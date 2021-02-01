@@ -1,0 +1,7 @@
+﻿*
+!/**/
+!*.cs
+!*.csproj
+!DspPluginTest.sln
+
+!.gitignore
