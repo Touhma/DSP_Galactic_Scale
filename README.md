@@ -20,7 +20,8 @@ Some limitations :
 
 ## How much systems can you generate ? 
 
-You can slide the number of system up to 255 instead of 64. Be carefull if your pc is slow ^^ 
+You can slide the number of system up to 1024 instead of 64. Be carefull if your pc is slow ^^ 
+---> everything past 255 is experimental ! Test it at your own risk :) 
 
 
 
