@@ -5,3 +5,4 @@
 !DspPluginTest.sln
 
 !.gitignore
+.NETFramework,Version=v4.8.AssemblyAttributes.cs
