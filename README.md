@@ -20,7 +20,6 @@ Some limitations :
 
 ## How much systems can you generate ? 
 
-I added a piece of code inspired from the plugin of ragzilla#0001 from the discord of DSP. So all credit to him for the piece of code. 
 You can slide the number of system up to 255 instead of 64. Be carefull if your pc is slow ^^ 
 
 
