@@ -79,6 +79,7 @@ namespace DSP_Plugin {
         }
 
         public static bool CheckIfInBuildDistance(Vector3 position) {
+            // return true if in build distance range
             return ((position - GameMain.data.mainPlayer.position).sqrMagnitude <=
                     GameMain.data.mainPlayer.mecha.buildArea *
                     GameMain.data.mainPlayer.mecha.buildArea);

@@ -1,27 +1,27 @@
 ﻿using System.Collections.Generic;
-using System.Linq.Expressions;
 using BepInEx;
+using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
-using NGPT;
 
 namespace DSP_Plugin {
-    [BepInPlugin("touhma.dsp.plugins.massDisassembling", "MassDelete Plug-In", "1.0.0.0")]
+    [BepInPlugin("touhma.dsp.plugins.qol-features", "QOL Features Plug-In", "1.0.0.0")]
     public class MassDelete : BaseUnityPlugin {
+        private static ConfigEntry<int> _configDisassemblingRadiusMax;
+        
         void Awake() {
-            var harmony = new Harmony("touhma.dsp.plugins.massDisassembling");
-            Harmony.CreateAndPatchAll(typeof(MassDeletePatch));
+            _configDisassemblingRadiusMax = Config.Bind("Disassembling",  
+                "DisassemblingRadiusMax",  
+                10, 
+                "The Maximum Size of the Sphere For Mass Disassembling");
+            
+            var harmony = new Harmony("touhma.dsp.plugins.qol-features");
+            Harmony.CreateAndPatchAll(typeof(QOLFeatureDisassemblePatch));
         }
 
 
         [HarmonyPatch(typeof(PlayerAction_Build))]
-        private class MassDeletePatch {
-            public float radius = 10f;
-            public float minSize = 1f;
-            public float maxSize = 20f;
-            public float sensitivity = 1f;
-
-
+        private class QOLFeatureDisassemblePatch {
             [HarmonyPrefix]
             [HarmonyPatch("DetermineDestructPreviews")]
             public static bool DetermineDestructPreviewsPatch(PlayerAction_Build __instance,
@@ -36,8 +36,9 @@ namespace DSP_Plugin {
                     return true;
                 }
 
-                if (Utils.CheckIfInBuildDistance(__instance.cursorTarget)) {
+                if (!Utils.CheckIfInBuildDistance(__instance.cursorTarget)) {
                     // Out of reach
+                    UnityEngine.Debug.Log("out of reach");
                     return true;
                 }
 
@@ -53,7 +54,7 @@ namespace DSP_Plugin {
                 }
 
                 if (VFInput.reformPlusKey.onDown) {
-                    if (__instance.reformSize <= 10) {
+                    if (__instance.reformSize <= _configDisassemblingRadiusMax.Value) {
                         __instance.reformSize++;
                     }
                 }
