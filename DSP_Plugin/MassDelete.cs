@@ -109,7 +109,8 @@ namespace DSP_Plugin {
                                 deleteEntitiesList = Utils.GetBeltsEntitiesByCargoPathBuildRange(___factory, pathByBeltId);
                             }
                             else {
-                                deleteEntitiesList = Utils.GetEntitiesByProtoBuildRange(___factory, itemProto);
+                                // deleteEntitiesList = Utils.GetEntitiesByProtoBuildRange(___factory, itemProto);
+                                return true;
                             }
                         }
                     }
