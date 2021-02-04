@@ -48,6 +48,20 @@ namespace DSP_Plugin {
 
             return entityDataList;
         }
+        
+        public static List<EntityData> GetEntitiesByProtoSphereRange(
+            PlanetFactory factory,
+            ItemProto itemProto, float radius) {
+            List<EntityData> entityDataList = new List<EntityData>();
+            foreach (EntityData entityData in factory.entityPool) {
+                if ((uint) entityData.id > 0U && entityData.protoId == itemProto.ID &&
+                    CheckIfInBuildDistance(entityData.pos)) {
+                    entityDataList.Add(entityData);
+                }
+            }
+
+            return entityDataList;
+        }
 
         // return all entities from a proto in the mecha build range 
         public static List<EntityData> GetEntitySortedByTypeAndRadius(

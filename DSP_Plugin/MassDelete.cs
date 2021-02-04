@@ -8,13 +8,17 @@ namespace DSP_Plugin {
     [BepInPlugin("touhma.dsp.plugins.qol-features", "QOL Features Plug-In", "1.0.0.0")]
     public class MassDelete : BaseUnityPlugin {
         private static ConfigEntry<int> _configDisassemblingRadiusMax;
+        private static ConfigEntry<int> _maxArrayOfBuildingSize;
         
         void Awake() {
             _configDisassemblingRadiusMax = Config.Bind("Disassembling",  
                 "DisassemblingRadiusMax",  
-                10, 
-                "The Maximum Size of the Sphere For Mass Disassembling");
-            
+                20, 
+                "The Maximum Size of an Internal Array For Mass Disassembling");
+            _maxArrayOfBuildingSize = Config.Bind("Disassembling",  
+                "ArrayOfBuildingSize",  
+                300, 
+                "Increase this if you crash when deleting a shit ton of building at once :)");
             var harmony = new Harmony("touhma.dsp.plugins.qol-features");
             Harmony.CreateAndPatchAll(typeof(QOLFeatureDisassemblePatch));
         }
@@ -54,14 +58,14 @@ namespace DSP_Plugin {
                 }
 
                 if (VFInput.reformPlusKey.onDown) {
-                    if (__instance.reformSize <= _configDisassemblingRadiusMax.Value) {
+                    if (__instance.reformSize < _configDisassemblingRadiusMax.Value) {
                         __instance.reformSize++;
                     }
                 }
 
                 // Management of the sphere delete
                 if (Input.GetKey(KeyCode.LeftControl)) {
-                    int[] buildingIdsToDelete = new int[100];
+                    int[] buildingIdsToDelete = new int[_maxArrayOfBuildingSize.Value];
                     if (itemProto != null) {
                         ___nearcdLogic.GetBuildingsInAreaNonAlloc(__instance.castObjPos, __instance.reformSize, buildingIdsToDelete);
                     }
