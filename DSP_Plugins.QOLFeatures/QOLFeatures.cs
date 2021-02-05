@@ -5,9 +5,9 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
 
-namespace DSP_Plugin {
+namespace DSP_Plugins.QOLFeatures {
     [BepInPlugin("touhma.dsp.plugins.qol-features", "QOL Features Plug-In", "1.0.0.0")]
-    public class MassDelete : BaseUnityPlugin {
+    public class QOLFeatures : BaseUnityPlugin {
         private static ConfigEntry<int> _configDisassemblingRadiusMax;
         private static ConfigEntry<int> _maxArrayOfBuildingSize;
         
