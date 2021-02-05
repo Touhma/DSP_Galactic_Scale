@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DSP_Plugins.Shared;
 using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
