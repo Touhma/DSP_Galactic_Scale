@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace DSP_Plugin {
+namespace DSP_Plugins.Shared {
     public static class Utils {
         // this should return the cargo node from a belt id
         public static CargoPath GetPathWithBeltId(PlanetFactory factory, int beltId) {

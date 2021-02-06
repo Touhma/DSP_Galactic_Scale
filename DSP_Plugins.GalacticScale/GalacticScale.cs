@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine.UI;
 
-namespace DSP_Plugin {
+namespace DSP_Plugin.GalacticScale {
     [BepInPlugin("touhma.dsp.plugins.galactic-scale", "Galactic Scale Plug-In", "1.0.0.0")]
-    public class DSP_MoreStars : BaseUnityPlugin {
+    public class DSP_GalacticScale : BaseUnityPlugin {
         private static ConfigEntry<int> _configStarsMax;
         private static ConfigEntry<int> _configStarsMin;
 
