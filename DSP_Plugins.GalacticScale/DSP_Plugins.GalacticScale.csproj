@@ -61,8 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GalacticScale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\GalacticScale.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="manifest.json" />

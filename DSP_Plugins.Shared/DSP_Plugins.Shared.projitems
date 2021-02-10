@@ -9,6 +9,6 @@
     <Import_RootNamespace>DSP_Plugins.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\Utils.cs" />
   </ItemGroup>
 </Project>
