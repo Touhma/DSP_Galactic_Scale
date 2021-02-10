@@ -1,32 +1,11 @@
 ﻿using System.Collections.Generic;
 using DSP_Plugins.Shared;
-using BepInEx;
-using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
 
 namespace DSP_Plugins.QOLFeatures {
-    [BepInPlugin("touhma.dsp.plugins.qol-features", "QOL Features Plug-In", "1.0.0.0")]
-    public class QOLFeatures : BaseUnityPlugin {
-        private static ConfigEntry<int> _configDisassemblingRadiusMax;
-        private static ConfigEntry<int> _maxArrayOfBuildingSize;
-        
-        void Awake() {
-            _configDisassemblingRadiusMax = Config.Bind("Disassembling",  
-                "DisassemblingRadiusMax",  
-                20, 
-                "The Maximum Size of an Internal Array For Mass Disassembling");
-            _maxArrayOfBuildingSize = Config.Bind("Disassembling",  
-                "ArrayOfBuildingSize",  
-                300, 
-                "Increase this if you crash when deleting a shit ton of building at once :)");
-            var harmony = new Harmony("touhma.dsp.plugins.qol-features");
-            Harmony.CreateAndPatchAll(typeof(QOLFeatureDisassemblePatch));
-        }
-
-
-        [HarmonyPatch(typeof(PlayerAction_Build))]
-        private class QOLFeatureDisassemblePatch {
+  [HarmonyPatch(typeof(PlayerAction_Build))]
+        public class PatchOnPlayerAction_Build {
             [HarmonyPrefix]
             [HarmonyPatch("DetermineDestructPreviews")]
             public static bool DetermineDestructPreviewsPatch(PlayerAction_Build __instance,
@@ -59,14 +38,14 @@ namespace DSP_Plugins.QOLFeatures {
                 }
 
                 if (VFInput.reformPlusKey.onDown) {
-                    if (__instance.reformSize < _configDisassemblingRadiusMax.Value) {
+                    if (__instance.reformSize < QOLFeatures.ConfigDisassemblingRadiusMax.Value) {
                         __instance.reformSize++;
                     }
                 }
 
                 // Management of the sphere delete
                 if (Input.GetKey(KeyCode.LeftControl)) {
-                    int[] buildingIdsToDelete = new int[_maxArrayOfBuildingSize.Value];
+                    int[] buildingIdsToDelete = new int[QOLFeatures.MAXArrayOfBuildingSize.Value];
                     if (itemProto != null) {
                         ___nearcdLogic.GetBuildingsInAreaNonAlloc(__instance.castObjPos, __instance.reformSize, buildingIdsToDelete);
                     }
@@ -170,5 +149,4 @@ namespace DSP_Plugins.QOLFeatures {
                 return false;
             }
         }
-    }
 }
