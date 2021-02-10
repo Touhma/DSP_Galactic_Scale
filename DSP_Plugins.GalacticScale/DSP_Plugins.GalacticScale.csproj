@@ -7,8 +7,8 @@
     <ProjectGuid>{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DSP_Plugins.GalacticScale</RootNamespace>
-    <AssemblyName>DSP_Plugins.GalacticScale</AssemblyName>
+    <RootNamespace>Touhma-GalacticScale</RootNamespace>
+    <AssemblyName>Touhma-GalacticScale</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,24 +43,6 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>..\Libs\BepInEx.Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\Libs\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>..\Libs\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>..\Libs\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks">
-      <HintPath>..\Libs\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\Libs\MonoMod.RuntimeDetour.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>..\Libs\MonoMod.Utils.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -82,6 +64,14 @@
     <Compile Include="GalacticScale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="manifest.json" />
+    <Content Include="Touhma-GalacticScale.png" />
+  </ItemGroup>
   <Import Project="..\DSP_Plugins.Shared\DSP_Plugins.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Delete Files="G:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\DSP_Plugin.dll" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles=".\bin\Debug\Touhma-GalacticScale.dll" DestinationFolder="G:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\" />
+  </Target>
 </Project>
