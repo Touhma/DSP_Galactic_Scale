@@ -1,15 +1,15 @@
 ﻿using HarmonyLib;
 using UnityEngine.UI;
 
-namespace DSP_Plugin.GalacticScale {
+namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
     [HarmonyPatch(typeof(UIGalaxySelect))]
     public class PatchOnUIGalaxySelect {
 
         [HarmonyPostfix]
         [HarmonyPatch("_OnInit")]
         public static void Patch_OnInit(UIGalaxySelect __instance, ref Slider ___starCountSlider) {
-            ___starCountSlider.maxValue = DSP_GalacticScale.ConfigStarsMax.Value;
-            ___starCountSlider.minValue = DSP_GalacticScale.ConfigStarsMin.Value;
+            ___starCountSlider.maxValue = PatchForGalaxySizeSelection.ConfigStarsMax.Value;
+            ___starCountSlider.minValue = PatchForGalaxySizeSelection.ConfigStarsMin.Value;
         }
 
         [HarmonyPrefix]

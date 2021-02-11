@@ -2,9 +2,11 @@
 using BepInEx.Configuration;
 using HarmonyLib;
 
-namespace DSP_Plugin.GalacticScale {
-    [BepInPlugin("touhma.dsp.plugins.galactic-scale", "Galactic Scale Plug-In", "1.0.0.0")]
-    public class DSP_GalacticScale : BaseUnityPlugin {
+
+namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
+    [BepInPlugin("touhma.dsp.galactic-scale.galaxy-size-select", "Galactic Scale Plug-In", "1.0.0.0")]
+    public class PatchForGalaxySizeSelection : BaseUnityPlugin {
+        
         public static ConfigEntry<int> ConfigStarsMax;
         public static ConfigEntry<int> ConfigStarsMin;
 
@@ -18,12 +20,12 @@ namespace DSP_Plugin.GalacticScale {
                 32,
                 "The Minimum Number of stars desired");
 
-            var harmony = new Harmony("touhma.dsp.plugins.galactic-scale");
-            
-            Harmony.CreateAndPatchAll(typeof(Patch));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
+            var harmony = new Harmony("touhma.dsp.galactic-scale.galaxy-size-select");
+
+            // PatchsForGalaxySizeSelection
             Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
         }
+        
     }
 }

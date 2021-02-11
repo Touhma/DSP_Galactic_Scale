@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace DSP_Plugin.GalacticScale {
+namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
     [HarmonyPatch(typeof(StarGen))]
     public class PatchOnStarGen {
         [HarmonyPrefix]
