@@ -136,7 +136,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 // predefined orbit size for x star size and orbit index x
 
 
-                float baselineOrbitSize = Patch._orbitRadiusArray[orbitIndex] * star.orbitScaler;
+                float baselineOrbitSize = Patch.OrbitRadiusArray[orbitIndex] * star.orbitScaler;
                 float orbitSize = (float) ((baselineOrbitVariation - 1.0) / Mathf.Max(1f, baselineOrbitSize) + 1.0);
                 orbitRadius = baselineOrbitSize * orbitSize;
             }
@@ -357,10 +357,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug("Patching the radius :", LogLevel.Debug, Patch.DebugPlanetGen);
                 Patch.Debug("Patching the scale :", LogLevel.Debug, Patch.DebugPlanetGen);
 
-                planet.radius = 200f;
-                planet.scale = 1f;
-                // precision
-                planet.precision = 200;
+                planet.radius = 100f;
+                planet.scale = 0.5f;
+                planet.precision = 100;
             }
 
 

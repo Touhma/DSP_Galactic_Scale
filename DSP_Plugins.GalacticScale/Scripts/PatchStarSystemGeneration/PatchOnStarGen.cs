@@ -12,8 +12,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPrefix]
         [HarmonyPatch("CreateStarPlanets")]
         public static bool CreateStarPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc) {
-            double[] pgasRef = new double[Patch._startingSystemPlanetNb];
-            string[] pnameRef = new string[Patch._startingSystemPlanetNb];
+            double[] pgasRef = new double[Patch.StartingSystemPlanetNb];
+            string[] pnameRef = new string[Patch.StartingSystemPlanetNb];
 
             // Random Generator 
             Random random1 = new Random(star.seed);
@@ -193,7 +193,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             else {
                 Array.Clear(pgasRef, 0, pgasRef.Length);
                 if (star.index == 0) {
-                    star.planetCount = Patch._startingSystemPlanetNb;
+                    star.planetCount = Patch.StartingSystemPlanetNb;
                     List<double> pgaslist = new List<double>();
                     List<string> pnamelist = new List<string>();
                     pgaslist.Add(0); // Mercure
@@ -531,7 +531,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             star.asterBelt1OrbitIndex = AsteroidBeltOrbitIndex;
             star.asterBelt2OrbitIndex = asteroidBelt2OrbitIndex;
             if (AsteroidBeltOrbitIndex > 0) {
-                star.asterBelt1Radius = Patch._orbitRadiusArray[AsteroidBeltOrbitIndex] * (float) randomNumber6 *
+                star.asterBelt1Radius = Patch.OrbitRadiusArray[AsteroidBeltOrbitIndex] * (float) randomNumber6 *
                                         star.orbitScaler;
             }
 
@@ -539,7 +539,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 return false;
             }
 
-            star.asterBelt2Radius = Patch._orbitRadiusArray[asteroidBelt2OrbitIndex] * (float) randomNumber7 *
+            star.asterBelt2Radius = Patch.OrbitRadiusArray[asteroidBelt2OrbitIndex] * (float) randomNumber7 *
                                     star.orbitScaler;
             if (star.index == 0) {
                 Patch.Debug("#End of Function : #", LogLevel.Debug, Patch.DebugStarGen);

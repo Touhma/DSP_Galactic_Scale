@@ -8,11 +8,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public class PatchForStarSystemGeneration : BaseUnityPlugin{
         public new static ManualLogSource Logger;
         
-        public static int _startingSystemPlanetNb = 30;
-        public static float _orbitMaxIncrement = 1f;
-        public static float _orbitMinIncrement = 0.5f;
-        public static float _minOrbitRadius = 0.4f;
-        public static float[] _orbitRadiusArray;
+        public static int StartingSystemPlanetNb = 30;
+        public static float OrbitMaxIncrement = 1f;
+        public static float OrbitMinIncrement = 0.5f;
+        public static float MINOrbitRadius = 0.4f;
+        public static float[] OrbitRadiusArray;
 
         public static bool DebugPlanetGen = false;
         public static bool DebugStarGen = false;
@@ -20,8 +20,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         internal void Awake() {
             var harmony = new Harmony("touhma.dsp.galactic-scale.star-system-generation");
             
-             _orbitRadiusArray = new float[_startingSystemPlanetNb];
-            _orbitRadiusArray = new float[_startingSystemPlanetNb];
+            //Adding the Logger
+            Logger = new ManualLogSource("PatchForStarSystemGeneration");
+            BepInEx.Logging.Logger.Sources.Add(Logger);
+            
+             OrbitRadiusArray = new float[StartingSystemPlanetNb];
+            OrbitRadiusArray = new float[StartingSystemPlanetNb];
 
             List<float> _orbitRadiusArrayList = new List<float>();
             // 1 unit environ 0.945 UA
@@ -64,7 +68,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             _orbitRadiusArrayList.Add(50f);
             _orbitRadiusArrayList.Add(50f);
 
-            _orbitRadiusArray = _orbitRadiusArrayList.ToArray();
+            OrbitRadiusArray = _orbitRadiusArrayList.ToArray();
 
        
             

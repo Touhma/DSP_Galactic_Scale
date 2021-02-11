@@ -20,6 +20,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         internal void Awake() {
             var harmony = new Harmony("touhma.dsp.galactic-scale.planet-size");
             
+            //Adding the Logger
+            Logger = new ManualLogSource("PatchForPlanetSize");
+            BepInEx.Logging.Logger.Sources.Add(Logger);
+            
             //PatchForPlanetSize
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm1));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
