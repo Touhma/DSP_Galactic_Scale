@@ -176,7 +176,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 //chance to jump an orbit
 
-                int jumpOrbitMargin = Patch.OrbitRadiusArrayPlanetNb - (nbOfPlanets - planetsGenerated);
+                int jumpOrbitMargin = Patch.OrbitRadiusArrayPlanetNb.Value - (nbOfPlanets - planetsGenerated);
                 if (currentOrbitIndex < jumpOrbitMargin && jumpOrbitMargin < currentSettings.JumpOrbitPlanetIndex) {
                     if (annexSeed.NextDouble() < currentSettings.ChanceJumpOrbitPlanets) {
                         // can jump orbit up to JumpOrbitPlanetIndex
@@ -247,7 +247,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 if (moonsTelluricGenerated < nbOfMoonsTelluric) {
                     //between the index 1 & the number generated. so between 1 & 4 if 4 are generated
                     orbitAroundSelected = UnityRandom.Range(1, planetsTelluricGenerated);
-                    jumpOrbitMoonMargin = Patch.OrbitRadiusArrayMoonsNb - (nbOfMoonsTelluric - moonsTelluricGenerated);
+                    jumpOrbitMoonMargin = Patch.OrbitRadiusArrayMoonsNb.Value - (nbOfMoonsTelluric - moonsTelluricGenerated);
                     Patch.Debug(
                         "Telluric Moon Creation around: " + orbitAroundSelected + " jumpOrbitMoonMargin : " +
                         jumpOrbitMoonMargin, LogLevel.Debug, Patch.DebugStarGen);
@@ -255,7 +255,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 else if (moonsGasGenerated < nbOfMoonsGasGiant) {
                     orbitAroundSelected = UnityRandom.Range(gasPlanetStartingIndex,
                         planetsTelluricGenerated + planetsGasGenerated);
-                    jumpOrbitMoonMargin = Patch.OrbitRadiusArrayMoonsNb - (nbOfMoonsGasGiant - moonsGasGenerated);
+                    jumpOrbitMoonMargin = Patch.OrbitRadiusArrayMoonsNb.Value - (nbOfMoonsGasGiant - moonsGasGenerated);
                     Patch.Debug(
                         "GasGiant Moon Creation around: " + orbitAroundSelected + " jumpOrbitMoonMargin : " +
                         jumpOrbitMoonMargin, LogLevel.Debug, Patch.DebugStarGen);
