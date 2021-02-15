@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
@@ -19,10 +20,13 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         [HarmonyPrefix]
         [HarmonyPatch("UpdateDirtyMesh")]
         public static bool UpdateDirtyMesh(ref PlanetData __instance, ref bool __result, int dirtyIdx) {
-            if (__instance.name == "Luna") {
+            
+            Patch.Debug("UpdateDirtyMesh", LogLevel.Debug,
+                Patch.DebugGeneral);
+    
                 Patch.Debug("UpdateDirtyMesh Start :", LogLevel.Debug,
                     Patch.DebugPlanetData);
-                Patch.Debug("scaleFactor updateDirtyMesh :" + Patch.scaleFactor, LogLevel.Debug,
+                Patch.Debug("scaleFactor updateDirtyMesh :" +  __instance.GetScaleFactored(), LogLevel.Debug,
                     Patch.DebugPlanetData);
 
                 if (__instance.dirtyFlags[dirtyIdx]) {
@@ -75,7 +79,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                             float copyOfRadiusOffset = radiusOffset;
                             if (thirdOdModLevel > 0f) {
                                 copyOfRadiusOffset = (float) __instance.data.GetModPlane(strideIndexLoop) *
-                                                     Patch.scaleFactor * 0.01f;
+                                                     __instance.GetScaleFactored() * 0.01f;
                             }
 
                             //patched copyOfRadiusOffset
@@ -120,9 +124,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
 
                 __result = false;
                 return false;
-            }
-
-            return true;
+         
         }
     }
 }

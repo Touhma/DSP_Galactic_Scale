@@ -72,6 +72,16 @@
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm2.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm3.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm4.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm5.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm6.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm7.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetDataExtention.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetRawDataExtention.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\RomanNumbers.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\TidalLevel.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm1.cs" />
@@ -80,6 +90,10 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkCreatePlanet.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Utils\GalaxyInfosUtils.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Utils\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="manifest.json" />

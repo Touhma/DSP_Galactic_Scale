@@ -1,5 +1,6 @@
 ﻿using System;
 using BepInEx.Logging;
+using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using Random = System.Random;
@@ -8,13 +9,15 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 namespace GalacticScale.Scripts.PatchPlanetSize  {
     [HarmonyPatch(typeof(PlanetAlgorithm1))]
     public class PatchOnPlanetAlgorithm1 {
+        
+        /*
         [HarmonyPrefix]
         [HarmonyPatch("GenerateTerrain")]
         public static bool PatchGenerateTerrain(ref PlanetAlgorithm1 __instance, ref PlanetData ___planet,
             double modX, double modY) {
-            if (___planet.name == "Luna") {
-                Patch.Debug("GenerateTerrain Luna", LogLevel.Debug,
-                    Patch.DebugPlanetAlgorithm1);
+
+                Patch.Debug("GenerateTerrain", LogLevel.Debug,
+                    Patch.DebugGeneral);
                 double constant1 = 0.01;
                 double constant2 = 0.012;
                 double constant3 = 0.01;
@@ -60,11 +63,11 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
 
                     Patch.Debug("___planet.radius : " + ___planet.radius, LogLevel.Debug,
                         Patch.DebugPlanetAlgorithm1);
-                    Patch.Debug("scaleFactor : " + Patch.scaleFactor, LogLevel.Debug,
+                    Patch.Debug("scaleFactor : " + ___planet.GetScaleFactored(), LogLevel.Debug,
                         Patch.DebugPlanetAlgorithm1);
                     Patch.Debug(
                         "(___planet.radius + fLevelized + 0.2) * amplitude) * scaleFactor : " +
-                        ((___planet.radius + fLevelized + 0.2) * amplitude) * Patch.scaleFactor,
+                        ((___planet.radius + fLevelized + 0.2) * amplitude) *  ___planet.GetScaleFactored(),
                         LogLevel.Debug, Patch.DebugPlanetAlgorithm1);
                     Patch.Debug("data.heightData[" + index + "] : " + data.heightData[index],
                         LogLevel.Debug, Patch.DebugPlanetAlgorithm1);
@@ -76,10 +79,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                 }
 
                 return false;
-            }
-
-            return true;
+   
         }
+        */
 
         [HarmonyPrefix]
         [HarmonyPatch("GenerateVegetables")]
@@ -292,7 +294,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                                 a = !flag1 ? data.QueryHeight(vege.pos) : num22;
 
                                 // Patched Vegetation position depending on the scaleFactor
-                                vege.pos *= a * Patch.scaleFactor;
+                                vege.pos *= a *  ___planet.GetScaleFactored();
                                 vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) *
                                            Quaternion.AngleAxis(angle2, Vector3.up);
                                 vege.scl = new Vector3(num45, y, num45);

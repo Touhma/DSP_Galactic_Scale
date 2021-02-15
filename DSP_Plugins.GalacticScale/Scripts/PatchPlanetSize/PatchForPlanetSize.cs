@@ -3,13 +3,18 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize  {
-    [BepInPlugin("touhma.dsp.galactic-scale.planet-size", "Galactic Scale Plug-In", "1.0.0.0")]
+    [BepInPlugin("touhma.dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
     public class PatchForPlanetSize  : BaseUnityPlugin{
         public new static ManualLogSource Logger;
         
-        public static float scaleFactor = 1;
-        
+        public static bool DebugGeneral = false;
         public static bool DebugPlanetAlgorithm1 = false;
+        public static bool DebugPlanetAlgorithm2 = false;
+        public static bool DebugPlanetAlgorithm3 = false;
+        public static bool DebugPlanetAlgorithm4 = false;
+        public static bool DebugPlanetAlgorithm5 = false;
+        public static bool DebugPlanetAlgorithm6 = false;
+        public static bool DebugPlanetAlgorithm7 = false;
         public static bool DebugPlanetFactory = false;
         public static bool DebugPlanetFactoryDeep = false;
         public static bool DebugPlanetRawData = false;
@@ -26,6 +31,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             
             //PatchForPlanetSize
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm1));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm2));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm3));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm4));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm5));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm6));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm7));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));

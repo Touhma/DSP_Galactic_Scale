@@ -36,7 +36,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             float fade1 = 1f,
             bool removeVein = false,
             bool lift = false) {
-            if (__instance.planet.name == "Luna") {
+           
                 Patch.Debug("FlattenTerrain -- Begining ", LogLevel.Debug,
                     Patch.DebugPlanetFactory);
                 if (___tmp_levelChanges == null) {
@@ -323,9 +323,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
 
 
                 return false;
-            }
-
-            return true;
+          
         }
 
         [HarmonyPrefix]
@@ -337,7 +335,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             bool veinBuried,
             float fade0 = 3f) {
             Patch.Debug("FlattenTerrainReform ", LogLevel.Debug,
-                Patch.DebugPlanetFactoryDeep);
+                Patch.DebugPlanetFactory);
             return true;
         }
     }

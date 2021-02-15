@@ -5,7 +5,7 @@ using HarmonyLib;
 
 
 namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
-    [BepInPlugin("touhma.dsp.galactic-scale.galaxy-size-select", "Galactic Scale Plug-In", "1.0.0.0")]
+    [BepInPlugin("touhma.dsp.galactic-scale.galaxy-size-select", "Galactic Scale Plug-In - Galaxy Size Select", "1.0.0.0")]
     public class PatchForGalaxySizeSelection : BaseUnityPlugin {
         public new static ManualLogSource Logger;
         

@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
@@ -8,7 +9,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         [HarmonyPrefix]
         [HarmonyPatch("GetModPlane")]
         public static bool GetModPlane(int index, ref PlanetRawData __instance, ref short __result) {
-            Patch.Debug("scaleFactor " + Patch.scaleFactor, LogLevel.Debug,
+            Patch.Debug("scaleFactor " + __instance.GetFactoredScale(), LogLevel.Debug,
                 Patch.DebugPlanetRawData);
 
             Patch.Debug("index " + index, LogLevel.Debug,
@@ -21,7 +22,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                 "test " + (((int) __instance.modData[index >> 1] >> ((index & 1) << 2) + 2 & 3) * 133), LogLevel.Debug,
                 Patch.DebugPlanetRawData);
 
-            if (Patch.scaleFactor > 1.0f) {
+            if (__instance.GetFactoredScale() > 1.0f) {
                 float baseHeight = 20020;
 
                 Patch.Debug("baseHeight " + baseHeight, LogLevel.Debug,
@@ -73,7 +74,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
 
                             Patch.Debug("MagnetudeOnPrecision " + magnetudeOnPrecision, LogLevel.Debug,
                                 Patch.DebugPlanetRawData);
-                            magnetudeOnPrecision *= Patch.scaleFactor;
+                            magnetudeOnPrecision *= __instance.GetFactoredScale();
 
                             Patch.Debug("MagnetudeOnPrecision Patched " + magnetudeOnPrecision,
                                 LogLevel.Debug,
@@ -85,7 +86,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                                 Patch.DebugPlanetRawData);
                             if (modLevel > 0) {
                                 // try patching here
-                                float modPlane = (float) __instance.GetModPlane(index4) * Patch.scaleFactor;
+                                float modPlane = (float) __instance.GetModPlane(index4) * __instance.GetFactoredScale();
 
                                 Patch.Debug("modPlane " + modPlane, LogLevel.Debug,
                                     Patch.DebugPlanetRawData);
