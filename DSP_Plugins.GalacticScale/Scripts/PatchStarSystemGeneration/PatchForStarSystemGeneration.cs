@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using BepInEx;
@@ -18,11 +19,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
         // use custom orbit for planets
         public static ConfigEntry<bool> UseCustomOrbitRadiusArray;
-        public static ConfigEntry<float[]> CustomOrbitRadiusArrayPlanets;
+        public static ConfigEntry<string> CustomOrbitRadiusArrayPlanets;
    
         // use custom orbit for moons
         public static ConfigEntry<bool> UseCustomOrbitRadiusArrayMoons;
-        public static ConfigEntry<float[]> CustomOrbitRadiusArrayMoons;
+        public static ConfigEntry<string> CustomOrbitRadiusArrayMoons;
         
         
         // Settings for the algorithms
@@ -294,19 +295,20 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             
             CustomOrbitRadiusArrayPlanets = Config.Bind("galactic-scale-systems",
                 "CustomOrbitRadiusArrayPlanets", 
-                new []{0f,1f,2.5f},
+                "0,1,2.5",
                 "Custom Array for the value in UA for the orbits of the planets");
             
             CustomOrbitRadiusArrayMoons = Config.Bind("galactic-scale-systems",
                 "CustomOrbitRadiusArrayMoon", 
-                new []{0f,1f,2.5f},
+                "0,1,2.5",
                 "Custom Array for the value in UA for the orbits of the moons");
             
             //nb of planet + star
             OrbitRadiusPlanetArray = new float[OrbitRadiusArrayPlanetNb.Value + 1];
-            OrbitRadiusPlanetArray = !UseCustomOrbitRadiusArray.Value ? _orbitRadiusArrayPlanetList.ToArray() : CustomOrbitRadiusArrayPlanets.Value;
+            OrbitRadiusPlanetArray = !UseCustomOrbitRadiusArray.Value ? _orbitRadiusArrayPlanetList.ToArray() : Array.ConvertAll(CustomOrbitRadiusArrayPlanets.Value.Split(','), float.Parse);
+       
             OrbitRadiusArrayMoons = new float[OrbitRadiusArrayMoonsNb.Value];
-            OrbitRadiusArrayMoons = !UseCustomOrbitRadiusArrayMoons.Value ? _orbitRadiusArrayMoonList.ToArray() : CustomOrbitRadiusArrayMoons.Value;
+            OrbitRadiusArrayMoons = !UseCustomOrbitRadiusArrayMoons.Value ? _orbitRadiusArrayMoonList.ToArray() : Array.ConvertAll(CustomOrbitRadiusArrayMoons.Value.Split(','), float.Parse);
 
             StartingSystemPlanetNb = Config.Bind("galactic-scale-systems",
                 "StartingSystemPlanetNb",
