@@ -81,6 +81,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetDataExtention.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetRawDataExtention.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\RomanNumbers.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\SystemsNames.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\TidalLevel.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
