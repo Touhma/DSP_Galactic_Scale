@@ -189,8 +189,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             public int JumpOrbitMoonIndex;
 
             // the higher the spacier the system will be 
-            public int ChanceJumpOrbitPlanets;
-            public int ChanceJumpOrbitMoons;
+            public float ChanceJumpOrbitPlanets;
+            public float ChanceJumpOrbitMoons;
 
             public float ChanceTelluricPlanet;
             public float ChanceGasGiant;
@@ -203,7 +203,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 int maxPlanetNb,
                 int maxMoonNb,
                 int jumpOrbitPlanetIndex,
+                float chanceJumpOrbitPlanets,
                 int jumpOrbitMoonIndex,
+                float chanceJumpOrbitMoons,
                 float chanceTelluricPlanet,
                 float chanceGasGiant,
                 float chanceGasGiantMoon,
@@ -211,7 +213,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 MaxPlanetNb = maxPlanetNb;
                 MaxMoonNb = maxMoonNb;
                 JumpOrbitPlanetIndex = jumpOrbitPlanetIndex;
+                ChanceJumpOrbitPlanets = chanceJumpOrbitPlanets;
                 JumpOrbitMoonIndex = jumpOrbitMoonIndex;
+                ChanceJumpOrbitMoons = chanceJumpOrbitMoons;
                 ChanceTelluricPlanet = chanceTelluricPlanet;
                 ChanceGasGiant = chanceGasGiant;
                 ChanceGasGiantMoon = chanceGasGiantMoon;
@@ -334,7 +338,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "float : ChanceTelluricMoon");
             if (!UseCustomParamsForBlackHole.Value) {
                 GeneratorSpecialsSystemConfig.Add(EStarType.BlackHole,
-                    new StarSystemSetting(1, 1, 4, 1, 0.5f, 0.5f, 0.5f, 0.5f));
+                    new StarSystemSetting(1, 1, 4, 0.9f,1,  0.9f, 0.5f, 0.5f, 0.5f, 0.5f));
             }
             else {
                 GeneratorSpecialsSystemConfig.Add(EStarType.BlackHole,
@@ -351,7 +355,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for neutron star");
             if (!UseCustomParamsForNeutronStar.Value) {
                 GeneratorSpecialsSystemConfig.Add(EStarType.NeutronStar,
-                    new StarSystemSetting(1,1,4,2,0.8f,0.2f,0.5f,0.5f));
+                    new StarSystemSetting(1,1,4,0.1f,2,0.1f,0.8f,0.2f,0.5f,0.5f));
             }
             else {
                 GeneratorSpecialsSystemConfig.Add(EStarType.NeutronStar,
@@ -368,7 +372,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for neutron star");
             if (!UseCustomParamsForWhiteDwarf.Value) {
                 GeneratorSpecialsSystemConfig.Add(EStarType.WhiteDwarf,
-                    new StarSystemSetting(2, 4, 3, 3, 0.6f, 0.6f, 0.7f, 0.2f));
+                    new StarSystemSetting(2, 4, 3, 0.5f,3,0.5f, 0.6f, 0.6f, 0.7f, 0.2f));
             }
             else {
                 GeneratorSpecialsSystemConfig.Add(EStarType.WhiteDwarf,
@@ -383,13 +387,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "CustomParamsForGiantStar",
                 "6,6,5,2,0.8f,0.8f,0.8f,0.2f",
                 "Same for neutron star");
-            if (!UseCustomParamsForWhiteDwarf.Value) {
-                GeneratorSpecialsSystemConfig.Add(EStarType.WhiteDwarf,
-                    new StarSystemSetting(2, 4, 3, 3, 0.6f, 0.6f, 0.7f, 0.2f));
+            if (!UseCustomParamsForGiantStar.Value) {
+                GeneratorSpecialsSystemConfig.Add(EStarType.GiantStar,
+                    new StarSystemSetting(2, 4, 3, 0.8f,3, 0.8f,0.6f, 0.6f, 0.7f, 0.2f));
             }
             else {
-                GeneratorSpecialsSystemConfig.Add(EStarType.WhiteDwarf,
-                    ParseCustomStarSystemSetting(CustomParamsForWhiteDwarf.Value));
+                GeneratorSpecialsSystemConfig.Add(EStarType.GiantStar,
+                    ParseCustomStarSystemSetting(CustomParamsForGiantStar.Value));
             }
 
             UseCustomParamsForClassA = Config.Bind("galactic-scale-systems",
@@ -402,7 +406,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class A");
             if (!UseCustomParamsForClassA.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.A,
-                    new StarSystemSetting(9,10,3,3,0.7f,0.4f,0.6f,0.5f));
+                    new StarSystemSetting(9,10,3, 0.3f, 3,0.4f, 0.7f,0.4f,0.6f,0.5f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.X,
@@ -419,7 +423,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class B");
             if (!UseCustomParamsForClassB.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.B,
-                    new StarSystemSetting(6,6,5,2,0.8f,0.3f,0.8f,0.5f));
+                    new StarSystemSetting(6,6,5,0.5f,2,0.6f,0.8f,0.3f,0.8f,0.5f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.B,
@@ -436,7 +440,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class F");
             if (!UseCustomParamsForClassF.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.F,
-                    new StarSystemSetting(6,6,3,2,0.8f,0.5f,0.8f,0.2f));
+                    new StarSystemSetting(6,6,3,0.6f,2,0.4f,0.8f,0.5f,0.8f,0.2f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.F,
@@ -453,7 +457,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class G");
             if (!UseCustomParamsForClassG.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.G,
-                    new StarSystemSetting(3,3,2,2,0.8f,0.6f,0.6f,0.3f));
+                    new StarSystemSetting(3,3,2,0.8f,2,0.6f,0.8f,0.6f,0.6f,0.3f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.X,
@@ -470,7 +474,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class K");
             if (!UseCustomParamsForClassK.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.K,
-                    new StarSystemSetting(5,4,1,2,0.8f,0.7f,0.8f,0.2f));
+                    new StarSystemSetting(5,4,1,0.5f,2,0.5f,0.8f,0.7f,0.8f,0.2f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.K,
@@ -487,7 +491,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class M");
             if (!UseCustomParamsForClassM.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.M,
-                    new StarSystemSetting(4,12,1,2,0.7f,0.8f,0.6f,0.3f));
+                    new StarSystemSetting(4,12,1,0.7f,2,0.2f,0.7f,0.8f,0.6f,0.3f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.M,
@@ -504,7 +508,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class O");
             if (!UseCustomParamsForClassO.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.O,
-                    new StarSystemSetting(10,14,4,2,0.9f,0.3f,0.9f,0.8f));
+                    new StarSystemSetting(10,14,4,0.2f,2,0.2f,0.9f,0.3f,0.9f,0.8f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.O,
@@ -521,7 +525,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Same for Class X --> not used yet AFAIK");
             if (!UseCustomParamsForClassX.Value) {
                 GeneratorMainSystemConfig.Add(ESpectrType.X,
-                    new StarSystemSetting(0,0,0,0,0f,0f,0f,0f));
+                    new StarSystemSetting(0,0,0,0.0f,0,0.0f,0f,0f,0f,0f));
             }
             else {
                 GeneratorMainSystemConfig.Add(ESpectrType.X,
@@ -677,8 +681,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static StarSystemSetting ParseCustomStarSystemSetting(string config) {
             float[] configArray = Array.ConvertAll(config.Split(','), float.Parse);
             return new StarSystemSetting((int) configArray[0], (int) configArray[1], (int) configArray[2],
-                (int) configArray[3], configArray[4],
-                configArray[5], configArray[6], configArray[7]);
+                 configArray[3], (int )configArray[4],
+                configArray[5], configArray[6], configArray[7], configArray[8], configArray[9]);
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
