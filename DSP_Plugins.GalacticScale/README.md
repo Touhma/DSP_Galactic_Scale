@@ -1,5 +1,16 @@
 ﻿# DSP Touhma GalacticScale Plugin
 
+
+## Disclaimer
+
+This is a Beta Release version of the mod. Expects bugs , crash etc ... 
+
+Your save WILL break ! 
+
+I need some feedback & some bug report to fix it. Plus i'm opening the mod for people who think can help me fixing it. 
+
+Have fun with it and good testing ! 
+
 ## How to Install :
 
 First Install Bepinex in your game
