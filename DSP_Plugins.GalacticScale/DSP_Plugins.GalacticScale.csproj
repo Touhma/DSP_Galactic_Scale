@@ -7,7 +7,7 @@
     <ProjectGuid>{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Touhma-GalacticScale</RootNamespace>
+    <RootNamespace>GalacticScale</RootNamespace>
     <AssemblyName>Touhma-GalacticScale</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,8 +53,14 @@
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Libs\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Libs\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
@@ -62,13 +68,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\PatchOnStarGen.cs" />
-    <Compile Include="Scripts\PatchOnUniverseGen.cs" />
-    <Compile Include="Scripts\_GalacticScale.cs" />
-    <Compile Include="Scripts\PatchOnUIGalaxySelect.cs" />
+    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
+    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
+    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm2.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm3.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm4.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm5.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm6.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm7.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetDataExtention.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetRawDataExtention.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\RomanNumbers.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\SystemsNames.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\TidalLevel.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm1.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetData.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetFactory.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkCreatePlanet.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Utils\GalaxyInfosUtils.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Utils\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="manifest.json" />
+    <Content Include="README.md" />
     <Content Include="Touhma-GalacticScale.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

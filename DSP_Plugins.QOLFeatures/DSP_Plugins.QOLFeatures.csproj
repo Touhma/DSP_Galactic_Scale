@@ -7,7 +7,7 @@
     <ProjectGuid>{658BB596-C691-44CA-BDA8-A3D2ED9EEC26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Touhma-QOLFeatures</RootNamespace>
+    <RootNamespace>QOLFeatures</RootNamespace>
     <AssemblyName>Touhma-QOLFeatures</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -72,6 +72,9 @@
       <Project>{bd2a2bb8-f34b-4e0b-8e6c-f561d367e76d}</Project>
       <Name>DSP_Plugins.GalacticScale</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
