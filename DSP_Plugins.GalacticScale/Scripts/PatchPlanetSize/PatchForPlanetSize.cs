@@ -21,6 +21,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         public static bool DebugPlanetData = false;
         public static bool DebugPlanetModelingManager = false;
         public static bool DebugPlanetModelingManagerDeep = false;
+                
+        public static bool DebugAtmoBlur = false;
 
         internal void Awake() {
             var harmony = new Harmony("touhma.dsp.galactic-scale.planet-size");
@@ -41,6 +43,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
         }
         
         public static void Debug(object data, LogLevel logLevel , bool isActive) {

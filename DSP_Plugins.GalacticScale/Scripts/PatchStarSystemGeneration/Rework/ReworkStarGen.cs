@@ -48,8 +48,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             //Debugging configs
             Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGen);
-            Patch.Debug("ChanceMoon :" + currentSettings.ChanceMoon, LogLevel.Debug, Patch.DebugStarGen);
-            Patch.Debug("ChancePlanet :" + currentSettings.ChancePlanet, LogLevel.Debug, Patch.DebugStarGen);
+            Patch.Debug("ChanceMoon :" + currentSettings.ChanceGasGiantMoon, LogLevel.Debug, Patch.DebugStarGen);
+            Patch.Debug("ChancePlanet :" + currentSettings.ChanceTelluricPlanet, LogLevel.Debug, Patch.DebugStarGen);
             Patch.Debug("ChanceGasGiant :" + currentSettings.ChanceGasGiant, LogLevel.Debug, Patch.DebugStarGen);
             Patch.Debug("ChanceMoonTelluric :" + currentSettings.ChanceMoonTelluric, LogLevel.Debug,
                 Patch.DebugStarGen);
@@ -65,7 +65,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("Definition of Nb of planets In the system :", LogLevel.Debug, Patch.DebugStarGen);
             // Define how much planets the system have
             for (var i = 0; i < currentSettings.MaxPlanetNb; i++) {
-                if (annexSeed.NextDouble() <= currentSettings.ChancePlanet) {
+                if (annexSeed.NextDouble() <= currentSettings.ChanceTelluricPlanet) {
                     nbOfPlanets++;
                 }
             }
@@ -87,7 +87,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("Definition of Nb of Moons In the system :", LogLevel.Debug, Patch.DebugStarGen);
             // Define how much moons the system have
             for (var i = 0; i < currentSettings.MaxMoonNb; i++) {
-                if (annexSeed.NextDouble() <= currentSettings.ChanceMoon) {
+                if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiantMoon) {
                     nbOfMoons++;
                 }
             }

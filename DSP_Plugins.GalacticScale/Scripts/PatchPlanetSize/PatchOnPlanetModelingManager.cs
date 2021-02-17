@@ -191,6 +191,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     ___tmpPlanetGameObject.layer = 31;
                     GameMain.universeSimulator.SetPlanetSimulator(
                         ___tmpPlanetGameObject.AddComponent<PlanetSimulator>(), planet);
+                    
                     ___tmpPlanetGameObject.transform.localPosition = Vector3.zero;
                     ___tmpPlanetBodyGameObject = new GameObject("Planet Body");
                     ___tmpPlanetBodyGameObject.transform.SetParent(___tmpPlanetGameObject.transform, false);

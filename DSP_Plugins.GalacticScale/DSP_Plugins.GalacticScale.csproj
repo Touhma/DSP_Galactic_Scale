@@ -78,6 +78,9 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm5.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm6.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAlgorithm7.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetDataExtention.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetRawDataExtention.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\RomanNumbers.cs" />
