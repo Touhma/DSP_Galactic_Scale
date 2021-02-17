@@ -328,14 +328,16 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "CustomParamsForBlackHole",
                 "1,1,4,1,0.5f,0.5f,0.5f,0.5f",
                 "Custom Params for the specified system, " +
-                "int : MaxPlanetNb," +
-                "int : MaxMoonNb," +
-                "int : JumpOrbitPlanetIndex," +
-                "int : jumpOrbitMoonIndex," +
-                "float : ChanceTelluric," +
-                "float : ChanceGasGiant," +
-                "float : ChanceGasGiantMoon," +
-                "float : ChanceTelluricMoon");
+                "int : MaxPlanetNb : nb max of planets in the system in total," +
+                "int : MaxMoonNb : nb max of moons in the system in total," +
+                "int : JumpOrbitPlanetIndex :the first planet of the host star will be on this orbit" +
+                "float : ChanceJumpOrbitPlanet : lower = denser systems, higher = further away from the star,"+
+                "int : jumpOrbitMoonIndex : the first moon of the host planet will be on this orbit" +
+                "float : ChanceJumpOrbitMoon : lower = denser systems, higher = further away from the host planet,"+
+                "float : ChanceTelluric : chance for a telluric planet to spawn," +
+                "float : ChanceGasGiant : chance for a gas giant to spawn," +
+                "float : ChanceGasGiantMoon : chance for a moon around a gasgiant to spawn," +
+                "float : ChanceTelluricMoon : chance for a moon around a telluric planet to spawn ");
             if (!UseCustomParamsForBlackHole.Value) {
                 GeneratorSpecialsSystemConfig.Add(EStarType.BlackHole,
                     new StarSystemSetting(1, 1, 4, 0.9f,1,  0.9f, 0.5f, 0.5f, 0.5f, 0.5f));

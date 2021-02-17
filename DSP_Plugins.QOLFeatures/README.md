@@ -1,4 +1,4 @@
-﻿# DSP Touhma Plugins
+﻿# DSP Touhma QOL Plugin
 
 ## How to Install :
 
@@ -49,21 +49,3 @@ Edit the file here : %gamefolder%\Dyson Sphere Program\BepInEx\config\touhma.dsp
     <li> <del>The height is limited by the radius of the invisible sphere for now. you will still have to remove some stuff manually but it should be only on extreme height situation. </del></li>
     <li> If you don't have space in inventory you loose what's deleted, be carefull ! </li>
 </ul>
-
-
-## How to use galactic-scale ?  
-
-### Map Size :
-
-You can slide the number of system up to 1024 ( by default ) instead of 64. Be carefull if your pc is slow ^^ ---> everything past 64 is experimental ! Test it at your own risk :) 
-
-#### Config Available :
-
-Edit the file here : %gamefolder%\Dyson Sphere Program\BepInEx\config\touhma.dsp.plugins.galactic-scale.cfg
-
-#### Limitations :
-
-Although you can put more than 1024 stars in the config file the slider will get stuck on a number between 1024 & 1300 depending on the seed you are using.
-
-
-

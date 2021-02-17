@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="manifest.json" />
+    <Content Include="README.md" />
     <Content Include="Touhma-GalacticScale.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
