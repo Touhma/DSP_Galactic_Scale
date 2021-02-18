@@ -6,6 +6,8 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkStarGen {
         public static void CreateStarPlanetsRework(ref GalaxyData galaxy, ref StarData star, ref GameDesc gameDesc) {
+            
+            
             star.name = SystemsNames.systems[star.index];
             
             Patch.Debug("System " + star.name + " - " + star.type + " - " + star.spectr, LogLevel.Debug,

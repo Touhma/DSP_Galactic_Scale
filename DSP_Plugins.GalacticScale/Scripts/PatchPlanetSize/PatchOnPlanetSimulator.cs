@@ -1,8 +1,11 @@
 ﻿using System;
+using BepInEx.Logging;
 using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
+
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlanetSimulator))]
@@ -163,9 +166,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     positionOffset = Mathf.RoundToInt(Mathf.Abs(localPlanet.radius - 200) / 2);
                 }
             }
-          
+            Patch.Debug("positionOffset "+positionOffset , LogLevel.Debug, Patch.DebugAtmoBlur);
+
     
-           __instance.atmoTrans1.localPosition = new Vector3(positionOffset, positionOffset,
+           __instance.atmoTrans1.localPosition = new Vector3(30,30,
                 Mathf.Clamp(Vector3.Dot(lhs,___lookCamera.forward) + 10f, 0.0f, 320f /   __instance.planetData.GetScaleFactored()));
             float num1 = Mathf.Clamp01(8000f * __instance.planetData.GetScaleFactored() / magnitude);
             float num2 = Mathf.Clamp01(4000f  * __instance.planetData.GetScaleFactored() / magnitude);

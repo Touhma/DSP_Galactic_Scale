@@ -72,7 +72,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                     Patch.Debug("data.heightData[" + index + "] : " + data.heightData[index],
                         LogLevel.Debug, Patch.DebugPlanetAlgorithm1);
 
-                    data.biomoData[index] = (byte) Mathf.Clamp((float) (fNoisifiedAdjusted * 100.0), 0.0f, 200f);
+                    data.biomoData[index] = (byte) Mathf.Clamp((float) (fNoisifiedAdjusted * 100.0 * ___planet.GetScaleFactored()), 0.0f, 200f* ___planet.GetScaleFactored());
 
                     Patch.Debug("data.biomoData[" + index + "] : " + data.biomoData[index], LogLevel.Debug,
                         Patch.DebugPlanetAlgorithm1);
@@ -81,12 +81,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
                 return false;
    
         }
-        */
+        //*/
 
         [HarmonyPrefix]
         [HarmonyPatch("GenerateVegetables")]
         public static bool PatchGenerateVegetables(ref PlanetData ___planet) {
-            Patch.Debug("GenerateVegetables :  " + ___planet.radius + " for : " + ___planet.name,
+            Patch.Debug("GenerateVegetables 1:  " + ___planet.radius + " for : " + ___planet.name,
                 LogLevel.Debug, Patch.DebugPlanetAlgorithm1);
             ThemeProto themeProto = LDB.themes.Select(___planet.theme);
             if (themeProto == null)

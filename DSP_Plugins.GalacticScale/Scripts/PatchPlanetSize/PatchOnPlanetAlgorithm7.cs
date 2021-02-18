@@ -4,10 +4,11 @@ using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
+using Random = System.Random;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlanetAlgorithm7))]
-    public class PatchOnPlanetAlgorithm7 {
+    public class PatchOnPlanetAlgorithm7 { 
         [HarmonyPrefix]
         [HarmonyPatch("GenerateVegetables")]
         public static bool PatchGenerateVegetables(ref PlanetData ___planet) {
