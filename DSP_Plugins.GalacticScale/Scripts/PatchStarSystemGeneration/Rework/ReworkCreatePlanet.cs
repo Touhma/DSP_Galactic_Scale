@@ -86,6 +86,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             // Planet
             Patch.Debug("Body Stuff", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
+            
+            //orbit longitude
+            planetData.orbitLongitude = (float) (randomNumber4 * 360.0);
+            //runtimeOrbitRotation
+            planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) *
+                                              Quaternion.AngleAxis(orbitInclination, Vector3.forward);
+            
             if (planetData.IsNotAMoon()) {
                 Patch.Debug("Planets Stuff", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
@@ -131,10 +138,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked4);
                     }
                 }
-
-                //runtimeOrbitRotation
-                planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) *
-                                                  Quaternion.AngleAxis(planetData.orbitInclination, Vector3.forward);
+               
                 Patch.Debug("Planets Stuff Done", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
             }
@@ -150,7 +154,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug("orbitAround " + (orbitAround) , LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 Patch.Debug("star.planets[orbitAround] " + star.planets[orbitAround].name, LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 planetData.orbitAroundPlanet = star.planets[orbitAround];
-                
+      
                 //orbit
                 planetData.orbitRadius = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
                                          Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f);
@@ -200,6 +204,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug("End Tidal Lock " + planetData.rotationPeriod, LogLevel.Debug, Patch.DebugReworkPlanetGen);
 
                 //runtimeOrbitRotation
+                
                 planetData.runtimeOrbitRotation = planetData.orbitAroundPlanet.runtimeOrbitRotation *
                                                   planetData.runtimeOrbitRotation;
                 Patch.Debug("runtimeOrbitRotation " + planetData.runtimeOrbitRotation, LogLevel.Debug, Patch.DebugReworkPlanetGen);
