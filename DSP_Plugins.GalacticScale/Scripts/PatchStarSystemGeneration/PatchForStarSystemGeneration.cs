@@ -178,7 +178,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool DebugStarGen = false;
 
 
-        public static bool EnableCustomStarAlgorithm = false;
+        public static ConfigEntry<bool> EnableCustomStarAlgorithm ;
 
 
         public class StarSystemSetting {
@@ -276,6 +276,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             _orbitRadiusArrayPlanetList.Add(49.7f);
             _orbitRadiusArrayPlanetList.Add(60.5f);
 
+            
+            EnableCustomStarAlgorithm = Config.Bind("galactic-scale-systems",
+                "EnableCustomStarAlgorithm",
+                false,
+                "Enable or not the custom algorithm");
+            
             OrbitRadiusArrayMoonsNb = Config.Bind("galactic-scale-systems",
                 "OrbitRadiusArrayMoonsNb",
                 20,

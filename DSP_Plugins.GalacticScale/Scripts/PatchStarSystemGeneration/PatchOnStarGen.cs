@@ -8,7 +8,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPrefix]
         [HarmonyPatch("CreateStarPlanets")]
         public static bool CreateStarPlanets(ref GalaxyData galaxy,ref StarData star,ref GameDesc gameDesc) {
-            if (Patch.EnableCustomStarAlgorithm) {
+            if (Patch.EnableCustomStarAlgorithm.Value) {
                 ReworkStarGen.CreateStarPlanetsRework(ref galaxy, ref star, ref gameDesc);
                 return false;
             }
