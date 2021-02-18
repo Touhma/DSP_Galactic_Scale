@@ -9,7 +9,15 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 namespace GalacticScale.Scripts.PatchPlanetSize  {
     [HarmonyPatch(typeof(PlanetAlgorithm1))]
     public class PatchOnPlanetAlgorithm1 {
-        
+        [HarmonyPrefix]
+        [HarmonyPatch("GenerateTerrain")]
+        public static bool PatchGenerateTerrain(ref PlanetAlgorithm1 __instance, ref PlanetData ___planet,
+            double modX, double modY) {
+
+            Patch.Debug("GenerateTerrain" + ___planet.radius + " for : " + ___planet.name, LogLevel.Debug,
+                Patch.DebugPlanetAlgorithm1);
+            return true;
+        }
         /*
         [HarmonyPrefix]
         [HarmonyPatch("GenerateTerrain")]

@@ -684,6 +684,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
+           // Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
         }
 
         public static StarSystemSetting ParseCustomStarSystemSetting(string config) {

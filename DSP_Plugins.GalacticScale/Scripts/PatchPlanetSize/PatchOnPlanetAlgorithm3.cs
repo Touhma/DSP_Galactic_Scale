@@ -10,6 +10,15 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlanetAlgorithm3))]
     public class PatchOnPlanetAlgorithm3 {
         [HarmonyPrefix]
+        [HarmonyPatch("GenerateTerrain")]
+        public static bool PatchGenerateTerrain(ref PlanetAlgorithm1 __instance, ref PlanetData ___planet,
+            double modX, double modY) {
+
+            Patch.Debug("GenerateTerrain" + ___planet.radius + " for : " + ___planet.name, LogLevel.Debug,
+                Patch.DebugPlanetAlgorithm3);
+            return true;
+        }
+        [HarmonyPrefix]
         [HarmonyPatch("GenerateVegetables")]
         public static bool PatchGenerateVegetables(ref PlanetData ___planet) {
             Patch.Debug("GenerateVegetables 3:  " + ___planet.radius + " for : " + ___planet.name,

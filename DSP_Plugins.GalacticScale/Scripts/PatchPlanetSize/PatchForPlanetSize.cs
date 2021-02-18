@@ -9,6 +9,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         
         public static bool DebugGeneral = false;
         public static bool DebugPlanetAlgorithm1 = false;
+        public static bool DebugPlanetAlgorithm0 = false;
         public static bool DebugPlanetAlgorithm2 = false;
         public static bool DebugPlanetAlgorithm3 = false;
         public static bool DebugPlanetAlgorithm4 = false;
@@ -32,6 +33,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             BepInEx.Logging.Logger.Sources.Add(Logger);
             
             //PatchForPlanetSize
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm0));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm1));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm2));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm3));

@@ -9,48 +9,15 @@ using Random = System.Random;
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlanetAlgorithm2))]
     public class PatchOnPlanetAlgorithm2 {
-        /*
         [HarmonyPrefix]
         [HarmonyPatch("GenerateTerrain")]
         public static bool PatchGenerateTerrain(ref PlanetAlgorithm1 __instance, ref PlanetData ___planet,
             double modX, double modY) {
 
-            Patch.Debug("GenerateTerrain", LogLevel.Debug,
-                Patch.DebugGeneral);
-            modX = (3.0 - modX - modX) * modX * modX;
-            double constant1 = 0.0035;
-            double constant2 = 0.025 * modX + 0.0035 * (1.0 - modX);
-            double constant3 = 0.0035;
-            double constant4 = 3.0;
-            double constant5 = 1.0 + 1.3 * modY;
-            double constant6 = constant1 * constant5;
-            double constant7 = constant2 * constant5;
-            double constant8 = constant3 * constant5;
-            Random random = new Random(___planet.seed);
-            int seed1 = random.Next();
-            int seed2 = random.Next();
-            SimplexNoise simplexNoise1 = new SimplexNoise(seed1);
-            SimplexNoise simplexNoise2 = new SimplexNoise(seed2);
-            PlanetRawData data = ___planet.data;
-            for (int index = 0; index < data.dataLength; ++index) {
-                double xAxis = data.vertices[index].x * (double) ___planet.radius;
-                double yAxis = data.vertices[index].y * (double) ___planet.radius;
-                double zAxis = data.vertices[index].z * (double) ___planet.radius;
-                double y = (double) data.vertices[index].y;
-                double noiseSimplex3D = simplexNoise1.Noise3DFBM(xAxis * constant6, yAxis * constant7, zAxis * constant8, 6, 0.45, 1.8);
-                double secondNoiseSimplex3D = simplexNoise2.Noise3DFBM(xAxis * constant6 * 2.0, yAxis * constant7 * 2.0, zAxis * constant8 * 2.0, 3);
-                double noiseFactor = 0.6 / (Math.Abs(noiseSimplex3D * constant4 + constant4 * 0.4) + 0.6) - 0.25;
-                double noiseOffset = noiseFactor >= 0.0 ? noiseFactor : noiseFactor * 0.3;
-                double yPow = Math.Pow(Math.Abs(y * 1.01), 3.0) * 1.0;
-                double noiseFactor2 = secondNoiseSimplex3D >= 0.0 ? secondNoiseSimplex3D : 0.0;
-                double ypowClamped = yPow <= 1.0 ? yPow : 1.0;
-                double fNoisifiedAdjusted = noiseOffset * 1.5 + noiseFactor2 * 1.0 + ypowClamped;
-                data.heightData[index] = (ushort) (((double) ___planet.radius + noiseOffset + 0.1) * 100.0);
-                data.biomoData[index] = (byte) Mathf.Clamp((float) (fNoisifiedAdjusted * 100.0), 0.0f, 200f);
-            }
-            return false;
+            Patch.Debug("GenerateTerrain" + ___planet.radius + " for : " + ___planet.name, LogLevel.Debug,
+                Patch.DebugPlanetAlgorithm2);
+            return true;
         }
-        */
 
         [HarmonyPrefix]
         [HarmonyPatch("GenerateVegetables")]

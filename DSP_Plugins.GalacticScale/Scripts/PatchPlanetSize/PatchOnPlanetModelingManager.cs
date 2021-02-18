@@ -364,7 +364,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                             }
 
                                             float heightDataScaled = data.heightData[index6] * 0.01f;
-
+                                            if (planet.type == EPlanetType.Gas) {
+                                                heightDataScaled *= planetScale;
+                                            }
                                             Patch.Debug("heightDataScaled  :  " + heightDataScaled,
                                                 LogLevel.Debug,
                                                 Patch.DebugPlanetModelingManagerDeep);

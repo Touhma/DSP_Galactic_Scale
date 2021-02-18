@@ -1,4 +1,5 @@
-﻿using BepInEx.Logging;
+﻿using System.Collections.Generic;
+using BepInEx.Logging;
 using Random = System.Random;
 using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
@@ -141,7 +142,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("Preparation of planet Creation :", LogLevel.Debug, Patch.DebugStarGen);
             //preparation of the planet creation :
             int infoSeed;
-            int genSeed;
+            int genSeed = 0;
 
             star.planetCount = nbOfPlanets + nbOfMoons;
             star.planets = new PlanetData[star.planetCount];
@@ -298,7 +299,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 genSeed = annexSeed.Next();
                 //create the moon
 
-                star.planets[planetsGenerated+moonsGenerated]= PlanetGen.CreatePlanet(galaxy, star, gameDesc, moonIndex, orbitAroundSelected,
+                star.planets[planetsGenerated+moonsGenerated]= PlanetGen.CreatePlanet(galaxy, star, gameDesc, planetsGenerated - 1  + moonIndex, orbitAroundSelected,
                     planetOrbitMoons[orbitAroundSelected] + orbitJumped, planetMoons[orbitAroundSelected], false,
                     infoSeed, genSeed);
                 Patch.Debug("Moon is Created : ", LogLevel.Debug, Patch.DebugStarGen);
@@ -318,9 +319,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     Patch.Debug("That was a Gas Giant Moon  ", LogLevel.Debug, Patch.DebugStarGen);
                     moonsGasGenerated++;
                 }
-                
-         
             }
+            foreach (var starPlanet in star.planets) {
+                // Name Management :
+                string name ;
+
+                if (starPlanet.IsNotAMoon()) {
+                    name = star.name +  " - " + RomanNumbers.roman[starPlanet.index + 1];
+                }
+                
+                else {
+                    name = starPlanet.orbitAroundPlanet.name + " - " + RomanNumbers.roman[starPlanet.number + 1 ] ;
+                }
+
+                starPlanet.name = name;
+            }
+            
+           
             
             //Singularities
             
