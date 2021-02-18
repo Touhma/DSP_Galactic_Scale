@@ -407,7 +407,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                  name = star.name +  " - " + RomanNumbers.roman[nbPlanets + 1];
             }
             else {
-                 name = planetData.orbitAroundPlanet.name + " - " + RomanNumbers.roman[number] ;
+                 name = planetData.orbitAroundPlanet.name + " - " + RomanNumbers.roman[number +1 ] ;
             }
 
             planetData.name = name;
