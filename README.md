@@ -1,11 +1,15 @@
 ﻿# DSP Touhma GalacticScale Plugin
 
 
+
+
 ## Disclaimer
+The version 1.0.2 is the one you want if you are looking only for the slider for more stars
+All version 1.0.x are Beta release to test the new algorithm for the generation of entire systems.
 
-This is a Beta Release version of the mod. Expects bugs , crash etc ...
+You can find all the releases and the patch notes here : https://github.com/Touhma/DSP_Plugins/releases
 
-Your save WILL break !
+A beta release mean : bugs , save broken, etc ... it's EXPERIMENTAL Please report any issues on my github : https://github.com/Touhma/DSP_Plugins/issues
 
 I need some feedback & some bug report to fix it. Plus i'm opening the mod for people who think can help me fixing it.
 
@@ -63,31 +67,6 @@ Edit the file here :
 
 A more complete documentation will come later :)
 
-# How to use the QOL mod ?
-
-### Dismantling :
-
-Everything is available from the dismantle tool ingame :
-<ul>
-    <li>Use the tool normally for vanilla usage</li>
-    <li>Use the LeftControl key to enter in Sphere mode, use the reformPlusKey  or reformMinusKey ( + & - on NUMPAD by default ) to increase or decrease the size of the sphere</li>
-    <li>The sphere start either from the ground or from the first building touched</li>
-    <li>Use the LeftShift key to enter in General mode, it allow you to select all the conveyor belt of a specific node</li>
-    <li>Use the LeftShift key to enter in General - Sphere mode, it allow you to select all the specific Building in a specific Area. ex : all conveyors in a specific sphere. use the reformPlusKey  or reformMinusKey ( + & - on NUMPAD by default ) to increase or decrease the size of the sphere</li>
-</ul>
-
-#### Quick Key map :
-
-<ul>
-    <li>LeftControl : Sphere mode</li>
-    <li>reformPlusKey  or reformMinusKey ( + & - on NUMPAD by default ) :  increase or decrease the size of the sphere</li>
-    <li>LeftShift key : General mode </li>
-    <li>LeftShift key + Left Control key to enter in General - Sphere mode</li>
-</ul>
-
-#### Config Available :
-
-Edit the file here : %gamefolder%\Dyson Sphere Program\BepInEx\config\touhma.dsp.plugins.qol-features.cfg
 
 
 ## For modders :
