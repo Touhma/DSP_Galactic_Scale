@@ -279,7 +279,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             
             EnableCustomStarAlgorithm = Config.Bind("galactic-scale-systems",
                 "EnableCustomStarAlgorithm",
-                false,
+                true,
                 "Enable or not the custom algorithm");
             
             OrbitRadiusArrayMoonsNb = Config.Bind("galactic-scale-systems",
@@ -668,7 +668,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             BaseGasGiantSize = Config.Bind("galactic-scale-systems",
                 "BaseGasGiantSize",
-                2000f,
+                1400f,
                 "Base Gas Giant Size  -- Not Advised to modify YET");
 
             BaseTelluricSizeVariationFactor = Config.Bind("galactic-scale-systems",
@@ -678,7 +678,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             BaseGasGiantSizeVariationFactor = Config.Bind("galactic-scale-systems",
                 "BaseGasGiantSizeVariationFactor",
-                1200f,
+                600f,
                 "Used to create variation on the planet size : help defining the min & max size for a gas giant --  -- Not Advised to modify YET");
 
 

@@ -154,10 +154,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug("orbitAround " + (orbitAround) , LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 Patch.Debug("star.planets[orbitAround] " + star.planets[orbitAround].name, LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 planetData.orbitAroundPlanet = star.planets[orbitAround];
-      
+                float orbitRadiusScaled = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
+                                          Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f) *
+                                          planetData.orbitAroundPlanet.GetGasGiantOrbitScaler();
                 //orbit
-                planetData.orbitRadius = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
-                                         Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f);
+                planetData.orbitRadius = orbitRadiusScaled;
                 Patch.Debug("orbitRadius " + planetData.orbitRadius, LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 // orbit Inclination + periods
                 planetData.orbitInclination = orbitInclination * Patch.MoonOrbitInclinationFactor.Value;
@@ -345,8 +346,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 radiusGasGiantWanted -= radiusGasGiantWanted % 10;
                 
                 
-                planetData.scale = 10;
-                planetData.radius = 80;
+                planetData.scale = 10f;
+                planetData.radius = radiusGasGiantWanted / planetData.scale;
+
 
                 planetData.precision = 64;
                 planetData.segment = 2;

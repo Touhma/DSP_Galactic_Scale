@@ -28,13 +28,25 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             planet.singularity |= EPlanetSingularity.ClockwiseRotate;
         }
 
+       
+
         public static float VanillaSizeGasGiant = 80f;
         public static int VanillaPrecisionGasGiant = 64;
         public static float VanillaScaleGasGiant = 10f;
         public static float VanillaSizeTelluric = 200f;
         public static int VanillaPrecisionTelluric = 200;
         public static float VanillaScaleTelluric = 1f;
+        public static float GetGasGiantOrbitScaler(this PlanetData planet) {
+            float orbitScaler = 1f;
+            if (planet.type == EPlanetType.Gas) {
+                orbitScaler =  planet.radius / VanillaSizeGasGiant;
+                if (orbitScaler < 1) {
+                    orbitScaler = 1;
+                }
+            }
 
+            return orbitScaler;
+        }
         public static void SetSize(this PlanetData planet, float radius) {
             planet.radius = radius;
             if (planet.type == EPlanetType.Gas) {
