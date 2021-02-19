@@ -4,7 +4,7 @@
 
 
 ## Disclaimer
-The version 1.0.2 is the one you want if you are looking only for the slider for more stars
+The version 1.0.1 is the one you want if you are looking only for the slider for more stars
 All version 1.0.x are Beta release to test the new algorithm for the generation of entire systems.
 
 You can find all the releases and the patch notes here : https://github.com/Touhma/DSP_Plugins/releases
