@@ -8,14 +8,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         public new static ManualLogSource Logger;
         
         public static bool DebugGeneral = false;
-        public static bool DebugPlanetAlgorithm1 = false;
-        public static bool DebugPlanetAlgorithm0 = false;
-        public static bool DebugPlanetAlgorithm2 = false;
-        public static bool DebugPlanetAlgorithm3 = false;
-        public static bool DebugPlanetAlgorithm4 = false;
-        public static bool DebugPlanetAlgorithm5 = false;
-        public static bool DebugPlanetAlgorithm6 = false;
-        public static bool DebugPlanetAlgorithm7 = false;
         public static bool DebugPlanetFactory = false;
         public static bool DebugPlanetFactoryDeep = false;
         public static bool DebugPlanetRawData = false;
@@ -33,14 +25,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             BepInEx.Logging.Logger.Sources.Add(Logger);
             
             //PatchForPlanetSize
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm0));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm1));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm2));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm3));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm4));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm5));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm6));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm7));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
