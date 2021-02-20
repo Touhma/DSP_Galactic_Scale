@@ -7,6 +7,8 @@
 The version 1.0.1 is the one you want if you are looking only for the slider for more stars
 All version 1.0.x are Beta release to test the new algorithm for the generation of entire systems.
 
+This mod is pretty mych incompatible with anything touching on any part of the generation : i'll not support any compatibility before the release.
+
 You can find all the releases and the patch notes here : https://github.com/Touhma/DSP_Plugins/releases
 
 A beta release mean : bugs , save broken, etc ... it's EXPERIMENTAL Please report any issues on my github : https://github.com/Touhma/DSP_Plugins/issues
