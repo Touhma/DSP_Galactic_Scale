@@ -1,5 +1,9 @@
 ﻿# DSP Touhma GalacticScale Plugin
 
+For any question related to my work, stop spamming this server or anyone here, 
+Seeing that some people asked me for a dedicated discord , here you are : 
+https://discord.gg/NbpBn6gM6d --> It will not replace the modding discord comunity. But at least it will be easier to talk about the mod and ask me directly questions :) 
+
 
 
 
