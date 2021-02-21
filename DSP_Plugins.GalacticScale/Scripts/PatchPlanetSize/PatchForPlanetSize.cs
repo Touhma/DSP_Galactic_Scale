@@ -11,9 +11,13 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
         public static bool DebugPlanetFactory = false;
         public static bool DebugPlanetFactoryDeep = false;
         public static bool DebugPlanetRawData = false;
-        public static bool DebugPlanetData = false;
+        public static bool DebugPlanetData = true;
+        public static bool DebugPlanetDataDeep = false;
         public static bool DebugPlanetModelingManager = false;
         public static bool DebugPlanetModelingManagerDeep = false;
+        public static bool DebugPlanetAlgorithm1 = false;
+        
+        
                 
         public static bool DebugAtmoBlur = false;
 
@@ -32,6 +36,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize  {
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerNavigation));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm1));
         }
         
         public static void Debug(object data, LogLevel logLevel , bool isActive) {

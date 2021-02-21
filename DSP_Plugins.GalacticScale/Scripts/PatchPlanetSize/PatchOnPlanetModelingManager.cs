@@ -404,7 +404,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                                          (1.0 - thirdOfModLevel) +
                                                          planetRadiusScaled *
                                                          (double) thirdOfModLevel);
-
+                                        
+                                            
                                             Patch.Debug("finalHeight :  " + finalHeight, LogLevel.Debug,
                                                 Patch.DebugPlanetModelingManagerDeep);
 
@@ -602,6 +603,49 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
 
             return false;
+        }
+        
+        [HarmonyPostfix]
+        [HarmonyPatch("ModelingPlanetMain")]
+        public static void ModelingPlanetMainPost(PlanetData planet,
+            ref Camera ___heightmapCamera,
+            ref List<Mesh> ___tmpMeshList,
+            ref PlanetData ___currentModelingPlanet,
+            ref int ___currentModelingStage,
+            ref int ___currentModelingSeamNormal,
+            ref PlanetData ___currentFactingPlanet,
+            ref int ___currentFactingStage,
+            ref List<MeshRenderer> ___tmpMeshRendererList,
+            ref List<MeshCollider> ___tmpMeshColliderList,
+            ref Collider ___tmpOceanCollider,
+            ref List<Vector3> ___tmpVerts,
+            ref List<Vector3> ___tmpNorms,
+            ref List<Vector4> ___tmpTgnts,
+            ref VegeProto[] ___vegeProtos,
+            ref List<Vector2> ___tmpUvs,
+            ref List<Vector4> ___tmpUv2s,
+            ref List<int> ___tmpTris,
+            ref GameObject ___tmpPlanetGameObject,
+            ref GameObject ___tmpPlanetBodyGameObject,
+            ref GameObject ___tmpPlanetReformGameObject,
+            ref MeshRenderer ___tmpPlanetReformRenderer) {
+
+            
+            if (planet.dirtyFlags!= null ) {
+                if (planet.dirtyFlags.Length != 0) {
+                    for (var i = 0; i < planet.dirtyFlags.Length; i++) {
+                        planet.dirtyFlags[i] = true;
+                    }
+                }
+            }
+
+            if (GameMain.isRunning) {
+                planet.UpdateDirtyMeshes();
+            }
+           
+     
+            
+
         }
     }
 }
