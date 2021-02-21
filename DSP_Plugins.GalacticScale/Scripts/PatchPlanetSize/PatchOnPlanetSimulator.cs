@@ -21,6 +21,13 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 }.transform;
                 __instance.atmoTrans0.parent = __instance.transform;
                 __instance.atmoTrans0.localPosition = Vector3.zero;
+                if (planet.GetScaleFactored() >= 1) {
+                    __instance.atmoTrans0.localScale *= planet.GetScaleFactored();
+                }
+                else {
+                    __instance.atmoTrans0.localScale /= planet.GetScaleFactored();
+                }
+               
                 GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 primitive.layer = 31;
                 __instance.atmoTrans1 = primitive.transform;
@@ -169,15 +176,17 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             Patch.Debug("positionOffset "+positionOffset , LogLevel.Debug, Patch.DebugAtmoBlur);
 
     
-           __instance.atmoTrans1.localPosition = new Vector3(30,30,
-                Mathf.Clamp(Vector3.Dot(lhs,___lookCamera.forward) + 10f, 0.0f, 320f /   __instance.planetData.GetScaleFactored()));
+           __instance.atmoTrans1.localPosition = new Vector3(0,0,
+                Mathf.Clamp(Vector3.Dot(lhs,___lookCamera.forward) + 10f / __instance.planetData.GetScaleFactored(), 0.0f, Math.Max(320f ,320f *   __instance.planetData.GetScaleFactored())));
             float num1 = Mathf.Clamp01(8000f * __instance.planetData.GetScaleFactored() / magnitude);
             float num2 = Mathf.Clamp01(4000f  * __instance.planetData.GetScaleFactored() / magnitude);
             Vector4 atmoMatRadiusParam =__instance.atmoMatRadiusParam;
             atmoMatRadiusParam.z = atmoMatRadiusParam.x +
                                    (float) (((double)__instance.atmoMatRadiusParam.z - (double)__instance.atmoMatRadiusParam.x) *
                                             (2.70000004768372 - (double) num2 * 1.70000004768372));
+            Patch.Debug("__instance.atmoTrans1  "+__instance.atmoTrans1.localScale , LogLevel.Debug, Patch.DebugAtmoBlur);
             Vector4 vector4_3 = atmoMatRadiusParam * vscale * __instance.planetData.GetScaleFactored();
+            Patch.Debug("vector4_3 "+ __instance.planetData.name + vector4_3 , LogLevel.Debug, Patch.DebugAtmoBlur);
            __instance.atmoMat.SetVector("_PlanetPos", (Vector4)__instance.transform.localPosition);
            __instance.atmoMat.SetVector("_SunDir", (Vector4) vector3_2);
            __instance.atmoMat.SetVector("_PlanetRadius", vector4_3);
