@@ -1,15 +1,25 @@
-﻿# DSP Touhma GalacticScale Plugin
+﻿﻿# DSP Touhma GalacticScale Plugin
+
+For any question related to my work, stop spamming this server or anyone here,
+Seeing that some people asked me for a dedicated discord , here you are :
+https://discord.gg/NbpBn6gM6d --> It will not replace the modding discord comunity. But at least it will be easier to talk about the mod and ask me directly questions :)
+
+
 
 
 ## Disclaimer
+The version 1.0.1 is the one you want if you are looking only for the slider for more stars
+All version 1.0.x are Beta release to test the new algorithm for the generation of entire systems.
 
-This is a Beta Release version of the mod. Expects bugs , crash etc ... 
+This mod is pretty mych incompatible with anything touching on any part of the generation : i'll not support any compatibility before the release.
 
-Your save WILL break ! 
+You can find all the releases and the patch notes here : https://github.com/Touhma/DSP_Plugins/releases
 
-I need some feedback & some bug report to fix it. Plus i'm opening the mod for people who think can help me fixing it. 
+A beta release mean : bugs , save broken, etc ... it's EXPERIMENTAL Please report any issues on my github : https://github.com/Touhma/DSP_Plugins/issues
 
-Have fun with it and good testing ! 
+I need some feedback & some bug report to fix it. Plus i'm opening the mod for people who think can help me fixing it.
+
+Have fun with it and good testing !
 
 ## How to Install :
 

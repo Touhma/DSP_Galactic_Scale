@@ -2,9 +2,7 @@
 
 For any question related to my work, stop spamming this server or anyone here, 
 Seeing that some people asked me for a dedicated discord , here you are : 
-https://discord.gg/NbpBn6gM6d --> It will not replace the modding discord comunity. But at least it will be easier to talk about the mod and ask me directly questions :) 
-
-
+https://discord.gg/NbpBn6gM6d --> It will not replace the modding discord community. But at least it will be easier to talk about the mod and ask me directly questions :) 
 
 
 ## Disclaimer
@@ -36,7 +34,7 @@ Launch the game and you should be all set !
 
 ### Map Size :
 
-You can slide the number of system up to 1024 ( by default ) instead of 64. Be carefull if your pc is slow ^^ ---> everything past 64 is experimental ! Test it at your own risk :)
+You can slide the number of system up to 1024 ( by default ) instead of 64. Be careful if your pc is slow ^^ ---> everything past 64 is experimental ! Test it at your own risk :)
 
 #### Config Available :
 
@@ -80,14 +78,14 @@ A more complete documentation will come later :)
 I spent a shit ton of time working on that mod so please ... don't be a dick.
 If you have some features ideas that would need my code to work, talk to me first ( Touhma#1599 ) on Discord about it then we shall decide how we can proceed.
 If you can : make your own work using this mod as a dependency if you don't wanna improve this mod.
-If you wanna fix something in it or improve on it --> please go ahead and do a pull request, i'll hapilly credit you for your work.
+If you wanna fix something in it or improve on it --> please go ahead and do a pull request, i'll happily credit you for your work.
 
 Do NOT make a mod just to change the default configuration or a few parameters, DO share your configs files with me :) if it's giving good result it can make it to the official release of the mod.
 
-I would love that mod to be a reference in the comunity concerning everything around the generation of the moons, planets, stars, etc ... I have a shit tons of ideas for it and i'll probably not be able to take car e of everything by myself as fast as I wish for. So consider helping me improving it instead of copy pasting the code & releasing it under a new name.
+I would love that mod to be a reference in the community concerning everything around the generation of the moons, planets, stars, etc ... I have a shit tons of ideas for it and i'll probably not be able to take car e of everything by myself as fast as I wish for. So consider helping me improving it instead of copy pasting the code & releasing it under a new name.
 
 This mod is and will always be free of charge for everyone.
 
-I'll see in the future if people wanna give me a pint of beer if they wannna support me but again : it will stay open & free of charge for everyone.
+I'll see in the future if people wanna give me a pint of beer if they wanna support me but again : it will stay open & free of charge for everyone.
 
 If you wanna reuse some piece of code : make your own work free of charge & open source too .
