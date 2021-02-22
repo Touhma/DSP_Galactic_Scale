@@ -13,9 +13,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             
             Patch.Debug("System " + star.name + " - " + star.type + " - " + star.spectr, LogLevel.Debug,
                 Patch.DebugStarGen);
-            
 
-            
             // Here we Decide How we create the planets
             // Random Generators
             UnityRandom.InitState(star.seed);
@@ -334,11 +332,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 starPlanet.name = name;
             }
-            
-           
-            
+
             //Singularities
-            
             for (var i = 0; i < planetMoons.Length; i++) {
                 if (planetMoons[i] > 1) {
                     star.planets[i].HasMultipleSatellites();

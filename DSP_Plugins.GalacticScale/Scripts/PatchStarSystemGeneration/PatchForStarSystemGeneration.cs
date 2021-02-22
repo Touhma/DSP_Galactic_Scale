@@ -25,7 +25,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static ConfigEntry<bool> UseCustomOrbitRadiusArrayMoons;
         public static ConfigEntry<string> CustomOrbitRadiusArrayMoons;
 
-
         // Settings for the algorithms
         public static ConfigEntry<int> OrbitRadiusArrayMoonsNb;
 
@@ -69,7 +68,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static ConfigEntry<float> StandardObliquityAngle;
         //public static float StandardObliquityAngle = 30f;
 
-
         // Minimum rotation period
         public static ConfigEntry<float> RotationPeriodBaseTime;
 
@@ -92,7 +90,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static ConfigEntry<float> ChanceRetrogradeOrbit;
         //public static float ChanceRetrogradeOrbit = 0.05f;
 
-
         //Habitability Related : 
         public static ConfigEntry<float> HabitabilityBaseConstant;
         //public static float HabitabilityBaseConstant = 1000f;
@@ -113,25 +110,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static ConfigEntry<float> IcePlanetDistanceRatio;
         //public static float IcePlanetDistanceRatio = 1.2f;
 
-        public static ConfigEntry<float> BaseTelluricSize;
-
-        //public static float BaseTelluricSize = 280f;
-        public static ConfigEntry<float> MinTelluricSize;
-
-        //public static float MinTelluricSize = 80f;
-        public static ConfigEntry<float> MaxTelluricSize;
-
-        //public static float MaxTelluricSize = 480f;
-        public static ConfigEntry<float> BaseGasGiantSize;
-
-        //public static float BaseGasGiantSize = 2000f;
-        // Min : 80, Max : 480
-        public static ConfigEntry<float> BaseTelluricSizeVariationFactor;
-
-        //public static float BaseTelluricSizeVariationFactor = 200f;
-        // Min : 800, Max : 3200
-        public static ConfigEntry<float> BaseGasGiantSizeVariationFactor;
-        //public static float BaseGasGiantSizeVariationFactor = 1200f;
 
         public static ConfigEntry<string> CustomParamsForBlackHole;
         public static ConfigEntry<string> CustomParamsForNeutronStar;
@@ -652,40 +630,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 1.2f,
                 "if planet.distance / star.habitableRadius is more than that --> the planet will be an ice planet");
 
-            BaseTelluricSize = Config.Bind("galactic-scale-systems",
-                "BaseTelluricSize",
-                280f,
-                "Base Telluric planet Size  -- Not Advised to modify YET");
-
-            MinTelluricSize = Config.Bind("galactic-scale-systems",
-                "MinTelluricSize",
-                80f,
-                "Min Value Telluric planet Size. Should be BaseTelluricSize - BaseTelluricSizeVariationFactor  -- Not Advised to modify YET");
-
-            MaxTelluricSize = Config.Bind("galactic-scale-systems",
-                "MaxTelluricSize",
-                480f,
-                "Max Value Telluric planet Size --> more that than CAN break and is not supported YET. Should be BaseTelluricSize + BaseTelluricSizeVariationFactor  -- Not Advised to modify YET");
-
-            BaseGasGiantSize = Config.Bind("galactic-scale-systems",
-                "BaseGasGiantSize",
-                1400f,
-                "Base Gas Giant Size  -- Not Advised to modify YET");
-
-            BaseTelluricSizeVariationFactor = Config.Bind("galactic-scale-systems",
-                "BaseTelluricSizeVariationFactor",
-                200f,
-                "Used to create variation on the planet size : help defining the min & max size for a Telluric planet-- Not Advised to modify YET");
-
-            BaseGasGiantSizeVariationFactor = Config.Bind("galactic-scale-systems",
-                "BaseGasGiantSizeVariationFactor",
-                600f,
-                "Used to create variation on the planet size : help defining the min & max size for a gas giant --  -- Not Advised to modify YET");
 
 
-            Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
-            // Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
+            if (EnableCustomStarAlgorithm.Value) {
+                Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
+            }
         }
 
         public static StarSystemSetting ParseCustomStarSystemSetting(string config) {
