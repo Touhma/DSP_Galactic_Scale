@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BepInEx.Logging;
 using Steamworks;
+using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using Random = System.Random;
 using UnityRandom = UnityEngine.Random;
@@ -8,7 +9,7 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkStarGen {
-        public static void CreateStarPlanetsRework(ref GalaxyData galaxy, ref StarData star, ref GameDesc gameDesc , PlanetGeneratorSettings genSettings) {
+        public static void CreateStarPlanetsRework(GalaxyData galaxy,  StarData star,  GameDesc gameDesc , PlanetGeneratorSettings genSettings) {
             star.name = SystemsNames.systems[star.index];
 
             Patch.Debug("System " + star.name + " - " + star.type + " - " + star.spectr, LogLevel.Debug,
@@ -213,7 +214,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         isGasGiant = true;
                     }
 
-                    planetsToGenerate.Add(new PlanetForGenerator(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, null));
+                    planetsToGenerate.Add(new PlanetForGenerator(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, genSeed,infoSeed, null));
                     Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToString(), LogLevel.Debug, Patch.DebugStarGen);
                     nbOfPlanetsPreGenerated++;
                     planetsPreGeneratedNumber++;
@@ -281,7 +282,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         }
                     }
                     
-                    planetsToGenerate[orbitAround - 1].AddMoonInOrbit(nbOfBodiesPreGenerated, currentOrbitMoonIndex);
+                    planetsToGenerate[orbitAround - 1].AddMoonInOrbit(nbOfBodiesPreGenerated, currentOrbitMoonIndex, genSeed, infoSeed);
                     
                 
                     nbOfMoonsPreGenerated++;
@@ -307,7 +308,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 
                 //planet.ToString();
                 
-                planet.GenerateThePlanet(ref galaxy,ref star,ref gameDesc, infoSeed,genSeed);
+                //planet.GenerateThePlanet(ref galaxy,ref star,ref gameDesc);
+                PlanetGen.CreatePlanet( galaxy, star,  gameDesc, planet.planetIndex, planet.orbitAround, planet.orbitIndex, planet.number, planet.isGasGiant, planet.infoSeed, planet.genSeed);
+                star.planets[finalIndex].name =  star.name + " - " + RomanNumbers.roman[planet.number];
+                planet.name = star.planets[finalIndex].name;
+                Debug.Log(star.planets[finalIndex].name);
                 finalIndex++;
                 //debugLine += planet.ToString() + "\n\n";
                 if (planet.moons.Count != 0) {
@@ -316,38 +321,15 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         
                         moon.planetIndex = finalIndex;
                         debugLine += " Moon : " + moon.planetIndex + "\n";
-                        moon.GenerateThePlanet(ref galaxy, ref star, ref gameDesc, infoSeed, genSeed);
+                        PlanetGen.CreatePlanet( galaxy, star,  gameDesc, moon.planetIndex, moon.orbitAround, moon.orbitIndex, moon.number, moon.isGasGiant, moon.infoSeed, moon.genSeed);
+                        star.planets[moon.planetIndex].name = planet.name + " - " + RomanNumbers.roman[moon.number];
+                        Debug.Log(star.planets[moon.planetIndex].name);
                         finalIndex++;
                     }
                 }
                 Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen);
             }
-            
-            
 
-            /*
-            foreach (var starPlanet in star.planets) {
-                // Name Management :
-                string name;
-
-                if (starPlanet.IsNotAMoon()) {
-                    name = star.name + " - " + RomanNumbers.roman[starPlanet.index + 1];
-                }
-
-                else {
-                    name = starPlanet.orbitAroundPlanet.name + " - " + RomanNumbers.roman[starPlanet.number + 1];
-                }
-
-                starPlanet.name = name;
-            }
-
-            //Singularities
-            for (var i = 0; i < planetMoons.Length; i++) {
-                if (planetMoons[i] > 1) {
-                    star.planets[i].HasMultipleSatellites();
-                }
-            }
-            */
         }
     }
 }
