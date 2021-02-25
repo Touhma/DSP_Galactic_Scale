@@ -9,7 +9,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPatch("CreateStarPlanets")]
         public static bool CreateStarPlanets(ref GalaxyData galaxy,ref StarData star,ref GameDesc gameDesc) {
             if (Patch.EnableCustomStarAlgorithm.Value) {
-                ReworkStarGen.CreateStarPlanetsRework(ref galaxy, ref star, ref gameDesc);
+                // InnerCount for the System
+                
+                
+                ReworkStarGen.CreateStarPlanetsRework(ref galaxy, ref star, ref gameDesc, new PlanetGeneratorSettings());
                 return false;
             }
 

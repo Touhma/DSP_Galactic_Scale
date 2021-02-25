@@ -153,7 +153,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool DebugPlanetGen = false;
         public static bool DebugReworkPlanetGen = false;
         public static bool DebugReworkPlanetGenDeep = false;
-        public static bool DebugStarGen = true;
+        public static bool DebugStarGen = false;
+        public static bool DebugStarGenDeep = false;
 
 
         public static ConfigEntry<bool> EnableCustomStarAlgorithm;
@@ -163,8 +164,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             public int MaxPlanetNb;
             public int MaxMoonNb;
 
-            public int JumpOrbitPlanetIndex;
-            public int JumpOrbitMoonIndex;
+            public int JumpOrbitPlanetMax;
+            public int JumpOrbitMoonMax;
 
             // the higher the spacier the system will be 
             public float ChanceJumpOrbitPlanets;
@@ -180,9 +181,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             public StarSystemSetting(
                 int maxPlanetNb,
                 int maxMoonNb,
-                int jumpOrbitPlanetIndex,
+                int jumpOrbitPlanetMax,
                 float chanceJumpOrbitPlanets,
-                int jumpOrbitMoonIndex,
+                int jumpOrbitMoonMax,
                 float chanceJumpOrbitMoons,
                 float chanceTelluricPlanet,
                 float chanceGasGiant,
@@ -190,9 +191,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 float chanceMoonTelluric) {
                 MaxPlanetNb = maxPlanetNb;
                 MaxMoonNb = maxMoonNb;
-                JumpOrbitPlanetIndex = jumpOrbitPlanetIndex;
+                JumpOrbitPlanetMax = jumpOrbitPlanetMax;
                 ChanceJumpOrbitPlanets = chanceJumpOrbitPlanets;
-                JumpOrbitMoonIndex = jumpOrbitMoonIndex;
+                JumpOrbitMoonMax = jumpOrbitMoonMax;
                 ChanceJumpOrbitMoons = chanceJumpOrbitMoons;
                 ChanceTelluricPlanet = chanceTelluricPlanet;
                 ChanceGasGiant = chanceGasGiant;

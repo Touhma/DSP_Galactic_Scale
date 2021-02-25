@@ -81,7 +81,8 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\customs\StartingSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetDataExtention.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetRawDataExtention.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Model\PlanetReady.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\PlanetForGenerator.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Model\PlanetGeneratorSettings.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\RomanNumbers.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\SystemsNames.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\TidalLevel.cs" />

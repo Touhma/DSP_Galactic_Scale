@@ -152,9 +152,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     Patch.DebugReworkPlanetGen);
                 //affect the data of the planet of the moon
                 Patch.Debug("orbitAround " + (orbitAround), LogLevel.Debug, Patch.DebugReworkPlanetGen);
-                Patch.Debug("star.planets[orbitAround] " + star.planets[orbitAround].name, LogLevel.Debug,
-                    Patch.DebugReworkPlanetGen);
+                
                 planetData.orbitAroundPlanet = star.planets[orbitAround];
+                Patch.Debug("orbitAround id : " + star.planets[orbitAround].index, LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 float orbitRadiusScaled = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
                                           Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f) *
                                           planetData.orbitAroundPlanet.GetGasGiantOrbitScaler();
@@ -172,8 +172,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 planetData.rotationPeriod *= Mathf.Pow(planetData.orbitRadius, 0.25f);
                 Patch.Debug("rotationPeriod " + planetData.rotationPeriod, LogLevel.Debug, Patch.DebugReworkPlanetGen);
-                Patch.Debug("planetData.orbitAroundPlanet name " + planetData.orbitAroundPlanet.name, LogLevel.Debug,
-                    Patch.DebugReworkPlanetGen);
+               
 
                 // distance = planet of the moon
                 planetData.sunDistance = planetData.orbitAroundPlanet.orbitRadius;
@@ -420,9 +419,22 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 planetData.segment = 2;
             }
 
-            Patch.Debug("Body Theme Def ( planet / Moon )", LogLevel.Debug,
-                Patch.DebugReworkPlanetGen);
-
+            star.planets[planetData.index] = planetData;
+            planetData.star = star;
+            
+            Patch.Debug("Body Theme Def ( planet / Moon )", LogLevel.Debug, Patch.DebugReworkPlanetGen);
+            Patch.Debug("planetData \n" + 
+                "planetData.star.index " + planetData.star.index +"\n" +
+                "planetData.index " + planetData.index +"\n" +
+                "planetData.temperatureBias " + planetData.temperatureBias +"\n" +
+                "planetData.planets " + planetData.star.planets +"\n" +
+                "planetData.planets index : " + planetData.star.planets[planetData.index].type +"\n" +
+                "planetData.planets Lenght " + planetData.star.planets.Length +"\n" +
+                "planetData.type " + planetData.type +"\n" +
+                "planetData.mod_x " + planetData.mod_x +"\n" +
+                "planetData.mod_y " + planetData.mod_y +"\n" +
+                "planetData.algoId " + planetData.algoId +"\n"
+                , LogLevel.Debug, Patch.DebugReworkPlanetGen);
             //set Theme
             PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 0, 0, rand1, rand2, rand3, rand4, theme_seed);
             star.galaxy.astroPoses[planetData.id].uRadius = planetData.realRadius;
