@@ -9,6 +9,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public int orbitIndex;
         public int number;
         public bool isGasGiant;
+        public int genSeed;
+        public int infoSeed;
+        public string name = "";
 
         public List<PlanetForGenerator> moons;
 
@@ -20,19 +23,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             int orbitIndex,
             int number,
             bool isGasGiant, 
+            int infoSeed,
+            int genSeed,
             [CanBeNull] PlanetForGenerator host) {
             this.planetIndex = planetIndex;
             this.orbitAround = orbitAround;
             this.orbitIndex = orbitIndex;
             this.number = number;
             this.isGasGiant = isGasGiant;
+            this.infoSeed = infoSeed;
+            this.genSeed = genSeed;
 
             moons = new List<PlanetForGenerator>();
             hostPlanet = host;
         }
 
         //debug string
-        public string ToString() {
+        public string ToStringDebug() {
             return "index : " + this.planetIndex + "\n" +
                    "orbitAround : " + this.orbitAround + "\n" +
                    "orbitIndex : " + this.orbitIndex + "\n" +
@@ -40,12 +47,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                    "isGasGiant : " + this.isGasGiant + "\n";
         }
 
-        public void AddMoonInOrbit(int index, int orbitIndex) {
-            moons.Add(new PlanetForGenerator(index, this.planetIndex + 1, orbitIndex, this.moons.Count + 1, false, this));
+        public void AddMoonInOrbit(int index, int orbitIndex,int genSeed,int infoSeed) {
+            moons.Add(new PlanetForGenerator(index, this.planetIndex + 1 , orbitIndex, this.moons.Count + 1, false, genSeed,infoSeed,this));
         }
 
-        public void GenerateThePlanet(ref GalaxyData galaxy, ref StarData star, ref GameDesc gameDesc, int infoSeed, int genSeed) {
-            PlanetGen.CreatePlanet( galaxy, star,  gameDesc, this.planetIndex, this.orbitAround, this.orbitIndex, this.number, this.isGasGiant, infoSeed, genSeed);
+        public void GenerateThePlanet(ref GalaxyData galaxy, ref StarData star, ref GameDesc gameDesc) {
+            PlanetGen.CreatePlanet( galaxy, star,  gameDesc, this.planetIndex, this.orbitAround, this.orbitIndex, this.number, this.isGasGiant, this.infoSeed, this.genSeed);
         }
     }
 }

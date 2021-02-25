@@ -143,7 +143,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //
             //preparation of the planet creation :
             int infoSeed;
-            int genSeed = 0;
+            int genSeed;
 
             // planets pre-generation
             int nbOfBodiesPreGenerated = 0;
@@ -157,8 +157,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             int currentOrbitPlanetIndex = 1;
             int previousOrbitPlanetIndex = 0;
-            int currentOrbitMoonIndex = 1;
-            int previousOrbitMoonIndex = 0;
+            int currentOrbitMoonIndex;
 
             int beltGenerated = 0;
 
@@ -168,7 +167,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 
                 Patch.Debug("bodies generated !"  + nbOfBodiesPreGenerated, LogLevel.Debug, Patch.DebugStarGenDeep);
                 Patch.Debug("genSettings.nbOfPlanets + genSettings.nbOfMoons !"  + (genSettings.nbOfPlanets + genSettings.nbOfMoons), LogLevel.Debug, Patch.DebugStarGenDeep);
-                bool isGasGiant = false;
+                bool isGasGiant;
                 int orbitAround = 0;
 
                 if (asterBelt1OrbitIndex == currentOrbitPlanetIndex) {
@@ -215,7 +214,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     }
 
                     planetsToGenerate.Add(new PlanetForGenerator(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, genSeed,infoSeed, null));
-                    Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToString(), LogLevel.Debug, Patch.DebugStarGen);
+                    Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToStringDebug(), LogLevel.Debug, Patch.DebugStarGen);
                     nbOfPlanetsPreGenerated++;
                     planetsPreGeneratedNumber++;
                     currentOrbitPlanetIndex++;
@@ -249,9 +248,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     if (orbitAround <= 0) {
                         Patch.Debug("Issue in moon generation : " +  orbitAround, LogLevel.Debug, Patch.DebugStarGen);
                     }
-                    //jumporbit moon 
-                    int jumpOrbitMoonMargin = 0;
-
+                   
                     jumpOrbitMargin = Patch.OrbitRadiusArrayMoonsNb.Value - (genSettings.nbOfMoons - nbOfMoonsPreGenerated);
 
                     Patch.Debug("orbitAround - 1 : " + (orbitAround - 1), LogLevel.Debug, Patch.DebugStarGenDeep);

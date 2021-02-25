@@ -333,8 +333,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("Body Luminosity( planet / Moon )", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
             //Luminosity
-            planetData.luminosity =
-                Mathf.Pow(planetData.star.lightBalanceRadius / (planetData.sunDistance + 0.01f), 0.6f);
+            planetData.luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (planetData.sunDistance + 0.01f), 0.6f);
             if (planetData.luminosity > 1.0) {
                 planetData.luminosity = Mathf.Log(planetData.luminosity) + 1f;
                 planetData.luminosity = Mathf.Log(planetData.luminosity) + 1f;
