@@ -14,7 +14,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool IsGasGiant(this PlanetData planet) {
             return planet.type == EPlanetType.Gas;
         }
-
+        public static void ShouldBeHabitable(this PlanetData planet) {
+            planet.type = EPlanetType.Ocean;
+            planet.theme = 1;
+            planet.algoId = 1; 
+        }
         public static void HasMultipleSatellites(this PlanetData planet) {
             planet.singularity |= EPlanetSingularity.MultipleSatellites;
         }

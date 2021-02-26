@@ -14,7 +14,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public class PatchForStarSystemGeneration : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
-        public static ConfigEntry<int> StartingSystemPlanetNb;
+        public static ConfigEntry<int> StartingSystemMinPlanetTelluricNb;
+        public static ConfigEntry<int> StartingSystemMinGasGiantNb;
+        public static ConfigEntry<int> StartingSystemMinTelluricMoonNb;
+        public static ConfigEntry<int> StartingSystemMinGasGiantMoonNb;
+        
         //public static int StartingSystemPlanetNb = 30;
 
         // use custom orbit for planets
@@ -155,10 +159,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool DebugReworkPlanetGenDeep = false;
         public static bool DebugStarGen = false;
         public static bool DebugStarGenDeep = false;
-
+        public static bool DebugStarNamingGen = false;
 
         public static ConfigEntry<bool> EnableCustomStarAlgorithm;
-
 
         public class StarSystemSetting {
             public int MaxPlanetNb;
@@ -521,10 +524,24 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
 
 
-            StartingSystemPlanetNb = Config.Bind("galactic-scale-systems",
-                "StartingSystemPlanetNb",
-                30,
-                "The Maximum Number of planet in the starting system -- not used yet");
+    
+            StartingSystemMinPlanetTelluricNb = Config.Bind("galactic-scale-systems",
+                "StartingSystemMinPlanetTelluricNb",
+                2,
+                "The Minimum Number of Telluric planet in the starting system");            
+            StartingSystemMinGasGiantNb = Config.Bind("galactic-scale-systems",
+                "StartingSystemMinGasGiantNb",
+                1,
+                "The Minimum Number of GasGiants in the starting system ");            
+            StartingSystemMinTelluricMoonNb = Config.Bind("galactic-scale-systems",
+                "StartingSystemMinTelluricMoonNb",
+                1,
+                "The Minimum Number of Moon of Telluric Planets in the starting system");            
+            StartingSystemMinGasGiantMoonNb = Config.Bind("galactic-scale-systems",
+                "StartingSystemMinGasGiantMoonNb",
+                1,
+                "The Minimum Number of Moons of GasGiant  in the starting system ");         
+            
 
             MaxOrbitInclination = Config.Bind("galactic-scale-systems",
                 "MaxOrbitInclination",
@@ -631,11 +648,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 1.2f,
                 "if planet.distance / star.habitableRadius is more than that --> the planet will be an ice planet");
 
-
-
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
+               // Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
             }
         }
 

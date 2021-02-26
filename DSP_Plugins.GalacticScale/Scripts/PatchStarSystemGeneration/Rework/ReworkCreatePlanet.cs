@@ -62,12 +62,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             double randomNumber13 = mainSeed.NextDouble();
             double randomNumber14 = mainSeed.NextDouble();
 
-            double rand1 = mainSeed.NextDouble();
-            double rand2 = mainSeed.NextDouble();
-            double rand3 = mainSeed.NextDouble();
-            double rand4 = mainSeed.NextDouble();
-
-            int theme_seed = mainSeed.Next();
+     
 
 
             // Orbit definition
@@ -434,8 +429,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "planetData.mod_y " + planetData.mod_y +"\n" +
                 "planetData.algoId " + planetData.algoId +"\n"
                 , LogLevel.Debug, Patch.DebugReworkPlanetGen);
-            //set Theme
-            PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 0, 0, rand1, rand2, rand3, rand4, theme_seed);
+            
             star.galaxy.astroPoses[planetData.id].uRadius = planetData.realRadius;
 
 

@@ -81,6 +81,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\customs\StartingSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetDataExtention.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\PlanetRawDataExtention.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Extensions\StarDataExtension.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\PlanetForGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\PlanetGeneratorSettings.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Model\RomanNumbers.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUniverseGen.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Utils\GalaxyInfosUtils.cs" />
