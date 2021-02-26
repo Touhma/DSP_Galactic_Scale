@@ -103,7 +103,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 PlanetGen.SetPlanetTheme(planet, star, gameDesc, 0, 0, mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.Next());
                 Patch.Debug("planet.algoId --> " + planet.algoId, LogLevel.Debug, Patch.DebugStarGen);
             }
-
+            
             star.planetCount = star.planets.Length;
         }
 
@@ -339,6 +339,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 PlanetGen.CreatePlanet(galaxy, star, gameDesc, planet.planetIndex, planet.orbitAround, planet.orbitIndex, planet.number, planet.isGasGiant, planet.infoSeed, planet.genSeed);
                 star.planets[finalIndex].name = star.name + " - " + RomanNumbers.roman[planet.number];
                 planet.name = star.planets[finalIndex].name;
+                
+                if (planet.moons.Count >= 2) {
+                    star.planets[finalIndex].HasMultipleSatellites();
+                }
+                
                 Patch.Debug(star.planets[finalIndex].name, LogLevel.Debug, Patch.DebugStarNamingGen);
                 finalIndex++;
                 //debugLine += planet.ToString() + "\n\n";
