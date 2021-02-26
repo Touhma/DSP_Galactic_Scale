@@ -67,10 +67,13 @@ A first version of the reworked algorithm is available. It allow you to :
 #### Config Available :
 
 Edit the file here :
+--> Everything related to the planets generations :
 %gamefolder%\Dyson Sphere Program\BepInEx\config\touhma.dsp.galactic-scale.star-system-generation.cfg
 
-A more complete documentation will come later :)
+--> Everything related to the planet size :
+%gamefolder%\Dyson Sphere Program\BepInEx\config\touhma.dsp.galactic-scale.planet-size.cfg
 
+A more complete documentation will come later :)
 
 
 ## For modders :

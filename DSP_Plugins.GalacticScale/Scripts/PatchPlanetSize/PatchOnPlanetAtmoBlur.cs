@@ -1,5 +1,4 @@
 ﻿using GalacticScale.Scripts.PatchPlanetSize.Rework;
-using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
@@ -11,6 +10,5 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             ReworkPlanetAtmoBlur.ReworkUpdate(ref __instance);
             return false;
         }
-        
     }
 }

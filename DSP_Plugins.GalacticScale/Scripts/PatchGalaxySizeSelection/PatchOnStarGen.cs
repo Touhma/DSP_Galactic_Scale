@@ -6,7 +6,7 @@ namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
         [HarmonyPrefix]
         [HarmonyPatch("CreateBirthStar")]
         public static bool CreateBirthStar(GalaxyData galaxy, int seed) {
-            int gSize = galaxy.starCount > 64 ? galaxy.starCount * 4 * 100 : 25600;
+            var gSize = galaxy.starCount > 64 ? galaxy.starCount * 4 * 100 : 25600;
             galaxy.astroPoses = new AstroPose[gSize];
             return true;
         }
