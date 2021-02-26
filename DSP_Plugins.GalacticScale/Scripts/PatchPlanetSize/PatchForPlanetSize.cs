@@ -105,9 +105,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
-            if (isActive) {
-                Logger.Log(logLevel, data);
-            }
+            if (isActive) Logger.Log(logLevel, data);
         }
     }
 }

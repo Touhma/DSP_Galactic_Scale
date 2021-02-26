@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using HarmonyLib;
-using NGPT;
-using UnityEngine;
+﻿using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlayerAction_Build))]
     public class PatchOnPlayerAction_Build {
-        
         /*
         [HarmonyPrefix]
         [HarmonyPatch("PrepareBuild")]
@@ -1718,5 +1713,4 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             return false;
         }   */
     }
- 
 }

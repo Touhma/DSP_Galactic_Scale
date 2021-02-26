@@ -3,9 +3,9 @@ using BepInEx.Logging;
 using GalacticScale.Scripts.PatchStarSystemGeneration.Utils;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
-using Random = System.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
+using Random = System.Random;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkPlanetGen {
@@ -25,8 +25,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("ReworkCreatePlanet", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
 
-            PlanetData planetData = new PlanetData();
-            Random mainSeed = new Random(info_seed);
+            var planetData = new PlanetData();
+            var mainSeed = new Random(info_seed);
 
             //Base data of the planet : 
             planetData.index = index;
@@ -42,41 +42,39 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             // Global Id of the entity 
             planetData.id = star.id * 100 + planetData.index + 1;
 
-            StarData[] stars = galaxy.stars;
+            var stars = galaxy.stars;
 
             Patch.Debug("Basic Information Setup", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
 
-            double randomNumber1 = mainSeed.NextDouble();
-            double randomNumber2 = mainSeed.NextDouble();
-            double randomNumber3 = mainSeed.NextDouble();
-            double randomNumber4 = mainSeed.NextDouble();
-            double randomNumber5 = mainSeed.NextDouble();
-            double randomNumber6 = mainSeed.NextDouble();
-            double randomNumber7 = mainSeed.NextDouble();
-            double randomNumber8 = mainSeed.NextDouble();
-            double randomNumber9 = mainSeed.NextDouble();
-            double randomNumber10 = mainSeed.NextDouble();
-            double randomNumber11 = mainSeed.NextDouble();
-            double randomNumber12 = mainSeed.NextDouble();
-            double randomNumber13 = mainSeed.NextDouble();
-            double randomNumber14 = mainSeed.NextDouble();
-
-     
+            var randomNumber1 = mainSeed.NextDouble();
+            var randomNumber2 = mainSeed.NextDouble();
+            var randomNumber3 = mainSeed.NextDouble();
+            var randomNumber4 = mainSeed.NextDouble();
+            var randomNumber5 = mainSeed.NextDouble();
+            var randomNumber6 = mainSeed.NextDouble();
+            var randomNumber7 = mainSeed.NextDouble();
+            var randomNumber8 = mainSeed.NextDouble();
+            var randomNumber9 = mainSeed.NextDouble();
+            var randomNumber10 = mainSeed.NextDouble();
+            var randomNumber11 = mainSeed.NextDouble();
+            var randomNumber12 = mainSeed.NextDouble();
+            var randomNumber13 = mainSeed.NextDouble();
+            var randomNumber14 = mainSeed.NextDouble();
 
 
             // Orbit definition
             Patch.Debug("Orbit definition", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
-            float baselineOrbitVariation = Mathf.Pow(1.2f, (float) (randomNumber1 * (randomNumber2 - 0.5) * 0.5));
-            float orbitInclination =
+            var baselineOrbitVariation = Mathf.Pow(1.2f, (float) (randomNumber1 * (randomNumber2 - 0.5) * 0.5));
+            var orbitInclination =
                 UnityRandom.Range(0, Patch.MaxOrbitInclination.Value) * MathUtils.RangePlusMinusOne(mainSeed);
 
             Patch.Debug("Rotation definition", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
             // rotation period
-            planetData.rotationPeriod = (randomNumber8 * randomNumber9 * Patch.RotationPeriodVariabilityFactor.Value +
-                                         Patch.RotationPeriodBaseTime.Value);
+            planetData.rotationPeriod = randomNumber8 * randomNumber9 * Patch.RotationPeriodVariabilityFactor.Value +
+                                        Patch.RotationPeriodBaseTime.Value;
 
             // Planet
             Patch.Debug("Body Stuff", LogLevel.Debug,
@@ -92,8 +90,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug("Planets Stuff", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
                 //orbit
-                float baselineOrbitSize = Patch.OrbitRadiusPlanetArray[orbitIndex] * star.orbitScaler;
-                float orbitSize = (float) ((baselineOrbitVariation - 1.0) / Mathf.Max(1f, baselineOrbitSize) + 1.0);
+                var baselineOrbitSize = Patch.OrbitRadiusPlanetArray[orbitIndex] * star.orbitScaler;
+                var orbitSize = (float) ((baselineOrbitVariation - 1.0) / Mathf.Max(1f, baselineOrbitSize) + 1.0);
                 planetData.orbitRadius = baselineOrbitSize * orbitSize;
 
                 // orbit Inclination + periods
@@ -103,12 +101,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                                      (1.35385519905204E-06 * star.mass));
 
                 //rotation period
-                if (planetData.IsGasGiant() || planetData.star.type == EStarType.NeutronStar) {
+                if (planetData.IsGasGiant() || planetData.star.type == EStarType.NeutronStar)
                     planetData.rotationPeriod *= 0.200000002980232;
-                }
-                else if (planetData.star.type == EStarType.BlackHole) {
-                    planetData.rotationPeriod *= 0.150000005960464;
-                }
+                else if (planetData.star.type == EStarType.BlackHole) planetData.rotationPeriod *= 0.150000005960464;
 
                 planetData.sunDistance = planetData.orbitRadius;
 
@@ -146,13 +141,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug("Moon Stuff", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
                 //affect the data of the planet of the moon
-                Patch.Debug("orbitAround " + (orbitAround), LogLevel.Debug, Patch.DebugReworkPlanetGen);
-                
+                Patch.Debug("orbitAround " + orbitAround, LogLevel.Debug, Patch.DebugReworkPlanetGen);
+
                 planetData.orbitAroundPlanet = star.planets[orbitAround];
                 Patch.Debug("orbitAround id : " + star.planets[orbitAround].index, LogLevel.Debug, Patch.DebugReworkPlanetGen);
-                float orbitRadiusScaled = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
-                                          Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f) *
-                                          planetData.orbitAroundPlanet.GetGasGiantOrbitScaler();
+                var orbitRadiusScaled = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
+                                        Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f) *
+                                        planetData.orbitAroundPlanet.GetGasGiantOrbitScaler();
                 //orbit
                 planetData.orbitRadius = orbitRadiusScaled;
                 Patch.Debug("orbitRadius " + planetData.orbitRadius, LogLevel.Debug, Patch.DebugReworkPlanetGen);
@@ -167,7 +162,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 planetData.rotationPeriod *= Mathf.Pow(planetData.orbitRadius, 0.25f);
                 Patch.Debug("rotationPeriod " + planetData.rotationPeriod, LogLevel.Debug, Patch.DebugReworkPlanetGen);
-               
+
 
                 // distance = planet of the moon
                 planetData.sunDistance = planetData.orbitAroundPlanet.orbitRadius;
@@ -253,16 +248,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("Body Retrograde", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
             //Define if the orbit is retrograde
-            if (randomNumber14 < Patch.ChanceRetrogradeOrbit.Value) {
-                planetData.HasRetrogradeOrbit();
-            }
+            if (randomNumber14 < Patch.ChanceRetrogradeOrbit.Value) planetData.HasRetrogradeOrbit();
 
             Patch.Debug("Body Neutron Star", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
             // Anomaly around neutron stars
-            if (planetData.star.type == EStarType.NeutronStar) {
-                planetData.OrbitAroundNeutronStar();
-            }
+            if (planetData.star.type == EStarType.NeutronStar) planetData.OrbitAroundNeutronStar();
 
             Patch.Debug("Body Type Definition", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
@@ -276,22 +267,18 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             else {
                 Patch.Debug("Body TypeDefinition ( planet / Moon )", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
-                float sunDistance = planetData.sunDistance;
-                float ratioHabitableDistance = Patch.HabitabilityBaseConstant.Value;
+                var sunDistance = planetData.sunDistance;
+                var ratioHabitableDistance = Patch.HabitabilityBaseConstant.Value;
                 Patch.Debug("Body Habitability", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
-                if (star.habitableRadius > 0.0 && sunDistance > 0.0) {
-                    ratioHabitableDistance = sunDistance / star.habitableRadius;
-                }
+                if (star.habitableRadius > 0.0 && sunDistance > 0.0) ratioHabitableDistance = sunDistance / star.habitableRadius;
 
                 Patch.Debug("Star Habitability radius ", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
-                float minRadiusHabitable = star.habitableRadius - Patch.HabitableRadiusAreaBaseline.Value;
-                float maxRadiusHabitable = star.habitableRadius + Patch.HabitableRadiusAreaBaseline.Value;
+                var minRadiusHabitable = star.habitableRadius - Patch.HabitableRadiusAreaBaseline.Value;
+                var maxRadiusHabitable = star.habitableRadius + Patch.HabitableRadiusAreaBaseline.Value;
 
-                if (planetData.sunDistance < maxRadiusHabitable && planetData.sunDistance > minRadiusHabitable) {
-                    planetData.habitableBias = Patch.ChanceBeingHabitable.Value;
-                }
+                if (planetData.sunDistance < maxRadiusHabitable && planetData.sunDistance > minRadiusHabitable) planetData.habitableBias = Patch.ChanceBeingHabitable.Value;
 
                 Patch.Debug("Body Temperature ( planet / Moon )", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
@@ -341,10 +328,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.DebugReworkPlanetGen);
             //Size related stuff : 
             if (planetData.type == EPlanetType.Gas) {
-                float radiusGasGiantWanted = PatchSize.VanillaGasGiantSize;
+                var radiusGasGiantWanted = PatchSize.VanillaGasGiantSize;
                 if (PatchSize.EnableResizingFeature.Value) {
                     //Default : 0.25
-                    float minScalingGasGiantRatio =
+                    var minScalingGasGiantRatio =
                         (PatchSize.BaseGasGiantSize.Value - PatchSize.BaseGasGiantSizeVariationFactor.Value) /
                         (PatchSize.BaseGasGiantSize.Value + PatchSize.BaseGasGiantSizeVariationFactor.Value);
 
@@ -362,7 +349,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
             else if (planetData.type != EPlanetType.None) {
                 if (PatchSize.EnableResizingFeature.Value) {
-                    float radiusTelluricWanted = PatchSize.VanillaTelluricSize;
+                    var radiusTelluricWanted = PatchSize.VanillaTelluricSize;
                     if (planetData.IsNotAMoon()) {
                         radiusTelluricWanted = PatchSize.BaseTelluricSize.Value +
                                                MathUtils.RangePlusMinusOne(mainSeed) *
@@ -415,21 +402,21 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             star.planets[planetData.index] = planetData;
             planetData.star = star;
-            
+
             Patch.Debug("Body Theme Def ( planet / Moon )", LogLevel.Debug, Patch.DebugReworkPlanetGen);
-            Patch.Debug("planetData \n" + 
-                "planetData.star.index " + planetData.star.index +"\n" +
-                "planetData.index " + planetData.index +"\n" +
-                "planetData.temperatureBias " + planetData.temperatureBias +"\n" +
-                "planetData.planets " + planetData.star.planets +"\n" +
-                "planetData.planets index : " + planetData.star.planets[planetData.index].type +"\n" +
-                "planetData.planets Lenght " + planetData.star.planets.Length +"\n" +
-                "planetData.type " + planetData.type +"\n" +
-                "planetData.mod_x " + planetData.mod_x +"\n" +
-                "planetData.mod_y " + planetData.mod_y +"\n" +
-                "planetData.algoId " + planetData.algoId +"\n"
+            Patch.Debug("planetData \n" +
+                        "planetData.star.index " + planetData.star.index + "\n" +
+                        "planetData.index " + planetData.index + "\n" +
+                        "planetData.temperatureBias " + planetData.temperatureBias + "\n" +
+                        "planetData.planets " + planetData.star.planets + "\n" +
+                        "planetData.planets index : " + planetData.star.planets[planetData.index].type + "\n" +
+                        "planetData.planets Lenght " + planetData.star.planets.Length + "\n" +
+                        "planetData.type " + planetData.type + "\n" +
+                        "planetData.mod_x " + planetData.mod_x + "\n" +
+                        "planetData.mod_y " + planetData.mod_y + "\n" +
+                        "planetData.algoId " + planetData.algoId + "\n"
                 , LogLevel.Debug, Patch.DebugReworkPlanetGen);
-            
+
             star.galaxy.astroPoses[planetData.id].uRadius = planetData.realRadius;
 
 

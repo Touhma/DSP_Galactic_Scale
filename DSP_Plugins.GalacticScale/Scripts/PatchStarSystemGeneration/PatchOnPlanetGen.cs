@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BepInEx.Logging;
-using HarmonyLib;
-using UnityEngine;
-using Random = System.Random;
+﻿using HarmonyLib;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
@@ -39,7 +34,5 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //Debug.Log("__result.index" + __result.id);
             return false;
         }
-        
-        
     }
 }

@@ -3,6 +3,13 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class PlanetDataExtension {
+        public static float VanillaSizeGasGiant = 80f;
+        public static int VanillaPrecisionGasGiant = 64;
+        public static float VanillaScaleGasGiant = 10f;
+        public static float VanillaSizeTelluric = 200f;
+        public static int VanillaPrecisionTelluric = 200;
+        public static float VanillaScaleTelluric = 1f;
+
         public static bool IsAMoon(this PlanetData planet) {
             return planet.orbitAround != 0;
         }
@@ -14,11 +21,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool IsGasGiant(this PlanetData planet) {
             return planet.type == EPlanetType.Gas;
         }
+
         public static void ShouldBeHabitable(this PlanetData planet) {
             planet.type = EPlanetType.Ocean;
             planet.theme = 1;
-            planet.algoId = 1; 
+            planet.algoId = 1;
         }
+
         public static void HasMultipleSatellites(this PlanetData planet) {
             planet.singularity |= EPlanetSingularity.MultipleSatellites;
         }
@@ -32,38 +41,25 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             planet.singularity |= EPlanetSingularity.ClockwiseRotate;
         }
 
-       
-
-        public static float VanillaSizeGasGiant = 80f;
-        public static int VanillaPrecisionGasGiant = 64;
-        public static float VanillaScaleGasGiant = 10f;
-        public static float VanillaSizeTelluric = 200f;
-        public static int VanillaPrecisionTelluric = 200;
-        public static float VanillaScaleTelluric = 1f;
         public static float GetGasGiantOrbitScaler(this PlanetData planet) {
-            float orbitScaler = 1f;
+            var orbitScaler = 1f;
             if (planet.type == EPlanetType.Gas) {
-                orbitScaler =  planet.radius / VanillaSizeGasGiant;
-                if (orbitScaler < 1) {
-                    orbitScaler = 1;
-                }
+                orbitScaler = planet.radius / VanillaSizeGasGiant;
+                if (orbitScaler < 1) orbitScaler = 1;
             }
 
             return orbitScaler;
         }
+
         public static void SetSize(this PlanetData planet, float radius) {
             planet.radius = radius;
-            if (planet.type == EPlanetType.Gas) {
-                planet.scale = 10f;
-            }
+            if (planet.type == EPlanetType.Gas) planet.scale = 10f;
         }
 
         public static float GetScaleFactored(this PlanetData planet) {
             float scale;
-            
-            if (planet.type == EPlanetType.Gas) {
-                return planet.radius / VanillaSizeGasGiant;
-            }
+
+            if (planet.type == EPlanetType.Gas) return planet.radius / VanillaSizeGasGiant;
 
             scale = planet.radius / VanillaSizeTelluric;
             /*
@@ -76,16 +72,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
         public static int GetPrecisionFactored(this PlanetData planet) {
             // do not use it for gas giant YET : not tested
-            if (planet.type == EPlanetType.Gas) {
-                return Mathf.RoundToInt(planet.scale * VanillaPrecisionGasGiant);
-            }
-        
-            int precision = Mathf.RoundToInt(planet.scale * VanillaPrecisionTelluric);
-            
+            if (planet.type == EPlanetType.Gas) return Mathf.RoundToInt(planet.scale * VanillaPrecisionGasGiant);
+
+            var precision = Mathf.RoundToInt(planet.scale * VanillaPrecisionTelluric);
+
             //In the meantime while i'm fixing the hard coded limit later
-            if (precision > VanillaPrecisionTelluric) {
-                return VanillaPrecisionTelluric;
-            }
+            if (precision > VanillaPrecisionTelluric) return VanillaPrecisionTelluric;
 
             return precision;
         }
