@@ -95,7 +95,6 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUniverseGen.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Utils\GalaxyInfosUtils.cs" />
