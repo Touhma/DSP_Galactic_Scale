@@ -623,8 +623,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 if (planet.dirtyFlags.Length != 0)
                     for (var i = 0; i < planet.dirtyFlags.Length; i++)
                         planet.dirtyFlags[i] = true;
-
-            if (GameMain.isRunning) planet.UpdateDirtyMeshes();
+            // Planet.wanted shows that we've modeled the planet and are keeping it. Modeling stage will be 0 in this postfix only AFTER modeling stage 4 is complete.
+            if (GameMain.isRunning && planet.wanted && ___currentModelingStage == 0) planet.UpdateDirtyMeshes();
         }
     }
 }
