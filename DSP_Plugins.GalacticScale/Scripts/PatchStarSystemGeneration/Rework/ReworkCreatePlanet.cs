@@ -86,6 +86,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) *
                                               Quaternion.AngleAxis(orbitInclination, Vector3.forward);
 
+            planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation * Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
+            
             if (planetData.IsNotAMoon()) {
                 Patch.Debug("Planets Stuff", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
@@ -244,6 +246,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //runtimeOrbitRotation obliquity adjustment
             planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation *
                                                Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
+        
 
             Patch.Debug("Body Retrograde", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
