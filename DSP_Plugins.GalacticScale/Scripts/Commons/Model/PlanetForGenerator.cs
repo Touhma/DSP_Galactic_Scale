@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration {
+namespace GalacticScale.Scripts {
     public class PlanetForGenerator {
         public int genSeed;
 

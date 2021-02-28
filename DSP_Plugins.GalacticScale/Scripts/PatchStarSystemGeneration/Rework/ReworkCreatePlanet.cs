@@ -1,6 +1,5 @@
 ﻿using System;
 using BepInEx.Logging;
-using GalacticScale.Scripts.PatchStarSystemGeneration.Utils;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;

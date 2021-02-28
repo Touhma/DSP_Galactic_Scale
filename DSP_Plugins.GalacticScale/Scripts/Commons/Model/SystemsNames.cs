@@ -1,4 +1,4 @@
-﻿namespace GalacticScale.Scripts.PatchStarSystemGeneration {
+﻿namespace GalacticScale.Scripts {
     public static class SystemsNames {
         public static string[] systems = new string[1660] {
             "Vouskiaho",

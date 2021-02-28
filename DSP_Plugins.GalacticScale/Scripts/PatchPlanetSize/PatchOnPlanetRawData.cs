@@ -11,18 +11,30 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPatch("GetModPlane")]
         public static bool GetModPlane(int index, ref PlanetRawData __instance, ref short __result) {
             Patch.Debug("scaleFactor " + __instance.GetFactoredScale(), LogLevel.Debug,
-                Patch.DebugPlanetRawData);
+                Patch.DebugGetModPlane);
 
             Patch.Debug("index " + index, LogLevel.Debug,
-                Patch.DebugPlanetRawData);
+                Patch.DebugGetModPlane);
 
             Patch.Debug("__instance.modData.Length " + __instance.modData.Length, LogLevel.Debug,
-                Patch.DebugPlanetRawData);
+                Patch.DebugGetModPlane);
 
             Patch.Debug(
                 "test " + ((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133, LogLevel.Debug,
-                Patch.DebugPlanetRawData);
+                Patch.DebugGetModPlane);
+            if (__instance.GetFactoredScale() < 1.0f) {
+                float baseHeight = 20;
+                baseHeight += __instance.GetFactoredScale() * 200 * 100; 
 
+                Patch.Debug("baseHeight " + baseHeight, LogLevel.Debug,
+                    Patch.DebugGetModPlane);
+                __result = (short) (((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 +
+                                    baseHeight);
+
+                Patch.Debug("GetModPlane __result " + __result, LogLevel.Debug,
+                    Patch.DebugGetModPlane);
+                return false;
+            }
             if (__instance.GetFactoredScale() > 1.0f) {
                 float baseHeight = 20020;
 
@@ -40,8 +52,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
 
 
-        [HarmonyPrefix]
-        [HarmonyPatch("QueryModifiedHeight")]
+      
         public static bool QueryModifiedHeight(ref PlanetRawData __instance,
             ref float __result, Vector3 vpos) {
             Patch.Debug("QueryModifiedHeight ", LogLevel.Debug,
@@ -86,7 +97,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                             Patch.DebugPlanetRawData);
                         if (modLevel > 0) {
                             // try patching here
-                            var modPlane = __instance.GetModPlane(index4) * __instance.GetFactoredScale();
+                            var modPlane = __instance.GetModPlane(index4);
 
                             Patch.Debug("modPlane " + modPlane, LogLevel.Debug,
                                 Patch.DebugPlanetRawData);

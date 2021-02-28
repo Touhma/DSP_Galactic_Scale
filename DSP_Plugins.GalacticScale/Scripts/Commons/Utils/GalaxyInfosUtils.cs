@@ -1,4 +1,4 @@
-﻿namespace GalacticScale.Scripts.PatchStarSystemGeneration.Utils {
+﻿namespace GalacticScale.Scripts {
     public static class GalaxyInfoUtils {
         public static int NumberOfPlanetInGalaxy(StarData[] stars) {
             var result = 0;

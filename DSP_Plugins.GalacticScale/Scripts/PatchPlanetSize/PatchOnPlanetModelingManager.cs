@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BepInEx.Logging;
 using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
@@ -66,230 +67,14 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
 
             //data.heightData = scaledHeightData;
-
-            var planetPrecisionBySegment = planet.precision / planet.segment;
-            switch (___currentModelingStage) {
-                case 0: {
-                    Patch.Debug("___currentModelingStage :" + 0, LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-
-                    if (___tmpMeshList == null) {
-                        ___tmpMeshList = new List<Mesh>(100);
-                        ___tmpMeshRendererList = new List<MeshRenderer>(100);
-                        ___tmpMeshColliderList = new List<MeshCollider>(100);
-                        ___tmpOceanCollider = null;
-                        ___tmpVerts = new List<Vector3>(1700);
-                        ___tmpNorms = new List<Vector3>(1700);
-                        ___tmpTgnts = new List<Vector4>(1700);
-                        ___tmpUvs = new List<Vector2>(1700);
-                        ___tmpUv2s = new List<Vector4>(1700);
-                        ___tmpTris = new List<int>(10000);
-                    }
-
-                    if (planet.heightmap == null)
-                        planet.heightmap = new RenderTexture(
-                            new RenderTextureDescriptor(512, 512, RenderTextureFormat.RGHalf, 0) {
-                                dimension = TextureDimension.Cube,
-                                useMipMap = false,
-                                autoGenerateMips = false
-                            });
-                    if (___heightmapCamera == null) {
-                        var gameObject = new GameObject("Heightmap Camera");
-                        ___heightmapCamera = gameObject.AddComponent<Camera>();
-                        ___heightmapCamera.cullingMask = 1073741824;
-                        ___heightmapCamera.enabled = false;
-                        ___heightmapCamera.farClipPlane = 900f;
-                        ___heightmapCamera.nearClipPlane = 10f;
-                        ___heightmapCamera.renderingPath = RenderingPath.Forward;
-                        ___heightmapCamera.allowDynamicResolution = false;
-                        ___heightmapCamera.allowMSAA = false;
-                        ___heightmapCamera.allowHDR = true;
-                        ___heightmapCamera.depthTextureMode = DepthTextureMode.None;
-                        ___heightmapCamera.clearFlags = CameraClearFlags.Color;
-                        ___heightmapCamera.backgroundColor = Color.black;
-                        ___heightmapCamera.depth = 0.0f;
-                        ___heightmapCamera.SetReplacementShader(Configs.builtin.heightmapShader, "ReplaceTag");
-                        gameObject.SetActive(false);
-                    }
-
-                    if (planet.terrainMaterial == null) {
-                        if (themeProto != null &&
-                            themeProto.terrainMat != null) {
-                            planet.terrainMaterial =
-                                Instantiate(themeProto.terrainMat);
-                            planet.terrainMaterial.name = planet.displayName + " Terrain";
-                            planet.terrainMaterial.SetFloat("_Radius", planet.realRadius);
-                        }
-                        else {
-                            planet.terrainMaterial =
-                                Instantiate(Configs.builtin.planetSurfaceMatProto);
-                        }
-                    }
-
-                    if (planet.oceanMaterial == null) {
-                        if (themeProto != null &&
-                            themeProto.oceanMat != null) {
-                            planet.oceanMaterial =
-                                Instantiate(themeProto.oceanMat);
-                            planet.oceanMaterial.name = planet.displayName + " Ocean";
-                            planet.oceanMaterial.SetFloat("_Radius", planet.realRadius);
-                        }
-                        else {
-                            planet.oceanMaterial = null;
-                        }
-                    }
-
-                    if (planet.atmosMaterial == null) {
-                        if (themeProto != null &&
-                            themeProto.atmosMat != null) {
-                            planet.atmosMaterial =
-                                Instantiate(themeProto.atmosMat);
-                            planet.atmosMaterial.name = planet.displayName + " Atmos";
-                        }
-                        else {
-                            planet.atmosMaterial = null;
-                        }
-                    }
-
-                    if (planet.reformMaterial == null)
-                        planet.reformMaterial =
-                            Instantiate(Configs.builtin.planetReformMatProto);
-                    if (planet.ambientDesc == null)
-                        planet.ambientDesc =
-                            themeProto == null || !(themeProto.ambientDesc !=
-                                                    null)
-                                ? null
-                                : themeProto.ambientDesc;
-                    if (planet.ambientSfx == null &&
-                        themeProto != null &&
-                        themeProto.ambientSfx != null) {
-                        planet.ambientSfx = themeProto.ambientSfx;
-                        planet.ambientSfxVolume = themeProto.SFXVolume;
-                    }
-
-                    if (planet.minimapMaterial == null) {
-                        planet.minimapMaterial =
-                            themeProto == null || !(themeProto.minimapMat !=
-                                                    null)
-                                ? Instantiate(Configs.builtin.planetMinimapDefault)
-                                : Instantiate(themeProto.minimapMat);
-                        planet.minimapMaterial.name = planet.displayName + " Minimap";
-                        planet.minimapMaterial.SetTexture("_HeightMap", planet.heightmap);
-                    }
-
-                    ___tmpMeshList.Clear();
-                    ___tmpMeshRendererList.Clear();
-                    ___tmpMeshColliderList.Clear();
-                    ___tmpOceanCollider = null;
-                    ___tmpTris.Clear();
-                    ___currentModelingStage = 1;
-                    break;
-                }
-                case 1: {
-                    Patch.Debug("___currentModelingStage :" + 1, LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-
-                    ___tmpPlanetGameObject = new GameObject(planet.displayName);
-                    ___tmpPlanetGameObject.layer = 31;
-                    GameMain.universeSimulator.SetPlanetSimulator(
-                        ___tmpPlanetGameObject.AddComponent<PlanetSimulator>(), planet);
-
-                    ___tmpPlanetGameObject.transform.localPosition = Vector3.zero;
-                    ___tmpPlanetBodyGameObject = new GameObject("Planet Body");
-                    ___tmpPlanetBodyGameObject.transform.SetParent(___tmpPlanetGameObject.transform, false);
-                    ___tmpPlanetBodyGameObject.layer = 31;
-                    ___tmpPlanetReformGameObject = new GameObject("Terrain Reform");
-                    ___tmpPlanetReformGameObject.transform.SetParent(___tmpPlanetBodyGameObject.transform,
-                        false);
-                    ___tmpPlanetReformGameObject.layer = 14;
-                    var meshFilter1 = ___tmpPlanetReformGameObject.AddComponent<MeshFilter>();
-                    ___tmpPlanetReformRenderer = ___tmpPlanetReformGameObject.AddComponent<MeshRenderer>();
-                    meshFilter1.sharedMesh = Configs.builtin.planetReformMesh;
-                    ___tmpPlanetReformRenderer.sharedMaterial = planet.reformMaterial;
-                    ___tmpPlanetReformRenderer.receiveShadows = false;
-                    ___tmpPlanetReformRenderer.lightProbeUsage = LightProbeUsage.Off;
-                    ___tmpPlanetReformRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                    // radius x2 = diameter
-                    var planetReformDiameter =
-                        (float) ((planet.realRadius + 0.200000002980232 + 0.025000000372529) * 2.0);
-
-
-                    Patch.Debug("planetReformDiameter :" + planetReformDiameter, LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-
-                    planetReformDiameter /= 2;
-
-                    Patch.Debug("Try patching reform Diameter / 2  :" + planetReformDiameter,
-                        LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-
-                    ___tmpPlanetReformRenderer.transform.localScale = new Vector3(planetReformDiameter,
-                        planetReformDiameter, planetReformDiameter);
-                    ___tmpPlanetReformRenderer.transform.rotation = Quaternion.identity;
-                    if (planet.waterItemId != 0) {
-                        var gameObject =
-                            Instantiate(Configs.builtin.oceanSphere,
-                                ___tmpPlanetBodyGameObject.transform);
-                        gameObject.name = "Ocean Sphere";
-                        gameObject.layer = 31;
-                        gameObject.transform.localPosition = Vector3.zero;
-                        gameObject.transform.localScale = Vector3.one *
-                                                          (float) ((planet.realRadius +
-                                                                    (double) planet.waterHeight) * 2.0);
-
-                        Patch.Debug("Ocean Sphere Scale : realRadius : " + planet.realRadius +
-                                    " water height " + planet.waterHeight + " x 2 ", LogLevel.Debug,
-                            Patch.DebugPlanetModelingManager);
-
-
-                        Patch.Debug("Ocean Sphere Scale :" + gameObject.transform.localScale,
-                            LogLevel.Debug,
-                            Patch.DebugPlanetModelingManager);
-
-                        var component = gameObject.GetComponent<Renderer>();
-                        ___tmpOceanCollider = gameObject.GetComponent<Collider>();
-                        if (component != null) {
-                            component.enabled = planet.oceanMaterial !=
-                                                null;
-                            component.shadowCastingMode = ShadowCastingMode.Off;
-                            component.receiveShadows = false;
-                            component.lightProbeUsage = LightProbeUsage.Off;
-                            component.sharedMaterial = planet.oceanMaterial;
-                        }
-                    }
-
-                    Patch.Debug(
-                        "Planet Precision  : " + planet.precision + " Planet Segments " + planet.segment,
-                        LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-
-                    var planetPrecisionBySegmentPlusOne = planetPrecisionBySegment + 1;
-
-
-                    Patch.Debug("Planet tris Generation", LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-                    for (var index1 = 0; index1 < planetPrecisionBySegment; ++index1)
-                    for (var index2 = 0; index2 < planetPrecisionBySegment; ++index2) {
-                        ___tmpTris.Add(index1 + 1 + (index2 + 1) * planetPrecisionBySegmentPlusOne);
-                        ___tmpTris.Add(index1 + (index2 + 1) * planetPrecisionBySegmentPlusOne);
-                        ___tmpTris.Add(index1 + index2 * planetPrecisionBySegmentPlusOne);
-                        ___tmpTris.Add(index1 + index2 * planetPrecisionBySegmentPlusOne);
-                        ___tmpTris.Add(index1 + 1 + index2 * planetPrecisionBySegmentPlusOne);
-                        ___tmpTris.Add(index1 + 1 + (index2 + 1) * planetPrecisionBySegmentPlusOne);
-                    }
-
-                    Patch.Debug("___currentModelingStage end of 1", LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
-                    ___currentModelingStage = 2;
-                    break;
-                }
-                case 2: {
-                    var planetPrecision = planet.precision;
+            
+            if(___currentModelingStage == 2){
+                int planetPrecisionBySegment = planet.precision / planet.segment;
+                var planetPrecision = planet.precision;
                     var data = planet.data;
                     var planetScale = planet.scale;
                     // float planetRadiusScaled = (float) (planet.radius * (double) planetScale + 0.200000002980232);
-                    var planetRadiusScaled =
-                        (float) (planet.radius + 0.200000002980232);
+                    float planetRadiusScaled = (float) (planet.radius * (double) planetScale + 0.200000002980232);
                     Patch.Debug("planetRadiusScaled " + planetRadiusScaled, LogLevel.Debug,
                         Patch.DebugPlanetModelingManager);
                     // planetRadiusScaled *= scaleFactor;
@@ -363,14 +148,16 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                         var num18 = 0;
                                         num13 = num15 + num17 + (num16 + num18) * stride;
                                     }
-
+                                    Patch.Debug("data.heightData[index6]  :  " + data.heightData[index6],
+                                        LogLevel.Debug,
+                                        Patch.DebugPlanetModelingManagerDeep);
                                     var heightDataScaled = data.heightData[index6] * 0.01f;
+                                    //If GasGiant
                                     if (planet.type == EPlanetType.Gas) heightDataScaled *= planetScale;
                                     Patch.Debug("heightDataScaled  :  " + heightDataScaled,
                                         LogLevel.Debug,
                                         Patch.DebugPlanetModelingManagerDeep);
-                                    var thirdOfModLevel =
-                                        data.GetModLevel(index6) * 0.3333333f;
+                                    var thirdOfModLevel = data.GetModLevel(index6) * 0.3333333f;
 
                                     Patch.Debug("thirdOfModLevel  :  " + thirdOfModLevel,
                                         LogLevel.Debug,
@@ -382,14 +169,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                             "data.GetModPlane(index6) :  " + data.GetModPlane(index6),
                                             LogLevel.Debug,
                                             Patch.DebugPlanetModelingManagerDeep);
-                                        var modPlanePatched = data.GetModPlane(index6) *
-                                                              planet.GetScaleFactored();
+                                        var modPlanePatched = data.GetModPlane(index6);
 
                                         Patch.Debug("patch modPlane:  " + modPlanePatched,
                                             LogLevel.Debug,
                                             Patch.DebugPlanetModelingManagerDeep);
-                                        planetRadiusScaled = modPlanePatched * 0.01f *
-                                                             planetScale;
+                                        planetRadiusScaled = modPlanePatched * 0.01f;
 
                                         Patch.Debug(
                                             "planetRadiusScaled is modified :  " + planetRadiusScaled,
@@ -398,11 +183,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                     }
 
                                     // final height modification ? 
-                                    var finalHeight =
-                                        (float) (heightDataScaled *
-                                                 (1.0 - thirdOfModLevel) +
-                                                 planetRadiusScaled *
-                                                 (double) thirdOfModLevel);
+                                    var finalHeight = (float) (heightDataScaled *(1.0 - thirdOfModLevel) + planetRadiusScaled * (double) thirdOfModLevel);
 
 
                                     Patch.Debug("finalHeight :  " + finalHeight, LogLevel.Debug,
@@ -411,17 +192,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                     var vector3_1 = data.vertices[index6] * finalHeight;
                                     ___tmpVerts.Add(vector3_1);
                                     ___tmpNorms.Add(data.vertices[index6]);
-                                    var vector3_2 = Vector3.Cross(data.vertices[index6], Vector3.up)
-                                        .normalized;
+                                    var vector3_2 = Vector3.Cross(data.vertices[index6], Vector3.up).normalized;
                                     if (vector3_2.sqrMagnitude == 0.0) vector3_2 = Vector3.right;
 
-                                    ___tmpTgnts.Add(new Vector4(vector3_2.x, vector3_2.y, vector3_2.z,
-                                        1f));
-                                    ___tmpUvs.Add(new Vector2((num11 + 0.5f) / stride,
-                                        (num12 + 0.5f) / stride));
-                                    ___tmpUv2s.Add(new Vector4(data.biomoData[index6] * 0.01f,
-                                        data.temprData[index6] * 0.01f, index6 + 0.3f,
-                                        num13 + 0.3f));
+                                    ___tmpTgnts.Add(new Vector4(vector3_2.x, vector3_2.y, vector3_2.z, 1f));
+                                    ___tmpUvs.Add(new Vector2((num11 + 0.5f) / stride, (num12 + 0.5f) / stride));
+                                    ___tmpUv2s.Add(new Vector4(data.biomoData[index6] * 0.01f, data.temprData[index6] * 0.01f, index6 + 0.3f, num13 + 0.3f));
                                 }
 
                                 mesh.indexFormat = IndexFormat.UInt16;
@@ -478,125 +254,15 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                             tmpMesh.SetNormals(___tmpNorms);
                         }
                     }
-
                     ___currentModelingStage = 3;
-                    break;
                 }
-                case 3: {
-                    ___tmpPlanetBodyGameObject.SetActive(true);
-                    ___tmpPlanetReformGameObject.SetActive(true);
-                    ___heightmapCamera.transform.localPosition = ___tmpPlanetGameObject.transform.localPosition;
-                    ___heightmapCamera.RenderToCubemap(planet.heightmap, 63);
-                    ___currentModelingStage = 4;
-                    break;
-                }
-                case 4: {
-                    Patch.Debug("___currentModelingStage start of 4", LogLevel.Debug,
-                        Patch.DebugPlanetModelingManager);
+                
+            
 
-                    if (planet.wanted) {
-                        Patch.Debug("planet.wanted is True", LogLevel.Debug,
-                            Patch.DebugPlanetModelingManager);
-
-                        planet.gameObject = ___tmpPlanetGameObject;
-                        planet.bodyObject = ___tmpPlanetBodyGameObject;
-                        var component = ___tmpPlanetGameObject.GetComponent<PlanetSimulator>();
-                        component.surfaceRenderer = new Renderer[___tmpMeshRendererList.Count];
-                        component.surfaceCollider = new Collider[___tmpMeshColliderList.Count];
-                        for (var index = 0; index < ___tmpMeshList.Count; ++index) {
-                            planet.meshes[index] = ___tmpMeshList[index];
-                            planet.meshRenderers[index] = ___tmpMeshRendererList[index];
-                            planet.meshColliders[index] = ___tmpMeshColliderList[index];
-                        }
-
-                        for (var index = 0; index < ___tmpMeshRendererList.Count; ++index) {
-                            ___tmpMeshRendererList[index].gameObject.layer = 31;
-                            ___tmpMeshRendererList[index].sharedMaterial = planet.terrainMaterial;
-                            ___tmpMeshRendererList[index].receiveShadows = false;
-                            ___tmpMeshRendererList[index].shadowCastingMode = ShadowCastingMode.Off;
-                            component.surfaceRenderer[index] = ___tmpMeshRendererList[index];
-                            component.surfaceCollider[index] = ___tmpMeshColliderList[index];
-                        }
-
-                        component.oceanCollider = ___tmpOceanCollider;
-                        component.sphereCollider = ___tmpPlanetBodyGameObject.AddComponent<SphereCollider>();
-                        if (component.sphereCollider != null)
-                            component.sphereCollider.enabled = false;
-                        component.sphereCollider.radius = planet.realRadius;
-                        component.reformRenderer = ___tmpPlanetReformRenderer;
-                        component.reformMat = planet.reformMaterial;
-                        var sharedMaterial = component.surfaceRenderer[0].sharedMaterial;
-                        if (planet.type != EPlanetType.Gas) {
-                            component.reformMat.SetColor("_AmbientColor0",
-                                sharedMaterial.GetColor("_AmbientColor0"));
-                            component.reformMat.SetColor("_AmbientColor1",
-                                sharedMaterial.GetColor("_AmbientColor1"));
-                            component.reformMat.SetColor("_AmbientColor2",
-                                sharedMaterial.GetColor("_AmbientColor2"));
-                            component.reformMat.SetColor("_LightColorScreen",
-                                sharedMaterial.GetColor("_LightColorScreen"));
-                            component.reformMat.SetFloat("_Multiplier", sharedMaterial.GetFloat("_Multiplier"));
-                            component.reformMat.SetFloat("_AmbientInc", sharedMaterial.GetFloat("_AmbientInc"));
-                        }
-
-                        ___tmpPlanetGameObject.transform.localPosition = Vector3.zero;
-                        ___heightmapCamera.transform.localPosition = Vector3.zero;
-                        ___tmpPlanetBodyGameObject.SetActive(true);
-                        ___tmpPlanetReformGameObject.SetActive(true);
-                        ___tmpPlanetGameObject = null;
-                        ___tmpPlanetBodyGameObject = null;
-                        ___tmpPlanetReformGameObject = null;
-                        ___tmpPlanetReformRenderer = null;
-                        ___tmpMeshList.Clear();
-                        ___tmpMeshRendererList.Clear();
-                        ___tmpMeshColliderList.Clear();
-                        ___tmpOceanCollider = null;
-                        ___tmpTris.Clear();
-                        ___tmpVerts.Clear();
-                        ___tmpNorms.Clear();
-                        ___tmpTgnts.Clear();
-                        ___tmpUvs.Clear();
-                        ___tmpUv2s.Clear();
-                        ___currentModelingPlanet = null;
-                        ___currentModelingStage = 0;
-                        ___currentModelingSeamNormal = 0;
-                        planet.NotifyLoaded();
-                        if (!planet.star.loaded) break;
-
-                        planet.star.NotifyLoaded();
-
-                        Patch.Debug("___currentModelingStage end of 4", LogLevel.Debug,
-                            Patch.DebugPlanetModelingManager);
-
-                        break;
-                    }
-
-                    for (var index = 0; index < ___tmpMeshList.Count; ++index)
-                        Destroy(___tmpMeshList[index]);
-                    Destroy(___tmpPlanetGameObject);
-                    ___tmpPlanetGameObject = null;
-                    ___tmpPlanetBodyGameObject = null;
-                    ___tmpPlanetReformGameObject = null;
-                    ___tmpPlanetReformRenderer = null;
-                    ___tmpMeshList.Clear();
-                    ___tmpTris.Clear();
-                    ___tmpVerts.Clear();
-                    ___tmpNorms.Clear();
-                    ___tmpTgnts.Clear();
-                    ___tmpUvs.Clear();
-                    ___tmpUv2s.Clear();
-                    ___currentModelingPlanet = null;
-                    ___currentModelingStage = 0;
-                    ___currentModelingSeamNormal = 0;
-                    break;
-                }
-            }
-
-            return false;
+            return true;
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch("ModelingPlanetMain")]
+
         public static void ModelingPlanetMainPost(PlanetData planet,
             ref Camera ___heightmapCamera,
             ref List<Mesh> ___tmpMeshList,

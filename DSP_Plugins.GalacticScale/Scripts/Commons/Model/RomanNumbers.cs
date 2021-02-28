@@ -1,4 +1,4 @@
-﻿namespace GalacticScale.Scripts.PatchStarSystemGeneration {
+﻿namespace GalacticScale.Scripts {
     public static class RomanNumbers {
         public static string[] roman = new string[31] {
             string.Empty,
