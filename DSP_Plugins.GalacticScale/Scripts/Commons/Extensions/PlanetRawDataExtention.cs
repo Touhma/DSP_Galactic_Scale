@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration {
+namespace GalacticScale.Scripts {
     public static class PlanetRawDataExtension {
         private static readonly Dictionary<PlanetRawData, float>
             FactoredRadius = new Dictionary<PlanetRawData, float>();

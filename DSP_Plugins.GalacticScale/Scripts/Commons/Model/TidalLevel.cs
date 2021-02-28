@@ -1,4 +1,4 @@
-﻿namespace GalacticScale.Scripts.PatchStarSystemGeneration {
+﻿namespace GalacticScale.Scripts {
     public enum TidalLevel {
         TidalLocked,
         TidalLocked2,

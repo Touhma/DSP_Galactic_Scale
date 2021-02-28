@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = System.Random;
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration.Utils {
+namespace GalacticScale.Scripts {
     public static class MathUtils {
         public static float RangePlusMinusOne(Random mainSeed) {
             // will return a number between -1 and 1 
