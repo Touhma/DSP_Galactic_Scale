@@ -84,7 +84,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
                     var copyOfRadiusOffset = radiusOffset;
                     if (thirdOdModLevel > 0f)
-                        copyOfRadiusOffset = __instance.data.GetModPlane(strideIndexLoop) * 0.01f;
+                        copyOfRadiusOffset = __instance.data.GetModPlaneInt(strideIndexLoop) * 0.01f;
 
                     Patch.Debug("copyOfRadiusOffset :" + copyOfRadiusOffset, LogLevel.Debug,
                         Patch.DebugPlanetDataDeep);

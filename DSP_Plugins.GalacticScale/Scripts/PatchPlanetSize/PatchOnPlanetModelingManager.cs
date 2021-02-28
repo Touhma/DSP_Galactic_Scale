@@ -166,10 +166,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                                     if (thirdOfModLevel > 0.0) {
                                         //data.GetModPlane(index6)) 20000 + * 0.01f --> 200 +
                                         Patch.Debug(
-                                            "data.GetModPlane(index6) :  " + data.GetModPlane(index6),
+                                            "data.GetModPlane(index6) :  " + data.GetModPlaneInt(index6),
                                             LogLevel.Debug,
                                             Patch.DebugPlanetModelingManagerDeep);
-                                        var modPlanePatched = data.GetModPlane(index6);
+                                        var modPlanePatched = data.GetModPlaneInt(index6);
 
                                         Patch.Debug("patch modPlane:  " + modPlanePatched,
                                             LogLevel.Debug,
