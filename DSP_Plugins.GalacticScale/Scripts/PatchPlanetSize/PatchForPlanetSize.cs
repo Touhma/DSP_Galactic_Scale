@@ -12,6 +12,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DebugPlanetFactory = false;
         public static bool DebugPlanetFactoryDeep = false;
         public static bool DebugPlanetRawData = false;
+        public static bool DebugGetModPlane = false;
         public static bool DebugPlanetData = false;
         public static bool DebugPlanetDataDeep = false;
         public static bool DebugPlanetModelingManager = false;
@@ -92,15 +93,16 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             if (EnableResizingFeature.Value) {
                 //PatchForPlanetSize
+                
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
-                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
+               //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
-                Harmony.CreateAndPatchAll(typeof(PatchOnPlayerNavigation));
-                Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
-                Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
+                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerNavigation));
+                //Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
+                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
             }
         }
 

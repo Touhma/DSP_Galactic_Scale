@@ -84,25 +84,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
                     var copyOfRadiusOffset = radiusOffset;
                     if (thirdOdModLevel > 0f)
-                        copyOfRadiusOffset = __instance.data.GetModPlane(strideIndexLoop) *
-                                             __instance.GetScaleFactored() * 0.01f;
-
-                    //patched copyOfRadiusOffset
-                    // copyOfRadiusOffset *= scaleFactor;
+                        copyOfRadiusOffset = __instance.data.GetModPlane(strideIndexLoop) * 0.01f;
 
                     Patch.Debug("copyOfRadiusOffset :" + copyOfRadiusOffset, LogLevel.Debug,
                         Patch.DebugPlanetDataDeep);
                     var ploup = heightDataNormalized * (1f - thirdOdModLevel) +
                                 copyOfRadiusOffset * thirdOdModLevel;
-
-
-                    Patch.Debug("ploup :" + ploup, LogLevel.Debug,
-                        Patch.DebugPlanetDataDeep);
-                    if (ploup > __instance.radius) {
-                        ploup -= (float) 0.2 * __instance.GetScaleFactored();
-                        if (ploup < __instance.radius) ploup = __instance.radius + 0.2f;
-                    }
-
 
                     vertices[IndexGeo].x = __instance.data.vertices[strideIndexLoop].x * ploup;
                     vertices[IndexGeo].y = __instance.data.vertices[strideIndexLoop].y * ploup;
