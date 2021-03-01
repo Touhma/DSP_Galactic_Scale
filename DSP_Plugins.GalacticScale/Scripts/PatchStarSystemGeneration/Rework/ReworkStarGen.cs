@@ -35,8 +35,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         "ChanceMoonTelluric : " + currentSettings.ChanceMoonTelluric + "\n" +
                         "ChancePlanetTelluric : " + currentSettings.ChanceTelluricPlanet + "\n" +
                         "ChancePlanetGasGiant : " + currentSettings.ChanceGasGiant + "\n" +
-                        "MaxMoonNb : " + currentSettings.MaxMoonNb + "\n" +
-                        "MaxPlanetNb : " + currentSettings.MaxPlanetNb + "\n" +
+                        "MaxMoonTelluricNb : " + currentSettings.MaxMoonTelluricNb + "\n" +
+                        "MaxMoonGasGiantNb : " + currentSettings.MaxMoonGasGiantNb + "\n" +
+                        "MaxTelluricNb : " + currentSettings.MaxTelluricNb + "\n" +
+                        "MaxGasGiantNb : " + currentSettings.MaxGasGiantNb + "\n" +
                         "ChanceJumpOrbitMoons : " + currentSettings.ChanceJumpOrbitMoons + "\n" +
                         "ChanceJumpOrbitPlanets : " + currentSettings.ChanceJumpOrbitPlanets + "\n" +
                         "*************************** ", LogLevel.Debug, Patch.DebugStarGenDeep);
@@ -117,7 +119,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
         public static void DefineNumberOfBodies(PatchForStarSystemGeneration.StarSystemSetting currentSettings, Random annexSeed, PlanetGeneratorSettings genSettings) {
             // Define how much planets the system have
-            for (var i = 0; i < currentSettings.MaxPlanetNb; i++)
+            for (var i = 0; i < currentSettings.MaxTelluricNb; i++)
                 if (annexSeed.NextDouble() <= currentSettings.ChanceTelluricPlanet) {
                     genSettings.nbOfTelluricPlanets++;
                     genSettings.nbOfPlanets++;
@@ -125,12 +127,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 }
 
             // Define how much of the planets are GasGiant
-            for (var j = genSettings.nbOfPlanets; j < currentSettings.MaxPlanetNb; j++)
+            for (var j = genSettings.nbOfPlanets; j < currentSettings.MaxGasGiantNb; j++)
                 if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiant) {
                     genSettings.nbOfGasGiantPlanets++;
                     genSettings.nbOfPlanets++;
                     genSettings.nbOfStellarBodies++;
                 }
+            
 
             Patch.Debug("*************************** : \n" +
                         "nbOfPlanets : " + genSettings.nbOfPlanets + "\n" +
@@ -142,7 +145,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             // Define how much moons the system have
             // Define how much moons the telluric  planets have 
             if (genSettings.nbOfTelluricPlanets != 0) {
-                for (var i = 0; i < currentSettings.MaxMoonNb; i++)
+                for (var i = 0; i < currentSettings.MaxMoonTelluricNb; i++)
                     if (annexSeed.NextDouble() <= currentSettings.ChanceMoonTelluric) {
                         genSettings.nbOfMoonsTelluric++;
                         genSettings.nbOfMoons++;
@@ -155,7 +158,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             // Define how much moons the gasGiants planets have 
             if (genSettings.nbOfGasGiantPlanets != 0) {
-                for (var i = genSettings.nbOfMoons; i < currentSettings.MaxMoonNb; i++)
+                for (var i = genSettings.nbOfMoons; i < currentSettings.MaxMoonGasGiantNb; i++)
                     if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiantMoon) {
                         genSettings.nbOfMoonsGasGiant++;
                         genSettings.nbOfMoons++;
