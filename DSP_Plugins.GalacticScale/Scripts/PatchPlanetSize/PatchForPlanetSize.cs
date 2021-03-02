@@ -9,14 +9,14 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public new static ManualLogSource Logger;
 
         public static bool DebugGeneral = false;
-        public static bool DebugPlanetFactory = false;
-        public static bool DebugPlanetFactoryDeep = false;
         public static bool DebugPlanetRawData = false;
-        public static bool DebugGetModPlane = true;
+        public static bool DebugGetModPlane = false;
         public static bool DebugPlanetData = false;
         public static bool DebugPlanetDataDeep = false;
         public static bool DebugPlanetModelingManager = false;
         public static bool DebugPlanetModelingManagerDeep = false;
+        public static bool DebugAtmoBlur = false;
+        
 
         public static float VanillaGasGiantSize = 800f; // will be rescaled in the create planet
         public static float VanillaGasGiantScale = 10f; // will be rescaled in the create planet
@@ -24,7 +24,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static int VanillaTelluricPrecision = 200;
         public static float VanillaTelluricScale = 1f;
 
-        public static bool DebugAtmoBlur = false;
+
 
         public static ConfigEntry<bool> EnableResizingFeature;
 
@@ -78,7 +78,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             BaseGasGiantSize = Config.Bind("galactic-scale-planets-size",
                 "BaseGasGiantSize",
-                1400f,
+                2000f,
                 "Base Gas Giant Size  -- Not Advised to modify YET");
 
             BaseTelluricSizeVariationFactor = Config.Bind("galactic-scale-planets-size",
@@ -88,21 +88,16 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             BaseGasGiantSizeVariationFactor = Config.Bind("galactic-scale-planets-size",
                 "BaseGasGiantSizeVariationFactor",
-                600f,
+                1200f,
                 "Used to create variation on the planet size : help defining the min & max size for a gas giant --  -- Not Advised to modify YET");
 
             if (EnableResizingFeature.Value) {
                 //PatchForPlanetSize
-                
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
-               //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerNavigation));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
             }
         }
 

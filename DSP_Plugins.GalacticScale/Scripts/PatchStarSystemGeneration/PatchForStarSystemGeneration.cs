@@ -19,7 +19,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         //public static int StartingSystemPlanetNb = 30;
 
         // use custom orbit for planets
-        public static ConfigEntry<bool> UseCustomOrbitRadiusArray;
+        public static ConfigEntry<bool> UseCustomOrbitRadiusArrayPlanets;
         public static ConfigEntry<string> CustomOrbitRadiusArrayPlanets;
 
         // use custom orbit for moons
@@ -155,7 +155,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool DebugReworkPlanetGen = false;
         public static bool DebugReworkPlanetGenDeep = false;
         public static bool DebugStarGen = false;
-        public static bool DebugStarGenDeep = true;
+        public static bool DebugStarGenDeep = false;
         public static bool DebugStarNamingGen = false;
 
         public static ConfigEntry<bool> EnableCustomStarAlgorithm;
@@ -226,34 +226,34 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             OrbitRadiusArrayPlanetNb = Config.Bind("galactic-scale-systems",
                 "OrbitRadiusArrayPlanetNb",
-                16,
+                17,
                 "The size for the array of orbits for planets");
 
             // use custom orbit for planets
-            UseCustomOrbitRadiusArray = Config.Bind("galactic-scale-systems",
-                "CustomOrbitRadiusArray",
+            UseCustomOrbitRadiusArrayPlanets = Config.Bind("galactic-scale-systems",
+                "UseCustomOrbitRadiusArrayPlanets",
                 false,
                 "turn it to true to use your own custom orbit array for planet --> don't forget to update the OrbitRadiusArrayPlanetNb value accordingly ( +1 will be added anyway, the first orbit is always the star's one ^^' ");
 
             // use custom orbit for moons
             UseCustomOrbitRadiusArrayMoons = Config.Bind("galactic-scale-systems",
-                "CustomOrbitRadiusArray",
+                "UseCustomOrbitRadiusArrayMoons",
                 false,
                 "turn it to true to use your own custom orbit array for moons --> don't forget to update the OrbitRadiusArrayMoonsNb value accordingly");
 
             CustomOrbitRadiusArrayPlanets = Config.Bind("galactic-scale-systems",
                 "CustomOrbitRadiusArrayPlanets",
-                "0,1,2.5",
+                "0,0.3,0.7,1.1,1.5,1.9,2.3,3.5,5.3,7.7,10.8,14.7,19.5,25.3,32.2,40.3,49.7,60.5",
                 "Custom Array for the value in UA for the orbits of the planets");
 
             CustomOrbitRadiusArrayMoons = Config.Bind("galactic-scale-systems",
                 "CustomOrbitRadiusArrayMoon",
-                "0,1,2.5",
+                "0.048125,0.06015625,0.0751953125,0.09399414063,0.1174926758,0.1468658447,0.1835823059,0.2294778824,0.286847353,0.3585591912,0.448198989,0.5602487363,0.7003109204,0.8753886505,1.094235813,1.367794766,1.709743458,2.137179322,2.671474153,3.339342691,4.174178364",
                 "Custom Array for the value in UA for the orbits of the moons");
 
             //nb of planet + star
             OrbitRadiusPlanetArray = new float[OrbitRadiusArrayPlanetNb.Value + 1];
-            OrbitRadiusPlanetArray = !UseCustomOrbitRadiusArray.Value
+            OrbitRadiusPlanetArray = !UseCustomOrbitRadiusArrayPlanets.Value
                 ? _orbitRadiusArrayPlanetList.ToArray()
                 : Array.ConvertAll(CustomOrbitRadiusArrayPlanets.Value.Split(','), float.Parse);
 
@@ -273,9 +273,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Custom Params for the specified system, \n " +
                 "int maxPlanetNb : nb max of planets in the system in total,\n " +
                 "int maxMoonNb : nb max of moons in the system in total\n" +
-                "int jumpOrbitPlanetIndex :the first planet of the host star will be on this orbit\n" +
+                "int jumpOrbitPlanetMax :the first planet of the host star will be on this orbit\n" +
                 "float chanceJumpOrbitPlanets : lower = denser systems, higher = further away from the star,\n" +
-                "int jumpOrbitMoonIndex: the first moon of the host planet will be on this orbit\n" +
+                "int jumpOrbitMoonMax: the first moon of the host planet will be on this orbit\n" +
                 "float chanceJumpOrbitMoons: lower = denser systems, higher = further away from the host planet,\n" +
                 "float chanceTelluricPlanet: chance for a telluric planet to spawn,\n" +
                 "float chanceGasGiant: chance for a gas giant to spawn,\n" +
@@ -581,7 +581,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
-                // Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
             }
         }
 

@@ -35,7 +35,7 @@
       <HintPath>..\Libs\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>G:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\Libs\BepInEx.dll</HintPath>
@@ -82,18 +82,14 @@
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerNavigation.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Customs\StartingSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetData.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetFactory.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
