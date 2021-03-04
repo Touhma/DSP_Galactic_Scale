@@ -1,4 +1,5 @@
-﻿using BepInEx.Logging;
+﻿using System;
+using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
@@ -9,14 +10,40 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPrefix]
         [HarmonyPatch("DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result) {
-            int index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float) ((double) latitudeIndex / (double) ((float) segment / 4f) * 3.14159274101257 * 0.5))) * (float) segment);
-            __result = index < 500 ? PlanetGrid.segmentTable[index] : (index + 49) / 100 * 100;
+            Patch.Debug("PlanetGrid - _latitudeIndex --> " + latitudeIndex, LogLevel.Debug, true);
+            //int index = Mathf.RoundToInt(Mathf.Abs(Mathf.Cos((float) ((double) latitudeIndex / (double) ((float) segment / 4f) * Math.PI * 0.5))) * (float) segment);
+            int index = Mathf.RoundToInt(Mathf.Abs(Mathf.Cos((float) ((double) latitudeIndex / (double) ((float) segment / 4f) *  3.14159274101257 * 0.5))) * (float) segment);
+            Patch.Debug("PlanetGrid - index --> " + index, LogLevel.Debug, true);
+            __result = index < 500 ? PlanetGrid.segmentTable[index ] : (index + 49) / 100 * 100;
             Patch.Debug("PlanetGrid - longitudeSegmentCount" + __result, LogLevel.Debug, true);
+
             return false;
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch("ReformSnapTo")]
+        public static bool SnapTo( ref PlanetGrid __instance, Vector3 pos , ref Vector3 __result)
+        {
+            pos.Normalize();
+            float num1 = Mathf.Asin(pos.y);
+            float num2 = Mathf.Atan2(pos.x, -pos.z);
+            float f1 = num1 / 6.283185f * (float) __instance.segment;
+          //  float f1 = num1 / (2 * (float)Math.PI) * (float) __instance.segment;
+            float longitudeSegmentCount = (float) PlanetGrid.DetermineLongitudeSegmentCount(Mathf.FloorToInt(Mathf.Max(0.0f, Mathf.Abs(f1) - 0.1f)), __instance.segment);
+            float num3 = num2 /6.283185f* longitudeSegmentCount;
+          //  float num3 = num2 / (2 * (float)Math.PI)* longitudeSegmentCount;
+            float num4 = Mathf.Round(f1 * 5f) / 5f;
+            float num5 = Mathf.Round(num3 * 5f) / 5f;
+            //float f2 = (float) ((double) num4 / (double) __instance.segment * 2 * (float)Math.PI);
+            //float f3 = (float) ((double) num5 / (double) longitudeSegmentCount *2 * (float)Math.PI);
+           float f2 = (float) ((double) num4 / (double) __instance.segment * 6.283185f);
+            float f3 = (float) ((double) num5 / (double) longitudeSegmentCount * 6.283185f);
+            float y = Mathf.Sin(f2);
+            float num6 = Mathf.Cos(f2);
+            float num7 = Mathf.Sin(f3);
+            float num8 = Mathf.Cos(f3);
+            __result =  new Vector3(num6 * num7, y, num6 * -num8);
+            return false;
+        }
+
         public static bool ReformSnapTo(
             ref PlanetGrid __instance,
             Vector3 pos,
@@ -26,18 +53,21 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             Vector3[] reformPoints,
             int[] reformIndices,
             PlatformSystem platform,
-            out Vector3 reformCenter, ref int __result) {
+            out Vector3 reformCenter,
+            ref int __result) {
             pos.Normalize();
 
 
             float num1 = Mathf.Asin(pos.y);
             float num2 = Mathf.Atan2(pos.x, -pos.z);
+            //float f1 = num1 / ( 2 * (float)Math.PI) * (float) __instance.segment;
             float f1 = num1 / 6.283185f * (float) __instance.segment;
             int longitudeSegmentCount = PlanetGrid.DetermineLongitudeSegmentCount(Mathf.FloorToInt(Mathf.Abs(f1)), __instance.segment);
 
 
             float num3 = (float) longitudeSegmentCount;
             float f2 = num2 / 6.283185f * num3;
+            //float f2 = num2 / ( 2 * (float)Math.PI) * num3;
             float f3 = Mathf.Round(f1 * 10f);
             float f4 = Mathf.Round(f2 * 10f);
             float num4 = Mathf.Abs(f3);
@@ -57,6 +87,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
 
             float num8 = (double) f4 < 0.0 ? -num5 : num5;
+            // float f5 = (float) ((double) num7 / 10.0 / (double) __instance.segment * 2 * (float)Math.PI);
+            // float f6 = (float) ((double) num8 / 10.0 / (double) num3 * 2 * (float)Math.PI);
             float f5 = (float) ((double) num7 / 10.0 / (double) __instance.segment * 6.28318548202515);
             float f6 = (float) ((double) num8 / 10.0 / (double) num3 * 6.28318548202515);
             float y1 = Mathf.Sin(f5);
@@ -95,8 +127,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                         int reformType1 = platform.GetReformType(reformIndexForSegment);
                         int reformColor1 = platform.GetReformColor(reformIndexForSegment);
                         if (!platform.IsTerrainReformed(reformType1) && (reformType1 != reformType || reformColor1 != reformColor)) {
-                            float f7 = (float) ((double) num16 / (double) __instance.segment * 6.28318548202515);
-                            float f8 = (float) ((double) _longitudeSeg / (double) num3 * 6.28318548202515);
+                            float f7 = (float) ((double) num16 / (double) __instance.segment *  6.28318548202515);
+                           // float f7 = (float) ((double) num16 / (double) __instance.segment *  ( 2 * (float)Math.PI));
+                            float f8 = (float) ((double) _longitudeSeg / (double) num3 *  6.28318548202515);
+                            //float f8 = (float) ((double) _longitudeSeg / (double) num3 *  ( 2 * (float)Math.PI));
                             float y2 = Mathf.Sin(f7);
                             float num17 = Mathf.Cos(f7);
                             float num18 = Mathf.Sin(f8);
@@ -108,7 +142,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 }
             }
 
-            __result =  index1;
+            __result = index1;
             return false;
         }
     }
