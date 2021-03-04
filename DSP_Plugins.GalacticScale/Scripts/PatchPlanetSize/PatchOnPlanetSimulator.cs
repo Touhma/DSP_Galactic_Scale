@@ -127,19 +127,19 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
 
             if (__instance.reformRenderer != null &&
-                __instance.reformMat != null && __instance.planetData.factory != null) {
+                __instance.reformMat0 != null && __instance.planetData.factory != null) {
                 var platformSystem = __instance.planetData.factory.platformSystem;
                 var reformOffsetsBuffer = platformSystem.reformOffsetsBuffer;
                 var reformDataBuffer = platformSystem.reformDataBuffer;
-                __instance.reformMat.SetFloat("_LatitudeCount", platformSystem.latitudeCount);
-                __instance.reformMat.SetVector("_SunDir", vector3_2);
-                __instance.reformMat.SetFloat("_Distance", magnitude);
-                __instance.reformMat.SetVector("_Rotation", vector4_1);
+                __instance.reformMat0.SetFloat("_LatitudeCount", platformSystem.latitudeCount);
+                __instance.reformMat0.SetVector("_SunDir", vector3_2);
+                __instance.reformMat0.SetFloat("_Distance", magnitude);
+                __instance.reformMat0.SetVector("_Rotation", vector4_1);
                 if (platformSystem.reformData != null && reformDataBuffer != null) {
                     reformOffsetsBuffer.SetData(platformSystem.reformOffsets);
                     reformDataBuffer.SetData(platformSystem.reformData);
-                    __instance.reformMat.SetBuffer("_OffsetsBuffer", reformOffsetsBuffer);
-                    __instance.reformMat.SetBuffer("_DataBuffer", reformDataBuffer);
+                    __instance.reformMat0.SetBuffer("_OffsetsBuffer", reformOffsetsBuffer);
+                    __instance.reformMat0.SetBuffer("_DataBuffer", reformDataBuffer);
                 }
             }
 

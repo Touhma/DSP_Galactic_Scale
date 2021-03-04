@@ -151,9 +151,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                         }
                     }
 
-                    if (planet.reformMaterial == null)
-                        planet.reformMaterial =
-                            Instantiate(Configs.builtin.planetReformMatProto);
+                    if (planet.reformMaterial0 == null)
+                        planet.reformMaterial0 =
+                            Instantiate(Configs.builtin.planetReformMatProto0);
                     if (planet.ambientDesc == null)
                         planet.ambientDesc =
                             themeProto == null || !(themeProto.ambientDesc !=
@@ -205,7 +205,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     var meshFilter1 = ___tmpPlanetReformGameObject.AddComponent<MeshFilter>();
                     ___tmpPlanetReformRenderer = ___tmpPlanetReformGameObject.AddComponent<MeshRenderer>();
                     meshFilter1.sharedMesh = Configs.builtin.planetReformMesh;
-                    ___tmpPlanetReformRenderer.sharedMaterial = planet.reformMaterial;
+                    ___tmpPlanetReformRenderer.sharedMaterial = planet.reformMaterial0;
                     ___tmpPlanetReformRenderer.receiveShadows = false;
                     ___tmpPlanetReformRenderer.lightProbeUsage = LightProbeUsage.Off;
                     ___tmpPlanetReformRenderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -524,19 +524,19 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                             component.sphereCollider.enabled = false;
                         component.sphereCollider.radius = planet.realRadius;
                         component.reformRenderer = ___tmpPlanetReformRenderer;
-                        component.reformMat = planet.reformMaterial;
+                        component.reformMat0 = planet.reformMaterial0;
                         var sharedMaterial = component.surfaceRenderer[0].sharedMaterial;
                         if (planet.type != EPlanetType.Gas) {
-                            component.reformMat.SetColor("_AmbientColor0",
+                            component.reformMat0.SetColor("_AmbientColor0",
                                 sharedMaterial.GetColor("_AmbientColor0"));
-                            component.reformMat.SetColor("_AmbientColor1",
+                            component.reformMat0.SetColor("_AmbientColor1",
                                 sharedMaterial.GetColor("_AmbientColor1"));
-                            component.reformMat.SetColor("_AmbientColor2",
+                            component.reformMat0.SetColor("_AmbientColor2",
                                 sharedMaterial.GetColor("_AmbientColor2"));
-                            component.reformMat.SetColor("_LightColorScreen",
+                            component.reformMat0.SetColor("_LightColorScreen",
                                 sharedMaterial.GetColor("_LightColorScreen"));
-                            component.reformMat.SetFloat("_Multiplier", sharedMaterial.GetFloat("_Multiplier"));
-                            component.reformMat.SetFloat("_AmbientInc", sharedMaterial.GetFloat("_AmbientInc"));
+                            component.reformMat0.SetFloat("_Multiplier", sharedMaterial.GetFloat("_Multiplier"));
+                            component.reformMat0.SetFloat("_AmbientInc", sharedMaterial.GetFloat("_AmbientInc"));
                         }
 
                         ___tmpPlanetGameObject.transform.localPosition = Vector3.zero;
