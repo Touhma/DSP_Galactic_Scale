@@ -10,10 +10,11 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPrefix]
         [HarmonyPatch("DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result) {
-            Patch.Debug("PlanetGrid - _latitudeIndex --> " + latitudeIndex, LogLevel.Debug, true);
+           // Patch.Debug("PlanetGrid - _latitudeIndex --> " + latitudeIndex, LogLevel.Debug, true);
             //int index = Mathf.RoundToInt(Mathf.Abs(Mathf.Cos((float) ((double) latitudeIndex / (double) ((float) segment / 4f) * Math.PI * 0.5))) * (float) segment);
+            //CeilToInt --> RoundToInt
             int index = Mathf.RoundToInt(Mathf.Abs(Mathf.Cos((float) ((double) latitudeIndex / (double) ((float) segment / 4f) *  3.14159274101257 * 0.5))) * (float) segment);
-            Patch.Debug("PlanetGrid - index --> " + index, LogLevel.Debug, true);
+            //Patch.Debug("PlanetGrid - index --> " + index, LogLevel.Debug, true);
             __result = index < 500 ? PlanetGrid.segmentTable[index ] : (index + 49) / 100 * 100;
             Patch.Debug("PlanetGrid - longitudeSegmentCount" + __result, LogLevel.Debug, true);
 
@@ -27,7 +28,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             float num2 = Mathf.Atan2(pos.x, -pos.z);
             float f1 = num1 / 6.283185f * (float) __instance.segment;
           //  float f1 = num1 / (2 * (float)Math.PI) * (float) __instance.segment;
-            float longitudeSegmentCount = (float) PlanetGrid.DetermineLongitudeSegmentCount(Mathf.FloorToInt(Mathf.Max(0.0f, Mathf.Abs(f1) - 0.1f)), __instance.segment);
+            float longitudeSegmentCount = (float) PlanetGrid.DetermineLongitudeSegmentCount(Mathf.RoundToInt(Mathf.Max(0.0f, Mathf.Abs(f1) - 0.1f)), __instance.segment);
             float num3 = num2 /6.283185f* longitudeSegmentCount;
           //  float num3 = num2 / (2 * (float)Math.PI)* longitudeSegmentCount;
             float num4 = Mathf.Round(f1 * 5f) / 5f;
@@ -57,12 +58,11 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             ref int __result) {
             pos.Normalize();
 
-
             float num1 = Mathf.Asin(pos.y);
             float num2 = Mathf.Atan2(pos.x, -pos.z);
             //float f1 = num1 / ( 2 * (float)Math.PI) * (float) __instance.segment;
             float f1 = num1 / 6.283185f * (float) __instance.segment;
-            int longitudeSegmentCount = PlanetGrid.DetermineLongitudeSegmentCount(Mathf.FloorToInt(Mathf.Abs(f1)), __instance.segment);
+            int longitudeSegmentCount = PlanetGrid.DetermineLongitudeSegmentCount(Mathf.RoundToInt(Mathf.Abs(f1)), __instance.segment);
 
 
             float num3 = (float) longitudeSegmentCount;
@@ -85,6 +85,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 if ((double) num5 % 2.0 != (double) num6)
                     ++num5;
             }
+       
 
             float num8 = (double) f4 < 0.0 ? -num5 : num5;
             // float f5 = (float) ((double) num7 / 10.0 / (double) __instance.segment * 2 * (float)Math.PI);
@@ -105,7 +106,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 ++num14;
                 float num16 = (float) (((double) num7 + (double) num12) / 10.0);
                 float _longitudeSeg = (float) (((double) num8 + (double) num13) / 10.0);
-                num13 += 2;
+                
+              num13 += 2;
                 if (num14 % reformSize == 0) {
                     num13 = 1 - reformSize;
                     num12 += 2;
@@ -115,8 +117,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     reformIndices[index2] = -1;
                 }
                 else {
-                    int latitudeIndex = Mathf.FloorToInt(Mathf.Abs(num16));
+                    int latitudeIndex = Mathf.RoundToInt(Mathf.Abs(num16));
+                    
                     if (longitudeSegmentCount != PlanetGrid.DetermineLongitudeSegmentCount(latitudeIndex, __instance.segment)) {
+                        
                         reformIndices[index2] = -1;
                     }
                     else {
@@ -143,6 +147,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
 
             __result = index1;
+          
             return false;
         }
     }
