@@ -15,7 +15,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             var index = Mathf.RoundToInt(Mathf.Abs(Mathf.Cos((float) (latitudeIndex / (double) (segment / 4f) * 3.14159274101257 * 0.5))) * segment);
             //Patch.Debug("PlanetGrid - index --> " + index, LogLevel.Debug, true);
             __result = index < 500 ? PlanetGrid.segmentTable[index] : (index + 49) / 100 * 100;
-            Patch.Debug("PlanetGrid - longitudeSegmentCount" + __result, LogLevel.Debug, true);
+           // Patch.Debug("PlanetGrid - longitudeSegmentCount" + __result, LogLevel.Debug, true);
 
             return false;
         }

@@ -18,7 +18,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             //Patch.Debug("PlatformSystem - segmentTable --> " + PlatformSystem.segmentTable[index]  , LogLevel.Debug, true);
             //Patch.Debug("PlatformSystem - (index + 49) / 100 * 100  --> " + (index + 49) / 100 * 100  , LogLevel.Debug, true);
             __result = index < 500 ? PlatformSystem.segmentTable[index] : (index + 49) / 100 * 100;
-            Patch.Debug("PlatformSystem - longitudeSegmentCount --> " + __result, LogLevel.Debug, true);
+           // Patch.Debug("PlatformSystem - longitudeSegmentCount --> " + __result, LogLevel.Debug, true);
 
             return false;
         }
