@@ -1,6 +1,5 @@
 ﻿using System;
 using BepInEx.Logging;
-using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -127,7 +126,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
 
             if (__instance.reformRenderer != null &&
-                __instance.reformMat0 != null && __instance.planetData.factory != null) {
+                __instance.reformMat0 != null && __instance.reformMat0 != null && __instance.planetData.factory != null) {
                 var platformSystem = __instance.planetData.factory.platformSystem;
                 var reformOffsetsBuffer = platformSystem.reformOffsetsBuffer;
                 var reformDataBuffer = platformSystem.reformDataBuffer;
@@ -135,11 +134,19 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 __instance.reformMat0.SetVector("_SunDir", vector3_2);
                 __instance.reformMat0.SetFloat("_Distance", magnitude);
                 __instance.reformMat0.SetVector("_Rotation", vector4_1);
+                __instance.reformMat0.SetTexture("_ColorsTexture", platformSystem.reformColorsTex);
+                __instance.reformMat1.SetFloat("_LatitudeCount", platformSystem.latitudeCount);
+                __instance.reformMat1.SetVector("_SunDir", vector3_2);
+                __instance.reformMat1.SetFloat("_Distance", magnitude);
+                __instance.reformMat1.SetVector("_Rotation", vector4_1);
+                __instance.reformMat1.SetTexture("_ColorsTexture", platformSystem.reformColorsTex);
                 if (platformSystem.reformData != null && reformDataBuffer != null) {
                     reformOffsetsBuffer.SetData(platformSystem.reformOffsets);
                     reformDataBuffer.SetData(platformSystem.reformData);
                     __instance.reformMat0.SetBuffer("_OffsetsBuffer", reformOffsetsBuffer);
                     __instance.reformMat0.SetBuffer("_DataBuffer", reformDataBuffer);
+                    __instance.reformMat1.SetBuffer("_OffsetsBuffer", reformOffsetsBuffer);
+                    __instance.reformMat1.SetBuffer("_DataBuffer", reformDataBuffer);
                 }
             }
 
