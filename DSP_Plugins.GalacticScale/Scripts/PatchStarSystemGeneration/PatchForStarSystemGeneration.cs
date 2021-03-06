@@ -5,6 +5,8 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 
+using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
+
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [BepInPlugin("touhma.dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
         "1.0.0.0")]
@@ -580,6 +582,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 1.2f,
                 "if planet.distance / star.habitableRadius is more than that --> the planet will be an ice planet");
 
+            //Forcing the Custom star Algo if resizing is enabled
+            if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) {
+                EnableCustomStarAlgorithm.Value = true;
+            }
+            
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));

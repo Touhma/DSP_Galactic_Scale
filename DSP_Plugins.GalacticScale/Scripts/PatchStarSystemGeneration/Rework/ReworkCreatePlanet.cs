@@ -354,7 +354,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             else if (planetData.type != EPlanetType.None) {
                 if (PatchSize.EnableResizingFeature.Value) {
                     var radiusTelluricWanted = PatchSize.VanillaTelluricSize;
-                    if (planetData.IsNotAMoon()) {
+                    if (planetData.IsNotAMoon() ||  !PatchSize.EnableMoonSizeFailSafe.Value) {
                         radiusTelluricWanted = PatchSize.BaseTelluricSize.Value +
                                                MathUtils.RangePlusMinusOne(mainSeed) *
                                                PatchSize.BaseTelluricSizeVariationFactor.Value;

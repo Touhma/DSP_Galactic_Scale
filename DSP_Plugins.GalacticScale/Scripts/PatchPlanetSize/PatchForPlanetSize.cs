@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
@@ -122,6 +121,13 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             if (EnableResizingFeature.Value || EnableLimitedResizingFeature.Value) {
 
                 ParseResizinSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
+                
+                // check some configs dependencies 
+                if (EnableLimitedResizingFeature.Value) {
+                    EnableResizingFeature.Value = false;
+                }
+
+                Config.Save();
                 
                 //PatchForPlanetSize
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
