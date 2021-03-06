@@ -590,6 +590,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
+                Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
             }
         }
 
