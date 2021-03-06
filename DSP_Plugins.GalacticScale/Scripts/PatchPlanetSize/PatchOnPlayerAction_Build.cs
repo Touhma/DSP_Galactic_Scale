@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using HarmonyLib;
+using UnityEngine;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlayerAction_Build))]
@@ -42,34 +42,27 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //     insert those instructions at i+2 (where i is still the location where we found ldc.r4 0.025), so that the result of the prior vector multiplication is what we vector divide
         [HarmonyTranspiler]
         [HarmonyPatch("CheckBuildConditions")]
-        public static IEnumerable<CodeInstruction> CheckBuildConditions(IEnumerable<CodeInstruction> instructions)
-        {
+        public static IEnumerable<CodeInstruction> CheckBuildConditions(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
-            {
                 if (i > 0 && codes[i].Is(OpCodes.Ldc_R4, 0.025f) && i < codes.Count - 1)
-                // This condition is to add scale factor to gas giant calls. First we check for the existing static scale factor of 0.025f
-                // We check late and stop early because we operate with info all AROUND the current line when we do anything
+                    // This condition is to add scale factor to gas giant calls. First we check for the existing static scale factor of 0.025f
+                    // We check late and stop early because we operate with info all AROUND the current line when we do anything
                 {
                     if (codes[i - 1].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()) && codes[i + 1].opcode == OpCodes.Mul)
-                    // Check if the prior instruction is get_realRadius() and the next call is mul
+                        // Check if the prior instruction is get_realRadius() and the next call is mul
                     {
-                        List<CodeInstruction> newInstructions = new List<CodeInstruction>();
+                        var newInstructions = new List<CodeInstruction>();
                         for (var j = i - 2; j > 0 && j > i - 11; j--)
-                        //loop BACKWARD until we reach ldloc.s (sanity check: limit to 10 prior instructions)
-                        {
-                            if (codes[j].opcode == OpCodes.Ldloc_S)
-                            {
+                            //loop BACKWARD until we reach ldloc.s (sanity check: limit to 10 prior instructions)
+                            if (codes[j].opcode == OpCodes.Ldloc_S) {
                                 for (; j < i - 1; j++)
-                                //create a copy of each instruction FROM the ldloc.s instruction TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
-                                {
+                                    //create a copy of each instruction FROM the ldloc.s instruction TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
                                     newInstructions.Add(new CodeInstruction(codes[j]));
-                                }
                                 break;
                             }
-                        }
                         if (newInstructions.Count != 0)
-                        //If we didn't find ldloc.s, don't do anything with this instance as it is not a recognized pattern.
+                            //If we didn't find ldloc.s, don't do anything with this instance as it is not a recognized pattern.
                         {
                             //create a new instruction to call the GetScaleFactored() function on the same planetData instance
                             newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(PlanetDataExtension).GetMethod("GetScaleFactored")));
@@ -81,31 +74,26 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                             codes.InsertRange(i + 2, newInstructions);
                         }
                     }
-                    else if (codes[i - 1].Calls(typeof(UnityEngine.Vector3).GetMethod("op_Multiply", new Type[]{ typeof(UnityEngine.Vector3), typeof(float) })) && codes[i - 2].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
-                    // check if the prior instruction is calling Vector3.Multiply and the further-prior instruction is callvirt float32 PlanetData::get_realRadius()
+                    else if (codes[i - 1].Calls(typeof(Vector3).GetMethod("op_Multiply", new[] { typeof(Vector3), typeof(float) })) && codes[i - 2].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
+                        // check if the prior instruction is calling Vector3.Multiply and the further-prior instruction is callvirt float32 PlanetData::get_realRadius()
                     {
-                        List<CodeInstruction> newInstructions = new List<CodeInstruction>();
+                        var newInstructions = new List<CodeInstruction>();
                         for (var j = i - 3; j > 0 && j > i - 12; j--)
-                        //loop BACKWARD until we reach ldarg.0 (sanity check: limit to 10 prior instructions)
-                        {
-                            if (codes[j].opcode == OpCodes.Ldarg_0)
-                            {
+                            //loop BACKWARD until we reach ldarg.0 (sanity check: limit to 10 prior instructions)
+                            if (codes[j].opcode == OpCodes.Ldarg_0) {
                                 for (; j < i - 2; j++)
-                                //create a copy of each instruction FROM ldarg.0 TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
-                                {
+                                    //create a copy of each instruction FROM ldarg.0 TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
                                     newInstructions.Add(new CodeInstruction(codes[j]));
-                                }
                                 break;
                             }
-                        }
                         if (newInstructions.Count != 0)
-                        //If we didn't find ldarg.0, don't do anything with this instance as it is not a recognized pattern.
+                            //If we didn't find ldarg.0, don't do anything with this instance as it is not a recognized pattern.
                         {
                             //create a new instruction to call the GetScaleFactored() function on the same planetData instance
                             newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(PlanetDataExtension).GetMethod("GetScaleFactored")));
 
                             //create a new call instruction to call Vector3.Divide, dividing the data already on the stack by the result of GetScaleFactored()
-                            newInstructions.Add(new CodeInstruction(OpCodes.Call, typeof(UnityEngine.Vector3).GetMethod("op_Division")));
+                            newInstructions.Add(new CodeInstruction(OpCodes.Call, typeof(Vector3).GetMethod("op_Division")));
 
                             //insert those instructions at i+2 (where i is still the location where we found ldc.r4 0.025), so that the result of the prior vector multiplication is what we vector divide
                             codes.InsertRange(i + 2, newInstructions);
@@ -114,7 +102,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     }
 
                 }
-            }
             return codes.AsEnumerable();
         }
 
@@ -140,49 +127,38 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //     insert those instructions at i+2 (where i is still the location where we found ldc.r4 0.025), so that the result of the prior vector multiplication is what we vector divide
         [HarmonyTranspiler]
         [HarmonyPatch("DetermineBuildPreviews")]
-        public static IEnumerable<CodeInstruction> DetermineBuildPreviews(IEnumerable<CodeInstruction> instructions)
-        {
+        public static IEnumerable<CodeInstruction> DetermineBuildPreviews(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
-            {
                 if (i > 0 && codes[i].Is(OpCodes.Ldc_R4, 0.025f) && i < codes.Count - 1)
-                // This condition Add scale factor to gas giant calls. First we check for the existing static scale factor of 0.025f
-                // We check late and stop early because we operate with info all AROUND the current line when we do anything
-                {
-                    if (codes[i - 1].Calls(typeof(UnityEngine.Vector3).GetMethod("op_Multiply", new Type[] { typeof(UnityEngine.Vector3), typeof(float) })) && codes[i - 2].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
-                    // check if the prior instruction is calling Vector3.Multiply and the further-prior instruction is callvirt float32 PlanetData::get_realRadius()
+                    // This condition Add scale factor to gas giant calls. First we check for the existing static scale factor of 0.025f
+                    // We check late and stop early because we operate with info all AROUND the current line when we do anything
+                    if (codes[i - 1].Calls(typeof(Vector3).GetMethod("op_Multiply", new[] { typeof(Vector3), typeof(float) })) && codes[i - 2].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
+                        // check if the prior instruction is calling Vector3.Multiply and the further-prior instruction is callvirt float32 PlanetData::get_realRadius()
                     {
-                        List<CodeInstruction> newInstructions = new List<CodeInstruction>();
+                        var newInstructions = new List<CodeInstruction>();
                         for (var j = i - 3; j > 0 && j > i - 12; j--)
-                        //loop BACKWARD until we reach ldarg.0 (sanity check: limit to 10 prior instructions)
-                        {
-                            if (codes[j].opcode == OpCodes.Ldarg_0)
-                            {
+                            //loop BACKWARD until we reach ldarg.0 (sanity check: limit to 10 prior instructions)
+                            if (codes[j].opcode == OpCodes.Ldarg_0) {
                                 for (; j < i - 2; j++)
-                                //create a copy of each instruction FROM ldarg.0 TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
-                                {
+                                    //create a copy of each instruction FROM ldarg.0 TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
                                     newInstructions.Add(new CodeInstruction(codes[j]));
-                                }
                                 break;
                             }
-                        }
                         if (newInstructions.Count != 0)
-                        //If we didn't find ldarg.0, don't do anything with this instance as it is not a recognized pattern.
+                            //If we didn't find ldarg.0, don't do anything with this instance as it is not a recognized pattern.
                         {
                             //create a new instruction to call the GetScaleFactored() function on the same planetData instance
                             newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(PlanetDataExtension).GetMethod("GetScaleFactored")));
 
                             //create a new call instruction to call Vector3.Divide, dividing the data already on the stack by the result of GetScaleFactored()
-                            newInstructions.Add(new CodeInstruction(OpCodes.Call, typeof(UnityEngine.Vector3).GetMethod("op_Division")));
+                            newInstructions.Add(new CodeInstruction(OpCodes.Call, typeof(Vector3).GetMethod("op_Division")));
 
                             //insert those instructions at i+2 (where i is still the location where we found ldc.r4 0.025), so that the result of the prior vector multiplication is what we vector divide
                             codes.InsertRange(i + 2, newInstructions);
                         }
 
                     }
-
-                }
-            }
             return codes.AsEnumerable();
         }
     }

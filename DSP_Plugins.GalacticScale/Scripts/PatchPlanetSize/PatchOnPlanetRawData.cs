@@ -1,5 +1,4 @@
 ﻿using BepInEx.Logging;
-using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
@@ -135,4 +134,3 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
     }
 }
-

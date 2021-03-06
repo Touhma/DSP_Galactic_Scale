@@ -1,4 +1,4 @@
-﻿namespace GalacticScale.Scripts{
+﻿namespace GalacticScale.Scripts {
     public class PlanetGeneratorSettings {
         public int nbOfGasGiantPlanets = 0;
         public int nbOfMoons = 0;

@@ -20,8 +20,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DebugAtmoBlur = false;
 
 
-        public static float VanillaGasGiantSize = 800f; // will be rescaled in the create planet
-        public static float VanillaGasGiantScale = 10f; // will be rescaled in the create planet
+        public static float VanillaGasGiantSize = 800f;// will be rescaled in the create planet
+        public static float VanillaGasGiantScale = 10f;// will be rescaled in the create planet
         public static float VanillaTelluricSize = 200f;
         public static int VanillaTelluricPrecision = 200;
         public static float VanillaTelluricScale = 1f;
@@ -121,14 +121,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             if (EnableResizingFeature.Value || EnableLimitedResizingFeature.Value) {
 
                 ParseResizinSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
-                
+
                 // check some configs dependencies 
-                if (EnableLimitedResizingFeature.Value) {
-                    EnableResizingFeature.Value = false;
-                }
+                if (EnableLimitedResizingFeature.Value) EnableResizingFeature.Value = false;
 
                 Config.Save();
-                
+
                 //PatchForPlanetSize
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
@@ -143,17 +141,17 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
         }
 
-        
+
         public static void ParseResizinSettings(string configArray, string chanceArray) {
             var tempPlanetArray = Array.ConvertAll(configArray.Split(','), int.Parse);
             var tempChanceArray = Array.ConvertAll(chanceArray.Split(','), float.Parse);
-            
+
             for (var i = 0; i < tempPlanetArray.Length; i++) {
-                PlanetSizeParams.Add(tempPlanetArray[i],tempChanceArray[i] );
+                PlanetSizeParams.Add(tempPlanetArray[i], tempChanceArray[i]);
                 PlanetSizeList.Add(tempPlanetArray[i]);
             }
         }
-        
+
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
             if (isActive) Logger.Log(logLevel, data);
         }

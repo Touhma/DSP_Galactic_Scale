@@ -18,7 +18,7 @@ namespace GalacticScale.Scripts {
             float baseHeight = 20;
 
             baseHeight += planetRawData.GetFactoredScale() * 200 * 100;
-            
+
             return (int) (((planetRawData.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 + baseHeight);
         }
     }

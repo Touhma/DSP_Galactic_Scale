@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BepInEx.Logging;
 using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
-using Random = System.Random;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkStarGen {
@@ -92,7 +92,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 if (nbOfHabitablePlanets == 0) {
                     Patch.Debug("Nb of habitable == 0 --> Override one planet ", LogLevel.Debug, Patch.DebugStarGen);
-                    bool @override = true;
+                    var @override = true;
                     while (@override) {
                         var indexStartingPlanet = UnityRandom.Range(0, star.planets.Length - 1);
 
@@ -133,7 +133,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     genSettings.nbOfPlanets++;
                     genSettings.nbOfStellarBodies++;
                 }
-            
+
 
             Patch.Debug("*************************** : \n" +
                         "nbOfPlanets : " + genSettings.nbOfPlanets + "\n" +
@@ -215,12 +215,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             int jumpOrbitMargin;
 
             for (var i = 0; i < genSettings.nbOfStellarBodies; i++) {
-                
+
                 infoSeed = annexSeed.Next();
                 genSeed = annexSeed.Next();
-                
-                int planetInfoSeed = 0 + infoSeed;
-                int planetGenSeed = 0 + genSeed;
+
+                var planetInfoSeed = 0 + infoSeed;
+                var planetGenSeed = 0 + genSeed;
                 Patch.Debug("bodies generated !" + nbOfBodiesPreGenerated, LogLevel.Debug, Patch.DebugStarGenDeep);
                 Patch.Debug("genSettings.nbOfPlanets + genSettings.nbOfMoons !" + (genSettings.nbOfPlanets + genSettings.nbOfMoons), LogLevel.Debug, Patch.DebugStarGenDeep);
                 bool isGasGiant;
@@ -249,7 +249,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     jumpOrbitMargin = Patch.OrbitRadiusArrayPlanetNb.Value - (genSettings.nbOfPlanets - nbOfPlanetsPreGenerated);
 
                     if (currentOrbitPlanetIndex < jumpOrbitMargin && jumpOrbitMargin < currentSettings.JumpOrbitPlanetMax)
-                        if (annexSeed.NextDouble() < currentSettings.ChanceJumpOrbitPlanets) // can jump orbit up to JumpOrbitPlanetIndex
+                        if (annexSeed.NextDouble() < currentSettings.ChanceJumpOrbitPlanets)// can jump orbit up to JumpOrbitPlanetIndex
                             currentOrbitPlanetIndex = UnityRandom.Range(currentOrbitPlanetIndex, currentOrbitPlanetIndex + currentSettings.JumpOrbitPlanetMax);
 
                     previousOrbitPlanetIndex = currentOrbitPlanetIndex;
@@ -257,9 +257,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                     orbitAround = 0;
 
-                    if (nbOfBodiesPreGenerated < genSettings.nbOfTelluricPlanets + beltGenerated) //telluric
+                    if (nbOfBodiesPreGenerated < genSettings.nbOfTelluricPlanets + beltGenerated)//telluric
                         isGasGiant = false;
-                    else //gasgiant
+                    else//gasgiant
                         isGasGiant = true;
 
 
@@ -354,9 +354,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 star.planets[finalIndex].name = star.name + " - " + RomanNumbers.roman[planet.number];
                 planet.name = star.planets[finalIndex].name;
 
-                if (planet.moons.Count >= 2) {
-                    star.planets[finalIndex].HasMultipleSatellites();
-                }
+                if (planet.moons.Count >= 2) star.planets[finalIndex].HasMultipleSatellites();
 
                 Patch.Debug(star.planets[finalIndex].name, LogLevel.Debug, Patch.DebugStarNamingGen);
                 finalIndex++;
@@ -373,8 +371,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         finalIndex++;
                     }
                 }
-                
-               
+
+
 
                 Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen);
             }
