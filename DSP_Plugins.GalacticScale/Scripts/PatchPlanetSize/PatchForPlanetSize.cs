@@ -33,6 +33,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
         public static ConfigEntry<bool> EnableResizingFeature;
         public static ConfigEntry<bool> EnableLimitedResizingFeature;
+        public static ConfigEntry<bool> EnableMoonSizeFailSafe;
 
         public static ConfigEntry<float> BaseTelluricSize;
 
@@ -82,6 +83,11 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "EnableResizingFeature",
                 false,
                 "Decide if the resizing of the planets is enabled or not --> if true : EnableCustomStarAlgorithm=true from the generation is a dependency --> should put EnableLimitedResizingFeature to false if activated");
+
+            EnableMoonSizeFailSafe = Config.Bind("galactic-scale-planets-size",
+                "EnableMoonSizeFailSafe",
+                true,
+                "EnableMoonSizeFailSafe -> enable and the moon will never be bigger than the host planet , true by default");
 
             BaseTelluricSize = Config.Bind("galactic-scale-planets-size",
                 "BaseTelluricSize",

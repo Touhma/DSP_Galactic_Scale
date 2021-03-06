@@ -396,7 +396,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
                         if (choice <= planetSizeParam.Value ) {
                             planetData.radius = planetSizeParam.Key;
-                            if (planetData.IsAMoon()) {
+                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value) {
                                 if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
                                     for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
                                         if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius) {
