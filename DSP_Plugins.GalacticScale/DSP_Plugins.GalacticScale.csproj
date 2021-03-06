@@ -102,6 +102,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon.png" />
     <Content Include="manifest.json" />
     <Content Include="README.md" />
     <Content Include="Touhma-GalacticScale.png" />
