@@ -1,5 +1,4 @@
 ﻿using BepInEx.Logging;
-using GalacticScale.Scripts.PatchStarSystemGeneration;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 

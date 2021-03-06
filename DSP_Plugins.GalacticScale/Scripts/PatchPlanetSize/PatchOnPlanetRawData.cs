@@ -1,5 +1,4 @@
 ﻿using BepInEx.Logging;
-using GalacticScale.Scripts.PatchStarSystemGeneration;
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
@@ -22,37 +21,23 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             Patch.Debug(
                 "test " + ((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133, LogLevel.Debug,
                 Patch.DebugGetModPlane);
-            if (__instance.GetFactoredScale() < 1.0f) {
-                float baseHeight = 20;
-                baseHeight += __instance.GetFactoredScale() * 200 * 100; 
 
-                Patch.Debug("baseHeight " + baseHeight, LogLevel.Debug,
-                    Patch.DebugGetModPlane);
-                __result = (short) (((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 +
-                                    baseHeight);
+            float baseHeight = 20;
 
-                Patch.Debug("GetModPlane __result " + __result, LogLevel.Debug,
-                    Patch.DebugGetModPlane);
-                return false;
-            }
-            if (__instance.GetFactoredScale() > 1.0f) {
-                float baseHeight = 20020;
+            baseHeight += __instance.GetFactoredScale() * 200 * 100;
 
-                Patch.Debug("baseHeight " + baseHeight, LogLevel.Debug,
-                    Patch.DebugPlanetRawData);
-                __result = (short) (((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 +
-                                    baseHeight);
+            Patch.Debug("baseHeight " + baseHeight, LogLevel.Debug,
+                Patch.DebugGetModPlane);
+            __result = (short) (((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 +
+                                baseHeight);
 
-                Patch.Debug("GetModPlane __result " + __result, LogLevel.Debug,
-                    Patch.DebugPlanetRawData);
-                return false;
-            }
+            Patch.Debug("GetModPlane __result " + __result, LogLevel.Debug,
+                Patch.DebugGetModPlane);
 
-            return true;
+            return false;
         }
-
-
-      
+        [HarmonyPrefix]
+        [HarmonyPatch("QueryModifiedHeight")]
         public static bool QueryModifiedHeight(ref PlanetRawData __instance,
             ref float __result, Vector3 vpos) {
             Patch.Debug("QueryModifiedHeight ", LogLevel.Debug,
@@ -97,7 +82,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                             Patch.DebugPlanetRawData);
                         if (modLevel > 0) {
                             // try patching here
-                            var modPlane = __instance.GetModPlane(index4);
+                            var modPlane = __instance.GetModPlaneInt(index4);
 
                             Patch.Debug("modPlane " + modPlane, LogLevel.Debug,
                                 Patch.DebugPlanetRawData);

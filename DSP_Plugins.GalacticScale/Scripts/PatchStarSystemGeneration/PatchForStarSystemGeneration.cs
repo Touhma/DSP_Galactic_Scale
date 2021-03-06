@@ -4,6 +4,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [BepInPlugin("touhma.dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
@@ -19,7 +20,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         //public static int StartingSystemPlanetNb = 30;
 
         // use custom orbit for planets
-        public static ConfigEntry<bool> UseCustomOrbitRadiusArray;
+        public static ConfigEntry<bool> UseCustomOrbitRadiusArrayPlanets;
         public static ConfigEntry<string> CustomOrbitRadiusArrayPlanets;
 
         // use custom orbit for moons
@@ -194,7 +195,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             _orbitRadiusArrayMoonList.Add(4.174178364f);
 
             // Orbits for the planets
-            _orbitRadiusArrayPlanetList.Add(0f); // star orbit
+            _orbitRadiusArrayPlanetList.Add(0f);// star orbit
             _orbitRadiusArrayPlanetList.Add(0.3f);
             _orbitRadiusArrayPlanetList.Add(0.7f);
             _orbitRadiusArrayPlanetList.Add(1.1f);
@@ -226,34 +227,34 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             OrbitRadiusArrayPlanetNb = Config.Bind("galactic-scale-systems",
                 "OrbitRadiusArrayPlanetNb",
-                16,
+                17,
                 "The size for the array of orbits for planets");
 
             // use custom orbit for planets
-            UseCustomOrbitRadiusArray = Config.Bind("galactic-scale-systems",
-                "CustomOrbitRadiusArray",
+            UseCustomOrbitRadiusArrayPlanets = Config.Bind("galactic-scale-systems",
+                "UseCustomOrbitRadiusArrayPlanets",
                 false,
                 "turn it to true to use your own custom orbit array for planet --> don't forget to update the OrbitRadiusArrayPlanetNb value accordingly ( +1 will be added anyway, the first orbit is always the star's one ^^' ");
 
             // use custom orbit for moons
             UseCustomOrbitRadiusArrayMoons = Config.Bind("galactic-scale-systems",
-                "CustomOrbitRadiusArray",
+                "UseCustomOrbitRadiusArrayMoons",
                 false,
                 "turn it to true to use your own custom orbit array for moons --> don't forget to update the OrbitRadiusArrayMoonsNb value accordingly");
 
             CustomOrbitRadiusArrayPlanets = Config.Bind("galactic-scale-systems",
                 "CustomOrbitRadiusArrayPlanets",
-                "0,1,2.5",
+                "0,0.3,0.7,1.1,1.5,1.9,2.3,3.5,5.3,7.7,10.8,14.7,19.5,25.3,32.2,40.3,49.7,60.5",
                 "Custom Array for the value in UA for the orbits of the planets");
 
             CustomOrbitRadiusArrayMoons = Config.Bind("galactic-scale-systems",
                 "CustomOrbitRadiusArrayMoon",
-                "0,1,2.5",
+                "0.048125,0.06015625,0.0751953125,0.09399414063,0.1174926758,0.1468658447,0.1835823059,0.2294778824,0.286847353,0.3585591912,0.448198989,0.5602487363,0.7003109204,0.8753886505,1.094235813,1.367794766,1.709743458,2.137179322,2.671474153,3.339342691,4.174178364",
                 "Custom Array for the value in UA for the orbits of the moons");
 
             //nb of planet + star
             OrbitRadiusPlanetArray = new float[OrbitRadiusArrayPlanetNb.Value + 1];
-            OrbitRadiusPlanetArray = !UseCustomOrbitRadiusArray.Value
+            OrbitRadiusPlanetArray = !UseCustomOrbitRadiusArrayPlanets.Value
                 ? _orbitRadiusArrayPlanetList.ToArray()
                 : Array.ConvertAll(CustomOrbitRadiusArrayPlanets.Value.Split(','), float.Parse);
 
@@ -269,13 +270,15 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             ;
             CustomParamsForBlackHole = Config.Bind("galactic-scale-systems",
                 "CustomParamsForBlackHole",
-                "1,1,4,0.9,1,0.9,0.5,0.5,0.5,0.5",
+                "1,0,6,0,4,0.9,2,0.9,0.5,0.5,0.5,0.5",
                 "Custom Params for the specified system, \n " +
-                "int maxPlanetNb : nb max of planets in the system in total,\n " +
-                "int maxMoonNb : nb max of moons in the system in total\n" +
-                "int jumpOrbitPlanetIndex :the first planet of the host star will be on this orbit\n" +
+                "int maxTelluricNb : nb max of solid planets in the system in total,\n " +
+                "int maxGasGiantNb : nb max of Gas Giants in the system in total,\n" +
+                "int maxMoonTelluricNb : nb max of moons around solid planets in the system in total,\n " +
+                "int maxMoonGasGiantNb : nb max of moons around gas giants in the system in total,\n" +
+                "int jumpOrbitPlanetMax :the first planet of the host star will be on this orbit,\n" +
                 "float chanceJumpOrbitPlanets : lower = denser systems, higher = further away from the star,\n" +
-                "int jumpOrbitMoonIndex: the first moon of the host planet will be on this orbit\n" +
+                "int jumpOrbitMoonMax: the first moon of the host planet will be on this orbit,\n" +
                 "float chanceJumpOrbitMoons: lower = denser systems, higher = further away from the host planet,\n" +
                 "float chanceTelluricPlanet: chance for a telluric planet to spawn,\n" +
                 "float chanceGasGiant: chance for a gas giant to spawn,\n" +
@@ -284,7 +287,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             );
             if (!UseCustomParamsForBlackHole.Value)
                 GeneratorSpecialsSystemConfig.Add(EStarType.BlackHole,
-                    new StarSystemSetting(1, 1, 4, 0.9f, 1, 0.9f, 0.5f, 0.5f, 0.5f, 0.5f));
+                    new StarSystemSetting(1, 0, 6, 0, 4, 0.9f, 2, 0.9f, 0.5f, 0.5f, 0.5f, 0.5f));
             else
                 GeneratorSpecialsSystemConfig.Add(EStarType.BlackHole,
                     ParseCustomStarSystemSetting(CustomParamsForBlackHole.Value));
@@ -295,11 +298,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForNeutronStar = Config.Bind("galactic-scale-systems",
                 "CustomParamsForNeutronStar",
-                "1,1,4,0.1,2,0.1,0.8,0.2,0.5,0.5",
+                "1,1,1,1,4,0.1,2,0.1,0.8,0.2,0.5,0.5",
                 "Same for neutron star");
             if (!UseCustomParamsForNeutronStar.Value)
                 GeneratorSpecialsSystemConfig.Add(EStarType.NeutronStar,
-                    new StarSystemSetting(1, 1, 4, 0.1f, 2, 0.1f, 0.8f, 0.2f, 0.5f, 0.5f));
+                    new StarSystemSetting(1, 1, 1, 1, 4, 0.1f, 2, 0.1f, 0.8f, 0.2f, 0.5f, 0.5f));
             else
                 GeneratorSpecialsSystemConfig.Add(EStarType.NeutronStar,
                     ParseCustomStarSystemSetting(CustomParamsForNeutronStar.Value));
@@ -310,11 +313,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForWhiteDwarf = Config.Bind("galactic-scale-systems",
                 "CustomParamsForWhiteDwarf",
-                "2,4,3,0.5,3,0.5,0.6,0.6,0.7,0.2",
+                "2,1,1,3,3,0.5,3,0.5,0.6,0.6,0.7,0.2",
                 "Same for neutron star");
             if (!UseCustomParamsForWhiteDwarf.Value)
                 GeneratorSpecialsSystemConfig.Add(EStarType.WhiteDwarf,
-                    new StarSystemSetting(2, 4, 3, 0.5f, 3, 0.5f, 0.6f, 0.6f, 0.7f, 0.2f));
+                    new StarSystemSetting(2, 1, 1, 3, 3, 0.5f, 3, 0.5f, 0.6f, 0.6f, 0.7f, 0.2f));
             else
                 GeneratorSpecialsSystemConfig.Add(EStarType.WhiteDwarf,
                     ParseCustomStarSystemSetting(CustomParamsForWhiteDwarf.Value));
@@ -325,11 +328,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForGiantStar = Config.Bind("galactic-scale-systems",
                 "CustomParamsForGiantStar",
-                "2,4,3,0.8,3,0.8,0.6,0.6,0.7,0.2",
+                "2,2,1,6,3,0.8,3,0.8,0.6,0.6,0.7,0.2",
                 "Same for neutron star");
             if (!UseCustomParamsForGiantStar.Value)
                 GeneratorSpecialsSystemConfig.Add(EStarType.GiantStar,
-                    new StarSystemSetting(2, 4, 3, 0.8f, 3, 0.8f, 0.6f, 0.6f, 0.7f, 0.2f));
+                    new StarSystemSetting(2, 2, 1, 6, 3, 0.8f, 3, 0.8f, 0.6f, 0.6f, 0.7f, 0.2f));
             else
                 GeneratorSpecialsSystemConfig.Add(EStarType.GiantStar,
                     ParseCustomStarSystemSetting(CustomParamsForGiantStar.Value));
@@ -340,11 +343,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassA = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassA",
-                "9,10,3,0.3,3,0.4,0.7,0.4,0.6,0.5",
+                "5,4,4,8,3,0.3,3,0.4,0.7,0.4,0.6,0.5",
                 "Same for Class A");
             if (!UseCustomParamsForClassA.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.A,
-                    new StarSystemSetting(9, 10, 3, 0.3f, 3, 0.4f, 0.7f, 0.4f, 0.6f, 0.5f));
+                    new StarSystemSetting(5, 4, 4, 8, 3, 0.3f, 3, 0.4f, 0.7f, 0.4f, 0.6f, 0.5f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.A,
                     ParseCustomStarSystemSetting(CustomParamsForClassA.Value));
@@ -355,11 +358,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassB = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassB",
-                "6,6,5,0.5,2,0.6,0.8,0.3,0.8,0.5",
+                "5,2,5,2,5,0.5,2,0.6,0.8,0.5,0.8,0.5",
                 "Same for Class B");
             if (!UseCustomParamsForClassB.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.B,
-                    new StarSystemSetting(6, 6, 5, 0.5f, 2, 0.6f, 0.8f, 0.3f, 0.8f, 0.5f));
+                    new StarSystemSetting(5, 2, 5, 2, 5, 0.5f, 2, 0.6f, 0.8f, 0.5f, 0.8f, 0.5f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.B,
                     ParseCustomStarSystemSetting(CustomParamsForClassB.Value));
@@ -370,11 +373,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassF = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassF",
-                "6,6,3,0.6,2,0.4,0.8,0.5,0.8,0.2",
+                "4,3,2,4,3,0.6,2,0.4,0.8,0.7,0.8,0.2",
                 "Same for Class F");
             if (!UseCustomParamsForClassF.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.F,
-                    new StarSystemSetting(6, 6, 3, 0.6f, 2, 0.4f, 0.8f, 0.5f, 0.8f, 0.2f));
+                    new StarSystemSetting(4, 3, 2, 4, 3, 0.6f, 2, 0.4f, 0.8f, 0.7f, 0.8f, 0.2f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.F,
                     ParseCustomStarSystemSetting(CustomParamsForClassF.Value));
@@ -385,11 +388,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassG = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassG",
-                "3,3,2,0.8,2,0.6,0.8,0.6,0.6,0.3",
+                "3,3,1,2,3,0.8,2,0.6,0.8,0.6,0.7,0.3",
                 "Same for Class G");
             if (!UseCustomParamsForClassG.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.G,
-                    new StarSystemSetting(3, 3, 2, 0.8f, 2, 0.6f, 0.8f, 0.6f, 0.6f, 0.3f));
+                    new StarSystemSetting(3, 3, 1, 2, 3, 0.8f, 2, 0.6f, 0.8f, 0.7f, 0.6f, 0.3f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.G,
                     ParseCustomStarSystemSetting(CustomParamsForClassG.Value));
@@ -400,11 +403,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassK = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassK",
-                "5,4,1,0.5,2,0.5,0.8,0.7,0.8,0.2",
+                "4,3,1,4,2,0.5,2,0.5,0.8,0.8,0.8,0.2",
                 "Same for Class K");
             if (!UseCustomParamsForClassK.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.K,
-                    new StarSystemSetting(5, 4, 1, 0.5f, 2, 0.5f, 0.8f, 0.7f, 0.8f, 0.2f));
+                    new StarSystemSetting(4, 3, 1, 4, 2, 0.5f, 2, 0.5f, 0.8f, 0.8f, 0.8f, 0.2f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.K,
                     ParseCustomStarSystemSetting(CustomParamsForClassK.Value));
@@ -415,11 +418,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassM = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassM",
-                "4,12,1,0.7,2,0.2,0.7,0.8,0.6,0.3",
+                "1,4,1,11,1,0.7,2,0.2,0.7,0.8,0.6,0.3",
                 "Same for Class M");
             if (!UseCustomParamsForClassM.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.M,
-                    new StarSystemSetting(4, 12, 1, 0.7f, 2, 0.2f, 0.7f, 0.8f, 0.6f, 0.3f));
+                    new StarSystemSetting(1, 4, 1, 11, 1, 0.7f, 2, 0.2f, 0.7f, 0.8f, 0.6f, 0.3f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.M,
                     ParseCustomStarSystemSetting(CustomParamsForClassM.Value));
@@ -430,11 +433,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassO = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassO",
-                "10,14,4,0.2,2,0.2,0.9,0.3,0.9,0.8",
+                "7,3,6,8,4,0.2,2,0.2,0.9,0.5,0.9,0.8",
                 "Same for Class O");
             if (!UseCustomParamsForClassO.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.O,
-                    new StarSystemSetting(10, 14, 4, 0.2f, 2, 0.2f, 0.9f, 0.3f, 0.9f, 0.8f));
+                    new StarSystemSetting(7, 3, 6, 8, 4, 0.2f, 2, 0.2f, 0.9f, 0.5f, 0.9f, 0.8f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.O,
                     ParseCustomStarSystemSetting(CustomParamsForClassO.Value));
@@ -445,11 +448,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "Turn it to true to use your own custom config for the specified system Class");
             CustomParamsForClassX = Config.Bind("galactic-scale-systems",
                 "CustomParamsForClassX",
-                "0,0,0,0.0,0,0.0,0,0,0,0",
+                "0,0,0,0,0,0.0,0,0.0,0,0,0,0",
                 "Same for Class X --> not used yet AFAIK");
             if (!UseCustomParamsForClassX.Value)
                 GeneratorMainSystemConfig.Add(ESpectrType.X,
-                    new StarSystemSetting(0, 0, 0, 0.0f, 0, 0.0f, 0f, 0f, 0f, 0f));
+                    new StarSystemSetting(0, 0, 0, 0, 0, 0.0f, 0, 0.0f, 0f, 0f, 0f, 0f));
             else
                 GeneratorMainSystemConfig.Add(ESpectrType.X,
                     ParseCustomStarSystemSetting(CustomParamsForClassX.Value));
@@ -458,19 +461,19 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             StartingSystemMinPlanetTelluricNb = Config.Bind("galactic-scale-systems",
                 "StartingSystemMinPlanetTelluricNb",
                 2,
-                "The Minimum Number of Telluric planet in the starting system");
+                "The Minimum Number of Telluric planet in the starting system -- should not be less than 2");
             StartingSystemMinGasGiantNb = Config.Bind("galactic-scale-systems",
                 "StartingSystemMinGasGiantNb",
                 1,
-                "The Minimum Number of GasGiants in the starting system ");
+                "The Minimum Number of GasGiants in the starting system -- should not be less than 1");
             StartingSystemMinTelluricMoonNb = Config.Bind("galactic-scale-systems",
                 "StartingSystemMinTelluricMoonNb",
                 1,
-                "The Minimum Number of Moon of Telluric Planets in the starting system");
+                "The Minimum Number of Moon of Telluric Planets in the starting system -- should not be less than 1");
             StartingSystemMinGasGiantMoonNb = Config.Bind("galactic-scale-systems",
                 "StartingSystemMinGasGiantMoonNb",
                 1,
-                "The Minimum Number of Moons of GasGiant  in the starting system ");
+                "The Minimum Number of Moons of GasGiant  in the starting system -- should not be less than 1");
 
 
             MaxOrbitInclination = Config.Bind("galactic-scale-systems",
@@ -578,18 +581,32 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 1.2f,
                 "if planet.distance / star.habitableRadius is more than that --> the planet will be an ice planet");
 
+            //Forcing the Custom star Algo if resizing is enabled
+            if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
+
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
-                // Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
+                Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
+                Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
             }
         }
 
         public static StarSystemSetting ParseCustomStarSystemSetting(string config) {
             var configArray = Array.ConvertAll(config.Split(','), float.Parse);
-            return new StarSystemSetting((int) configArray[0], (int) configArray[1], (int) configArray[2],
-                configArray[3], (int) configArray[4],
-                configArray[5], configArray[6], configArray[7], configArray[8], configArray[9]);
+            return new StarSystemSetting(
+                (int) configArray[0],
+                (int) configArray[1],
+                (int) configArray[2],
+                (int) configArray[3],
+                (int) configArray[4],
+                configArray[5],
+                (int) configArray[6],
+                configArray[7],
+                configArray[8],
+                configArray[9],
+                configArray[10],
+                configArray[11]);
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
@@ -601,22 +618,26 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             // Moon
             public float ChanceGasGiantMoon;
-            public float ChanceJumpOrbitMoons;
 
-            // the higher the spacier the system will be 
+            public float ChanceJumpOrbitMoons;
             public float ChanceJumpOrbitPlanets;
             public float ChanceMoonTelluric;
-
             public float ChanceTelluricPlanet;
-            public int JumpOrbitMoonMax;
 
+            public int JumpOrbitMoonMax;
             public int JumpOrbitPlanetMax;
-            public int MaxMoonNb;
-            public int MaxPlanetNb;
+            public int MaxGasGiantNb;
+            public int MaxMoonGasGiantNb;
+
+            public int MaxMoonTelluricNb;
+            public int MaxTelluricNb;
+
 
             public StarSystemSetting(
-                int maxPlanetNb,
-                int maxMoonNb,
+                int maxTelluricNb,
+                int maxGasGiantNb,
+                int maxMoonTelluricNb,
+                int maxMoonGasGiantNb,
                 int jumpOrbitPlanetMax,
                 float chanceJumpOrbitPlanets,
                 int jumpOrbitMoonMax,
@@ -625,8 +646,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 float chanceGasGiant,
                 float chanceGasGiantMoon,
                 float chanceMoonTelluric) {
-                MaxPlanetNb = maxPlanetNb;
-                MaxMoonNb = maxMoonNb;
+                MaxTelluricNb = maxTelluricNb;
+                MaxGasGiantNb = maxGasGiantNb;
+                MaxMoonTelluricNb = maxMoonTelluricNb;
+                MaxMoonGasGiantNb = maxMoonGasGiantNb;
                 JumpOrbitPlanetMax = jumpOrbitPlanetMax;
                 ChanceJumpOrbitPlanets = chanceJumpOrbitPlanets;
                 JumpOrbitMoonMax = jumpOrbitMoonMax;

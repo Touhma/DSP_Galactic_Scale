@@ -86,7 +86,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                               Quaternion.AngleAxis(orbitInclination, Vector3.forward);
 
             planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation * Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
-            
+
             if (planetData.IsNotAMoon()) {
                 Patch.Debug("Planets Stuff", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
@@ -245,7 +245,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //runtimeOrbitRotation obliquity adjustment
             planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation *
                                                Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
-        
+
 
             Patch.Debug("Body Retrograde", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
@@ -352,7 +352,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             else if (planetData.type != EPlanetType.None) {
                 if (PatchSize.EnableResizingFeature.Value) {
                     var radiusTelluricWanted = PatchSize.VanillaTelluricSize;
-                    if (planetData.IsNotAMoon()) {
+                    if (planetData.IsNotAMoon() || !PatchSize.EnableMoonSizeFailSafe.Value) {
                         radiusTelluricWanted = PatchSize.BaseTelluricSize.Value +
                                                MathUtils.RangePlusMinusOne(mainSeed) *
                                                PatchSize.BaseTelluricSizeVariationFactor.Value;
@@ -387,6 +387,20 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     planetData.precision = planetData.GetPrecisionFactored();
                     Patch.Debug(" planetData.precision" + planetData.precision, LogLevel.Debug,
                         Patch.DebugReworkPlanetGenDeep);
+                }
+                else if (PatchSize.EnableLimitedResizingFeature.Value) {
+                    var choice = mainSeed.NextDouble();
+
+                    foreach (var planetSizeParam in PatchSize.PlanetSizeParams)
+                        if (choice <= planetSizeParam.Value) {
+                            planetData.radius = planetSizeParam.Key;
+                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value)
+                                if (planetData.orbitAroundPlanet.radius <= planetData.radius)
+                                    for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++)
+                                        if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius)
+                                            if (i != 0)
+                                                planetData.radius = PatchSize.PlanetSizeList[i - 1];
+                        }
                 }
                 else {
                     planetData.radius = PatchSize.VanillaTelluricSize;
