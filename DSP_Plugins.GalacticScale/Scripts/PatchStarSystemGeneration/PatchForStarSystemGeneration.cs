@@ -162,8 +162,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
         public static ConfigEntry<bool> EnableCustomStarAlgorithm;
 
-        public static Dictionary<int, PlanetData> PlanetDataReferences = new Dictionary<int, PlanetData>();
-
         internal void Awake() {
             var harmony = new Harmony("touhma.dsp.galactic-scale.star-system-generation");
 
