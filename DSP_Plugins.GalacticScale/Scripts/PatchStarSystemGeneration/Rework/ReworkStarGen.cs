@@ -373,6 +373,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         finalIndex++;
                     }
                 }
+                
+               
 
                 Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen);
             }

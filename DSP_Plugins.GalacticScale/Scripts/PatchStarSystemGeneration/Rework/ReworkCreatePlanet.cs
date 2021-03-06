@@ -446,6 +446,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             Patch.Debug("ReworkCreatePlanet Done !", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
+            
+            //Save Ref to the planet
+            Patch.PlanetDataReferences.Add(planetData.id, planetData);
 
             return planetData;
         }
