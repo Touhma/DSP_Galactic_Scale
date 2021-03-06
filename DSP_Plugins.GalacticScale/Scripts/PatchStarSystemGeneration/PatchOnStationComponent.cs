@@ -11,8 +11,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
 
         // Strategy: find where  replace all ldc.i4.s 10 instructions with dynamic references to the relevant star's planetCount
         //
-        // GameMain.galaxyData.PlanetById(int) returns null if not a planet, otherwise PlanetData
-        /* 0x0002D43D 7E05130004   */// IL_000D: callVirt    class GalaxyData GameMain::get_galaxyData
+        // GameMain.galaxy.PlanetById(int) returns null if not a planet, otherwise PlanetData
+        /* 0x0002D43D 7E05130004   */// IL_000D: callVirt    class GalaxyData GameMain::get_galaxy
         // IL_xxxx: See below for how we find the right planet ID
         // IL_xxxx: callVirt class PlanetData GalaxyData::PlanetById(int)
         //
@@ -20,13 +20,15 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
         //
         // Finding the planetID:
         // First, the C# code at this time:
-        //   int num43 = shipData.planetA / 100 * 100; //this is later passed to astroPoses[i] so it represents a planet ID.
-        //   int num44 = shipData.planetB / 100 * 100; //this is later passed to astroPoses[i] so it represents a planet ID.
+        //   int num43 = shipData.planetA / 100 * 100; //this is later passed to astroPoses[i] and it basically represents a planet ID.
+        //   int num44 = shipData.planetB / 100 * 100; //this is later passed to astroPoses[i] and it basically represents a planet ID.
 		//	 for (int k = num43; k<num43 + 10; k++) {...}
         //   if (num44 != num43) {
 		//     for (int l = num44; l<num44 + 10; l++) {...}}
         //
-        // For loops are kind of backwards in CIL (compared to C# anyhow). Here's the planet IDs and prep...
+        // Note that "basically represents" is important - astroPoses is a zero-indexed array, but IDs start at 1.
+        //
+        // For loops are kind of backwards in CIL (compared to C# anyhow). Here's original IL for the planet IDs and prep...
         /* 0x0002EFFD 1221         */// IL_1BCD: ldloca.s V_33                  // shipData.
         /* 0x0002EFFF 7B28050004   */// IL_1BCF: ldfld int32 ShipData::planetA  // load planetA ID from prior
         /* 0x0002F004 1F64         */// IL_1BD4: ldc.i4.s  100                  // load 100
@@ -48,11 +50,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
         /* 0x0002F132 1142         */// IL_1D02: ldloc.s   V_66                 // load in the loop variable
 		/* 0x0002F134 1140         */// IL_1D04: ldloc.s   V_64                 // load planet A's ID
 		/* 0x0002F136 1F0A         */// IL_1D06: ldc.i4.s  10                   // load the value 10
-		/* 0x0002F138 58           */// IL_1D08: add                            // add the last two loads - A's ID + 10
+		/* 0x0002F138 58           */// IL_1D08: add                            // add the last two loads - planet A's ID + 10
 		/* 0x0002F139 3FE6FEFFFF   */// IL_1D09: blt       IL_1BF4              // skip back to the actual loop code if the result is less than the loop variable loaded before it
         //
         // Unfortunately we can't guarantee that V_64 and V_65 are consistently going to be the variables we need, especially between patches and with other mods.
-        // But, thankfully, we know that the line immediately before ldc.i4.s 10 is the variable we want to refer to!
+        // But, thankfully, we know that the line immediately before ldc.i4.s 10 is the variable we want to refer to.
         [HarmonyTranspiler]
         [HarmonyPatch("InternalTickRemote")]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -63,13 +65,18 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 if (codes[i].opcode == OpCodes.Ldc_I4_S && codes[i].OperandIs(10))
                 {
                     List<CodeInstruction> newInstructions = new List<CodeInstruction>();
-                    newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(GameMain).GetProperty("galaxyData").GetGetMethod()));
-                    newInstructions.Add(codes[i - 1].Clone()); //The line before adding 10 is the line which loads in the planet ID we care about
+                    newInstructions.Add(new CodeInstruction(OpCodes.Ldsfld, typeof(GameMain).GetField("data"))); //load GameMain.data
+                    newInstructions.Add(new CodeInstruction(OpCodes.Ldfld, typeof(GameData).GetField("galaxy"))); // access galaxy from GameMain.data
+                    newInstructions.Add(new CodeInstruction(codes[i - 1])); //The line before adding 10 is the line which loads in the planet ID we care about, so copy it
+                    newInstructions.Add(new CodeInstruction(OpCodes.Ldc_I4_1)); // Load the value 1
+                    newInstructions.Add(new CodeInstruction(OpCodes.Add)); // Add 1 to the planet ID, because astroPoses is zero-indexed and planet IDs are 1-indexed.
                     newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(GalaxyData).GetMethod("PlanetById"))); // Call PlanetById on the galaxyData using the specified ID
                     newInstructions.Add(new CodeInstruction(OpCodes.Ldfld, typeof(PlanetData).GetField("star"))); // Get the planet's star
                     newInstructions.Add(new CodeInstruction(OpCodes.Ldfld, typeof(StarData).GetField("planetCount"))); // Get the count of planets around this star
+                    newInstructions.Add(new CodeInstruction(OpCodes.Ldc_I4_1)); // Load the value 1
+                    newInstructions.Add(new CodeInstruction(OpCodes.Add)); // Add 1 to the number of planets, because the comparison is < and not <=
                     codes.RemoveAt(i); // Remove the original loading of 10
-                    codes.InsertRange(i, newInstructions); //Instead, load the count of planets around the target star
+                    codes.InsertRange(i, newInstructions); //Instead, load the count of planets around the target star (plus one)
                 }
             }
             return codes.AsEnumerable();

@@ -88,6 +88,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Customs\StartingSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
