@@ -275,11 +275,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "CustomParamsForBlackHole",
                 "1,0,6,0,4,0.9,2,0.9,0.5,0.5,0.5,0.5",
                 "Custom Params for the specified system, \n " +
-                "int maxPlanetNb : nb max of planets in the system in total,\n " +
-                "int maxMoonNb : nb max of moons in the system in total\n" +
-                "int jumpOrbitPlanetMax :the first planet of the host star will be on this orbit\n" +
+                "int maxTelluricNb : nb max of solid planets in the system in total,\n " +
+                "int maxGasGiantNb : nb max of Gas Giants in the system in total,\n" +
+                "int maxMoonTelluricNb : nb max of moons around solid planets in the system in total,\n " +
+                "int maxMoonGasGiantNb : nb max of moons around gas giants in the system in total,\n" +
+                "int jumpOrbitPlanetMax :the first planet of the host star will be on this orbit,\n" +
                 "float chanceJumpOrbitPlanets : lower = denser systems, higher = further away from the star,\n" +
-                "int jumpOrbitMoonMax: the first moon of the host planet will be on this orbit\n" +
+                "int jumpOrbitMoonMax: the first moon of the host planet will be on this orbit,\n" +
                 "float chanceJumpOrbitMoons: lower = denser systems, higher = further away from the host planet,\n" +
                 "float chanceTelluricPlanet: chance for a telluric planet to spawn,\n" +
                 "float chanceGasGiant: chance for a gas giant to spawn,\n" +
