@@ -1,12 +1,22 @@
 ﻿# DSP GalacticScale Mod
 
-# Discord for Galactic Scale's team work 
+After a looooong week ... here it is. the 1.3.0 ! Thanks everyone for your patience !
+
+This release should help a lot and we hope that we can get our first playthrought on this version without breaking bugs.
+
+PS : Delete your config I broke a lot of stuff in i. the wiki should help :smile:
+
+[BETA] 1.3.0 :  Go to the discord for the changelogs , help and instructions about the mod :)
+
+/!\ READ THIS 
+
+# Discord for Galactic Scale's team work
 https://discord.gg/NbpBn6gM6d --> It will not replace the modding discord community. But at least it will be easier to talk about the mod and ask me directly questions :)
 
-#Patch notes & releases : 
+#Patch notes & releases :
 You can find all the releases and the patch notes here : https://github.com/Touhma/DSP_Plugins/releases
 
-#Bug report : 
+#Bug report :
 Go on the discord or post a ticket here :
 https://github.com/Touhma/DSP_Plugins/issues
 
@@ -35,7 +45,7 @@ Launch the game and you should be all set !
 
 ## How to use galactic-scale ?
 
-All the information are here : https://github.com/Touhma/DSP_Plugins/wiki 
+All the information are here : https://github.com/Touhma/DSP_Plugins/wiki
 
 It's still incomplete but you will have all the basics information there & in the configs files.
 
