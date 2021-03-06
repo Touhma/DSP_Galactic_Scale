@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using BepInEx.Logging;
+using Steamworks;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
@@ -387,6 +389,26 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     planetData.precision = planetData.GetPrecisionFactored();
                     Patch.Debug(" planetData.precision" + planetData.precision, LogLevel.Debug,
                         Patch.DebugReworkPlanetGenDeep);
+                }
+                else if (PatchSize.EnableLimitedResizingFeature.Value) {
+                    var choice = mainSeed.NextDouble();
+                    
+                    foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
+                        if (choice <= planetSizeParam.Value ) {
+                            planetData.radius = planetSizeParam.Key;
+                            if (planetData.IsAMoon()) {
+                                if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
+                                    for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
+                                        if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius) {
+                                            if (i != 0) {
+                                                planetData.radius = PatchSize.PlanetSizeList[i - 1];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 else {
                     planetData.radius = PatchSize.VanillaTelluricSize;
