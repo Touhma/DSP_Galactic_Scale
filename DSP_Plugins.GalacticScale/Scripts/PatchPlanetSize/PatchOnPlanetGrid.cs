@@ -11,24 +11,20 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
         [HarmonyPrefix]
         [HarmonyPatch("DetermineLongitudeSegmentCount")]
-        public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result)
-        {
+        public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result) {
             Patch.Debug("PlanetGrid Vanilla DeterminLongitudeSegmentCount.", LogLevel.Debug, true);
-            if (keyedLUTs.ContainsKey(segment))
-            {
+            if (keyedLUTs.ContainsKey(segment)) {
                 Patch.Debug("PlanetGrid Vanilla DeterminLongitudeSegmentCount Key Existed.", LogLevel.Debug, true);
                 int index = Mathf.Abs(latitudeIndex) % (segment / 2);
-                if (index >= segment / 4)
-                {
+                if (index >= segment / 4) {
                     index = segment / 4 - index;
                 }
 
                 Patch.Debug("PlatformSystem Vanilla DeterminLongitudeSegmentCount fetched " + keyedLUTs[segment][index] + " for segments " + segment + " at index " + latitudeIndex + "(" + index + ")", LogLevel.Debug, true);
                 __result = keyedLUTs[segment][index];
             }
-            else
-            {
-                var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)(latitudeIndex / (double)(segment / 4f) * 3.14159274101257 * 0.5))) * segment);
+            else {
+                var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float) (latitudeIndex / (double) (segment / 4f) * 3.14159274101257 * 0.5))) * segment);
                 __result = index < 500 ? PlatformSystem.segmentTable[index] : (index + 49) / 100 * 100;
             }
             // Patch.Debug("PlanetGrid - _latitudeIndex --> " + latitudeIndex, LogLevel.Debug, true);
@@ -249,19 +245,16 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
         */
 
-        private static float LatitudeSegIndex(int segmentCount, float yPos)
-        {
+        private static float LatitudeSegIndex(int segmentCount, float yPos) {
             return Mathf.Abs(Mathf.Asin(yPos) / 6.283185f * segmentCount);
         }
 
-        private static float LongitudeIndex(int segmentCount, float xPos, float zPos, int latitudeSegmentIndex)
-        {
+        private static float LongitudeIndex(int segmentCount, float xPos, float zPos, int latitudeSegmentIndex) {
             var longitudeSegmentCount = PlanetGrid.DetermineLongitudeSegmentCount(latitudeSegmentIndex, segmentCount);
-            return Mathf.Atan2(xPos, -zPos) / 6.283185f * (float)longitudeSegmentCount;
+            return Mathf.Atan2(xPos, -zPos) / 6.283185f * (float) longitudeSegmentCount;
         }
 
-        private static string GridPos(int segmentCount, float xPos, float yPos, float zPos)
-        {
+        private static string GridPos(int segmentCount, float xPos, float yPos, float zPos) {
             float lat = LatitudeSegIndex(segmentCount, yPos);
             int latIndex = Mathf.FloorToInt(lat);
             float lon = LongitudeIndex(segmentCount, xPos, zPos, latIndex);
