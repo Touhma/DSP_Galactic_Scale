@@ -5,6 +5,7 @@ using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 using Random = System.Random;
+using GalacticScale.Scripts.PatchPlanetSize;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkPlanetGen {
@@ -335,6 +336,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 planetData.scale = PatchSize.VanillaGasGiantScale;
                 planetData.radius = radiusGasGiantWanted / planetData.scale;
 
+                int segments = (int)(planetData.radius / 4f + 0.1f) * 4;
+                SetLuts(segments, planetData.radius);
+
                 planetData.precision = 64;
                 planetData.segment = 2;
             }
@@ -383,17 +387,27 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
                         if (choice <= planetSizeParam.Value) {
                             planetData.radius = planetSizeParam.Key;
-                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value)
-                                if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
-                                    for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
-                                        if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius) {
-                                            if (i != 0) {
-                                                planetData.radius = PatchSize.PlanetSizeList[i - 1];
+                            //planetData.precision = Mathf.Max(planetSizeParam.Key, 200);
+                            planetData.precision = planetSizeParam.Key;
+                            int segments = (int)(planetData.radius / 4f + 0.1f) * 4; ;
+                            SetLuts(segments, planetData.radius);
 
+                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value){
+                                if (planetData.orbitAroundPlanet.radius <= planetData.radius){
+                                    for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++){
+                                        if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius){
+                                            if (i != 0)
+                                            {
+                                                planetData.radius = PatchSize.PlanetSizeList[i - 1];
+                                                //planetData.precision = Mathf.Max(PatchSize.PlanetSizeList[i - 1], 200);
+                                                planetData.precision = PatchSize.PlanetSizeList[i - 1];
+                                                segments = (int)(planetData.radius / 4f + 0.1f) * 4; ;
+                                                SetLuts(segments, planetData.radius);
                                             }
                                         }
                                     }
                                 }
+                            }
                         }
                     }
                 }
@@ -435,6 +449,46 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.DebugReworkPlanetGen);
 
             return planetData;
+        }
+
+        private static void SetLuts(int segments, float planetRadius)
+        {
+            if (PatchOnPlanetGrid.keyedLUTs.ContainsKey(segments) && PatchOnPlatformSystem.keyedLUTs.ContainsKey(segments))
+            {
+                return;
+            }
+            Patch.Debug("Setting Planet LUTs for size " + planetRadius, LogLevel.Debug, true);
+            int numSegments = segments / 4;
+            int[] lut = new int[numSegments];
+            float segmentAngle = (Mathf.PI / 2f) / numSegments;
+
+            float lastMajorRadius = planetRadius;
+            int lastMajorRadiusCount = numSegments * 4;
+
+            for (int cnt = 0; cnt < numSegments; cnt++)
+            {
+                float segmentXAngle = (Mathf.PI / 2f) - (cnt * segmentAngle);
+                float segmentLineHeight = Mathf.Cos(segmentXAngle);
+                float segmentCylinderHeight = segmentLineHeight * planetRadius * 2;
+
+                float ringradius = Mathf.Sqrt((planetRadius * planetRadius) - ((segmentCylinderHeight * segmentCylinderHeight) / 4.0f));
+
+                if (ringradius < (0.9 * lastMajorRadius))
+                {
+                    lastMajorRadius = ringradius;
+                    lastMajorRadiusCount = (int)(ringradius / 4.0) * 4;
+                }
+                lut[cnt] = lastMajorRadiusCount;
+            }
+
+            if (!PatchOnPlanetGrid.keyedLUTs.ContainsKey(segments))
+            {
+                PatchOnPlanetGrid.keyedLUTs.Add(segments, lut);
+            }
+            if (!PatchOnPlatformSystem.keyedLUTs.ContainsKey(segments))
+            {
+                PatchOnPlatformSystem.keyedLUTs.Add(segments, lut);
+            }
         }
     }
 }
