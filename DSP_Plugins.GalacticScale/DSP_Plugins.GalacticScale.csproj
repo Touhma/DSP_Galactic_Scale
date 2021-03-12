@@ -102,7 +102,9 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIStarDetail.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkCreatePlanet.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkSetPlanetTheme.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
   </ItemGroup>
   <ItemGroup>

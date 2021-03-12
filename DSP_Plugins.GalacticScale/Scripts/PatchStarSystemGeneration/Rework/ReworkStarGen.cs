@@ -7,10 +7,12 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkStarGen {
         public static void CreateStarPlanetsRework(GalaxyData galaxy, StarData star, GameDesc gameDesc, PlanetGeneratorSettings genSettings) {
+            bool isDebugOn = star.IsStartingStar();
+
             star.name = SystemsNames.systems[star.index];
 
             Patch.Debug("System " + star.name + " - " + star.type + " - " + star.spectr, LogLevel.Debug,
-                Patch.DebugStarGen);
+                Patch.DebugStarGen && isDebugOn);
 
             // Random Generators Inits
             UnityRandom.InitState(star.seed);
@@ -61,8 +63,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             star.planets = new PlanetData[genSettings.nbOfStellarBodies];
 
-            Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGen);
-            Patch.Debug("\nSystem Presets : ", LogLevel.Debug, Patch.DebugStarGen);
+            Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+            Patch.Debug("\nSystem Presets : ", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
 
             var preset =
                 "nbOfPlanets : " + genSettings.nbOfPlanets + "\n" +
@@ -71,7 +73,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "nbOfMoons : " + genSettings.nbOfMoons + "\n" +
                 "nbOfMoonsTelluric : " + genSettings.nbOfMoonsTelluric + "\n" +
                 "nbOfMoonsGasGiant : " + genSettings.nbOfMoonsGasGiant + "\n\n";
-            Patch.Debug(preset, LogLevel.Debug, Patch.DebugStarGen);
+            Patch.Debug(preset, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
 
             PreGenerateAllBodies(star, planetsToGenerate, annexSeed, genSettings, currentSettings);
 
@@ -79,19 +81,19 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
 
             if (star.IsStartingStar()) {
-                Patch.Debug(star.name + " --recap-- : ", LogLevel.Debug, Patch.DebugStarGen);
+                Patch.Debug(star.name + " --recap-- : ", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                 var nbOfHabitablePlanets = 0;
                 foreach (var planet in star.planets) {
                     if (planet.orbitAround != 0)
-                        Patch.Debug("moon type : " + planet.type, LogLevel.Debug, Patch.DebugStarGen);
+                        Patch.Debug("moon type : " + planet.type, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     else
-                        Patch.Debug("planet type : " + planet.type, LogLevel.Debug, Patch.DebugStarGen);
+                        Patch.Debug("planet type : " + planet.type, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
 
                     if (planet.type == EPlanetType.Ocean) nbOfHabitablePlanets++;
                 }
 
                 if (nbOfHabitablePlanets == 0) {
-                    Patch.Debug("Nb of habitable == 0 --> Override one planet ", LogLevel.Debug, Patch.DebugStarGen);
+                    Patch.Debug("Nb of habitable == 0 --> Override one planet ", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     var @override = true;
                     while (@override) {
                         var indexStartingPlanet = UnityRandom.Range(0, star.planets.Length - 1);
@@ -104,14 +106,20 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     }
 
 
-                    Patch.Debug(" galaxy.birthPlanetId --> " + galaxy.birthPlanetId, LogLevel.Debug, Patch.DebugStarGen);
+                    Patch.Debug(" galaxy.birthPlanetId --> " + galaxy.birthPlanetId, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                 }
             }
 
             // Apply themes 
             foreach (var planet in star.planets) {
                 PlanetGen.SetPlanetTheme(planet, star, gameDesc, 0, 0, mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.Next());
-                Patch.Debug("planet.algoId --> " + planet.algoId, LogLevel.Debug, Patch.DebugStarGen);
+                if (star.IsStartingStar()) {
+                    Patch.Debug("planet.name --> " + planet.name, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+                    Patch.Debug("planet.algoId --> " + planet.algoId, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+                    Patch.Debug("planet.type --> " + planet.type, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+                }
+              
+        
             }
 
             star.planetCount = star.planets.Length;
@@ -127,7 +135,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 }
 
             // Define how much of the planets are GasGiant
-            for (var j = genSettings.nbOfPlanets; j < currentSettings.MaxGasGiantNb; j++)
+            for (var j = 0; j < currentSettings.MaxGasGiantNb; j++)
                 if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiant) {
                     genSettings.nbOfGasGiantPlanets++;
                     genSettings.nbOfPlanets++;
@@ -179,6 +187,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         }
 
         public static void PreGenerateAllBodies(StarData star, List<PlanetForGenerator> planetsToGenerate, Random annexSeed, PlanetGeneratorSettings genSettings, PatchForStarSystemGeneration.StarSystemSetting currentSettings) {
+            bool isDebugOn = star.IsStartingStar();
             //
             //preparation of the planet creation :
             Patch.Debug("Define the belts for whatever they are for :", LogLevel.Debug, Patch.DebugStarGenDeep);
@@ -264,17 +273,17 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
 
                     planetsToGenerate.Add(new PlanetForGenerator(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, planetInfoSeed, planetGenSeed, null));
-                    Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToStringDebug(), LogLevel.Debug, Patch.DebugStarGen);
+                    Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToStringDebug(), LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     nbOfPlanetsPreGenerated++;
                     planetsPreGeneratedNumber++;
                     currentOrbitPlanetIndex++;
                     if (isGasGiant)
-                        Patch.Debug("gas Giant generated !", LogLevel.Debug, Patch.DebugStarGen);
+                        Patch.Debug("gas Giant generated !", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     else
-                        Patch.Debug("planet generated !", LogLevel.Debug, Patch.DebugStarGen);
+                        Patch.Debug("planet generated !", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                 }
                 else if (nbOfBodiesPreGenerated < genSettings.nbOfPlanets + genSettings.nbOfMoons + beltGenerated) {
-                    Patch.Debug("Moon in generation!", LogLevel.Debug, Patch.DebugStarGen);
+                    Patch.Debug("Moon in generation!", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
 
                     isGasGiant = false;
 
@@ -291,7 +300,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         }
                     }
 
-                    if (orbitAround <= 0) Patch.Debug("Issue in moon generation : " + orbitAround, LogLevel.Debug, Patch.DebugStarGen);
+                    if (orbitAround <= 0) Patch.Debug("Issue in moon generation : " + orbitAround, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
 
                     jumpOrbitMargin = Patch.OrbitRadiusArrayMoonsNb.Value - (genSettings.nbOfMoons - nbOfMoonsPreGenerated);
 
@@ -333,7 +342,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         }
 
         public static void GenerateAllPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc, List<PlanetForGenerator> planetsToGenerate) {
-            Patch.Debug("Recap of what have to be generated : \n", LogLevel.Debug, Patch.DebugStarGen);
+            bool isDebugOn = star.IsStartingStar();
+            Patch.Debug("Recap of what have to be generated : \n", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
             var finalIndex = 0;
             foreach (var planet in planetsToGenerate) {
                 var debugLine = "A ";
@@ -374,7 +384,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
 
 
-                Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen);
+                Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
             }
         }
     }

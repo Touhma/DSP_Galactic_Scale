@@ -1,5 +1,7 @@
-﻿using HarmonyLib;
+﻿using System.Collections.Generic;
+using HarmonyLib;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
+
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [HarmonyPatch(typeof(PlanetGen))]
@@ -33,6 +35,28 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             __result = ReworkPlanetGen.ReworkCreatePlanet(ref galaxy, ref star, ref gameDesc, index, orbitAround, orbitIndex, number, gasGiant, info_seed, gen_seed);
             //Debug.Log("__result.index" + __result.id);
             return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("SetPlanetTheme")]
+        public static bool SetPlanetTheme(
+            ref List<int> ___tmp_theme,
+            PlanetData planet,
+            StarData star,
+            GameDesc game_desc,
+            int set_theme,
+            int set_algo,
+            double rand1,
+            double rand2,
+            double rand3,
+            double rand4,
+            int theme_seed) {
+            if (planet.type == EPlanetType.Gas) {
+                ReworkSetPlanetTheme.SetPlanetTheme(ref planet,ref star, theme_seed);
+                return false;
+            }
+            return true;
+
         }
     }
 }
