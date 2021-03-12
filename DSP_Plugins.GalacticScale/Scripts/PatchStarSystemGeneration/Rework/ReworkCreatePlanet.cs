@@ -335,7 +335,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 planetData.scale = PatchSize.VanillaGasGiantScale;
                 planetData.radius = radiusGasGiantWanted / planetData.scale;
-                if (PatchSize.EnableResizingFeature.Value) {
+                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value) {
                     int segments = (int) (planetData.radius / 4f + 0.1f) * 4;
                     SetLuts(segments, planetData.radius);
                 }
@@ -388,7 +388,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         if (choice <= planetSizeParam.Value) {
                             planetData.radius = planetSizeParam.Key;
                             int segments;
-                            if (PatchSize.EnableResizingFeature.Value) {
+                            if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value) {
                                 //planetData.precision = Mathf.Max(planetSizeParam.Key, 200);
                                 planetData.precision = planetSizeParam.Key;
                                 segments = (int) (planetData.radius / 4f + 0.1f) * 4;
@@ -401,7 +401,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                         if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius) {
                                             if (i != 0) {
                                                 planetData.radius = PatchSize.PlanetSizeList[i - 1];
-                                                if (PatchSize.EnableResizingFeature.Value) {
+                                                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value) {
                                                     //planetData.precision = Mathf.Max(PatchSize.PlanetSizeList[i - 1], 200);
                                                     planetData.precision = PatchSize.PlanetSizeList[i - 1];
                                                     segments = (int) (planetData.radius / 4f + 0.1f) * 4;
