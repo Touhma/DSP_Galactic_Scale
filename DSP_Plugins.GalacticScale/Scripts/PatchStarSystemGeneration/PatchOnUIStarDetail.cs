@@ -27,15 +27,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             UIResAmountEntry ___entryPrafab,
             ref UIStarDetail __instance
         ) {
-            var getEntry = Traverse.Create(__instance).Method("GetEntry").GetValue<UIResAmountEntry>();
-            
             for (int index = 0; index < __instance.entries.Count; ++index) {
                 UIResAmountEntry entry = __instance.entries[index];
                 entry.SetEmpty();
                 __instance.pool.Add(entry);
             }
             __instance.entries.Clear();
-            ___tipEntry = null;
             if (__instance.star == null) {
                 return false;
             }
@@ -127,44 +124,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 entry.SetObserved(_observed);
                 ++num;
             }
-            //*/
-            
-            /*
-            for (int index1 = 0; index1 < __instance.star.planetCount; ++index1)
-            {
-                PlanetData planet = __instance.star.planets[index1];
-                if (planet.type == EPlanetType.Gas && planet.gasItems != null)
-                {
-                    for (int index2 = 0; index2 < planet.gasItems.Length; ++index2)
-                    {
-                        ItemProto itemProto = LDB.items.Select(planet.gasItems[index2]);
-                        if (itemProto != null)
-                        {
-                            UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);
-                            __instance.entries.Add(entry);
-                            if (_observed)
-                            {
-                                entry.SetInfo(num, itemProto.name, itemProto.iconSprite, itemProto.description, false, false, "        /s");
-                                if (__instance.star.loaded)
-                                {
-                                    StringBuilderUtility.WritePositiveFloat(entry.sb, 0, 7, planet.gasSpeeds[index2]);
-                                    entry.DisplayStringBuilder();
-                                }
-                                else
-                                    entry.valueString = "探测到信号".Translate();
-                            }
-                            else
-                            {
-                                entry.SetInfo(num, "未知".Translate(), ___unknownResIcon, string.Empty, false, false, "        /s");
-                                entry.valueString = "未知".Translate();
-                            }
-                            entry.SetObserved(_observed);
-                            ++num;
-                        }
-                    }
-                }
-            }
-            */
             
             if (!_observed) {
                 UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;;
@@ -180,31 +139,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             __instance.RefreshDynamicProperties();
 
             return false;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch("OnStarDataSet")]
-        private static void OnStarDataSetPost(
-            Text ___nameText,
-            Text ___typeText,
-            RectTransform ___paramGroup,
-            Text ___massValueText,
-            Text ___spectrValueText,
-            Text ___radiusValueText,
-            Text ___luminoValueText,
-            Text ___temperatureValueText,
-            Text ___ageValueText,
-            Sprite ___unknownResIcon,
-            GameObject ___trslBg,
-            GameObject ___imgBg,
-            UIResAmountEntry ___tipEntry,
-            ref UIStarDetail __instance
-        ) {
-            foreach (var uiResAmountEntry in __instance.entries) {
-                Debug.Log(uiResAmountEntry.valueString);
-            }
-
-
         }
     }
 }
