@@ -152,7 +152,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static float[] OrbitRadiusArrayMoons;
         public static float[] OrbitRadiusPlanetArray;
 
-        public static bool DebugPlanetGen = false;
         public static bool DebugReworkPlanetGen = false;
         public static bool DebugReworkPlanetGenDeep = false;
         public static bool DebugStarGen = false;
@@ -589,6 +588,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
                 Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
+                Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
             }
         }
 
