@@ -10,6 +10,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPrefix]
         [HarmonyPatch("OnStarDataSet")]
         private static bool OnStarDataSet(
+            StarData ____star,
             Text ___nameText,
             Text ___typeText,
             RectTransform ___paramGroup,
@@ -23,6 +24,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             GameObject ___trslBg,
             GameObject ___imgBg,
             UIResAmountEntry ___tipEntry,
+            UIResAmountEntry ___entryPrafab,
             ref UIStarDetail __instance
         ) {
             var getEntry = Traverse.Create(__instance).Method("GetEntry").GetValue<UIResAmountEntry>();
@@ -33,7 +35,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 __instance.pool.Add(entry);
             }
             __instance.entries.Clear();
-            ___tipEntry = (UIResAmountEntry) null;
+            ___tipEntry = null;
             if (__instance.star == null) {
                 return false;
             }
@@ -49,7 +51,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             if (Localization.isKMG)
                 ___ageValueText.text =((__instance.star.age * __instance.star.lifetime).ToString("#,##0 ") + "百万亿年".Translate());
             else
-                ___ageValueText.text =(((float) ((double) __instance.star.age * (double) __instance.star.lifetime * 0.00999999977648258)).ToString("#,##0.00 ") + "百万亿年".Translate());
+                ___ageValueText.text =(((float) (__instance.star.age * (double) __instance.star.lifetime * 0.00999999977648258)).ToString("#,##0.00 ") + "百万亿年".Translate());
             int num = 0;
             for (int type = 1; type < 15; ++type) {
                 int id = type;
@@ -58,7 +60,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 if (_observed || type < 7) {
                     bool flag = (!__instance.star.loaded ? __instance.star.GetResourceSpots(type) > 0 : __instance.star.GetResourceAmount(type) > 0L) || type < 7;
                     if (veinProto != null && itemProto != null && flag) {
-                        UIResAmountEntry entry = getEntry;
+                        UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;
                         __instance.entries.Add(entry);
                         entry.SetInfo(num, itemProto.name, veinProto.iconSprite, veinProto.description, type >= 7, false, type != 7 ? "                " : "         /s");
                         entry.refId = id;
@@ -75,7 +77,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         if (itemProto != null) {
                             Sprite iconSprite = itemProto.iconSprite;
                             string name = itemProto.name;
-                            UIResAmountEntry entry = getEntry;
+                            UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;
                             __instance.entries.Add(entry);
                             entry.SetInfo(num, name, iconSprite, itemProto.description, itemProto != null && waterItemId != 1000, false, string.Empty);
                             entry.valueString = "海洋".Translate();
@@ -85,14 +87,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 }
             }
             
-            /*
+            //*
             Dictionary<int,float> ressources = new Dictionary<int,float>();
             
             for (int index1 = 0; index1 < __instance.star.planetCount; ++index1) {
                 PlanetData planet = __instance.star.planets[index1];
                 if (planet.type == EPlanetType.Gas && planet.gasItems != null) {
                     for (var i = 0; i < planet.gasItems.Length; i++) {
-                        
                         if (ressources.ContainsKey(planet.gasItems[i])) {
                             ressources[planet.gasItems[i]] += planet.gasSpeeds[i];
                         }
@@ -105,12 +106,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             
             
             foreach (var keyValuePair in ressources) {
-                Debug.Log("keyValuePair.key" + keyValuePair.Key);
                 ItemProto itemProto = LDB.items.Select(keyValuePair.Key);
-                Debug.Log("itemProto.name" + itemProto.name);
-                Debug.Log("keyValuePair.value" + keyValuePair.Value);
                 
-                UIResAmountEntry entry = getEntry;
+                UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);
                 __instance.entries.Add(entry);
                 if (_observed) {
                     entry.SetInfo(num, itemProto.name, itemProto.iconSprite, itemProto.description, false, false, "        /s");
@@ -128,10 +126,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 }
                 entry.SetObserved(_observed);
                 ++num;
-            }*/
+            }
+            //*/
             
-            Debug.Log("Pool count : "+ __instance.pool.Count);
-            
+            /*
             for (int index1 = 0; index1 < __instance.star.planetCount; ++index1)
             {
                 PlanetData planet = __instance.star.planets[index1];
@@ -142,7 +140,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         ItemProto itemProto = LDB.items.Select(planet.gasItems[index2]);
                         if (itemProto != null)
                         {
-                            UIResAmountEntry entry = getEntry;
+                            UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);
                             __instance.entries.Add(entry);
                             if (_observed)
                             {
@@ -166,18 +164,47 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     }
                 }
             }
+            */
             
             if (!_observed) {
-                UIResAmountEntry entry = getEntry;
+                UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;;
                 __instance.entries.Add(entry);
-                entry.SetInfo(num, string.Empty, (Sprite) null, string.Empty, false, false, string.Empty);
+                entry.SetInfo(num, string.Empty, null, string.Empty, false, false, string.Empty);
                 ___tipEntry = entry;
+                int num1 = ____star != GameMain.localStar ? (magnitude >= 14400000.0 ? 4 : 3) : 2;
+                bool flag = GameMain.history.universeObserveLevel >= num1;
+                ___tipEntry.valueString = flag ? string.Empty : "宇宙探索等级".Translate() + num1.ToString();
                 ++num;
             }
             __instance.SetResCount(num);
             __instance.RefreshDynamicProperties();
 
             return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("OnStarDataSet")]
+        private static void OnStarDataSetPost(
+            Text ___nameText,
+            Text ___typeText,
+            RectTransform ___paramGroup,
+            Text ___massValueText,
+            Text ___spectrValueText,
+            Text ___radiusValueText,
+            Text ___luminoValueText,
+            Text ___temperatureValueText,
+            Text ___ageValueText,
+            Sprite ___unknownResIcon,
+            GameObject ___trslBg,
+            GameObject ___imgBg,
+            UIResAmountEntry ___tipEntry,
+            ref UIStarDetail __instance
+        ) {
+            foreach (var uiResAmountEntry in __instance.entries) {
+                Debug.Log(uiResAmountEntry.valueString);
+            }
+
+
         }
     }
 }
