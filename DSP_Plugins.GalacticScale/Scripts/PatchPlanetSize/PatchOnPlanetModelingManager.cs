@@ -65,8 +65,66 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
 
             //data.heightData = scaledHeightData;
-
-            if (___currentModelingStage == 2) {
+            if (___currentModelingStage == 1)
+            {
+                ___tmpPlanetGameObject = new GameObject(planet.displayName);
+                ___tmpPlanetGameObject.layer = 31;
+                PlanetSimulator sim = ___tmpPlanetGameObject.AddComponent<PlanetSimulator>();
+                GameMain.universeSimulator.SetPlanetSimulator(sim, planet);
+                ___tmpPlanetGameObject.transform.localPosition = Vector3.zero;
+                ___tmpPlanetBodyGameObject = new GameObject("Planet Body");
+                ___tmpPlanetBodyGameObject.transform.SetParent(___tmpPlanetGameObject.transform, worldPositionStays: false);
+                ___tmpPlanetBodyGameObject.layer = 31;
+                ___tmpPlanetReformGameObject = new GameObject("Terrain Reform");
+                ___tmpPlanetReformGameObject.transform.SetParent(___tmpPlanetBodyGameObject.transform, worldPositionStays: false);
+                ___tmpPlanetReformGameObject.layer = 14;
+                MeshFilter meshFilter = ___tmpPlanetReformGameObject.AddComponent<MeshFilter>();
+                ___tmpPlanetReformRenderer = ___tmpPlanetReformGameObject.AddComponent<MeshRenderer>();
+                meshFilter.sharedMesh = Configs.builtin.planetReformMesh;
+                Material[] sharedMaterials = new Material[2] { planet.reformMaterial0, planet.reformMaterial1 };
+                ___tmpPlanetReformRenderer.sharedMaterials = sharedMaterials;
+                ___tmpPlanetReformRenderer.receiveShadows = false;
+                ___tmpPlanetReformRenderer.lightProbeUsage = LightProbeUsage.Off;
+                ___tmpPlanetReformRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                float num = (planet.realRadius + 0.2f + planet.realRadius/8000f) * 2f;
+                ___tmpPlanetReformRenderer.transform.localScale = new Vector3(num, num, num);
+                ___tmpPlanetReformRenderer.transform.rotation = Quaternion.identity;
+                if (planet.waterItemId != 0)
+                {
+                    GameObject oceanSphere = Configs.builtin.oceanSphere;
+                    GameObject gameObject2 = UnityEngine.Object.Instantiate(oceanSphere, ___tmpPlanetBodyGameObject.transform);
+                    gameObject2.name = "Ocean Sphere";
+                    gameObject2.layer = 31;
+                    gameObject2.transform.localPosition = Vector3.zero;
+                    gameObject2.transform.localScale = Vector3.one * ((planet.realRadius + planet.waterHeight) * 2f);
+                    Renderer component = gameObject2.GetComponent<Renderer>();
+                    ___tmpOceanCollider = gameObject2.GetComponent<Collider>();
+                    if (component != null)
+                    {
+                        component.enabled = planet.oceanMaterial != null;
+                        component.shadowCastingMode = ShadowCastingMode.Off;
+                        component.receiveShadows = false;
+                        component.lightProbeUsage = LightProbeUsage.Off;
+                        component.sharedMaterial = planet.oceanMaterial;
+                    }
+                }
+                int precision = planet.precision;
+                int num2 = precision / planet.segment;
+                int num3 = num2 + 1;
+                for (int i = 0; i < num2; i++)
+                {
+                    for (int j = 0; j < num2; j++)
+                    {
+                        ___tmpTris.Add(i + 1 + (j + 1) * num3);
+                        ___tmpTris.Add(i + (j + 1) * num3);
+                        ___tmpTris.Add(i + j * num3);
+                        ___tmpTris.Add(i + j * num3);
+                        ___tmpTris.Add(i + 1 + j * num3);
+                        ___tmpTris.Add(i + 1 + (j + 1) * num3);
+                    }
+                }
+                ___currentModelingStage = 2;
+            }else if (___currentModelingStage == 2) {
                 var planetPrecisionBySegment = planet.precision / planet.segment;
                 var planetPrecision = planet.precision;
                 var data = planet.data;
