@@ -407,6 +407,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                                     segments = (int) (planetData.radius / 4f + 0.1f) * 4;
                                                     SetLuts(segments, planetData.radius);
                                                 }
+                                                break;
                                             }
                                         }
                                     }
