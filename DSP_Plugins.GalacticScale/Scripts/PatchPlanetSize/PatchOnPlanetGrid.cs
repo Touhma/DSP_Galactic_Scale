@@ -49,6 +49,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             float f = num / ((float)Math.PI * 2f) * (float)__instance.segment;
             int latitudeIndex = Mathf.FloorToInt(Mathf.Max(0f, Mathf.Abs(f) - 0.1f));
             float num2 = PlanetGrid.DetermineLongitudeSegmentCount(latitudeIndex, __instance.segment);
+            //Replaced the fixed value 0.0048 with 1/segments * 0.96 [based on planet size 200: 1/200 = 0.005; 0.005 * 0.96 = 0.0048
+            //since the value has to become smaller the larger the planet is, the inverse value (1/x) is used in the calculation
             float num3 = Mathf.Max((1.0f / __instance.segment) * 0.96f, Mathf.Cos(num) * (float)Math.PI * 2f / (num2 * 5f));
             float num4 = (float)Math.PI * 2f / ((float)__instance.segment * 5f);
             float num5 = Mathf.Asin(posA.y);
