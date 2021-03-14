@@ -22,7 +22,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 if (refreshGridRadius != -1) {
                     if (___material == null) {
                         Patch.Debug("Material was null!", BepInEx.Logging.LogLevel.Debug, true);
-                        return false;
+                        return true;
                     }
                     segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
                     if (LUT512.ContainsKey(segments)) {
@@ -35,7 +35,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                         refreshGridRadius = -1;
                     }
                 }
-                return false;
+                return true;
             }
             return true;
         }

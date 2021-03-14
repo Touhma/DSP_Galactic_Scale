@@ -86,7 +86,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 ___tmpPlanetReformRenderer.receiveShadows = false;
                 ___tmpPlanetReformRenderer.lightProbeUsage = LightProbeUsage.Off;
                 ___tmpPlanetReformRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                float num = (planet.realRadius + 0.2f + planet.realRadius / 8000f) * 2f;
+                //changed "0.025f" to "planet.realRadius / 8000f" to adapt foundations to different planet sizes
+                float num = (planet.realRadius + 0.2f + planet.realRadius / 8000f) * 2f; 
                 ___tmpPlanetReformRenderer.transform.localScale = new Vector3(num, num, num);
                 ___tmpPlanetReformRenderer.transform.rotation = Quaternion.identity;
                 if (planet.waterItemId != 0) {
