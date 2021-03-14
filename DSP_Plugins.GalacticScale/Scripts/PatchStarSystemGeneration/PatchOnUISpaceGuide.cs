@@ -18,7 +18,19 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         //
         [HarmonyTranspiler]
         [HarmonyPatch("_OnLateUpdate")]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+        public static IEnumerable<CodeInstruction> UpdateTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            return ReplaceLd10(instructions);
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch("CheckVisible")]
+        public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            return ReplaceLd10(instructions);
+        }
+
+        public static IEnumerable<CodeInstruction> ReplaceLd10(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
                 if (codes[i].opcode == OpCodes.Ldc_I4_S && codes[i].OperandIs(10)) {
