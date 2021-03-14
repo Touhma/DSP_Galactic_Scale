@@ -85,8 +85,20 @@
     </Target>
     -->
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Delete Files="G:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\DSP_Plugin.dll" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles=".\bin\Debug\Touhma-QOLFeatures.dll" DestinationFolder="G:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\" />
+    <Error
+      Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable."
+      Condition="$(Plugins_Dir) == ''" />
+    <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles=".\bin\Debug\Touhma-QOLFeatures.dll" DestinationFolder="$(Plugins_Dir)" />
+  </Target>
+  <Target Name="CreateDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
+    <Exec Command="start &quot;&quot; /d &quot;$(pdb2mdb_Path)&quot; pdb2mdb .\bin\Debug\Touhma-QOLFeatures.dll"/>
+  </Target>
+  <Target Name="CopyDebugMDB" AfterTargets="CreateDebugMDB">
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles=".\bin\Debug\Touhma-QOLFeatures.dll.mdb" DestinationFolder="$(Plugins_Dir)" />
+  </Target>
+  <Target Name="CleanDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' != 'Debug' OR $(pdb2mdb_Path) == ''">
+    <Delete Files="&quot;$(Plugins_Dir)&quot;Touhma-QOLFeatures.dll.mdb" />
   </Target>
   <Import Project="..\DSP_Plugins.Shared\DSP_Plugins.Shared.projitems" Label="Shared" />
 </Project>

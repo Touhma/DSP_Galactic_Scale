@@ -1,4 +1,5 @@
 ﻿*
+!Directory.Build.props.example
 !/**/
 !*.cs
 !*.csproj
