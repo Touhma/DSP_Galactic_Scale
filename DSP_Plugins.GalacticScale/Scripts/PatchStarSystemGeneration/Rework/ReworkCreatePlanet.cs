@@ -387,12 +387,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
                         if (choice <= planetSizeParam.Value) {
                             planetData.radius = planetSizeParam.Key;
-                            int segments;
-                            if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value) {
-                                planetData.precision = planetSizeParam.Key;
-                                segments = (int) (planetData.radius / 4f + 0.1f) * 4;
-                                PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
-                            }
+                            planetData.precision = planetSizeParam.Key;
+                            int segments = (int) (planetData.radius / 4f + 0.1f) * 4;
+                            PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+
                             if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value) {
                                 if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
                                     for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
@@ -403,14 +401,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                                     planetData.precision = PatchSize.PlanetSizeList[i - 1];
                                                     segments = (int) (planetData.radius / 4f + 0.1f) * 4;
                                                     PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                                                    break;
                                                 }
-                                                break;
                                             }
                                         }
                                     }
                                 }
                             }
-                            break;
                         }
                     }
                 }

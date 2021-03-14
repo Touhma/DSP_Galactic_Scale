@@ -4,7 +4,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
-    [BepInPlugin("touhma.dsp.galactic-scale.galaxy-size-select", "Galactic Scale Plug-In - Galaxy Size Select", "1.0.0.0")]
+    [BepInPlugin("dsp.galactic-scale.galaxy-size-select", "Galactic Scale Plug-In - Galaxy Size Select", "1.0.0.0")]
     public class PatchForGalaxySizeSelection : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
@@ -21,7 +21,7 @@ namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
                 32,
                 "The Minimum Number of stars desired");
 
-            var harmony = new Harmony("touhma.dsp.galactic-scale.galaxy-size-select");
+            var harmony = new Harmony("dsp.galactic-scale.galaxy-size-select");
 
             //Adding the Logger
             Logger = new ManualLogSource("PatchForGalaxySizeSelection");

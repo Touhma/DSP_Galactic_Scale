@@ -6,7 +6,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
-    [BepInPlugin("touhma.dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
+    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
     public class PatchForPlanetSize : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
@@ -57,7 +57,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static ConfigEntry<string> LimitedResizingChances;
 
         internal void Awake() {
-            var harmony = new Harmony("touhma.dsp.galactic-scale.planet-size");
+            var harmony = new Harmony("dsp.galactic-scale.planet-size");
 
             //Adding the Logger
             Logger = new ManualLogSource("PatchForPlanetSize");

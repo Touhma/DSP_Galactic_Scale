@@ -27,6 +27,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             UIResAmountEntry ___entryPrafab,
             ref UIStarDetail __instance
         ) {
+            var getEntry = Traverse.Create(__instance).Method("GetEntry");
+            
             for (int index = 0; index < __instance.entries.Count; ++index) {
                 UIResAmountEntry entry = __instance.entries[index];
                 entry.SetEmpty();
@@ -57,7 +59,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 if (_observed || type < 7) {
                     bool flag = (!__instance.star.loaded ? __instance.star.GetResourceSpots(type) > 0 : __instance.star.GetResourceAmount(type) > 0L) || type < 7;
                     if (veinProto != null && itemProto != null && flag) {
-                        UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;
+                        UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                         __instance.entries.Add(entry);
                         entry.SetInfo(num, itemProto.name, veinProto.iconSprite, veinProto.description, type >= 7, false, type != 7 ? "                " : "         /s");
                         entry.refId = id;
@@ -74,7 +76,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         if (itemProto != null) {
                             Sprite iconSprite = itemProto.iconSprite;
                             string name = itemProto.name;
-                            UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;
+                            UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                             __instance.entries.Add(entry);
                             entry.SetInfo(num, name, iconSprite, itemProto.description, itemProto != null && waterItemId != 1000, false, string.Empty);
                             entry.valueString = "海洋".Translate();
@@ -105,7 +107,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             foreach (var keyValuePair in ressources) {
                 ItemProto itemProto = LDB.items.Select(keyValuePair.Key);
                 
-                UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);
+                UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                 __instance.entries.Add(entry);
                 if (_observed) {
                     entry.SetInfo(num, itemProto.name, itemProto.iconSprite, itemProto.description, false, false, "        /s");
@@ -126,7 +128,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
             
             if (!_observed) {
-                UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;;
+                UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                 __instance.entries.Add(entry);
                 entry.SetInfo(num, string.Empty, null, string.Empty, false, false, string.Empty);
                 ___tipEntry = entry;

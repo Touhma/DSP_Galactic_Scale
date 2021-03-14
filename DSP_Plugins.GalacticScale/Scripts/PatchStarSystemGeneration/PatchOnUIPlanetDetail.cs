@@ -2,13 +2,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration
-{
+namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [HarmonyPatch(typeof(UIPlanetDetail))]
     public class PatchOnUIPlanetDetail
     {
-        [HarmonyPrefix]
-        [HarmonyPatch("OnPlanetDataSet")]
+
         public static bool OnPlanetDataSet(ref UIPlanetDetail __instance,
             ref UIResAmountEntry ___tipEntry,
             ref Text ___nameText,
