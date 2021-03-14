@@ -21,17 +21,17 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 int segments;
                 if (refreshGridRadius != -1) {
                     if (___material == null) {
-                        Patch.Debug("Material was null!", BepInEx.Logging.LogLevel.Debug, true);
+                        Patch.Debug("Material was null!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
                         return true;
                     }
                     segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
                     if (LUT512.ContainsKey(segments)) {
-                        Patch.Debug("Updating LUT for radius + " + refreshGridRadius + " and segments " + segments + "!", BepInEx.Logging.LogLevel.Debug, true);
+                        Patch.Debug("Updating LUT for radius + " + refreshGridRadius + " and segments " + segments + "!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
                         UpdateTextureToLUT(___material, segments);
                     }
                     else {
                         //TODO
-                        Patch.Debug("LUT512 did not yet contain the texture for refreshing.", BepInEx.Logging.LogLevel.Debug, true);
+                        Patch.Debug("LUT512 did not yet contain the texture for refreshing.", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
                         refreshGridRadius = -1;
                     }
                 }
