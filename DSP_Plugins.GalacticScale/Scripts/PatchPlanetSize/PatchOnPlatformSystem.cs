@@ -22,18 +22,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
             else {
                 //Original algorithm. Really shouldn't be used anymore... but just in case it's still here.
-                var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)(_latitudeIndex / (double)(_segment / 4f) * 3.14159274101257 * 0.5))) * _segment);
+                var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float) (_latitudeIndex / (double) (_segment / 4f) * 3.14159274101257 * 0.5))) * _segment);
                 __result = index < 500 ? PlatformSystem.segmentTable[index] : (index + 49) / 100 * 100;
             }
-            // Patch.Debug("PlatformSystem - _latitudeIndex --> " + _latitudeIndex, LogLevel.Debug, true);
-            // Patch.Debug("PlatformSystem - _segment --> " + _segment, LogLevel.Debug, true);
-            //CeilToInt --> RoundToInt
-            //int index = Mathf.RoundToInt(Mathf.Abs(Mathf.Cos((_latitudeIndex / (_segment / 4f) * (float)Math.PI * 0.5f))) * _segment);
-            // Patch.Debug("PlatformSystem - index --> " + index, LogLevel.Debug, true);
-            //Patch.Debug("PlatformSystem - segmentTable --> " + PlatformSystem.segmentTable[index]  , LogLevel.Debug, true);
-            //Patch.Debug("PlatformSystem - (index + 49) / 100 * 100  --> " + (index + 49) / 100 * 100  , LogLevel.Debug, true);
-            // Patch.Debug("PlatformSystem - longitudeSegmentCount --> " + __result, LogLevel.Debug, true);
-
             return false;
         }
 

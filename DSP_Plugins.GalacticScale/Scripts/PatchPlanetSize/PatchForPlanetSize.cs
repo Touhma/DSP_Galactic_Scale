@@ -13,8 +13,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DebugGeneral = false;
         public static bool DebugPlanetRawData = false;
         public static bool DebugGetModPlane = false;
-        public static bool DebugPlanetData = false;
-        public static bool DebugPlanetDataDeep = false;
+        public static bool DebugNewPlanetGrid = false;
         public static bool DebugPlanetModelingManager = false;
         public static bool DebugPlanetModelingManagerDeep = false;
         public static bool DebugAtmoBlur = false;
@@ -135,8 +134,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerNavigation));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
                 Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameData));

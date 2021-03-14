@@ -32,6 +32,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             ref GameObject ___tmpPlanetBodyGameObject,
             ref GameObject ___tmpPlanetReformGameObject,
             ref MeshRenderer ___tmpPlanetReformRenderer) {
+
             Patch.Debug("ModelingPlanetMain", LogLevel.Debug,
                 Patch.DebugGeneral);
 
@@ -65,8 +66,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
 
             //data.heightData = scaledHeightData;
-            if (___currentModelingStage == 1)
-            {
+            if (___currentModelingStage == 1) {
                 ___tmpPlanetGameObject = new GameObject(planet.displayName);
                 ___tmpPlanetGameObject.layer = 31;
                 PlanetSimulator sim = ___tmpPlanetGameObject.AddComponent<PlanetSimulator>();
@@ -86,11 +86,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 ___tmpPlanetReformRenderer.receiveShadows = false;
                 ___tmpPlanetReformRenderer.lightProbeUsage = LightProbeUsage.Off;
                 ___tmpPlanetReformRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                float num = (planet.realRadius + 0.2f + planet.realRadius/8000f) * 2f;
+                float num = (planet.realRadius + 0.2f + planet.realRadius / 8000f) * 2f;
                 ___tmpPlanetReformRenderer.transform.localScale = new Vector3(num, num, num);
                 ___tmpPlanetReformRenderer.transform.rotation = Quaternion.identity;
-                if (planet.waterItemId != 0)
-                {
+                if (planet.waterItemId != 0) {
                     GameObject oceanSphere = Configs.builtin.oceanSphere;
                     GameObject gameObject2 = UnityEngine.Object.Instantiate(oceanSphere, ___tmpPlanetBodyGameObject.transform);
                     gameObject2.name = "Ocean Sphere";
@@ -99,8 +98,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     gameObject2.transform.localScale = Vector3.one * ((planet.realRadius + planet.waterHeight) * 2f);
                     Renderer component = gameObject2.GetComponent<Renderer>();
                     ___tmpOceanCollider = gameObject2.GetComponent<Collider>();
-                    if (component != null)
-                    {
+                    if (component != null) {
                         component.enabled = planet.oceanMaterial != null;
                         component.shadowCastingMode = ShadowCastingMode.Off;
                         component.receiveShadows = false;
@@ -111,10 +109,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 int precision = planet.precision;
                 int num2 = precision / planet.segment;
                 int num3 = num2 + 1;
-                for (int i = 0; i < num2; i++)
-                {
-                    for (int j = 0; j < num2; j++)
-                    {
+                for (int i = 0; i < num2; i++) {
+                    for (int j = 0; j < num2; j++) {
                         ___tmpTris.Add(i + 1 + (j + 1) * num3);
                         ___tmpTris.Add(i + (j + 1) * num3);
                         ___tmpTris.Add(i + j * num3);
@@ -124,7 +120,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     }
                 }
                 ___currentModelingStage = 2;
-            }else if (___currentModelingStage == 2) {
+            }
+            else if (___currentModelingStage == 2) {
                 var planetPrecisionBySegment = planet.precision / planet.segment;
                 var planetPrecision = planet.precision;
                 var data = planet.data;
@@ -312,41 +309,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 }
                 ___currentModelingStage = 3;
             }
-
-
-
             return true;
-        }
-
-
-        public static void ModelingPlanetMainPost(PlanetData planet,
-            ref Camera ___heightmapCamera,
-            ref List<Mesh> ___tmpMeshList,
-            ref PlanetData ___currentModelingPlanet,
-            ref int ___currentModelingStage,
-            ref int ___currentModelingSeamNormal,
-            ref PlanetData ___currentFactingPlanet,
-            ref int ___currentFactingStage,
-            ref List<MeshRenderer> ___tmpMeshRendererList,
-            ref List<MeshCollider> ___tmpMeshColliderList,
-            ref Collider ___tmpOceanCollider,
-            ref List<Vector3> ___tmpVerts,
-            ref List<Vector3> ___tmpNorms,
-            ref List<Vector4> ___tmpTgnts,
-            ref VegeProto[] ___vegeProtos,
-            ref List<Vector2> ___tmpUvs,
-            ref List<Vector4> ___tmpUv2s,
-            ref List<int> ___tmpTris,
-            ref GameObject ___tmpPlanetGameObject,
-            ref GameObject ___tmpPlanetBodyGameObject,
-            ref GameObject ___tmpPlanetReformGameObject,
-            ref MeshRenderer ___tmpPlanetReformRenderer) {
-            if (planet.dirtyFlags != null)
-                if (planet.dirtyFlags.Length != 0)
-                    for (var i = 0; i < planet.dirtyFlags.Length; i++)
-                        planet.dirtyFlags[i] = true;
-            // Planet.wanted shows that we've modeled the planet and are keeping it. Modeling stage will be 0 in this postfix only AFTER modeling stage 4 is complete.
-            if (GameMain.isRunning && planet.wanted && ___currentModelingStage == 0) planet.UpdateDirtyMeshes();
         }
     }
 }

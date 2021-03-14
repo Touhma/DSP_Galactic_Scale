@@ -50,12 +50,5 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             return true;
         }
-
-        [HarmonyPrefix]
-        [HarmonyPatch("GenBirthPoints")]
-        public static bool GenBirthPoints(PlanetRawData rawData, int _birthSeed) {
-            return true;
-        }
     }
-
 }
