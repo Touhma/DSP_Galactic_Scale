@@ -584,6 +584,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
 
             if (EnableCustomStarAlgorithm.Value) {
+                Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
