@@ -36,6 +36,15 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             return false;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("GetModLevel")]
+        public static bool GetModLevel(int index, ref PlanetRawData __instance, ref int __result)
+        {
+            __result = 0; // I ran debug log on the original function for half an hour as it churned out a stream of zeroes... hundreds of thousands of them. occasionally a 1, 2 or 3, but very very rarely. maybe a hundred values out of a million. Setting it to always zero allows the game to load. It may break something else!
+            return false;
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch("QueryModifiedHeight")]
         public static bool QueryModifiedHeight(ref PlanetRawData __instance,
