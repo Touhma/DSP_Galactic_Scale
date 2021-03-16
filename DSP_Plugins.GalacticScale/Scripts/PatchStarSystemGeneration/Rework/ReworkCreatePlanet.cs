@@ -408,6 +408,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                     }
                                 }
                             }
+                            break;
                         }
                     }
                 }
@@ -416,7 +417,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     planetData.scale = PatchSize.VanillaTelluricScale;
                     planetData.precision = PatchSize.VanillaTelluricPrecision;
                 }
-
                 planetData.segment = 5;
             }
             else {
