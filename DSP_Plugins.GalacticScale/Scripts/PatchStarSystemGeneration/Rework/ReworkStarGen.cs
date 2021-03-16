@@ -60,17 +60,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 genSettings.nbOfPlanets = genSettings.nbOfTelluricPlanets + genSettings.nbOfGasGiantPlanets;
                 genSettings.nbOfStellarBodies = genSettings.nbOfPlanets + genSettings.nbOfMoons;
             }
-            if (DSPGame.IsMenuDemo) //Override for Main Menu
-            {
-                genSettings.nbOfTelluricPlanets = 2;
-                genSettings.nbOfMoonsTelluric = 0;
-                genSettings.nbOfGasGiantPlanets = 1;
-                genSettings.nbOfMoonsGasGiant = 0;
-
-                genSettings.nbOfMoons = genSettings.nbOfMoonsTelluric + genSettings.nbOfMoonsGasGiant;
-                genSettings.nbOfPlanets = genSettings.nbOfTelluricPlanets + genSettings.nbOfGasGiantPlanets;
-                genSettings.nbOfStellarBodies = genSettings.nbOfPlanets + genSettings.nbOfMoons;
-            }
+           
             star.planets = new PlanetData[genSettings.nbOfStellarBodies];
 
             Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
