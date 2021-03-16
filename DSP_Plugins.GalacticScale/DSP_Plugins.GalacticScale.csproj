@@ -70,9 +70,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Commons\Extensions\PlanetDataExtention.cs" />
     <Compile Include="Scripts\Commons\Extensions\PlanetRawDataExtention.cs" />
+    <Compile Include="Scripts\Commons\Extensions\PlanetThemeExtension.cs" />
     <Compile Include="Scripts\Commons\Extensions\StarDataExtension.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetForGenerator.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetGeneratorSettings.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\GeneratorPlanet.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\GeneratorStar.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\GeneratorSystem.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\GeneratorCluster.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetSettings.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorStarSettings.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorSystemSettings.cs" />
+    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorUniverseSettings.cs" />
+    <Compile Include="Scripts\Commons\Model\PlanetType.cs" />
+    <Compile Include="Scripts\Commons\Model\PlanetTheme.cs" />
     <Compile Include="Scripts\Commons\Model\RomanNumbers.cs" />
     <Compile Include="Scripts\Commons\Model\SystemsNames.cs" />
     <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
@@ -91,6 +100,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\Generator\SystemGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />
@@ -110,7 +120,6 @@
     <Content Include="manifest.json" />
     <Content Include="README.md" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />

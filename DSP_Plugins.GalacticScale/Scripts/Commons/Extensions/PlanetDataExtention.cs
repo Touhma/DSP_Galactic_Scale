@@ -3,9 +3,7 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 
 namespace GalacticScale.Scripts {
     public static class PlanetDataExtension {
-
-
-
+        
         public static float VanillaSizeGasGiant = 80f;
         public static int VanillaPrecisionGasGiant = 64;
         public static float VanillaScaleGasGiant = 10f;

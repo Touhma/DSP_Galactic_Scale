@@ -2,21 +2,25 @@
 using JetBrains.Annotations;
 
 namespace GalacticScale.Scripts {
-    public class PlanetForGenerator {
+    public class GeneratorPlanet {
         public int genSeed;
 
-        public PlanetForGenerator hostPlanet;
+        // Setup If the current body is a moon
+        public GeneratorPlanet HostGeneratorPlanet;
+        
+        //Setup if the current body is in orbit around the star
+        public List<GeneratorPlanet> moons;
+        
         public int infoSeed;
         public bool isGasGiant;
 
-        public List<PlanetForGenerator> moons;
         public string name = "";
         public int number;
         public int orbitAround;
         public int orbitIndex;
         public int planetIndex;
 
-        public PlanetForGenerator(
+        public GeneratorPlanet(
             int planetIndex,
             int orbitAround,
             int orbitIndex,
@@ -24,7 +28,7 @@ namespace GalacticScale.Scripts {
             bool isGasGiant,
             int infoSeed,
             int genSeed,
-            [CanBeNull] PlanetForGenerator host) {
+            [CanBeNull] GeneratorPlanet hostGenerator) {
             this.planetIndex = planetIndex;
             this.orbitAround = orbitAround;
             this.orbitIndex = orbitIndex;
@@ -33,8 +37,8 @@ namespace GalacticScale.Scripts {
             this.infoSeed = infoSeed;
             this.genSeed = genSeed;
 
-            moons = new List<PlanetForGenerator>();
-            hostPlanet = host;
+            moons = new List<GeneratorPlanet>();
+            HostGeneratorPlanet = hostGenerator;
         }
 
         //debug string
@@ -47,11 +51,17 @@ namespace GalacticScale.Scripts {
         }
 
         public void AddMoonInOrbit(int index, int orbitIndex, int genSeed, int infoSeed) {
-            moons.Add(new PlanetForGenerator(index, planetIndex + 1, orbitIndex, moons.Count + 1, false, genSeed, infoSeed, this));
+            moons.Add(new GeneratorPlanet(index, planetIndex + 1, orbitIndex, moons.Count + 1, false, genSeed, infoSeed, this));
         }
-
+        
+        // Helper to call the creation function
         public void GenerateThePlanet(ref GalaxyData galaxy, ref StarData star, ref GameDesc gameDesc) {
             PlanetGen.CreatePlanet(galaxy, star, gameDesc, planetIndex, orbitAround, orbitIndex, number, isGasGiant, infoSeed, genSeed);
+        }
+
+        // Helper to call the Theme Selection function
+        public void SelectTheTheme() {
+            
         }
     }
 }

@@ -6,7 +6,7 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public static class ReworkStarGen {
-        public static void CreateStarPlanetsRework(GalaxyData galaxy, StarData star, GameDesc gameDesc, PlanetGeneratorSettings genSettings) {
+        public static void CreateStarPlanetsRework(GalaxyData galaxy, StarData star, GameDesc gameDesc, GeneratorPlanetSettings genSettings) {
             bool isDebugOn = star.IsStartingStar();
 
             star.name = SystemsNames.systems[star.index];
@@ -20,7 +20,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             var annexSeed = new Random(mainSeed.Next());
 
             // InnerCount for the System
-            var planetsToGenerate = new List<PlanetForGenerator>();
+            var planetsToGenerate = new List<GeneratorPlanet>();
 
             // settings from the config
             PatchForStarSystemGeneration.StarSystemSetting currentSettings;
@@ -125,7 +125,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             star.planetCount = star.planets.Length;
         }
 
-        public static void DefineNumberOfBodies(PatchForStarSystemGeneration.StarSystemSetting currentSettings, Random annexSeed, PlanetGeneratorSettings genSettings) {
+        public static void DefineNumberOfBodies(PatchForStarSystemGeneration.StarSystemSetting currentSettings, Random annexSeed, GeneratorPlanetSettings genSettings) {
             // Define how much planets the system have
             for (var i = 0; i < currentSettings.MaxTelluricNb; i++)
                 if (annexSeed.NextDouble() <= currentSettings.ChanceTelluricPlanet) {
@@ -186,7 +186,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGenDeep);
         }
 
-        public static void PreGenerateAllBodies(StarData star, List<PlanetForGenerator> planetsToGenerate, Random annexSeed, PlanetGeneratorSettings genSettings, PatchForStarSystemGeneration.StarSystemSetting currentSettings) {
+        public static void PreGenerateAllBodies(StarData star, List<GeneratorPlanet> planetsToGenerate, Random annexSeed, GeneratorPlanetSettings genSettings, PatchForStarSystemGeneration.StarSystemSetting currentSettings) {
             bool isDebugOn = star.IsStartingStar();
             //
             //preparation of the planet creation :
@@ -272,7 +272,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         isGasGiant = true;
 
 
-                    planetsToGenerate.Add(new PlanetForGenerator(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, planetInfoSeed, planetGenSeed, null));
+                    planetsToGenerate.Add(new GeneratorPlanet(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, planetInfoSeed, planetGenSeed, null));
                     Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToStringDebug(), LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     nbOfPlanetsPreGenerated++;
                     planetsPreGeneratedNumber++;
@@ -341,7 +341,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
         }
 
-        public static void GenerateAllPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc, List<PlanetForGenerator> planetsToGenerate) {
+        public static void GenerateAllPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc, List<GeneratorPlanet> planetsToGenerate) {
             bool isDebugOn = star.IsStartingStar();
             Patch.Debug("Recap of what have to be generated : \n", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
             var finalIndex = 0;

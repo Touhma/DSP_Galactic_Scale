@@ -27,8 +27,11 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
         public static Dictionary<int, float> PlanetSizeParams = new Dictionary<int, float>();
         public static List<int> PlanetSizeList = new List<int>();
-
-
+        
+        
+        
+        
+        
         public static ConfigEntry<bool> EnableResizingFeature;
         public static ConfigEntry<bool> EnableLimitedResizingFeature;
         public static ConfigEntry<bool> EnableMoonSizeFailSafe;
