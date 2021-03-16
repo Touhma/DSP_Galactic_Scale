@@ -37,7 +37,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             return false;
         }
-<<<<<<< HEAD
 
         [HarmonyPrefix]
         [HarmonyPatch("GetModLevel")]
@@ -66,8 +65,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
 
 
-=======
->>>>>>> parent of f60a9d2 (Update PatchOnPlanetRawData.cs)
         [HarmonyPrefix]
         [HarmonyPatch("QueryModifiedHeight")]
         public static bool QueryModifiedHeight(ref PlanetRawData __instance,
