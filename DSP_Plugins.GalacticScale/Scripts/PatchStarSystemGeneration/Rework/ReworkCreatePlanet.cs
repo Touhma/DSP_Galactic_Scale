@@ -408,7 +408,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                     }
                                 }
                             }
-                            break;
+                            
                         }
                     }
                 }
