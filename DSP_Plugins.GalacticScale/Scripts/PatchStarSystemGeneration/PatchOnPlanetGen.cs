@@ -32,9 +32,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             int gen_seed,
             ref PlanetData __result) {
             //Debug.Log("CreatePlanet -----");
-            __result = ReworkPlanetGen.ReworkCreatePlanet(ref galaxy, ref star, ref gameDesc, index, orbitAround, orbitIndex, number, gasGiant, info_seed, gen_seed);
-            //Debug.Log("__result.index" + __result.id);
-            return false;
+            if (!DSPGame.IsMenuDemo)
+            {
+                __result = ReworkPlanetGen.ReworkCreatePlanet(ref galaxy, ref star, ref gameDesc, index, orbitAround, orbitIndex, number, gasGiant, info_seed, gen_seed);
+                //Debug.Log("__result.index" + __result.id);
+                return false;
+            }
+            return true;
         }
 
         [HarmonyPrefix]

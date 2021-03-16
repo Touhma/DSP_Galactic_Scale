@@ -321,7 +321,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //Size related stuff : 
             if (planetData.type == EPlanetType.Gas) {
                 var radiusGasGiantWanted = PatchSize.VanillaGasGiantSize;
-                if (PatchSize.EnableResizingFeature.Value && !DSPGame.IsMenuDemo) { //Prevent Scaling Gas Giant in Main Menu
+                if (PatchSize.EnableResizingFeature.Value) { 
                     //Default : 0.25
                     var minScalingGasGiantRatio =
                         (PatchSize.BaseGasGiantSize.Value - PatchSize.BaseGasGiantSizeVariationFactor.Value) /
@@ -386,12 +386,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
                         if (choice <= planetSizeParam.Value) {
-                            planetData.radius = (!DSPGame.IsMenuDemo)?planetSizeParam.Key:200; //Prevent Scaling Planets in Main Menu
-                            planetData.precision = (!DSPGame.IsMenuDemo) ? planetSizeParam.Key : 200; //Prevent Scaling Planets in Main Menu
+                            planetData.radius = planetSizeParam.Key; 
+                            planetData.precision = planetSizeParam.Key; 
                             int segments = (int) (planetData.radius / 4f + 0.1f) * 4;
                             PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
 
-                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value && !DSPGame.IsMenuDemo) { //Prevent Scaling Planets in Main Menu
+                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value) { 
                                 if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
                                     for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
                                         if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius) {
