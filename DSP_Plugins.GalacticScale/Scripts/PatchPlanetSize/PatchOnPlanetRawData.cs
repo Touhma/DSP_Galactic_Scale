@@ -2,6 +2,7 @@
 using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
+using System;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlanetRawData))]
@@ -41,9 +42,28 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPatch("GetModLevel")]
         public static bool GetModLevel(int index, ref PlanetRawData __instance, ref int __result)
         {
-            __result = 0; // I ran debug log on the original function for half an hour as it churned out a stream of zeroes... hundreds of thousands of them. occasionally a 1, 2 or 3, but very very rarely. maybe a hundred values out of a million. Setting it to always zero allows the game to load. It may break something else!
+            try // try-catch block probably unnecessary, left in for debugging use in future
+            {
+                __result = __instance.modData[index >> 1] >> ((index & 1) << 2) & 3;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Patch.Debug("modData Index " + index + " doesn't exist: " + e, LogLevel.Error, true);
+                return false;
+            }
+
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch("InitModData")]
+        public static bool InitModData(byte[] refModData, ref PlanetRawData __instance, ref byte[] __result)
+        {
+            Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Message, Patch.DebugGetModPlane);
+            __instance.modData = new byte[__instance.dataLength]; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now
+            __result = __instance.modData;
             return false;
         }
+
 
         [HarmonyPrefix]
         [HarmonyPatch("QueryModifiedHeight")]
