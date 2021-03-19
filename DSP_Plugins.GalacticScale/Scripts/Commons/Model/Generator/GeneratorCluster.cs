@@ -8,6 +8,6 @@ namespace GalacticScale.Scripts {
         public Dictionary<EStarType, int> NbOfStarByType = new Dictionary<EStarType, int>();
         public Dictionary<ESpectrType, int> NbOfStarBySpectre = new Dictionary<ESpectrType, int>();
         
-        public List<GeneratorStar> ClusterStars = new List<GeneratorStar>();
+        public List<GeneratorSystem> ClusterSystems = new List<GeneratorSystem>();
     }
 }

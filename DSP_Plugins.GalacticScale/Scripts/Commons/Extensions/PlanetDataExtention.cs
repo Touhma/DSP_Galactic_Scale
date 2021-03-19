@@ -10,6 +10,7 @@ namespace GalacticScale.Scripts {
         public static float VanillaSizeTelluric = 200f;
         public static int VanillaPrecisionTelluric = 200;
         public static float VanillaScaleTelluric = 1f;
+        
         public static bool IsAMoon(this PlanetData planet) {
             return planet.orbitAround != 0;
         }
@@ -58,11 +59,7 @@ namespace GalacticScale.Scripts {
             if (planet.type == EPlanetType.Gas) return planet.radius / VanillaSizeGasGiant;
 
             scale = planet.radius / VanillaSizeTelluric;
-            /*
-            if (scale > VanillaScaleTelluric) {
-                return VanillaScaleTelluric;
-            }
-            */
+
             return scale;
         }
 
@@ -93,7 +90,7 @@ namespace GalacticScale.Scripts {
         }
 
         public static void OrbitAroundNeutronStar(this PlanetData planet) {
-            planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
+           // planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
         }
     }
 }
