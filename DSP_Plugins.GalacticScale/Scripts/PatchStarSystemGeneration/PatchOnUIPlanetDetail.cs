@@ -10,7 +10,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPatch("OnPlanetDataSet")]
         public static bool OnPlanetDataSet(ref UIPlanetDetail __instance,
             ref UIResAmountEntry ___tipEntry,
-            ref Text ___nameText,
+            // ref Text ___nameText,
+            ref InputField ___nameInput,
             ref Text ___typeText,
             ref Text ___orbitRadiusValueText,
             ref Text ___orbitRadiusValueTextEx,
@@ -39,7 +40,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 return false;
             var _observed = GameMain.history.universeObserveLevel >=
                             (__instance.planet != GameMain.localPlanet ? 2 : 1);
-            ___nameText.text = __instance.planet.displayName;
+            ___nameInput.text = __instance.planet.displayName;
             var empty = string.Empty;
             ___typeText.text = string.Format("{0} {1}", __instance.planet.typeString,
                 "<color=\"#FD965EC0\">" + __instance.planet.singularityString + "</color>");
