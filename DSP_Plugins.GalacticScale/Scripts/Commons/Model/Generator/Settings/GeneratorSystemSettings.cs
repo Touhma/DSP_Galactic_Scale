@@ -17,5 +17,10 @@
         public int MaxMoonTelluricNb = 0;
         public int MaxTelluricNb = 0;
         
+        public GeneratorOrbitsSettings GeneratorOrbitsSettings = new GeneratorOrbitsSettings();
+
+        public GeneratorStarSettings starsSetting = new GeneratorStarSettings();
+        public GeneratorPlanetSettings GeneratorPlanetSettings=new GeneratorPlanetSettings();
+        public GeneratorPlanetThemeSettings GeneratorPlanetThemeSettings = new GeneratorPlanetThemeSettings();
     }
 }

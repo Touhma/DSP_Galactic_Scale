@@ -40,7 +40,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
 
             
-            var configPath = Path.Combine(Path.Combine(Paths.BepInExRootPath, "config"), "test.json");
+            var configPath = Path.Combine(Path.Combine(Paths.BepInExRootPath, "config"), "GalacticScale.json");
             Debug("---------------------------------- configPath : " + configPath, LogLevel.Debug, true);
             GeneratorGlobalSettings gen = new GeneratorGlobalSettings();
            

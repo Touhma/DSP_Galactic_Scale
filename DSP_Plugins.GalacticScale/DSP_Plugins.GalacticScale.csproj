@@ -83,6 +83,7 @@
         <Compile Include="Scripts\Commons\Model\Generator\GeneratorSystem.cs" />
         <Compile Include="Scripts\Commons\Model\Generator\GeneratorCluster.cs" />
         <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorGlobalSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorOrbitsSettings.cs" />
         <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetSettings.cs" />
         <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetThemeSettings.cs" />
         <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorStarSettings.cs" />
