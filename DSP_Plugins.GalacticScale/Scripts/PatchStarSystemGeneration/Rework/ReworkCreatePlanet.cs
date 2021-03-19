@@ -410,6 +410,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                             }
                             
                         }
+                        break;
                     }
                 }
                 else {
