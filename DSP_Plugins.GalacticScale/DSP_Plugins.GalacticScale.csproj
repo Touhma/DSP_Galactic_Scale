@@ -84,6 +84,7 @@
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_BuildCheck.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
