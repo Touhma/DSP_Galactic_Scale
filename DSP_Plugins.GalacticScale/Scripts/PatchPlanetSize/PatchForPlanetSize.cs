@@ -134,6 +134,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_BuildCheck));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
                 Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
