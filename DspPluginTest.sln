@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSP_Plugins.QOLFeatures", "DSP_Plugins.QOLFeatures\DSP_Plugins.QOLFeatures.csproj", "{658BB596-C691-44CA-BDA8-A3D2ED9EEC26}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DSP_Plugins.Shared", "DSP_Plugins.Shared\DSP_Plugins.Shared.shproj", "{43957A34-AFDB-4502-8A9D-6578FAE6B233}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSP_Plugins.GalacticScale", "DSP_Plugins.GalacticScale\DSP_Plugins.GalacticScale.csproj", "{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}"
 EndProject
 Global
@@ -19,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{658BB596-C691-44CA-BDA8-A3D2ED9EEC26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{658BB596-C691-44CA-BDA8-A3D2ED9EEC26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{658BB596-C691-44CA-BDA8-A3D2ED9EEC26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{658BB596-C691-44CA-BDA8-A3D2ED9EEC26}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}.Release|Any CPU.ActiveCfg = Release|Any CPU

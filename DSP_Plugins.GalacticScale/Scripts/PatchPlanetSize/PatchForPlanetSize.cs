@@ -6,15 +6,14 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
-    [BepInPlugin("touhma.dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
+    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
     public class PatchForPlanetSize : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
         public static bool DebugGeneral = false;
         public static bool DebugPlanetRawData = false;
         public static bool DebugGetModPlane = false;
-        public static bool DebugPlanetData = false;
-        public static bool DebugPlanetDataDeep = false;
+        public static bool DebugNewPlanetGrid = false;
         public static bool DebugPlanetModelingManager = false;
         public static bool DebugPlanetModelingManagerDeep = false;
         public static bool DebugAtmoBlur = false;
@@ -58,7 +57,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static ConfigEntry<string> LimitedResizingChances;
 
         internal void Awake() {
-            var harmony = new Harmony("touhma.dsp.galactic-scale.planet-size");
+            var harmony = new Harmony("dsp.galactic-scale.planet-size");
 
             //Adding the Logger
             Logger = new ManualLogSource("PatchForPlanetSize");
@@ -135,9 +134,11 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerNavigation));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_BuildCheck));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
+                Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
+                Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
+                Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
             }
         }
 

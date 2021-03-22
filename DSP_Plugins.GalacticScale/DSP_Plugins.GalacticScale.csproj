@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GalacticScale</RootNamespace>
-    <AssemblyName>Touhma-GalacticScale</AssemblyName>
+    <AssemblyName>GalacticScale</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,6 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -81,18 +84,22 @@
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_BuildCheck.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Customs\StartingSystemGeneration.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetData.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
@@ -107,12 +114,25 @@
     <Content Include="icon.png" />
     <Content Include="manifest.json" />
     <Content Include="README.md" />
-    <Content Include="Touhma-GalacticScale.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Delete Files="G:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\DSP_Plugin.dll" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles=".\bin\Debug\Touhma-GalacticScale.dll" DestinationFolder="G:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\" />
+    <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
+    <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
+  </Target>
+  <Target Name="CreateDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
+    <Exec Command="start &quot;&quot; /d &quot;$(pdb2mdb_Path)&quot; pdb2mdb $(TargetPath)" />
+    <Exec Command="ping -n 2 127.0.0.1 &gt; nul" />
+  </Target>
+  <Target Name="CopyDebugMDB" AfterTargets="CreateDebugMDB" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath).mdb" DestinationFolder="$(Plugins_Dir)" />
+  </Target>
+  <Target Name="CleanDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' != 'Debug' OR $(pdb2mdb_Path) == ''">
+    <Delete Files="&quot;$(Plugins_Dir)&quot;Touhma-GalacticScale.dll.mdb" />
+  </Target>
+  <Target Name="AfterClean">
+    <Delete Files="$(TargetPath).mdb" />
   </Target>
 </Project>

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
+using PatchSizeReworkPlanetGen = GalacticScale.Scripts.PatchPlanetSize.ReworkPlanetGen;
 using Random = System.Random;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
@@ -71,7 +72,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             Patch.Debug("Rotation definition", LogLevel.Debug,
                 Patch.DebugReworkPlanetGen);
-           
+
 
             // Planet
             Patch.Debug("Body Stuff", LogLevel.Debug,
@@ -101,12 +102,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 // rotation period
                 planetData.rotationPeriod = randomNumber8 * randomNumber9 * Patch.RotationPeriodVariabilityFactor.Value +
                                             Patch.RotationPeriodBaseTime.Value;
-                
+
                 //rotation period
                 if (planetData.IsGasGiant() || planetData.star.type == EStarType.NeutronStar)
                     planetData.rotationPeriod *= 0.200000002980232;
                 else if (planetData.star.type == EStarType.BlackHole) planetData.rotationPeriod *= 0.150000005960464;
-        
+
                 planetData.sunDistance = planetData.orbitRadius;
 
                 //Tidal Lock Management
@@ -320,7 +321,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //Size related stuff : 
             if (planetData.type == EPlanetType.Gas) {
                 var radiusGasGiantWanted = PatchSize.VanillaGasGiantSize;
-                if (PatchSize.EnableResizingFeature.Value) {
+                if (PatchSize.EnableResizingFeature.Value) { 
                     //Default : 0.25
                     var minScalingGasGiantRatio =
                         (PatchSize.BaseGasGiantSize.Value - PatchSize.BaseGasGiantSizeVariationFactor.Value) /
@@ -334,7 +335,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 planetData.scale = PatchSize.VanillaGasGiantScale;
                 planetData.radius = radiusGasGiantWanted / planetData.scale;
-
+                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value) {
+                    int segments = (int) (planetData.radius / 4f + 0.1f) * 4;
+                    PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                }
                 planetData.precision = 64;
                 planetData.segment = 2;
             }
@@ -382,19 +386,31 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
                         if (choice <= planetSizeParam.Value) {
-                            planetData.radius = planetSizeParam.Key;
-                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value)
+                            planetData.radius = planetSizeParam.Key; 
+                            planetData.precision = planetSizeParam.Key; 
+                            int segments = (int) (planetData.radius / 4f + 0.1f) * 4;
+                            PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+
+                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value) { 
                                 if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
                                     for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
                                         if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius) {
                                             if (i != 0) {
                                                 planetData.radius = PatchSize.PlanetSizeList[i - 1];
-
+                                                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value) {
+                                                    planetData.precision = PatchSize.PlanetSizeList[i - 1];
+                                                    segments = (int) (planetData.radius / 4f + 0.1f) * 4;
+                                                    PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
                                 }
+                            }
+                            
                         }
+                        break;
                     }
                 }
                 else {
@@ -402,7 +418,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     planetData.scale = PatchSize.VanillaTelluricScale;
                     planetData.precision = PatchSize.VanillaTelluricPrecision;
                 }
-
                 planetData.segment = 5;
             }
             else {

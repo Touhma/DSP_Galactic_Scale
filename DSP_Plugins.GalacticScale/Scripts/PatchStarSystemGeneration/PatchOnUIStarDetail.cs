@@ -11,7 +11,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPatch("OnStarDataSet")]
         private static bool OnStarDataSet(
             StarData ____star,
-            Text ___nameText,
+            InputField ___nameInput,
             Text ___typeText,
             RectTransform ___paramGroup,
             Text ___massValueText,
@@ -27,6 +27,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             UIResAmountEntry ___entryPrafab,
             ref UIStarDetail __instance
         ) {
+            var getEntry = Traverse.Create(__instance).Method("GetEntry");
+            
             for (int index = 0; index < __instance.entries.Count; ++index) {
                 UIResAmountEntry entry = __instance.entries[index];
                 entry.SetEmpty();
@@ -38,7 +40,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
             double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
             bool _observed = GameMain.history.universeObserveLevel >= (__instance.star != GameMain.localStar ? (magnitude >= 14400000.0 ? 4 : 3) : 2);
-            ___nameText.text = __instance.star.displayName;
+            ___nameInput.text = __instance.star.displayName;
             ___typeText.text =(__instance.star.typeString);
             ___massValueText.text =(__instance.star.mass.ToString("0.000") + " M    ");
             ___spectrValueText.text =(__instance.star.spectr.ToString());
@@ -57,7 +59,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 if (_observed || type < 7) {
                     bool flag = (!__instance.star.loaded ? __instance.star.GetResourceSpots(type) > 0 : __instance.star.GetResourceAmount(type) > 0L) || type < 7;
                     if (veinProto != null && itemProto != null && flag) {
-                        UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;
+                        UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                         __instance.entries.Add(entry);
                         entry.SetInfo(num, itemProto.name, veinProto.iconSprite, veinProto.description, type >= 7, false, type != 7 ? "                " : "         /s");
                         entry.refId = id;
@@ -74,7 +76,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         if (itemProto != null) {
                             Sprite iconSprite = itemProto.iconSprite;
                             string name = itemProto.name;
-                            UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;
+                            UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                             __instance.entries.Add(entry);
                             entry.SetInfo(num, name, iconSprite, itemProto.description, itemProto != null && waterItemId != 1000, false, string.Empty);
                             entry.valueString = "海洋".Translate();
@@ -105,7 +107,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             foreach (var keyValuePair in ressources) {
                 ItemProto itemProto = LDB.items.Select(keyValuePair.Key);
                 
-                UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);
+                UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                 __instance.entries.Add(entry);
                 if (_observed) {
                     entry.SetInfo(num, itemProto.name, itemProto.iconSprite, itemProto.description, false, false, "        /s");
@@ -126,7 +128,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
             
             if (!_observed) {
-                UIResAmountEntry entry = Object.Instantiate(___entryPrafab, ___entryPrafab.transform.parent);;;
+                UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                 __instance.entries.Add(entry);
                 entry.SetInfo(num, string.Empty, null, string.Empty, false, false, string.Empty);
                 ___tipEntry = entry;

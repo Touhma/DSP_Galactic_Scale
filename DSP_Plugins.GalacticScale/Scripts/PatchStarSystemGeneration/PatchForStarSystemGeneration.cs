@@ -7,7 +7,7 @@ using HarmonyLib;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
-    [BepInPlugin("touhma.dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
+    [BepInPlugin("dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
         "1.0.0.0")]
     public class PatchForStarSystemGeneration : BaseUnityPlugin {
         public new static ManualLogSource Logger;
@@ -161,7 +161,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static ConfigEntry<bool> EnableCustomStarAlgorithm;
 
         internal void Awake() {
-            var harmony = new Harmony("touhma.dsp.galactic-scale.star-system-generation");
+            var harmony = new Harmony("dsp.galactic-scale.star-system-generation");
 
             //Adding the Logger
             Logger = new ManualLogSource("PatchForStarSystemGeneration");
@@ -584,6 +584,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
 
             if (EnableCustomStarAlgorithm.Value) {
+                Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
                 Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));

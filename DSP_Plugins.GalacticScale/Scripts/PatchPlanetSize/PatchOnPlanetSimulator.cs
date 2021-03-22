@@ -6,7 +6,6 @@ using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
-
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlanetSimulator))]
     public class PatchOnPlanetSimulator {
