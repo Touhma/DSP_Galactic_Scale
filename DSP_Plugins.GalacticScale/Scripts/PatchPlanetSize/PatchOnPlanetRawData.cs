@@ -59,7 +59,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool InitModData(byte[] refModData, ref PlanetRawData __instance, ref byte[] __result)
         {
             Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Message, Patch.DebugGetModPlane);
-            __instance.modData = new byte[__instance.dataLength]; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now
+            __instance.modData = refModData == null ? new byte[__instance.dataLength] : refModData; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now
             __result = __instance.modData;
             return false;
         }
@@ -85,6 +85,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             var magnetudeOnPrecisionDummy = 0.0f;
             var HeightTimePrecision = 0.0f;
             var stride = __instance.stride;
+            //Stride is 62 for small planets, 322 for large planets
             for (var index2 = -1; index2 <= 3; ++index2)
             for (var index3 = -1; index3 <= 3; ++index3) {
                 var index4 = index1 + index2 + index3 * stride;
