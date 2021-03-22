@@ -30,7 +30,10 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
-    <ItemGroup>
+    <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
         <Reference Include="0Harmony">
             <HintPath>..\Libs\0Harmony.dll</HintPath>
         </Reference>
@@ -99,7 +102,9 @@
         <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
         <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
         <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
-        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_BuildCheck.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
         <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
         <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
         <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
@@ -134,7 +139,20 @@
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
-        <Delete Files="$(Plugins_Dir)GalacticScale.dll" />
-        <Copy OverwriteReadOnlyFiles="true" SourceFiles=".\bin\Debug\GalacticScale.dll" DestinationFolder="$(Plugins_Dir)" />
+        <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
+        <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
+  </Target>
+  <Target Name="CreateDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
+    <Exec Command="start &quot;&quot; /d &quot;$(pdb2mdb_Path)&quot; pdb2mdb $(TargetPath)" />
+    <Exec Command="ping -n 2 127.0.0.1 &gt; nul" />
+  </Target>
+  <Target Name="CopyDebugMDB" AfterTargets="CreateDebugMDB" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath).mdb" DestinationFolder="$(Plugins_Dir)" />
     </Target>
+  <Target Name="CleanDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' != 'Debug' OR $(pdb2mdb_Path) == ''">
+    <Delete Files="&quot;$(Plugins_Dir)&quot;Touhma-GalacticScale.dll.mdb" />
+  </Target>
+  <Target Name="AfterClean">
+    <Delete Files="$(TargetPath).mdb" />
+  </Target>
 </Project>

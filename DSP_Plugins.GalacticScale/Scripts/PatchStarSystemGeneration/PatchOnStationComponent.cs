@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
+
 using HarmonyLib;
+using System.Collections.Generic;
+using System.Reflection.Emit;
+using System.Linq;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [HarmonyPatch(typeof(StationComponent))]
@@ -44,7 +45,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         /* 0x0002F01B 1140         */// IL_1BEB: ldloc.s V_64                   // loop prep - load the planetA ID stored prior
         /* 0x0002F01D 1342         */// IL_1BED: stloc.s V_66                   // loop prep - save that ID into a new temp variable (i)
         /* 0x0002F01F 380E010000   */// IL_1BEF: br IL_1D02                     //skip to the for loop's limit checking line
-        // ...                                     //skipping the code inside the loop
+                                     // ...                                     //skipping the code inside the loop
         /* 0x0002F132 1142         */// IL_1D02: ldloc.s   V_66                 // load in the loop variable
         /* 0x0002F134 1140         */// IL_1D04: ldloc.s   V_64                 // load planet A's ID
         /* 0x0002F136 1F0A         */// IL_1D06: ldc.i4.s  10                   // load the value 10
@@ -55,25 +56,26 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         // But, thankfully, we know that the line immediately before ldc.i4.s 10 is the variable we want to refer to.
         [HarmonyTranspiler]
         [HarmonyPatch("InternalTickRemote")]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
-                if (codes[i].opcode == OpCodes.Ldc_I4_S && codes[i].OperandIs(10)) {
-                    var newInstructions = new List<CodeInstruction>();
-                    newInstructions.Add(new CodeInstruction(OpCodes.Ldsfld, typeof(GameMain).GetField("data")));//load GameMain.data
-                    newInstructions.Add(new CodeInstruction(OpCodes.Ldfld, typeof(GameData).GetField("galaxy")));// access galaxy from GameMain.data
-                    newInstructions.Add(new CodeInstruction(codes[i - 1]));//The line before adding 10 is the line which loads in the planet ID we care about, so copy it
-                    newInstructions.Add(new CodeInstruction(OpCodes.Ldc_I4_1));// Load the value 1
-                    newInstructions.Add(new CodeInstruction(OpCodes.Add));// Add 1 to the planet ID, because astroPoses is zero-indexed and planet IDs are 1-indexed.
-                    newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(GalaxyData).GetMethod("PlanetById")));// Call PlanetById on the galaxyData using the specified ID
-                    newInstructions.Add(new CodeInstruction(OpCodes.Ldfld, typeof(PlanetData).GetField("star")));// Get the planet's star
-                    newInstructions.Add(new CodeInstruction(OpCodes.Ldfld, typeof(StarData).GetField("planetCount")));// Get the count of planets around this star
-                    newInstructions.Add(new CodeInstruction(OpCodes.Ldc_I4_1));// Load the value 1
-                    newInstructions.Add(new CodeInstruction(OpCodes.Add));// Add 1 to the number of planets, because the comparison is < and not <=
-                    codes.RemoveAt(i);// Remove the original loading of 10
-                    codes.InsertRange(i, newInstructions);//Instead, load the count of planets around the target star (plus one)
+                if (codes[i].opcode == OpCodes.Ldc_I4_S && codes[i].OperandIs(10))
+                {
+                    List<CodeInstruction> newInstructions = new List<CodeInstruction>();
+                    newInstructions.Add(new CodeInstruction(codes[i - 1])); //The line before adding 10 is the line which loads in the planet ID we care about, so copy it
+                    newInstructions.Add(Transpilers.EmitDelegate<Del>(bodyID =>
+                        // We add 1 to the body ID because it was originally an index in the astroPoses array but we need the actual ID of it.
+                        // We add 1 to the planet count because the loop is <, not <=
+                        GameMain.galaxy.PlanetById(bodyID + 1).star.planetCount + 1));
+                    codes.RemoveAt(i); // Remove the original loading of 10
+                    codes.InsertRange(i, newInstructions); //Instead, load the count of planets around the target star (plus one)
                 }
             return codes.AsEnumerable();
+            
         }
+        delegate int Del(int bodyID);
     }
+
+
 }

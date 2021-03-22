@@ -11,7 +11,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         [HarmonyPatch("OnStarDataSet")]
         private static bool OnStarDataSet(
             StarData ____star,
-            Text ___nameText,
+            InputField ___nameInput,
             Text ___typeText,
             RectTransform ___paramGroup,
             Text ___massValueText,
@@ -40,7 +40,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
             double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
             bool _observed = GameMain.history.universeObserveLevel >= (__instance.star != GameMain.localStar ? (magnitude >= 14400000.0 ? 4 : 3) : 2);
-            ___nameText.text = __instance.star.displayName;
+            ___nameInput.text = __instance.star.displayName;
             ___typeText.text =(__instance.star.typeString);
             ___massValueText.text =(__instance.star.mass.ToString("0.000") + " M    ");
             ___spectrValueText.text =(__instance.star.spectr.ToString());

@@ -17,28 +17,29 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPrefix]
         [HarmonyPatch("Update")]
         public static bool Update(UIBuildingGrid __instance, Material ___material, Material ___altMaterial) {
-            if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value) {
-                int segments;
-                if (refreshGridRadius != -1) {
-                    if (___material == null) {
-                        Patch.Debug("Material was null!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
-                        return true;
+            if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value) 
+                if (!DSPGame.IsMenuDemo) {
+                    int segments;
+                    if (refreshGridRadius != -1) {
+                        if (___material == null) {
+                            Patch.Debug("Material was null!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
+                            return true;
+                        }
+                        segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
+                        if (LUT512.ContainsKey(segments)) {
+                            Patch.Debug("Updating LUT for radius + " + refreshGridRadius + " and segments " + segments + "!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
+                            UpdateTextureToLUT(___material, segments);
+                        }
+                        else {
+                            //TODO
+                            Patch.Debug("LUT512 did not yet contain the texture for refreshing.", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
+                            refreshGridRadius = -1;
+                        }
                     }
-                    segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
-                    if (LUT512.ContainsKey(segments)) {
-                        Patch.Debug("Updating LUT for radius + " + refreshGridRadius + " and segments " + segments + "!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
-                        UpdateTextureToLUT(___material, segments);
-                    }
-                    else {
-                        //TODO
-                        Patch.Debug("LUT512 did not yet contain the texture for refreshing.", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
-                        refreshGridRadius = -1;
-                    }
+                    return true;
                 }
                 return true;
             }
-            return true;
-        }
 
         public static void UpdateTextureToLUT(Material material, int segment) {
             Texture tex = material.GetTexture("_SegmentTable");
