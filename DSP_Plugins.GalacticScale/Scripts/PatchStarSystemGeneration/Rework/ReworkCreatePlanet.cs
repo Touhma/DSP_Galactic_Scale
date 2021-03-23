@@ -401,7 +401,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                                     planetData.precision = PatchSize.PlanetSizeList[i - 1];
                                                     segments = (int) (planetData.radius / 4f + 0.1f) * 4;
                                                     PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
-                                                    break;
+                                                    if (PatchSize.Break) break;
                                                 }
                                             }
                                         }
@@ -410,7 +410,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                             }
                             
                         }
-                        break;
+                        if (PatchSize.Break) break;
                     }
                 }
                 else {

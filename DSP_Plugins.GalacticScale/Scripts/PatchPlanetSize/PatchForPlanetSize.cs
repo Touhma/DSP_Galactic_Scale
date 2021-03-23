@@ -6,10 +6,11 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
-    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
+    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.1.0.0")]
     public class PatchForPlanetSize : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
+        public static string Version = "1.3.2.1";
         public static bool DebugGeneral = false;
         public static bool DebugPlanetRawData = false;
         public static bool DebugGetModPlane = false;
@@ -18,7 +19,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DebugPlanetModelingManagerDeep = false;
         public static bool DebugAtmoBlur = false;
 
-
+        public static bool Break = true; // If false, don't break while selecting planet sizes to enable save load from 1.3.1
         public static float VanillaGasGiantSize = 800f;// will be rescaled in the create planet
         public static float VanillaGasGiantScale = 10f;// will be rescaled in the create planet
         public static float VanillaTelluricSize = 200f;
@@ -28,7 +29,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static Dictionary<int, float> PlanetSizeParams = new Dictionary<int, float>();
         public static List<int> PlanetSizeList = new List<int>();
 
-
+        public static ConfigEntry<bool> OldPlanetSelection;
         public static ConfigEntry<bool> EnableResizingFeature;
         public static ConfigEntry<bool> EnableLimitedResizingFeature;
         public static ConfigEntry<bool> EnableMoonSizeFailSafe;
@@ -71,6 +72,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "LimitedResizingArray",
                 "50,100,200",
                 "limited version of the resizing feature : will be here the time we fix the other one");
+            OldPlanetSelection = Config.Bind("galactic-scale-planets-size",
+                "OldPlanetSelection",
+                false,
+                "use the broken planet selection from 1.3.1 to prevent small planets on older saves");
 
             LimitedResizingChances = Config.Bind("galactic-scale-planets-size",
                 "LimitedResizingChances",
@@ -117,6 +122,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 1200f,
                 "Used to create variation on the planet size : help defining the min & max size for a gas giant --  -- Not Advised to modify YET");
 
+            if (OldPlanetSelection.Value)
+            {
+                Break = !OldPlanetSelection.Value;
+            }
             if (EnableResizingFeature.Value || EnableLimitedResizingFeature.Value) {
 
                 ParseResizinSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
