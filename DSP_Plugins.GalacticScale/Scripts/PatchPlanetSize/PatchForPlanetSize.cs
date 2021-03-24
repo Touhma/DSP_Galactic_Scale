@@ -63,6 +63,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             //Adding the Logger
             Logger = new ManualLogSource("PatchForPlanetSize");
             BepInEx.Logging.Logger.Sources.Add(Logger);
+
+            OldPlanetSelection = Config.Bind("galactic-scale-planets-size",
+               "OldPlanetSelection",
+               false,
+               "use the broken planet selection from 1.3.1 to prevent small planets on older saves");
+
             EnableLimitedResizingFeature = Config.Bind("galactic-scale-planets-size",
                 "EnableLimitedResizingFeature",
                 true,
@@ -72,10 +78,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "LimitedResizingArray",
                 "50,100,200",
                 "limited version of the resizing feature : will be here the time we fix the other one");
-            OldPlanetSelection = Config.Bind("galactic-scale-planets-size",
-                "OldPlanetSelection",
-                false,
-                "use the broken planet selection from 1.3.1 to prevent small planets on older saves");
 
             LimitedResizingChances = Config.Bind("galactic-scale-planets-size",
                 "LimitedResizingChances",
