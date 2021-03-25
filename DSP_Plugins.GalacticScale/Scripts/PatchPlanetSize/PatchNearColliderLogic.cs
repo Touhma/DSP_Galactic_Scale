@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using FullSerializer;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
@@ -10,6 +11,30 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(NearColliderLogic))]
     static class PatchNearColliderLogic
     {
+        private static readonly fsSerializer _serializer = new fsSerializer();
+
+        public static string Serialize(Type type, object value)
+        {
+            // serialize the data
+            fsData data;
+            _serializer.TrySerialize(type, value, out data).AssertSuccessWithoutWarnings();
+
+            // emit the data via JSON
+            return fsJsonPrinter.CompressedJson(data);
+        }
+
+        public static object Deserialize(Type type, string serializedState)
+        {
+            // step 1: parse the JSON data
+            fsData data = fsJsonParser.Parse(serializedState);
+
+            // step 2: deserialize the data
+            object deserialized = null;
+            _serializer.TryDeserialize(data, type, ref deserialized).AssertSuccessWithoutWarnings();
+
+            return deserialized;
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch("RefreshCollidersOnArrayChange")]
         public static bool PatchRefreshCollidersOnArrayChange(NearColliderLogic __instance)
@@ -130,6 +155,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     int activeColHash = ___activeColHashes[index1];
                     ColliderData[] colliderPool = ___colChunks[activeColHash].colliderPool;
                     Patch.Log("activeColHash = " + activeColHash + " colliderPool Length = " + colliderPool.Length + " ___colChunks length = " + ___colChunks.Length);
+                    Patch.Log(Serialize(typeof(ColliderData[]), colliderPool));
                     for (int index2 = 1; index2 < ___colChunks[activeColHash].cursor; ++index2)
                     {
                         if (colliderPool[index2].idType != 0 && colliderPool[index2].usage != EColliderUsage.Build && colliderPool[index2].objType == EObjectType.Vein && (double)(colliderPool[index2].pos - center).sqrMagnitude <= (double)areaRadius * (double)areaRadius + (double)colliderPool[index2].ext.sqrMagnitude)
