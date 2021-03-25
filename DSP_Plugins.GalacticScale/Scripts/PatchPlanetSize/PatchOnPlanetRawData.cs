@@ -162,5 +162,39 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             return false;
         }
+        //[HarmonyPrefix]
+        //[HarmonyPatch("QueryHeight")]
+        //public float QueryHeight(Vector3 vpos)
+        //{
+        //    vpos.Normalize();
+        //    int index1 = this.indexMap[this.PositionHash(vpos)];
+        //    float num1 = (float)(3.14159274101257 / (double)(this.precision * 2) * 1.20000004768372);
+        //    float num2 = num1 * num1;
+        //    float num3 = 0.0f;
+        //    float num4 = 0.0f;
+        //    int stride = this.stride;
+        //    for (int index2 = -1; index2 <= 3; ++index2)
+        //    {
+        //        for (int index3 = -1; index3 <= 3; ++index3)
+        //        {
+        //            int index4 = index1 + index2 + index3 * stride;
+        //            if ((long)(uint)index4 < (long)this.dataLength)
+        //            {
+        //                float sqrMagnitude = (this.vertices[index4] - vpos).sqrMagnitude;
+        //                if ((double)sqrMagnitude <= (double)num2)
+        //                {
+        //                    float num5 = (float)(1.0 - (double)Mathf.Sqrt(sqrMagnitude) / (double)num1);
+        //                    float num6 = (float)this.heightData[index4];
+        //                    num3 += num5;
+        //                    num4 += num6 * num5;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    if ((double)num3 != 0.0)
+        //        return (float)((double)num4 / (double)num3 * 0.00999999977648258);
+        //    Debug.LogWarning((object)"bad query");
+        //    return (float)this.heightData[0] * 0.01f;
+        //}
     }
 }

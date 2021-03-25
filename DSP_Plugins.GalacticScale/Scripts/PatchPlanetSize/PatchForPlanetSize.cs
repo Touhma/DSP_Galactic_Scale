@@ -139,6 +139,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
+                Harmony.CreateAndPatchAll(typeof(PatchBuildingGizmo));
+                Harmony.CreateAndPatchAll(typeof(PatchNearColliderLogic));
+                //Harmony.CreateAndPatchAll(typeof(PatchPlanetAlgorithm));
             }
         }
 
@@ -155,6 +158,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
             if (isActive) Logger.Log(logLevel, data);
+        }
+        public static void Log(object data)
+        {
+            Debug(data, LogLevel.Message, true);
         }
     }
 }
