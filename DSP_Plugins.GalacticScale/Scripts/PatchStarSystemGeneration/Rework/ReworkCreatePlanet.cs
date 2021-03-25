@@ -404,18 +404,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                                     break;
                                                 }
                                             }
-                                            if (i == 0 && PatchSize.PlanetSizeList[0] == planetData.orbitAroundPlanet.radius && PatchSize.PlanetSizeList.Count > 1) //If the planet is already the smallest size, and there are more than one size in the list
-                                            {
-                                                planetData.radius = PatchSize.PlanetSizeList[0];
-                                                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
-                                                {
-                                                    planetData.precision = PatchSize.PlanetSizeList[0];
-                                                    segments = (int)(planetData.radius / 4f + 0.1f) * 4;
-                                                    PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
-                                                    break;
-                                                }
-                                            }
-                                            
                                         }
                                     }
                                 }
