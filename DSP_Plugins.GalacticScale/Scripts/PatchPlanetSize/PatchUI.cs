@@ -40,11 +40,14 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     string userName = ___displayAccount.detail.userName;
                     if (string.IsNullOrEmpty(userName))
                     {
-                        ___textComp.fontSize = 10;
+                        ___textComp.fontSize = 18;
                         ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\nGalactic Scale v" + Patch.Version;
                     }
                     else
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + "\r\nGalactic Scale v" + Patch.Version;
+                    {
+                        ___textComp.fontSize = 24;
+                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + Patch.Version;
+                    }
 
                 }
             }
