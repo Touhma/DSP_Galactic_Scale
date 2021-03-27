@@ -114,13 +114,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 planetData.sunDistance = planetData.orbitRadius;
 
                 //Tidal Lock Management
-                if (randomNumber13 < Patch.ChanceTidalLock.Value) {
+                if (randomNumber12 < Patch.ChanceTidalLock.Value) {
                     if (randomNumber13 < Patch.ChanceTidalLock1.Value) {
                         planetData.obliquity *= 0.01f;
                         planetData.rotationPeriod = planetData.orbitalPeriod;
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked);
                     }
-                    else if (randomNumber13 < Patch.ChanceTidalLock2.Value) {
+                    else if (randomNumber7 < Patch.ChanceTidalLock2.Value) {
                         planetData.obliquity *= 0.1f;
                         planetData.rotationPeriod = planetData.orbitalPeriod * 0.5;
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked2);
