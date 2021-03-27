@@ -139,13 +139,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
-<<<<<<< Updated upstream
                 Harmony.CreateAndPatchAll(typeof(PatchBuildingGizmo));
                 Harmony.CreateAndPatchAll(typeof(PatchNearColliderLogic));
                 //Harmony.CreateAndPatchAll(typeof(PatchPlanetAlgorithm));
-=======
                 Harmony.CreateAndPatchAll(typeof(PatchUI));
->>>>>>> Stashed changes
             }
         }
 
