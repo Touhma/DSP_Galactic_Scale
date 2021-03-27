@@ -387,7 +387,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 }
                 else if (PatchSize.EnableLimitedResizingFeature.Value) {
                     var choice = mainSeed.NextDouble();
-                    PatchSize.Log(PatchSize.Serialize(PatchSize.PlanetSizeParams.GetType(), PatchSize.PlanetSizeParams));
+                    
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
                         Patch.Debug(planetSizeParam.Key + " - " + planetSizeParam.Value + " - " + choice, LogLevel.Message, true);
                         if (choice <= planetSizeParam.Value) {
@@ -395,7 +395,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                             planetData.precision = planetSizeParam.Key; 
                             int segments = (int) (planetData.radius / 4f + 0.1f) * 4;
                             PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
-                            Patch.Debug(planetSizeParam.Key + " selected", LogLevel.Message, true);
                             if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value) { 
                                 if (planetData.orbitAroundPlanet.radius <= planetData.radius) {
                                     for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++) {
@@ -425,9 +424,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                 }
                             }
                         break;    
-                        }
-
-                        
+                        }             
                     }
                 }
                 else {
