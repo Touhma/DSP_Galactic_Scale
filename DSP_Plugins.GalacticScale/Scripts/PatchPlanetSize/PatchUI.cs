@@ -9,11 +9,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(UIVersionText))]
     public class PatchUI{
 
-        public static int refreshGridRadius = -1;
-
-        //segment count to 512 lut
-        public static Dictionary<int, int[]> LUT512 = new Dictionary<int, int[]>();
-
         [HarmonyPrefix]
         [HarmonyPatch("Refresh")]
         public static bool PatchRefresh (ref Text ___textComp, string ___prefix, ref AccountData ___displayAccount, ref bool ___firstFrame)
