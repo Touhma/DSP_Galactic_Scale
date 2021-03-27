@@ -420,9 +420,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                                     }
                                 }
                             }
-                            
+                        break;    
                         }
-                        break;
+                        
                     }
                 }
                 else {
