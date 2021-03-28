@@ -1,5 +1,9 @@
 ﻿namespace GalacticScale.Scripts {
     public class GeneratorGlobalSettings {
+        public bool UseCustomBirthStar = false;
+        public EStarType BirthStarType = EStarType.MainSeqStar;
+        public ESpectrType BirthStarSpectr = ESpectrType.O;
+        
         public GeneratorClusterSettings GeneratorClusterSettings =new GeneratorClusterSettings();
 
         public bool UseGeneralSettingsForOrbits = false;

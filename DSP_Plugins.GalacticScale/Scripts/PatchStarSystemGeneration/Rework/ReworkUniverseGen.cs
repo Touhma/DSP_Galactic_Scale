@@ -1,15 +1,7 @@
-﻿using System.IO;
-using BepInEx;
-using UnityEngine;
-
-namespace GalacticScale.Scripts.PatchStarSystemGeneration {
-    
-    
+﻿namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public class ReworkUniverseGen {
-        public static void ReworkCreateGalaxy(GameDesc gameDesc) {
-         
-
-
+        public static GalaxyData ReworkCreateGalaxy(GameDesc gameDesc) {
+            return new GalaxyData();
         }
     }
 

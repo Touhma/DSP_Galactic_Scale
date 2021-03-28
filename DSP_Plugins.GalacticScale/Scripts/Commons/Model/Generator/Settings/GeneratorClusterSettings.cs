@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace GalacticScale.Scripts {
     public class GeneratorClusterSettings {
-        public int MinStarNumber = 0;
-        public int MaxStarNumber = 0;
 
         public int IterationCount = 0;
         public float MinStarDistances = 0f;

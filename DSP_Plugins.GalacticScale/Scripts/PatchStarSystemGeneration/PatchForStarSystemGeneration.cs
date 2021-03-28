@@ -5,6 +5,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using FullSerializer;
+using GalacticScale.Scripts.PatchStarSystemGeneration.Generator;
 using HarmonyLib;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
@@ -20,6 +21,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static bool DebugStarGen = false;
         public static bool DebugStarGenDeep = false;
         public static bool DebugStarNamingGen = false;
+
+        public static GeneratorGlobalSettings gen = new GeneratorGlobalSettings();
 
 
         public class Test {
@@ -42,9 +45,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             
             var configPath = Path.Combine(Path.Combine(Paths.BepInExRootPath, "config"), "GalacticScale.json");
             Debug("---------------------------------- configPath : " + configPath, LogLevel.Debug, true);
-            GeneratorGlobalSettings gen = new GeneratorGlobalSettings();
-           
-            
+
+
+            //*
 
             fsSerializer serializer = new fsSerializer();
             
@@ -60,7 +63,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             // JsonConvert.PopulateObject( testConfig , result);
             Debug("---------------------------------- Test : " + result.GeneratorClusterSettings.Flatten, LogLevel.Debug, true);
-
+    //*/
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

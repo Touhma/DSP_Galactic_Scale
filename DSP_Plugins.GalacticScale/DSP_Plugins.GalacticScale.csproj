@@ -114,6 +114,9 @@
         <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
         <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
         <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\ClusterGenerator.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\PlanetGenerator.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\StarGenerator.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\Generator\SystemGenerator.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
@@ -125,6 +128,7 @@
         <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIStarDetail.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUniverseGen.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkPlanetGen.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkSetPlanetTheme.cs" />
         <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
