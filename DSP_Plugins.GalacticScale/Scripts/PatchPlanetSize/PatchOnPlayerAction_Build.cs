@@ -8,6 +8,7 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlayerAction_Build))]
     public class PatchOnPlayerAction_Build {
+
         //Strategy: 1) Add scale factor to gas giant calls
         // There are two flavors of this currently, one for floats and one for Vector3s:
         //

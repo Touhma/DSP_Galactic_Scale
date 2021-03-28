@@ -62,17 +62,11 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libs\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UIModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +95,6 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchUIPlanetGlobe.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchUIGameLoadingSplash.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchUI.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />

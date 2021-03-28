@@ -9,7 +9,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.3.3.0")]
     public class PatchForPlanetSize : BaseUnityPlugin {
         public new static ManualLogSource Logger;
-        public static string Version = "1.3.3";
+
         public static bool DebugGeneral = false;
         public static bool DebugPlanetRawData = false;
         public static bool DebugGetModPlane = false;
@@ -141,7 +141,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
                 Harmony.CreateAndPatchAll(typeof(PatchBuildingGizmo));
                 Harmony.CreateAndPatchAll(typeof(PatchNearColliderLogic));
-                Harmony.CreateAndPatchAll(typeof(PatchUI));
             }
         }
 
