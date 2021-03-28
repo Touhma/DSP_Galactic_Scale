@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
+using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlayerAction_Build))]
@@ -130,23 +131,25 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static IEnumerable<CodeInstruction> DetermineBuildPreviews(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
+            {
                 if (i > 0 && codes[i].Is(OpCodes.Ldc_R4, 0.025f) && i < codes.Count - 1)
                     // This condition Add scale factor to gas giant calls. First we check for the existing static scale factor of 0.025f
                     // We check late and stop early because we operate with info all AROUND the current line when we do anything
                     if (codes[i - 1].Calls(typeof(Vector3).GetMethod("op_Multiply", new[] { typeof(Vector3), typeof(float) })) && codes[i - 2].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
-                        // check if the prior instruction is calling Vector3.Multiply and the further-prior instruction is callvirt float32 PlanetData::get_realRadius()
+                    // check if the prior instruction is calling Vector3.Multiply and the further-prior instruction is callvirt float32 PlanetData::get_realRadius()
                     {
                         var newInstructions = new List<CodeInstruction>();
                         for (var j = i - 3; j > 0 && j > i - 12; j--)
                             //loop BACKWARD until we reach ldarg.0 (sanity check: limit to 10 prior instructions)
-                            if (codes[j].opcode == OpCodes.Ldarg_0) {
+                            if (codes[j].opcode == OpCodes.Ldarg_0)
+                            {
                                 for (; j < i - 2; j++)
                                     //create a copy of each instruction FROM ldarg.0 TO (but not including) the get_realRadius instruction (this gets us the same PlanetData instance)
                                     newInstructions.Add(new CodeInstruction(codes[j]));
                                 break;
                             }
                         if (newInstructions.Count != 0)
-                            //If we didn't find ldarg.0, don't do anything with this instance as it is not a recognized pattern.
+                        //If we didn't find ldarg.0, don't do anything with this instance as it is not a recognized pattern.
                         {
                             //create a new instruction to call the GetScaleFactored() function on the same planetData instance
                             newInstructions.Add(new CodeInstruction(OpCodes.Callvirt, typeof(PlanetDataExtension).GetMethod("GetScaleFactored")));
@@ -159,7 +162,51 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                         }
 
                     }
+                //if (i > 0 && codes[i].Is(OpCodes.Ldc_R4, 12f) && i < codes.Count - 1)
+                //    {
+                //    if (codes[i + 3].Is(OpCodes.Call, typeof(NearColliderLogic).GetMethod("GetVeinsInAreaNonAlloc")))
+                //        {
+                //        var newInstructions = new List<CodeInstruction>();
+                //        newInstructions.Add(new CodeInstruction(OpCodes.Ldc_R4, GameMain.localPlanet.radius));
+                //        codes.RemoveAt(i);
+                //        codes.InsertRange(i, newInstructions);
+                //    }
+                //}
+            }
             return codes.AsEnumerable();
         }
+
+        //      // Vector3 vector4 = pose.position + pose.forward * -1.2f;
+        //      IL_04bb: ldloca.s 11
+        //      IL_04bd: ldfld valuetype[UnityEngine.CoreModule]UnityEngine.Vector3[UnityEngine.CoreModule] UnityEngine.Pose::position
+        //      IL_04c2: ldloca.s 11
+        //      IL_04c4: call instance valuetype[UnityEngine.CoreModule] UnityEngine.Vector3[UnityEngine.CoreModule] UnityEngine.Pose::get_forward()
+        //      IL_04c9: ldc.r4 -1.2
+        //      IL_04ce: call valuetype [UnityEngine.CoreModule] UnityEngine.Vector3[UnityEngine.CoreModule] UnityEngine.Vector3::op_Multiply(valuetype[UnityEngine.CoreModule] UnityEngine.Vector3, float32)
+        //      IL_04d3: call valuetype[UnityEngine.CoreModule]UnityEngine.Vector3[UnityEngine.CoreModule] UnityEngine.Vector3::op_Addition(valuetype[UnityEngine.CoreModule] UnityEngine.Vector3, valuetype[UnityEngine.CoreModule] UnityEngine.Vector3)
+        //      IL_04d8: stloc.s 26
+        //[HarmonyTranspiler]
+        //[HarmonyPatch("CheckBuildConditions")]
+        //public static IEnumerable<CodeInstruction> MinerFix(IEnumerable<CodeInstruction> instructions)
+        //{
+        //    var codes = new List<CodeInstruction>(instructions);
+        //    for (var i = 0; i < codes.Count; i++)
+        //        if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i].OperandIs(-1.2))
+        //        {
+        //            List<CodeInstruction> newInstructions = new List<CodeInstruction>();
+        //            newInstructions.Add(new CodeInstruction(codes[i - 1])); //The line before loading -1.2 is the line which loads in get_forward(), so copy it
+        //            newInstructions.Add(Transpilers.EmitDelegate<MFDel>(getForward =>
+        //                {
+        //                    float angle = 1.0f * Mathf.Abs(Mathf.PI/200 - Mathf.PI/((GameMain.localPlanet.radius/4.0f) * (int)4)); // Hopefully get difference in tangent in radians
+        //                    Patch.Debug(angle, BepInEx.Logging.LogLevel.Message, true);
+        //                    return Vector3.RotateTowards(getForward, GameMain.localPlanet.gameObject.transform.position, angle, 0.0f); //Rotate miner forward towards planet
+        //                        } ));
+        //            codes.RemoveAt(i -1); // Remove the original
+        //            codes.InsertRange(i -1, newInstructions); 
+        //        }
+        //    return codes.AsEnumerable();
+
+        //}
+        //delegate Vector3 MFDel(Vector3 getForward);
     }
 }

@@ -59,7 +59,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool InitModData(byte[] refModData, ref PlanetRawData __instance, ref byte[] __result)
         {
             Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Message, Patch.DebugGetModPlane);
-            __instance.modData = refModData == null ? new byte[__instance.dataLength] : refModData; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now
+            __instance.modData = refModData == null ? new byte[__instance.dataLength] : refModData; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now -innominata
             __result = __instance.modData;
             return false;
         }

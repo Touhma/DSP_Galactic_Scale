@@ -8,8 +8,10 @@ using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [BepInPlugin("dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
-        "1.0.0.0")]
+        "1.3.3")]
     public class PatchForStarSystemGeneration : BaseUnityPlugin {
+        public static string version = "1.3.3";
+
         public new static ManualLogSource Logger;
 
         public static ConfigEntry<int> StartingSystemMinPlanetTelluricNb;
@@ -590,6 +592,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
                 Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
                 Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
+                Harmony.CreateAndPatchAll(typeof(PatchUIEscMenu));
             }
         }
 
