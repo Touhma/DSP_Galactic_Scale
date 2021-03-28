@@ -1,16 +1,14 @@
 ﻿using HarmonyLib;
 using System;
 using UnityEngine;
-using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
     [HarmonyPatch(typeof(NearColliderLogic))]
     static class PatchNearColliderLogic
     {
-        [HarmonyPrefix]
         [HarmonyPatch("GetVeinsInAreaNonAlloc")]
-        public static bool PatchGetVeinsInAreaNonAlloc(ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
+        public static bool GetVeinsInAreaNonAlloc(ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
         {
             if (veinIds == null) return true;
             int num = 0;
@@ -25,9 +23,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize
             }
             else
                 vector3_1 = Vector3.Cross(lhs, normalized).normalized;
-            lhs *= areaRadius - 5f; // Original had areaRadius + 3f;
-            Vector3 vector3_2 = vector3_1 * (areaRadius - 5f); // Original had areaRadius + 3f;
-            Vector3[] positions = {
+            lhs *= areaRadius - 5f; // Original had areaRadius + 3f; -innominata
+            Vector3 vector3_2 = vector3_1 * (areaRadius - 5f); // Original had areaRadius + 3f; -innominata
+            Vector3[] positions = { //I've inlined the private function -innominata
                 center,
                 center + lhs,
                 center - lhs,
@@ -65,7 +63,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                             (double)(colliderPool[index2].pos - center).sqrMagnitude <= (double)areaRadius * (double)areaRadius + (double)colliderPool[index2].ext.sqrMagnitude) //and their center is within the area we are scanning
                         {
                             bool flag = false; //if so, dont set the break flag
-                            for (int index3 = 0; index3 < num; ++index3) //hang on a second, these are while loops :S
+                            for (int index3 = 0; index3 < num; ++index3) 
                             {
                                 if (veinIds[index3] == colliderPool[index2].objId)
                                 {

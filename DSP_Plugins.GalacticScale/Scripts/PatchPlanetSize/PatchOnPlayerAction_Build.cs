@@ -8,12 +8,6 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(PlayerAction_Build))]
     public class PatchOnPlayerAction_Build {
-        [HarmonyPrefix]
-        [HarmonyPatch("GetOverlappedVeinsNonAlloc")]
-        public static bool PatchGetOverlappedVeinsNonAlloc(Vector3 pos, float objSize = 0.0f, float areaSize = 10f)
-        {
-            return true;
-        }
         //Strategy: 1) Add scale factor to gas giant calls
         // There are two flavors of this currently, one for floats and one for Vector3s:
         //

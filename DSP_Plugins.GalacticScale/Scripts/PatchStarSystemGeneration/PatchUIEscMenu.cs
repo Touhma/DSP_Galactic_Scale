@@ -7,7 +7,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     public class PatchUIEscMenu {
         [HarmonyPostfix]
         [HarmonyPatch("_OnOpen")]
-        public static void Patch_OnOpen(ref UnityEngine.UI.Text ___stateText) {
+        public static void _OnOpen(ref UnityEngine.UI.Text ___stateText) {
             ___stateText.text += "\r\nGalactic Scale v" + Patch.version;
         }
     }

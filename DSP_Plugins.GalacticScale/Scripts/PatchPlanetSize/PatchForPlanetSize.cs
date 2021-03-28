@@ -145,7 +145,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             }
         }
 
-
         public static void ParseResizinSettings(string configArray, string chanceArray) {
             var tempPlanetArray = Array.ConvertAll(configArray.Split(','), int.Parse);
             var tempChanceArray = Array.ConvertAll(chanceArray.Split(','), float.Parse);
