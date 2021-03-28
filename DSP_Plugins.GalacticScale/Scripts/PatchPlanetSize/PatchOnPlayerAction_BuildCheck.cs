@@ -1,33 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
-using BepInEx.Logging;
-using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 using System;
 
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
     [HarmonyPatch(typeof(PlayerAction_Build))]
-    public class PatchOnPlayerAction_BuildCheck
+    public class PatchOnPlayerAction_BuildCheck // - innominata
     {
-
         [HarmonyPostfix]
         [HarmonyPatch("CheckBuildConditions")]
-        static bool PatchBuildConditionsCheck(bool __result,
+        static bool BuildConditionsCheck(bool __result,
             PlayerAction_Build __instance, ref string ___cursorText,
             ref bool ___cursorWarning, ref bool ___cursorValid,
             ref bool ___waitConfirm, ref int[] ____tmp_ids,
             ref NearColliderLogic ___nearcdLogic,
             ref PlanetFactory ___factory,
             Pose ___previewPose
-
             )
         {
             if (__instance.buildPreviews.Count > 1) // Check we are building
             {
-
                 ItemProto itemProto = LDB.items.Select((int)___factory.entityPool[__instance.buildPreviews[0].inputObjId].protoId); // Grab the prototype of the first object in the chain
                 if (itemProto != null && itemProto.prefabDesc.oilMiner) // Check that we are connected to an oil miner
                 {
@@ -48,9 +42,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize
 
             return __result;
         }
+        // The following is unmodified from original, but I've left it here because it took a couple of hours to port over, and it will probably be needed in the future. 
         [HarmonyPrefix]
         [HarmonyPatch("CheckBuildConditions")]
-        public static bool FullCheckBuildConditions(ref PlayerAction_Build __instance, ref bool __result,
+        public static bool CheckBuildConditions(ref PlayerAction_Build __instance, ref bool __result,
         ref List<Renderer> ___previewRenderers,
         ref List<MeshFilter> ___previewMeshFilters,
         ref Vector3 ___reformChangedPoint,
@@ -196,18 +191,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                             {
                                 Array.Clear((Array)____tmp_ids, 0, ____tmp_ids.Length);
                                 Vector3 center = pose.position + pose.forward * -1.2f;
-                                //GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                                //sphere.transform.position = center;
-                                //sphere.transform.localScale = new Vector3(12f, 12f, 12f);
                                 Vector3 rhs1 = -pose.forward;
-                                //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                                 Vector3 up = pose.up;
                                 int veinsInAreaNonAlloc = ___nearcdLogic.GetVeinsInAreaNonAlloc(center, 12f, ____tmp_ids);
                                 PrebuildData prebuildData = new PrebuildData();
                                 prebuildData.InitRefArray(veinsInAreaNonAlloc);
-                                //if (prebuildData.refCount > 0) Patch.Log("Data " + prebuildData.refCount); // This shows how many it sees. 
                                 VeinData[] veinPool = ___factory.veinPool;
-                                //if (veinPool.Length > 0) Patch.Log("Veinpool " + veinPool.Length);
                                 int num1 = 0;
                                 for (int index2 = 0; index2 < veinsInAreaNonAlloc; ++index2)
                                 {
