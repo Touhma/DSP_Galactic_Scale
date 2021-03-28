@@ -12,7 +12,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPatch("GetOverlappedVeinsNonAlloc")]
         public static bool PatchGetOverlappedVeinsNonAlloc(Vector3 pos, float objSize = 0.0f, float areaSize = 10f)
         {
-            Patch.Log("GetOverLappedVeinsNonAlloc");
             return true;
         }
         //Strategy: 1) Add scale factor to gas giant calls

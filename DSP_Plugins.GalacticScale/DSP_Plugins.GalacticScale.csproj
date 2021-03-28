@@ -75,6 +75,9 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchUIPlanetGlobe.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchUIGameLoadingSplash.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchUI.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />

@@ -389,7 +389,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     var choice = mainSeed.NextDouble();
                     
                     foreach (var planetSizeParam in PatchSize.PlanetSizeParams) {
-                        Patch.Debug(planetSizeParam.Key + " - " + planetSizeParam.Value + " - " + choice, LogLevel.Message, true);
                         if (choice <= planetSizeParam.Value) {
                             planetData.radius = planetSizeParam.Key; 
                             planetData.precision = planetSizeParam.Key; 

@@ -19,7 +19,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static void PatchOnEnable(ref Text ___promptText, ref RawImage ___noiseImage1) {
             ___promptText.text = V;
             //public RawImage rawImage;
-            string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUIGameLoadingSplash)).Location) + "\\splash.png";
+            string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUIGameLoadingSplash)).Location) + "\\splash.jpg";
             Patch.Log(dir);
             Texture2D tex = null;
             byte[] fileData;
@@ -30,6 +30,31 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 UnityEngine.ImageConversion.LoadImage(tex, fileData);
             }
             ___noiseImage1.texture = tex;
+            Image[] images = UIRoot.instance.overlayCanvas.GetComponentsInChildren<Image>();
+            RawImage[] rimages = UIRoot.instance.overlayCanvas.GetComponentsInChildren<RawImage>();
+            foreach (Image image in images)
+            {
+                Patch.Log(image.name + " " + image.color.ToString());
+                if (image.name == "black-bg") {
+                    
+                    Component[] c = image.GetComponents<Component>();
+                    Sprite sprite;
+                    sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0), 100f);
+                    image.sprite = sprite;
+                    Patch.Log(image.color.ToString());
+                    image.color = Color.white;
+                }
+                if (image.name == "bg" || image.name == "dots" || image.name == "dsp")
+                {
+                    image.enabled = false;
+                }
+            }
+            foreach (RawImage rimage in rimages)
+            {
+                if (rimage.name == "vignette") rimage.enabled = false;
+            }
+            
+            //i.sprite = sprite;
         }
     }
 }
