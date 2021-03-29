@@ -20,7 +20,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static void OnEnable(ref Text ___promptText, ref RawImage ___noiseImage1)
         {
             ___promptText.text = "WARNING - Galactic Scale savegames can be broken by updates. Read the FAQ @ http://customizing.space";
-            string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUIGameLoadingSplash)).Location) + "\\splash.jpg";
+            string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUI)).Location) + "\\splash.jpg";
             Patch.Log(dir);
             Texture2D tex = null;
             byte[] fileData;
