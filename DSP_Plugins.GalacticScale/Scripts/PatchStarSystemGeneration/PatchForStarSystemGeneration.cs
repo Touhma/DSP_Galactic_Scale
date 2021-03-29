@@ -592,7 +592,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
                 Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
                 Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
-                Harmony.CreateAndPatchAll(typeof(PatchUIEscMenu));
             }
         }
 
