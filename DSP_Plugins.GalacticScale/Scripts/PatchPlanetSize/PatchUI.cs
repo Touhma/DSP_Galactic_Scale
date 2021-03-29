@@ -10,6 +10,25 @@ using UnityEngine;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     public class PatchUI{
+        public static byte[] GetSplashImage()
+        {
+            byte[] buffer;
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream s = assembly.GetManifestResourceStream("GalacticScale.Scripts.PatchPlanetSize.splash.jpg"))
+            {
+                long length = s.Length;
+                buffer = new byte[length];
+                s.Read(buffer, 0, (int)length);
+            }
+            return buffer;           
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(UIEscMenu), "_OnOpen")]
+        public static void _OnOpen(ref UnityEngine.UI.Text ___stateText)
+        {
+            ___stateText.text += "\r\nGalactic Scale v" + Patch.Version;
+        }
+
         [HarmonyPostfix, HarmonyPatch(typeof(UIPlanetGlobe), "_OnUpdate")]
         public static void PatchOnUpdate(ref Text ___geoInfoText)
         {
@@ -20,16 +39,18 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static void OnEnable(ref Text ___promptText, ref RawImage ___noiseImage1)
         {
             ___promptText.text = "WARNING - Galactic Scale savegames can be broken by updates. Read the FAQ @ http://customizing.space";
-            string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUIGameLoadingSplash)).Location) + "\\splash.jpg";
-            Patch.Log(dir);
+            string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUI)).Location) + "\\splash.jpg";
             Texture2D tex = null;
             byte[] fileData;
             if (File.Exists(dir))
             {
                 fileData = File.ReadAllBytes(dir);
-                tex = new Texture2D(2, 2);
-                ImageConversion.LoadImage(tex, fileData);
+            } else
+            {
+                fileData = GetSplashImage();
             }
+            tex = new Texture2D(2, 2);
+            ImageConversion.LoadImage(tex, fileData);
             Image[] images = UIRoot.instance.overlayCanvas.GetComponentsInChildren<Image>();
             RawImage[] rimages = UIRoot.instance.overlayCanvas.GetComponentsInChildren<RawImage>();
             foreach (Image image in images)
