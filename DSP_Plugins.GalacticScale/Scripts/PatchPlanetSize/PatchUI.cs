@@ -26,7 +26,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPostfix, HarmonyPatch(typeof(UIEscMenu), "_OnOpen")]
         public static void _OnOpen(ref UnityEngine.UI.Text ___stateText)
         {
-            ___stateText.text += "\r\nGalactic Scale v" + Patch.Version;
+            ___stateText.text += "\r\nGalactic Scale v" + PatchStarSystemGeneration.PatchForStarSystemGeneration.Version;
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIPlanetGlobe), "_OnUpdate")]
@@ -94,12 +94,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     if (string.IsNullOrEmpty(userName))
                     {
                         ___textComp.fontSize = 18;
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\nGalactic Scale v" + Patch.Version;
+                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\nGalactic Scale v" + PatchStarSystemGeneration.PatchForStarSystemGeneration.Version;
                     }
                     else
                     {
                         ___textComp.fontSize = 24;
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + Patch.Version;
+                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + PatchStarSystemGeneration.PatchForStarSystemGeneration.Version;
                     }
 
                 }

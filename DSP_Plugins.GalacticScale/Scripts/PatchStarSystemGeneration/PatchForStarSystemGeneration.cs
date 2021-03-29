@@ -10,7 +10,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [BepInPlugin("dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
         "1.3.3")]
     public class PatchForStarSystemGeneration : BaseUnityPlugin {
-        public static string version = "1.3.3";
+        public static string Version = "1.3.3";
 
         public new static ManualLogSource Logger;
 
