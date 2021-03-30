@@ -1,20 +1,40 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.Rendering;
-using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 using System.Reflection;
 using System.IO;
 using UnityEngine;
+using BepInEx;
+using BepInEx.Logging;
+using System;
 
-namespace GalacticScale.Scripts.PatchPlanetSize {
-    public class PatchUI{
+namespace GalacticScale.Scripts.PatchUI {
+    [BepInPlugin("dsp.galactic-scale.ui", "Galactic Scale Plug-In - UI", "1.3.2.dev")]
+    public class PatchUI : BaseUnityPlugin {
+        public new static ManualLogSource Logger;
+        public static string Version = "1.3.2.dev";
+
+        internal void Awake()
+        {
+            var harmony = new Harmony("dsp.galactic-scale.ui");
+            Logger = new ManualLogSource("PatchUI");
+            BepInEx.Logging.Logger.Sources.Add(Logger);
+            Logger.LogMessage("Galactic Scale Version " + Version + " loading");
+            try
+            {
+                harmony.PatchAll(typeof(PatchUI));
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e.Message);
+                Logger.LogError(e.StackTrace);
+            }
+        }
+
         public static byte[] GetSplashImage()
         {
             byte[] buffer;
             Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream s = assembly.GetManifestResourceStream("GalacticScale.Scripts.PatchPlanetSize.splash.jpg"))
+            using (Stream s = assembly.GetManifestResourceStream("GalacticScale.Scripts.PatchUI.splash.jpg"))
             {
                 long length = s.Length;
                 buffer = new byte[length];
@@ -26,7 +46,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPostfix, HarmonyPatch(typeof(UIEscMenu), "_OnOpen")]
         public static void _OnOpen(ref UnityEngine.UI.Text ___stateText)
         {
-            ___stateText.text += "\r\nGalactic Scale v" + PatchStarSystemGeneration.PatchForStarSystemGeneration.Version;
+            ___stateText.text += "\r\nGalactic Scale v" + Version;
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIPlanetGlobe), "_OnUpdate")]
@@ -94,12 +114,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     if (string.IsNullOrEmpty(userName))
                     {
                         ___textComp.fontSize = 18;
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\nGalactic Scale v" + PatchStarSystemGeneration.PatchForStarSystemGeneration.Version;
+                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\nGalactic Scale v" + Version;
                     }
                     else
                     {
                         ___textComp.fontSize = 24;
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + PatchStarSystemGeneration.PatchForStarSystemGeneration.Version;
+                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + Version;
                     }
 
                 }
