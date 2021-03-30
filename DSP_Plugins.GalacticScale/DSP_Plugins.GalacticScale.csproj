@@ -122,6 +122,7 @@
     <Content Include="icon.png" />
     <Content Include="manifest.json" />
     <Content Include="README.md" />
+    <EmbeddedResource Include="Scripts\PatchUI\ruler.png" />
     <EmbeddedResource Include="Scripts\PatchUI\splash.jpg" />
   </ItemGroup>
   <ItemGroup>
