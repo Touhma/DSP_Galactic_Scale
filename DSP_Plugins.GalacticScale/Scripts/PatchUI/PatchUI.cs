@@ -44,32 +44,6 @@ namespace GalacticScale.Scripts.PatchUI {
             ImageConversion.LoadImage(tex, buffer);
             return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0), 100f);
         }
-        //public static byte[] GetSplashImage()
-        //{
-        //    byte[] buffer;
-        //    Assembly assembly = Assembly.GetExecutingAssembly();
-        //    using (Stream s = assembly.GetManifestResourceStream("GalacticScale.Scripts.PatchUI.splash.jpg"))
-        //    {
-        //        long length = s.Length;
-        //        buffer = new byte[length];
-        //        s.Read(buffer, 0, (int)length);
-        //    }
-        //    return buffer;
-        //}
-        //public static Sprite GetRulerSprite()
-        //{
-        //    byte[] buffer;
-        //    Assembly assembly = Assembly.GetExecutingAssembly();
-        //    using (Stream s = assembly.GetManifestResourceStream("GalacticScale.Scripts.PatchUI.ruler.png"))
-        //    {
-        //        long length = s.Length;
-        //        buffer = new byte[length];
-        //        s.Read(buffer, 0, (int)length);
-        //    }
-        //    Texture2D tex = new Texture2D(2, 2);
-        //    ImageConversion.LoadImage(tex, buffer);
-        //    return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0), 100f);
-        //}
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIEscMenu), "_OnOpen")]
         public static void _OnOpen(ref Text ___stateText)
@@ -87,25 +61,13 @@ namespace GalacticScale.Scripts.PatchUI {
         public static void OnEnable(ref Text ___promptText)
         {
             ___promptText.text = "WARNING - Galactic Scale savegames can be broken by updates. Read the FAQ @ http://customizing.space";
-            //string dir = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUI)).Location) + "\\splash.jpg";
-            //Texture2D tex = null;
-            //byte[] fileData;
-            //if (File.Exists(dir))
-            //{
-            //    fileData = File.ReadAllBytes(dir);
-            //} else
-            //{
-            //    fileData = GetSplashImage();
-            //}
-            //tex = new Texture2D(2, 2);
-            //ImageConversion.LoadImage(tex, fileData);
             Image[] images = UIRoot.instance.overlayCanvas.GetComponentsInChildren<Image>();
             RawImage[] rimages = UIRoot.instance.overlayCanvas.GetComponentsInChildren<RawImage>();
             foreach (Image image in images)
             {
                 if (image.name == "black-bg")
                 {
-                    image.sprite = GetEmbeddedSprite("GalacticScale.Scripts.PatchUI.splash.jpg"); // Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0), 100f);
+                    image.sprite = GetEmbeddedSprite("GalacticScale.Scripts.PatchUI.splash.jpg"); 
                     image.color = Color.white;
                 }
                 else if (image.name == "bg" || image.name == "dots" || image.name == "dsp") image.enabled = false;
@@ -137,7 +99,6 @@ namespace GalacticScale.Scripts.PatchUI {
                 }
                 if (___firstFrame || flag)
                 {
-                    //string empty = string.Empty;
                     string userName = ___displayAccount.detail.userName;
                     if (string.IsNullOrEmpty(userName))
                     {
