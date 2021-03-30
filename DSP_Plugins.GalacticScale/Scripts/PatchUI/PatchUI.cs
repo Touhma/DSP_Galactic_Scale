@@ -8,10 +8,10 @@ using BepInEx.Logging;
 using System;
 
 namespace GalacticScale.Scripts.PatchUI {
-    [BepInPlugin("dsp.galactic-scale.ui", "Galactic Scale Plug-In - UI", "1.3.2.dev")]
+    [BepInPlugin("dsp.galactic-scale.ui", "Galactic Scale Plug-In - UI", "1.3.3")]
     public class PatchUI : BaseUnityPlugin {
         public new static ManualLogSource Logger;
-        public static string Version = "1.3.2.dev";
+        public static string Version = "1.3.3";
 
         internal void Awake()
         {
