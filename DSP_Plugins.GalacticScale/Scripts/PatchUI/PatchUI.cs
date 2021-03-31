@@ -12,7 +12,7 @@ namespace GalacticScale.Scripts.PatchUI {
     public class PatchUI : BaseUnityPlugin {
         public new static ManualLogSource Logger;
         public static string Version = "1.3.3";
-
+        public static AssetBundle bundle;
         internal void Awake()
         {
             var harmony = new Harmony("dsp.galactic-scale.ui");
@@ -30,19 +30,30 @@ namespace GalacticScale.Scripts.PatchUI {
             }
         }
 
-        public static Sprite GetEmbeddedSprite(string location)
+        //public static Sprite GetEmbeddedSprite(string location)
+        //{
+        //    byte[] buffer;
+        //    Assembly assembly = Assembly.GetExecutingAssembly();
+        //    using (Stream s = assembly.GetManifestResourceStream(location))
+        //    {
+        //        long length = s.Length;
+        //        buffer = new byte[length];
+        //        s.Read(buffer, 0, (int)length);
+        //    }
+        //    Texture2D tex = new Texture2D(2, 2);
+        //    ImageConversion.LoadImage(tex, buffer);
+        //    return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0), 100f);
+        //}
+
+        public static Sprite GetSpriteAsset(string name)
         {
-            byte[] buffer;
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream s = assembly.GetManifestResourceStream(location))
+            if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchUI)).Location), "galacticbundle"));
+            if (bundle == null)
             {
-                long length = s.Length;
-                buffer = new byte[length];
-                s.Read(buffer, 0, (int)length);
+                Debug.Log("Failed to load AssetBundle!");
+                return null;
             }
-            Texture2D tex = new Texture2D(2, 2);
-            ImageConversion.LoadImage(tex, buffer);
-            return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0), 100f);
+            return bundle.LoadAsset<Sprite>(name);
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIEscMenu), "_OnOpen")]
@@ -67,7 +78,7 @@ namespace GalacticScale.Scripts.PatchUI {
             {
                 if (image.name == "black-bg")
                 {
-                    image.sprite = GetEmbeddedSprite("GalacticScale.Scripts.PatchUI.splash.jpg"); 
+                    image.sprite = GetSpriteAsset("splash"); //GetEmbeddedSprite("GalacticScale.Scripts.PatchUI.splash.jpg"); 
                     image.color = Color.white;
                 }
                 else if (image.name == "bg" || image.name == "dots" || image.name == "dsp") image.enabled = false;
@@ -130,7 +141,7 @@ namespace GalacticScale.Scripts.PatchUI {
                 Text radiusLabelText = radiusLabel.GetComponent<Text>();
                 radiusLabelText.GetComponent<Localizer>().enabled = false;
                 Image radiusIcon = radiusLabel.transform.GetChild(1).GetComponent<Image>();
-                radiusIcon.sprite = GetEmbeddedSprite("GalacticScale.Scripts.PatchUI.ruler.png"); //  GetRulerSprite();
+                radiusIcon.sprite = GetSpriteAsset("ruler"); // GetEmbeddedSprite("GalacticScale.Scripts.PatchUI.ruler.png"); //  GetRulerSprite();
                 Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();        
                 radiusLabelText.text = "Planetary Radius";
                 radiusValueText.text = __instance.planet.radius.ToString();
