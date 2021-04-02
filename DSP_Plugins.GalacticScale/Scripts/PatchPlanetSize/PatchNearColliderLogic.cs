@@ -1,12 +1,26 @@
 ﻿using HarmonyLib;
 using System;
 using UnityEngine;
+using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
     [HarmonyPatch(typeof(NearColliderLogic))]
     static class PatchNearColliderLogic
     {
+        public static int offset = 0;
+        public static GameObject[] markers;
+
+        public static void OnFixedUpdate()
+        {
+            int o = offset;
+            if ((Input.GetKeyUp(KeyCode.Equals) || Input.GetKeyUp(KeyCode.KeypadPlus)) && VFInput.alt)
+                ++offset;
+            if ((Input.GetKeyUp(KeyCode.Minus) || Input.GetKeyUp(KeyCode.KeypadMinus)) && VFInput.alt)
+                --offset;
+            if (o != offset) Patch.Debug(offset, BepInEx.Logging.LogLevel.Message, true);
+
+        }
         [HarmonyPatch("GetVeinsInAreaNonAlloc")]
         public static bool GetVeinsInAreaNonAlloc(ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
         {
@@ -23,8 +37,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize
             }
             else
                 vector3_1 = Vector3.Cross(lhs, normalized).normalized;
-            lhs *= areaRadius - 5f; // Original had areaRadius + 3f; -innominata
-            Vector3 vector3_2 = vector3_1 * (areaRadius - 5f); // Original had areaRadius + 3f; -innominata
+            lhs *= areaRadius + offset; // Original had areaRadius + 3f; -innominata
+            Vector3 vector3_2 = vector3_1 * (areaRadius + offset); // Original had areaRadius + 3f; -innominata
             Vector3[] positions = { //I've inlined the private function -innominata
                 center,
                 center + lhs,
@@ -35,7 +49,27 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                 center - lhs + vector3_2,
                 center + lhs - vector3_2,
                 center - lhs - vector3_2,
-        };
+            };
+            //if (markers.Length > 0)
+            //{
+            //    foreach (GameObject m in markers)
+            //    {
+            //        GameObject.Destroy(m);
+            //    }
+            //}
+            if (markers == null)
+            {
+                markers = new GameObject[positions.Length];
+                Patch.Debug("Created Markers", BepInEx.Logging.LogLevel.Message, true);
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    markers[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                }
+            }
+            for (int i = 0; i < positions.Length; i++)
+            { 
+                markers[i].transform.position = positions[i];
+            }
             ___activeColHashCount = 0;
             foreach (Vector3 pos in positions) //Grab the hash of the position, and add it to the array ___activeColHashes. activeColHashCount increases each time...but is always 9...
             {

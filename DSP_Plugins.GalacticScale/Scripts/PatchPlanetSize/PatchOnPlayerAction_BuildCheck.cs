@@ -42,6 +42,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
 
             return __result;
         }
+        /*
         // The following is unmodified from original, but I've left it here because it took a couple of hours to port over, and it will probably be needed in the future. 
         [HarmonyPrefix]
         [HarmonyPatch("CheckBuildConditions")]
@@ -995,6 +996,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                 UICursor.SetCursor(ECursor.Ban);
             __result = flag1;
             return false;
-        }
+        }*/
     }
 }
