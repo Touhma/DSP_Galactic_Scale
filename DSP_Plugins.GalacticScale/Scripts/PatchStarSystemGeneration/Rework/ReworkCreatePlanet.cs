@@ -248,7 +248,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             Patch.Debug("Body Retrograde", LogLevel.Debug, Patch.DebugReworkPlanetGen);
             //Define if the orbit is retrograde
-            if (randomNumber14 < Patch.ChanceRetrogradeOrbit.Value) planetData.HasRetrogradeOrbit();
+            if (randomNumber14 < Patch.ChanceRetrogradeOrbit.Value)
+            {
+                if (planetData.HasSingularityFlag(EPlanetSingularity.None) || planetData.HasSingularityFlag(EPlanetSingularity.ClockwiseRotate) || planetData.HasSingularityFlag(EPlanetSingularity.MultipleSatellites))  planetData.HasRetrogradeOrbit(); //tidally locked planets cannot be retrograde!
+            }
 
             Patch.Debug("Body Neutron Star", LogLevel.Debug, Patch.DebugReworkPlanetGen);
             // Anomaly around neutron stars
