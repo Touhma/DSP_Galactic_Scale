@@ -37,8 +37,8 @@
     <Reference Include="0Harmony">
       <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp.refstub">
+      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\Assembly-CSharp.refstub.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
@@ -90,6 +90,7 @@
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchPlanetPhysics.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchNearColliderLogic.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchBuildingGizmo.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
