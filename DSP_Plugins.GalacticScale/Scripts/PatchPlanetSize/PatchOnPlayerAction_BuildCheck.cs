@@ -3,7 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using System;
-
+using BepInEx.Logging;
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
     [HarmonyPatch(typeof(PlayerAction_Build))]
@@ -20,23 +20,33 @@ namespace GalacticScale.Scripts.PatchPlanetSize
             Pose ___previewPose
             )
         {
-            if (__instance.buildPreviews.Count > 1) // Check we are building
+            int count = __instance.buildPreviews.Count;
+            if (count < 2) return __result; // Check we are building
+            BuildPreview preview = __instance.buildPreviews[0];
+            int objId = preview.inputObjId;
+            if (objId < 0 || objId >= ___factory.entityPool.Length) return __result; // Sanity Check
+            EntityData entity = ___factory.entityPool[objId];
+            if (entity.isNull) return __result;
+            ItemProto itemProto = LDB.items.Select((int)entity.protoId); // Grab the prototype of the first object in the chain
+            if (itemProto == null) return __result;
+            if (itemProto.prefabDesc == null) return __result;
+            if (itemProto.prefabDesc.oilMiner) // Check that we are connected to an oil miner
             {
-                ItemProto itemProto = LDB.items.Select((int)___factory.entityPool[__instance.buildPreviews[0].inputObjId].protoId); // Grab the prototype of the first object in the chain
-                if (itemProto != null && itemProto.prefabDesc.oilMiner) // Check that we are connected to an oil miner
+                if (preview.condition == EBuildCondition.JointCannotLift) // Make sure the error is that the endpoint must be horizontal
                 {
-                    if (__instance.buildPreviews[0].condition == EBuildCondition.JointCannotLift) // Make sure the error is that the endpoint must be horizontal
+                    preview.condition = EBuildCondition.Ok; // Ignore that endpoint horizontal error
+                    for (int i = 0; i < count; i++) // Check the rest of the belt for errors
                     {
-                        __instance.buildPreviews[0].condition = EBuildCondition.Ok; // Ignore that endpoint horizontal error
-                        for (int i = 0; i < __instance.buildPreviews.Count(); i++) // Check the rest of the belt for errors
+                        if ((__instance.buildPreviews[i].condition != EBuildCondition.Ok && __instance.buildPreviews[i].condition != EBuildCondition.JointCannotLift))
                         {
-                            if ((__instance.buildPreviews[i].condition != EBuildCondition.Ok && __instance.buildPreviews[i].condition != EBuildCondition.JointCannotLift)) return (bool)false; //If there's some other problem with the belt, bail out.
+                            __result = (bool)false;
+                            return __result; //If there's some other problem with the belt, bail out.
                         }
-                        ___cursorText = "Click to build";
-                        ___cursorWarning = false; // Prevent red text
-                        __result = true; // Override the build condition check
-                        UICursor.SetCursor(ECursor.Default); // Get rid of that ban cursor
                     }
+                    ___cursorText = "Click to build";
+                    ___cursorWarning = false; // Prevent red text
+                    __result = true; // Override the build condition check
+                    UICursor.SetCursor(ECursor.Default); // Get rid of that ban cursor
                 }
             }
 
