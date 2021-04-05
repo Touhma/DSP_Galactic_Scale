@@ -12,6 +12,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize
         public static int offset = -20;
         public static List<GameObject> markers;
 
+#if DEBUG
+
         [HarmonyPostfix]
         [HarmonyPatch("Update")]
         public static void Update()
@@ -55,6 +57,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize
             }
             ___activeColHashes[___activeColHashCount++] = num;
         }
+
+#endif
+
         [HarmonyPrefix]
         [HarmonyPatch("GetVeinsInAreaNonAlloc")]
         public static bool GetVeinsInAreaNonAlloc(ref NearColliderLogic __instance, ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
