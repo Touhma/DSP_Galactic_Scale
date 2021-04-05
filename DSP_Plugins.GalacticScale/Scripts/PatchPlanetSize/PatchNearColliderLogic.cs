@@ -21,7 +21,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                 ++offset;
             if ((Input.GetKeyUp(KeyCode.Minus) || Input.GetKeyUp(KeyCode.KeypadMinus)) && VFInput.alt)
                 --offset;
-            if (o != offset) Patch.Debug(offset, BepInEx.Logging.LogLevel.Message, true);
+            if (o != offset) Patch.Debug("Mining AreaRadius Offset Changed to " + offset, BepInEx.Logging.LogLevel.Message, true);
 
         }
         [HarmonyPostfix]
@@ -40,12 +40,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize
             if (markers == null) markers = new List<GameObject>();
             if (VFInput.alt && Input.GetKeyUp(KeyCode.KeypadPeriod)) {
                 GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                Patch.Debug("made sphere", BepInEx.Logging.LogLevel.Message, true);
                 markers.Add(sphere);
-                Patch.Debug("added" + markers.Count, BepInEx.Logging.LogLevel.Message, true);
                 GameObject t = markers[markers.Count - 1];
                 if (t != null) t.transform.position = pos;
-                else Patch.Debug("t = null", BepInEx.Logging.LogLevel.Message, true);
             }
 
             int num = PlanetPhysics.HashPhysBlock(pos);
