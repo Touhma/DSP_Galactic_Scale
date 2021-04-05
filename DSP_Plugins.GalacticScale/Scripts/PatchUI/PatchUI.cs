@@ -63,7 +63,8 @@ namespace GalacticScale.Scripts.PatchUI {
             {
                 if (image.name == "black-bg")
                 {
-                    image.sprite = GetSpriteAsset("splash");
+                    Sprite splash = GetSpriteAsset("splash");
+                    if (splash != null) image.sprite = splash;
                     image.color = Color.white;
                 }
                 else if (image.name == "bg" || image.name == "dots" || image.name == "dsp") image.enabled = false;
@@ -119,6 +120,7 @@ namespace GalacticScale.Scripts.PatchUI {
             // Add the planets radius to the Planet Detail UI
             if (___obliquityValueText.transform.parent.transform.parent.childCount == 6) 
             {
+
                 GameObject radiusLabel;
                 GameObject obliquityLabel = ___obliquityValueText.transform.parent.gameObject;
                 radiusLabel = Instantiate(obliquityLabel, obliquityLabel.transform.parent.transform);
@@ -126,6 +128,9 @@ namespace GalacticScale.Scripts.PatchUI {
                 Text radiusLabelText = radiusLabel.GetComponent<Text>();
                 radiusLabelText.GetComponent<Localizer>().enabled = false;
                 Image radiusIcon = radiusLabel.transform.GetChild(1).GetComponent<Image>();
+                UIButton uiButton = radiusLabel.transform.GetChild(1).GetComponent<UIButton>();
+                uiButton.tips.tipText = "How large the planet is. Also roughly the amount of larger gridlines at the equator.";
+                uiButton.tips.tipTitle = "Planet Radius";
                 radiusIcon.sprite = GetSpriteAsset("ruler");
                 Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();        
                 radiusLabelText.text = "Planetary Radius";
