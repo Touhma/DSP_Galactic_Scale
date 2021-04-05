@@ -9,7 +9,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
         [HarmonyPatch("CheckBuildConditions")]
         static bool BuildConditionsCheck(
             bool __result,
-            PlayerAction_Build __instance, 
+            PlayerAction_Build __instance,
             ref string ___cursorText,
             ref bool ___cursorWarning,
             ref PlanetFactory ___factory)
@@ -33,7 +33,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                     {
                         if ((__instance.buildPreviews[i].condition != EBuildCondition.Ok && __instance.buildPreviews[i].condition != EBuildCondition.JointCannotLift))
                         {
-                            __result = (bool)false;
+                            __result = false;
                             return __result; //If there's some other problem with the belt, bail out.
                         }
                     }
