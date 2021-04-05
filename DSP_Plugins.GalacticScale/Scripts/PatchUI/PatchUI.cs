@@ -50,7 +50,7 @@ namespace GalacticScale.Scripts.PatchUI {
         [HarmonyPostfix, HarmonyPatch(typeof(UIPlanetGlobe), "_OnUpdate")]
         public static void PatchOnUpdate(ref Text ___geoInfoText)
         {
-            if (GameMain.localPlanet != null && VFInput.alt) ___geoInfoText.text = "\r\nRadius " + GameMain.localPlanet.radius;
+            if (GameMain.localPlanet != null && VFInput.alt) ___geoInfoText.text = "\r\nRadius " + GameMain.localPlanet.realRadius;
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIGameLoadingSplash), "OnEnable")]
@@ -129,14 +129,14 @@ namespace GalacticScale.Scripts.PatchUI {
                 radiusIcon.sprite = GetSpriteAsset("ruler");
                 Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();        
                 radiusLabelText.text = "Planetary Radius";
-                radiusValueText.text = __instance.planet.radius.ToString();
+                radiusValueText.text = __instance.planet.realRadius.ToString();
             }
             if (___obliquityValueText.transform.parent.transform.parent.childCount == 7)
             {
                 Transform p = ___obliquityValueText.transform.parent.parent;
                 GameObject radiusLabel = p.GetChild(p.childCount - 1).gameObject;
                 Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
-                if (__instance.planet != null) radiusValueText.text = __instance.planet.radius.ToString();
+                if (__instance.planet != null) radiusValueText.text = __instance.planet.realRadius.ToString();
             }
         }
         [HarmonyPrefix, HarmonyPatch(typeof(UIPlanetDetail), "SetResCount")]
