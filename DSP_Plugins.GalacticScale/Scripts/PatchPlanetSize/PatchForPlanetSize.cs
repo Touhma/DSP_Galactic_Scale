@@ -121,7 +121,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
                 ParseResizinSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
 
-                // check some configs dependencies 
+                // check some configs dependencies
                 if (EnableLimitedResizingFeature.Value) EnableResizingFeature.Value = false;
 
                 Config.Save();
@@ -139,6 +139,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
+                Harmony.CreateAndPatchAll(typeof(PatchBuildingGizmo));
+                Harmony.CreateAndPatchAll(typeof(PatchNearColliderLogic));
+
             }
         }
 
