@@ -32,7 +32,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                         }
                         else {
                             //TODO
-                            Patch.Debug("LUT512 did not yet contain the texture for refreshing.", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
+                            Patch.Debug("LUT512 did not yet contain the texture for refreshing. Segment Count=" + segments, BepInEx.Logging.LogLevel.Warning, true);
                             refreshGridRadius = -1;
                         }
                     }
