@@ -13,3 +13,4 @@ Directory.Build.props
 .vs/DspPluginTest/v16/.suo
 DSP_Plugins.GalacticScale/DSP_Plugins.GalacticScale.csproj
 .vs/DspPluginTest/v16/.suo
+*.csproj
