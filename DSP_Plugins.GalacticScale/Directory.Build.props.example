@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Plugins_Dir>C:\Users\{username}\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\test\BepInEx\plugins\GalacticScale</Plugins_Dir>
     <DSP_Dir>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program</DSP_Dir>
-    <BepInExCore_Dir>C:\Users\{username}\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\test\BepInEx\core</BepInExCore>
+    <BepInExCore_Dir>C:\Users\{username}\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\test\BepInEx\core</BepInExCore_Dir>
 
     <!-- pdb2mdb_Path is optional, needed if you want to enable debugging the modded game. More detailed instructions:
 
