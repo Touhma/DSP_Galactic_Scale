@@ -45,6 +45,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             try // try-catch block probably unnecessary, left in for debugging use in future
             {
                 __result = __instance.modData[index >> 1] >> ((index & 1) << 2) & 3;
+                //if (__result > 0) Patch.Debug("Found ModLevel " + __result, LogLevel.Message, true);
                 return false;
             }
             catch (Exception e)

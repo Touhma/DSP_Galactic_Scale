@@ -46,6 +46,10 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="FullSerializer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\test\BepInEx\plugins\brokenmass-MultiBuildBeta\FullSerializer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
