@@ -36,6 +36,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                 Patch.Debug("Position Hash: " + planet.data.PositionHash(position), BepInEx.Logging.LogLevel.Message, true);
                 Patch.Debug("Precision: " + planet.data.precision, BepInEx.Logging.LogLevel.Message, true);
                 Patch.Debug("Algorithm: " + planet.algoId, BepInEx.Logging.LogLevel.Message, true);
+                Patch.Debug("Scale: " + planet.scale, BepInEx.Logging.LogLevel.Message, true);
+                Patch.Debug("Scale: " + planet.scale, BepInEx.Logging.LogLevel.Message, true);
                 Patch.Debug("---------------", BepInEx.Logging.LogLevel.Message, true);
                 delay = 5;
             }

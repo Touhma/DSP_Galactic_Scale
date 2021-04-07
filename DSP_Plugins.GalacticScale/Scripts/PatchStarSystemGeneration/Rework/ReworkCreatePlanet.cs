@@ -6,12 +6,47 @@ using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystem
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 using PatchSizeReworkPlanetGen = GalacticScale.Scripts.PatchPlanetSize.ReworkPlanetGen;
 using Random = System.Random;
+using System.Collections.Generic;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration
 {
     public static class ReworkPlanetGen
     {
         public static float pi2Rad = 39.4784176043574f;
+        public static float TelluricSizeSelector(PlanetData planet, Random seed)
+        {
+            Dictionary<int, float> options = PatchSize.PlanetSizeParams;
+            List<int> sizes = PatchSize.PlanetSizeList;
+            float choice;
+            float radius = 200f;
+            bool isMoon = planet.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value;
+            float hostRadius = 0f;
+            if (isMoon)
+            {
+                hostRadius = planet.orbitAroundPlanet.radius;
+                if (sizes[0] == hostRadius) return hostRadius;
+            }
+
+            int flag = 100;
+            while ((!isMoon && flag == 100) || (isMoon && radius >= hostRadius && flag > 0))
+            {
+                Patch.Debug("Flag " + flag, LogLevel.Message, true);
+                flag--;
+                choice = (float)seed.NextDouble();
+                foreach (KeyValuePair<int, float> option in options)
+                {
+                    Patch.Debug("Trying Size " + option.Key + " with chance " + option.Value + " against choice " + choice + " isisMoon:" +isMoon, LogLevel.Message, true);
+                    if (choice <= option.Value)
+                    {
+                        radius = option.Key;
+                        break;
+                    }
+                }
+                if (flag < 1) Patch.Debug("Failed to select planet Size in 100 iterations", LogLevel.Error, true);
+            }
+            Patch.Debug("size " + radius + " selected. Flag = " + flag, LogLevel.Message, true);
+            return radius;
+        }
 
         public static PlanetData ReworkCreatePlanet(
             ref GalaxyData galaxy,
@@ -423,56 +458,61 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 }
                 else if (PatchSize.EnableLimitedResizingFeature.Value)
                 {
-                    var choice = mainSeed.NextDouble();
+                    planetData.radius = TelluricSizeSelector(planetData, mainSeed);
+                    Patch.Debug("--" + planetData.radius, LogLevel.Message, true);
+                    planetData.precision = (int)planetData.radius;
+                    int segments = (int)(planetData.radius / 4f + 0.1f) * 4;
+                    PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                    //var choice = mainSeed.NextDouble();
 
-                    foreach (var planetSizeParam in PatchSize.PlanetSizeParams)
-                    {
-                        if (choice <= planetSizeParam.Value)
-                        {
-                            planetData.radius = planetSizeParam.Key;
-                            planetData.precision = planetSizeParam.Key;
-                            int segments = (int)(planetData.radius / 4f + 0.1f) * 4;
-                            PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                    //foreach (var planetSizeParam in PatchSize.PlanetSizeParams)
+                    //{
+                    //    if (choice <= planetSizeParam.Value)
+                    //    {
+                    //        planetData.radius = planetSizeParam.Key;
+                    //        planetData.precision = planetSizeParam.Key;
+                    //        int segments = (int)(planetData.radius / 4f + 0.1f) * 4;
+                    //        PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
 
-                            if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value)
-                            {
-                                if (planetData.orbitAroundPlanet.radius <= planetData.radius)
-                                {
-                                    for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++)
-                                    {
-                                        if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius)
-                                        {
-                                            if (i != 0)
-                                            {
-                                                planetData.radius = PatchSize.PlanetSizeList[i - 1];
-                                                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
-                                                {
-                                                    planetData.precision = PatchSize.PlanetSizeList[i - 1];
-                                                    segments = (int)(planetData.radius / 4f + 0.1f) * 4;
-                                                    PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
-                                                    break;
-                                                }
-                                            }
-                                            if (i == 0 && PatchSize.PlanetSizeList[0] == planetData.orbitAroundPlanet.radius && PatchSize.PlanetSizeList.Count > 1) //If the planet is already the smallest size, and there are more than one size in the list
-                                            {
-                                                planetData.radius = PatchSize.PlanetSizeList[0];
-                                                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
-                                                {
-                                                    planetData.precision = PatchSize.PlanetSizeList[0];
-                                                    segments = (int)(planetData.radius / 4f + 0.1f) * 4;
-                                                    PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
-                                                    break;
-                                                }
-                                            }
+                    //        if (planetData.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value)
+                    //        {
+                    //            if (planetData.orbitAroundPlanet.radius <= planetData.radius)
+                    //            {
+                    //                for (var i = 0; i < PatchSize.PlanetSizeParams.Count; i++)
+                    //                {
+                    //                    if (PatchSize.PlanetSizeList[i] == planetData.orbitAroundPlanet.radius)
+                    //                    {
+                    //                        if (i != 0)
+                    //                        {
+                    //                            planetData.radius = PatchSize.PlanetSizeList[i - 1];
+                    //                            if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
+                    //                            {
+                    //                                planetData.precision = PatchSize.PlanetSizeList[i - 1];
+                    //                                segments = (int)(planetData.radius / 4f + 0.1f) * 4;
+                    //                                PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                    //                                break;
+                    //                            }
+                    //                        }
+                    //                        if (i == 0 && PatchSize.PlanetSizeList[0] == planetData.orbitAroundPlanet.radius && PatchSize.PlanetSizeList.Count > 1) //If the planet is already the smallest size, and there are more than one size in the list
+                    //                        {
+                    //                            planetData.radius = PatchSize.PlanetSizeList[0];
+                    //                            if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
+                    //                            {
+                    //                                planetData.precision = PatchSize.PlanetSizeList[0];
+                    //                                segments = (int)(planetData.radius / 4f + 0.1f) * 4;
+                    //                                PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
+                    //                                break;
+                    //                            }
+                    //                        }
 
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                        }
+                    //                    }
+                    //                }
+                    //            }
+                    //        }
+                    //        break;
+                    //     }
 
-                    }
+                    //}
                 }
                 else
                 {
