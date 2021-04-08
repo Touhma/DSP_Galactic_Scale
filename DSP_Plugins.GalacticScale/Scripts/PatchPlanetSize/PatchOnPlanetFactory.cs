@@ -8,7 +8,7 @@ using UnityEngine;
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
 
-    public static class PatchPlanetFactory
+    public static class PatchOnPlanetFactory
     {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetFactory), "FlattenTerrain")]
         public static bool PatchFlattenTerrain(
