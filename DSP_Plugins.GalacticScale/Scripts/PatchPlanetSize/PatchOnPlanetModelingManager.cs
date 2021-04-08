@@ -5,9 +5,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
-namespace GalacticScale.Scripts.PatchPlanetSize {
+namespace GalacticScale.Scripts.PatchPlanetSize
+{
     [HarmonyPatch(typeof(PlanetModelingManager))]
-    public class PatchOnPlanetModelingManager : MonoBehaviour {
+    public class PatchOnPlanetModelingManager : MonoBehaviour
+    {
         [HarmonyPrefix]
         [HarmonyPatch("ModelingPlanetMain")]
         public static bool ModelingPlanetMain(PlanetData planet,
@@ -31,11 +33,12 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             ref GameObject ___tmpPlanetGameObject,
             ref GameObject ___tmpPlanetBodyGameObject,
             ref GameObject ___tmpPlanetReformGameObject,
-            ref MeshRenderer ___tmpPlanetReformRenderer) {
+            ref MeshRenderer ___tmpPlanetReformRenderer)
+        {
 
             Patch.Debug("ModelingPlanetMain", LogLevel.Debug,
                 Patch.DebugGeneral);
-            
+
 
             var themeProto = LDB.themes.Select(planet.theme);
 
@@ -64,102 +67,103 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             Patch.Debug("Planet Scale :" + planet.radius, LogLevel.Debug,
                 Patch.DebugPlanetModelingManager);
 
-            if (___currentModelingStage == 0) { 
-        if (___tmpMeshList == null)
+            if (___currentModelingStage == 0)
             {
-                ___tmpMeshList = new List<Mesh>(100);
-                ___tmpMeshRendererList = new List<MeshRenderer>(100);
-                ___tmpMeshColliderList = new List<MeshCollider>(100);
+                if (___tmpMeshList == null)
+                {
+                    ___tmpMeshList = new List<Mesh>(100);
+                    ___tmpMeshRendererList = new List<MeshRenderer>(100);
+                    ___tmpMeshColliderList = new List<MeshCollider>(100);
+                    ___tmpOceanCollider = (Collider)null;
+                    ___tmpVerts = new List<Vector3>(1700);
+                    ___tmpNorms = new List<Vector3>(1700);
+                    ___tmpTgnts = new List<Vector4>(1700);
+                    ___tmpUvs = new List<Vector2>(1700);
+                    ___tmpUv2s = new List<Vector4>(1700);
+                    ___tmpTris = new List<int>(10000);
+                }
+                if ((UnityEngine.Object)planet.heightmap == (UnityEngine.Object)null)
+                    planet.heightmap = new RenderTexture(new RenderTextureDescriptor(512, 512, RenderTextureFormat.RGHalf, 0)
+                    {
+                        dimension = TextureDimension.Cube,
+                        useMipMap = false,
+                        autoGenerateMips = false
+                    });
+                if ((UnityEngine.Object)___heightmapCamera == (UnityEngine.Object)null)
+                {
+                    GameObject gameObject = new GameObject("Heightmap Camera");
+                    ___heightmapCamera = gameObject.AddComponent<Camera>();
+                    ___heightmapCamera.cullingMask = 1073741824;
+                    ___heightmapCamera.enabled = false;
+                    ___heightmapCamera.farClipPlane = 900f;
+                    ___heightmapCamera.nearClipPlane = 10f;
+                    ___heightmapCamera.renderingPath = RenderingPath.Forward;
+                    ___heightmapCamera.allowDynamicResolution = false;
+                    ___heightmapCamera.allowMSAA = false;
+                    ___heightmapCamera.allowHDR = true;
+                    ___heightmapCamera.depthTextureMode = DepthTextureMode.None;
+                    ___heightmapCamera.clearFlags = CameraClearFlags.Color;
+                    ___heightmapCamera.backgroundColor = Color.black;
+                    ___heightmapCamera.depth = 0.0f;
+                    ___heightmapCamera.SetReplacementShader(Configs.builtin.heightmapShader, "ReplaceTag");
+                    gameObject.SetActive(false);
+                }
+                if ((UnityEngine.Object)planet.terrainMaterial == (UnityEngine.Object)null)
+                {
+                    if (themeProto != null && (UnityEngine.Object)themeProto.terrainMat != (UnityEngine.Object)null)
+                    {
+                        planet.terrainMaterial = UnityEngine.Object.Instantiate<Material>(themeProto.terrainMat);
+                        planet.terrainMaterial.name = planet.displayName + " Terrain";
+                        planet.terrainMaterial.SetFloat("_Radius", planet.realRadius);
+                    }
+                    else
+                        planet.terrainMaterial = UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetSurfaceMatProto);
+                }
+                if ((UnityEngine.Object)planet.oceanMaterial == (UnityEngine.Object)null)
+                {
+                    if (themeProto != null && (UnityEngine.Object)themeProto.oceanMat != (UnityEngine.Object)null)
+                    {
+                        planet.oceanMaterial = UnityEngine.Object.Instantiate<Material>(themeProto.oceanMat);
+                        planet.oceanMaterial.name = planet.displayName + " Ocean";
+                        planet.oceanMaterial.SetFloat("_Radius", planet.realRadius);
+                    }
+                    else
+                        planet.oceanMaterial = (Material)null;
+                }
+                if ((UnityEngine.Object)planet.atmosMaterial == (UnityEngine.Object)null)
+                {
+                    if (themeProto != null && (UnityEngine.Object)themeProto.atmosMat != (UnityEngine.Object)null)
+                    {
+                        planet.atmosMaterial = UnityEngine.Object.Instantiate<Material>(themeProto.atmosMat);
+                        planet.atmosMaterial.name = planet.displayName + " Atmos";
+                    }
+                    else
+                        planet.atmosMaterial = (Material)null;
+                }
+                if ((UnityEngine.Object)planet.reformMaterial0 == (UnityEngine.Object)null)
+                    planet.reformMaterial0 = UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetReformMatProto0);
+                if ((UnityEngine.Object)planet.reformMaterial1 == (UnityEngine.Object)null)
+                    planet.reformMaterial1 = UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetReformMatProto1);
+                if ((UnityEngine.Object)planet.ambientDesc == (UnityEngine.Object)null)
+                    planet.ambientDesc = themeProto == null || !((UnityEngine.Object)themeProto.ambientDesc != (UnityEngine.Object)null) ? (AmbientDesc)null : themeProto.ambientDesc;
+                if ((UnityEngine.Object)planet.ambientSfx == (UnityEngine.Object)null && themeProto != null && (UnityEngine.Object)themeProto.ambientSfx != (UnityEngine.Object)null)
+                {
+                    planet.ambientSfx = themeProto.ambientSfx;
+                    planet.ambientSfxVolume = themeProto.SFXVolume;
+                }
+                if ((UnityEngine.Object)planet.minimapMaterial == (UnityEngine.Object)null)
+                {
+                    planet.minimapMaterial = themeProto == null || !((UnityEngine.Object)themeProto.minimapMat != (UnityEngine.Object)null) ? UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetMinimapDefault) : UnityEngine.Object.Instantiate<Material>(themeProto.minimapMat);
+                    planet.minimapMaterial.name = planet.displayName + " Minimap";
+                    planet.minimapMaterial.SetTexture("_HeightMap", (Texture)planet.heightmap);
+                }
+                ___tmpMeshList.Clear();
+                ___tmpMeshRendererList.Clear();
+                ___tmpMeshColliderList.Clear();
                 ___tmpOceanCollider = (Collider)null;
-                ___tmpVerts = new List<Vector3>(1700);
-                ___tmpNorms = new List<Vector3>(1700);
-                ___tmpTgnts = new List<Vector4>(1700);
-                ___tmpUvs = new List<Vector2>(1700);
-                ___tmpUv2s = new List<Vector4>(1700);
-                ___tmpTris = new List<int>(10000);
+                ___tmpTris.Clear();
+                ___currentModelingStage = 1;
             }
-            if ((UnityEngine.Object)planet.heightmap == (UnityEngine.Object)null)
-                planet.heightmap = new RenderTexture(new RenderTextureDescriptor(512, 512, RenderTextureFormat.RGHalf, 0)
-                {
-                    dimension = TextureDimension.Cube,
-                    useMipMap = false,
-                    autoGenerateMips = false
-                });
-            if ((UnityEngine.Object)___heightmapCamera == (UnityEngine.Object)null)
-            {
-                GameObject gameObject = new GameObject("Heightmap Camera");
-                ___heightmapCamera = gameObject.AddComponent<Camera>();
-                ___heightmapCamera.cullingMask = 1073741824;
-                ___heightmapCamera.enabled = false;
-                ___heightmapCamera.farClipPlane = 900f;
-                ___heightmapCamera.nearClipPlane = 10f;
-                ___heightmapCamera.renderingPath = RenderingPath.Forward;
-                ___heightmapCamera.allowDynamicResolution = false;
-                ___heightmapCamera.allowMSAA = false;
-                ___heightmapCamera.allowHDR = true;
-                ___heightmapCamera.depthTextureMode = DepthTextureMode.None;
-                ___heightmapCamera.clearFlags = CameraClearFlags.Color;
-                ___heightmapCamera.backgroundColor = Color.black;
-                ___heightmapCamera.depth = 0.0f;
-                ___heightmapCamera.SetReplacementShader(Configs.builtin.heightmapShader, "ReplaceTag");
-                gameObject.SetActive(false);
-            }
-            if ((UnityEngine.Object)planet.terrainMaterial == (UnityEngine.Object)null)
-            {
-                if (themeProto != null && (UnityEngine.Object)themeProto.terrainMat != (UnityEngine.Object)null)
-                {
-                    planet.terrainMaterial = UnityEngine.Object.Instantiate<Material>(themeProto.terrainMat);
-                    planet.terrainMaterial.name = planet.displayName + " Terrain";
-                    planet.terrainMaterial.SetFloat("_Radius", planet.realRadius);
-                }
-                else
-                    planet.terrainMaterial = UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetSurfaceMatProto);
-            }
-            if ((UnityEngine.Object)planet.oceanMaterial == (UnityEngine.Object)null)
-            {
-                if (themeProto != null && (UnityEngine.Object)themeProto.oceanMat != (UnityEngine.Object)null)
-                {
-                    planet.oceanMaterial = UnityEngine.Object.Instantiate<Material>(themeProto.oceanMat);
-                    planet.oceanMaterial.name = planet.displayName + " Ocean";
-                    planet.oceanMaterial.SetFloat("_Radius", planet.realRadius);
-                }
-                else
-                    planet.oceanMaterial = (Material)null;
-            }
-            if ((UnityEngine.Object)planet.atmosMaterial == (UnityEngine.Object)null)
-            {
-                if (themeProto != null && (UnityEngine.Object)themeProto.atmosMat != (UnityEngine.Object)null)
-                {
-                    planet.atmosMaterial = UnityEngine.Object.Instantiate<Material>(themeProto.atmosMat);
-                    planet.atmosMaterial.name = planet.displayName + " Atmos";
-                }
-                else
-                    planet.atmosMaterial = (Material)null;
-            }
-            if ((UnityEngine.Object)planet.reformMaterial0 == (UnityEngine.Object)null)
-                planet.reformMaterial0 = UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetReformMatProto0);
-            if ((UnityEngine.Object)planet.reformMaterial1 == (UnityEngine.Object)null)
-                planet.reformMaterial1 = UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetReformMatProto1);
-            if ((UnityEngine.Object)planet.ambientDesc == (UnityEngine.Object)null)
-                planet.ambientDesc = themeProto == null || !((UnityEngine.Object)themeProto.ambientDesc != (UnityEngine.Object)null) ? (AmbientDesc)null : themeProto.ambientDesc;
-            if ((UnityEngine.Object)planet.ambientSfx == (UnityEngine.Object)null && themeProto != null && (UnityEngine.Object)themeProto.ambientSfx != (UnityEngine.Object)null)
-            {
-                planet.ambientSfx = themeProto.ambientSfx;
-                planet.ambientSfxVolume = themeProto.SFXVolume;
-            }
-            if ((UnityEngine.Object)planet.minimapMaterial == (UnityEngine.Object)null)
-            {
-                planet.minimapMaterial = themeProto == null || !((UnityEngine.Object)themeProto.minimapMat != (UnityEngine.Object)null) ? UnityEngine.Object.Instantiate<Material>(Configs.builtin.planetMinimapDefault) : UnityEngine.Object.Instantiate<Material>(themeProto.minimapMat);
-                planet.minimapMaterial.name = planet.displayName + " Minimap";
-                planet.minimapMaterial.SetTexture("_HeightMap", (Texture)planet.heightmap);
-            }
-            ___tmpMeshList.Clear();
-            ___tmpMeshRendererList.Clear();
-            ___tmpMeshColliderList.Clear();
-            ___tmpOceanCollider = (Collider)null;
-            ___tmpTris.Clear();
-            ___currentModelingStage = 1;
-        }
             //data.heightData = scaledHeightData;
             if (___currentModelingStage == 1)
             {
@@ -537,7 +541,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     ___currentModelingSeamNormal = 0;
                 }
             }
-                return false;
+            return false;
         }
     }
 }
