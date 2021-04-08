@@ -6,7 +6,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
-    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
+    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.3.3")]
     public class PatchForPlanetSize : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
@@ -141,10 +141,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
                 Harmony.CreateAndPatchAll(typeof(PatchBuildingGizmo));
                 Harmony.CreateAndPatchAll(typeof(PatchNearColliderLogic));
-
             }
         }
-
 
         public static void ParseResizinSettings(string configArray, string chanceArray) {
             var tempPlanetArray = Array.ConvertAll(configArray.Split(','), int.Parse);

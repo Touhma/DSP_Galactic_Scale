@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using System;
 using BepInEx.Logging;
+
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
     [HarmonyPatch(typeof(PlayerAction_Build))]
@@ -11,14 +12,14 @@ namespace GalacticScale.Scripts.PatchPlanetSize
     {
         [HarmonyPostfix]
         [HarmonyPatch("CheckBuildConditions")]
-        static bool BuildConditionsCheck(bool __result,
-            PlayerAction_Build __instance, ref string ___cursorText,
-            ref bool ___cursorWarning, ref bool ___cursorValid,
-            ref bool ___waitConfirm, ref int[] ____tmp_ids,
-            ref NearColliderLogic ___nearcdLogic,
-            ref PlanetFactory ___factory,
-            Pose ___previewPose
-            )
+
+        static bool BuildConditionsCheck(
+            bool __result,
+            PlayerAction_Build __instance,
+            ref string ___cursorText,
+            ref bool ___cursorWarning,
+            ref PlanetFactory ___factory)
+
         {
             int count = __instance.buildPreviews.Count;
             if (count < 2) return __result; // Check we are building
@@ -39,7 +40,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                     {
                         if ((__instance.buildPreviews[i].condition != EBuildCondition.Ok && __instance.buildPreviews[i].condition != EBuildCondition.JointCannotLift))
                         {
-                            __result = (bool)false;
+
+                            __result = false;
+
                             return __result; //If there's some other problem with the belt, bail out.
                         }
                     }

@@ -7,7 +7,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
-namespace GalacticScale.Scripts.PatchPlanetSize {
+namespace GalacticScale.Scripts.PatchPlanetSize
+{
     [HarmonyPatch(typeof(PlanetModelingManager))]
     public class PatchOnPlanetModelingManager : MonoBehaviour {
 
@@ -18,7 +19,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             planet.data.AddFactoredRadius(planet);
             return true;
         }
-
         [HarmonyTranspiler, HarmonyPatch("ModelingPlanetMain")]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -56,7 +56,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     instructionList[instructionCounter] = new CodeInstruction(OpCodes.Call, typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
                 }
             }
-
             return instructionList.AsEnumerable();
         }
     }
