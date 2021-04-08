@@ -1,4 +1,9 @@
-﻿Directory.Build.props.example
+﻿*
+!Directory.Build.props.example
+!/**/
+!*.cs
+!*.csproj
+!DspPluginTest.sln
 
 !.gitignore
 !README.md
@@ -7,10 +12,3 @@
 !*/**/Release/**
 bin/
 obj/
-.vs/GalacticScale/config/applicationhost.config
-.vs/GalacticScale/v16/.suo
-Directory.Build.props
-.vs/DspPluginTest/v16/.suo
-DSP_Plugins.GalacticScale/DSP_Plugins.GalacticScale.csproj
-.vs/DspPluginTest/v16/.suo
-*.csproj

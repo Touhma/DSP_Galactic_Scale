@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
 namespace GalacticScale.Scripts {
@@ -93,10 +92,6 @@ namespace GalacticScale.Scripts {
                     planet.singularity |= EPlanetSingularity.TidalLocked4;
                     break;
             }
-        }
-        public static bool HasSingularityFlag(this PlanetData planet, EPlanetSingularity singularity)
-        {
-            return ((planet.singularity & singularity) != EPlanetSingularity.None);
         }
 
         public static void OrbitAroundNeutronStar(this PlanetData planet) {

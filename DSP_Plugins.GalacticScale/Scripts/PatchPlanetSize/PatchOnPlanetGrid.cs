@@ -28,7 +28,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     }
                     else {
                         //Original algorithm. Really shouldn't be used anymore... but just in case it's still here.
-                        Patch.Debug("DetermineLongitudeSegmentCount Failed, Defaulting to original with segment count " + segment, LogLevel.Warning, true);
                         var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float) (latitudeIndex / (double) (segment / 4f) * 3.14159274101257 * 0.5))) * segment);
                         __result = index < 500 ? PlatformSystem.segmentTable[index] : (index + 49) / 100 * 100;
                     }
