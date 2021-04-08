@@ -20,7 +20,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize
             LocalBuilder intNum4 = generator.DeclareLocal(typeof(int));
             intNum4.SetLocalSymInfo("intNum4");
 
-            Patch.Debug("ModelingPlanetMain Transpiler.", BepInEx.Logging.LogLevel.Debug, Patch.DebugPlanetModelingManagerDeep);
             for (int instructionCounter = 0; instructionCounter < instructionList.Count; instructionCounter++)
             {
                 if (instructionList[instructionCounter].opcode == OpCodes.Conv_I2 && instructionCounter + 1 < instructionList.Count &&
