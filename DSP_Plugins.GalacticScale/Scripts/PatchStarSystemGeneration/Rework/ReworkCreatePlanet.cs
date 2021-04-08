@@ -19,23 +19,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             List<int> sizes = PatchSize.PlanetSizeList;
             float choice;
             float radius = 200f;
-            bool isMoon = planet.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value;
+            bool makeMoonSmaller = planet.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value && !planet.orbitAroundPlanet.IsGasGiant();
             float hostRadius = 0f;
-            if (isMoon)
+            if (makeMoonSmaller)
             {
                 hostRadius = planet.orbitAroundPlanet.radius;
                 if (sizes[0] == hostRadius) return hostRadius;
             }
 
             int flag = 100;
-            while ((!isMoon && flag == 100) || (isMoon && radius >= hostRadius && flag > 0))
+            while ((!makeMoonSmaller && flag == 100) || (makeMoonSmaller && radius >= hostRadius && flag > 0))
             {
                 Patch.Debug("Flag " + flag, LogLevel.Message, true);
                 flag--;
                 choice = (float)seed.NextDouble();
                 foreach (KeyValuePair<int, float> option in options)
                 {
-                    Patch.Debug("Trying Size " + option.Key + " with chance " + option.Value + " against choice " + choice + " isisMoon:" +isMoon, LogLevel.Message, true);
+                    Patch.Debug("Trying Size " + option.Key + " with chance " + option.Value + " against choice " + choice + " ismakeMoonSmaller:" +makeMoonSmaller, LogLevel.Message, true);
                     if (choice <= option.Value)
                     {
                         radius = option.Key;
