@@ -93,7 +93,10 @@ namespace GalacticScale.Scripts {
                     break;
             }
         }
-
+        public static bool HasSingularityFlag(this PlanetData planet, EPlanetSingularity singularity)
+        {
+            return ((planet.singularity & singularity) != EPlanetSingularity.None);
+        }
         public static void OrbitAroundNeutronStar(this PlanetData planet) {
             planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
         }
