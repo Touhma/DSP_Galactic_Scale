@@ -18,9 +18,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             planet.data.AddFactoredRadius(planet);
             return true;
         }
-
-        [HarmonyTranspiler, HarmonyPatch("ModelingPlanetMain")]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        
+        [HarmonyTranspiler]
+        [HarmonyPatch("ModelingPlanetMain")]
+        public static IEnumerable<CodeInstruction> ModelingPlanetMainTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> instructionList = new List<CodeInstruction>(instructions);
 

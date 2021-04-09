@@ -13,8 +13,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //    change ldarg.0 to OpCodes.Nop
         //    change the following instruction to ldc.r4 1
         // 2) find all calls to GetModPlane
+        [HarmonyTranspiler]
         [HarmonyPatch("UpdateDirtyMesh")]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+        public static IEnumerable<CodeInstruction> UpdateDirtyMeshTranspiler(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
                 if (codes[i].opcode == OpCodes.Ldarg_0 && i < codes.Count - 1)

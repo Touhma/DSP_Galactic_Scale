@@ -119,7 +119,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
             if (EnableResizingFeature.Value || EnableLimitedResizingFeature.Value) {
 
-                ParseResizinSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
+                ParseResizingSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
 
                 // check some configs dependencies
                 if (EnableLimitedResizingFeature.Value) EnableResizingFeature.Value = false;
@@ -134,19 +134,18 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
-                Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_BuildCheck));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
                 Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
-                Harmony.CreateAndPatchAll(typeof(PatchBuildingGizmo));
-                Harmony.CreateAndPatchAll(typeof(PatchNearColliderLogic));
+                Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
+                Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
             }
         }
 
 
-        public static void ParseResizinSettings(string configArray, string chanceArray) {
+        public static void ParseResizingSettings(string configArray, string chanceArray) {
             var tempPlanetArray = Array.ConvertAll(configArray.Split(','), int.Parse);
             var tempChanceArray = Array.ConvertAll(chanceArray.Split(','), float.Parse);
 

@@ -6,7 +6,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     public class PatchOnPlanetAtmoBlur {
         [HarmonyPrefix]
         [HarmonyPatch("Update")]
-        public static bool CreatePlanet(ref PlanetAtmoBlur __instance) {
+        public static bool Update(ref PlanetAtmoBlur __instance) {
             ReworkPlanetAtmoBlur.ReworkUpdate(ref __instance);
             return false;
         }

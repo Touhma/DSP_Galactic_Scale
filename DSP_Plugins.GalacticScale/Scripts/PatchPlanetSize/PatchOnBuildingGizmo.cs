@@ -8,7 +8,7 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(BuildingGizmo))]
-    static class PatchBuildingGizmo
+    static class PatchOnBuildingGizmo
     {
         [HarmonyPostfix]
         [HarmonyPatch("SetGizmoDesc")]

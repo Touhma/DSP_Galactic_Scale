@@ -85,10 +85,9 @@
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetFactory.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchNearColliderLogic.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchBuildingGizmo.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnNearColliderLogic.cs" />
+    <Compile Include="Scripts\PatchPlanetSize\PatchOnBuildingGizmo.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_BuildCheck.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />

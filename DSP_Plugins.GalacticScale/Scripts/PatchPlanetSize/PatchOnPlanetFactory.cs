@@ -12,8 +12,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize
     [HarmonyPatch(typeof(PlanetFactory))]
     public static class PatchOnPlanetFactory
     {
-        [HarmonyTranspiler, HarmonyPatch("FlattenTerrain")]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        [HarmonyTranspiler]
+        [HarmonyPatch("FlattenTerrain")]
+        public static IEnumerable<CodeInstruction> FlattenTerrainTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> instructionList = new List<CodeInstruction>(instructions);
 

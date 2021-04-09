@@ -7,7 +7,7 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 namespace GalacticScale.Scripts.PatchPlanetSize
 {
     [HarmonyPatch(typeof(NearColliderLogic))]
-    static class PatchNearColliderLogic
+    static class PatchOnNearColliderLogic
     {
         public static int offset = -20;
         public static List<GameObject> markers;
