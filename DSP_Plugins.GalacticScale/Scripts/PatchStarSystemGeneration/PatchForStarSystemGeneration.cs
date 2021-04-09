@@ -7,8 +7,8 @@ using HarmonyLib;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
-    [BepInPlugin("dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation",
-        "1.0.0.0")]
+    [BepInPlugin("dsp.galactic-scale.star-system-generation", "Galactic Scale Plug-In - Star System Generation", "1.4.0")]
+
     public class PatchForStarSystemGeneration : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
@@ -92,11 +92,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static ConfigEntry<float> ChanceRetrogradeOrbit;
         //public static float ChanceRetrogradeOrbit = 0.05f;
 
-        //Habitability Related : 
+        //Habitability Related :
         public static ConfigEntry<float> HabitabilityBaseConstant;
         //public static float HabitabilityBaseConstant = 1000f;
 
-        // the habitability area : for 1 habitability radius of the star & a value of 0.2f : 0.8 -> 1.2 
+        // the habitability area : for 1 habitability radius of the star & a value of 0.2f : 0.8 -> 1.2
         public static ConfigEntry<float> HabitableRadiusAreaBaseline;
         //public static float HabitableRadiusAreaBaseline = 0.2f;
 
