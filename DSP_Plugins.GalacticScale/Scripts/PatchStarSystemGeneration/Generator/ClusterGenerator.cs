@@ -88,7 +88,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration.Generator {
             }
             
             
- // Pre-gen the actual stellar system
+            // Pre-gen the actual stellar system
             preGenCluster.ClusterSystems = pregenSystems;
             
             return preGenCluster;
