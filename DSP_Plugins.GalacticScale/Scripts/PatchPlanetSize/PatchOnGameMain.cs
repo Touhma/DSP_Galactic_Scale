@@ -20,7 +20,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             if (GameMain.data != null) GameMain.data.OnPostDraw();
             return false;
         }
-    }
+    
 
 #if DEBUG
         [HarmonyPostfix, HarmonyPatch("FixedUpdate")]
