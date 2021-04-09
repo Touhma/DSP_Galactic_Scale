@@ -46,6 +46,10 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="FullSerializer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Users\Tony\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\Touhma-Touhma_GalacticScale\FullSerializer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -101,6 +105,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
+    <Compile Include="Scripts\PatchUI\DebugCommands.cs" />
     <Compile Include="Scripts\PatchUI\PatchUI.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
