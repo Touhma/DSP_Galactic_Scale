@@ -3,14 +3,14 @@ using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
-    [HarmonyPatch(typeof(StarGen))]
-    public class PatchOnStarGen {
+    [HarmonyPatch(typeof(UniverseGen))]
+    public class PatchOnUniverseGen {
         [HarmonyPrefix]
-        [HarmonyPatch("CreateStarPlanets")]
-        public static bool CreateStarPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc) {
+        [HarmonyPatch("CreateGalaxy")]
+        public static bool CreateGalaxy(GameDesc gameDesc, GalaxyData __result) {
            
                 // InnerCount for the System
-                // ReworkStarGen.CreateStarPlanetsRework(galaxy, star, gameDesc, new GeneratorPlanetSettings());
+                __result = ReworkUniverseGen.ReworkCreateGalaxy(gameDesc);
   
 
 
