@@ -95,7 +95,7 @@ namespace GalacticScale.Scripts {
         }
 
         public static void OrbitAroundNeutronStar(this PlanetData planet) {
-            planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
+          //  planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
         }
     }
 }
