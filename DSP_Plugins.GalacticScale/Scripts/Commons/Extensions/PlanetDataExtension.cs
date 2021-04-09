@@ -94,7 +94,7 @@ namespace GalacticScale.Scripts {
             return ((planet.singularity & singularity) != EPlanetSingularity.None);
         }
         public static void OrbitAroundNeutronStar(this PlanetData planet) {
-            planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
+          //  planet.orbitInclination *= Patch.NeutronStarOrbitInclinationFactor.Value;
         }
     }
 }

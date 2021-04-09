@@ -1,145 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GalacticScale</RootNamespace>
-    <AssemblyName>GalacticScale</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>GalacticScale</RootNamespace>
+        <AssemblyName>GalacticScale</AssemblyName>
+        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Harmony">
-      <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.UIModule.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\Commons\Extensions\PlanetDataExtension.cs" />
-    <Compile Include="Scripts\Commons\Extensions\PlanetRawDataExtention.cs" />
-    <Compile Include="Scripts\Commons\Extensions\StarDataExtension.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetForGenerator.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetGeneratorSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\RomanNumbers.cs" />
-    <Compile Include="Scripts\Commons\Model\SystemsNames.cs" />
-    <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
-    <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
-    <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
-    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
-    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
-    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnBuildingGizmo.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnNearColliderLogic.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetFactory.cs" />
+        <Reference Include="0Harmony">
+            <HintPath>..\Libs\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>G:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx">
+            <HintPath>..\Libs\BepInEx.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx.Harmony">
+            <HintPath>..\Libs\BepInEx.Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="FullSerializer, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\dspplugin\Libs\FullSerializer.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="UnityEngine">
+            <HintPath>..\Libs\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\Libs\UnityEngine.AudioModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\Libs\UnityEngine.JSONSerializeModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\Libs\UnityEngine.PhysicsModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Scripts\Commons\Extensions\PlanetDataExtention.cs" />
+        <Compile Include="Scripts\Commons\Extensions\PlanetRawDataExtention.cs" />
+        <Compile Include="Scripts\Commons\Extensions\PlanetThemeExtension.cs" />
+        <Compile Include="Scripts\Commons\Extensions\StarDataExtension.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\GeneratorPlanet.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\GeneratorStar.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\GeneratorSystem.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\GeneratorCluster.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorGlobalSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorOrbitsSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetThemeSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorStarSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorSystemSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorClusterSettings.cs" />
+        <Compile Include="Scripts\Commons\Model\PlanetType.cs" />
+        <Compile Include="Scripts\Commons\Model\PlanetTheme.cs" />
+        <Compile Include="Scripts\Commons\Model\RomanNumbers.cs" />
+        <Compile Include="Scripts\Commons\Model\SystemsNames.cs" />
+        <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
+        <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
+        <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
+        <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
+        <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
+        <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetFactory.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnNearColliderLogic.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnBuildingGizmo.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIPlanetDetail.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIVersionText.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIGameLoadingSplash.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIEscMenu.cs" />
-    <Compile Include="Scripts\PatchUI\PatchForUI.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetData.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIStarDetail.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkCreatePlanet.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkSetPlanetTheme.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icon.png" />
-    <Content Include="manifest.json" />
-    <Content Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <ContentWithTargetPath Include="Scripts\PatchUI\galacticbundle">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>galacticbundle</TargetPath>
-    </ContentWithTargetPath>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
-    <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)galacticbundle" DestinationFolder="$(Plugins_Dir)" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\ClusterGenerator.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\PlanetGenerator.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\StarGenerator.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Generator\SystemGenerator.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchForStarSystemGeneration.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnPlanetGen.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetData.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
+        <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStarGen.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIStarDetail.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUniverseGen.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkPlanetGen.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkSetPlanetTheme.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkStarGen.cs" />
+        <Compile Include="Scripts\PatchStarSystemGeneration\Rework\ReworkUniverseGen.cs" />
+        <Compile Include="Scripts\Dependencies\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="icon.png" />
+        <Content Include="manifest.json" />
+        <Content Include="README.md" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
+        <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
+        <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
   </Target>
   <Target Name="CreateDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
     <Exec Command="start &quot;&quot; /d &quot;$(pdb2mdb_Path)&quot; pdb2mdb $(TargetPath)" />
@@ -147,7 +154,7 @@
   </Target>
   <Target Name="CopyDebugMDB" AfterTargets="CreateDebugMDB" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath).mdb" DestinationFolder="$(Plugins_Dir)" />
-  </Target>
+    </Target>
   <Target Name="CleanDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' != 'Debug' OR $(pdb2mdb_Path) == ''">
     <Delete Files="&quot;$(Plugins_Dir)&quot;Touhma-GalacticScale.dll.mdb" />
   </Target>
