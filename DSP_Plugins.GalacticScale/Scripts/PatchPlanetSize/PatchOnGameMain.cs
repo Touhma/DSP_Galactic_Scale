@@ -8,7 +8,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     {
         [HarmonyPrefix]
         [HarmonyPatch("OnMainCameraPostRender")]
-        static bool PatchOnMainCameraPostRender(Camera cam) 
+        static bool OnMainCameraPostRender(Camera cam) 
         {
             if (GameMain.data != null) GameMain.data.OnPostDraw();
             return false;

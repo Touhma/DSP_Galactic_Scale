@@ -8,7 +8,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     public class PatchOnGameData {
         [HarmonyPostfix]
         [HarmonyPatch("OnActivePlanetLoaded")]
-        public static void PostfixPlanetLoaded(PlanetData planet) {
+        public static void OnActivePlanetLoaded(PlanetData planet) {
             if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) {
                 PatchSize.Debug("PlanetLoaded was called!", BepInEx.Logging.LogLevel.Debug, PatchSize.DebugNewPlanetGrid);
                 int segments = (int) (planet.radius / 4f + 0.1f) * 4;

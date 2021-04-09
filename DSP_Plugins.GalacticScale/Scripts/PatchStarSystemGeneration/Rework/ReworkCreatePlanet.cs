@@ -89,8 +89,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             if (planetData.IsNotAMoon()) {
                 Patch.Debug("Planets Stuff", LogLevel.Debug,
                     Patch.DebugReworkPlanetGen);
+                var baselineOrbitSize = 0.1f * orbitIndex;
+                if (Patch.OrbitRadiusPlanetArray.Length - 1 < orbitIndex) Patch.Debug("Trying to squeeze planet into orbit " + orbitIndex + " when total orbits are " + Patch.OrbitRadiusPlanetArray.Length, LogLevel.Error, true);
+                
                 //orbit
-                var baselineOrbitSize = Patch.OrbitRadiusPlanetArray[orbitIndex] * star.orbitScaler;
+                else baselineOrbitSize = Patch.OrbitRadiusPlanetArray[orbitIndex] * star.orbitScaler;
                 var orbitSize = (float) ((baselineOrbitVariation - 1.0) / Mathf.Max(1f, baselineOrbitSize) + 1.0);
                 planetData.orbitRadius = baselineOrbitSize * orbitSize;
 
@@ -111,13 +114,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 planetData.sunDistance = planetData.orbitRadius;
 
                 //Tidal Lock Management
-                if (randomNumber13 < Patch.ChanceTidalLock.Value) {
+                if (randomNumber12 < Patch.ChanceTidalLock.Value) {
                     if (randomNumber13 < Patch.ChanceTidalLock1.Value) {
                         planetData.obliquity *= 0.01f;
                         planetData.rotationPeriod = planetData.orbitalPeriod;
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked);
                     }
-                    else if (randomNumber13 < Patch.ChanceTidalLock2.Value) {
+                    else if (randomNumber7 < Patch.ChanceTidalLock2.Value) {
                         planetData.obliquity *= 0.1f;
                         planetData.rotationPeriod = planetData.orbitalPeriod * 0.5;
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked2);
@@ -145,7 +148,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 planetData.orbitAroundPlanet = star.planets[orbitAround];
                 Patch.Debug("orbitAround id : " + star.planets[orbitAround].index, LogLevel.Debug, Patch.DebugReworkPlanetGen);
-                var orbitRadiusScaled = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
+                var orbitRadiusScaled = 0.1f * orbitIndex;
+                if (Patch.OrbitRadiusArrayMoons.Length - 1 < orbitIndex) Patch.Debug("Trying to squeeze moon into orbit " + orbitIndex + " when total orbits are" + Patch.OrbitRadiusArrayMoons.Length, LogLevel.Error, true);
+                else orbitRadiusScaled = Patch.OrbitRadiusArrayMoons[orbitIndex] * star.orbitScaler *
                                         Mathf.Lerp(baselineOrbitVariation, 1f, 0.5f) *
                                         planetData.orbitAroundPlanet.GetGasGiantOrbitScaler();
                 //orbit
@@ -178,13 +183,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 Patch.Debug("Tidal Lock " + planetData.rotationPeriod, LogLevel.Debug, Patch.DebugReworkPlanetGen);
                 //Tidal Lock Management
-                if (randomNumber13 < Patch.ChanceTidalLock.Value) {
+                if (randomNumber12 < Patch.ChanceTidalLock.Value) {
                     if (randomNumber13 < Patch.ChanceTidalLock1.Value) {
                         planetData.obliquity *= 0.01f;
                         planetData.rotationPeriod = planetData.orbitAroundPlanet.orbitalPeriod;
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked);
                     }
-                    else if (randomNumber13 < Patch.ChanceTidalLock2.Value) {
+                    else if (randomNumber7 < Patch.ChanceTidalLock2.Value) {
                         planetData.obliquity *= 0.1f;
                         planetData.rotationPeriod = planetData.orbitAroundPlanet.orbitalPeriod * 0.5;
                         planetData.IsTidallyLocked(TidalLevel.TidalLocked2);

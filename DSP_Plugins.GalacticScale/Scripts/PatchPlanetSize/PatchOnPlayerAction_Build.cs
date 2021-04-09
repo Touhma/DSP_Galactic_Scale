@@ -42,7 +42,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //     insert those instructions at i+2 (where i is still the location where we found ldc.r4 0.025), so that the result of the prior vector multiplication is what we vector divide
         [HarmonyTranspiler]
         [HarmonyPatch("CheckBuildConditions")]
-        public static IEnumerable<CodeInstruction> CheckBuildConditions(IEnumerable<CodeInstruction> instructions) {
+        public static IEnumerable<CodeInstruction> CheckBuildConditionsTranspiler(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
                 if (i > 0 && codes[i].Is(OpCodes.Ldc_R4, 0.025f) && i < codes.Count - 1)
@@ -104,6 +104,51 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 }
             return codes.AsEnumerable();
         }
+        
+        [HarmonyPostfix]
+        [HarmonyPatch("CheckBuildConditions")]
+        static bool CheckBuildConditions(bool __result,
+            PlayerAction_Build __instance, ref string ___cursorText,
+            ref bool ___cursorWarning, ref bool ___cursorValid,
+            ref bool ___waitConfirm, ref int[] ____tmp_ids,
+            ref NearColliderLogic ___nearcdLogic,
+            ref PlanetFactory ___factory,
+            Pose ___previewPose
+            )
+        {
+            int count = __instance.buildPreviews.Count;
+            if (count < 2) return __result; // Check we are building
+            BuildPreview preview = __instance.buildPreviews[0];
+            int objId = preview.inputObjId;
+            if (objId < 0 || objId >= ___factory.entityPool.Length) return __result; // Sanity Check
+            EntityData entity = ___factory.entityPool[objId];
+            if (entity.isNull) return __result;
+            ItemProto itemProto = LDB.items.Select((int)entity.protoId); // Grab the prototype of the first object in the chain
+            if (itemProto == null) return __result;
+            if (itemProto.prefabDesc == null) return __result;
+            if (itemProto.prefabDesc.oilMiner) // Check that we are connected to an oil miner
+            {
+                if (preview.condition == EBuildCondition.JointCannotLift) // Make sure the error is that the endpoint must be horizontal
+                {
+                    preview.condition = EBuildCondition.Ok; // Ignore that endpoint horizontal error
+                    for (int i = 0; i < count; i++) // Check the rest of the belt for errors
+                    {
+                        if ((__instance.buildPreviews[i].condition != EBuildCondition.Ok && __instance.buildPreviews[i].condition != EBuildCondition.JointCannotLift))
+                        {
+                            __result = (bool)false;
+                            return __result; //If there's some other problem with the belt, bail out.
+                        }
+                    }
+                    ___cursorText = "Click to build";
+                    ___cursorWarning = false; // Prevent red text
+                    __result = true; // Override the build condition check
+                    UICursor.SetCursor(ECursor.Default); // Get rid of that ban cursor
+                }
+            }
+
+            return __result;
+        }
+        
 
         //Strategy: 1) Add scale factor to gas giant call
         // This is the Vector3 flavor, identical instructions to the above
@@ -127,7 +172,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //     insert those instructions at i+2 (where i is still the location where we found ldc.r4 0.025), so that the result of the prior vector multiplication is what we vector divide
         [HarmonyTranspiler]
         [HarmonyPatch("DetermineBuildPreviews")]
-        public static IEnumerable<CodeInstruction> DetermineBuildPreviews(IEnumerable<CodeInstruction> instructions) {
+        public static IEnumerable<CodeInstruction> DetermineBuildPreviewsTranspiler(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
                 if (i > 0 && codes[i].Is(OpCodes.Ldc_R4, 0.025f) && i < codes.Count - 1)
