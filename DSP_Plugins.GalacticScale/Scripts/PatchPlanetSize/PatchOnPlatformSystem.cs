@@ -12,7 +12,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     public class PatchOnPlatformSystem {
         
         public static Dictionary<int, int[]> keyedLUTs = new Dictionary<int, int[]>();
-        public static Dictionary<int, byte> extraReformData = new Dictionary<int, byte>();
         [HarmonyPrefix]
         [HarmonyPatch("DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(int _latitudeIndex, int _segment, ref int __result) {
