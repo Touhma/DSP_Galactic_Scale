@@ -17,7 +17,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPrefix]
         [HarmonyPatch("Update")]
         public static bool Update(UIBuildingGrid __instance, Material ___material, Material ___altMaterial) {
-            if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value) 
+            //if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value)
+                if (Patch.EnableLimitedResizingFeature.Value) 
                 if (!DSPGame.IsMenuDemo) {
                     int segments;
                     if (refreshGridRadius != -1) {

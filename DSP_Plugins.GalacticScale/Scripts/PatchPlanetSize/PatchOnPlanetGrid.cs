@@ -13,8 +13,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPrefix]
         [HarmonyPatch("DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result) {
-            if (!DSPGame.IsMenuDemo) 
-                if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value) {
+            if (!DSPGame.IsMenuDemo)
+                //if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value) {
+                if (Patch.EnableLimitedResizingFeature.Value) {
                     Patch.Debug("PlanetGrid Vanilla DetermineLongitudeSegmentCount.", LogLevel.Debug, Patch.DebugNewPlanetGrid);
                     if (keyedLUTs.ContainsKey(segment)) {
                         Patch.Debug("PlanetGrid Vanilla DeterminLongitudeSegmentCount Key Existed.", LogLevel.Debug, Patch.DebugNewPlanetGrid);

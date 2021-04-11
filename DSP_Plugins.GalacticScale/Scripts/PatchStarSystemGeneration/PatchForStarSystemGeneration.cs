@@ -581,8 +581,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "if planet.distance / star.habitableRadius is more than that --> the planet will be an ice planet");
 
             //Forcing the Custom star Algo if resizing is enabled
-            if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
-
+            //if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
+            if (PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
                 Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));

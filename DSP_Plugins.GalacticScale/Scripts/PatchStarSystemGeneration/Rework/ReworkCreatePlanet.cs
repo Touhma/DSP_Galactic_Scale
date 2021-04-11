@@ -387,22 +387,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             if (planetData.type == EPlanetType.Gas)
             {
                 var radiusGasGiantWanted = PatchSize.VanillaGasGiantSize;
-                if (PatchSize.EnableResizingFeature.Value)
-                {
-                    //Default : 0.25
-                    var minScalingGasGiantRatio =
-                        (PatchSize.BaseGasGiantSize.Value - PatchSize.BaseGasGiantSizeVariationFactor.Value) /
-                        (PatchSize.BaseGasGiantSize.Value + PatchSize.BaseGasGiantSizeVariationFactor.Value);
+                //if (PatchSize.EnableResizingFeature.Value)
+                //{
+                //    //Default : 0.25
+                //    var minScalingGasGiantRatio =
+                //        (PatchSize.BaseGasGiantSize.Value - PatchSize.BaseGasGiantSizeVariationFactor.Value) /
+                //        (PatchSize.BaseGasGiantSize.Value + PatchSize.BaseGasGiantSizeVariationFactor.Value);
 
-                    radiusGasGiantWanted = PatchSize.BaseGasGiantSize.Value +
-                                           MathUtils.RangePlusMinusOne(mainSeed) *
-                                           PatchSize.BaseGasGiantSizeVariationFactor.Value;
-                    radiusGasGiantWanted -= radiusGasGiantWanted % 10;
-                }
+                //    radiusGasGiantWanted = PatchSize.BaseGasGiantSize.Value +
+                //                           MathUtils.RangePlusMinusOne(mainSeed) *
+                //                           PatchSize.BaseGasGiantSizeVariationFactor.Value;
+                //    radiusGasGiantWanted -= radiusGasGiantWanted % 10;
+                //}
 
                 planetData.scale = PatchSize.VanillaGasGiantScale;
                 planetData.radius = radiusGasGiantWanted / planetData.scale;
-                if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
+                //if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
+                if (PatchSize.EnableLimitedResizingFeature.Value)
                 {
                     int segments = (int)(planetData.radius / 4f + 0.1f) * 4;
                     PatchSizeReworkPlanetGen.SetLuts(segments, planetData.radius);
@@ -412,50 +413,6 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             }
             else if (planetData.type != EPlanetType.None)
             {
-                /*if (PatchSize.EnableResizingFeature.Value)
-                {
-                    var radiusTelluricWanted = PatchSize.VanillaTelluricSize;
-                    if (planetData.IsNotAMoon() || !PatchSize.EnableMoonSizeFailSafe.Value)
-                    {
-                        radiusTelluricWanted = PatchSize.BaseTelluricSize.Value +
-                                               MathUtils.RangePlusMinusOne(mainSeed) *
-                                               PatchSize.BaseTelluricSizeVariationFactor.Value;
-                    }
-                    else
-                    {
-                        //A moon can only be smaller than it's host
-                        if (planetData.orbitAroundPlanet.type != EPlanetType.Gas)
-                        {
-                            radiusTelluricWanted = planetData.orbitAroundPlanet.radius -
-                                                   (float)mainSeed.NextDouble() *
-                                                   PatchSize.BaseTelluricSizeVariationFactor.Value;
-                            // clamp to avoid weird sizes
-                            radiusTelluricWanted = Mathf.Clamp(radiusTelluricWanted,
-                                PatchSize.MinTelluricSize.Value,
-                                planetData.orbitAroundPlanet.radius);
-                        }
-                        else
-                        {
-                            radiusTelluricWanted = PatchSize.BaseTelluricSize.Value +
-                                                   MathUtils.RangePlusMinusOne(mainSeed) *
-                                                   PatchSize.BaseTelluricSizeVariationFactor.Value;
-                        }
-                    }
-
-                    radiusTelluricWanted -= radiusTelluricWanted % 10;
-                    planetData.radius = Mathf.RoundToInt(radiusTelluricWanted);
-                    Patch.Debug(" planetData.radius" + planetData.radius, LogLevel.Debug,
-                        Patch.DebugReworkPlanetGenDeep);
-
-                    planetData.scale = planetData.GetScaleFactored();
-                    Patch.Debug(" planetData.scale" + planetData.scale, LogLevel.Debug,
-                        Patch.DebugReworkPlanetGenDeep);
-
-                    planetData.precision = planetData.GetPrecisionFactored();
-                    Patch.Debug(" planetData.precision" + planetData.precision, LogLevel.Debug,
-                        Patch.DebugReworkPlanetGenDeep);
-                }
-                else */
                 if (PatchSize.EnableLimitedResizingFeature.Value)
                 {
                     planetData.radius = TelluricSizeSelector(planetData, mainSeed);
