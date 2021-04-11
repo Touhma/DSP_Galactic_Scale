@@ -10,55 +10,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize
     static class PatchOnNearColliderLogic
     {
         public static int offset = -20;
-        public static List<GameObject> markers;
-
-#if DEBUG
-
-        [HarmonyPostfix]
-        [HarmonyPatch("Update")]
-        public static void Update()
-        {
-            int o = offset;
-            if ((Input.GetKeyUp(KeyCode.Equals) || Input.GetKeyUp(KeyCode.KeypadPlus)) && VFInput.alt)
-                ++offset;
-            if ((Input.GetKeyUp(KeyCode.Minus) || Input.GetKeyUp(KeyCode.KeypadMinus)) && VFInput.alt)
-                --offset;
-            if (o != offset) Patch.Debug("Mining AreaRadius Offset Changed to " + offset, BepInEx.Logging.LogLevel.Message, true);
-
-        }
-        [HarmonyPostfix]
-        [HarmonyPatch("MarkActivePos")]
-        public static void MarkActivePos(Vector3 pos, ref NearColliderLogic __instance, ref int[] ___activeColHashes, ref int ___activeColHashCount)
-        {  
-            if (VFInput.alt && Input.GetKeyUp(KeyCode.Delete))
-            {
-                for (var i = 0; i < markers.Count; i++)
-                {
-                    if (markers[i] != null) GameObject.Destroy(markers[i]);
-                    
-                }
-                markers.Clear();
-            }
-            if (markers == null) markers = new List<GameObject>();
-            if (VFInput.alt && Input.GetKeyUp(KeyCode.KeypadPeriod)) {
-                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                markers.Add(sphere);
-                GameObject t = markers[markers.Count - 1];
-                if (t != null) t.transform.position = pos;
-            }
-
-            int num = PlanetPhysics.HashPhysBlock(pos);
-            if (num == -1)
-                return;
-            for (int index = 0; index < ___activeColHashCount; ++index)
-            {
-                if (___activeColHashes[index] == num)
-                    return;
-            }
-            ___activeColHashes[___activeColHashCount++] = num;
-        }
-
-#endif
 
         [HarmonyPrefix]
         [HarmonyPatch("GetVeinsInAreaNonAlloc")]
