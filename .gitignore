@@ -1,5 +1,6 @@
 ﻿*
 !Directory.Build.props.example
+!galacticbundle
 !/**/
 !*.cs
 !*.csproj
