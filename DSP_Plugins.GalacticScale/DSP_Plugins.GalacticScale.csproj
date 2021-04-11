@@ -37,7 +37,7 @@
     <Reference Include="0Harmony">
       <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp.refstub">
+    <Reference Include="Assembly-CSharp">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
