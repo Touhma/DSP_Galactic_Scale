@@ -18,39 +18,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             planet.data.AddFactoredRadius(planet);
             return true;
         }
-        [HarmonyPostfix]
-        [HarmonyPatch("ModelingPlanetMain")]
-        public static void ModellingPlanetMainPostFix(PlanetData planet)
-        {
-            if (!planet.gameObject) return;
-            if (planet.type != EPlanetType.Gas) return;
-            //MeshRenderer[] meshrenderers = planet.gameObject.GetComponentsInChildren(typeof(MeshRenderer)) as MeshRenderer[];
-            //if (meshrenderers == null) return;
-            //Patch.Debug("MeshRenderers = " + meshrenderers.Length, LogLevel.Message, true);
-            //foreach (MeshRenderer m in meshrenderers)
-            //{
-            //    Patch.Debug("MESH " + (m), LogLevel.Message, true);
-            //    m.material.color = Color.red;
-            //}
-            var planetbody = planet.gameObject.transform.GetChild(1);
-            var pbt = planetbody.transform;
-                Patch.Debug("Childcount =" +pbt.childCount, LogLevel.Message, true);
-            for (var i = 0; i < pbt.childCount; i++)
-            {
-                var child = pbt.GetChild(i);
-                if (child.name != "Surface") return;
-                Patch.Debug("-" + i + "-" + pbt.GetChild(i).name, LogLevel.Message, true);
-                MeshRenderer mr = child.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
-                if (mr == null)
-                {
-                    Patch.Debug("didnt get meshrenderer", LogLevel.Message, true);
-                    break;
-                }
-                var m = mr.materials[0];
-                m.color = Color.red; // SetColor("_Color", Color.red);
-            }
-
-        }
         
         [HarmonyTranspiler]
         [HarmonyPatch("ModelingPlanetMain")]
