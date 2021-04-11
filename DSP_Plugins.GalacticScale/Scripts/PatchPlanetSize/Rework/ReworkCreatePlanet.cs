@@ -7,7 +7,6 @@ using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 namespace GalacticScale.Scripts.PatchPlanetSize {
     public static class ReworkPlanetGen {
         public static void SetLuts(int segments, float planetRadius) {
-            //if (!DSPGame.IsMenuDemo && (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value)) { // Prevent special LUT's being created in main menu
             if (!DSPGame.IsMenuDemo && (Patch.EnableLimitedResizingFeature.Value)) { // Prevent special LUT's being created in main menu
                 if (PatchOnPlanetGrid.keyedLUTs.ContainsKey(segments) && PatchOnPlatformSystem.keyedLUTs.ContainsKey(segments) && PatchUIBuildingGrid.LUT512.ContainsKey(segments)) {
                     return;

@@ -9,7 +9,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPostfix]
         [HarmonyPatch("OnActivePlanetLoaded")]
         public static void OnActivePlanetLoaded(PlanetData planet) {
-           // if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) {
                 if (PatchSize.EnableLimitedResizingFeature.Value)
                 {
                     PatchSize.Debug("PlanetLoaded was called!", BepInEx.Logging.LogLevel.Debug, PatchSize.DebugNewPlanetGrid);

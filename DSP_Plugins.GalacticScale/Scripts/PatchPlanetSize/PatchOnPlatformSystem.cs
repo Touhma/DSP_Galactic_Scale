@@ -17,7 +17,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DetermineLongitudeSegmentCount(int _latitudeIndex, int _segment, ref int __result) {
             if (!DSPGame.IsMenuDemo) 
                 if (Patch.EnableLimitedResizingFeature.Value)
-                { //if (Patch.EnableResizingFeature.Value || Patch.EnableLimitedResizingFeature.Value) {
+                { 
                     Patch.Debug("PlatformSystem Vanilla DeterminLongitudeSegmentCount.", LogLevel.Debug, Patch.DebugNewPlanetGrid);
                     if (keyedLUTs.ContainsKey(_segment)) {
                         Patch.Debug("PlatformSystem Vanilla DeterminLongitudeSegmentCount Key Existed.", LogLevel.Debug, Patch.DebugNewPlanetGrid);

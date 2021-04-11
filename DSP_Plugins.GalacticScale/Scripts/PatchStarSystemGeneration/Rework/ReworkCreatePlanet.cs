@@ -387,22 +387,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             if (planetData.type == EPlanetType.Gas)
             {
                 var radiusGasGiantWanted = PatchSize.VanillaGasGiantSize;
-                //if (PatchSize.EnableResizingFeature.Value)
-                //{
-                //    //Default : 0.25
-                //    var minScalingGasGiantRatio =
-                //        (PatchSize.BaseGasGiantSize.Value - PatchSize.BaseGasGiantSizeVariationFactor.Value) /
-                //        (PatchSize.BaseGasGiantSize.Value + PatchSize.BaseGasGiantSizeVariationFactor.Value);
-
-                //    radiusGasGiantWanted = PatchSize.BaseGasGiantSize.Value +
-                //                           MathUtils.RangePlusMinusOne(mainSeed) *
-                //                           PatchSize.BaseGasGiantSizeVariationFactor.Value;
-                //    radiusGasGiantWanted -= radiusGasGiantWanted % 10;
-                //}
 
                 planetData.scale = PatchSize.VanillaGasGiantScale;
                 planetData.radius = radiusGasGiantWanted / planetData.scale;
-                //if (PatchSize.EnableLimitedResizingFeature.Value || PatchSize.EnableResizingFeature.Value)
                 if (PatchSize.EnableLimitedResizingFeature.Value)
                 {
                     int segments = (int)(planetData.radius / 4f + 0.1f) * 4;
