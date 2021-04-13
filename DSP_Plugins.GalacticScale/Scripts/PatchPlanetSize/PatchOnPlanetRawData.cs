@@ -3,10 +3,14 @@ using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 using System;
+using System.Collections.Generic;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
+    
     [HarmonyPatch(typeof(PlanetRawData))]
     public class PatchOnPlanetRawData {
+        public static Dictionary<int, Vector3[]> verDict = new Dictionary<int, Vector3[]>();
+        public static Dictionary<int, int[]> inDict = new Dictionary<int, int[]>();
         [HarmonyPrefix]
         [HarmonyPatch("GetModPlane")]
         public static bool GetModPlane(int index, ref PlanetRawData __instance, ref short __result) {
@@ -58,7 +62,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPatch("InitModData")]
         public static bool InitModData(byte[] refModData, ref PlanetRawData __instance, ref byte[] __result)
         {
-            Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Message, Patch.DebugGetModPlane);
+            Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Debug, Patch.DebugGetModPlane);
             __instance.modData = refModData == null ? new byte[__instance.dataLength/2] : refModData; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now -innominata
             __result = __instance.modData;
             return false;
@@ -164,18 +168,16 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPrefix, HarmonyPatch("CalcVerts")]
         public static bool CalcVerts(ref PlanetRawData __instance, ref int[] ___indexMap80, ref int[] ___indexMap200, ref Vector3[] ___verts80, ref Vector3[] ___verts200)
         {
-            //if (__instance.precision == 200 && ___verts200 != null)
-            //{
-            //    Array.Copy(___verts200, __instance.vertices, ___verts200.Length);
-            //    Array.Copy(___indexMap200, __instance.indexMap, ___indexMap200.Length);
-            //    return false;
-            //}
-            //if (__instance.precision == 80 && ___verts80 != null)
-            //{
-            //    Array.Copy(___verts80, __instance.vertices, ___verts80.Length);
-            //    Array.Copy(___indexMap80, __instance.indexMap, ___indexMap80.Length);
-            //    return false;
-            //}
+            if (verDict.ContainsKey(__instance.precision))
+            {
+                Patch.Debug("Loading Saved Data for precision " + __instance.precision, LogLevel.Debug,
+               Patch.DebugPlanetRawData);
+                Array.Copy(verDict[__instance.precision], __instance.vertices, verDict[__instance.precision].Length);
+                Array.Copy(inDict[__instance.precision], __instance.indexMap, inDict[__instance.precision].Length);
+                Patch.Debug("Loaded " + __instance.precision, LogLevel.Debug, Patch.DebugPlanetRawData);
+                return false;
+            }
+
             for (int i = 0; i < __instance.indexMapDataLength; i++) //Set indexMap to [-1]
             {
                 __instance.indexMap[i] = -1;
@@ -272,23 +274,19 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     num13++;
                 }
             }
-            //if (__instance.precision == 200)
-            //{
-            //    if (___verts200 == null)
-            //    {
-            //        ___verts200 = new Vector3[__instance.vertices.Length];
-            //        ___indexMap200 = new int[__instance.indexMap.Length];
-            //        Array.Copy(__instance.vertices, ___verts200, __instance.vertices.Length);
-            //        Array.Copy(__instance.indexMap, ___indexMap200, __instance.indexMap.Length);
-            //    }
-            //}
-            //else if (__instance.precision == 80 && ___verts80 == null)
-            //{
-            //    ___verts80 = new Vector3[__instance.vertices.Length];
-            //    ___indexMap80 = new int[__instance.indexMap.Length];
-            //    Array.Copy(__instance.vertices, ___verts80, __instance.vertices.Length);
-            //    Array.Copy(__instance.indexMap, ___indexMap80, __instance.indexMap.Length);
-            //}
+            if (!verDict.ContainsKey(__instance.precision))
+            {
+                Patch.Debug("Saving VerDict "+__instance.precision, LogLevel.Debug, Patch.DebugPlanetRawData);
+                int precision = __instance.precision;
+                int vertLength = __instance.vertices.Length;
+                int indexMapLength = __instance.indexMap.Length;
+                verDict[precision] = new Vector3[vertLength];
+                inDict[precision] = new int[indexMapLength];
+                Array.Copy(__instance.vertices, verDict[precision], vertLength);
+                Array.Copy(__instance.indexMap, inDict[precision], indexMapLength);
+                Patch.Debug("Saved VerDict", LogLevel.Debug, Patch.DebugPlanetRawData);
+                return false;
+            }
             return false;
         }
     }
