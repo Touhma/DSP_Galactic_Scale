@@ -113,6 +113,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         //public static float IcePlanetDistanceRatio = 1.2f;
         
         public static ConfigEntry<bool> UseNewGasGiantOrbitPicker;
+        public static ConfigEntry<float> GasGiantMinOrbitBias;
+        public static ConfigEntry<float> GasGiantMaxOrbitBias;
 
         public static ConfigEntry<string> CustomParamsForBlackHole;
         public static ConfigEntry<string> CustomParamsForNeutronStar;
@@ -588,7 +590,14 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "UseNewGasGiantOrbitPicker",
                 true,
                 "Randomly distribute gas giants throughout the system. Setting this to false will spawn them in the outer orbits");
-
+            GasGiantMinOrbitBias = Config.Bind("galactic-scale-systems",
+                "GasGiantMinOrbitBias",
+                0f,
+                "When New Orbit Picker Enabled, setting this higher than 0 will decrease the odds that gas giants are spawned close to the star");
+            GasGiantMaxOrbitBias = Config.Bind("galactic-scale-systems",
+                "GasGiantMaxOrbitBias",
+                0f,
+                "When New Orbit Picker Enabled, setting this higher than 0 will decrease the odds that gas giants are spawned far from the star");
             if (PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
@@ -602,7 +611,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
         public static StarSystemSetting ParseCustomStarSystemSetting(string config) {
             var configArray = Array.ConvertAll(config.Split(','), float.Parse);
-            //if (configArray.Length > 12)
+            if (configArray.Length > 12)
                 return new StarSystemSetting(
                 (int)configArray[0],
                 (int)configArray[1],
@@ -621,19 +630,19 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 configArray[14],
                 configArray[15]);
 
-            //return new StarSystemSetting(
-            //    (int) configArray[0],
-            //    (int) configArray[1],
-            //    (int) configArray[2],
-            //    (int) configArray[3],
-            //    (int) configArray[4],
-            //    configArray[5],
-            //    (int) configArray[6],
-            //    configArray[7],
-            //    configArray[8],
-            //    configArray[9],
-            //    configArray[10],
-            //    configArray[11]);
+            return new StarSystemSetting(
+                (int)configArray[0],
+                (int)configArray[1],
+                (int)configArray[2],
+                (int)configArray[3],
+                (int)configArray[4],
+                configArray[5],
+                (int)configArray[6],
+                configArray[7],
+                configArray[8],
+                configArray[9],
+                configArray[10],
+                configArray[11]);
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

@@ -331,9 +331,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         int remainingTelluric = genSettings.nbOfTelluricPlanets - nbOfTelluricPlanetsPreGenerated;
                         int remainingGasGiant = genSettings.nbOfGasGiantPlanets - nbOfGasGiantPlanetsPreGenerated;
                         int remainingTotal = remainingTelluric + remainingGasGiant;
-                        float chanceTelluric = remainingTelluric / remainingTotal;
-                        if (annexSeed.NextDouble() <= chanceTelluric) isGasGiant = false;
+                        float chanceTelluric = (float)remainingTelluric / (float)remainingTotal;
+                        float pick = (float)annexSeed.NextDouble();
+                        Patch.Debug("ChanceTelluric: " + chanceTelluric + ", remainingTelluric: " + remainingTelluric + ", remainingGasGiant: " + remainingGasGiant + ", remainingTotal: " + remainingTotal +", pick: " + pick, LogLevel.Warning, true);
+                        if (pick <= chanceTelluric) isGasGiant = false;
                         else isGasGiant = true;
+                        Patch.Debug("Selected " + ((isGasGiant) ? "Gas Giant" : "Telluric"), LogLevel.Warning, true);
                     }
                     else
                     {
