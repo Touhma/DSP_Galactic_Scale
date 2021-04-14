@@ -17,7 +17,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DebugPlanetModelingManager = false;
         public static bool DebugPlanetModelingManagerDeep = false;
         public static bool DebugAtmoBlur = false;
-
+        public static bool DebugReformFix = false;
 
         public static float VanillaGasGiantSize = 800f;// will be rescaled in the create planet
         public static float VanillaGasGiantScale = 10f;// will be rescaled in the create planet

@@ -12,9 +12,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                     return;
                 }
                 Patch.Debug("Setting Planet LUTs for size " + planetRadius, LogLevel.Debug, Patch.DebugNewPlanetGrid);
-                int numSegments = segments / 4;
+                int numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 int[] lut = new int[numSegments];
-                float segmentAngle = (Mathf.PI / 2f) / numSegments;
+                float segmentAngle = (Mathf.PI / 2f) / numSegments; //quarter circle divided by num segments is the angle per segment
 
                 float lastMajorRadius = planetRadius;
                 int lastMajorRadiusCount = numSegments * 4;
@@ -23,13 +23,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 classicLUT[0] = 1;
 
                 for (int cnt = 0; cnt < numSegments; cnt++) {
-                    float segmentXAngle = (Mathf.PI / 2f) - (cnt * segmentAngle);
-                    float segmentLineHeight = Mathf.Cos(segmentXAngle);
-                    float segmentCylinderHeight = segmentLineHeight * planetRadius * 2;
-
-                    float ringradius = Mathf.Sqrt((planetRadius * planetRadius) - ((segmentCylinderHeight * segmentCylinderHeight) / 4.0f));
+                    float ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
                     int classicIdx = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float) ((cnt + 1) / (segments / 4f) * Math.PI * 0.5))) * (float) segments);
 
+                    //If the new radius is smaller than 90% of the currently used radius, use it as the new segment count to avoid tile squishing
                     if (ringradius < (0.9 * lastMajorRadius)) {
                         lastMajorRadius = ringradius;
                         lastMajorRadiusCount = (int) (ringradius / 4.0) * 4;
