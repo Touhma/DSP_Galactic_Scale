@@ -670,7 +670,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 if (i2 == 2 * third) output += "--Orbit 3--\n";
                 output += ((orbs[i2]) ? "R" : "G");
             }
-            Patch.Debug("-*-*-*-*finished distributing planets. returning", LogLevel.Message, true);
+            Patch.Debug(output, LogLevel.Message, true);
             Patch.Debug("-*-*-*-*finished distributing planets. returning", LogLevel.Message, true);
         }
     }
