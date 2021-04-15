@@ -158,9 +158,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
         public static bool DebugReworkPlanetGen = false;
         public static bool DebugReworkPlanetGenDeep = false;
-        public static bool DebugStarGen = true;
-        public static bool DebugStarGenDeep = true;
+        public static bool DebugStarGen = false;
+        public static bool DebugStarGenDeep = false;
         public static bool DebugStarNamingGen = false;
+        public static bool DebugPlanetDistribution = false;
 
         public static ConfigEntry<bool> EnableCustomStarAlgorithm;
 
