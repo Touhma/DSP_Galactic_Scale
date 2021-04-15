@@ -113,8 +113,9 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         //public static float IcePlanetDistanceRatio = 1.2f;
         
         public static ConfigEntry<bool> UseNewGasGiantOrbitPicker;
-        public static ConfigEntry<float> GasGiantMinOrbitBias;
-        public static ConfigEntry<float> GasGiantMaxOrbitBias;
+        public static ConfigEntry<float> DistributionBiasInner;
+        public static ConfigEntry<float> DistributionBiasMiddle;
+        public static ConfigEntry<float> DistributionBiasOuter;
 
         public static ConfigEntry<string> CustomParamsForBlackHole;
         public static ConfigEntry<string> CustomParamsForNeutronStar;
@@ -590,14 +591,18 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 "UseNewGasGiantOrbitPicker",
                 true,
                 "Randomly distribute gas giants throughout the system. Setting this to false will spawn them in the outer orbits");
-            GasGiantMinOrbitBias = Config.Bind("galactic-scale-systems",
-                "GasGiantMinOrbitBias",
-                0f,
-                "When New Orbit Picker Enabled, setting this higher than 0 will decrease the odds that gas giants are spawned close to the star");
-            GasGiantMaxOrbitBias = Config.Bind("galactic-scale-systems",
-                "GasGiantMaxOrbitBias",
-                0f,
-                "When New Orbit Picker Enabled, setting this higher than 0 will decrease the odds that gas giants are spawned far from the star");
+            DistributionBiasInner = Config.Bind("galactic-scale-systems",
+                "DistributionBiasInner",
+                0.9f,
+                "When New Orbit Picker Enabled, setting this closer to 1 will cause telluric planets to prefer to spawn in the inner orbits, closer to 0 will prefer gas giants");
+            DistributionBiasMiddle = Config.Bind("galactic-scale-systems",
+                "DistributionBiasMiddle",
+                0.1f,
+                "When New Orbit Picker Enabled, setting this closer to 1 will cause telluric planets to prefer to spawn in the middle orbits, closer to 0 will prefer gas giants");
+            DistributionBiasOuter = Config.Bind("galactic-scale-systems",
+                "DistributionBiasOuter",
+                0.5f,
+                "When New Orbit Picker Enabled, setting this closer to 1 will cause telluric planets to prefer to spawn in the outer orbits, closer to 0 will prefer gas giants");
             if (PatchSize.EnableLimitedResizingFeature.Value) EnableCustomStarAlgorithm.Value = true;
             if (EnableCustomStarAlgorithm.Value) {
                 Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));

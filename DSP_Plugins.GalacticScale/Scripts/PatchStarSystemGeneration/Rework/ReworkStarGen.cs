@@ -310,7 +310,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             orb2 = -1;
             orb3 = -1;
 
-
+            if (Patch.UseNewGasGiantOrbitPicker.Value) DistributePlanets(annexSeed, genSettings);
             for (var i = 0; i < genSettings.nbOfStellarBodies; i++)
             {
 
@@ -359,7 +359,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                     orbitAround = 0;
                     if (Patch.UseNewGasGiantOrbitPicker.Value)
                     {
-                        isGasGiant = getGas(annexSeed, i, genSettings);
+                        isGasGiant = orbs[i];
                     }
                     else
                     {
@@ -502,45 +502,54 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
         }
         static int pickOrbit(float r, ref Random annexSeed, ref int orb1, ref int orb2, ref int orb3, ref float tBias, ref int total, ref float bias1, ref float bias2, ref float bias3, ref float bias1a, ref float bias2a, ref float bias3a)
         {
+            Patch.Debug("PickOrbit", LogLevel.Message, true);
             int third = total / 3;
+            if (third == 0)
+            {
+                Patch.Debug("Third would have been " + third, LogLevel.Message, true);
+                third = 1;
+            }
+            Patch.Debug("Third = "+third, LogLevel.Message, true);
             tBias = (orb1 < (third) ? bias1 : 0) + (orb2 < (third) ? bias2 : 0) + (orb3 < (third) ? bias3 : 0);
+            if (tBias == 0) return 1;
+            Patch.Debug("tBias = "+tBias, LogLevel.Message, true);
             bias1a = (orb1 < (third) ? bias1 : 0) / tBias;
+            Patch.Debug("bias1a = "+bias1a, LogLevel.Message, true);
             bias2a = (orb2 < (total - 2 * third) ? bias2 : 0) / tBias;
+            Patch.Debug("bias1a = " + bias1a, LogLevel.Message, true);
             bias3a = (orb3 < (third) ? bias3 : 0) / tBias;
+            Patch.Debug("bias1a = " + bias1a, LogLevel.Message, true);
             if (orb1 < (third) && r < bias1a) return 1;
             if (orb2 < (total - 2 * third) && r < (bias1a + bias2a)) return 2;
             if (orb3 < (third) && r < (bias1a + bias2a + bias3a)) return 3;
+            Patch.Debug("starting while loop. orb1= "+orb1+" orb2="+orb2+"orb3="+orb3, LogLevel.Message, true);
+
             while (orb1 + orb2 + orb3 < total)
             {
+                Patch.Debug(orb1 + " + " + orb2 + " + " + orb3 + " < " + total, LogLevel.Message, true);
                 float r2 = (float)annexSeed.NextDouble();
-                if (r2 < 0.33 && orb1 < (third)) return 1;
-                if (r2 < 0.66 && orb2 < (third)) return 2;
-                if (orb3 < third) return 3;
+                Patch.Debug("r2 = "+r2+" checking against 0.33, and 0.66", LogLevel.Message, true);
+                Patch.Debug((r2 <= 0.33) + " && orb1 <= third = " + orb1 + " <= " + third + " = " + (orb1 < third), LogLevel.Message, true);
+                if (r2 <= 0.33 && orb1 < (third)) return 1;
+                Patch.Debug((r2 <= 0.66) + " && orb2 < third = " + orb2 + " <= " + third + " = " + (orb2 < third), LogLevel.Message, true);
+                if (r2 <= 0.66 && orb2 < (third)) return 2;
+                Patch.Debug((r2 <= 1) + " && orb3 < third = " + orb3 + " <= " + third + " = " + (orb3 < third), LogLevel.Message, true);
+                if (orb3 <= third) return 3;
+                Patch.Debug("that didnt work, trying again...", LogLevel.Message, true);
             }
-            return 4;
+            return 4; //this can never be called, why is it here?!
         }
-        static bool getGas(Random annexSeed, int p, PlanetGeneratorSettings genSettings)
+        static void DistributePlanets(Random annexSeed, PlanetGeneratorSettings genSettings)
         {
-            Patch.Debug("GetGas for " + p, LogLevel.Message, true);
-            if (orb1 >= 0) return orbs[p];
-            Patch.Debug("GetGas generating", LogLevel.Message, true);
-            //int remainingTelluric = genSettings.nbOfTelluricPlanets - nbOfTelluricPlanetsPreGenerated;
-            //int remainingGasGiant = genSettings.nbOfGasGiantPlanets - nbOfGasGiantPlanetsPreGenerated;
-            //int remainingTotal = remainingTelluric + remainingGasGiant;
-            //float chanceTelluric = (float)remainingTelluric / (float)remainingTotal;
-            //float pick = (float)annexSeed.NextDouble();
-            //Patch.Debug("ChanceTelluric: " + chanceTelluric + ", remainingTelluric: " + remainingTelluric + ", remainingGasGiant: " + remainingGasGiant + ", remainingTotal: " + remainingTotal +", pick: " + pick, LogLevel.Warning, true);
-            //if (pick <= chanceTelluric) isGasGiant = false;
-            //else isGasGiant = true;
-            //Patch.Debug("Selected " + ((isGasGiant) ? "Gas Giant" : "Telluric"), LogLevel.Warning, true);
+            Patch.Debug("Distributing Planets-------------------", LogLevel.Message, true);
             int nRocky = genSettings.nbOfTelluricPlanets;
             int nGas = genSettings.nbOfGasGiantPlanets;
             var total = nRocky + nGas;
             int third = total / 3;
-            float bias1 = 0; //1 = always put rocky planets here. 0 = never
-            float bias2 = 1; //of course if they overflow, they are rogue planets
-            float bias3 = 0;
-
+            if (third == 0) third = 1;
+            float bias1 = Patch.DistributionBiasInner.Value; //1 = always put rocky planets here. 0 = never
+            float bias2 = Patch.DistributionBiasMiddle.Value; 
+            float bias3 = Patch.DistributionBiasOuter.Value; 
 
             float tBias = bias1 + bias2 + bias3;
             var bias1a = bias1 / tBias;
@@ -548,24 +557,24 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             var bias3a = bias3 / tBias;
 
             var rRocky = nRocky;
-            if (orb1 < 0)
+
+            Patch.Debug("Resetting orb array", LogLevel.Message, true);
+            orb1 = orb2 = orb3 = 0;
+            orbs = new bool[genSettings.nbOfPlanets];
+            Patch.Debug("Generating " + genSettings.nbOfPlanets + " planets using new Generator", LogLevel.Message, true);
+            while (rRocky > 0)
             {
-                Patch.Debug("Orb1 less than", LogLevel.Message, true);
-                orb1 = orb2 = orb3 = 0;
-                orbs = new bool[] { };
-                while (rRocky > 0)
-                {
-                    Patch.Debug("rRocky = " + rRocky, LogLevel.Message, true);
-                    float rr = (float)annexSeed.NextDouble();
-                    var orbitArray = pickOrbit(rr, ref annexSeed, ref orb1, ref orb2, ref orb3, ref tBias, ref total, ref bias1, ref bias2, ref bias3, ref bias1a, ref bias2a, ref bias3a);
-                    Patch.Debug("OrbitArray is " + orbitArray, LogLevel.Message, true);
-                    if (orbitArray == 1) orb1++;
-                    if (orbitArray == 2) orb2++;
-                    if (orbitArray == 3) orb3++;
-                    if (orbitArray == 4) Patch.Debug("PickOrbit Failed", LogLevel.Warning, true);
-                    rRocky--;
-                }
+                Patch.Debug("remaining Rocky = " + rRocky, LogLevel.Message, true);
+                float rr = (float)annexSeed.NextDouble();
+                var orbitArray = pickOrbit(rr, ref annexSeed, ref orb1, ref orb2, ref orb3, ref tBias, ref total, ref bias1, ref bias2, ref bias3, ref bias1a, ref bias2a, ref bias3a);
+                Patch.Debug("OrbitArray is " + orbitArray, LogLevel.Message, true);
+                if (orbitArray == 1) orb1++;
+                if (orbitArray == 2) orb2++;
+                if (orbitArray == 3) orb3++;
+                if (orbitArray == 4) Patch.Debug("PickOrbit Failed", LogLevel.Warning, true);
+                rRocky--;
             }
+
             Patch.Debug("Finished that part", LogLevel.Message, true);
             Patch.Debug(orb1 + " " + orb2 + " " + orb3, LogLevel.Message, true);
             int rTelluric = orb1;
@@ -577,24 +586,25 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 float rand = (float)annexSeed.NextDouble();
                 if (rand < (rTelluric / (rTelluric + rGas)))
                 {
-                    orbs[i] = true;
+                    orbs[i] = false;
                     rTelluric--;
                 }
                 else
                 {
-                    orbs[i] = false;
+                    orbs[i] = true;
                     rGas--;
                 }
             }
-            Patch.Debug("finished both", LogLevel.Message, true);
+            Patch.Debug("finished both rTelluric= "+rTelluric + " " + orbs.Length, LogLevel.Message, true);
             while (rTelluric > 0)
             {
-                orbs[i] = true;
+                orbs[i] = false;
                 rTelluric--;
             }
+            Patch.Debug("finished rTelluric", LogLevel.Message, true);
             while (rGas > 0)
             {
-                orbs[i] = false;
+                orbs[i] = true;
                 rGas--;
             }
             Patch.Debug("finished orb1", LogLevel.Message, true);
@@ -606,23 +616,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 float rand = (float)annexSeed.NextDouble();
                 if (rand < (rTelluric / (rTelluric + rGas)))
                 {
-                    orbs[i] = true;
+                    orbs[i] = false;
                     rTelluric--;
                 }
                 else
                 {
-                    orbs[i] = false;
+                    orbs[i] = true;
                     rGas--;
                 }
             }
             while (rTelluric > 0)
             {
-                orbs[i] = true;
+                orbs[i] = false;
                 rTelluric--;
             }
             while (rGas > 0)
             {
-                orbs[i] = false;
+                orbs[i] = true;
                 rGas--;
             }
             Patch.Debug("finished orb2", LogLevel.Message, true);
@@ -634,27 +644,34 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 float rand = (float)annexSeed.NextDouble();
                 if (rand < (rTelluric / (rTelluric + rGas)))
                 {
-                    orbs[i] = true;
+                    orbs[i] = false;
                     rTelluric--;
                 }
                 else
                 {
-                    orbs[i] = false;
+                    orbs[i] = true;
                     rGas--;
                 }
             }
             while (rTelluric > 0)
             {
-                orbs[i] = true;
+                orbs[i] = false;
                 rTelluric--;
             }
             while (rGas > 0)
             {
-                orbs[i] = false;
+                orbs[i] = true;
                 rGas--;
             }
-            Patch.Debug("finished orb3. returning", LogLevel.Message, true);
-            return orbs[p];
+            string output = "--Orbit 1--\n";
+            for (var i2 = 0; i2 < orbs.Length; i2++)
+            {
+                if (i2 == third) output += "--Orbit 2--\n";
+                if (i2 == 2 * third) output += "--Orbit 3--\n";
+                output += ((orbs[i2]) ? "R" : "G");
+            }
+            Patch.Debug("-*-*-*-*finished distributing planets. returning", LogLevel.Message, true);
+            Patch.Debug("-*-*-*-*finished distributing planets. returning", LogLevel.Message, true);
         }
     }
 }
