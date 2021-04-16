@@ -492,35 +492,48 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                 Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
             }
         }
-        static int SelectOrbitRange(ref Random seed, ref int orbitRange1nbTelluric, ref int orbitRange2nbTelluric, ref int orbitRange3nbTelluric, ref float totalProbability, ref int totalPlanetsToGenerate, ref float orbit1Probability, ref float orbit2Probability, ref float orbit3Probability)
+        static int SelectOrbitRange(ref Random seed, ref int orbitRange1nbTelluric, ref int orbitRange2nbTelluric, ref int orbitRange3nbTelluric, ref float totalProbability, int totalTelluric, ref int totalPlanets, ref float orbit1Probability, ref float orbit2Probability, ref float orbit3Probability)
         {
             Patch.Debug("Selecting Orbit Range", LogLevel.Debug, Patch.DebugPlanetDistribution);
             float r = (float)seed.NextDouble();
             float bias1 = Patch.DistributionBiasInner.Value; //1 = always put rocky planets here. 0 = never
             float bias2 = Patch.DistributionBiasMiddle.Value;
             float bias3 = Patch.DistributionBiasOuter.Value;
-            int orbit1TotalSlots = totalPlanetsToGenerate / 3;
-            int orbit2TotalSlots = totalPlanetsToGenerate / 3 + totalPlanetsToGenerate % 3;
-            int orbit3TotalSlots = totalPlanetsToGenerate / 3;
+            int orbit1TotalSlots = totalPlanets / 3;
+            int orbit2TotalSlots = totalPlanets / 3 + totalPlanets % 3;
+            int orbit3TotalSlots = totalPlanets / 3;
 
             totalProbability = (orbitRange1nbTelluric < (orbit1TotalSlots) ? bias1 : 0) + (orbitRange2nbTelluric < (orbit2TotalSlots) ? bias2 : 0) + (orbitRange3nbTelluric < (orbit3TotalSlots) ? bias3 : 0);
-            if (totalProbability == 0) return 1;
+            //if (totalProbability == 0) return 1;
             orbit1Probability = (orbitRange1nbTelluric < (orbit1TotalSlots) ? bias1 : 0) / totalProbability;
             orbit2Probability = (orbitRange2nbTelluric < (orbit2TotalSlots) ? bias2 : 0) / totalProbability;
             orbit3Probability = (orbitRange3nbTelluric < (orbit3TotalSlots) ? bias3 : 0) / totalProbability;
 
             Patch.Debug("SelectOrbitRange:Available Orbit Slots: " + String.Format("|{0,10}|{1,10}|{2,10}|", (orbit1TotalSlots - orbitRange1nbTelluric), (orbit2TotalSlots - orbitRange2nbTelluric), (orbit3TotalSlots - orbitRange3nbTelluric)), LogLevel.Debug, Patch.DebugPlanetDistribution);
             Patch.Debug("SelectOrbitRange:Orbit Probability    : " + String.Format("|{0,10}|{1,10}|{2,10}|", orbit1Probability, orbit2Probability, orbit3Probability), LogLevel.Debug, Patch.DebugPlanetDistribution);
-            if (orbitRange1nbTelluric < (orbit1TotalSlots) && r < orbit1Probability) return 1;
-            if (orbitRange2nbTelluric < (orbit2TotalSlots) && r < (orbit1Probability + orbit2Probability)) return 2;
-            if (orbitRange3nbTelluric < (orbit3TotalSlots) && r < (orbit1Probability + orbit2Probability + orbit3Probability)) return 3;
 
-            while (orbitRange1nbTelluric + orbitRange2nbTelluric + orbitRange3nbTelluric < totalPlanetsToGenerate)
+            if (orbitRange1nbTelluric < (orbit1TotalSlots) && r < orbit1Probability)
+            {
+                Patch.Debug("Returning 1: " + orbitRange1nbTelluric + " < " + orbit1TotalSlots, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                return 1; //If we have space in orbit1 for a telluric planet, and we want to put one there (orbit1Probability > 0) and random number is lower than this probability, put it in orbit1
+            }
+            if (orbitRange2nbTelluric < (orbit2TotalSlots) && r < (orbit1Probability + orbit2Probability)) { 
+                Patch.Debug("Returning 2: " + orbitRange2nbTelluric + " < " + orbit2TotalSlots, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                return 2;
+            }
+            if (orbitRange3nbTelluric < (orbit3TotalSlots) && r < (orbit1Probability + orbit2Probability + orbit3Probability))
+            {
+                Patch.Debug("Returning 3: " + orbitRange2nbTelluric + " < " + orbit2TotalSlots, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                return 3;
+            }
+            Patch.Debug("No Available Preferred Slots. Entering Randomization Loop", LogLevel.Warning, Patch.DebugPlanetDistribution);
+
+            while (orbitRange1nbTelluric + orbitRange2nbTelluric + orbitRange3nbTelluric < totalTelluric)
             {
                 float r2 = (float)seed.NextDouble();
                 if (r2 <= 0.33 && orbitRange1nbTelluric < (orbit1TotalSlots)) return 1;
                 if (r2 <= 0.66 && orbitRange2nbTelluric < (orbit2TotalSlots)) return 2;
-                if (orbitRange3nbTelluric <= orbit3TotalSlots) return 3;
+                if (orbitRange3nbTelluric < orbit3TotalSlots) return 3;
             }
             return 4;
         }
@@ -549,19 +562,20 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             Patch.Debug("Distributing " + genSettings.nbOfPlanets + " Planets using new Generator: "+ genSettings.nbOfTelluricPlanets + " Telluric, "+genSettings.nbOfGasGiantPlanets + " Gas Giants", LogLevel.Debug, Patch.DebugPlanetDistribution);
             while (remainingTelluricPlanets > 0)
             {
-                var orbitRange = SelectOrbitRange(ref seed, ref orbitRange1nbTelluric, ref orbitRange2nbTelluric, ref orbitRange3nbTelluric, ref totalBias, ref totalSlots, ref orbitRange1Probability, ref orbitRange2Probability, ref orbitRange3Probability);
+                var orbitRange = SelectOrbitRange(ref seed, ref orbitRange1nbTelluric, ref orbitRange2nbTelluric, ref orbitRange3nbTelluric, ref totalBias, totalTelluricPlanets, ref totalSlots, ref orbitRange1Probability, ref orbitRange2Probability, ref orbitRange3Probability);
                 Patch.Debug("OrbitRange " + orbitRange + " Selected", LogLevel.Debug, Patch.DebugPlanetDistribution);
                 if (orbitRange == 1) orbitRange1nbTelluric++;
                 if (orbitRange == 2) orbitRange2nbTelluric++;
                 if (orbitRange == 3) orbitRange3nbTelluric++;
-                if (orbitRange == 4) Patch.Debug("PickOrbit Failed", LogLevel.Warning, true);
+                if (orbitRange == 4) Patch.Debug("SelectOrbitRange Failed", LogLevel.Warning, true);
                 remainingTelluricPlanets--;
             }
             int i = 0;
+            Patch.Debug("PreRandomization Telluric Orbit Range Contents: " + orbitRange1nbTelluric + "/" + orbitRange1Slots + " " + orbitRange2nbTelluric + "/" + orbitRange2Slots + " " + orbitRange3nbTelluric + "/" + orbitRange3Slots, LogLevel.Message, Patch.DebugPlanetDistribution);
+
             AssignOrbits(ref assignedOrbits, orbitRange1nbTelluric, orbitRange1Slots - orbitRange1nbTelluric, ref seed, ref i);
             AssignOrbits(ref assignedOrbits, orbitRange2nbTelluric, orbitRange2Slots - orbitRange2nbTelluric, ref seed, ref i);
             AssignOrbits(ref assignedOrbits, orbitRange3nbTelluric, orbitRange3Slots - orbitRange3nbTelluric, ref seed, ref i);
-            Patch.Debug("Final Orbit Ranges:", LogLevel.Debug, Patch.DebugPlanetDistribution);
             if (Patch.DebugPlanetDistribution)
             {
                 string output = (orbitRange1Slots > 0) ? "\n--Orbit Range 1--\n|" : "";
@@ -581,6 +595,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
         {
             while (remainingTelluricPlanets > 0 && remainingGasGiants > 0)
             {
+                Patch.Debug("Assigning Planets: There are " + remainingTelluricPlanets + " Tellurics and " + remainingGasGiants + " remaining. Position: " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
                 float r = (float)seed.NextDouble();
                 if (r < (remainingTelluricPlanets / (remainingTelluricPlanets + remainingGasGiants)))
                 {
@@ -600,14 +615,14 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
             {
                 assignedOrbits[position] = false;
                 remainingTelluricPlanets--;
-                Patch.Debug("Assigned Telluric at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                Patch.Debug("While " + (remainingTelluricPlanets + 1) + " Tellurics remaining, assigned Telluric at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
                 position++;
             }
             while (remainingGasGiants > 0)
             {
                 assignedOrbits[position] = true;
                 remainingGasGiants--;
-                Patch.Debug("Assigned Gas Giant at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                Patch.Debug("While " + (remainingGasGiants +1) + " Gas Giants remaining, assigned Gas Giant at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
                 position++;
             }
         }
