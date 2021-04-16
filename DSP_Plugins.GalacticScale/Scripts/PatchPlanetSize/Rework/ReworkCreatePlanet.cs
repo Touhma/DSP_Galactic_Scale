@@ -8,7 +8,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     public static class ReworkPlanetGen {
         public static void SetLuts(int segments, float planetRadius) {
             if (!DSPGame.IsMenuDemo && (Patch.EnableLimitedResizingFeature.Value)) { // Prevent special LUT's being created in main menu
-                if (PatchOnPlanetGrid.keyedLUTs.ContainsKey(segments) && PatchOnPlatformSystem.keyedLUTs.ContainsKey(segments) && PatchUIBuildingGrid.LUT512.ContainsKey(segments)) {
+                if (PatchOnPlanetGrid.keyedLUTs.ContainsKey(segments) && PatchOnPlatformSystem.keyedLUTs.ContainsKey(segments) && PatchUIBuildingGrid.LUT1024.ContainsKey(segments)) {
                     return;
                 }
                 Patch.Debug("Setting Planet LUTs for size " + planetRadius, LogLevel.Debug, Patch.DebugNewPlanetGrid);
@@ -19,7 +19,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 float lastMajorRadius = planetRadius;
                 int lastMajorRadiusCount = numSegments * 4;
 
-                int[] classicLUT = new int[512];
+                int[] classicLUT = new int[1024];
                 classicLUT[0] = 1;
 
                 for (int cnt = 0; cnt < numSegments; cnt++) {
@@ -36,7 +36,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 }
 
                 int last = 1;
-                for (int oldlLutIdx = 1; oldlLutIdx < 512; oldlLutIdx++) {
+                for (int oldlLutIdx = 1; oldlLutIdx < 1024; oldlLutIdx++) {
                     if (classicLUT[oldlLutIdx] > last) {
                         //Offset of 1 is required to avoid mismatch of some longitude circles
                         int temp = classicLUT[oldlLutIdx];
@@ -55,8 +55,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 if (!PatchOnPlatformSystem.keyedLUTs.ContainsKey(segments)) {
                     PatchOnPlatformSystem.keyedLUTs.Add(segments, lut);
                 }
-                if (!PatchUIBuildingGrid.LUT512.ContainsKey(segments)) {
-                    PatchUIBuildingGrid.LUT512.Add(segments, classicLUT);
+                if (!PatchUIBuildingGrid.LUT1024.ContainsKey(segments)) {
+                    PatchUIBuildingGrid.LUT1024.Add(segments, classicLUT);
                 }
             }
         }

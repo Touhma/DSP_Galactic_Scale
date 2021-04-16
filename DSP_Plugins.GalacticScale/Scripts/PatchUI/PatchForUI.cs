@@ -43,5 +43,15 @@ namespace GalacticScale.Scripts.PatchUI {
             }
             return bundle.LoadAsset<Sprite>(name);
         }
+        public static Texture GetTextureAsset(string name)
+        {
+            if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchForUI)).Location), "galacticbundle"));
+            if (bundle == null)
+            {
+                Debug.Log("Failed to load AssetBundle!");
+                return null;
+            }
+            return bundle.LoadAsset<Texture>(name);
+        }
     }
 }

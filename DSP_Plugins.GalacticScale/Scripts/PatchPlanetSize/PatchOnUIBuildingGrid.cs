@@ -14,7 +14,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
         public static int refreshGridRadius = -1;
 
         //segment count to 512 lut
-        public static Dictionary<int, int[]> LUT512 = new Dictionary<int, int[]>();
+        public static Dictionary<int, int[]> LUT1024 = new Dictionary<int, int[]>();
 
         [HarmonyPrefix]
         [HarmonyPatch("Update")]
@@ -33,7 +33,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize
                             return true;
                         }
                         segments = (int)(refreshGridRadius / 4f + 0.1f) * 4;
-                        if (LUT512.ContainsKey(segments))
+                        if (LUT1024.ContainsKey(segments))
                         {
                             Patch.Debug("Updating LUT for radius + " + refreshGridRadius + " and segments " + segments + "!", BepInEx.Logging.LogLevel.Debug, Patch.DebugNewPlanetGrid);
                             UpdateTextureToLUT(___material, segments);
@@ -52,18 +52,24 @@ namespace GalacticScale.Scripts.PatchPlanetSize
 
         public static void UpdateTextureToLUT(Material material, int segment)
         {
-            Texture tex = material.GetTexture("_SegmentTable");
+            //Texture tex = material.GetTexture("_SegmentTable");
+            Texture tex = PatchUI.PatchForUI.GetTextureAsset("segment-table1024");
+
             if (tex.dimension == TextureDimension.Tex2D)
             {
                 Texture2D tex2d = (Texture2D)tex;
-                for (int i = 0; i < 512; i++)
+                for (int i = 0; i < 1024; i+=2) // for (int i = 0; i < 512; i++)
                 {
-                    float num = (LUT512[segment][i] / 4f + 0.05f) / 255f;
+                    float num = (LUT1024[segment][i] / 4f + 0.05f) / 255f;
 
                     tex2d.SetPixel(i, 0, new Color(num, num, num, 1f));
+                    tex2d.SetPixel(i+1, 0, new Color(num, num, num, 1f));
                     tex2d.SetPixel(i, 1, new Color(num, num, num, 1f));
+                    tex2d.SetPixel(i + 1, 1, new Color(num, num, num, 1f));
                     tex2d.SetPixel(i, 2, new Color(num, num, num, 1f));
+                    tex2d.SetPixel(i + 1, 2, new Color(num, num, num, 1f));
                     tex2d.SetPixel(i, 3, new Color(num, num, num, 1f));
+                    tex2d.SetPixel(i + 1, 3, new Color(num, num, num, 1f));
                 }
                 tex2d.Apply();
             }

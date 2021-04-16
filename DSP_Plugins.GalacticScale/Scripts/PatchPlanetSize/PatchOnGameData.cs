@@ -13,7 +13,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 {
                     PatchSize.Debug("PlanetLoaded was called!", BepInEx.Logging.LogLevel.Debug, PatchSize.DebugNewPlanetGrid);
                 int segments = (int) (planet.radius / 4f + 0.1f) * 4;
-                if (!PatchUIBuildingGrid.LUT512.ContainsKey(segments)) {
+                if (!PatchUIBuildingGrid.LUT1024.ContainsKey(segments)) {
                     PatchSizeReworkPlanetGen.SetLuts(segments, planet.radius);
                 }
                 PatchUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
