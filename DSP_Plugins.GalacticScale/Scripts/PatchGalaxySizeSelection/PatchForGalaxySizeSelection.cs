@@ -28,8 +28,8 @@ namespace GalacticScale.Scripts.PatchGalaxySizeSelection {
             BepInEx.Logging.Logger.Sources.Add(Logger);
 
             // PatchsForGalaxySizeSelection
-            Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
         }
     }
 }

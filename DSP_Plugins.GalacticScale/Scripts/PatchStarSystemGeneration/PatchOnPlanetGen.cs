@@ -30,7 +30,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             int info_seed,
             int gen_seed,
             ref PlanetData __result) {
-            //Debug.Log("CreatePlanet -----");
+            Patch.Debug("CreatePlanet -----");
             //__result = ReworkPlanetGen.ReworkCreatePlanet(ref galaxy, ref star, ref gameDesc, index, orbitAround, orbitIndex, number, gasGiant, info_seed, gen_seed);
             //Debug.Log("__result.index" + __result.id);
             return false;
