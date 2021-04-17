@@ -40,6 +40,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="BCE">
+      <HintPath>..\..\..\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\test\BepInEx\plugins\BCE.dll</HintPath>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
     </Reference>

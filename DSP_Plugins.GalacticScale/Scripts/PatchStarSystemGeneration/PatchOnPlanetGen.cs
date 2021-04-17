@@ -2,7 +2,6 @@
 using HarmonyLib;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
-
 namespace GalacticScale.Scripts.PatchStarSystemGeneration {
     [HarmonyPatch(typeof(PlanetGen))]
     public class PatchOnPlanetGen {
