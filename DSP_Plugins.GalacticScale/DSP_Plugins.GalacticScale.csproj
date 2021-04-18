@@ -121,6 +121,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\Generator\StarGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Generator\SystemGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\classes.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\CreateGalaxy.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnStationComponent.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUIPlanetDetail.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuide.cs" />

@@ -56,7 +56,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             serializer.TrySerialize<GeneratorGlobalSettings>(gen, out fsData data).AssertSuccessWithoutWarnings();
 
             string json = fsJsonPrinter.PrettyJson(data);
-            Debug(json, LogLevel.Debug, true);
+            //Debug(json, LogLevel.Debug, true);
              System.IO.File.WriteAllText(configPath , json);
             var testConfig = System.IO.File.ReadAllText(configPath );
             fsData data2 = fsJsonParser.Parse(testConfig);
@@ -64,7 +64,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             serializer.TryDeserialize<GeneratorGlobalSettings>(data2, ref result).AssertSuccessWithoutWarnings();
 
             // JsonConvert.PopulateObject( testConfig , result);
-            Debug("---------------------------------- Test : " + result.GeneratorClusterSettings.Flatten, LogLevel.Debug, true);
+            //Debug("---------------------------------- Test : " + result.GeneratorClusterSettings.Flatten, LogLevel.Debug, true);
     //*/
         }
 
