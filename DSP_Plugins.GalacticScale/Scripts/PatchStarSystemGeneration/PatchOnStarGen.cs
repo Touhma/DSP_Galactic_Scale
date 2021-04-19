@@ -12,7 +12,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             // InnerCount for the System
             //ReworkStarGen.CreateStarPlanetsRework(galaxy, star, gameDesc, new GeneratorPlanetSettings());
 
-            Patch.Debug("CreateStarPlanets");
+            //Patch.Debug("CreateStarPlanets");
 
             return true;
         }

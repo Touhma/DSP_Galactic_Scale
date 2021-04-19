@@ -3,6 +3,7 @@
 !galacticbundle
 !/**/
 !*.cs
+!*Assembly*
 !*.csproj
 !GalacticScale.sln
 

@@ -4,30 +4,6 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static class settings
-    {
-        public static int Seed = 1;
-        public static List<star> Stars= new List<star>();
-        public static int starCount { get => Stars.Count; }
-        public static star BirthStar { get => Stars[0]; set => Stars[0] = value; }
-        public static galaxyParams GalaxyParams = new galaxyParams();
- 
-        public static void set(galaxyParams galaxyParams, int seed, star birthStar, List<star> stars)
-        {
-            GalaxyParams = galaxyParams;
-            BirthStar = birthStar;
-            Stars = stars;
-            Seed = seed;
-        }
-    }
-    public class galaxyParams
-    {
-        public int iterations;
-        public double minDistance;
-        public double minStepLength;
-        public double maxStepLength;
-        public double flatten = 0.17;
-    }
     public class star
     {
         public string Name;
@@ -38,7 +14,6 @@ namespace GalacticScale
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
         public float orbitScaler = 1;
-
         private float _temperature = -1;
         private float _lifetime = -1;
         private float _age = -1;
@@ -47,10 +22,12 @@ namespace GalacticScale
         private float _classfactor = 3;
         private float _luminosity = -1;
         private float _radius = -1;
-        public float _acdiscRadius = -1;
+        private float _acdiscRadius = -1;
         private float _lightBalanceRadius = -1;
         private float _resourceCoef = 0.6f;
-        private float level = 1;
+        private float _physicsRadius = -1;
+        [SerializeField] 
+        public float level = 1;
         public star(int seed, string name, ESpectrType spectr, EStarType type, List<planet> planets)
         {
             this.Name = name;
@@ -63,20 +40,40 @@ namespace GalacticScale
         {
             return this.Name;
         }
+        public int planetCount { get => Planets.Count; }
+        [SerializeField]
         public float age { get => _age < 0 ? getAge() : _age; set => _age = value; }
+        [SerializeField]
         public float mass { get => _mass < 0 ? getMass() : _mass; set => _mass = value; }
+        [SerializeField]
         public float temperature { get => _temperature < 0 ? getTemperature() : _temperature; set => _temperature = value; }
+        [SerializeField]
         public float lifetime { get => _lifetime < 0 ? getLifetime() : _lifetime; set => _lifetime = value; }
+        [SerializeField]
         public float color { get => _color < 0 ? getColor() : _color; set => _color = value; }
+        [SerializeField]
         public float luminosity { get => _luminosity; set => _luminosity = value; }
+        [SerializeField]
         public float radius { get => _radius < 0 ? getRadius() : _radius; set => _radius = value; }
+        [SerializeField]
         public float habitableRadius { get => _habitableRadius < 0 ? getHabitableRadius() : _habitableRadius; set => _habitableRadius = value; }
+        [SerializeField] 
         public float dysonRadius { get => _dysonRadius < 0 ? getDysonRadius() : _dysonRadius; set => _dysonRadius = value; }
+        [SerializeField] 
         public float lightBalanceRadius { get => _lightBalanceRadius < 0 ? getLightBalanceRadius() : _lightBalanceRadius; set => _lightBalanceRadius = value; }
-        public float physicsRadius { get => radius * 1200f; }
+        [SerializeField] 
+        public float physicsRadius { get => _physicsRadius < 0 ? getPhysicsRadius() : _physicsRadius; set => _physicsRadius = value; }
+        [SerializeField] 
         public float classFactor { get => _classfactor; }
-        public float resourceCoef { get => _resourceCoef; set => _resourceCoef = value; }
+        [SerializeField] 
+        public float resourceCoef { get => _resourceCoef < 0?getResourceCoef(): _resourceCoef; set => _resourceCoef = value; }
+        [SerializeField]
         public float acDiscRadius { get => _acdiscRadius < 0 ? getAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
+        public VectorLF3 pos;
+        float getPhysicsRadius()
+        {
+            return radius * 1200f;
+        }
         float getAcDiscRadius()
         {
             switch (Type)
@@ -157,7 +154,7 @@ namespace GalacticScale
             }
             double r = random.NextDouble();
             double r2 = random.NextDouble();
-            float num7 = InnoGen.RandNormal(averageValue, standardDeviation, r, r2);
+            float num7 = GS2.RandNormal(averageValue, standardDeviation, r, r2);
             switch (Spectr)
             {
                 case ESpectrType.M:
@@ -227,17 +224,14 @@ namespace GalacticScale
             _classfactor = (float)num9;
             return _color;
         }
-    }
-    public class planet
-    {
-        public string Name;
-        public planet(string name)
+        float getResourceCoef ()
         {
-            this.Name = name;
-        }
-        public override string ToString()
-        {
-          return this.Name;
+            float num1 = (float)pos.magnitude / 32f;
+            if ((double)num1 > 1.0)
+                num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
+            _resourceCoef = Mathf.Pow(7f, num1) * 0.6f;
+            return resourceCoef;
         }
     }
+    
 }
