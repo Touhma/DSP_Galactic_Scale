@@ -127,7 +127,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
                     if (planet.type == EPlanetType.Ocean) // For some reason the generator is only spitting out ONE habitable planet even if all the planets should be habitable
                     {
                         Patch.Debug("Radius is " + planet.radius, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
-                        if (planet.radius < 50) planet.radius = 50; // Don't want starting planet smaller than this or its unplayable. Maybe add a config option
+                        if (planet.radius < PatchPlanetSize.PatchForPlanetSize.StartingPlanetMinimumSize.Value) planet.radius = PatchPlanetSize.PatchForPlanetSize.StartingPlanetMinimumSize.Value; // Don't want starting planet smaller than this or its unplayable. Maybe add a config option
                     }
                 }
 
