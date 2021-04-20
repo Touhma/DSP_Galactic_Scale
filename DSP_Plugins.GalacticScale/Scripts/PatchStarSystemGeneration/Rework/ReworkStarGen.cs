@@ -4,13 +4,17 @@ using BepInEx.Logging;
 using UnityRandom = UnityEngine.Random;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration {
-    public static class ReworkStarGen {
-        public static void CreateStarPlanetsRework(GalaxyData galaxy, StarData star, GameDesc gameDesc, PlanetGeneratorSettings genSettings) {
+namespace GalacticScale.Scripts.PatchStarSystemGeneration
+{
+    public static class ReworkStarGen
+    {
+
+        
+        public static void CreateStarPlanetsRework(GalaxyData galaxy, StarData star, GameDesc gameDesc, PlanetGeneratorSettings genSettings)
+        {
             bool isDebugOn = star.IsStartingStar();
 
             star.name = SystemsNames.systems[star.index];
-
             Patch.Debug("System " + star.name + " - " + star.type + " - " + star.spectr, LogLevel.Debug,
                 Patch.DebugStarGen && isDebugOn);
 
@@ -37,6 +41,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                         "ChanceMoonTelluric : " + currentSettings.ChanceMoonTelluric + "\n" +
                         "ChancePlanetTelluric : " + currentSettings.ChanceTelluricPlanet + "\n" +
                         "ChancePlanetGasGiant : " + currentSettings.ChanceGasGiant + "\n" +
+                        "MinMoonTelluricNb : " + currentSettings.MinMoonTelluricNb + "\n" +
+                        "MinMoonGasGiantNb : " + currentSettings.MinMoonGasGiantNb + "\n" +
+                        "MinTelluricNb : " + currentSettings.MinTelluricNb + "\n" +
+                        "MinGasGiantNb : " + currentSettings.MinGasGiantNb + "\n" +
                         "MaxMoonTelluricNb : " + currentSettings.MaxMoonTelluricNb + "\n" +
                         "MaxMoonGasGiantNb : " + currentSettings.MaxMoonGasGiantNb + "\n" +
                         "MaxTelluricNb : " + currentSettings.MaxTelluricNb + "\n" +
@@ -49,7 +57,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             DefineNumberOfBodies(currentSettings, annexSeed, genSettings);
 
-            if (star.IsStartingStar()) {
+            if (star.IsStartingStar())
+            {
                 // check if minimum number of planet is met 
                 genSettings.nbOfTelluricPlanets = genSettings.nbOfTelluricPlanets < Patch.StartingSystemMinPlanetTelluricNb.Value ? Patch.StartingSystemMinPlanetTelluricNb.Value : genSettings.nbOfTelluricPlanets;
                 genSettings.nbOfMoonsTelluric = genSettings.nbOfMoonsTelluric < Patch.StartingSystemMinTelluricMoonNb.Value ? Patch.StartingSystemMinTelluricMoonNb.Value : genSettings.nbOfMoonsTelluric;
@@ -60,7 +69,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 genSettings.nbOfPlanets = genSettings.nbOfTelluricPlanets + genSettings.nbOfGasGiantPlanets;
                 genSettings.nbOfStellarBodies = genSettings.nbOfPlanets + genSettings.nbOfMoons;
             }
-           
+
             star.planets = new PlanetData[genSettings.nbOfStellarBodies];
 
             Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
@@ -80,10 +89,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             GenerateAllPlanets(galaxy, star, gameDesc, planetsToGenerate);
 
 
-            if (star.IsStartingStar()) {
+            if (star.IsStartingStar())
+            {
                 Patch.Debug(star.name + " --recap-- : ", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                 var nbOfHabitablePlanets = 0;
-                foreach (var planet in star.planets) {
+                foreach (var planet in star.planets)
+                {
                     if (planet.orbitAround != 0)
                         Patch.Debug("moon type : " + planet.type, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     else
@@ -92,13 +103,16 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     if (planet.type == EPlanetType.Ocean) nbOfHabitablePlanets++;
                 }
 
-                if (nbOfHabitablePlanets == 0) {
+                if (nbOfHabitablePlanets == 0)
+                {
                     Patch.Debug("Nb of habitable == 0 --> Override one planet ", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     var @override = true;
-                    while (@override) {
+                    while (@override)
+                    {
                         var indexStartingPlanet = UnityRandom.Range(0, star.planets.Length - 1);
 
-                        if (star.planets[indexStartingPlanet].type != EPlanetType.Gas) {
+                        if (star.planets[indexStartingPlanet].type != EPlanetType.Gas)
+                        {
                             star.planets[indexStartingPlanet].ShouldBeHabitable();
                             galaxy.birthPlanetId = star.planets[indexStartingPlanet].id;
                             @override = false;
@@ -113,44 +127,70 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     if (planet.type == EPlanetType.Ocean) // For some reason the generator is only spitting out ONE habitable planet even if all the planets should be habitable
                     {
                         Patch.Debug("Radius is " + planet.radius, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
-                        if (planet.radius < 50) planet.radius = 50; // Don't want starting planet smaller than this or its unplayable. Maybe add a config option
+                        if (planet.radius < PatchPlanetSize.PatchForPlanetSize.StartingPlanetMinimumSize.Value) planet.radius = PatchPlanetSize.PatchForPlanetSize.StartingPlanetMinimumSize.Value; // Don't want starting planet smaller than this or its unplayable. Maybe add a config option
                     }
                 }
-               
+
             }
 
             // Apply themes 
-            foreach (var planet in star.planets) {
+            foreach (var planet in star.planets)
+            {
                 PlanetGen.SetPlanetTheme(planet, star, gameDesc, 0, 0, mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.NextDouble(), mainSeed.Next());
-                if (star.IsStartingStar()) {
+                if (star.IsStartingStar())
+                {
                     Patch.Debug("planet.name --> " + planet.name, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     Patch.Debug("planet.algoId --> " + planet.algoId, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                     Patch.Debug("planet.type --> " + planet.type, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
                 }
-              
-        
+
+
             }
 
             star.planetCount = star.planets.Length;
         }
 
-        public static void DefineNumberOfBodies(PatchForStarSystemGeneration.StarSystemSetting currentSettings, Random annexSeed, PlanetGeneratorSettings genSettings) {
+        public static void DefineNumberOfBodies(PatchForStarSystemGeneration.StarSystemSetting currentSettings, Random annexSeed, PlanetGeneratorSettings genSettings)
+        {
             // Define how much planets the system have
             for (var i = 0; i < currentSettings.MaxTelluricNb; i++)
-                if (annexSeed.NextDouble() <= currentSettings.ChanceTelluricPlanet) {
+            {
+                if (annexSeed.NextDouble() <= currentSettings.ChanceTelluricPlanet)
+                {
                     genSettings.nbOfTelluricPlanets++;
                     genSettings.nbOfPlanets++;
                     genSettings.nbOfStellarBodies++;
                 }
+                Patch.Debug("Initially generated " + genSettings.nbOfTelluricPlanets, LogLevel.Debug, Patch.DebugStarGen);
 
+            }
+            if (genSettings.nbOfTelluricPlanets < currentSettings.MinTelluricNb)
+            {
+                Patch.Debug("Minimum Telluric Planets is too few", LogLevel.Debug, Patch.DebugStarGen);
+                Patch.Debug("Minimum Telluric Planets is " + currentSettings.MinTelluricNb + " while generated number was " + genSettings.nbOfTelluricPlanets, LogLevel.Debug, Patch.DebugStarGen);
+                int difference = currentSettings.MinTelluricNb - genSettings.nbOfTelluricPlanets;
+                genSettings.nbOfTelluricPlanets += difference;
+                genSettings.nbOfPlanets += difference;
+                genSettings.nbOfStellarBodies += difference;
+            }
             // Define how much of the planets are GasGiant
             for (var j = 0; j < currentSettings.MaxGasGiantNb; j++)
-                if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiant) {
+            {
+                if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiant)
+                {
                     genSettings.nbOfGasGiantPlanets++;
                     genSettings.nbOfPlanets++;
                     genSettings.nbOfStellarBodies++;
                 }
 
+            }
+            if (genSettings.nbOfGasGiantPlanets < currentSettings.MinGasGiantNb)
+            {
+                int difference = currentSettings.MinGasGiantNb - genSettings.nbOfGasGiantPlanets;
+                genSettings.nbOfGasGiantPlanets += difference;
+                genSettings.nbOfPlanets += difference;
+                genSettings.nbOfStellarBodies += difference;
+            }
 
             Patch.Debug("*************************** : \n" +
                         "nbOfPlanets : " + genSettings.nbOfPlanets + "\n" +
@@ -161,28 +201,54 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("Definition of Nb of Moons In the system :", LogLevel.Debug, Patch.DebugStarGenDeep);
             // Define how much moons the system have
             // Define how much moons the telluric  planets have 
-            if (genSettings.nbOfTelluricPlanets != 0) {
+            if (genSettings.nbOfTelluricPlanets != 0)
+            {
                 for (var i = 0; i < currentSettings.MaxMoonTelluricNb; i++)
-                    if (annexSeed.NextDouble() <= currentSettings.ChanceMoonTelluric) {
+                {
+                    if (annexSeed.NextDouble() <= currentSettings.ChanceMoonTelluric)
+                    {
                         genSettings.nbOfMoonsTelluric++;
                         genSettings.nbOfMoons++;
                         genSettings.nbOfStellarBodies++;
                     }
+
+                }
+                if (genSettings.nbOfMoonsTelluric < currentSettings.MinMoonTelluricNb)
+                {
+                    int difference = currentSettings.MinMoonTelluricNb - genSettings.nbOfMoonsTelluric;
+                    genSettings.nbOfMoonsTelluric += difference;
+                    genSettings.nbOfMoons += difference;
+                    genSettings.nbOfStellarBodies += difference;
+                }
             }
-            else {
+            else
+            {
                 Patch.Debug("No Telluric in the system :", LogLevel.Debug, Patch.DebugStarGenDeep);
             }
 
             // Define how much moons the gasGiants planets have 
-            if (genSettings.nbOfGasGiantPlanets != 0) {
+            if (genSettings.nbOfGasGiantPlanets != 0)
+            {
                 for (var i = genSettings.nbOfMoons; i < currentSettings.MaxMoonGasGiantNb; i++)
-                    if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiantMoon) {
+                {
+                    if (annexSeed.NextDouble() <= currentSettings.ChanceGasGiantMoon)
+                    {
                         genSettings.nbOfMoonsGasGiant++;
                         genSettings.nbOfMoons++;
                         genSettings.nbOfStellarBodies++;
                     }
+
+                }
+                if (genSettings.nbOfMoonsGasGiant < currentSettings.MinMoonGasGiantNb)
+                {
+                    int difference = currentSettings.MinMoonGasGiantNb - genSettings.nbOfMoonsGasGiant;
+                    genSettings.nbOfMoonsGasGiant += difference;
+                    genSettings.nbOfMoons += difference;
+                    genSettings.nbOfStellarBodies += difference;
+                }
             }
-            else {
+            else
+            {
                 Patch.Debug("No Gas Giant in the system :", LogLevel.Debug, Patch.DebugStarGenDeep);
             }
 
@@ -195,9 +261,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Patch.Debug("*************************** :", LogLevel.Debug, Patch.DebugStarGenDeep);
         }
 
-        public static void PreGenerateAllBodies(StarData star, List<PlanetForGenerator> planetsToGenerate, Random annexSeed, PlanetGeneratorSettings genSettings, PatchForStarSystemGeneration.StarSystemSetting currentSettings) {
+        public static void PreGenerateAllBodies(StarData star, List<PlanetForGenerator> planetsToGenerate, Random annexSeed, PlanetGeneratorSettings genSettings, PatchForStarSystemGeneration.StarSystemSetting currentSettings)
+        {
             bool isDebugOn = star.IsStartingStar();
-            //
+
             //preparation of the planet creation :
             Patch.Debug("Define the belts for whatever they are for :", LogLevel.Debug, Patch.DebugStarGenDeep);
             //Define where the 2 asteroids belts are ( maybe not implemented ) 
@@ -217,10 +284,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             int infoSeed;
             int genSeed;
-
+            bool[] assignedOrbits;
             // planets pre-generation
             var nbOfBodiesPreGenerated = 0;
             var nbOfPlanetsPreGenerated = 0;
+            var nbOfTelluricPlanetsPreGenerated = 0;
+            var nbOfGasGiantPlanetsPreGenerated = 0;
             var planetsPreGeneratedNumber = 1;
             var nbOfMoonsPreGenerated = 0;
 
@@ -232,7 +301,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
             int jumpOrbitMargin;
 
-            for (var i = 0; i < genSettings.nbOfStellarBodies; i++) {
+            if (Patch.UseNewGasGiantOrbitPicker.Value) assignedOrbits = DistributePlanets(annexSeed, genSettings);
+            else assignedOrbits = new bool[0];
+            for (var i = 0; i < genSettings.nbOfStellarBodies; i++)
+            {
 
                 infoSeed = annexSeed.Next();
                 genSeed = annexSeed.Next();
@@ -244,14 +316,16 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 bool isGasGiant;
                 var orbitAround = 0;
 
-                if (asterBelt1OrbitIndex == currentOrbitPlanetIndex) {
+                if (asterBelt1OrbitIndex == currentOrbitPlanetIndex)
+                {
                     Patch.Debug("Jump Belt 1 Orbit :", LogLevel.Debug, Patch.DebugStarGenDeep);
                     currentOrbitPlanetIndex++;
                     nbOfBodiesPreGenerated++;
                     beltGenerated++;
                 }
 
-                if (asterBelt2OrbitIndex == currentOrbitPlanetIndex) {
+                if (asterBelt2OrbitIndex == currentOrbitPlanetIndex)
+                {
                     Patch.Debug("Jump Belt 2 Orbit :", LogLevel.Debug, Patch.DebugStarGenDeep);
                     currentOrbitPlanetIndex++;
                     nbOfBodiesPreGenerated++;
@@ -260,7 +334,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
                 Patch.Debug("nbOfPlanetsPreGenerated : " + nbOfPlanetsPreGenerated, LogLevel.Debug, Patch.DebugStarGenDeep);
                 Patch.Debug("nbOfPlanets : " + genSettings.nbOfPlanets, LogLevel.Debug, Patch.DebugStarGenDeep);
-                if (nbOfPlanetsPreGenerated < genSettings.nbOfPlanets) {
+                if (nbOfPlanetsPreGenerated < genSettings.nbOfPlanets)
+                {
                     //planets
                     // jumporbit planet
 
@@ -274,12 +349,17 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
 
                     orbitAround = 0;
-
-                    if (nbOfBodiesPreGenerated < genSettings.nbOfTelluricPlanets + beltGenerated)//telluric
-                        isGasGiant = false;
-                    else//gasgiant
-                        isGasGiant = true;
-
+                    if (Patch.UseNewGasGiantOrbitPicker.Value)
+                    {
+                        isGasGiant = assignedOrbits[i];
+                    }
+                    else
+                    {
+                        if (nbOfBodiesPreGenerated < genSettings.nbOfTelluricPlanets + beltGenerated)//telluric
+                            isGasGiant = false;
+                        else//gasgiant
+                            isGasGiant = true;
+                    }
 
                     planetsToGenerate.Add(new PlanetForGenerator(nbOfBodiesPreGenerated - beltGenerated, orbitAround, currentOrbitPlanetIndex, planetsPreGeneratedNumber, isGasGiant, planetInfoSeed, planetGenSeed, null));
                     Patch.Debug("planetsToGenerate -->   \n" + planetsToGenerate[nbOfPlanetsPreGenerated].ToStringDebug(), LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
@@ -287,22 +367,33 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     planetsPreGeneratedNumber++;
                     currentOrbitPlanetIndex++;
                     if (isGasGiant)
+                    {
+                        nbOfGasGiantPlanetsPreGenerated++;
                         Patch.Debug("gas Giant generated !", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+                    }
                     else
+                    {
+                        nbOfTelluricPlanetsPreGenerated++;
                         Patch.Debug("planet generated !", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+                    }
+
                 }
-                else if (nbOfBodiesPreGenerated < genSettings.nbOfPlanets + genSettings.nbOfMoons + beltGenerated) {
+                else if (nbOfBodiesPreGenerated < genSettings.nbOfPlanets + genSettings.nbOfMoons + beltGenerated)
+                {
                     Patch.Debug("Moon in generation!", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
 
                     isGasGiant = false;
 
-                    if (genSettings.nbOfTelluricPlanets != 0 && nbOfBodiesPreGenerated < genSettings.nbOfPlanets + genSettings.nbOfMoonsTelluric + beltGenerated) {
+                    if (genSettings.nbOfTelluricPlanets != 0 && nbOfBodiesPreGenerated < genSettings.nbOfPlanets + genSettings.nbOfMoonsTelluric + beltGenerated)
+                    {
                         // telluric moon
                         orbitAround = UnityRandom.Range(1, genSettings.nbOfTelluricPlanets);
                         Patch.Debug("telluric moon! orbit around : " + orbitAround, LogLevel.Debug, Patch.DebugStarGenDeep);
                     }
-                    else {
-                        if (genSettings.nbOfGasGiantPlanets != 0) {
+                    else
+                    {
+                        if (genSettings.nbOfGasGiantPlanets != 0)
+                        {
                             //gasgiant moon 
                             orbitAround = UnityRandom.Range(genSettings.nbOfTelluricPlanets + 1, genSettings.nbOfTelluricPlanets + genSettings.nbOfGasGiantPlanets);
                             Patch.Debug("gas moon! orbit around : " + orbitAround, LogLevel.Debug, Patch.DebugStarGenDeep);
@@ -333,7 +424,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                     Patch.Debug("currentOrbitMoonIndex : " + currentOrbitMoonIndex, LogLevel.Debug, Patch.DebugStarGenDeep);
 
                     if (currentOrbitMoonIndex < jumpOrbitMargin && jumpOrbitMargin < currentSettings.JumpOrbitMoonMax)
-                        if (annexSeed.NextDouble() < currentSettings.ChanceJumpOrbitMoons) {
+                        if (annexSeed.NextDouble() < currentSettings.ChanceJumpOrbitMoons)
+                        {
                             // can jump orbit up to JumpOrbitPlanetIndex
                             var oldOrbitIndex = currentOrbitMoonIndex;
                             currentOrbitMoonIndex += UnityRandom.Range(currentOrbitMoonIndex, currentOrbitMoonIndex + currentSettings.JumpOrbitMoonMax);
@@ -350,11 +442,13 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             }
         }
 
-        public static void GenerateAllPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc, List<PlanetForGenerator> planetsToGenerate) {
+        public static void GenerateAllPlanets(GalaxyData galaxy, StarData star, GameDesc gameDesc, List<PlanetForGenerator> planetsToGenerate)
+        {
             bool isDebugOn = star.IsStartingStar();
             Patch.Debug("Recap of what have to be generated : \n", LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
             var finalIndex = 0;
-            foreach (var planet in planetsToGenerate) {
+            foreach (var planet in planetsToGenerate)
+            {
                 var debugLine = "A ";
 
                 planet.planetIndex = finalIndex;
@@ -378,9 +472,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
                 Patch.Debug(star.planets[finalIndex].name, LogLevel.Debug, Patch.DebugStarNamingGen);
                 finalIndex++;
                 //debugLine += planet.ToString() + "\n\n";
-                if (planet.moons.Count != 0) {
+                if (planet.moons.Count != 0)
+                {
                     debugLine += "with " + planet.moons.Count + " Moons  : \n\n";
-                    foreach (var moon in planet.moons) {
+                    foreach (var moon in planet.moons)
+                    {
                         moon.planetIndex = finalIndex;
                         debugLine += " Moon : " + moon.planetIndex + "\n";
                         PlanetGen.CreatePlanet(galaxy, star, gameDesc, moon.planetIndex, moon.orbitAround, moon.orbitIndex, moon.number, moon.isGasGiant, moon.infoSeed, moon.genSeed);
@@ -394,6 +490,140 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
 
 
                 Patch.Debug(debugLine, LogLevel.Debug, Patch.DebugStarGen && isDebugOn);
+            }
+        }
+        static int SelectOrbitRange(ref Random seed, ref int orbitRange1nbTelluric, ref int orbitRange2nbTelluric, ref int orbitRange3nbTelluric, ref float totalProbability, int totalTelluric, ref int totalPlanets, ref float orbit1Probability, ref float orbit2Probability, ref float orbit3Probability)
+        {
+            Patch.Debug("Selecting Orbit Range", LogLevel.Debug, Patch.DebugPlanetDistribution);
+            float r = (float)seed.NextDouble();
+            float bias1 = Patch.DistributionBiasInner.Value; //1 = always put rocky planets here. 0 = never
+            float bias2 = Patch.DistributionBiasMiddle.Value;
+            float bias3 = Patch.DistributionBiasOuter.Value;
+            int orbit1TotalSlots = totalPlanets / 3;
+            int orbit2TotalSlots = totalPlanets / 3 + totalPlanets % 3;
+            int orbit3TotalSlots = totalPlanets / 3;
+
+            totalProbability = (orbitRange1nbTelluric < (orbit1TotalSlots) ? bias1 : 0) + (orbitRange2nbTelluric < (orbit2TotalSlots) ? bias2 : 0) + (orbitRange3nbTelluric < (orbit3TotalSlots) ? bias3 : 0);
+            //if (totalProbability == 0) return 1;
+            orbit1Probability = (orbitRange1nbTelluric < (orbit1TotalSlots) ? bias1 : 0) / totalProbability;
+            orbit2Probability = (orbitRange2nbTelluric < (orbit2TotalSlots) ? bias2 : 0) / totalProbability;
+            orbit3Probability = (orbitRange3nbTelluric < (orbit3TotalSlots) ? bias3 : 0) / totalProbability;
+
+            Patch.Debug("SelectOrbitRange:Available Orbit Slots: " + String.Format("|{0,10}|{1,10}|{2,10}|", (orbit1TotalSlots - orbitRange1nbTelluric), (orbit2TotalSlots - orbitRange2nbTelluric), (orbit3TotalSlots - orbitRange3nbTelluric)), LogLevel.Debug, Patch.DebugPlanetDistribution);
+            Patch.Debug("SelectOrbitRange:Orbit Probability    : " + String.Format("|{0,10}|{1,10}|{2,10}|", orbit1Probability, orbit2Probability, orbit3Probability), LogLevel.Debug, Patch.DebugPlanetDistribution);
+
+            if (orbitRange1nbTelluric < (orbit1TotalSlots) && r < orbit1Probability)
+            {
+                Patch.Debug("Returning 1: " + orbitRange1nbTelluric + " < " + orbit1TotalSlots, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                return 1; //If we have space in orbit1 for a telluric planet, and we want to put one there (orbit1Probability > 0) and random number is lower than this probability, put it in orbit1
+            }
+            if (orbitRange2nbTelluric < (orbit2TotalSlots) && r < (orbit1Probability + orbit2Probability)) { 
+                Patch.Debug("Returning 2: " + orbitRange2nbTelluric + " < " + orbit2TotalSlots, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                return 2;
+            }
+            if (orbitRange3nbTelluric < (orbit3TotalSlots) && r < (orbit1Probability + orbit2Probability + orbit3Probability))
+            {
+                Patch.Debug("Returning 3: " + orbitRange2nbTelluric + " < " + orbit2TotalSlots, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                return 3;
+            }
+            Patch.Debug("No Available Preferred Slots. Entering Randomization Loop", LogLevel.Warning, Patch.DebugPlanetDistribution);
+
+            while (orbitRange1nbTelluric + orbitRange2nbTelluric + orbitRange3nbTelluric < totalTelluric)
+            {
+                float r2 = (float)seed.NextDouble();
+                if (r2 <= 0.33 && orbitRange1nbTelluric < (orbit1TotalSlots)) return 1;
+                if (r2 <= 0.66 && orbitRange2nbTelluric < (orbit2TotalSlots)) return 2;
+                if (orbitRange3nbTelluric < orbit3TotalSlots) return 3;
+            }
+            return 4;
+        }
+        static bool[] DistributePlanets(Random seed, PlanetGeneratorSettings genSettings)
+        {
+            int totalTelluricPlanets = genSettings.nbOfTelluricPlanets;
+            int totalGasGiants = genSettings.nbOfGasGiantPlanets;
+            var totalSlots = totalTelluricPlanets + totalGasGiants;
+            int orbitRange1Slots = totalSlots/3;
+            int orbitRange2Slots = totalSlots/3 + totalSlots%3;
+            int orbitRange3Slots = totalSlots/3;
+            
+            float bias1 = Patch.DistributionBiasInner.Value; //1 = always put rocky planets here. 0 = never
+            float bias2 = Patch.DistributionBiasMiddle.Value; 
+            float bias3 = Patch.DistributionBiasOuter.Value; 
+            float totalBias = bias1 + bias2 + bias3;
+            
+            var orbitRange1Probability = bias1 / totalBias;
+            var orbitRange2Probability = bias2 / totalBias;
+            var orbitRange3Probability = bias3 / totalBias;
+
+            int remainingTelluricPlanets = totalTelluricPlanets;
+            int orbitRange1nbTelluric = 0, orbitRange2nbTelluric = 0, orbitRange3nbTelluric = 0;
+
+            bool[] assignedOrbits = new bool[genSettings.nbOfPlanets]; //Reset the assignedOrbits array
+            Patch.Debug("Distributing " + genSettings.nbOfPlanets + " Planets using new Generator: "+ genSettings.nbOfTelluricPlanets + " Telluric, "+genSettings.nbOfGasGiantPlanets + " Gas Giants", LogLevel.Debug, Patch.DebugPlanetDistribution);
+            while (remainingTelluricPlanets > 0)
+            {
+                var orbitRange = SelectOrbitRange(ref seed, ref orbitRange1nbTelluric, ref orbitRange2nbTelluric, ref orbitRange3nbTelluric, ref totalBias, totalTelluricPlanets, ref totalSlots, ref orbitRange1Probability, ref orbitRange2Probability, ref orbitRange3Probability);
+                Patch.Debug("OrbitRange " + orbitRange + " Selected", LogLevel.Debug, Patch.DebugPlanetDistribution);
+                if (orbitRange == 1) orbitRange1nbTelluric++;
+                if (orbitRange == 2) orbitRange2nbTelluric++;
+                if (orbitRange == 3) orbitRange3nbTelluric++;
+                if (orbitRange == 4) Patch.Debug("SelectOrbitRange Failed", LogLevel.Warning, true);
+                remainingTelluricPlanets--;
+            }
+            int i = 0;
+            Patch.Debug("PreRandomization Telluric Orbit Range Contents: " + orbitRange1nbTelluric + "/" + orbitRange1Slots + " " + orbitRange2nbTelluric + "/" + orbitRange2Slots + " " + orbitRange3nbTelluric + "/" + orbitRange3Slots, LogLevel.Message, Patch.DebugPlanetDistribution);
+
+            AssignOrbits(ref assignedOrbits, orbitRange1nbTelluric, orbitRange1Slots - orbitRange1nbTelluric, ref seed, ref i);
+            AssignOrbits(ref assignedOrbits, orbitRange2nbTelluric, orbitRange2Slots - orbitRange2nbTelluric, ref seed, ref i);
+            AssignOrbits(ref assignedOrbits, orbitRange3nbTelluric, orbitRange3Slots - orbitRange3nbTelluric, ref seed, ref i);
+            if (Patch.DebugPlanetDistribution)
+            {
+                string output = (orbitRange1Slots > 0) ? "\n--Orbit Range 1--\n|" : "";
+                for (var i2 = 0; i2 < assignedOrbits.Length; i2++)
+                {
+                    if (i2 == orbitRange1Slots) output += "\n--Orbit Range 2--\n|";
+                    if (i2 == orbitRange1Slots + orbitRange2Slots) output += "\n--Orbit Range 3--\n|";
+                    output += ((assignedOrbits[i2]) ? " Gas |" : " Telluric |");
+                }
+                Patch.Debug(output, LogLevel.Debug, Patch.DebugPlanetDistribution);
+            }
+            
+            Patch.Debug("Distribution of Planets Complete.\n\n", LogLevel.Debug, Patch.DebugPlanetDistribution);
+            return assignedOrbits;
+        }
+        static void AssignOrbits(ref bool[] assignedOrbits, int remainingTelluricPlanets, int remainingGasGiants, ref Random seed, ref int position)
+        {
+            while (remainingTelluricPlanets > 0 && remainingGasGiants > 0)
+            {
+                Patch.Debug("Assigning Planets: There are " + remainingTelluricPlanets + " Tellurics and " + remainingGasGiants + " remaining. Position: " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                float r = (float)seed.NextDouble();
+                if (r < (remainingTelluricPlanets / (remainingTelluricPlanets + remainingGasGiants)))
+                {
+                    assignedOrbits[position] = false;
+                    remainingTelluricPlanets--;
+                    Patch.Debug("Assigned Telluric at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                }
+                else
+                {
+                    assignedOrbits[position] = true;
+                    remainingGasGiants--;
+                    Patch.Debug("Assigned Gas Giant at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                }
+                position++;
+            }
+            while (remainingTelluricPlanets > 0)
+            {
+                assignedOrbits[position] = false;
+                remainingTelluricPlanets--;
+                Patch.Debug("While " + (remainingTelluricPlanets + 1) + " Tellurics remaining, assigned Telluric at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                position++;
+            }
+            while (remainingGasGiants > 0)
+            {
+                assignedOrbits[position] = true;
+                remainingGasGiants--;
+                Patch.Debug("While " + (remainingGasGiants +1) + " Gas Giants remaining, assigned Gas Giant at position " + position, LogLevel.Debug, Patch.DebugPlanetDistribution);
+                position++;
             }
         }
     }

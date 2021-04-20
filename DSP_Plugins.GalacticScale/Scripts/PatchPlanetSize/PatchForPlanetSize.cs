@@ -31,6 +31,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
 
         public static ConfigEntry<bool> EnableLimitedResizingFeature;
+        public static ConfigEntry<int> StartingPlanetMinimumSize;
         public static ConfigEntry<bool> EnableMoonSizeFailSafe;
 
         //public static float MaxTelluricSize = 480f;
@@ -64,6 +65,10 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "LimitedResizingChances",
                 "0.5,0.8,1",
                 "chances for each size to appear --> 0 -> 0.5  = 1 , 0.5 -> 0.8 = 2 etc ...");
+            StartingPlanetMinimumSize = Config.Bind("galactic-scale-planets-size",
+                "StartingPlanetMinimumSize",
+                60,
+                "StartingPlanetMinimumSize -> Sizes smaller than this may be missing resources required to progress in the game. It is advised to always check small starting planets for coal and oil. ~95% of seeds at size 50 are playable.");
 
             EnableMoonSizeFailSafe = Config.Bind("galactic-scale-planets-size",
                 "EnableMoonSizeFailSafe",
