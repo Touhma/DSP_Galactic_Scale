@@ -17,12 +17,21 @@ namespace GalacticScale
         public static GalaxyData galaxy;
         public static System.Random random;
         public static GameDesc gameDesc;
+        public static string DataDir = Path.Combine(Paths.BepInExRootPath, "output");
+        public static Dictionary<string, GSTheme> planetThemes = new Dictionary<string, GSTheme>()
+        {
+             ["Mediterranian"] = new GSTheme() { 
+                 name = "Mediterranian",
+                 type = EPlanetType.Ocean,
+                 theme = LDB.themes.Select(1),
+             }, 
+        };
         public static void CreateDummySettings(int starCount)
         {
             settings.Stars.Clear();
-            List<planet> p = new List<planet>
+            List<GSplanet> p = new List<GSplanet>
                 {
-                    new planet("Urf")
+                    new GSplanet("Urf")
                 };
             Patch.Debug("Setting BirthStar");
             settings.Stars.Add(new star(1,"BeetleJuice", ESpectrType.O, EStarType.MainSeqStar, p));
@@ -30,7 +39,7 @@ namespace GalacticScale
             for (var i = 1; i < starCount; i++)
             {
                 Patch.Debug("Adding new Star = " + i);
-                settings.Stars.Add(new star(1,"Star" + i.ToString(), ESpectrType.X, EStarType.BlackHole, new List<planet>()));
+                settings.Stars.Add(new star(1,"Star" + i.ToString(), ESpectrType.X, EStarType.BlackHole, new List<GSplanet>()));
             }
             Patch.Debug("Creating Dummy Params");
             galaxyParams g = new galaxyParams();
@@ -72,6 +81,16 @@ namespace GalacticScale
             //string json = settings.Serialize();
             File.WriteAllText(path, json);
 
+        }
+        public static void DumpObjectToJson(string path, object obj)
+        {
+            Patch.Debug("Dumping Object to " + path);
+            fsSerializer serializer = new fsSerializer();
+
+            serializer.TrySerialize(obj, out fsData data).AssertSuccessWithoutWarnings();
+            string json = fsJsonPrinter.PrettyJson(data);
+            //string json = settings.Serialize();
+            File.WriteAllText(path, json);
         }
     }
 }

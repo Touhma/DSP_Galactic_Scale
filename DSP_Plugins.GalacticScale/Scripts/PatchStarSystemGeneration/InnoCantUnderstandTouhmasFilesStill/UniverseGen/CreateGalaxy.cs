@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
 
@@ -41,12 +42,14 @@ namespace GalacticScale
             }
             Patch.Debug("Finished creating Stars");
             for (var i = 0; i < settings.starCount; i++)
-                CreateStarPlanets(galaxy, galaxy.stars[i], gameDesc);
+                //StarGen.CreateStarPlanets(galaxy, galaxy.stars[i], gameDesc);
+                CreateStarPlanets(ref galaxy.stars[i], gameDesc);
             InitializeAstroPoses();
             //galaxy.UpdatePoses(0.0);
             galaxy.birthPlanetId = 1;
             PopulateStarsWithPlanets();
             UniverseGen.CreateGalaxyStarGraph(galaxy);
+            Patch.Debug("Returning Galaxy");
             return galaxy;
 
         }
@@ -59,11 +62,18 @@ namespace GalacticScale
                 {
                     PlanetData planet = starData.planets[p];
                     ThemeProto themeProto = LDB.themes.Select(planet.theme);
+                    Patch.Debug("Checking ThemeProto: " + (themeProto != null) + " " + themeProto.Distribute);
                     if (themeProto != null && themeProto.Distribute == EThemeDistribute.Birth)
                     {
+                        Patch.Debug("Setting birth planet! " + planet.id + " / " + starData.id);
                         galaxy.birthPlanetId = planet.id;
                         galaxy.birthStarId = starData.id;
                         break;
+                    }
+                    else
+                    {
+                        Patch.Debug("FAILED TO SET BIRTH PLANET!@#");
+                        DumpObjectToJson(Path.Combine(DataDir, "shit.json"), starData.planets);
                     }
                 }
             }

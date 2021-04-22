@@ -9,7 +9,7 @@ namespace GalacticScale
         public string Name;
         public ESpectrType Spectr;
         public EStarType Type;
-        public List<planet> Planets;
+        public List<GSplanet> Planets;
         public int Seed;
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
@@ -28,7 +28,7 @@ namespace GalacticScale
         private float _physicsRadius = -1;
         [SerializeField] 
         public float level = 1;
-        public star(int seed, string name, ESpectrType spectr, EStarType type, List<planet> planets)
+        public star(int seed, string name, ESpectrType spectr, EStarType type, List<GSplanet> planets)
         {
             this.Name = name;
             this.Spectr = spectr;
@@ -41,6 +41,7 @@ namespace GalacticScale
             return this.Name;
         }
         public int planetCount { get => Planets.Count; }
+        public int counter { get; set; }
         [SerializeField]
         public float age { get => _age < 0 ? getAge() : _age; set => _age = value; }
         [SerializeField]
@@ -73,6 +74,26 @@ namespace GalacticScale
         float getPhysicsRadius()
         {
             return radius * 1200f;
+        }
+        public int GetOrbitIndex(float radius)
+        {
+            //Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration.Debug("GGGGGETTING ORBITINDEX " + radius);
+            int index = 1;
+            HashSet<float> orbitsHash = new HashSet<float>();
+            //List<float> orbitsList = new List<float>();
+            foreach (GSplanet p in Planets)
+            {
+                orbitsHash.Add(p.OrbitRadius);
+            }
+            //GS2.DumpObjectToJson(System.IO.Path.Combine(GS2.DataDir, "test" + radius + ".json"), orbitsHash);
+            List<float> orbitsList = new List<float>(orbitsHash);
+            orbitsList.Sort();
+            for (var i = 0;i < orbitsList.Count;i++)
+            {
+                if (radius == orbitsList[i]) return i;
+            }
+
+            return index;
         }
         float getAcDiscRadius()
         {

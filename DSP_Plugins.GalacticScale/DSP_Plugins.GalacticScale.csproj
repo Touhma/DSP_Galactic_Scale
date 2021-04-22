@@ -40,6 +40,9 @@
     <Reference Include="Assembly-CSharp.refstub">
       <HintPath>..\..\stub\out\Assembly-CSharp.refstub.dll</HintPath>
     </Reference>
+    <Reference Include="BCE">
+      <HintPath>..\..\code\BCE\BepInEx-Console-Extensions\BCE.dll</HintPath>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\Libs\BepInEx.dll</HintPath>
     </Reference>
@@ -120,10 +123,12 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\Generator\PlanetGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Generator\StarGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Generator\SystemGenerator.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\CodeFile1.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\GameData\Import.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\PlanetGen\SetPlanetTheme.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\PlanetGen\CreatePlanet.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\refstubsecurity.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\Models\Planet.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\Models\GSplanet.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\Models\Star.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\GalacticScale2.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\InnoCantUnderstandTouhmasFilesStill\Models\Settings.cs" />

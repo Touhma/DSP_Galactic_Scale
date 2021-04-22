@@ -37,6 +37,8 @@ namespace GalacticScale
             starData.dysonRadius = settings.BirthStar.dysonRadius;
             starData.type = settings.BirthStar.Type;
             starData.spectr = settings.BirthStar.Spectr;
+            starData.asterBelt1OrbitIndex = 1;
+            starData.asterBelt1Radius = 1.1f;
 
             return starData;
         }
