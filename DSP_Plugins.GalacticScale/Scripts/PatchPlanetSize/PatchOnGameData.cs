@@ -9,8 +9,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPostfix]
         [HarmonyPatch("OnActivePlanetLoaded")]
         public static void OnActivePlanetLoaded(PlanetData planet) {
-            if (PatchSize.EnableResizingFeature.Value || PatchSize.EnableLimitedResizingFeature.Value) {
-                PatchSize.Debug("PlanetLoaded was called!", BepInEx.Logging.LogLevel.Debug, PatchSize.DebugNewPlanetGrid);
+                if (PatchSize.EnableLimitedResizingFeature.Value)
+                {
+                    PatchSize.Debug("PlanetLoaded was called!", BepInEx.Logging.LogLevel.Debug, PatchSize.DebugNewPlanetGrid);
                 int segments = (int) (planet.radius / 4f + 0.1f) * 4;
                 if (!PatchUIBuildingGrid.LUT512.ContainsKey(segments)) {
                     PatchSizeReworkPlanetGen.SetLuts(segments, planet.radius);

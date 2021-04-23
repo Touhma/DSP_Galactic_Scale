@@ -3,10 +3,14 @@ using HarmonyLib;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 using System;
+using System.Collections.Generic;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
+    
     [HarmonyPatch(typeof(PlanetRawData))]
     public class PatchOnPlanetRawData {
+        public static Dictionary<int, Vector3[]> verDict = new Dictionary<int, Vector3[]>();
+        public static Dictionary<int, int[]> inDict = new Dictionary<int, int[]>();
         [HarmonyPrefix]
         [HarmonyPatch("GetModPlane")]
         public static bool GetModPlane(int index, ref PlanetRawData __instance, ref short __result) {
@@ -14,7 +18,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Patch.DebugGetModPlane);
 
             Patch.Debug("index " + index, LogLevel.Debug,
-                Patch.DebugGetModPlane); 
+                Patch.DebugGetModPlane);
 
             Patch.Debug("__instance.modData.Length " + __instance.modData.Length, LogLevel.Debug,
                 Patch.DebugGetModPlane);
@@ -58,8 +62,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         [HarmonyPatch("InitModData")]
         public static bool InitModData(byte[] refModData, ref PlanetRawData __instance, ref byte[] __result)
         {
-            Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Message, Patch.DebugGetModPlane);
-            __instance.modData = refModData == null ? new byte[__instance.dataLength] : refModData; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now
+            Patch.Debug(__instance.GetFactoredScale() + "InitModData " + (refModData == null) + " " + (__instance.dataLength), LogLevel.Debug, Patch.DebugGetModPlane);
+            __instance.modData = refModData == null ? new byte[__instance.dataLength/2] : refModData; // changed from .dataLength/2, fixes issue where array can't fit all the data. Shad0wlife is going to take a look and see why it's trying to, but this works for now -innominata
             __result = __instance.modData;
             return false;
         }
@@ -85,7 +89,6 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             var magnetudeOnPrecisionDummy = 0.0f;
             var HeightTimePrecision = 0.0f;
             var stride = __instance.stride;
-            //Stride is 62 for small planets, 322 for large planets
             for (var index2 = -1; index2 <= 3; ++index2)
             for (var index3 = -1; index3 <= 3; ++index3) {
                 var index4 = index1 + index2 + index3 * stride;
@@ -160,6 +163,130 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
             Patch.Debug("__result bad query" + __result, LogLevel.Debug,
                 Patch.DebugPlanetRawData);
 
+            return false;
+        }
+        [HarmonyPrefix, HarmonyPatch("CalcVerts")]
+        public static bool CalcVerts(ref PlanetRawData __instance, ref int[] ___indexMap80, ref int[] ___indexMap200, ref Vector3[] ___verts80, ref Vector3[] ___verts200)
+        {
+            if (verDict.ContainsKey(__instance.precision))
+            {
+                Patch.Debug("Loading Saved Data for precision " + __instance.precision, LogLevel.Debug,
+               Patch.DebugPlanetRawData);
+                Array.Copy(verDict[__instance.precision], __instance.vertices, verDict[__instance.precision].Length);
+                Array.Copy(inDict[__instance.precision], __instance.indexMap, inDict[__instance.precision].Length);
+                Patch.Debug("Loaded " + __instance.precision, LogLevel.Debug, Patch.DebugPlanetRawData);
+                return false;
+            }
+
+            for (int i = 0; i < __instance.indexMapDataLength; i++) //Set indexMap to [-1]
+            {
+                __instance.indexMap[i] = -1;
+            }
+            int stride = (__instance.precision + 1) * 2;
+            int substride = __instance.precision + 1;
+            for (int j = 0; j < __instance.dataLength; j++)
+            {
+                int num3 = j % stride;
+                int num4 = j / stride;
+                int num5 = num3 % substride;
+                int num6 = num4 % substride;
+                int num7 = (((num3 >= substride) ? 1 : 0) + ((num4 >= substride) ? 1 : 0) * 2) * 2 + ((num5 < num6) ? 1 : 0); //
+                float num8 = ((num5 < num6) ? num5 : (__instance.precision - num5));
+                float num9 = ((num5 < num6) ? (__instance.precision - num6) : num6);
+                float num10 = (float)__instance.precision - num9;
+                num9 /= (float)__instance.precision;
+                num8 = ((!(num10 > 0f)) ? 0f : (num8 / num10));
+                int num11 = 0;
+                Vector3 a;
+                Vector3 a2;
+                Vector3 b;
+                switch (num7)
+                {
+                    case 0:
+                        a = PlanetRawData.poles[2];
+                        a2 = PlanetRawData.poles[0];
+                        b = PlanetRawData.poles[4];
+                        num11 = 7;
+                        break;
+                    case 1:
+                        a = PlanetRawData.poles[3];
+                        a2 = PlanetRawData.poles[4];
+                        b = PlanetRawData.poles[0];
+                        num11 = 5;
+                        break;
+                    case 2:
+                        a = PlanetRawData.poles[2];
+                        a2 = PlanetRawData.poles[4];
+                        b = PlanetRawData.poles[1];
+                        num11 = 6;
+                        break;
+                    case 3:
+                        a = PlanetRawData.poles[3];
+                        a2 = PlanetRawData.poles[1];
+                        b = PlanetRawData.poles[4];
+                        num11 = 4;
+                        break;
+                    case 4:
+                        a = PlanetRawData.poles[2];
+                        a2 = PlanetRawData.poles[1];
+                        b = PlanetRawData.poles[5];
+                        num11 = 2;
+                        break;
+                    case 5:
+                        a = PlanetRawData.poles[3];
+                        a2 = PlanetRawData.poles[5];
+                        b = PlanetRawData.poles[1];
+                        num11 = 0;
+                        break;
+                    case 6:
+                        a = PlanetRawData.poles[2];
+                        a2 = PlanetRawData.poles[5];
+                        b = PlanetRawData.poles[0];
+                        num11 = 3;
+                        break;
+                    case 7:
+                        a = PlanetRawData.poles[3];
+                        a2 = PlanetRawData.poles[0];
+                        b = PlanetRawData.poles[5];
+                        num11 = 1;
+                        break;
+                    default:
+                        a = PlanetRawData.poles[2];
+                        a2 = PlanetRawData.poles[0];
+                        b = PlanetRawData.poles[4];
+                        num11 = 7;
+                        break;
+                }
+                ref Vector3 reference = ref __instance.vertices[j];
+                reference = Vector3.Slerp(Vector3.Slerp(a, b, num9), Vector3.Slerp(a2, b, num9), num8);
+                int num12 = __instance.PositionHash(__instance.vertices[j], num11);
+                if (__instance.indexMap[num12] == -1)
+                {
+                    __instance.indexMap[num12] = j;
+                }
+            }
+            int num13 = 0;
+            for (int k = 1; k < __instance.indexMapDataLength; k++)
+            {
+                if (__instance.indexMap[k] == -1)
+                {
+                    __instance.indexMap[k] = __instance.indexMap[k - 1];
+                    num13++;
+                }
+            }
+            if (!verDict.ContainsKey(__instance.precision))
+            {
+                Patch.Debug("Saving VerDict "+__instance.precision, LogLevel.Debug, Patch.DebugPlanetRawData);
+                int precision = __instance.precision;
+                int vertLength = __instance.vertices.Length;
+                int indexMapLength = __instance.indexMap.Length;
+                verDict[precision] = new Vector3[vertLength];
+                inDict[precision] = new int[indexMapLength];
+                Array.Copy(__instance.vertices, verDict[precision], vertLength);
+                Array.Copy(__instance.indexMap, inDict[precision], indexMapLength);
+                Patch.Debug("Saved VerDict", LogLevel.Debug, Patch.DebugPlanetRawData);
+                return false;
+            }
             return false;
         }
     }

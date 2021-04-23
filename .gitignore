@@ -1,9 +1,10 @@
 ﻿*
 !Directory.Build.props.example
+!galacticbundle
 !/**/
 !*.cs
 !*.csproj
-!DspPluginTest.sln
+!GalacticScale.sln
 
 !.gitignore
 !README.md

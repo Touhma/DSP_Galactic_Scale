@@ -6,7 +6,8 @@ using BepInEx.Logging;
 using HarmonyLib;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
-    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.0.0.0")]
+
+    [BepInPlugin("dsp.galactic-scale.planet-size", "Galactic Scale Plug-In - Planet Size", "1.4.0")]
     public class PatchForPlanetSize : BaseUnityPlugin {
         public new static ManualLogSource Logger;
 
@@ -27,26 +28,15 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
         public static Dictionary<int, float> PlanetSizeParams = new Dictionary<int, float>();
         public static List<int> PlanetSizeList = new List<int>();
-
-
-        public static ConfigEntry<bool> EnableResizingFeature;
+        public static Dictionary<int, float> MoonSizeParams = new Dictionary<int, float>();
+        public static List<int> MoonSizeList = new List<int>();
+        public static ConfigEntry<bool> MoonsHaveDifferentSizes;
         public static ConfigEntry<bool> EnableLimitedResizingFeature;
+        public static ConfigEntry<int> StartingPlanetMinimumSize;
         public static ConfigEntry<bool> EnableMoonSizeFailSafe;
-
-        public static ConfigEntry<float> BaseTelluricSize;
-
-        //public static float BaseTelluricSize = 280f;
-        public static ConfigEntry<float> MinTelluricSize;
-
-        //public static float MinTelluricSize = 80f;
-        public static ConfigEntry<float> MaxTelluricSize;
 
         //public static float MaxTelluricSize = 480f;
         public static ConfigEntry<float> BaseGasGiantSize;
-
-        //public static float BaseGasGiantSize = 2000f;
-        // Min : 80, Max : 480
-        public static ConfigEntry<float> BaseTelluricSizeVariationFactor;
 
         //public static float BaseTelluricSizeVariationFactor = 200f;
         // Min : 800, Max : 3200
@@ -55,7 +45,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //public static float BaseGasGiantSizeVariationFactor = 1200f;
         public static ConfigEntry<string> LimitedResizingArray;
         public static ConfigEntry<string> LimitedResizingChances;
-
+        public static ConfigEntry<string> LimitedResizingArrayMoons;
+        public static ConfigEntry<string> LimitedResizingChancesMoons;
         internal void Awake() {
             var harmony = new Harmony("dsp.galactic-scale.planet-size");
 
@@ -76,53 +67,41 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "LimitedResizingChances",
                 "0.5,0.8,1",
                 "chances for each size to appear --> 0 -> 0.5  = 1 , 0.5 -> 0.8 = 2 etc ...");
+            MoonsHaveDifferentSizes = Config.Bind("galactic-scale-planets-size",
+    "MoonsHaveDifferentSizes",
+    false,
+    "MoonsHaveDifferentSizes -> enable and moons will use a different list of sizes");
+            LimitedResizingArrayMoons = Config.Bind("galactic-scale-planets-size",
+    "LimitedResizingArrayMoons",
+    "50,100,200",
+    "Sizes moons can be");
 
-            EnableResizingFeature = Config.Bind("galactic-scale-planets-size",
-                "EnableResizingFeature",
-                false,
-                "Decide if the resizing of the planets is enabled or not --> if true : EnableCustomStarAlgorithm=true from the generation is a dependency --> should put EnableLimitedResizingFeature to false if activated");
+            LimitedResizingChancesMoons = Config.Bind("galactic-scale-planets-size",
+                "LimitedResizingChancesMoons",
+                "0.5,0.8,1",
+                "chances for each size moon to appear --> 0 -> 0.5  = 1 , 0.5 -> 0.8 = 2 etc ...");
+            StartingPlanetMinimumSize = Config.Bind("galactic-scale-planets-size",
+                "StartingPlanetMinimumSize",
+                60,
+                "StartingPlanetMinimumSize -> Sizes smaller than this may be missing resources required to progress in the game. It is advised to always check small starting planets for coal and oil. ~95% of seeds at size 50 are playable.");
 
             EnableMoonSizeFailSafe = Config.Bind("galactic-scale-planets-size",
                 "EnableMoonSizeFailSafe",
                 true,
                 "EnableMoonSizeFailSafe -> enable and the moon will never be bigger than the host planet , true by default");
 
-            BaseTelluricSize = Config.Bind("galactic-scale-planets-size",
-                "BaseTelluricSize",
-                280f,
-                "Base Telluric planet Size  -- Not Advised to modify YET");
-
-            MinTelluricSize = Config.Bind("galactic-scale-planets-size",
-                "MinTelluricSize",
-                80f,
-                "Min Value Telluric planet Size. Should be BaseTelluricSize - BaseTelluricSizeVariationFactor  -- Not Advised to modify YET");
-
-            MaxTelluricSize = Config.Bind("galactic-scale-planets-size",
-                "MaxTelluricSize",
-                480f,
-                "Max Value Telluric planet Size --> more that than CAN break and is not supported YET. Should be BaseTelluricSize + BaseTelluricSizeVariationFactor  -- Not Advised to modify YET");
-
             BaseGasGiantSize = Config.Bind("galactic-scale-planets-size",
                 "BaseGasGiantSize",
                 2000f,
                 "Base Gas Giant Size  -- Not Advised to modify YET");
-
-            BaseTelluricSizeVariationFactor = Config.Bind("galactic-scale-planets-size",
-                "BaseTelluricSizeVariationFactor",
-                200f,
-                "Used to create variation on the planet size : help defining the min & max size for a Telluric planet-- Not Advised to modify YET");
 
             BaseGasGiantSizeVariationFactor = Config.Bind("galactic-scale-planets-size",
                 "BaseGasGiantSizeVariationFactor",
                 1200f,
                 "Used to create variation on the planet size : help defining the min & max size for a gas giant --  -- Not Advised to modify YET");
 
-            if (EnableResizingFeature.Value || EnableLimitedResizingFeature.Value) {
-
-                ParseResizingSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
-
-                // check some configs dependencies
-                if (EnableLimitedResizingFeature.Value) EnableResizingFeature.Value = false;
+            if (EnableLimitedResizingFeature.Value) { 
+                ParseResizingSettings(LimitedResizingArray.Value, LimitedResizingChances.Value, LimitedResizingArrayMoons.Value, LimitedResizingChancesMoons.Value);
 
                 Config.Save();
 
@@ -145,13 +124,20 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
 
 
-        public static void ParseResizingSettings(string configArray, string chanceArray) {
+        public static void ParseResizingSettings(string configArray, string chanceArray, string configArrayMoon, string chanceArrayMoon) {
             var tempPlanetArray = Array.ConvertAll(configArray.Split(','), int.Parse);
             var tempChanceArray = Array.ConvertAll(chanceArray.Split(','), float.Parse);
 
             for (var i = 0; i < tempPlanetArray.Length; i++) {
                 PlanetSizeParams.Add(tempPlanetArray[i], tempChanceArray[i]);
                 PlanetSizeList.Add(tempPlanetArray[i]);
+            }
+            var tempMoonArray = Array.ConvertAll(configArrayMoon.Split(','), int.Parse);
+            var tempMoonChanceArray = Array.ConvertAll(chanceArrayMoon.Split(','), float.Parse);
+            for (var i = 0; i < tempMoonArray.Length; i++)
+            {
+                MoonSizeParams.Add(tempMoonArray[i], tempMoonChanceArray[i]);
+                MoonSizeList.Add(tempMoonArray[i]);
             }
         }
 

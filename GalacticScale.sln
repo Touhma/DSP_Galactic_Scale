@@ -6,10 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSP_Plugins.GalacticScale", "DSP_Plugins.GalacticScale\DSP_Plugins.GalacticScale.csproj", "{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		DSP_Plugins.Shared\DSP_Plugins.Shared.projitems*{43957a34-afdb-4502-8a9d-6578fae6b233}*SharedItemsImports = 13
-		DSP_Plugins.Shared\DSP_Plugins.Shared.projitems*{658bb596-c691-44ca-bda8-a3d2ed9eec26}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

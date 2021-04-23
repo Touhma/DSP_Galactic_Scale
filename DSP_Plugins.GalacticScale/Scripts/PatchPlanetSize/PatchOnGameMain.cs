@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using UnityEngine;
-using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
     [HarmonyPatch(typeof(GameMain))]
@@ -8,7 +7,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
     {
         [HarmonyPrefix]
         [HarmonyPatch("OnMainCameraPostRender")]
-        static bool OnMainCameraPostRender(Camera cam) 
+        static bool OnMainCameraPostRender(Camera cam)
         {
             if (GameMain.data != null) GameMain.data.OnPostDraw();
             return false;
