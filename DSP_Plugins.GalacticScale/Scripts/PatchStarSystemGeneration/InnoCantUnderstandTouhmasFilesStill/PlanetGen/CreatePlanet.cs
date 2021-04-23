@@ -7,49 +7,65 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static PlanetData CreatePlanet(ref StarData star, int index, int orbitAround)
+        public static PlanetData CreatePlanet(ref StarData star, PlanetData host = null, int moonIndex = -1)
         {
-            Patch.Debug("Start of CreatePlanet(" + settings.Stars[star.index].counter + ", " + star.index + "," + index + "," + orbitAround+")");
+            bool isMoon = (host != null);
+            int index = settings.Stars[star.index].counter;
+            Patch.Debug("Star Index = " + star.index);
+            if (isMoon) Patch.Debug("This moons host is " + host.index + " number " + host.number);
+            Patch.Debug("Start of CreatePlanet(" + settings.Stars[star.index].counter + ", " + star.index + "," + index + ",)");
             StackTrace stackTrace = new StackTrace();
-            Patch.Debug("***"+stackTrace.GetFrame(1).GetMethod().Name);
-            System.Random ran = new System.Random(index);
-            float r = (float)ran.NextDouble();
+            Patch.Debug("***CreatePlanets called from "+stackTrace.GetFrame(1).GetMethod().Name);
+            //System.Random ran = new System.Random(index);
+            Patch.Debug("Random worked");
+            //float r = (float)ran.NextDouble();
             PlanetData planetData = new PlanetData();
             GSplanet gsPlanet;
-            if (orbitAround == 0) gsPlanet = settings.Stars[star.index].Planets[index];
-            else gsPlanet = settings.Stars[star.index].Planets[orbitAround].Moons[index];
+            Patch.Debug("Stars Length = " + settings.Stars.Count);
+            Patch.Debug("Planets Length = " + settings.Stars[star.index].Planets.Count);
+
+            int counter = settings.Stars[star.index].counter;
             planetData.index = index;
+            Patch.Debug("This Planet Index = " + planetData.index);
             planetData.galaxy = galaxy;
             planetData.star = star;
-            planetData.seed = ran.Next();
-            planetData.orbitAround = orbitAround;
+            Patch.Debug("1 " + isMoon +" " + star.index + " " + index);
+            if (!isMoon) gsPlanet = settings.Stars[star.index].Planets[index];
+            else gsPlanet = settings.Stars[star.index].Planets[host.index].Moons[moonIndex];
+            Patch.Debug("2");
+            planetData.seed = 1;
+            if (isMoon) planetData.orbitAround = host.number;
+            else planetData.orbitAround = 0;
+            Patch.Debug("3");
             //Patch.Debug("orbitAround set to " + orbitAround);
-            if (orbitAround > 0) planetData.orbitAroundPlanet = star.planets[orbitAround];
-            
-            int counter = settings.Stars[star.index].counter;
-            planetData.number = counter;// index;
-            planetData.id = star.id * 100 + settings.Stars[star.index].counter++ + 1;
+            if (isMoon) planetData.orbitAroundPlanet = star.planets[host.index];
+            Patch.Debug("4");
+
+            planetData.number = index + 1;// index;
+            planetData.id = star.id * 100 + index + planetData.number;
             Patch.Debug("Planet ID = " + planetData.id + " index = " + index);
             string roman = "";
-            if (orbitAround > 0) roman = Scripts.RomanNumbers.roman[orbitAround + 1] + " - ";
+            if (isMoon) roman = Scripts.RomanNumbers.roman[host.number + 1] + " - ";
             roman += Scripts.RomanNumbers.roman[index + 1];
             Patch.Debug("roman = " + roman + "  name = " + gsPlanet.Name);
             planetData.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;
             planetData.orbitRadius = gsPlanet.OrbitRadius;
-            planetData.orbitIndex = (orbitAround > 0) ? settings.Stars[star.index].Planets[orbitAround].GetOrbitIndex(planetData.orbitRadius) : settings.Stars[star.index].GetOrbitIndex(planetData.orbitRadius);
+            if (isMoon) planetData.orbitIndex = settings.Stars[star.index].Planets[host.index].GetOrbitIndex(planetData.orbitRadius);
+            else planetData.orbitIndex = settings.Stars[star.index].GetOrbitIndex(planetData.orbitRadius);
             Patch.Debug(planetData.orbitIndex + " is orbitindex for orbitRadius " + planetData.orbitRadius);
             planetData.orbitInclination = gsPlanet.OrbitInclination;
             planetData.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
             planetData.orbitalPeriod = gsPlanet.OrbitalPeriod;
             planetData.orbitPhase = gsPlanet.OrbitPhase;//1+(index * (360/star.planetCount));
-            planetData.orbitAround = orbitAround;
             Patch.Debug(planetData.orbitPhase + " <- phase");
             planetData.obliquity = gsPlanet.Obliquity;
             //planetData.singularity |= gsPlanet.singularity.Layside;
             planetData.rotationPeriod = gsPlanet.RotationPeriod;
             planetData.rotationPhase = gsPlanet.RotationPhase;
             //Patch.Debug("SunDistance");
-            planetData.sunDistance = orbitAround > 0 ? star.planets[orbitAround].orbitRadius : planetData.orbitRadius; //moon use gsPlanet.orbitAroundPlanet.orbitalRadius;
+            //planetData.sunDistance = host.number > 0 ? star.planets[host.index].orbitRadius : planetData.orbitRadius; //moon use gsPlanet.orbitAroundPlanet.orbitalRadius;
+            if (isMoon) planetData.sunDistance = star.planets[host.index].orbitRadius;
+            else planetData.sunDistance = planetData.orbitRadius;
             //Patch.Debug("Scale");
             planetData.scale = 1f;
             planetData.radius = gsPlanet.Radius;
@@ -64,16 +80,16 @@ namespace GalacticScale
             //Patch.Debug("Setting type");
             planetData.type = gsPlanet.Theme.type;
             //Patch.Debug("Type set to " + planetData.type);
-            GS2.DumpObjectToJson(System.IO.Path.Combine(GS2.DataDir, "test.json"), GS2.planetThemes["Mediterranian"]);
+            //GS2.DumpObjectToJson(System.IO.Path.Combine(GS2.DataDir, "test.json"), GS2.planetThemes["Mediterranian"]);
 
             if (planetData.type == EPlanetType.Gas) planetData.scale = 10f;
             planetData.precision = (int)gsPlanet.Radius;
             //planetData.temperatureBias = gsPlanet.temperatureBias;
             planetData.luminosity = gsPlanet.Luminosity;
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
-            GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
+            //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
 
-            SetPlanetTheme(planetData, star, gameDesc, gsPlanet.Theme.theme, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
+            SetPlanetTheme(planetData, star, gameDesc, gsPlanet.Theme.theme, 0, 0.4, 0.4, 0.4, 0.4, 2);
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
 
             //Patch.Debug("theme set");
@@ -82,13 +98,13 @@ namespace GalacticScale
 
             star.planets[counter] = planetData;
             Patch.Debug("star.planets["+counter+"] successfully set");
-            if (gsPlanet.MoonCount > 0)
-            {
-                Patch.Debug("Creating moons for gsPlanet " + index + " of star " + star.index + ". Star.counter = " + counter + " and star.planets.Length = " + star.planets.Length);
+            //if (gsPlanet.MoonCount > 0)
+            //{
+            //    Patch.Debug("Creating moons for gsPlanet " + index + " of star " + star.index + ". Star.counter = " + counter + " and star.planets.Length = " + star.planets.Length);
 
-                CreateMoons(ref planetData, gsPlanet);
-                Patch.Debug("Moons Created, returning planetData");
-            }
+            //    CreateMoons(ref planetData, gsPlanet);
+            //    Patch.Debug("Moons Created, returning planetData");
+            //}
             DebugPlanet(planetData);
             Patch.Debug("FINISHED CREATING PLANET " + planetData.id);
             return planetData;
@@ -97,13 +113,13 @@ namespace GalacticScale
         {
             Patch.Debug("Start of CreateMoons");
             StackTrace stackTrace = new StackTrace();
-            Patch.Debug("***" + stackTrace.GetFrame(1).GetMethod().Name);
+            Patch.Debug("***CreateMoons called from " + stackTrace.GetFrame(1).GetMethod().Name);
 
 
             for (var i = 0; i < planet.MoonCount; i++)
             {
                 Patch.Debug("creating moon " + i + " of " + planet.MoonCount);
-                PlanetData moon = CreatePlanet(ref planetData.star, i, planetData.index);
+                PlanetData moon = CreatePlanet(ref planetData.star, planetData, i);
                 Patch.Debug("finished creating moon " + moon.name);
                 moon.orbitAroundPlanet = planetData;
                 if (i > 1) planetData.singularity |= EPlanetSingularity.MultipleSatellites;

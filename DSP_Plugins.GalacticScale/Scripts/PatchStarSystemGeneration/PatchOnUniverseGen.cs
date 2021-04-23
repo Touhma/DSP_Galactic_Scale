@@ -25,9 +25,10 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
 
             }
             __result = GS2.CreateGalaxy(gameDesc);
+            
             GS2.SaveSettingsToJson(path);
             //GS2.DumpObjectToJson(path + "2", GS2.planetTypes);
-            //GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, "galaxy.json"), __result);
+            GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, "galaxy.json"), __result);
             return false;
         }
 

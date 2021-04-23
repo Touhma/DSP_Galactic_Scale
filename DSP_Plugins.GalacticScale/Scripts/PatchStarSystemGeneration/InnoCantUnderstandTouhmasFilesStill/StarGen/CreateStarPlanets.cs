@@ -25,7 +25,21 @@ namespace GalacticScale
             {
                 Patch.Debug("Creating Planet " + i + " of " + star.planetCount+  " for Star " + id);
                 //star.planets[i] = PlanetGen.CreatePlanet(galaxy, star, gameDesc, i, 0, i+2, i+1, false, 123, 321);
-                CreatePlanet(ref star, i, 0);
+                CreatePlanet(ref star, null);
+                settings.Stars[star.index].counter++;
+            }
+            for (var i = 0; i < star.planetCount; i++)
+            {
+                PlanetData planetData = star.planets[i];
+                GSplanet gsPlanet = settings.Stars[id].Planets[i];
+                if (gsPlanet.MoonCount > 0)
+                {
+                    Patch.Debug("Creating moons for gsPlanet " + i + " of star " + star.index + ". Star.counter = " + settings.Stars[star.index].counter + " and star.planets.Length = " + star.planets.Length);
+
+                    CreateMoons(ref planetData, gsPlanet);
+                    settings.Stars[star.index].counter++;
+                    Patch.Debug("Moons Created, returning planetData");
+                }
             }
         }
     }
