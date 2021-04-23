@@ -28,8 +28,9 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
 
         public static Dictionary<int, float> PlanetSizeParams = new Dictionary<int, float>();
         public static List<int> PlanetSizeList = new List<int>();
-
-
+        public static Dictionary<int, float> MoonSizeParams = new Dictionary<int, float>();
+        public static List<int> MoonSizeList = new List<int>();
+        public static ConfigEntry<bool> MoonsHaveDifferentSizes;
         public static ConfigEntry<bool> EnableLimitedResizingFeature;
         public static ConfigEntry<int> StartingPlanetMinimumSize;
         public static ConfigEntry<bool> EnableMoonSizeFailSafe;
@@ -44,7 +45,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         //public static float BaseGasGiantSizeVariationFactor = 1200f;
         public static ConfigEntry<string> LimitedResizingArray;
         public static ConfigEntry<string> LimitedResizingChances;
-
+        public static ConfigEntry<string> LimitedResizingArrayMoons;
+        public static ConfigEntry<string> LimitedResizingChancesMoons;
         internal void Awake() {
             var harmony = new Harmony("dsp.galactic-scale.planet-size");
 
@@ -65,6 +67,19 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "LimitedResizingChances",
                 "0.5,0.8,1",
                 "chances for each size to appear --> 0 -> 0.5  = 1 , 0.5 -> 0.8 = 2 etc ...");
+            MoonsHaveDifferentSizes = Config.Bind("galactic-scale-planets-size",
+    "MoonsHaveDifferentSizes",
+    false,
+    "MoonsHaveDifferentSizes -> enable and moons will use a different list of sizes");
+            LimitedResizingArrayMoons = Config.Bind("galactic-scale-planets-size",
+    "LimitedResizingArrayMoons",
+    "50,100,200",
+    "Sizes moons can be");
+
+            LimitedResizingChancesMoons = Config.Bind("galactic-scale-planets-size",
+                "LimitedResizingChancesMoons",
+                "0.5,0.8,1",
+                "chances for each size moon to appear --> 0 -> 0.5  = 1 , 0.5 -> 0.8 = 2 etc ...");
             StartingPlanetMinimumSize = Config.Bind("galactic-scale-planets-size",
                 "StartingPlanetMinimumSize",
                 60,
@@ -86,7 +101,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 "Used to create variation on the planet size : help defining the min & max size for a gas giant --  -- Not Advised to modify YET");
 
             if (EnableLimitedResizingFeature.Value) { 
-                ParseResizingSettings(LimitedResizingArray.Value, LimitedResizingChances.Value);
+                ParseResizingSettings(LimitedResizingArray.Value, LimitedResizingChances.Value, LimitedResizingArrayMoons.Value, LimitedResizingChancesMoons.Value);
 
                 Config.Save();
 
@@ -109,13 +124,20 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
 
 
-        public static void ParseResizingSettings(string configArray, string chanceArray) {
+        public static void ParseResizingSettings(string configArray, string chanceArray, string configArrayMoon, string chanceArrayMoon) {
             var tempPlanetArray = Array.ConvertAll(configArray.Split(','), int.Parse);
             var tempChanceArray = Array.ConvertAll(chanceArray.Split(','), float.Parse);
 
             for (var i = 0; i < tempPlanetArray.Length; i++) {
                 PlanetSizeParams.Add(tempPlanetArray[i], tempChanceArray[i]);
                 PlanetSizeList.Add(tempPlanetArray[i]);
+            }
+            var tempMoonArray = Array.ConvertAll(configArrayMoon.Split(','), int.Parse);
+            var tempMoonChanceArray = Array.ConvertAll(chanceArrayMoon.Split(','), float.Parse);
+            for (var i = 0; i < tempMoonArray.Length; i++)
+            {
+                MoonSizeParams.Add(tempMoonArray[i], tempMoonChanceArray[i]);
+                MoonSizeList.Add(tempMoonArray[i]);
             }
         }
 

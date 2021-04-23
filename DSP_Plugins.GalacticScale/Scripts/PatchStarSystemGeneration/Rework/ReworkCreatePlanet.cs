@@ -17,17 +17,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
         {
             Dictionary<int, float> options = PatchSize.PlanetSizeParams;
             List<int> sizes = PatchSize.PlanetSizeList;
+            
             float choice;
             float radius = 200f;
+            if (planet.IsAMoon() && PatchSize.MoonsHaveDifferentSizes.Value)
+            {
+                options = PatchSize.MoonSizeParams;
+                sizes = PatchSize.MoonSizeList;
+            }
             bool makeMoonSmaller = planet.IsAMoon() && PatchSize.EnableMoonSizeFailSafe.Value && !planet.orbitAroundPlanet.IsGasGiant();
             float hostRadius = 0f;
             if (makeMoonSmaller)
             {
                 hostRadius = planet.orbitAroundPlanet.radius;
-                if (sizes[0] == hostRadius) return hostRadius;
+                if (sizes[0] >= hostRadius) return sizes[0];
             }
             int tries = 0;
-            while ((!makeMoonSmaller && tries == 0) || (makeMoonSmaller && radius >= hostRadius && tries < 100))
+            while (tries == 0 || (makeMoonSmaller && (radius >= hostRadius) && (tries < 100)))
             {
                 tries++;
                 choice = (float)seed.NextDouble();
