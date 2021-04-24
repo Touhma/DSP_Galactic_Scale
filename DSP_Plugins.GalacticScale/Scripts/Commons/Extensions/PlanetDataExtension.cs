@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.PatchForStarSystemGeneration;
+using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
 
 namespace GalacticScale.Scripts {
     public static class PlanetDataExtension {
