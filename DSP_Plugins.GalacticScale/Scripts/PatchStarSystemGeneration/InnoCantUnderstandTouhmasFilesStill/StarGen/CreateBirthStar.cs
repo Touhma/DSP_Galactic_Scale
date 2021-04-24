@@ -12,7 +12,7 @@ namespace GalacticScale
             galaxy.astroPoses = new AstroPose[gSize];
             StarData starData = new StarData();
             starData.galaxy = galaxy;
-            starData.planetCount = settings.BirthStar.planetCount;
+            starData.planetCount = settings.BirthStar.bodyCount;
             starData.index = 0;
             starData.level = 0.0f;
             //galaxy.starCount <= 1 ? 0.0f : (float)starData.index / (float)(galaxy.starCount - 1);

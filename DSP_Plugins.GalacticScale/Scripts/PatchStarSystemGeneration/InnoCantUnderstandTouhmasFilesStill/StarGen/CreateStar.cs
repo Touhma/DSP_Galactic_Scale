@@ -37,7 +37,8 @@ namespace GalacticScale
             if (settings.Stars[id - 1].pos == new VectorLF3()) settings.Stars[id - 1].pos = tmp_pos;
             starData.position = settings.Stars[id -1].pos;
             starData.uPosition = starData.position * 2400000.0;
-            starData.planetCount = settings.Stars[id - 1].planetCount;
+            //starData.planetCount = settings.Stars[id - 1].bodyCount;
+            starData.planetCount = 4;
             Patch.Debug("Set planetcount for " + (id - 1) + " to " + starData.planetCount);
             starData.resourceCoef = settings.Stars[id -1].resourceCoef;
             starData.name = settings.Stars[id -1].Name;

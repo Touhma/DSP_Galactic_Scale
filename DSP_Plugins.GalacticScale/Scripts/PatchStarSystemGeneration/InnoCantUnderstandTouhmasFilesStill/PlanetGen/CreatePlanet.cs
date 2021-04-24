@@ -98,17 +98,22 @@ namespace GalacticScale
 
             star.planets[counter] = planetData;
             Patch.Debug("star.planets["+counter+"] successfully set");
-            //if (gsPlanet.MoonCount > 0)
-            //{
-            //    Patch.Debug("Creating moons for gsPlanet " + index + " of star " + star.index + ". Star.counter = " + counter + " and star.planets.Length = " + star.planets.Length);
-
-            //    CreateMoons(ref planetData, gsPlanet);
-            //    Patch.Debug("Moons Created, returning planetData");
-            //}
             DebugPlanet(planetData);
             Patch.Debug("FINISHED CREATING PLANET " + planetData.id);
+            /*Moons*/
+
+            if (gsPlanet.MoonCount > 0)
+            {
+                Patch.Debug("Creating moons for gsPlanet " + gsPlanet.Name + " of star " + star.name + ". Star.counter = " + settings.Stars[star.index].counter);
+
+                CreateMoons(ref planetData, gsPlanet);
+                settings.Stars[star.index].counter++;
+                Patch.Debug("Moons Created, returning planetData");
+            }
+            /*End Moons*/
             return planetData;
         }
+
         public static void CreateMoons(ref PlanetData planetData, GSplanet planet)
         {
             Patch.Debug("Start of CreateMoons");

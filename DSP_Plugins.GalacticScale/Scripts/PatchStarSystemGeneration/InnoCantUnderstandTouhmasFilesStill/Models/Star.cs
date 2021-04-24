@@ -41,6 +41,19 @@ namespace GalacticScale
             return this.Name;
         }
         public int planetCount { get => Planets.Count; }
+        public int bodyCount
+        {
+            get
+            {
+                int bodyCount = 0;
+                foreach (GSplanet p in Planets)
+                {
+                    bodyCount++;
+                    bodyCount += p.MoonCount;
+                }
+                return bodyCount;
+            }
+        }
         public int counter { get; set; }
         [SerializeField]
         public float age { get => _age < 0 ? getAge() : _age; set => _age = value; }
