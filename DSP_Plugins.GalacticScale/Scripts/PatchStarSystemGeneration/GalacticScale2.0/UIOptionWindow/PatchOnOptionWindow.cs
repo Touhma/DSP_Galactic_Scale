@@ -39,7 +39,10 @@ namespace GalacticScale
             tabTweeners = ___tabTweeners;
             //GS2.Log("TEST");
             //Get out of the patch, and start running our own code
-            CreateGalacticScaleSettingsPage();
+            var contentGS = GameObject.Find("Option Window/details/content-gs");
+            if (contentGS == null)
+                CreateGalacticScaleSettingsPage();
+            
     }
 
         private static void CreateGalacticScaleSettingsPage()
