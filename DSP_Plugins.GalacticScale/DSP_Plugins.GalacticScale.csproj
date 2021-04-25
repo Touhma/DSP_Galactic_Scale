@@ -101,7 +101,6 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuideCheckVisible.cs" />
     <Compile Include="Scripts\PatchUI\PatchOnUIPlanetDetail.cs" />
     <Compile Include="Scripts\PatchUI\PatchOnUIVersionText.cs" />
     <Compile Include="Scripts\PatchUI\PatchOnUIGameLoadingSplash.cs" />

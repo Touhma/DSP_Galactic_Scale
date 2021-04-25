@@ -62,7 +62,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i].OperandIs(2.5f))
                 {
-                    codes[i] = new CodeInstruction(Transpilers.EmitDelegate<Del2>( // replace load10 with this delegate
+                    codes[i] = new CodeInstruction(Transpilers.EmitDelegate<Del2>(
                     () =>
                     {
                         return 12.5f;
