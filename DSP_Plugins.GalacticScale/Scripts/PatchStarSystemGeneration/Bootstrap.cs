@@ -24,7 +24,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             BepInEx.Logging.Logger.Sources.Add(Logger);
 
             //Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
-            Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
             //Harmony.CreateAndPatchAll(typeof(PatchGuideMissionStandardMode));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescImport));
