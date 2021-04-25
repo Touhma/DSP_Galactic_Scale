@@ -13,9 +13,10 @@
         string iGenerator.GUID => "space.customizing.generators.vanilla";
 
 
-        void iGenerator.Generate(int starCount, ref GSSettings settings)
+        GSSettings iGenerator.Generate(int starCount)
         {
             GS2.Log("Wow, this worked");
+            return GSSettings.Instance;
         }
     }
 }

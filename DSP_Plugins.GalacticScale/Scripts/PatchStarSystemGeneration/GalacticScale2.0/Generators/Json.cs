@@ -13,9 +13,10 @@
         string iGenerator.GUID => "space.customizing.generators.customjson";
 
 
-        void iGenerator.Generate(int starCount, ref GSSettings settings)
+        GSSettings iGenerator.Generate(int starCount)
         {
             GS2.Log("Wow, this worked. Json");
+            return GSSettings.Instance;
         }
     }
 }

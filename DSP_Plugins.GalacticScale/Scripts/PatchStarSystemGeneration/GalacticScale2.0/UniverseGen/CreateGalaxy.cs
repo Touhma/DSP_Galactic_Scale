@@ -8,6 +8,7 @@ namespace GalacticScale
     {
         public static GalaxyData CreateGalaxy(GameDesc desc)
         {
+            gameDesc = desc;
             LoadSettings();
             gameDesc = desc;
             random = new System.Random(GSSettings.Seed);

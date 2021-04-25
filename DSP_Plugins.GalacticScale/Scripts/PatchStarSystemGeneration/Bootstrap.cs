@@ -31,10 +31,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescExport));
             Harmony.CreateAndPatchAll(typeof(PatchOnOptionWindow));
             Harmony.CreateAndPatchAll(typeof(PatchOnSetTabIndex));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameOption));
             //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGen));
-            //Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
-            //Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
-            //Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
+            Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

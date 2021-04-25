@@ -15,7 +15,7 @@ namespace GalacticScale
         public static GalaxyData galaxy;
         public static System.Random random;
         public static GameDesc gameDesc;
-        public static string DataDir = Path.Combine(Paths.BepInExRootPath, "output");
+        public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
 
         public static Dictionary<string, GSTheme> planetThemes = new Dictionary<string, GSTheme>()
         {
@@ -45,26 +45,7 @@ namespace GalacticScale
                 this.tip = _tip;
             }
         }
-        public static void CreateDummySettings(int starCount)
-        {
-            Log("Creating New Settings");
-            GSSettings.Stars.Clear();
-            List<GSplanet> p = new List<GSplanet>
-                {
-                    new GSplanet("Urf")
-                };
-            GSSettings.Stars.Add(new GSStar(1, "BeetleJuice", ESpectrType.O, EStarType.MainSeqStar, p));
-            for (var i = 1; i < starCount; i++)
-            {
-                GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.X, EStarType.BlackHole, new List<GSplanet>()));
-            }
-            GSSettings.GalaxyParams = new galaxyParams();
-            GSSettings.GalaxyParams.iterations = 4;
-            GSSettings.GalaxyParams.flatten = 0.18;
-            GSSettings.GalaxyParams.minDistance = 2;
-            GSSettings.GalaxyParams.minStepLength = 2.3;
-            GSSettings.GalaxyParams.maxStepLength = 3.5;
-        }
+       
         public static bool LoadSettingsFromJson(string path)
         {
             if (!CheckJsonFileExists(path)) return false;
@@ -145,11 +126,52 @@ namespace GalacticScale
                 Log("Settings Loaded From Save File");
                 return;
             }
-            string path = Path.Combine(Path.Combine(Paths.BepInExRootPath, "config"), "GSData.json");
-            if (!LoadSettingsFromJson(path))
+            Log("Loading Data from Generator : " + generator.Name);
+            GSSettings generatedData = generator.Generate(gameDesc.starCount);
+            GSSettings.Instance = generatedData;
+            //string path = Path.Combine(Path.Combine(Paths.BepInExRootPath, "config"), "GSData.json");
+            //if (!LoadSettingsFromJson(path))
+            //{
+            //    CreateDummySettings(12);
+            //}
+        }
+        public static void SavePreferences()
+        {
+            GSPreferences preferences = new GSPreferences();
+            preferences.GeneratorID = generator.GUID;
+            fsSerializer serializer = new fsSerializer();
+            serializer.TrySerialize(preferences, out fsData data).AssertSuccessWithoutWarnings();
+            string json = fsJsonPrinter.PrettyJson(data);
+            File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
+        }
+        public class GSPreferences
+        {
+            public string GeneratorID = "space.customizing.vanilla";
+        }
+        public static void LoadPreferences()
+        {
+            string path = Path.Combine(DataDir, "Preferences.json");
+            if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
+            if (!CheckJsonFileExists(path)) return;
+            Log("Loading Preferences from " + path);
+            fsSerializer serializer = new fsSerializer();
+            string json = File.ReadAllText(path);
+            GSPreferences result = new GSPreferences();
+            fsData data2 = fsJsonParser.Parse(json);
+            serializer.TryDeserialize<GSPreferences>(data2, ref result).AssertSuccessWithoutWarnings();
+            ParsePreferences(result);
+        }
+        public static void ParsePreferences(GSPreferences p)
+        {
+            generator = GetGeneratorByID(p.GeneratorID);
+        }
+        public static iGenerator GetGeneratorByID(string guid)
+        {
+            foreach (iGenerator g in generators)
             {
-                CreateDummySettings(12);
+                if (g.GUID == guid) return g;
             }
+            return new Generators.Dummy();
         }
     }
 }

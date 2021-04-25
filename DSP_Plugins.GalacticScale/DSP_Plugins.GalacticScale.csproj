@@ -130,8 +130,10 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Debug-GuideMission-CollectComplete.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\GameDesc\Export.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\GameDesc\Import.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\GameOption\PatchOnLoadGlobal.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Json.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Galactic2.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Dummy.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Vanilla.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\iGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\GS2.GeneratorData.cs" />

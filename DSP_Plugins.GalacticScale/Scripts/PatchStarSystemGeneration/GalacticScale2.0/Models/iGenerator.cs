@@ -7,7 +7,7 @@
         string Description { get; }
         string Version { get; }
         string GUID { get; }
-        void Generate(int starCount, ref GSSettings settings);
+        GSSettings Generate(int starCount);
         
     }
 }

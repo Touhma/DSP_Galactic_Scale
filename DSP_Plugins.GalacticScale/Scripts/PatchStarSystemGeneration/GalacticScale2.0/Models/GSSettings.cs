@@ -24,14 +24,14 @@ namespace GalacticScale
         public static int starCount { get => Stars.Count; }
         public static GSStar BirthStar { get => Stars[0]; set => Stars[0] = value; }
         public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
-        static GSSettings()
-        {
+        //static GSSettings()
+        //{
 
-        }
-        private GSSettings()
-        {
+        //}
+        //private GSSettings()
+        //{
 
-        }
+        //}
         public static GSSettings Instance { get { return instance; } set { instance = value; } }
       
         public static void set(galaxyParams galaxyParams, int seed, GSStar birthStar, List<GSStar> stars)
