@@ -23,13 +23,18 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             return ReplaceLd10(instructions);
         }
 
-        //[HarmonyTranspiler]
-        //[HarmonyPatch("CheckVisible")]
-        //public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
-        //{
-        //    return ReplaceLd10(instructions);
-        //}
-
+        [HarmonyTranspiler]
+        [HarmonyPatch("CheckVisible")]
+        public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            return ReplaceLd10(instructions);
+        }
+        [HarmonyTranspiler]
+        [HarmonyPatch("CheckVisible")]
+        public static IEnumerable<CodeInstruction> VisibleTranspiler2(IEnumerable<CodeInstruction> instructions)
+        {
+            return ReplaceLd25(instructions);
+        }
         public static IEnumerable<CodeInstruction> ReplaceLd10(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
@@ -49,5 +54,23 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             return codes.AsEnumerable();
         }
         delegate int Del();
+
+        public static IEnumerable<CodeInstruction> ReplaceLd25(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i].OperandIs(2.5f))
+                {
+                    codes[i] = new CodeInstruction(Transpilers.EmitDelegate<Del2>( // replace load10 with this delegate
+                    () =>
+                    {
+                        return 12.5f;
+                    }));
+                }
+            }
+            return codes.AsEnumerable();
+        }
+        delegate float Del2();
     }
 }
