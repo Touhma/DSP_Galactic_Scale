@@ -16,6 +16,8 @@
         GSSettings iGenerator.Generate(int starCount)
         {
             GS2.Log("Wow, this worked. Json");
+            string path = System.IO.Path.Combine(GS2.DataDir, "GSData.json");
+            GS2.LoadSettingsFromJson(path);
             return GSSettings.Instance;
         }
     }

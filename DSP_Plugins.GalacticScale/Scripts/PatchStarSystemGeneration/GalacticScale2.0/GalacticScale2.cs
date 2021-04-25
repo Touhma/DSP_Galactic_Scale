@@ -88,7 +88,7 @@ namespace GalacticScale
         {
             Patch.Debug(s);
         }
-        public static void Export(BinaryWriter w)
+        public static void Export(BinaryWriter w) // Export Settings to SaveGame
         {
             Log("()()()Exporting to Save");
             fsSerializer serializer = new fsSerializer();
@@ -101,7 +101,7 @@ namespace GalacticScale
             GSSettings.reset();
 
         }
-        public static void Import(BinaryReader r)
+        public static void Import(BinaryReader r) // Load Settings from SaveGame
         {
             Log("()()()Importing from Save");
             GSSettings.Stars.Clear();
