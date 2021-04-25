@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using NGPT;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace GalacticScale
 {
@@ -15,36 +16,37 @@ namespace GalacticScale
         private static UIButton[] tabButtons;
         private static Text[] tabTexts;
         private static Tweener[] tabTweeners;
+        private static int generatorIndex;
+        private static List<string> generators = new List<string>();
         //private static FastInvokeHandler SetTabIndexInfo;
         private static RectTransform details;
+        private static UIComboBox generatorOptionsUIComboBox;
+        private static List<GS2.GSOption> options = new List<GS2.GSOption>();
+        private static RectTransform templateUIComboBox;
+        private static List<RectTransform> optionRects = new List<RectTransform>();
+        private static float anchorX;
+        private static float anchorY;
+
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIOptionWindow), "_OnOpen")]
         public static void PatchMainMenu(ref UIButton[] ___tabButtons, ref Text[] ___tabTexts, ref Tweener[] ___tabTweeners, ref Image ___tabSlider)
         {
             GameObject overlayCanvas = GameObject.Find("Overlay Canvas");
-            if (overlayCanvas == null)
-            {
-                GS2.Log("'Overlay Canvas' not found!");
-                return;
-            }
+            if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;
 
-            if (overlayCanvas.transform.Find("Top Windows") == null)
-            {
-                GS2.Log("'Overlay Canvas/Top Windows' not found!");
-                return;
-            }
-
+            //Grab the tabgroup and store the relevant data in this class
             tabLine = GameObject.Find("Top Windows/Option Window/tab-line").GetComponent<RectTransform>();
-            
             tabButtons = ___tabButtons;
             tabTexts = ___tabTexts;
             tabTweeners = ___tabTweeners;
-            //SetTabIndexInfo = MethodInvoker.GetHandler(AccessTools.Method(typeof(UIOptionWindow), "SetTabIndex", new System.Type[] { typeof(int), typeof(bool) }));
-            AddGSTab();
+            
+            //Get out of the patch, and start running our own code
+            CreateGalacticScaleSettingsPage();
         }
 
-        private static void AddGSTab()
+        private static void CreateGalacticScaleSettingsPage()
         {
+            //Add Tab Button
             RectTransform tabButtonTemplate = GameObject.Find("Option Window/tab-line/tab-button-5").GetComponent<RectTransform>();
             galacticButton = Object.Instantiate(tabButtonTemplate, tabLine, false);
             galacticButton.name = "tab-button-gs";
@@ -56,9 +58,79 @@ namespace GalacticScale
             tabButtons.AddItem<UIButton>(galacticButton.GetComponent<UIButton>());
             tabTexts.AddItem<Text>(galacticButton.GetComponentInChildren<Text>());
             tabTweeners.AddItem<Tweener>(galacticButton.GetComponent<Tweener>());
+            
+            //Create the galactic scale settings panel
             RectTransform detailsTemplate = GameObject.Find("Option Window/details/content-5").GetComponent<RectTransform>();
             details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
             details.gameObject.SetActive(false);
+            details.gameObject.name = "content-gs";
+            
+            //Destroy surplus ui elements
+            Transform tl = details.Find("tiplevel");
+            if (tl != null) Object.Destroy(tl.gameObject);
+            
+            //Copy original combobox as a template, then get rid of it
+            RectTransform generatorPicker = details.Find("language").GetComponent<RectTransform>();
+            anchorX = generatorPicker.anchoredPosition.x;
+            anchorY = generatorPicker.anchoredPosition.y;
+            templateUIComboBox = Object.Instantiate<RectTransform>(details.Find("language").GetComponent<RectTransform>());
+            templateUIComboBox.gameObject.SetActive(false);
+            Object.Destroy(generatorPicker.gameObject);
+
+            //Get a list of all loaded generators, and add a combobox to select between them.
+            generators = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
+            options.Add(new GS2.GSOption("GS2", "Generator", "UIComboBox", generators, new GS2.GSOptionCallback(GeneratorSelected)));
+            CreateOptionsUI();
+        }
+        private static void CreateOptionsUI()
+        {
+            GS2.Log("CreateOptionsUI");
+            for (var i = 0; i < options.Count; i++)
+            {
+                switch (options[i].type)
+                {
+                    case "UIComboBox": CreateComboBox(options[i]); break;
+                    default: break;
+                }
+            }
+        }
+        private static void CreateComboBox(GS2.GSOption o)
+        {
+            GS2.Log("CreateComboBox");
+            RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, details);
+            comboBoxRect.gameObject.SetActive(true);
+            optionRects.Add(comboBoxRect);
+            int offset = (optionRects.Count-1) * -40;
+            comboBoxRect.anchoredPosition = new Vector2(anchorX , anchorY + offset);
+            UIComboBox comboBoxUI = comboBoxRect.GetComponentInChildren<UIComboBox>();
+            comboBoxUI.name = o.label;
+            comboBoxUI.Items = o.data as List<string>;
+            comboBoxUI.UpdateItems();
+            comboBoxUI.itemIndex = 0;
+            comboBoxUI.onItemIndexChange.RemoveAllListeners();
+            comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
+            comboBoxRect.GetComponentInChildren<Text>().text = o.label;
+            comboBoxRect.GetComponentInChildren<Text>().text = o.label;
+            RectTransform tipTransform = comboBoxRect.GetChild(0).GetComponent<RectTransform>();
+            tipTransform.gameObject.name = "optionTip-" + (optionRects.Count -1);
+            Object.Destroy(tipTransform.GetComponent<Localizer>());
+            tipTransform.GetComponent<Text>().text = o.tip;
+        }
+        private static void GeneratorSelected(object result)
+        {
+            GS2.Log("index selected");
+            GS2.Log("selected ");
+            string selection = null;
+            foreach (RectTransform r in optionRects)
+            {
+                var c = r.GetComponentInChildren<UIComboBox>();
+                if (c.name == "Generator")
+                {
+                    selection = c.Items[c.itemIndex];
+                }
+            }
+            GS2.Log("Selection = " + selection);
+            GS2.Log("Result = " + result);
         }
         private static void OptionsButtonClick()
         {
@@ -69,5 +141,7 @@ namespace GalacticScale
         {
             if (details != null && details.gameObject != null) details.gameObject.SetActive(false);
         }
+
+        
     }
 }

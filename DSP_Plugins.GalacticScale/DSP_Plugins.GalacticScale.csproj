@@ -130,6 +130,11 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Debug-GuideMission-CollectComplete.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\GameDesc\Export.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\GameDesc\Import.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Json.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Galactic2.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Vanilla.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\iGenerator.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\GS2.GeneratorData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\PlanetGen\SetPlanetTheme.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\PlanetGen\CreatePlanet.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\refstubsecurity.cs" />
@@ -171,6 +176,7 @@
       <TargetPath>galacticbundle</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />

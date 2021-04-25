@@ -26,7 +26,25 @@ namespace GalacticScale
                 theme = LDB.themes.Select(1),
             },
         };
-
+        public delegate void GSOptionCallback(object o);
+        public class GSOption
+        {
+            public string category;
+            public string label;
+            public string type;
+            public object data;
+            public GSOptionCallback callback;
+            public string tip;
+            public GSOption(string _category, string _label, string _type, object _data, GSOptionCallback _callback, string _tip = "")
+            {
+                this.label = _label;
+                this.type = _type;
+                this.data = _data;
+                this.callback = _callback;
+                this.category = _category;
+                this.tip = _tip;
+            }
+        }
         public static void CreateDummySettings(int starCount)
         {
             Log("Creating New Settings");

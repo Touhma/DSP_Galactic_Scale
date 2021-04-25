@@ -106,20 +106,20 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Config.Save();
 
                 //PatchForPlanetSize
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
-                //Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlayerAction_Build));
+                Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
+                Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
                 Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
-                //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
+                Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
+                Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
             }
         }
 
