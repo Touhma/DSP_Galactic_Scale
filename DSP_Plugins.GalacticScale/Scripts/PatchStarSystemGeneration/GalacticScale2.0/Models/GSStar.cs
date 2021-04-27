@@ -253,7 +253,6 @@ namespace GalacticScale
         }
         VectorLF3 getPos()
         {
-            GS2.Log("Getting Position! " + assignedIndex + " " + GS2.tmp_poses[assignedIndex]);
             _pos = GS2.tmp_poses[assignedIndex];
             return _pos;
         }

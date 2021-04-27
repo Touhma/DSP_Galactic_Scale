@@ -22,10 +22,14 @@
     {
         public bool DisableStarCountSlider = false;
         public bool DisableSeedInput = false;
-        public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false)
+        public int MinStarCount = 8;
+        public int MaxStarCount = 1024;
+        public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false, int minStarCount = 8, int maxStarCount = 1024)
         {
             DisableStarCountSlider = disableStarCountSlider;
             DisableSeedInput = disableSeedInput;
+            MinStarCount = minStarCount;
+            MaxStarCount = maxStarCount;
         }
     }
 }

@@ -21,6 +21,8 @@ namespace GalacticScale
             __instance.autoCameraYaw = true;
             __instance.lastCameraYaw = __instance.cameraPoser.yawWanted;
             __instance.autoRotateSpeed = 0.0f;
+            __instance.starCountSlider.minValue = GS2.generator.Config.MinStarCount;
+            __instance.starCountSlider.maxValue = GS2.generator.Config.MaxStarCount;
             if (GS2.generator.Config.DisableStarCountSlider)
             {
                 GS2.Log("Disabling StarCount Slider");
@@ -63,74 +65,111 @@ namespace GalacticScale
             starCountText.name = "GS Star Count";
             return starCountText.gameObject ;
         }
-        //[HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
-        //public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
+        [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
+        public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
+        {
+            __instance.starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
+            GS2.Log("UpdateUIDisplay");
+            if (galaxy == null) return false;
+            if (galaxy.stars == null) return false;
+            GS2.Log("UpdateUIDisplay stars");
+            __instance.seedInput.text = galaxy.seed.ToString("0000 0000");
+            GS2.Log("3");
+            //__instance.starCountSlider.minValue = 0;
+            GS2.Log("4");
+            //__instance.starCountSlider.maxValue = 1024;
+            GS2.Log("5");
+            //__instance.starCountSlider.value = (float)galaxy.starCount;
+            GS2.Log("6");
+            __instance.starCountText.text = galaxy.starCount.ToString();
+            int M = 0;
+            int K = 0;
+            int G = 0;
+            int F = 0;
+            int A = 0;
+            int B = 0;
+            int O = 0;
+            int N = 0;
+            int W = 0;
+            int H = 0;
+            GS2.Log("7");
+            if (galaxy.stars == null)
+            {
+                GS2.Log("galaxy.stars == null"); return false;
+            }
+            foreach (StarData star in galaxy.stars)
+            {
+                if (star.type == EStarType.MainSeqStar || star.type == EStarType.GiantStar)
+                {
+                    if (star.spectr == ESpectrType.M)
+                        ++M;
+                    else if (star.spectr == ESpectrType.K)
+                        ++K;
+                    else if (star.spectr == ESpectrType.G)
+                        ++G;
+                    else if (star.spectr == ESpectrType.F)
+                        ++F;
+                    else if (star.spectr == ESpectrType.A)
+                        ++A;
+                    else if (star.spectr == ESpectrType.B)
+                        ++B;
+                    else if (star.spectr == ESpectrType.O)
+                        ++O;
+                }
+                else if (star.type == EStarType.NeutronStar)
+                    ++N;
+                else if (star.type == EStarType.WhiteDwarf)
+                    ++W;
+                else if (star.type == EStarType.BlackHole)
+                    ++H;
+            }
+            GS2.Log("8");
+            __instance.mCountText.text = M.ToString();
+            __instance.kCountText.text = K.ToString();
+            __instance.gCountText.text = G.ToString();
+            __instance.fCountText.text = F.ToString();
+            __instance.aCountText.text = A.ToString();
+            __instance.bCountText.text = B.ToString();
+            __instance.oCountText.text = O.ToString();
+            __instance.nCountText.text = N.ToString();
+            __instance.wdCountText.text = W.ToString();
+            __instance.bhCountText.text = H.ToString();
+            return false;
+            //return true;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIGalaxySelect),"_OnInit")]
+        public static void Patch_OnInit(UIGalaxySelect __instance, ref Slider ___starCountSlider)
+        {
+            ___starCountSlider.maxValue = GS2.generator.Config.MinStarCount;
+            ___starCountSlider.minValue = GS2.generator.Config.MaxStarCount;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIGalaxySelect), "OnStarCountSliderValueChange")]
+        public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider,
+            ref GameDesc ___gameDesc, float val)
+        {
+            var num = (int)(___starCountSlider.value + 0.100000001490116);
+            if (num == ___gameDesc.starCount) return false;
+
+            ___gameDesc.starCount = num;
+            __instance.SetStarmapGalaxy();
+            return false;
+        }
+
+        //[HarmonyPrefix]
+        //[HarmonyPatch("UpdateUIDisplay")]
+        //public static void UIPrefix(UIGalaxySelect __instance, ref Slider ___starCountSlider)
         //{
-        //    GS2.Log("1");
-        //    if (galaxy == null) return false;
-        //    GS2.Log("2");
-        //    __instance.seedInput.text = galaxy.seed.ToString("0000 0000");
-        //    GS2.Log("3"); 
-        //    __instance.starCountSlider.minValue = 0;
-        //    GS2.Log("4");
-        //    __instance.starCountSlider.maxValue = 1024;
-        //    GS2.Log("5");
-        //    __instance.starCountSlider.value = (float)galaxy.starCount;
-        //    GS2.Log("6");
-        //    __instance.starCountText.text = galaxy.starCount.ToString();
-        //    int num1 = 0;
-        //    int num2 = 0;
-        //    int num3 = 0;
-        //    int num4 = 0;
-        //    int num5 = 0;
-        //    int num6 = 0;
-        //    int num7 = 0;
-        //    int num8 = 0;
-        //    int num9 = 0;
-        //    int num10 = 0;
-        //    GS2.Log("7");
-        //    if (galaxy.stars == null)
-        //    {
-        //        GS2.Log("galaxy.stars == null");   return false;
-        //    }
-        //    foreach (StarData star in galaxy.stars)
-        //    {
-        //        if (star.type == EStarType.MainSeqStar || star.type == EStarType.GiantStar)
-        //        {
-        //            if (star.spectr == ESpectrType.M)
-        //                ++num1;
-        //            else if (star.spectr == ESpectrType.K)
-        //                ++num2;
-        //            else if (star.spectr == ESpectrType.G)
-        //                ++num3;
-        //            else if (star.spectr == ESpectrType.F)
-        //                ++num4;
-        //            else if (star.spectr == ESpectrType.A)
-        //                ++num5;
-        //            else if (star.spectr == ESpectrType.B)
-        //                ++num6;
-        //            else if (star.spectr == ESpectrType.O)
-        //                ++num7;
-        //        }
-        //        else if (star.type == EStarType.NeutronStar)
-        //            ++num8;
-        //        else if (star.type == EStarType.WhiteDwarf)
-        //            ++num9;
-        //        else if (star.type == EStarType.BlackHole)
-        //            ++num10;
-        //    }
-        //    GS2.Log("8");
-        //    __instance.mCountText.text = num1.ToString();
-        //    __instance.kCountText.text = num2.ToString();
-        //    __instance.gCountText.text = num3.ToString();
-        //    __instance.fCountText.text = num4.ToString();
-        //    __instance.aCountText.text = num5.ToString();
-        //    __instance.bCountText.text = num6.ToString();
-        //    __instance.oCountText.text = num7.ToString();
-        //    __instance.nCountText.text = num8.ToString();
-        //    __instance.wdCountText.text = num9.ToString();
-        //    __instance.bhCountText.text = num10.ToString();
-        //    return false;
+        //    ___starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
         //}
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
+        public static void UIPostfix(UIGalaxySelect __instance, ref Slider ___starCountSlider)
+        {
+            ___starCountSlider.onValueChanged.AddListener(__instance.OnStarCountSliderValueChange);
+        }
     }
 }
