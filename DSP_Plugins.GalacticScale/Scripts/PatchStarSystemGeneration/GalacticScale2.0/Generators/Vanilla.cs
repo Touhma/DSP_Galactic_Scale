@@ -13,6 +13,7 @@
         public string GUID => "space.customizing.generators.vanilla";
 
         public bool DisableStarCountSlider => false;
+        public GSGeneratorConfig Config => new GSGeneratorConfig();
 
         public void Init()
         {

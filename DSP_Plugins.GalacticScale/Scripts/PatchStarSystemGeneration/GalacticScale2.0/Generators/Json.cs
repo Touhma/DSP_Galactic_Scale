@@ -21,6 +21,8 @@ namespace GalacticScale.Generators
 
         public bool DisableStarCountSlider => true;
 
+        public GSGeneratorConfig Config => new GSGeneratorConfig(true, true);
+
         private string filename = "GSData";
         private List<string> filenames = new List<string>();
         public void Init()

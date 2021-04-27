@@ -13,7 +13,7 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.dummy";
-
+        public GSGeneratorConfig Config => new GSGeneratorConfig();
         public List<GS2.GSOption> Options => this.options;
 
         public bool DisableStarCountSlider => false;

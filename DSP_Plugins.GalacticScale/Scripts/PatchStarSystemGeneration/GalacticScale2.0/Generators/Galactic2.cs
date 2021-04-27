@@ -14,6 +14,8 @@
 
         public bool DisableStarCountSlider => false;
 
+        public GSGeneratorConfig Config => new GSGeneratorConfig();
+
         public void Init()
         {
             
@@ -22,6 +24,7 @@
         public void Generate(int starCount)
         {
             GS2.Log("Wow, this worked. GalacticScale2");
+            GameMain.End();
         }
     }
 }
