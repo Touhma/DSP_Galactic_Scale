@@ -26,6 +26,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
             //Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGenStarGraph));
             //Harmony.CreateAndPatchAll(typeof(PatchGuideMissionStandardMode));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescImport));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescExport));
@@ -36,6 +37,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
             Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

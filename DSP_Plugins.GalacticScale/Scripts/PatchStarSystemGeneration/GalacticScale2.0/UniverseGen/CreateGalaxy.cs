@@ -6,11 +6,12 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static GalaxyData CreateGalaxy(GameDesc desc)
+        public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
             gameDesc = desc;
             LoadSettings();
             gameDesc = desc;
+            gameDesc.starCount = GSSettings.starCount;
             random = new System.Random(GSSettings.Seed);
             int tempPoses = GenerateTempPoses(
                 random.Next(),
@@ -29,11 +30,16 @@ namespace GalacticScale
             for (var i = 0; i < GSSettings.starCount; i++)
             {
                 galaxy.stars[i] = CreateStar(i);
+                //if (galaxy.stars[i].position == new VectorLF3() && i>1)
+                //{
+                //    galaxy.stars[i].position = tmp_poses[i];
+                //    galaxy.stars[i].uPosition = tmp_poses[i] * 2400000.0;
+                //}
             }
             for (var i = 0; i < GSSettings.starCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
             InitializeAstroPoses();
             galaxy.birthPlanetId = 1;
-            PopulateStarsWithPlanets();
+            if (createPlanets) PopulateStarsWithPlanets();
             UniverseGen.CreateGalaxyStarGraph(galaxy);
             return galaxy;
 

@@ -2,21 +2,26 @@
 {
     public class Vanilla : iGenerator
     {
-        string iGenerator.Name => "Vanilla";
+        public string Name => "Vanilla";
 
-        string iGenerator.Author => "innominata";
+        public string Author => "innominata";
 
-        string iGenerator.Description => "An attempt to mimic the standard generation of dyson sphere program";
+        public string Description => "An attempt to mimic the standard generation of dyson sphere program";
 
-        string iGenerator.Version => "0.0";
+        public string Version => "0.0";
 
-        string iGenerator.GUID => "space.customizing.generators.vanilla";
+        public string GUID => "space.customizing.generators.vanilla";
 
+        public bool DisableStarCountSlider => false;
 
-        GSSettings iGenerator.Generate(int starCount)
+        public void Init()
+        {
+
+        }
+
+        public void Generate(int starCount)
         {
             GS2.Log("Wow, this worked");
-            return GSSettings.Instance;
         }
     }
 }

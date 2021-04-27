@@ -30,14 +30,15 @@ namespace GalacticScale
             starData.level = galaxy.starCount <= 1 ? 0.0f : (float)starData.index / (float)(galaxy.starCount - 1);
             starData.id = id;
             starData.seed = GSSettings.Stars[id -1].Seed;
-            if (GSSettings.Stars[id - 1].pos == new VectorLF3()) GSSettings.Stars[id - 1].pos = tmp_pos;
-            starData.position = GSSettings.Stars[id -1].pos;
+            GSSettings.Stars[id - 1].assignedIndex = id - 1;
+            //if (GSSettings.Stars[id - 1].pos == new VectorLF3()) GSSettings.Stars[id - 1].pos = tmp_pos;
+            starData.position = GSSettings.Stars[id -1].position;
+            GS2.Log("Stardata.position = " + starData.position);
             starData.uPosition = starData.position * 2400000.0;
             starData.planetCount = GSSettings.Stars[id - 1].bodyCount;
             starData.resourceCoef = GSSettings.Stars[id -1].resourceCoef;
             starData.name = GSSettings.Stars[id -1].Name;
             starData.overrideName = string.Empty;
-            starData.position = VectorLF3.zero;
             starData.mass = GSSettings.Stars[id -1].mass;
             starData.age = GSSettings.Stars[id -1].age;
             starData.lifetime = GSSettings.Stars[id -1].lifetime;

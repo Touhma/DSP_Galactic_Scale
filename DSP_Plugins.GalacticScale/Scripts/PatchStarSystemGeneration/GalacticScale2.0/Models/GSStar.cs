@@ -9,7 +9,7 @@ namespace GalacticScale
         public string Name;
         public ESpectrType Spectr;
         public EStarType Type;
-        public List<GSplanet> Planets;
+        public List<GSplanet> Planets = new List<GSplanet>();
         public int Seed;
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
@@ -26,7 +26,8 @@ namespace GalacticScale
         private float _lightBalanceRadius = -1;
         private float _resourceCoef = 0.6f;
         private float _physicsRadius = -1;
-        [SerializeField] 
+        private VectorLF3 _pos = new VectorLF3();
+        [SerializeField]
         public float level = 1;
         public GSStar(int seed, string name, ESpectrType spectr, EStarType type, List<GSplanet> planets)
         {
@@ -54,7 +55,8 @@ namespace GalacticScale
                 return bodyCount;
             }
         }
-        public int counter { get; set; }
+        [NonSerialized]
+        public int counter = 0;
         [SerializeField]
         public float age { get => _age < 0 ? getAge() : _age; set => _age = value; }
         [SerializeField]
@@ -71,19 +73,22 @@ namespace GalacticScale
         public float radius { get => _radius < 0 ? getRadius() : _radius; set => _radius = value; }
         [SerializeField]
         public float habitableRadius { get => _habitableRadius < 0 ? getHabitableRadius() : _habitableRadius; set => _habitableRadius = value; }
-        [SerializeField] 
+        [SerializeField]
         public float dysonRadius { get => _dysonRadius < 0 ? getDysonRadius() : _dysonRadius; set => _dysonRadius = value; }
-        [SerializeField] 
+        [SerializeField]
         public float lightBalanceRadius { get => _lightBalanceRadius < 0 ? getLightBalanceRadius() : _lightBalanceRadius; set => _lightBalanceRadius = value; }
-        [SerializeField] 
+        [SerializeField]
         public float physicsRadius { get => _physicsRadius < 0 ? getPhysicsRadius() : _physicsRadius; set => _physicsRadius = value; }
-        [SerializeField] 
+        [SerializeField]
         public float classFactor { get => _classfactor; }
-        [SerializeField] 
-        public float resourceCoef { get => _resourceCoef < 0?getResourceCoef(): _resourceCoef; set => _resourceCoef = value; }
+        [SerializeField]
+        public float resourceCoef { get => _resourceCoef < 0 ? getResourceCoef() : _resourceCoef; set => _resourceCoef = value; }
         [SerializeField]
         public float acDiscRadius { get => _acdiscRadius < 0 ? getAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
-        public VectorLF3 pos;
+        public VectorLF3 position { get => (_pos == new VectorLF3()) ? getPos() : _pos; set => _pos = value; }
+        [NonSerialized]
+        public int assignedIndex = 0;
+
         float getPhysicsRadius()
         {
             return radius * 1200f;
@@ -137,7 +142,7 @@ namespace GalacticScale
         {
             System.Random random = new System.Random(Seed);
             double r = random.NextDouble();
-            switch(Type)
+            switch (Type)
             {
                 case EStarType.GiantStar:
                     _age = (float)(r * 0.0399999991059303 + 0.959999978542328); break;
@@ -146,7 +151,7 @@ namespace GalacticScale
                 case EStarType.WhiteDwarf:
                     _age = (float)r * 0.4f + 1; break;
                 default:
-                _age = (double)mass >= 0.5 ? ((double)mass >= 0.8 ? (float)(r * 0.699999988079071 + 0.200000002980232) : (float)(r * 0.400000005960464 + 0.100000001490116)) : (float)(r * 0.119999997317791 + 0.0199999995529652);
+                    _age = (double)mass >= 0.5 ? ((double)mass >= 0.8 ? (float)(r * 0.699999988079071 + 0.200000002980232) : (float)(r * 0.400000005960464 + 0.100000001490116)) : (float)(r * 0.119999997317791 + 0.0199999995529652);
                     break;
             }
             return _age;
@@ -179,7 +184,7 @@ namespace GalacticScale
                     break;
             }
             float p1 = (float)((double)Mathf.Clamp((double)num7 <= 0.0 ? num7 * 1f : num7 * 2f, -2.4f, 4.65f) + num3 + 1.0);
-             
+
             switch (Type)
             {
                 case EStarType.WhiteDwarf:
@@ -238,14 +243,20 @@ namespace GalacticScale
             _classfactor = (float)num9;
             return _color;
         }
-        float getResourceCoef ()
+        float getResourceCoef()
         {
-            float num1 = (float)pos.magnitude / 32f;
+            float num1 = (float)position.magnitude / 32f;
             if ((double)num1 > 1.0)
                 num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
             _resourceCoef = Mathf.Pow(7f, num1) * 0.6f;
             return resourceCoef;
         }
+        VectorLF3 getPos()
+        {
+            GS2.Log("Getting Position! " + assignedIndex + " " + GS2.tmp_poses[assignedIndex]);
+            _pos = GS2.tmp_poses[assignedIndex];
+            return _pos;
+        }
     }
-    
+
 }

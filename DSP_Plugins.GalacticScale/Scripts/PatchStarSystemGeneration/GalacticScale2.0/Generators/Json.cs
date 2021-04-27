@@ -1,24 +1,85 @@
-﻿namespace GalacticScale.Generators
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+namespace GalacticScale.Generators
 {
-    public class JsonImport : iGenerator
+    public class JsonImport : iConfigurableGenerator
     {
-        string iGenerator.Name => "Custom Json";
+        public string Name => "Custom Json";
 
-        string iGenerator.Author => "innominata";
+        public string Author => "innominata";
 
-        string iGenerator.Description => "Nothing left to chance. This allows external generators to create a universe description.";
+        public string Description => "Nothing left to chance. This allows external generators to create a universe description.";
 
-        string iGenerator.Version => "0.0";
+        public string Version => "0.0";
 
-        string iGenerator.GUID => "space.customizing.generators.customjson";
+        public string GUID => "space.customizing.generators.customjson";
 
+        public List<GS2.GSOption> Options => this.options;
 
-        GSSettings iGenerator.Generate(int starCount)
+        public bool DisableStarCountSlider => true;
+
+        private string filename = "GSData";
+        private List<string> filenames = new List<string>();
+        public void Init()
         {
-            GS2.Log("Wow, this worked. Json");
-            string path = System.IO.Path.Combine(GS2.DataDir, "GSData.json");
+            RefreshFileNames();
+            GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
+            options.Add(new GS2.GSOption("Custom Galaxy", "UIComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix, "Tippety"));
+            options.Add(new GS2.GSOption("Dump JSON", "UIComboBox", new List<string>() { "Click here", "Or Here" }, DumpJSONCallback, new UnityEngine.Events.UnityAction(() => { }), "(to dump.json)"));
+        }
+        public List<GS2.GSOption> options = new List<GS2.GSOption>();
+        public void Generate(int starCount)
+        {
+            GS2.Log("Json Importer Generating");
+            string path = Path.Combine(Path.Combine(GS2.DataDir,"CustomGalaxies"), filename + ".json");
             GS2.LoadSettingsFromJson(path);
-            return GSSettings.Instance;
+        }
+
+        public void Import(object preferences)
+        {
+            GS2.Log("Trying to import JSON Preferences, but no implementation yet");
+            if (preferences != null && preferences is string) filename = (string)preferences;
+        }
+
+        public object Export()
+        {
+            return filename;
+        }
+        public void CustomFileSelectorCallback(object result)
+        {
+            int index = (int)result;
+            filename = filenames[index];
+            RefreshFileNames();
+
+        }
+        private void CustomFileSelectorPostfix()
+        {
+            GS2.Log("Json:Postfix");
+            int index = 0;
+            for (var i = 0; i < filenames.Count; i++)
+            {
+                if (filename == filenames[i]) index = i;
+            }
+            options[0].rectTransform.GetComponentInChildren<UIComboBox>().itemIndex = index;
+        }
+        private void DumpJSONCallback(object result)
+        {
+            string outputDir = Path.Combine(GS2.DataDir, "output");
+            string path = Path.Combine(outputDir, DateTime.Now.ToString("yyMMddHHmmss") + "dump.json");
+            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+            GS2.DumpObjectToJson(path, GS2.gameDesc);
+        }
+        private void RefreshFileNames()
+        {
+            GS2.Log("Refreshing Filenames");
+            string customGalaxiesPath = Path.Combine(GS2.DataDir, "CustomGalaxies");
+            if (!Directory.Exists(customGalaxiesPath)) Directory.CreateDirectory(customGalaxiesPath);
+            filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll<string>((original) => Path.GetFileNameWithoutExtension(original));
+            foreach (string n in filenames) GS2.Log("File:" + n);
+            //options[0].rectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
         }
     }
 }

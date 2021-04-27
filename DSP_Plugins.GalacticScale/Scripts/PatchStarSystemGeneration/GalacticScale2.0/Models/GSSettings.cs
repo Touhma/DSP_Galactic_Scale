@@ -41,7 +41,7 @@ namespace GalacticScale
             Stars = stars;
             Seed = seed;
         }
-        public static void reset()
+        public static void Reset()
         {
             instance = new GSSettings();
             GalaxyParams = new galaxyParams();

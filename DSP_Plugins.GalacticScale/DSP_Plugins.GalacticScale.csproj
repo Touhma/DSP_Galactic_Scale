@@ -147,6 +147,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\CreateStar.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\CreateBirthStar.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\CreateStarPlanets.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\UIGalaxySelect\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\UIOptionWindow\PatchOnOptionWindow.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\UIOptionWindow\PatchOnSetTabIndex.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\UniverseGen\CreateGalaxy.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\Common\PatchOnUIStarDetail.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\UniverseGen\PatchOnUniverseGen_CreateGalaxyStarGraph.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\UniverseGen\PatchOnUniverseGen.cs" />
     <Compile Include="Scripts\Dependencies\**\*.cs" />
     <Compile Include="Scripts\PatchUI\PatchForUI.cs" />
@@ -178,7 +180,9 @@
       <TargetPath>galacticbundle</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\SettingsUI\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />

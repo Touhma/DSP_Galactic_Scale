@@ -2,21 +2,26 @@
 {
     public class GalacticScale2 : iGenerator
     {
-        string iGenerator.Name => "GalacticScale2";
+        public string Name => "GalacticScale2";
 
-        string iGenerator.Author => "innominata";
+        public string Author => "innominata";
 
-        string iGenerator.Description => "Just like the other generators, but more so";
+        public string Description => "Just like the other generators, but more so";
 
-        string iGenerator.Version => "0.0";
+        public string Version => "0.0";
 
-        string iGenerator.GUID => "space.customizing.generators.galacticscale2";
+        public string GUID => "space.customizing.generators.galacticscale2";
 
+        public bool DisableStarCountSlider => false;
 
-        GSSettings iGenerator.Generate(int starCount)
+        public void Init()
+        {
+            
+        }
+
+        public void Generate(int starCount)
         {
             GS2.Log("Wow, this worked. GalacticScale2");
-            return GSSettings.Instance;
         }
     }
 }

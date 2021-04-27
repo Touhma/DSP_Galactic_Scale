@@ -26,7 +26,7 @@ namespace GalacticScale
         private float _rotationPeriod = -1;
         private float _rotationPhase = -1;
         private float _luminosity = -1;
-        private List<GSplanet> _moons;
+        private List<GSplanet> _moons = new List<GSplanet>();
         [SerializeField]
         public string Name { get => _name; set => _name = value; }
         public GSTheme Theme { get => _theme != null ? _theme : GetTheme(); set => _theme = value; }
