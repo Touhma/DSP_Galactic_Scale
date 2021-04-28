@@ -1,8 +1,11 @@
 ﻿
 using BepInEx;
 using FullSerializer;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using UnityEngine.Events;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
 
@@ -181,14 +184,35 @@ namespace GalacticScale
                 }
             }
         }
-
+        private static IEnumerable<Type> GetTypesWithInterface(Assembly asm)
+        {
+            var it = typeof(iGenerator);
+            return asm.GetLoadableTypes().Where(it.IsAssignableFrom).ToList();
+        }
         public static void LoadPlugins()
         {
+            List<iGenerator> gens = new List<iGenerator>(GetTypesWithInterface(iGenerator));
             Log("Loading Plugins...");
             foreach (iGenerator g in generators)
             {
                 Log("Loading Generator: " + g.Name);
                 g.Init();
+            }
+        }
+    }
+
+    public static class TypeLoaderExtensions
+    {
+        public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                return e.Types.Where(t => t != null);
             }
         }
     }

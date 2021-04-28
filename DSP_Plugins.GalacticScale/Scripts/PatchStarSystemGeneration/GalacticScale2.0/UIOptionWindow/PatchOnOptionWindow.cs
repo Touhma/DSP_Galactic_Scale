@@ -38,11 +38,11 @@ namespace GalacticScale
 
 
         [HarmonyPostfix, HarmonyPatch(typeof(UIOptionWindow), "_OnOpen")]
-        public static void PatchMainMenu(ref UIButton[] ___tabButtons, ref Text[] ___tabTexts, ref Tweener[] ___tabTweeners, ref Image ___tabSlider)
+        public static void PatchMainMenu(ref UIOptionWindow __instance, ref UIButton[] ___tabButtons, ref Text[] ___tabTexts, ref Tweener[] ___tabTweeners, ref Image ___tabSlider)
         {
             GameObject overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;
-
+            __instance.applyButton.button.onClick.AddListener(new UnityAction(GS2.SavePreferences));
             ////Grab the tabgroup and store the relevant data in this class
             //tabLine = GameObject.Find("Top Windows/Option Window/tab-line").GetComponent<RectTransform>();
             ///tabButtons = ___tabButtons;
