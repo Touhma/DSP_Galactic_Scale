@@ -58,7 +58,7 @@ namespace GalacticScale
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
             star.galaxy.astroPoses[planetData.id].uRadius = planetData.realRadius;
             star.planets[counter] = planetData;
-            DebugPlanet(planetData);
+            //DebugPlanet(planetData);
             GSSettings.Stars[star.index].counter++;
             if (planetDescriptor.MoonCount > 0) CreateMoons(ref planetData, planetDescriptor);
 

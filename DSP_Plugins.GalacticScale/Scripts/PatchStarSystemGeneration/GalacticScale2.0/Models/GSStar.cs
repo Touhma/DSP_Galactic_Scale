@@ -241,7 +241,31 @@ namespace GalacticScale
                 num9 = -4.0;
             _color = Mathf.Clamp01((float)((num9 + 3.5) * 0.200000002980232));
             _classfactor = (float)num9;
-            return _color;
+            ///left the above in just to get classfactor, but its probably wrong
+            // A 0.74 - 0.79
+
+            //K 0.0014 - 0.18
+            //G 0.20 - 0.39
+            //F 0.4 - 0.59
+
+            //B 0.8 - 0.99
+            //M 0
+            //O 1
+            System.Random random = new System.Random(Seed);
+            switch (Spectr)
+            {
+                case ESpectrType.M: return 0;
+                case ESpectrType.O: return 1;
+                case ESpectrType.K: return random.Next(0   , 1999) * 0.0001f;
+                case ESpectrType.G: return random.Next(2000, 3999) * 0.0001f;
+                case ESpectrType.F: return random.Next(4000, 5999) * 0.0001f;
+                case ESpectrType.A: return random.Next(7400, 7999) * 0.0001f;
+                case ESpectrType.B: return random.Next(8000, 9999) * 0.0001f;
+                default: return 0;
+            }
+           
+
+            //return _color;
         }
         float getResourceCoef()
         {

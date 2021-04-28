@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public class PatchOnUIGalaxySelect
+    public partial class PatchOnUIGalaxySelect
     {
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect),"SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
@@ -54,17 +54,7 @@ namespace GalacticScale
             GS2.Log("done");
             return false;
         }
-        public static GameObject CreateStarCountText(Slider slider)
-        {
-            RectTransform starCountSlider = slider.GetComponent<RectTransform>();
-            slider.gameObject.SetActive(false);
-            Text template = slider.GetComponentInParent<Text>();
-            RectTransform starCountText = GameObject.Instantiate(template.GetComponent<RectTransform>(), template.GetComponentInParent<RectTransform>().parent, false);
-            starCountText.anchoredPosition = new Vector2(starCountText.anchoredPosition.x + 140, starCountSlider.GetComponentInParent<RectTransform>().anchoredPosition.y);
-            Object.DestroyImmediate(starCountText.GetComponent<Localizer>());
-            starCountText.name = "GS Star Count";
-            return starCountText.gameObject ;
-        }
+
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
         public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
         {
@@ -154,16 +144,17 @@ namespace GalacticScale
             if (num == ___gameDesc.starCount) return false;
 
             ___gameDesc.starCount = num;
+            GS2.gameDesc = ___gameDesc;
             __instance.SetStarmapGalaxy();
             return false;
         }
 
-        //[HarmonyPrefix]
-        //[HarmonyPatch("UpdateUIDisplay")]
-        //public static void UIPrefix(UIGalaxySelect __instance, ref Slider ___starCountSlider)
-        //{
-        //    ___starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
-        //}
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
+        public static void UIPrefix(UIGalaxySelect __instance, ref Slider ___starCountSlider)
+        {
+            ___starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
+        }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]

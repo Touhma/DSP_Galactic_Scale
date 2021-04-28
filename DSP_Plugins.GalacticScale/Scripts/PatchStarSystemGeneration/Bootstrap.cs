@@ -26,7 +26,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             //Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
             //Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
-            //Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGenStarGraph));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGenStarGraph));
             //Harmony.CreateAndPatchAll(typeof(PatchGuideMissionStandardMode));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescImport));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescExport));
@@ -38,6 +38,8 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
+            Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
+            //Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarMap));
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

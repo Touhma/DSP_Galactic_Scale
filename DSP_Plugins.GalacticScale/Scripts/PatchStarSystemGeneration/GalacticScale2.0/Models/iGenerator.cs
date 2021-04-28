@@ -22,9 +22,11 @@
     {
         public bool DisableStarCountSlider = false;
         public bool DisableSeedInput = false;
-        public int MinStarCount = 8;
-        public int MaxStarCount = 1024;
-        public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false, int minStarCount = 8, int maxStarCount = 1024)
+        private int _minStarCount = 4;
+        public int MinStarCount{ get => _minStarCount; set => _minStarCount = (int)Maths.Clamp(value, 1.0, _maxStarCount); }
+        private int _maxStarCount = 64;
+        public int MaxStarCount { get => _maxStarCount; set => _maxStarCount = (int)Maths.Clamp((double)value, _minStarCount, 1024); }
+        public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false, int minStarCount = 1, int maxStarCount = 1024)
         {
             DisableStarCountSlider = disableStarCountSlider;
             DisableSeedInput = disableSeedInput;

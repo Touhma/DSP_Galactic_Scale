@@ -9,7 +9,7 @@ namespace GalacticScale
       
         public static bool Prefix(int index, bool immediate, ref UIOptionWindow __instance)
         {
-            if (index != 5) PatchOnOptionWindow.DisableDetails(); return true;
+            if (index != 5) SettingsUI.DisableDetails(); return true;
         }
     }
 }

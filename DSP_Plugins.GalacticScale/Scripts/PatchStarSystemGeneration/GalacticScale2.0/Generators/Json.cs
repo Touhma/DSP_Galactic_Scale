@@ -29,8 +29,8 @@ namespace GalacticScale.Generators
         {
             RefreshFileNames();
             GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
-            options.Add(new GS2.GSOption("Custom Galaxy", "UIComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix, "Tippety"));
-            options.Add(new GS2.GSOption("Dump JSON", "UIComboBox", new List<string>() { "Click here", "Or Here" }, DumpJSONCallback, new UnityEngine.Events.UnityAction(() => { }), "(to dump.json)"));
+            options.Add(new GS2.GSOption("Custom Galaxy", "ComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(new GS2.GSOption("Dump JSON", "Button", "Export", DumpJSONCallback, new UnityEngine.Events.UnityAction(() => { })));
         }
         public List<GS2.GSOption> options = new List<GS2.GSOption>();
         public void Generate(int starCount)

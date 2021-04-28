@@ -13,16 +13,20 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.dummy";
-        public GSGeneratorConfig Config => new GSGeneratorConfig();
+        public GSGeneratorConfig Config => config;
         public List<GS2.GSOption> Options => this.options;
 
         public bool DisableStarCountSlider => false;
-
+        private GSGeneratorConfig config = new GSGeneratorConfig();
         public void Init()
         {
             GS2.Log("Dummy:Initializing");
+            config.DisableSeedInput = true;
+            config.DisableStarCountSlider = false;
+            config.MaxStarCount = 2048;
+            config.MinStarCount = 1;
             List<string> testList = new List<string>() { "Densest", "Denser", "Default", "Sparse" , "Sparsest"};
-            options.Add(new GS2.GSOption("Density", "UIComboBox", testList, SetDensity, new UnityEngine.Events.UnityAction(SetComboBox)));
+            options.Add(new GS2.GSOption("Density", "ComboBox", testList, SetDensity, new UnityEngine.Events.UnityAction(SetComboBox)));
         }
         public void Import(object prefs)
         {
@@ -88,7 +92,7 @@ namespace GalacticScale.Generators
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.O, EStarType.MainSeqStar, p));
             for (var i = 1; i < starCount; i++)
             {
-                GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.X, EStarType.BlackHole, new List<GSplanet>()));
+                GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new List<GSplanet>()));
             }
             GSSettings.GalaxyParams = new galaxyParams();
             GSSettings.GalaxyParams.iterations = 4;
