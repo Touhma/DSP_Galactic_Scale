@@ -17,7 +17,7 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.customjson";
 
-        public List<GS2.GSOption> Options => this.options;
+        public List<GSOption> Options => options;
 
         public bool DisableStarCountSlider => true;
 
@@ -29,10 +29,10 @@ namespace GalacticScale.Generators
         {
             RefreshFileNames();
             GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
-            options.Add(new GS2.GSOption("Custom Galaxy", "ComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
-            options.Add(new GS2.GSOption("Dump JSON", "Button", "Export", DumpJSONCallback, new UnityEngine.Events.UnityAction(() => { })));
+            options.Add(new GSOption("Custom Galaxy", "ComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(new GSOption("Dump JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
         }
-        public List<GS2.GSOption> options = new List<GS2.GSOption>();
+        public List<GSOption> options = new List<GSOption>();
         public void Generate(int starCount)
         {
             GS2.Log("Json Importer Generating");
@@ -40,15 +40,15 @@ namespace GalacticScale.Generators
             GS2.LoadSettingsFromJson(path);
         }
 
-        public void Import(object preferences)
+        public void Import(GSGenPreferences preferences)
         {
-            GS2.Log("Trying to import JSON Preferences, but no implementation yet");
-            if (preferences != null && preferences is string) filename = (string)preferences;
+            GS2.Log("Importing JSON Preferences");
+            if (preferences != null && preferences[filename] is string) filename = (string)preferences[filename];
         }
 
-        public object Export()
+        public GSGenPreferences Export()
         {
-            return filename;
+            return new GSGenPreferences() { { "filename", filename } };
         }
         public void CustomFileSelectorCallback(object result)
         {

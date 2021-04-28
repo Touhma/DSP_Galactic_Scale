@@ -26,11 +26,11 @@ namespace GalacticScale
 
         private static List<RectTransform> optionRects = new List<RectTransform>();
         private static List<RectTransform> generatorCanvases = new List<RectTransform>();
-        private static List<List<GS2.GSOption>> generatorPluginOptions = new List<List<GS2.GSOption>>();
+        private static List<List<GSOption>> generatorPluginOptions = new List<List<GSOption>>();
         private static float anchorX;
         private static float anchorY;
 
-        private static List<GS2.GSOption> options = new List<GS2.GSOption>();
+        private static List<GSOption> options = new List<GSOption>();
 
         public static UnityEvent OptionsUIPostfix = new UnityEvent();
         public static void CreateGalacticScaleSettingsPage(UIButton[] _tabButtons, Text[] _tabTexts)
@@ -123,8 +123,8 @@ namespace GalacticScale
         {
             for (var i = 0; i < GS2.generators.Count; i++)
             {
-                List<GS2.GSOption> pluginOptions = new List<GS2.GSOption>();
-                if (GS2.generators[i] is iConfigurableGenerator gen) foreach (GS2.GSOption o in gen.Options) pluginOptions.Add(o);
+                List<GSOption> pluginOptions = new List<GSOption>();
+                if (GS2.generators[i] is iConfigurableGenerator gen) foreach (GSOption o in gen.Options) pluginOptions.Add(o);
                 generatorPluginOptions.Add(pluginOptions);
             }
         }
@@ -132,7 +132,7 @@ namespace GalacticScale
         {
             GS2.Log("CreateOwnOptions()");
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
-            options.Add(new GS2.GSOption("Generator", "UIComboBox", generatorNames, new GS2.GSOptionCallback(GeneratorSelected), new UnityAction(CreateOwnOptionsPostFix)));
+            options.Add(new GSOption("Generator", "UIComboBox", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
         }
         private static void CreateOwnOptionsPostFix()
         {
@@ -194,7 +194,7 @@ namespace GalacticScale
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
         {
             GS2.Log("AddGeneratorOptions listener count=" + OptionsUIPostfix.GetPersistentEventCount());
-            List<GS2.GSOption> options = generatorPluginOptions[genIndex];
+            List<GSOption> options = generatorPluginOptions[genIndex];
             for (int i = 0; i < options.Count; i++)
             {
                 switch (options[i].type)
@@ -209,7 +209,7 @@ namespace GalacticScale
         }
 
         // Create a combobox from a GSOption definition
-        private static void CreateComboBox(GS2.GSOption o, RectTransform canvas, int index)
+        private static void CreateComboBox(GSOption o, RectTransform canvas, int index)
         {
             GS2.Log("CreateComboBox");
             RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
@@ -231,12 +231,12 @@ namespace GalacticScale
             tipTransform.gameObject.name = "optionTip-" + (index);
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             tipTransform.GetComponent<Text>().text = o.tip;
-            if (o.postfix != null) OptionsUIPostfix.AddListener(o.postfix);
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             GS2.Log("Finished Creating ComboBox");
         }        
         
         // Create a button from a GSOption definition
-        private static void CreateButton(GS2.GSOption o, RectTransform canvas, int index)
+        private static void CreateButton(GSOption o, RectTransform canvas, int index)
         {
             GS2.Log("CreateButton");
             RectTransform buttonRect = Object.Instantiate(templateButton, canvas);
@@ -249,14 +249,16 @@ namespace GalacticScale
             UIButton uiButton = buttonRect.GetComponentInChildren<UIButton>();
             uiButton.name = o.label + "_button";
             uiButton.button.onClick.RemoveAllListeners();
-            uiButton.GetComponent<Text>().text = o.data as string;
+            uiButton.GetComponentInChildren<Text>().text = o.data.ToString();
+            var l = uiButton.GetComponentInChildren<Localizer>();
+            Object.Destroy(l);
             if (o.callback != null) uiButton.button.onClick.AddListener(delegate { o.callback(null); });
             buttonRect.GetComponentInChildren<Text>().text = o.label;
             RectTransform tipTransform = buttonRect.GetChild(0).GetComponent<RectTransform>();
             tipTransform.gameObject.name = "optionTip-" + (index);
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             tipTransform.GetComponent<Text>().text = o.tip;
-            if (o.postfix != null) OptionsUIPostfix.AddListener(o.postfix);
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             GS2.Log("Finished Creating Button");
         }
 

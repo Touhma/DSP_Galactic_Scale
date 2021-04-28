@@ -1,4 +1,6 @@
-﻿namespace GalacticScale
+﻿using UnityEngine.Events;
+using System.Collections.Generic;
+namespace GalacticScale
 {
     public interface iGenerator
     {
@@ -14,9 +16,9 @@
     }
     public interface iConfigurableGenerator : iGenerator
     {
-        System.Collections.Generic.List<GS2.GSOption> Options { get; }
-        void Import(object preferences);
-        object Export();
+        List<GSOption> Options { get; }
+        void Import(GSGenPreferences preferences);
+        GSGenPreferences Export();
     }
     public class GSGeneratorConfig
     {
@@ -33,5 +35,31 @@
             MinStarCount = minStarCount;
             MaxStarCount = maxStarCount;
         }
+    }
+    public delegate void GSOptionCallback(object o);
+    public delegate void GSOptionPostfix();
+    public class GSOption
+    {
+        public string label;
+        public string type;
+        public object data;
+        public GSOptionCallback callback;
+        public string tip;
+        public UnityEngine.RectTransform rectTransform;
+        public GSOptionPostfix postfix;
+        public GSOption(string _label, string _type, object _data, GSOptionCallback _callback, GSOptionPostfix _postfix, string _tip = "")
+        {
+            this.label = _label;
+            this.type = _type;
+            this.data = _data;
+            this.callback = _callback;
+            if (_postfix == null) postfix = delegate { };
+            else postfix = _postfix;
+            this.tip = _tip;
+        }
+    }
+    public class GSGenPreferences : Dictionary<string, object>
+    {
+
     }
 }

@@ -9,7 +9,7 @@ namespace GalacticScale
         public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
             gameDesc = desc;
-            LoadSettings();
+            GenerateGalaxy();
             gameDesc = desc;
             gameDesc.starCount = GSSettings.starCount;
             random = new System.Random(GSSettings.Seed);

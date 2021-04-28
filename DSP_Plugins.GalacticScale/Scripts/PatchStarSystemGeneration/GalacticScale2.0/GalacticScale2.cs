@@ -27,28 +27,7 @@ namespace GalacticScale
                 theme = LDB.themes.Select(1),
             },
         };
-        public delegate void GSOptionCallback(object o);
-
-        public class GSOption
-        {
-            public string label;
-            public string type;
-            public object data;
-            public GSOptionCallback callback;
-            public string tip;
-            public UnityEngine.RectTransform rectTransform;
-            public UnityAction postfix;
-            public GSOption(string _label, string _type, object _data, GSOptionCallback _callback, UnityAction postfix, string _tip = "")
-            {
-                this.label = _label;
-                this.type = _type;
-                this.data = _data;
-                this.callback = _callback;
-                if (postfix == null) this.postfix = new UnityAction(() => { });
-                else this.postfix = postfix;
-                this.tip = _tip;
-            }
-        }
+        
        
         public static bool LoadSettingsFromJson(string path)
         {
@@ -123,7 +102,7 @@ namespace GalacticScale
             GSSettings.Instance.imported = true;
             Log("()()()Imported");
         }
-        public static void LoadSettings()
+        public static void GenerateGalaxy()
         {
             if (GSSettings.Instance.imported)
             {
@@ -137,7 +116,7 @@ namespace GalacticScale
         public static void SavePreferences()
         {
             Log("Saving Preferences");
-            GSPreferences preferences = new GSPreferences();
+            Preferences preferences = new Preferences();
             preferences.GeneratorID = generator.GUID;
             Log("Set the GeneratorID, now trying to get the plugin prefs");
             foreach (iGenerator g in generators)
@@ -146,7 +125,7 @@ namespace GalacticScale
                 {
                     iConfigurableGenerator gen = g as iConfigurableGenerator;
                     Log("trying to get prefs for " + gen.Name);
-                    object prefs = gen.Export();
+                    GSGenPreferences prefs = gen.Export();
                     Log(gen.Name + " has exported its prefs");
                     preferences.PluginOptions[gen.GUID] = prefs;
                     Log("Finished for " + gen.Name);
@@ -160,11 +139,15 @@ namespace GalacticScale
             Log(json);
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
         }
-        public class GSPreferences
+
+
+        private class Preferences
         {
             public string GeneratorID = "space.customizing.vanilla";
-            public Dictionary<string, object> PluginOptions = new Dictionary<string, object>();
+            public Dictionary<string, GSGenPreferences> PluginOptions = new Dictionary<string, GSGenPreferences>();
         }
+        
+        
         public static void LoadPreferences()
         {
             string path = Path.Combine(DataDir, "Preferences.json");
@@ -173,20 +156,20 @@ namespace GalacticScale
             Log("Loading Preferences from " + path);
             fsSerializer serializer = new fsSerializer();
             string json = File.ReadAllText(path);
-            GSPreferences result = new GSPreferences();
+            Preferences result = new Preferences();
             Log("LoadPreferences Initial " + result.GeneratorID);
             fsData data2 = fsJsonParser.Parse(json);
-            serializer.TryDeserialize<GSPreferences>(data2, ref result).AssertSuccessWithoutWarnings();
+            serializer.TryDeserialize<Preferences>(data2, ref result);
             Log("LoadPreferences Result " + result.GeneratorID);
             ParsePreferences(result);
         }
-        public static void ParsePreferences(GSPreferences p)
+        private static void ParsePreferences(Preferences p)
         {
             Log("Parsing Preferences");
             generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
             {
-                foreach (KeyValuePair<string, object> pluginOptions in p.PluginOptions)
+                foreach (KeyValuePair<string, GSGenPreferences> pluginOptions in p.PluginOptions)
                 {
                     Log("Plugin Options for " + pluginOptions.Key + "found");
                     iConfigurableGenerator gen = GetGeneratorByID(pluginOptions.Key) as iConfigurableGenerator;
@@ -198,22 +181,7 @@ namespace GalacticScale
                 }
             }
         }
-        public static iGenerator GetGeneratorByID(string guid)
-        {
-            foreach (iGenerator g in generators)
-            {
-                if (g.GUID == guid) return g;
-            }
-            return new Generators.Dummy();
-        }
-        public static int GetCurrentGeneratorIndex()
-        {
-            for (var i = 0; i < generators.Count; i++)
-            {
-                if (generators[i] == generator) return i;
-            }
-            return -1;
-        }
+
         public static void LoadPlugins()
         {
             Log("Loading Plugins...");

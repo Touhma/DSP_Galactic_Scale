@@ -135,6 +135,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Galactic2.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Dummy.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Generators\Vanilla.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\CodeFile1.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\iGenerator.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\GS2.GeneratorData.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\PlanetGen\SetPlanetTheme.cs" />
