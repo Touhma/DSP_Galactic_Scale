@@ -43,7 +43,7 @@ namespace GalacticScale.Generators
         public void Import(GSGenPreferences preferences)
         {
             GS2.Log("Importing JSON Preferences");
-            if (preferences != null && preferences[filename] is string) filename = (string)preferences[filename];
+            if (preferences != null && preferences.ContainsKey("filename")) filename = (string)preferences["filename"];
         }
 
         public GSGenPreferences Export()
