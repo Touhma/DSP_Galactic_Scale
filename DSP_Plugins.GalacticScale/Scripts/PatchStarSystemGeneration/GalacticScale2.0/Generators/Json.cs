@@ -72,7 +72,7 @@ namespace GalacticScale.Generators
             string outputDir = Path.Combine(GS2.DataDir, "output");
             string path = Path.Combine(outputDir, DateTime.Now.ToString("yyMMddHHmmss") + "dump.json");
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
-            GS2.DumpObjectToJson(path, GS2.gameDesc);
+            GS2.DumpObjectToJson(path, GSSettings.Instance);
         }
         private void RefreshFileNames()
         {
@@ -81,7 +81,7 @@ namespace GalacticScale.Generators
             if (!Directory.Exists(customGalaxiesPath)) Directory.CreateDirectory(customGalaxiesPath);
             filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll<string>((original) => Path.GetFileNameWithoutExtension(original));
             foreach (string n in filenames) GS2.Log("File:" + n);
-            //options[0].rectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
+            if (options != null && options.Count > 0 && options[0].rectTransform != null) options[0].rectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
         }
     }
 }

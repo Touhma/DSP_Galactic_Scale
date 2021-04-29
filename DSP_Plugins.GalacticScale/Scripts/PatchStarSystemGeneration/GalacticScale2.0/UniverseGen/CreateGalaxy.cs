@@ -37,10 +37,18 @@ namespace GalacticScale
                 //}
             }
             for (var i = 0; i < GSSettings.starCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
+            Log("After Star Creation");
+            foreach (StarData s in galaxy.stars) Log(s.position + " " + s.uPosition);
             InitializeAstroPoses();
+            Log("After Astroposes");
+            foreach (StarData s in galaxy.stars) Log(s.position + " " + s.uPosition);
             galaxy.birthPlanetId = 1;
             if (createPlanets) PopulateStarsWithPlanets();
+            Log("After Planets");
+            foreach (StarData s in galaxy.stars) Log(s.position + " " + s.uPosition);
             UniverseGen.CreateGalaxyStarGraph(galaxy);
+            Log("After Star Graph");
+            foreach (StarData s in galaxy.stars) Log(s.position + " " + s.uPosition);
             return galaxy;
 
         }

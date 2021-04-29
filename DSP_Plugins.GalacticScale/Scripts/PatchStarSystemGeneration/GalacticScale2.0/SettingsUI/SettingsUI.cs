@@ -124,7 +124,8 @@ namespace GalacticScale
             for (var i = 0; i < GS2.generators.Count; i++)
             {
                 List<GSOption> pluginOptions = new List<GSOption>();
-                if (GS2.generators[i] is iConfigurableGenerator gen) foreach (GSOption o in gen.Options) pluginOptions.Add(o);
+                GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
+                if (GS2.generators[i] is iConfigurableGenerator gen) { GS2.Log(gen.Name + " is configurable"); foreach (GSOption o in gen.Options) pluginOptions.Add(o); }
                 generatorPluginOptions.Add(pluginOptions);
             }
         }
@@ -169,7 +170,7 @@ namespace GalacticScale
                 }
             }
             int currentGenIndex = GS2.GetCurrentGeneratorIndex();
-            GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex);
+            GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.generators[currentGenIndex].Name);
             for (var i = 0; i < generatorPluginOptions.Count; i++)
             { //for each canvas
                 GS2.Log("Creating Canvas " + i);
@@ -193,8 +194,9 @@ namespace GalacticScale
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
         {
-            GS2.Log("AddGeneratorOptions listener count=" + OptionsUIPostfix.GetPersistentEventCount());
+            GS2.Log("AddGeneratorPluginUIElements: " + GS2.generators[genIndex].Name);
             List<GSOption> options = generatorPluginOptions[genIndex];
+            GS2.Log(GS2.generators[genIndex].Name + " option count = " + options.Count);
             for (int i = 0; i < options.Count; i++)
             {
                 switch (options[i].type)
@@ -205,7 +207,6 @@ namespace GalacticScale
                 }
                 //if (options[i].postfix != null) OptionsUIPostfix.AddListener(options[i].postfix);
             }
-            GS2.Log("AddGeneratorOptions listener count end=" + OptionsUIPostfix.GetPersistentEventCount());
         }
 
         // Create a combobox from a GSOption definition

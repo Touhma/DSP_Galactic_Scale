@@ -41,7 +41,7 @@ namespace GalacticScale
             string json = File.ReadAllText(path);
             GSSettings result = GSSettings.Instance;
             fsData data2 = fsJsonParser.Parse(json);
-            serializer.TryDeserialize<GSSettings>(data2, ref result).AssertSuccessWithoutWarnings();
+            serializer.TryDeserialize<GSSettings>(data2, ref result);
             GSSettings.Instance = result;
             return true;
 
@@ -112,6 +112,7 @@ namespace GalacticScale
                 Log("Settings Loaded From Save File");
                 return;
             }
+            GSSettings.Reset();
             Log("Loading Data from Generator : " + generator.Name);
             generator.Generate(gameDesc.starCount);
             return;
@@ -129,13 +130,13 @@ namespace GalacticScale
                     iConfigurableGenerator gen = g as iConfigurableGenerator;
                     Log("trying to get prefs for " + gen.Name);
                     GSGenPreferences prefs = gen.Export();
-                    Log(gen.Name + " has exported its prefs");
+                    Log(gen.Name + " has supplied preferences");
                     preferences.PluginOptions[gen.GUID] = prefs;
-                    Log("Finished for " + gen.Name);
+                    Log("Finished adding preferences to GS preferences object for " + gen.Name);
                 }
             }
             fsSerializer serializer = new fsSerializer();
-            Log("Trying to serialize");
+            Log("Trying to serialize preferences object");
             serializer.TrySerialize(preferences, out fsData data);
             Log("serialized");
             string json = fsJsonPrinter.PrettyJson(data);
@@ -184,35 +185,20 @@ namespace GalacticScale
                 }
             }
         }
-        private static IEnumerable<Type> GetTypesWithInterface(Assembly asm)
-        {
-            var it = typeof(iGenerator);
-            return asm.GetLoadableTypes().Where(it.IsAssignableFrom).ToList();
-        }
+
         public static void LoadPlugins()
         {
-            List<iGenerator> gens = new List<iGenerator>(GetTypesWithInterface(iGenerator));
-            Log("Loading Plugins...");
+            Log("***LOADING PLUGINS***");
+            foreach (string filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
+                foreach (Type type in Assembly.LoadFrom(filePath).GetTypes()) 
+                    foreach (Type t in type.GetInterfaces()) 
+                        if (t.Name == "iGenerator" && !type.IsAbstract && !type.IsInterface) 
+                            generators.Add((iGenerator)Activator.CreateInstance(type));
+
             foreach (iGenerator g in generators)
             {
                 Log("Loading Generator: " + g.Name);
                 g.Init();
-            }
-        }
-    }
-
-    public static class TypeLoaderExtensions
-    {
-        public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
-        {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            try
-            {
-                return assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException e)
-            {
-                return e.Types.Where(t => t != null);
             }
         }
     }

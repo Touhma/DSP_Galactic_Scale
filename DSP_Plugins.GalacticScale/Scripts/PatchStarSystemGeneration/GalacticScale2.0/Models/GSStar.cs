@@ -26,7 +26,7 @@ namespace GalacticScale
         private float _lightBalanceRadius = -1;
         private float _resourceCoef = 0.6f;
         private float _physicsRadius = -1;
-        private VectorLF3 _pos = new VectorLF3();
+        private VectorLF3 _pos;
         [SerializeField]
         public float level = 1;
         public GSStar(int seed, string name, ESpectrType spectr, EStarType type, List<GSplanet> planets)
@@ -85,6 +85,7 @@ namespace GalacticScale
         public float resourceCoef { get => _resourceCoef < 0 ? getResourceCoef() : _resourceCoef; set => _resourceCoef = value; }
         [SerializeField]
         public float acDiscRadius { get => _acdiscRadius < 0 ? getAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
+        [SerializeField]
         public VectorLF3 position { get => (_pos == new VectorLF3()) ? getPos() : _pos; set => _pos = value; }
         [NonSerialized]
         public int assignedIndex = 0;
@@ -277,7 +278,9 @@ namespace GalacticScale
         }
         VectorLF3 getPos()
         {
+            GS2.Log("getPos " + _pos);
             _pos = GS2.tmp_poses[assignedIndex];
+            GS2.Log("getPos2 " + _pos);
             return _pos;
         }
     }
