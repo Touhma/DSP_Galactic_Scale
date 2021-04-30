@@ -30,6 +30,7 @@ namespace GalacticScale.Generators
             RefreshFileNames();
             GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
             options.Add(new GSOption("Custom Galaxy", "ComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(new GSOption("Export Filename", "Input", "Export", DumpJSONCallback, () => { }));
             options.Add(new GSOption("Dump JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
         }
         public List<GSOption> options = new List<GSOption>();
