@@ -86,7 +86,7 @@ namespace GalacticScale
         [SerializeField]
         public float acDiscRadius { get => _acdiscRadius < 0 ? getAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
         [SerializeField]
-        public VectorLF3 position { get => (_pos == null || (_pos == new VectorLF3() && assignedIndex != 0)) ? getPos() : _pos; set => _pos = value; }
+        public VectorLF3 position { get => (_pos == null ) ? getPos() : _pos; set => _pos = value; }//|| (_pos == new VectorLF3() && assignedIndex != 0)
         [NonSerialized]
         public int assignedIndex = 0;
 
