@@ -54,14 +54,21 @@ namespace GalacticScale.Generators
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.O, EStarType.MainSeqStar, p));
             for (var i = 1; i < starCount; i++)
             {
-                int t = i % 7;
-                ESpectrType e = (ESpectrType)t;
-                GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new List<GSplanet>()));
+                //int t = i % 7;
+                //ESpectrType e = (ESpectrType)t;
+                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new List<GSplanet>()));
+                GS2.Log("Spiral 1");
+                GSStar s = StarDefaults.Random(i);
+                GS2.Log("Spiral 2");
+                GSSettings.Stars.Add(s);
+                GS2.Log("Spiral 3");
                 GSSettings.Stars[i].position = positions[i];
+                GS2.Log("Spiral 4");
                 //GSSettings.Stars[i].classFactor = (float)(new Random(i).NextDouble() * 6.0)-4f;
-                GSSettings.Stars[i].Spectr = e;
-                GSSettings.Stars[i].Name = "CF" + GSSettings.Stars[i].classFactor + "-" + e.ToString();
+                //GSSettings.Stars[i].Spectr = e;
+                //GSSettings.Stars[i].Name = "CF" + GSSettings.Stars[i].classFactor + "-" + e.ToString();
             }
+            GS2.Log("Spiral End");
 
         }
 

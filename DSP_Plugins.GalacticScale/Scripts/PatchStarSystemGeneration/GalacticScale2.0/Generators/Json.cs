@@ -39,7 +39,7 @@ namespace GalacticScale.Generators
         public void Generate(int starCount)
         {
             GS2.Log("Json Importer Generating");
-            string path = Path.Combine(Path.Combine(GS2.DataDir,"CustomGalaxies"), dumpFilename + ".json");
+            string path = Path.Combine(Path.Combine(GS2.DataDir,"CustomGalaxies"), filename + ".json");
             GS2.LoadSettingsFromJson(path);
         }
 
@@ -82,12 +82,12 @@ namespace GalacticScale.Generators
             string outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
             string path = Path.Combine(outputDir, dumpFilename + ".json");
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
-            string starlist = "ClassFactor,Type,Spectr,Age,Mass,Color,Luminosity,Lifetime,Radius,Dyson Radius,Temperature,Orbit Scaler,LightbalRadius\n";
-            foreach (StarData s in GameMain.galaxy.stars)
-            {
-                starlist+=s.classFactor+","+s.type + "," + s.spectr + "," + s.age + "," + s.mass +"," + s.color + "," + s.luminosity + "," + s.lifetime + "," + s.radius + "," + s.dysonRadius + "," + s.temperature + "," + s.orbitScaler+"," + s.lightBalanceRadius+"\n";
-            }
-            GS2.DumpObjectToJson(path, starlist);
+            //string starlist = "ClassFactor,Type,Spectr,Age,Mass,Color,Luminosity,Lifetime,Radius,Dyson Radius,Temperature,Orbit Scaler,LightbalRadius\n";
+            //foreach (StarData s in GameMain.galaxy.stars)
+            //{
+            //    starlist+=s.classFactor+","+s.type + "," + s.spectr + "," + s.age + "," + s.mass +"," + s.color + "," + s.luminosity + "," + s.lifetime + "," + s.radius + "," + s.dysonRadius + "," + s.temperature + "," + s.orbitScaler+"," + s.lightBalanceRadius+"\n";
+            //}
+            GS2.DumpObjectToJson(path, GSSettings.Instance);
         }
         private void FilenameInputCallback(object result)
         {
