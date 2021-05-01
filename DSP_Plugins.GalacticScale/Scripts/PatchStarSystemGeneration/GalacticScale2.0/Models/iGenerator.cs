@@ -67,6 +67,11 @@ namespace GalacticScale
         {
             return ContainsKey(key)?this[key]:null;
         }
+        public string GetString(string key, string Default = "", bool forceToString = false)
+        {
+            string parsedString = ContainsKey(key)?this[key] is string?this[key]:forceToString?this[key].ToString():Default:Default;
+            return parsedString;
+        }
         public int GetInt(string key, int Default = 0)
         {
             int parsedResult;

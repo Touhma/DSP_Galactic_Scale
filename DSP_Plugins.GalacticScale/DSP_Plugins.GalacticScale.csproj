@@ -144,6 +144,7 @@
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\GSStar.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\GalacticScale2.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\Models\GSSettings.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\StarDefaults.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\PatchOnStarGen.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\CreateStar.cs" />
     <Compile Include="Scripts\PatchStarSystemGeneration\GalacticScale2.0\StarGen\CreateBirthStar.cs" />

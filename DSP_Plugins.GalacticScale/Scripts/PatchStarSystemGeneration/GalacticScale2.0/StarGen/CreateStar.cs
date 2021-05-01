@@ -31,9 +31,7 @@ namespace GalacticScale
             starData.id = id;
             starData.seed = GSSettings.Stars[id -1].Seed;
             GSSettings.Stars[id - 1].assignedIndex = id - 1;
-            //if (GSSettings.Stars[id - 1].pos == new VectorLF3()) GSSettings.Stars[id - 1].pos = tmp_pos;
             starData.position = GSSettings.Stars[id -1].position;
-            GS2.Log("Stardata.position = " + starData.position + " " + GSSettings.Stars[id - 1].position);
             starData.uPosition = starData.position * 2400000.0;
             starData.planetCount = GSSettings.Stars[id - 1].bodyCount;
             starData.resourceCoef = GSSettings.Stars[id -1].resourceCoef;

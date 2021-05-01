@@ -101,10 +101,33 @@ namespace GalacticScale
             GS2.Log("TEST3");
             RectTransform checkBoxProto = GameObject.Find("Option Window/details/content-1/fullscreen").GetComponent<RectTransform>(); //need to remove localizer, has textcomponent, and child called Checkbox with a UIToggle and a unityengine.ui.toggle
             templateCheckBox = CreateTemplate(checkBoxProto);
+            GS2.Log("TEST4"); 
             RectTransform sliderProto = GameObject.Find("Option Window/details/content-1/dofblur").GetComponent<RectTransform>(); // localizer,  a textcomponent, has child called slider which has a UI.Slider component ,
             templateSlider = CreateTemplate(sliderProto);
-            RectTransform inputProto = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed").GetComponent<RectTransform>(); //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
-            templateInputField = CreateTemplate(inputProto);
+            GS2.Log("TEST5");
+            RectTransform inputFieldProto = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed").GetComponentInChildren<InputField>().GetComponent<RectTransform>(); //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
+            GS2.Log("TEST6");
+            RectTransform tempTransform = CreateTemplate(templateUIComboBox);
+            GS2.Log("TEST7");
+            UIComboBox tr = tempTransform.GetComponentInChildren<UIComboBox>();
+            GS2.Log("TEST7.5"); 
+            RectTransform tr2 = tr.GetComponent<RectTransform>();
+            GS2.Log("TEST8");
+            tempTransform.name = "TempTransform";
+            inputFieldProto.name = "inputFieldProto";
+            inputFieldProto.SetParent(tempTransform);
+            inputFieldProto.anchorMin = tr2.anchorMin;
+            inputFieldProto.anchorMax = tr2.anchorMax;
+            inputFieldProto.offsetMin = tr2.offsetMin;
+            inputFieldProto.offsetMax = tr2.offsetMax;
+            inputFieldProto.sizeDelta = tr2.sizeDelta;
+            inputFieldProto.anchoredPosition = new Vector2(250, -15);
+            Object.DestroyImmediate(tempTransform.GetComponentInChildren<UIComboBox>().gameObject);
+            templateInputField = CreateTemplate(tempTransform);
+            templateInputField.name = "templateInputField*";
+
+            
+            GS2.Log("4");
 
 
             //Get a list of all loaded generators, and add a combobox to select between them.
@@ -166,6 +189,8 @@ namespace GalacticScale
                 switch (options[i].type)
                 {
                     case "UIComboBox": CreateComboBox(options[i], details, i); break;
+                    case "Input": CreateInputField(options[i], details, i); break;
+                    case "Button": CreateButton(options[i], details, i); break;
                     default: break;
                 }
             }
@@ -203,6 +228,7 @@ namespace GalacticScale
                 {
                     case "ComboBox": CreateComboBox(options[i], canvas, i); break;
                     case "Button": CreateButton(options[i], canvas, i); break;
+                    case "Input": CreateInputField(options[i], canvas, i); break;
                     default: break;
                 }
                 //if (options[i].postfix != null) OptionsUIPostfix.AddListener(options[i].postfix);
@@ -234,9 +260,33 @@ namespace GalacticScale
             tipTransform.GetComponent<Text>().text = o.tip;
             if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             GS2.Log("Finished Creating ComboBox");
-        }        
-        
-        // Create a button from a GSOption definition
+        }
+
+        // Create an input field from a GSOption definition
+        private static void CreateInputField(GSOption o, RectTransform canvas, int index)
+        {
+            GS2.Log("CreateInputField");
+            RectTransform inputRect = Object.Instantiate(templateInputField, canvas);
+            inputRect.name = o.label;
+            inputRect.gameObject.SetActive(true);
+            optionRects.Add(inputRect);
+            o.rectTransform = inputRect;
+            int offset = index * -40;
+            inputRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+            InputField inputUI = inputRect.GetComponentInChildren<InputField>();
+            inputUI.name = o.label + "_inputField";
+            inputUI.text = o.data as string;
+            inputUI.onValueChanged.RemoveAllListeners();
+            if (o.callback != null) inputUI.onValueChanged.AddListener(delegate { o.callback(inputUI.text); });
+            inputRect.GetComponentInChildren<Text>().text = o.label;
+            Object.Destroy(inputUI.GetComponentInChildren<UnityEngine.EventSystems.EventTrigger>());
+            RectTransform tipTransform = inputRect.GetChild(0).GetComponent<RectTransform>();
+            tipTransform.gameObject.name = "optionTip-" + (index);
+            Object.Destroy(tipTransform.GetComponent<Localizer>());
+            tipTransform.GetComponent<Text>().text = o.tip;
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
+            GS2.Log("Finished Creating InputField");
+        }           // Create a button from a GSOption definition
         private static void CreateButton(GSOption o, RectTransform canvas, int index)
         {
             GS2.Log("CreateButton");
