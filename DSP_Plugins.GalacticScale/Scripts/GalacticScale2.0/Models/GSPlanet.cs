@@ -7,15 +7,15 @@ namespace GalacticScale
     public class GSTheme
     {
         public string name;
-        public EPlanetType type;
-        public ThemeProto theme;
+        public EPlanetType type = EPlanetType.Ocean;
+        public int LDBThemeId = 1;
         public int algo = 0;
     }
 
-    public class GSplanet
+    public class GSPlanet
     {
         private string _name;
-        private GSTheme _theme;
+        private string _theme;
         private int _radius = -1;
         private float _orbitRadius = -1;
         private float _orbitInclination = -1;
@@ -26,10 +26,13 @@ namespace GalacticScale
         private float _rotationPeriod = -1;
         private float _rotationPhase = -1;
         private float _luminosity = -1;
-        private List<GSplanet> _moons = new List<GSplanet>();
+        [NonSerialized]
+        public PlanetData planetData;
+        private List<GSPlanet> _moons = new List<GSPlanet>();
         [SerializeField]
         public string Name { get => _name; set => _name = value; }
-        public GSTheme Theme { get => _theme != null ? _theme : GetTheme(); set => _theme = value; }
+        [SerializeField]
+        public string Theme { get => _theme != null ? _theme : GetTheme(); set => _theme = value; }
         [SerializeField]
         public int Radius { get => _radius < 0 ? GetRadius():_radius; set => _radius = value; }
         [SerializeField]
@@ -51,27 +54,31 @@ namespace GalacticScale
         [SerializeField]
         public float Luminosity { get => _luminosity >= 0 ? _luminosity : GetLuminosity(); set => _luminosity = value; }
         [SerializeField]
-        public List<GSplanet> Moons { get => _moons; set => _moons = value; }
+        public List<GSPlanet> Moons { get => _moons; set => _moons = value; }
         public int MoonCount { get
             {
                 int count = 0;
                 if (Moons == null) return 0;
-                foreach (GSplanet moon in Moons)
+                foreach (GSPlanet moon in Moons)
                 {
                     count++;
                     count += moon.MoonCount;
                 }
                 return count;
-
             }
         }
-        public GSplanet()
+        public int Seed = -1;
+        
+        public GSPlanet()
         {
 
         }
-        public GSplanet(string name) { }
-        public GSplanet(string name, 
-            GSTheme theme, 
+
+        public GSPlanet(string name) { 
+            Name = name; 
+        }
+        public GSPlanet(string name, 
+            string theme, 
             int radius, 
             float orbitRadius, 
             float orbitInclination, 
@@ -82,63 +89,89 @@ namespace GalacticScale
             float rotationPeriod,
             float rotationPhase,
             float luminosity,
-            List<GSplanet> moons)
+            List<GSPlanet> moons)
         {
-            this.Name = name;
-            
-            this.Theme = theme;
-            
-            
+            Name = name;
+            Theme = theme;
+            Radius = radius;
+            OrbitRadius = orbitRadius;
+            OrbitInclination = orbitInclination;
+            OrbitLongitude = orbitLongitude;
+            OrbitalPeriod = orbitalPeriod;
+            OrbitPhase = orbitPhase;
+            Obliquity = obliquity;
+            RotationPeriod = rotationPeriod;
+            RotationPhase = rotationPhase;
+            Luminosity = luminosity;
 
         }
         public override string ToString()
         {
           return this.Name;
         }
-        private GSTheme GetTheme()
+        private string GetTheme()
         {
-            _theme = GS2.planetThemes["Mediterranian"];
+            _theme = "Mediterranian";
             return _theme;
         }
         private float GetLuminosity()
         {
-            return 1;
+            if (planetData == null) return 1f;
+            float sunDistance = ((planetData.orbitAround != 0) ? planetData.orbitAroundPlanet.orbitRadius : planetData.orbitRadius);
+            float luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (sunDistance + 0.01f), 0.6f);
+            if (luminosity > 1f)
+            {
+                luminosity = Mathf.Log(luminosity) + 1f;
+                luminosity = Mathf.Log(luminosity) + 1f;
+                luminosity = Mathf.Log(luminosity) + 1f;
+            }
+            luminosity = Mathf.Round(luminosity * 100f) / 100f;
+            return luminosity;
         }
         private int GetRadius()
         {
-            return 200;
+            _radius = 200;
+            return _radius;
         }
         private float GetOrbitRadius ()
         {
-            return 1;
+            _orbitRadius = GS2.random.Next(10);
+            return _orbitRadius;
         }
         private float GetOrbitInclination()
         {
-            return 1;
+            _orbitInclination = 0;
+            return _orbitInclination;
         }
         private float GetOrbitLongitude()
         {
-            return 1;
+            _orbitLongitude = 0;
+            return _orbitLongitude;
         }
         private float GetOrbitalPeriod()
         {
-            return 1000;
+            _orbitalPeriod = 1000;
+            return _orbitalPeriod;
         }
         private float GetOrbitPhase()
         {
-            return 10;
+            _orbitPhase = 0;
+            return _orbitPhase;
         }
         private float GetObliquity()
         {
-            return 1;
+            _obliquity = 0;
+            return _obliquity;
         }
         private float GetRotationPeriod()
         {
-            return 20;
+            _rotationPeriod = 1000;
+            return _rotationPeriod;
         }
         private float GetRotationPhase()
         {
-            return 1;
+            _rotationPhase = 0;
+            return _rotationPhase;
         }
       
     }

@@ -9,6 +9,8 @@ namespace GalacticScale
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect),"SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
+            SettingsUI.TryCaptureSeedInput();
+            
             GalaxyData galaxy;
             if (GS2.Vanilla) galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             else galaxy = GS2.CreateGalaxy(__instance.gameDesc, false);
@@ -43,13 +45,20 @@ namespace GalacticScale
             {
                 GS2.Log("Disabling Seed Input");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
-                if (inputField != null) inputField.SetActive(false);
+                //if (inputField != null) inputField.GetComponent<InputField>().interactable = false;
+                inputField.transform.parent.GetComponent<Text>().enabled = false;
+                inputField.GetComponentInChildren<Text>().enabled = false;
+                inputField.GetComponent<Image>().enabled = false;
             }
             else
             {
                 GS2.Log("Enabling Seed Input");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
-                if (inputField != null) inputField.SetActive(true);
+                //if (inputField != null) inputField.SetActive(true);
+                //inputField.GetComponent<InputField>().interactable = true;
+                inputField.transform.parent.GetComponent<Text>().enabled = true;
+                inputField.GetComponentInChildren<Text>().enabled = true;
+                inputField.GetComponent<Image>().enabled = true;
             }
             GS2.Log("done");
             return false;
@@ -140,12 +149,17 @@ namespace GalacticScale
         public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider,
             ref GameDesc ___gameDesc, float val)
         {
+            GS2.Log("OnStarCountSliderValueChange");
             var num = (int)(___starCountSlider.value + 0.100000001490116);
+            GS2.Log("OnStarCountSliderValueChange2"); 
             if (num == ___gameDesc.starCount) return false;
-
+            GS2.Log("OnStarCountSliderValueChange3");
             ___gameDesc.starCount = num;
+            GS2.Log("OnStarCountSliderValueChange4");
             GS2.gameDesc = ___gameDesc;
+            GS2.Log("OnStarCountSliderValueChange5");
             __instance.SetStarmapGalaxy();
+            GS2.Log("OnStarCountSliderValueChange6");
             return false;
         }
 

@@ -39,6 +39,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
+            //Harmony.CreateAndPatchAll(typeof(PatchOnMainMenu));
             //Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarMap));
         }
 

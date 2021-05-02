@@ -1,10 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using BCE;
 namespace GalacticScale
 {
     public static partial class GS2
     {
+        private static int progCount = 0;
+        public static void prog(string name, bool end = false)
+        {
+            if (end) { console.Write("]\n", ConsoleColor.Gray); progCount = -1; }
+            else
+            {
+                if (progCount == 0) { console.Write(name, ConsoleColor.Cyan); console.Write(" [", ConsoleColor.Gray); }
+                else console.Write((progCount % 5 == 0) ? "|" : ".", ConsoleColor.Green);
+            }
+            progCount++;
+        }
         public static float RandNormal(
                 float averageValue,
                 float standardDeviation,
@@ -138,5 +149,6 @@ namespace GalacticScale
             }
             return false;
         }
+        
     }
 }

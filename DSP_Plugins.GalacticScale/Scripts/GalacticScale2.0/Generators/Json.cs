@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GalacticScale.Generators
 {
@@ -25,13 +26,14 @@ namespace GalacticScale.Generators
 
         private string filename = "GSData";
         private List<string> filenames = new List<string>();
+        private string dumpFilename = "_dump";
         public void Init()
         {
             RefreshFileNames();
             GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
             options.Add(new GSOption("Custom Galaxy", "ComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
-            options.Add(new GSOption("Export Filename", "Input", "Export", DumpJSONCallback, () => { }));
-            options.Add(new GSOption("Dump JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
+            options.Add(new GSOption("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
+            options.Add(new GSOption("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
         }
         public List<GSOption> options = new List<GSOption>();
         public void Generate(int starCount)
@@ -45,11 +47,13 @@ namespace GalacticScale.Generators
         {
             GS2.Log("Importing JSON Preferences");
             if (preferences != null && preferences.ContainsKey("filename")) filename = (string)preferences["filename"];
+            //if (preferences != null && preferences.ContainsKey("dumpFilename")) dumpFilename = (string)preferences["dumpFilename"];
+            dumpFilename = preferences.GetString("dumpFilename", dumpFilename);
         }
 
         public GSGenPreferences Export()
         {
-            return new GSGenPreferences() { { "filename", filename } };
+            return new GSGenPreferences() { { "filename", filename }, { "dumpFilename", dumpFilename } };
         }
         public void CustomFileSelectorCallback(object result)
         {
@@ -68,12 +72,28 @@ namespace GalacticScale.Generators
             }
             options[0].rectTransform.GetComponentInChildren<UIComboBox>().itemIndex = index;
         }
+        private void FilenameInputPostfix()
+        {
+            GS2.Log("Json:Postfix Filename");
+            options[1].rectTransform.GetComponentInChildren<InputField>().text = dumpFilename;
+        }
         private void DumpJSONCallback(object result)
         {
-            string outputDir = Path.Combine(GS2.DataDir, "output");
-            string path = Path.Combine(outputDir, DateTime.Now.ToString("yyMMddHHmmss") + "dump.json");
+            string outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
+            string path = Path.Combine(outputDir, dumpFilename + ".json");
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+            //string starlist = "ClassFactor,Type,Spectr,Age,Mass,Color,Luminosity,Lifetime,Radius,Dyson Radius,Temperature,Orbit Scaler,LightbalRadius\n";
+            //foreach (StarData s in GameMain.galaxy.stars)
+            //{
+            //    starlist+=s.classFactor+","+s.type + "," + s.spectr + "," + s.age + "," + s.mass +"," + s.color + "," + s.luminosity + "," + s.lifetime + "," + s.radius + "," + s.dysonRadius + "," + s.temperature + "," + s.orbitScaler+"," + s.lightBalanceRadius+"\n";
+            //}
             GS2.DumpObjectToJson(path, GSSettings.Instance);
+        }
+        private void FilenameInputCallback(object result)
+        {
+            string fn = result as string;
+            if (fn != "") dumpFilename = fn;
+            GS2.Log("Changed Dump Filename to : " + fn);
         }
         private void RefreshFileNames()
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public static partial class GS2
     {
@@ -13,7 +10,7 @@ namespace GalacticScale
             starData.galaxy = galaxy;
             starData.planetCount = GSSettings.BirthStar.bodyCount;
             starData.index = 0;
-            starData.level = 0.0f; //galaxy.starCount <= 1 ? 0.0f : (float)starData.index / (float)(galaxy.starCount - 1);
+            starData.level = 0.0f; 
             starData.id = 1;
             starData.seed = GSSettings.BirthStar.Seed;
             starData.resourceCoef = GSSettings.BirthStar.resourceCoef;
