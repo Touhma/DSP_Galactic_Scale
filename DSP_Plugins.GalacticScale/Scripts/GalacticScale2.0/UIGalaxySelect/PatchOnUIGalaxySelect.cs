@@ -45,13 +45,20 @@ namespace GalacticScale
             {
                 GS2.Log("Disabling Seed Input");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
-                if (inputField != null) inputField.SetActive(false);
+                //if (inputField != null) inputField.GetComponent<InputField>().interactable = false;
+                inputField.transform.parent.GetComponent<Text>().enabled = false;
+                inputField.GetComponentInChildren<Text>().enabled = false;
+                inputField.GetComponent<Image>().enabled = false;
             }
             else
             {
                 GS2.Log("Enabling Seed Input");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
-                if (inputField != null) inputField.SetActive(true);
+                //if (inputField != null) inputField.SetActive(true);
+                //inputField.GetComponent<InputField>().interactable = true;
+                inputField.transform.parent.GetComponent<Text>().enabled = true;
+                inputField.GetComponentInChildren<Text>().enabled = true;
+                inputField.GetComponent<Image>().enabled = true;
             }
             GS2.Log("done");
             return false;

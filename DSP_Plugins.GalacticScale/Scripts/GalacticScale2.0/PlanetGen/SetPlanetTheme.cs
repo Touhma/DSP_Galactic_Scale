@@ -11,7 +11,7 @@ namespace GalacticScale
          PlanetData planet,
          GSPlanet gsPlanet)
         {
-            GS2.prog("SetPlanetTheme()");
+            GS2.prog("SetPlanetTheme("+ gsPlanet.Theme + ")");
             int seed = 0;
             GSTheme gsTheme = GS2.planetThemes[gsPlanet.Theme];
             GS2.prog("SetPlanetTheme");
@@ -52,8 +52,11 @@ namespace GalacticScale
             planet.type = themeProto.PlanetType;
             planet.ionHeight = themeProto.IonHeight;
             planet.windStrength = themeProto.Wind;
+            Log("planet.windStrength = " + planet.windStrength);
             planet.waterHeight = themeProto.WaterHeight;
+            Log("waterheight = " + planet.waterHeight);
             planet.waterItemId = themeProto.WaterItemId;
+            Log("waterItemId = " + planet.waterItemId);
             planet.levelized = themeProto.UseHeightForBuild;
             GS2.prog("SetPlanetTheme");
             if (planet.type != EPlanetType.Gas)

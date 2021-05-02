@@ -35,22 +35,24 @@ namespace GalacticScale
         public static UnityEvent OptionsUIPostfix = new UnityEvent();
         public static void TryCaptureSeedInput()
         {
-            GS2.prog("TryCaptureSeedInput()");
-            GameObject galaxyseed = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed");
-            GS2.prog("TryCaptureSeedInput()"); if (galaxyseed != null && SettingsUI.seedInput == null)
-            {
-                GS2.prog("TryCaptureSeedInput()");
-                RectTransform seedInputRect = galaxyseed.GetComponentInChildren<InputField>().GetComponent<RectTransform>();
-                GS2.prog("TryCaptureSeedInput()"); 
-                if (galaxyseed == null) GS2.Log("SeedInput Null");
+            //GS2.Log("TryCaptureSeedInput(1)");
+            //if (seedInput != null) return;
+            //GameObject galaxyseed = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed");
+            //GS2.Log("TryCaptureSeedInput(2)"); if (galaxyseed != null && seedInput == null)
+            //{
+            //    GS2.Log("TryCaptureSeedInput(3)");
+            //    RectTransform seedInputRect = Object.Instantiate(galaxyseed.GetComponentInChildren<InputField>().GetComponent<RectTransform>());
+            //    GS2.Log("TryCaptureSeedInput(4)"); 
+            //    if (galaxyseed == null) GS2.Log("SeedInput Null");
                 
-                else
-                {
-                    GS2.prog("TryCaptureSeedInput()");
-                    SettingsUI.seedInput = seedInputRect;
-                }
-                GS2.prog("TryCaptureSeedInput()", true);
-            }
+            //    else
+            //    {
+            //        GS2.Log("TryCaptureSeedInput(5)");
+            //        seedInput = seedInputRect;
+            //        seedInput.gameObject.SetActive(true);
+            //    }
+            //    GS2.Log("TryCaptureSeedInput(6)");
+            //}
         }
         public static void CreateGalacticScaleSettingsPage(UIButton[] _tabButtons, Text[] _tabTexts)
         {
@@ -133,7 +135,12 @@ namespace GalacticScale
             templateSlider = CreateTemplate(sliderProto);
             GS2.Log("CreateGalacticScaleSettingsPage TEST5");
             TryCaptureSeedInput();
-            RectTransform inputFieldProto = seedInput;// GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed").GetComponentInChildren<InputField>().GetComponent<RectTransform>(); //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
+            RectTransform inputFieldProto = seedInput;
+            inputFieldProto = Object.Instantiate(GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed").GetComponentInChildren<InputField>().GetComponent<RectTransform>(), details, false); //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
+            //inputFieldProto.GetComponent<InputField>().interactable = true;
+            inputFieldProto.transform.parent.GetComponent<Text>().enabled = true;
+            inputFieldProto.GetComponentInChildren<Text>().enabled = true;
+            inputFieldProto.GetComponent<Image>().enabled = true;
             GS2.Log("CreateGalacticScaleSettingsPage TEST6 - " + (seedInput != null));
             RectTransform tempTransform = CreateTemplate(templateUIComboBox);
             GS2.Log("CreateGalacticScaleSettingsPage TEST7");

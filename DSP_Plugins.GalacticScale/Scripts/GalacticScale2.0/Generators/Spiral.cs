@@ -49,9 +49,23 @@ namespace GalacticScale.Generators
             }
             List<GSPlanet> p = new List<GSPlanet>
             {
-                new GSPlanet("Urf"), 
-                new GSPlanet("Jupiter", "Gas", 80, 2.0f, -1, -1, -1, -1, -1, -1, -1, -1, null),
-                new GSPlanet("SuperJupiter", "Gas", 500, 2.0f, -1, -1, -1, 180, -1, -1, -1, -1, null),
+                new GSPlanet("Mediterranian", "Mediterranian", 80, 0.5f, -1, -1, -1, 0, -1, -1, -1, -1, null),
+                new GSPlanet("Gas", "Gas", 80, 0.5f, -1, -1, -1, 15, -1, -1, -1, -1, null),
+                new GSPlanet("Gas2", "Gas2", 80, 0.5f, -1, -1, -1, 30, -1, -1, -1, -1, null),
+                new GSPlanet("IceGiant", "IceGiant", 80, 0.5f, -1, -1, -1, 45, -1, -1, -1, -1, null),
+                new GSPlanet("IceGiant2", "IceGiant2", 80, 0.5f, -1, -1, -1, 60, -1, -1, -1, -1, null),
+                new GSPlanet("Arid", "Arid", 80, 0.5f, -1, -1, -1, 75, -1, -1, -1, -1, null),
+                new GSPlanet("AshenGelisol", "AshenGelisol", 80, 0.5f, -1, -1, -1, 90, -1, -1, -1, -1, null),
+                new GSPlanet("Jungle", "Jungle", 80, 0.5f, -1, -1, -1, 105, -1, -1, -1, -1, null),
+                new GSPlanet("Lava", "Lava", 80, 0.5f, -1, -1, -1, 120, -1, -1, -1, -1, null),
+                new GSPlanet("Test", "Test", 80, 0.5f, -1, -1, -1, 135, -1, -1, -1, -1, null),
+                new GSPlanet("Ice", "Ice", 80, 0.5f, -1, -1, -1, 150, -1, -1, -1, -1, null),
+                new GSPlanet("Barren", "Barren", 80, 0.5f, -1, -1, -1, 165, -1, -1, -1, -1, null),
+                new GSPlanet("Gobi", "Gobi", 80, 0.5f, -1, -1, -1, 180, -1, -1, -1, -1, null),
+                new GSPlanet("VolcanicAsh", "VolcanicAsh", 80, 0.5f, -1, -1, -1, 195, -1, -1, -1, -1, null),
+                new GSPlanet("RedStone", "RedStone", 80, 0.5f, -1, -1, -1, 210, -1, -1, -1, -1, null),
+                new GSPlanet("Prarie", "Prarie", 80, 0.5f, -1, -1, -1, 225, -1, -1, -1, -1, null),
+                new GSPlanet("Ocean", "Ocean", 80, 0.5f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             };
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.O, EStarType.MainSeqStar, p));
             for (var i = 1; i < starCount; i++)
