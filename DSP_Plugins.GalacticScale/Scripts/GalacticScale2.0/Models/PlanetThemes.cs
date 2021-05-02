@@ -6,9 +6,16 @@ namespace GalacticScale
     {
         public static Dictionary<string, GSTheme> planetThemes = new Dictionary<string, GSTheme>()
         {
+            ["Mediterranean"] = new GSTheme()
+            {
+                name = "Mediterranean",
+                type = EPlanetType.Ocean,
+                LDBThemeId = 1,
+                algo = 0,
+            },
             ["Mediterranian"] = new GSTheme()
             {
-                name = "Mediterranian",
+                name = "Mediterranean",
                 type = EPlanetType.Ocean,
                 LDBThemeId = 1,
                 algo = 0,

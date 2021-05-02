@@ -81,6 +81,7 @@ namespace GalacticScale
                 StarData starData = galaxy.stars[0];
                 for (int p = 0; p < starData.planetCount; p++)
                 {
+                    Log("Setting BirthPlanet");
                     PlanetData planet = starData.planets[p];
                     ThemeProto themeProto = LDB.themes.Select(planet.theme);
                     if (themeProto != null && themeProto.Distribute == EThemeDistribute.Birth)
@@ -92,6 +93,8 @@ namespace GalacticScale
                     else
                     {
                         Patch.Debug("FAILED TO SET BIRTH PLANET!", BepInEx.Logging.LogLevel.Warning, true);
+                        galaxy.birthPlanetId = galaxy.stars[0].planets[0].id;
+                        galaxy.birthStarId = galaxy.stars[0].id;
                         DumpObjectToJson(Path.Combine(DataDir, "error.json"), starData.planets);
                     }
                 }

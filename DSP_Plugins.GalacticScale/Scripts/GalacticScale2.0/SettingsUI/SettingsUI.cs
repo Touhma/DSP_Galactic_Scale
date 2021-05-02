@@ -3,7 +3,7 @@ using BepInEx;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using NGPT;
+using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -135,12 +135,18 @@ namespace GalacticScale
             templateSlider = CreateTemplate(sliderProto);
             GS2.Log("CreateGalacticScaleSettingsPage TEST5");
             TryCaptureSeedInput();
-            RectTransform inputFieldProto = seedInput;
-            inputFieldProto = Object.Instantiate(GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed").GetComponentInChildren<InputField>().GetComponent<RectTransform>(), details, false); //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
+            //RectTransform inputFieldProto = seedInput;
+            GameObject inputFieldGO = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
+            if (inputFieldGO == null) GS2.Log("SHIT");
+            RectTransform inputFieldProto = Object.Instantiate(inputFieldGO.GetComponent<RectTransform>(), details, false);
+            GS2.Log("Hmm");
+            //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
             //inputFieldProto.GetComponent<InputField>().interactable = true;
-            inputFieldProto.transform.parent.GetComponent<Text>().enabled = true;
+            if (inputFieldProto.transform.parent.GetComponent<Text>() != null) inputFieldProto.transform.parent.GetComponent<Text>().enabled = true;
+            GS2.Log("Hmm2");
             inputFieldProto.GetComponentInChildren<Text>().enabled = true;
-            inputFieldProto.GetComponent<Image>().enabled = true;
+            GS2.Log("Hmm3");
+            if (inputFieldProto.GetComponent<Image>() != null) inputFieldProto.GetComponent<Image>().enabled = true;
             GS2.Log("CreateGalacticScaleSettingsPage TEST6 - " + (seedInput != null));
             RectTransform tempTransform = CreateTemplate(templateUIComboBox);
             GS2.Log("CreateGalacticScaleSettingsPage TEST7");
