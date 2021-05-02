@@ -17,19 +17,10 @@ namespace GalacticScale
         public static List<VectorLF3> tmp_drunk;
         public static int[] tmp_state;
         public static GalaxyData galaxy;
-        public static System.Random random;
+        public static System.Random random = new Random(2);
         public static GameDesc gameDesc;
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }
-        public static Dictionary<string, GSTheme> planetThemes = new Dictionary<string, GSTheme>()
-        {
-            ["Mediterranian"] = new GSTheme()
-            {
-                name = "Mediterranian",
-                type = EPlanetType.Ocean,
-                theme = LDB.themes.Select(1),
-            },
-        };
         
        
         public static bool LoadSettingsFromJson(string path)

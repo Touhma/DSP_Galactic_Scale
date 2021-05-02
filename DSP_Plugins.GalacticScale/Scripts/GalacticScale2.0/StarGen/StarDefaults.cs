@@ -80,7 +80,7 @@ namespace GalacticScale
             GSRand r = new GSRand(star.Seed);
             switch (t)
             {
-                case EStarType.BlackHole: return r.Range(0.9f, 0.97f); //working on these
+                case EStarType.BlackHole: return r.Range(0.9f, 0.97f); 
                 case EStarType.NeutronStar: return r.Range(0.83f, 0.89f);
                 case EStarType.WhiteDwarf: return r.Range(0.02f, 0.75f);
                 case EStarType.GiantStar: 
@@ -92,8 +92,8 @@ namespace GalacticScale
                         case ESpectrType.F: return r.Range(0.4f, 0.599f);
                         case ESpectrType.G: return r.Range(0.2f, 0.399f);
                         case ESpectrType.K: return r.Range(0.0f, 0.199f);
-                        case ESpectrType.M: return 0f; //correct
-                        case ESpectrType.O: return 1f; //correct
+                        case ESpectrType.M: return 0f;
+                        case ESpectrType.O: return 1f;
                     }
                     break;
                 default: break;
@@ -108,7 +108,7 @@ namespace GalacticScale
             GSRand r = new GSRand(star.Seed);
             switch (t)
             {
-                case EStarType.BlackHole: return r.Range(0.005f, 0.0075f); //working on these
+                case EStarType.BlackHole: return r.Range(0.005f, 0.0075f); 
                 case EStarType.NeutronStar: return r.Range(0.27f, 0.44f);
 
                 case EStarType.WhiteDwarf: return r.Range(0.03f, 0.095f);
@@ -160,13 +160,11 @@ namespace GalacticScale
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G: return r.Range(6000f, 8000f); 
-
                         case ESpectrType.B:
                         case ESpectrType.O: return r.Range(25f, 30f);
-
                         case ESpectrType.M: return r.Range(9600 - 11300f, 2f);
                     }
-                    break;  //b type 26 //K type 6100-7900 9600-11300
+                    break;  
                 case EStarType.MainSeqStar:
                     switch (s)
                     {
@@ -193,9 +191,8 @@ namespace GalacticScale
             {
                 case EStarType.BlackHole:   return r.Range(3.45f, 4.6f); 
                 case EStarType.NeutronStar: return r.Range(0.37f, 0.52f);
-
                 case EStarType.WhiteDwarf:  return r.Range(0.19f, 0.45f); 
-                case EStarType.GiantStar:   return r.Range(12f, 31f); // b type 12.8 //k 13-17 // m 13-21
+                case EStarType.GiantStar:   return r.Range(12f, 31f); 
                 case EStarType.MainSeqStar:
                     switch (s)
                     {
@@ -222,7 +219,6 @@ namespace GalacticScale
             {
                 case EStarType.BlackHole: return r.Range(0.69f, 0.76f); 
                 case EStarType.NeutronStar: return r.Range(0.85f, 1.03f);
-
                 case EStarType.WhiteDwarf: return r.Range(0.24f, 0.55f);
                 case EStarType.GiantStar:
                     switch (s)
@@ -231,13 +227,11 @@ namespace GalacticScale
                         case ESpectrType.F:
                         case ESpectrType.G:
                         case ESpectrType.K: return r.Range(0.79f, 0.8f);
-
                         case ESpectrType.B:
                         case ESpectrType.O: return r.Range(3f, 3f);
-
                         case ESpectrType.M: return r.Range(0.75f, 1f);
                     }
-                    break; //b type 2.4 // k 0.79-0.8 //m 0.75-.92
+                    break; 
                 case EStarType.MainSeqStar:
                     switch (s)
                     {
@@ -317,7 +311,7 @@ namespace GalacticScale
                         case ESpectrType.B:
                         case ESpectrType.O: return r.Range(8f, 11f);
                     }
-                    break;//B type got 8.6 // k 2.8 //m 2.7
+                    break;
                 case EStarType.MainSeqStar:
                     switch (s)
                     {
@@ -343,7 +337,6 @@ namespace GalacticScale
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(2.0f, 2.5f); 
-
                 case EStarType.NeutronStar: return r.Range(11f, 15f);
                 case EStarType.WhiteDwarf: return r.Range(0.09f, 0.66f);
                 case EStarType.GiantStar:
@@ -384,7 +377,6 @@ namespace GalacticScale
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(1.0f, 1.35f); 
-
                 case EStarType.NeutronStar: return r.Range(0.54f, 0.95f);
                 case EStarType.WhiteDwarf: return r.Range(-3.4f, 0.22f);
                 case EStarType.GiantStar:
@@ -404,7 +396,7 @@ namespace GalacticScale
             }
             return 0f;
         }
-        public static float HabitableRadius(GSStar star) //Complete
+        public static float HabitableRadius(GSStar star) 
         {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
@@ -422,19 +414,12 @@ namespace GalacticScale
         }
         public static GSStar Random(int seed = -1, string name = null, bool special = false)
         {
-            GS2.Log("Random 1");
             if (seed == -1) seed = GS2.random.Next();
-            GS2.Log("Random 2");
             if (name == null) name = "Star-" + seed;
-            GS2.Log("Random 3");
-            int r = GS2.random.Next(0, 7);
-            GS2.Log("r = " + r);
+            int r = GS2.random.Next(7);
             ESpectrType spectr = special ? ESpectrType.X : (ESpectrType)r;
-            GS2.Log("Random 4");
             EStarType type = special ?(GS2.random.Next(10) > 5)?EStarType.GiantStar:(GS2.random.Next(10)<=1)?EStarType.WhiteDwarf:(GS2.random.Next(10)<=5)?EStarType.BlackHole:EStarType.NeutronStar:EStarType.MainSeqStar;
-            GS2.Log("Random 5");
-            GSStar star = new GSStar(seed, name, spectr, type, new List<GSplanet>());
-            GS2.Log("Random End");
+            GSStar star = new GSStar(seed, name, spectr, type, new List<GSPlanet>());
             return star;
         }
     }

@@ -9,7 +9,7 @@ namespace GalacticScale
         public string Name;
         public ESpectrType Spectr;
         public EStarType Type;
-        public List<GSplanet> Planets = new List<GSplanet>();
+        public List<GSPlanet> Planets = new List<GSPlanet>();
         public int Seed;
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
@@ -26,10 +26,10 @@ namespace GalacticScale
         private float _lightBalanceRadius = -1;
         private float _resourceCoef = 0.6f;
         private float _physicsRadius = -1;
-        private VectorLF3 _pos;
+        private VectorLF3 _pos = new VectorLF3();
         [SerializeField]
         public float level = 1;
-        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, List<GSplanet> planets)
+        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, List<GSPlanet> planets)
         {
             this.Name = name;
             this.Spectr = spectr;
@@ -47,7 +47,7 @@ namespace GalacticScale
             get
             {
                 int bodyCount = 0;
-                foreach (GSplanet p in Planets)
+                foreach (GSPlanet p in Planets)
                 {
                     bodyCount++;
                     bodyCount += p.MoonCount;
@@ -86,7 +86,7 @@ namespace GalacticScale
         [SerializeField]
         public float acDiscRadius { get => _acdiscRadius < 0 ? getAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
         [SerializeField]
-        public VectorLF3 position { get => (_pos == null ) ? getPos() : _pos; set => _pos = value; }//|| (_pos == new VectorLF3() && assignedIndex != 0)
+        public VectorLF3 position { get => (_pos == new VectorLF3() && assignedIndex != 0) ? getPos() : _pos; set => _pos = value; }
         [NonSerialized]
         public int assignedIndex = 0;
 
@@ -291,9 +291,7 @@ namespace GalacticScale
         }
         VectorLF3 getPos()
         {
-            GS2.Log("getPos " + _pos);
             _pos = GS2.tmp_poses[assignedIndex];
-            GS2.Log("getPos2 " + _pos);
             return _pos;
         }
     }

@@ -24,7 +24,10 @@
         public void Generate(int starCount)
         {
             GS2.Log("Wow, this worked. GalacticScale2");
-            GameMain.End();
+            for (var i = 0; i < starCount; i++)
+            {
+                GSStar s = StarDefaults.Random();
+            }
         }
     }
 }

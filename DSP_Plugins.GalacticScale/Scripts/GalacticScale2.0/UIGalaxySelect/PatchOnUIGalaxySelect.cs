@@ -9,6 +9,8 @@ namespace GalacticScale
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect),"SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
+            SettingsUI.TryCaptureSeedInput();
+            
             GalaxyData galaxy;
             if (GS2.Vanilla) galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             else galaxy = GS2.CreateGalaxy(__instance.gameDesc, false);
@@ -140,12 +142,17 @@ namespace GalacticScale
         public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider,
             ref GameDesc ___gameDesc, float val)
         {
+            GS2.Log("OnStarCountSliderValueChange");
             var num = (int)(___starCountSlider.value + 0.100000001490116);
+            GS2.Log("OnStarCountSliderValueChange2"); 
             if (num == ___gameDesc.starCount) return false;
-
+            GS2.Log("OnStarCountSliderValueChange3");
             ___gameDesc.starCount = num;
+            GS2.Log("OnStarCountSliderValueChange4");
             GS2.gameDesc = ___gameDesc;
+            GS2.Log("OnStarCountSliderValueChange5");
             __instance.SetStarmapGalaxy();
+            GS2.Log("OnStarCountSliderValueChange6");
             return false;
         }
 
