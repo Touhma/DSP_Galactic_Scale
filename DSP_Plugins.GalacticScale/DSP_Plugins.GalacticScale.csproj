@@ -43,7 +43,7 @@
     </Reference>
     <Reference Include="BCE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\code\BCE\BepInEx-Console-Extensions\BCE.dll</HintPath>
+      <HintPath>$(Plugins_Dir)\..\innominata-BepInEx_Console_Extensions\BCE.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
@@ -110,6 +110,23 @@
     <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSTheme.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Gas2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\IceGiant2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\IceGiant.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AridDesert.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Gas.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AshenGelisol.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Prarie.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\OceanWorld.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\RedStone.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\OceanicJungle.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Lava.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\IceGelisol.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Barren.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Gobi.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\VolcanicAsh.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Mediterranean.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />

@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public class GSTheme
-    {
-        public string name;
-        public EPlanetType type = EPlanetType.Ocean;
-        public int LDBThemeId = 1;
-        public int algo = 0;
-    }
+    //public class GSTheme
+    //{
+    //    public string name;
+    //    public EPlanetType type = EPlanetType.Ocean;
+    //    public int LDBThemeId = 1;
+    //    public int algo = 0;
+    //}
 
     public class GSPlanet
     {
