@@ -27,7 +27,8 @@ namespace GalacticScale.Generators
             options.Add(new GSOption("Dryrun Generator", "ComboBox", genList, OnDryRunChange, () => { }));
             options.Add(new GSOption("Output Settings", "Button", "Output", OnOutputSettingsClick, () => { }));
             options.Add(new GSOption("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
-            options.Add(new GSOption("Output StarData", "Button", "Output", OnDumpPlanetDataClick, () => { }));
+            options.Add(new GSOption("Output LDBThemes", "Button", "Output", OnDumpPlanetDataClick, () => { }));
+            options.Add(new GSOption("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { }));
         }
         private void OnDumpPlanetDataClick(object o)
         {
@@ -35,6 +36,15 @@ namespace GalacticScale.Generators
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             string path = Path.Combine(outputDir, "LDBThemes.json");
             GS2.DumpObjectToJson(path, LDB.themes);
+            //path = Path.Combine(outputDir, "LDBThemes.json");
+            //GS2.DumpObjectToJson(path, LDB.themes);
+        }
+        private void OnDumpThemesDataClick(object o)
+        {
+            string outputDir = Path.Combine(GS2.DataDir, "output");
+            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+            string path = Path.Combine(outputDir, "ThemeLibrary.json");
+            GS2.DumpObjectToJson(path, GS2.ThemeLibrary);
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }

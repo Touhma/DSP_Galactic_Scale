@@ -116,7 +116,7 @@ namespace GalacticScale
         }
         private float GetLuminosity()
         {
-            if (planetData == null) return 1f;
+            if (planetData == null) return -1f;
             float sunDistance = ((planetData.orbitAround != 0) ? planetData.orbitAroundPlanet.orbitRadius : planetData.orbitRadius);
             float luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (sunDistance + 0.01f), 0.6f);
             if (luminosity > 1f)

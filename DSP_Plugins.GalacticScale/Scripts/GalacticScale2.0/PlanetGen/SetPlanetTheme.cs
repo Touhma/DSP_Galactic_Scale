@@ -13,7 +13,9 @@ namespace GalacticScale
         {
             GS2.prog("SetPlanetTheme("+ gsPlanet.Theme + ")");
             int seed = 0;
-            GSTheme gsTheme = GS2.planetThemes[gsPlanet.Theme];
+            GSTheme gsTheme = GS2.ThemeLibrary[gsPlanet.Theme];
+            int ThemeID = gsTheme.AddToThemeProtoSet();
+            GS2.Log("Set Theme for Planet " + planet.name + " to " + ThemeID + " which is " + LDB.themes.Select(ThemeID).name);
             GS2.prog("SetPlanetTheme");
             //ThemeProto themeProto = LDB.themes.Select(gsTheme.LDBThemeId);
             GS2.prog("SetPlanetTheme");
@@ -27,7 +29,7 @@ namespace GalacticScale
             double rand4 = rand.NextDouble();
             GS2.prog("SetPlanetTheme");
            // Log(themeProto.ToString());
-            planet.theme = gsTheme.LDBThemeId;// themeProto.ID;
+            planet.theme = ThemeID;// themeProto.ID;
 
             GS2.prog("SetPlanetTheme");
             //if (set_algo > 0)

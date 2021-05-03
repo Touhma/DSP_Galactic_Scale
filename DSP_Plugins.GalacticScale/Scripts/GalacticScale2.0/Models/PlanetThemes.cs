@@ -4,7 +4,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static Dictionary<string, GSTheme> planetThemes = new Dictionary<string, GSTheme>()
+        public static Dictionary<string, GSTheme> ThemeLibrary = new Dictionary<string, GSTheme>()
         {
             ["Mediterranean"] = Themes.Mediterranean,
             ["Mediterranian"] = Themes.Mediterranean,
@@ -27,15 +27,15 @@ namespace GalacticScale
             ["RedStone"] = Themes.RedStone,
             ["Prarie"] = Themes.Prarie,
             ["Ocean"] = Themes.OceanWorld,
-            ["OceanWorld"] = Themes.OceanWorld,
-            ["Test"] = new GSTheme("Lava")
-            {
-                name = "Test",
-                type = EPlanetType.Vocano,
-                algo = 7,
-                terrainTint = UnityEngine.Color.green,
-                oceanTint = UnityEngine.Color.magenta
-            },
+            ["OceanWorld"] = Themes.OceanWorld//,
+            //["Test"] = new GSTheme("Lava")
+            //{
+            //    name = "Test",
+            //    type = EPlanetType.Vocano,
+            //    algo = 7,
+            //    terrainTint = UnityEngine.Color.green,
+            //    oceanTint = UnityEngine.Color.magenta
+            //},
         };
     }
 }

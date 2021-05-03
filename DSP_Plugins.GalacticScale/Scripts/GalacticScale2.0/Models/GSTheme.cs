@@ -9,6 +9,9 @@ namespace GalacticScale
 		public string name;
 		public EPlanetType type = EPlanetType.Ocean;
 		public int LDBThemeId = 1;
+		[NonSerialized]
+		public bool added = false;
+		public bool initialized = false;
 		public int algo = 0;
 		public string DisplayName = "Default Theme";
 		public GSTheme baseTheme;
@@ -120,18 +123,25 @@ namespace GalacticScale
 		public AudioClip ambientSfx;
 		public GSTheme (string baseName)
         {
-			if (GS2.planetThemes.ContainsKey(baseName)) baseTheme = GS2.planetThemes[baseName];
-			DisplayName = name;
-			if (baseTheme != null) InitTheme(baseTheme);
-			InitMaterials();
-			ProcessTints();
-			if (RareSettings.Length != RareVeins.Length * 4)
+			if (GS2.ThemeLibrary.ContainsKey(baseName)) baseTheme = GS2.ThemeLibrary[baseName];
+			if (baseTheme != null)
 			{
-				Debug.LogError("Error with RareSettings != RareVeins.Length * 4");
+				GS2.Log("Creating new Theme based on "+baseName);
+				CopyFrom(baseTheme);
 			}
 		}
-		public GSTheme() { InitMaterials(); }
-		public void InitTheme(GSTheme baseTheme) {
+		public void Process()
+        {
+			InitMaterials();
+			ProcessTints();
+			AddToLibrary();
+        }
+		public GSTheme() { }
+		public void AddToLibrary()
+        {
+			GS2.ThemeLibrary[name] = this;
+        }
+		public void CopyFrom(GSTheme baseTheme) {
 			LDBThemeId = baseTheme.LDBThemeId;
 			MaterialPath = baseTheme.MaterialPath;
 			Temperature = baseTheme.Temperature;
@@ -168,30 +178,107 @@ namespace GalacticScale
 			minimapMat = baseTheme.minimapMat;
 			ambientDesc = baseTheme.ambientDesc;
 			ambientSfx = baseTheme.ambientSfx;
-	}
+		}
+		public ThemeProto ToProto()
+        {
+			return new ThemeProto()
+			{
+				name = name,
+				Name = name,
+				sid = "",
+				SID = "",
+				PlanetType = type,
+				DisplayName = DisplayName,
+				displayName = DisplayName,
+				Algos = new[] { algo },
+				MaterialPath = MaterialPath,
+				Temperature = Temperature,
+				Distribute = Distribute,
+				ModX = ModX,
+				ModY = ModY,
+				Vegetables0 = Vegetables0,
+				Vegetables1 = Vegetables1,
+				Vegetables2 = Vegetables2,
+				Vegetables3 = Vegetables3,
+				Vegetables4 = Vegetables4,
+				Vegetables5 = Vegetables5,
+				VeinSpot = VeinSpot,
+				VeinCount = VeinCount,
+				VeinOpacity = VeinOpacity,
+				RareVeins = RareVeins,
+				RareSettings = RareSettings,
+				GasItems = GasItems,
+				GasSpeeds = GasSpeeds,
+				UseHeightForBuild = UseHeightForBuild,
+				Wind = Wind,
+				IonHeight = IonHeight,
+				WaterHeight = WaterHeight,
+				WaterItemId = WaterItemId,
+				Musics = Musics,
+				SFXPath = SFXPath,
+				SFXVolume = SFXVolume,
+				CullingRadius = CullingRadius,
+				terrainMat = terrainMat,
+				oceanMat = oceanMat,
+				atmosMat = atmosMat,
+				lowMat = lowMat,
+				thumbMat = thumbMat,
+				minimapMat = minimapMat,
+				ambientDesc = ambientDesc,
+				ambientSfx = ambientSfx,
+				ID = LDBThemeId
+			};
+        }
+		public int AddToThemeProtoSet()
+        {
+			GS2.Log("AddToThemeProtoSet() " + name);
+			if (added) return LDBThemeId;
+			if (terrainMat == null) InitMaterials();
+			int newIndex = LDB._themes.dataArray.Length; //16 items, so length is 16. ID should be 17, and index should be 16. 
+			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); //make it 17 long
+			int newId = LDB._themes.dataArray.Length; //id should be 17
+			LDBThemeId = newId; //17
+			LDB._themes.dataArray[newIndex] = ToProto(); //index shoudl be 16
+			LDB._themes.dataIndices[newId] = newIndex; //17
+			GS2.Log("Added Theme: " + name + " id " + newId + " index = " + newId + " length of array = " + LDB._themes.dataArray.Length + " and -1.id is " + LDB._themes.dataArray[LDB._themes.dataArray.Length - 1].ID); ;
+			added = true;
+			return newId;
+        }
+		public int UpdateThemeProtoSet()
+        {
+			if (!added) return AddToThemeProtoSet();
+			else
+            {
+				GS2.Log("Updating Themeprotoset");
+				LDB._themes.dataArray[LDBThemeId] = ToProto();
+				return LDBThemeId;
+            }
+		}
 		public void InitMaterials ()
         {
 			GS2.Log("Theme InitMaterials: " + name + " " + DisplayName);
 			if (terrainMaterial == null)
 				terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
-			else terrainMat = GS2.planetThemes[terrainMaterial].terrainMat;
+			else terrainMat = GS2.ThemeLibrary[terrainMaterial].terrainMat;
 			if (oceanMaterial == null) oceanMat = Resources.Load<Material>(MaterialPath + "ocean");
-			else oceanMat = GS2.planetThemes[oceanMaterial].oceanMat;
+			else oceanMat = GS2.ThemeLibrary[oceanMaterial].oceanMat;
 			if (atmosphereMaterial == null) atmosMat = Resources.Load<Material>(MaterialPath + "atmosphere");
-			else atmosMat = GS2.planetThemes[atmosphereMaterial].atmosMat; 
+			else atmosMat = GS2.ThemeLibrary[atmosphereMaterial].atmosMat; 
 			if (lowMaterial == null) lowMat = Resources.Load<Material>(MaterialPath + "low");
-			else lowMat = GS2.planetThemes[lowMaterial].lowMat; 
+			else lowMat = GS2.ThemeLibrary[lowMaterial].lowMat; 
 			if (thumbMaterial == null) thumbMat = Resources.Load<Material>(MaterialPath + "thumb");
-			else thumbMat = GS2.planetThemes[thumbMaterial].thumbMat; 
+			else thumbMat = GS2.ThemeLibrary[thumbMaterial].thumbMat; 
 			if (minimapMaterial == null) minimapMat = Resources.Load<Material>(MaterialPath + "minimap");
-			else minimapMat = GS2.planetThemes[minimapMaterial].minimapMat;
+			else minimapMat = GS2.ThemeLibrary[minimapMaterial].minimapMat;
 			if (ambient == null) ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
-			else ambientDesc = GS2.planetThemes[ambient].ambientDesc;
+			else ambientDesc = GS2.ThemeLibrary[ambient].ambientDesc;
 			ambientSfx = Resources.Load<AudioClip>(SFXPath);
+			ProcessTints();
+			GS2.Log("Theme InitMaterials Finished");
 		}
 		public void SetMaterial(string material, string materialBase)
         {
-			GSTheme donorTheme = GS2.planetThemes[materialBase];
+			GSTheme donorTheme = GS2.ThemeLibrary[materialBase];
 			switch(material)
             {
 				case "terrain":terrainMat = donorTheme.terrainMat; break;
@@ -205,18 +292,25 @@ namespace GalacticScale
         }
 		public static Material TintMaterial(Material material, Color color)
         {
+			if (material == null)
+			{
+				GS2.Log("TintMaterial Failed. Material = null");
+				return null;
+			}
+			GS2.Log("TintMaterial " + material.name );
 			Material newMaterial = UnityEngine.Object.Instantiate(material);
 			newMaterial.color = color;
 			return newMaterial;
         }
 		public void ProcessTints()
         {
-			if (terrainTint != null) terrainMat = TintMaterial(terrainMat, terrainTint);
-			if (oceanTint != null) oceanMat = TintMaterial(oceanMat, oceanTint);
-			if (atmosphereTint != null) atmosMat = TintMaterial(atmosMat, atmosphereTint);
-			if (lowTint != null) lowMat = TintMaterial(lowMat, lowTint);
-			if (thumbTint != null) thumbMat = TintMaterial(thumbMat, thumbTint);
-			if (minimapTint != null) minimapMat = TintMaterial(minimapMat, minimapTint);
+			GS2.Log("ProcessTints "+name);
+			if (terrainTint != new Color()) terrainMat = TintMaterial(terrainMat, terrainTint);
+			if (oceanTint != new Color()) oceanMat = TintMaterial(oceanMat, oceanTint);
+			if (atmosphereTint != new Color()) atmosMat = TintMaterial(atmosMat, atmosphereTint);
+			if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint);
+			if (thumbTint != new Color()) thumbMat = TintMaterial(thumbMat, thumbTint);
+			if (minimapTint != new Color()) minimapMat = TintMaterial(minimapMat, minimapTint);
 		}
 	}
 }
