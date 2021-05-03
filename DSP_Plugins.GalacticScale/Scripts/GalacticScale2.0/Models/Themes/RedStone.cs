@@ -10,7 +10,7 @@ namespace GalacticScale
             DisplayName = "Red Stone",
             type = EPlanetType.Ocean,
             LDBThemeId = 14,
-            algo = 0,
+            algo = 1,
             MaterialPath = "Universe/Materials/Planets/Ocean 3/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Interstellar,

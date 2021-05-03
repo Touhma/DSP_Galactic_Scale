@@ -118,9 +118,9 @@ namespace GalacticScale
 		public string ambient;
 		[NonSerialized]
 		public AudioClip ambientSfx;
-		public GSTheme (string name)
+		public GSTheme (string baseName)
         {
-			this.name = name;
+			if (GS2.planetThemes.ContainsKey(baseName)) baseTheme = GS2.planetThemes[baseName];
 			DisplayName = name;
 			if (baseTheme != null) InitTheme(baseTheme);
 			InitMaterials();
@@ -132,6 +132,7 @@ namespace GalacticScale
 		}
 		public GSTheme() { InitMaterials(); }
 		public void InitTheme(GSTheme baseTheme) {
+			LDBThemeId = baseTheme.LDBThemeId;
 			MaterialPath = baseTheme.MaterialPath;
 			Temperature = baseTheme.Temperature;
 			Distribute = baseTheme.Distribute;
@@ -170,6 +171,7 @@ namespace GalacticScale
 	}
 		public void InitMaterials ()
         {
+			GS2.Log("Theme InitMaterials: " + name + " " + DisplayName);
 			if (terrainMaterial == null)
 				terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
 			else terrainMat = GS2.planetThemes[terrainMaterial].terrainMat;

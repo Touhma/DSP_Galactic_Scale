@@ -10,10 +10,10 @@ namespace GalacticScale
             DisplayName = "Mediterranean",
             type = EPlanetType.Ocean,
             LDBThemeId = 1,
-            algo = 0,
+            algo = 1,
             MaterialPath = "Universe/Materials/Planets/Ocean 1/",
             Temperature = 0.0f,
-            Distribute = EThemeDistribute.Interstellar,
+            Distribute = EThemeDistribute.Birth,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
             Vegetables0 = new int[] {

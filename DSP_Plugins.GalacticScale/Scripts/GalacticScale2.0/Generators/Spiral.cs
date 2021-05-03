@@ -49,6 +49,7 @@ namespace GalacticScale.Generators
             }
             List<GSPlanet> p = new List<GSPlanet>
             {
+                new GSPlanet("Test", "Test", 80, 0.5f, -1, -1, -1, 135, -1, -1, -1, -1, null),
                 new GSPlanet("Mediterranian", "Mediterranian", 80, 0.5f, -1, -1, -1, 0, -1, -1, -1, -1, null),
                 new GSPlanet("Gas", "Gas", 80, 0.5f, -1, -1, -1, 15, -1, -1, -1, -1, null),
                 new GSPlanet("Gas2", "Gas2", 80, 0.5f, -1, -1, -1, 30, -1, -1, -1, -1, null),
