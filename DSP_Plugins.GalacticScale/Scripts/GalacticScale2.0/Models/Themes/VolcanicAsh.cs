@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme VolcanicAsh = new GSTheme()
         {
-            name = "VolcanicAsh",
+            Name = "VolcanicAsh",
             DisplayName = "Volcanic Ash",
-            type = EPlanetType.Vocano,
+            PlanetType = EPlanetType.Vocano,
             LDBThemeId = 13,
-            algo = 3,
+            Algo = 3,
             MaterialPath = "Universe/Materials/Planets/Volcanic 1/",
             Temperature = 4.0f,
             Distribute = EThemeDistribute.Interstellar,

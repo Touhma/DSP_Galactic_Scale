@@ -15,7 +15,11 @@ namespace GalacticScale
             Log("Galaxy Generated");
             gameDesc = desc;
             gameDesc.starCount = GSSettings.starCount;
-            if (GSSettings.ThemeLibrary == null) GSSettings.ThemeLibrary = GS2.ThemeLibrary;
+            if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new GSThemeLibrary())
+            {
+                GS2.Log("ThemeLibrary in settings was null. Updating");
+                GSSettings.ThemeLibrary = ThemeLibrary;
+            }
             else GS2.ThemeLibrary = GSSettings.ThemeLibrary;
             random = new System.Random(GSSettings.Seed);
             int tempPoses = GenerateTempPoses(

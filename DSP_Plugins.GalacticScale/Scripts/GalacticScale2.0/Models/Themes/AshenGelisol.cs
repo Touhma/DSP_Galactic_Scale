@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme AshenGelisol = new GSTheme()
         {
-            name = "AshenGelisol",
+            Name = "AshenGelisol",
             DisplayName = "Ashen Gelisol",
-            type = EPlanetType.Desert,
+            PlanetType = EPlanetType.Desert,
             LDBThemeId = 1,
-            algo = 2,
+            Algo = 2,
             MaterialPath = "Universe/Materials/Planets/Desert 2/",
             Temperature = -1.0f,
             Distribute = EThemeDistribute.Default,

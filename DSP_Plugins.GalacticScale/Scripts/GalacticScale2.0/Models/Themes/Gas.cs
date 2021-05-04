@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme Gas = new GSTheme()
         {
-            name = "GasGiant",
+            Name = "GasGiant",
             DisplayName = "Gas Giant",
-            type = EPlanetType.Gas,
+            PlanetType = EPlanetType.Gas,
             LDBThemeId = 2,
-            algo = 0,
+            Algo = 0,
             MaterialPath = "Universe/Materials/Planets/Gas 1/",
             Temperature = 2.0f,
             Distribute = EThemeDistribute.Default,

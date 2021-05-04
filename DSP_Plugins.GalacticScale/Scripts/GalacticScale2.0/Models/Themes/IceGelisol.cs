@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme IceGelisol = new GSTheme()
         {
-            name = "IceGgelisol",
+            Name = "IceGgelisol",
             DisplayName = "Ice Field Gelisol",
-            type = EPlanetType.Ice,
+            PlanetType = EPlanetType.Ice,
             LDBThemeId = 10,
-            algo = 3,
+            Algo = 3,
             MaterialPath = "Universe/Materials/Planets/Ice 1/",
             Temperature = -5.0f,
             Distribute = EThemeDistribute.Default,

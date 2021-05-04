@@ -53,8 +53,8 @@ namespace GalacticScale.Generators
             {
                 GS2.Log("Creating Theme for Algo" + i);
                 GSTheme temp = new GSTheme("Mediterranean");
-                temp.name = "Algo" + i;
-                temp.algo = i;
+                temp.Name = "Algo" + i;
+                temp.Algo = i;
                 temp.Process();
             }
             
@@ -72,7 +72,7 @@ namespace GalacticScale.Generators
         public void generate(int starCount)
         {
             GS2.Log("Spiral:Creating New Settings");
-            foreach (KeyValuePair<string, GSTheme> g in GS2.ThemeLibrary) GS2.Log("Theme " + g.Key + " is in library with name " + g.Value.name);
+            foreach (KeyValuePair<string, GSTheme> g in GS2.ThemeLibrary) GS2.Log("Theme " + g.Key + " is in library with name " + g.Value.Name);
             List<VectorLF3> positions = new List<VectorLF3>();
             for (var i = 0; i < starCount; i++)
             {

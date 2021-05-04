@@ -7,11 +7,11 @@ namespace GalacticScale
         //Note: Culling Radius is -10
         public static GSTheme OceanWorld = new GSTheme()
         {
-            name = "OceanWorld",
+            Name = "OceanWorld",
             DisplayName = "Ocean World",
-            type = EPlanetType.Ocean,
+            PlanetType = EPlanetType.Ocean,
             LDBThemeId = 16,
-            algo = 7,
+            Algo = 7,
             MaterialPath = "Universe/Materials/Planets/Ocean 5/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Interstellar,

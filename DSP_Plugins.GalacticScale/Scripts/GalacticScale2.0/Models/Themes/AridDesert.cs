@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme AridDesert = new GSTheme()
         {
-            name = "AridDesert",
+            Name = "AridDesert",
             DisplayName = "Arid Desert",
-            type = EPlanetType.Desert,
+            PlanetType = EPlanetType.Desert,
             LDBThemeId = 6,
-            algo = 2,
+            Algo = 2,
             MaterialPath = "Universe/Materials/Planets/Desert 1/",
             Temperature = 2.0f,
             Distribute = EThemeDistribute.Default,

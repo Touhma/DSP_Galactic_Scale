@@ -45,7 +45,9 @@ namespace GalacticScale
             //planetData.singularity |= gsPlanet.singularity.TidalLocked;
             planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planetData.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
             planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation * Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
-            planetData.type = GS2.ThemeLibrary[gsPlanet.Theme].type;
+            GS2.Log("Trying to apply theme " + gsPlanet.Theme);
+            planetData.type = GSSettings.ThemeLibrary[gsPlanet.Theme].PlanetType;
+            GS2.Log("Applied");
             //Patch.Debug("Type set to " + planetData.type);
             planetData.scale = 1f;
             if (planetData.type == EPlanetType.Gas) planetData.scale = 10f;

@@ -13,7 +13,8 @@ namespace GalacticScale
         {
             GS2.prog("SetPlanetTheme("+ gsPlanet.Theme + ")");
             int seed = 0;
-            GSTheme gsTheme = GS2.ThemeLibrary[gsPlanet.Theme];
+            GSTheme gsTheme = GSSettings.ThemeLibrary[gsPlanet.Theme];
+           
             int ThemeID = gsTheme.AddToThemeProtoSet();
             GS2.Log("Set Theme for Planet " + planet.name + " to " + ThemeID + " which is " + LDB.themes.Select(ThemeID).name);
             GS2.prog("SetPlanetTheme");
@@ -34,13 +35,13 @@ namespace GalacticScale
             GS2.prog("SetPlanetTheme");
             //if (set_algo > 0)
             //{
-            planet.algoId = gsTheme.algo; //set_algo;
+            planet.algoId = gsTheme.Algo; //set_algo;
             //}
             planet.mod_x = (double)gsTheme.ModX.x + rand3 * ((double)gsTheme.ModX.y - (double)gsTheme.ModX.x);
             planet.mod_y = (double)gsTheme.ModY.x + rand4 * ((double)gsTheme.ModY.y - (double)gsTheme.ModY.x);
 
             GS2.prog("SetPlanetTheme");
-            planet.type = gsTheme.type;
+            planet.type = gsTheme.PlanetType;
             planet.ionHeight = gsTheme.IonHeight;
             planet.windStrength = gsTheme.Wind;
             Log("planet.windStrength = " + planet.windStrength);
@@ -50,6 +51,7 @@ namespace GalacticScale
             Log("waterItemId = " + planet.waterItemId);
             planet.levelized = gsTheme.UseHeightForBuild;
             GS2.prog("SetPlanetTheme");
+            //GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, "test_" + planet.name + ".json"), gsTheme.oceanMat);
             if (planet.type != EPlanetType.Gas)
                 return;
             GS2.prog("SetPlanetTheme");
@@ -77,6 +79,7 @@ namespace GalacticScale
             planet.gasHeatValues = numArray3;
             planet.gasTotalHeat = num1;
             GS2.prog("SetPlanetTheme", true);
+
         }
     }
 }

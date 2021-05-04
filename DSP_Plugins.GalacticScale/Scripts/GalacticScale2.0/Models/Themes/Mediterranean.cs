@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme Mediterranean = new GSTheme()
         {
-            name = "Mediterranean",
+            Name = "Mediterranean",
             DisplayName = "Mediterranean",
-            type = EPlanetType.Ocean,
+            PlanetType = EPlanetType.Ocean,
             LDBThemeId = 1,
-            algo = 1,
+            Algo = 1,
             MaterialPath = "Universe/Materials/Planets/Ocean 1/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Birth,

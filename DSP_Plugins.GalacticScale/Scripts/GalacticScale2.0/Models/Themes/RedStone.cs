@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme RedStone = new GSTheme()
         {
-            name = "RedStone",
+            Name = "RedStone",
             DisplayName = "Red Stone",
-            type = EPlanetType.Ocean,
+            PlanetType = EPlanetType.Ocean,
             LDBThemeId = 14,
-            algo = 1,
+            Algo = 1,
             MaterialPath = "Universe/Materials/Planets/Ocean 3/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Interstellar,

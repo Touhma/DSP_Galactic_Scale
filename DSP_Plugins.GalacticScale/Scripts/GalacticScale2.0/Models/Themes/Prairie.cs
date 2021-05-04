@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme Prairie = new GSTheme()
         {
-            name = "Prairie",
+            Name = "Prairie",
             DisplayName = "Prairie",
-            type = EPlanetType.Ocean,
+            PlanetType = EPlanetType.Ocean,
             LDBThemeId = 15,
-            algo = 6,
+            Algo = 6,
             MaterialPath = "Universe/Materials/Planets/Ocean 4/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Interstellar,

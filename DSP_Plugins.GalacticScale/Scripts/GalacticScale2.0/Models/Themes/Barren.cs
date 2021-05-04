@@ -6,11 +6,11 @@ namespace GalacticScale
     {
         public static GSTheme Barren = new GSTheme()
         {
-            name = "Barren",
+            Name = "Barren",
             DisplayName = "Barren Desert",
-            type = EPlanetType.Desert,
+            PlanetType = EPlanetType.Desert,
             LDBThemeId = 11,
-            algo = 4,
+            Algo = 4,
             MaterialPath = "Universe/Materials/Planets/Desert 3/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Default,
