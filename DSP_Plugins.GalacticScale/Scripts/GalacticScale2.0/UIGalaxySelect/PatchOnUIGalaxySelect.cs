@@ -14,7 +14,7 @@ namespace GalacticScale
             GalaxyData galaxy;
             if (GS2.Vanilla) galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             else galaxy = GS2.CreateGalaxy(__instance.gameDesc, false);
-            GS2.Log("Galaxy starCount = " + __instance.gameDesc.starCount);
+            //GS2.Log("Galaxy starCount = " + __instance.gameDesc.starCount);
             if (__instance.starmap.galaxyData != null)
                 __instance.starmap.galaxyData.Free();
             __instance.starmap.galaxyData = galaxy;
@@ -27,7 +27,7 @@ namespace GalacticScale
             __instance.starCountSlider.maxValue = GS2.generator.Config.MaxStarCount;
             if (GS2.generator.Config.DisableStarCountSlider)
             {
-                GS2.Log("Disabling StarCount Slider");
+                //GS2.Log("Disabling StarCount Slider");
                 var starCountText = GameObject.Find("GS Star Count");
                 
                 if (starCountText == null) starCountText = CreateStarCountText(__instance.starCountSlider);
@@ -36,14 +36,14 @@ namespace GalacticScale
 
             } else
             {
-                GS2.Log("Enabling StarCount Slider");
+                //GS2.Log("Enabling StarCount Slider");
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText != null) starCountText.SetActive(false);
                 __instance.starCountSlider.gameObject.SetActive(true);
             }
             if (GS2.generator.Config.DisableSeedInput)
             {
-                GS2.Log("Disabling Seed Input");
+                //GS2.Log("Disabling Seed Input");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
                 //if (inputField != null) inputField.GetComponent<InputField>().interactable = false;
                 inputField.transform.parent.GetComponent<Text>().enabled = false;
@@ -52,7 +52,7 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log("Enabling Seed Input");
+                //GS2.Log("Enabling Seed Input");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
                 //if (inputField != null) inputField.SetActive(true);
                 //inputField.GetComponent<InputField>().interactable = true;
@@ -60,7 +60,7 @@ namespace GalacticScale
                 inputField.GetComponentInChildren<Text>().enabled = true;
                 inputField.GetComponent<Image>().enabled = true;
             }
-            GS2.Log("done");
+            //GS2.Log("done");
             return false;
         }
 
@@ -68,18 +68,18 @@ namespace GalacticScale
         public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
         {
             __instance.starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
-            GS2.Log("UpdateUIDisplay");
+            //GS2.Log("UpdateUIDisplay");
             if (galaxy == null) return false;
             if (galaxy.stars == null) return false;
-            GS2.Log("UpdateUIDisplay stars");
+            //GS2.Log("UpdateUIDisplay stars");
             __instance.seedInput.text = galaxy.seed.ToString("0000 0000");
-            GS2.Log("3");
+            //GS2.Log("3");
             //__instance.starCountSlider.minValue = 0;
-            GS2.Log("4");
+            //GS2.Log("4");
             //__instance.starCountSlider.maxValue = 1024;
-            GS2.Log("5");
+            //GS2.Log("5");
             //__instance.starCountSlider.value = (float)galaxy.starCount;
-            GS2.Log("6");
+            //GS2.Log("6");
             __instance.starCountText.text = galaxy.starCount.ToString();
             int M = 0;
             int K = 0;
@@ -91,10 +91,11 @@ namespace GalacticScale
             int N = 0;
             int W = 0;
             int H = 0;
-            GS2.Log("7");
+            //GS2.Log("7");
             if (galaxy.stars == null)
             {
-                GS2.Log("galaxy.stars == null"); return false;
+                //GS2.Log("galaxy.stars == null"); 
+                return false;
             }
             foreach (StarData star in galaxy.stars)
             {
@@ -122,7 +123,7 @@ namespace GalacticScale
                 else if (star.type == EStarType.BlackHole)
                     ++H;
             }
-            GS2.Log("8");
+            //GS2.Log("8");
             __instance.mCountText.text = M.ToString();
             __instance.kCountText.text = K.ToString();
             __instance.gCountText.text = G.ToString();
@@ -149,17 +150,17 @@ namespace GalacticScale
         public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider,
             ref GameDesc ___gameDesc, float val)
         {
-            GS2.Log("OnStarCountSliderValueChange");
+            //GS2.Log("OnStarCountSliderValueChange");
             var num = (int)(___starCountSlider.value + 0.100000001490116);
-            GS2.Log("OnStarCountSliderValueChange2"); 
+            //GS2.Log("OnStarCountSliderValueChange2"); 
             if (num == ___gameDesc.starCount) return false;
-            GS2.Log("OnStarCountSliderValueChange3");
+            //GS2.Log("OnStarCountSliderValueChange3");
             ___gameDesc.starCount = num;
-            GS2.Log("OnStarCountSliderValueChange4");
+            //GS2.Log("OnStarCountSliderValueChange4");
             GS2.gameDesc = ___gameDesc;
-            GS2.Log("OnStarCountSliderValueChange5");
+            //GS2.Log("OnStarCountSliderValueChange5");
             __instance.SetStarmapGalaxy();
-            GS2.Log("OnStarCountSliderValueChange6");
+            //GS2.Log("OnStarCountSliderValueChange6");
             return false;
         }
 

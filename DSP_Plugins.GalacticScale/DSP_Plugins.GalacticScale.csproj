@@ -117,7 +117,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AridDesert.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Gas.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AshenGelisol.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Prarie.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Prairie.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\OceanWorld.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\RedStone.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\OceanicJungle.cs" />

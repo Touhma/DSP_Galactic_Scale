@@ -4,10 +4,10 @@ namespace GalacticScale
 {
     public static partial class Themes
     {
-        public static GSTheme Prarie = new GSTheme()
+        public static GSTheme Prairie = new GSTheme()
         {
-            name = "Prarie",
-            DisplayName = "Prarie",
+            name = "Prairie",
+            DisplayName = "Prairie",
             type = EPlanetType.Ocean,
             LDBThemeId = 15,
             algo = 6,

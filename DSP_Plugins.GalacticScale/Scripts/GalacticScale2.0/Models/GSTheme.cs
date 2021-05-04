@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,10 +12,24 @@ namespace GalacticScale
 		public int LDBThemeId = 1;
 		[NonSerialized]
 		public bool added = false;
+		[NonSerialized]
 		public bool initialized = false;
 		public int algo = 0;
 		public string DisplayName = "Default Theme";
-		public GSTheme baseTheme;
+		public GSTheme baseTheme
+		{
+			get
+			{
+				GS2.Log("Attempting to get baseTheme for " + name + " it should be " + baseName);
+				return (baseName != "" && baseName != null) ? GS2.ThemeLibrary[this.baseName] : null;
+			}
+			set
+			{
+				GS2.Log("Setting baseName for " + name + " to " + value);
+				baseName = value.name;
+			}
+		}
+		public string baseName;
 		public string MaterialPath = "Universe/Materials/Planets/Ocean 1/";
 		public float Temperature = 0.0f;
 		public EThemeDistribute Distribute = EThemeDistribute.Interstellar;
@@ -123,15 +138,23 @@ namespace GalacticScale
 		public AudioClip ambientSfx;
 		public GSTheme (string baseName)
         {
-			if (GS2.ThemeLibrary.ContainsKey(baseName)) baseTheme = GS2.ThemeLibrary[baseName];
+			GS2.Log("Creating new Theme based on "+baseName);
+			//this.baseName = baseName;
+			if (GS2.ThemeLibrary.ContainsKey(baseName)) this.baseName = baseName;
+			
 			if (baseTheme != null)
 			{
-				GS2.Log("Creating new Theme based on "+baseName);
+				
 				CopyFrom(baseTheme);
-			}
+			} else
+            {
+				GS2.Log("Error: Base Theme " + baseName + " not found in library");
+            }
 		}
 		public void Process()
         {
+			GS2.Log("GSTheme " + name + " Process()");
+			if (DisplayName == "Default Theme") DisplayName = name;
 			InitMaterials();
 			ProcessTints();
 			AddToLibrary();
@@ -141,43 +164,50 @@ namespace GalacticScale
         {
 			GS2.ThemeLibrary[name] = this;
         }
+		public static int[] Clone(int[] source)
+        {
+			int[] destination = new int[source.Length];
+			Array.Copy(source, destination, source.Length);
+			return destination;
+        }
 		public void CopyFrom(GSTheme baseTheme) {
+			GS2.Log("GSTheme CopyFrom " + name + " copying from " + baseTheme.name);
 			LDBThemeId = baseTheme.LDBThemeId;
 			MaterialPath = baseTheme.MaterialPath;
 			Temperature = baseTheme.Temperature;
 			Distribute = baseTheme.Distribute;
-			ModX = baseTheme.ModX;
-			ModY = baseTheme.ModY;
-			Vegetables0 = baseTheme.Vegetables0;
-			Vegetables1 = baseTheme.Vegetables1;
-			Vegetables2 = baseTheme.Vegetables2;
-			Vegetables3 = baseTheme.Vegetables3;
-			Vegetables4 = baseTheme.Vegetables4;
-			Vegetables5 = baseTheme.Vegetables5;
-			VeinSpot = baseTheme.VeinSpot;
-			VeinCount = baseTheme.VeinCount;
-			VeinOpacity = baseTheme.VeinOpacity;
-			RareVeins = baseTheme.RareVeins;
-			RareSettings = baseTheme.RareSettings;
-			GasItems = baseTheme.GasItems;
-			GasSpeeds = baseTheme.GasSpeeds;
+			ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
+			ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
+			Vegetables0 = (int[])baseTheme.Vegetables0.Clone();
+			Vegetables1 = (int[])baseTheme.Vegetables1.Clone();
+			Vegetables2 = (int[])baseTheme.Vegetables2.Clone();
+			Vegetables3 = (int[])baseTheme.Vegetables3.Clone();
+			Vegetables4 = (int[])baseTheme.Vegetables4.Clone();
+			Vegetables5 = (int[])baseTheme.Vegetables5.Clone();
+			VeinSpot = (int[])baseTheme.VeinSpot.Clone(); 
+			VeinCount = (float[])baseTheme.VeinCount.Clone(); 
+			VeinOpacity = (float[])baseTheme.VeinOpacity.Clone();
+			RareVeins = (int[])baseTheme.RareVeins.Clone();
+			RareSettings = (float[])baseTheme.RareSettings.Clone();
+			GasItems = (int[])baseTheme.GasItems.Clone();
+			GasSpeeds = (float[])baseTheme.GasSpeeds.Clone();
 			UseHeightForBuild = baseTheme.UseHeightForBuild;
 			Wind = baseTheme.Wind;
 			IonHeight = baseTheme.IonHeight;
 			WaterHeight = baseTheme.WaterHeight;
 			WaterItemId = baseTheme.WaterItemId;
-			Musics = baseTheme.Musics;
+			Musics = (int[])baseTheme.Musics.Clone();
 			SFXPath = baseTheme.SFXPath;
 			SFXVolume = baseTheme.SFXVolume;
 			CullingRadius = baseTheme.CullingRadius;
-			terrainMat = baseTheme.terrainMat;
-			oceanMat = baseTheme.oceanMat;
-			atmosMat = baseTheme.atmosMat;
-			lowMat = baseTheme.lowMat;
-			thumbMat = baseTheme.thumbMat;
-			minimapMat = baseTheme.minimapMat;
-			ambientDesc = baseTheme.ambientDesc;
-			ambientSfx = baseTheme.ambientSfx;
+			terrainMat = baseTheme.terrainMat != null?UnityEngine.Object.Instantiate(baseTheme.terrainMat):null;
+			oceanMat = baseTheme.oceanMat != null ? UnityEngine.Object.Instantiate(baseTheme.oceanMat) : null;
+			atmosMat = baseTheme.atmosMat != null ? UnityEngine.Object.Instantiate(baseTheme.atmosMat) : null;
+			lowMat = baseTheme.lowMat != null ? UnityEngine.Object.Instantiate(baseTheme.lowMat) : null;
+			thumbMat = baseTheme.thumbMat != null ? UnityEngine.Object.Instantiate(baseTheme.thumbMat) : null;
+			minimapMat = baseTheme.minimapMat != null ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
+			ambientDesc = baseTheme.ambientDesc != null ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
+			ambientSfx = baseTheme.ambientSfx != null ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
 		}
 		public ThemeProto ToProto()
         {
@@ -297,7 +327,7 @@ namespace GalacticScale
 				GS2.Log("TintMaterial Failed. Material = null");
 				return null;
 			}
-			GS2.Log("TintMaterial " + material.name );
+			GS2.Log("TintMaterial " + material.name + " - " +color.ToString() );
 			Material newMaterial = UnityEngine.Object.Instantiate(material);
 			newMaterial.color = color;
 			return newMaterial;
@@ -311,6 +341,7 @@ namespace GalacticScale
 			if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint);
 			if (thumbTint != new Color()) thumbMat = TintMaterial(thumbMat, thumbTint);
 			if (minimapTint != new Color()) minimapMat = TintMaterial(minimapMat, minimapTint);
+			GS2.Log("Finished Processing Tints");
 		}
 	}
 }

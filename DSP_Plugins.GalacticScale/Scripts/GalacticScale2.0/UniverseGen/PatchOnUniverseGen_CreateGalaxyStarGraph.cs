@@ -12,7 +12,7 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration
         public static bool CreateGalaxyStarGraph(GalaxyData galaxy)
         {
             galaxy.graphNodes = new StarGraphNode[galaxy.starCount];
-            GS2.Log("Created stargraph of size " + galaxy.graphNodes.Length);
+            //GS2.Log("Created stargraph of size " + galaxy.graphNodes.Length);
             UniverseGen.tmp_state = new int[1024]; // increased from 128 to allow denser galaxies
             for (int index1 = 0; index1 < galaxy.starCount; ++index1)
             {

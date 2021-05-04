@@ -39,7 +39,7 @@ namespace GalacticScale
         }
         private static bool CheckJsonFileExists(string path)
         {
-            Log("Checking if Json File Exists");
+            //Log("Checking if Json File Exists");
             if (File.Exists(path)) return true;
             Log("Json file does not exist at " + path);
             return false;
@@ -113,25 +113,25 @@ namespace GalacticScale
             Log("Saving Preferences");
             Preferences preferences = new Preferences();
             preferences.GeneratorID = generator.GUID;
-            Log("Set the GeneratorID, now trying to get the plugin prefs");
+            //Log("Set the GeneratorID, now trying to get the plugin prefs");
             foreach (iGenerator g in generators)
             {
                 if (g is iConfigurableGenerator)
                 {
                     iConfigurableGenerator gen = g as iConfigurableGenerator;
-                    Log("trying to get prefs for " + gen.Name);
+                    //Log("trying to get prefs for " + gen.Name);
                     GSGenPreferences prefs = gen.Export();
-                    Log(gen.Name + " has supplied preferences");
+                    //Log(gen.Name + " has supplied preferences");
                     preferences.PluginOptions[gen.GUID] = prefs;
-                    Log("Finished adding preferences to GS preferences object for " + gen.Name);
+                    //Log("Finished adding preferences to GS preferences object for " + gen.Name);
                 }
             }
             fsSerializer serializer = new fsSerializer();
-            Log("Trying to serialize preferences object");
+            //Log("Trying to serialize preferences object");
             serializer.TrySerialize(preferences, out fsData data);
-            Log("serialized");
+            //Log("serialized");
             string json = fsJsonPrinter.PrettyJson(data);
-            Log(json);
+            //Log(json);
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
         }
 
@@ -148,29 +148,29 @@ namespace GalacticScale
             string path = Path.Combine(DataDir, "Preferences.json");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             if (!CheckJsonFileExists(path)) return;
-            Log("Loading Preferences from " + path);
+            //Log("Loading Preferences from " + path);
             fsSerializer serializer = new fsSerializer();
             string json = File.ReadAllText(path);
             Preferences result = new Preferences();
-            Log("LoadPreferences Initial " + result.GeneratorID);
+            //Log("LoadPreferences Initial " + result.GeneratorID);
             fsData data2 = fsJsonParser.Parse(json);
             serializer.TryDeserialize<Preferences>(data2, ref result);
-            Log("LoadPreferences Result " + result.GeneratorID);
+            //Log("LoadPreferences Result " + result.GeneratorID);
             ParsePreferences(result);
         }
         private static void ParsePreferences(Preferences p)
         {
-            Log("Parsing Preferences");
+            //Log("Parsing Preferences");
             generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
             {
                 foreach (KeyValuePair<string, GSGenPreferences> pluginOptions in p.PluginOptions)
                 {
-                    Log("Plugin Options for " + pluginOptions.Key + "found");
+                    //Log("Plugin Options for " + pluginOptions.Key + "found");
                     iConfigurableGenerator gen = GetGeneratorByID(pluginOptions.Key) as iConfigurableGenerator;
                     if (gen != null)
                     {
-                        Log(gen.Name + " preferences exported");
+                        //Log(gen.Name + " preferences exported");
                         gen.Import(pluginOptions.Value);
                     }
                 }
@@ -179,7 +179,7 @@ namespace GalacticScale
 
         public static void LoadPlugins()
         {
-            Log("***LOADING PLUGINS***");
+            //Log("***LOADING PLUGINS***");
             foreach (string filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
                 foreach (Type type in Assembly.LoadFrom(filePath).GetTypes()) 
                     foreach (Type t in type.GetInterfaces()) 
