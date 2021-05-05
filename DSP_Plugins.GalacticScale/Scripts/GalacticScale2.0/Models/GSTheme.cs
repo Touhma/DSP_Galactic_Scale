@@ -201,9 +201,13 @@ namespace GalacticScale
 			CullingRadius = baseTheme.CullingRadius;
 			terrainMat = (baseTheme.terrainMat != null)?UnityEngine.Object.Instantiate(baseTheme.terrainMat):null;
 			Material oceanTemp = null;
-			if (baseTheme.oceanMat != null) oceanTemp = UnityEngine.Object.Instantiate(baseTheme.oceanMat);
-			//oceanMat = (baseTheme.oceanMat != null) ? UnityEngine.Object.Instantiate(baseTheme.oceanMat) : null;
-			oceanMat = oceanTemp;
+			if (baseTheme.oceanMat != null)
+			{
+				oceanTemp = UnityEngine.Object.Instantiate(baseTheme.oceanMat);
+				//oceanMat = (baseTheme.oceanMat != null) ? UnityEngine.Object.Instantiate(baseTheme.oceanMat) : null;
+				oceanMat = oceanTemp;
+				if (oceanTint != new Color()) TintOcean(oceanTint);
+			} 
 			atmosMat = (baseTheme.atmosMat != null) ? UnityEngine.Object.Instantiate(baseTheme.atmosMat) : null;
 			lowMat = (baseTheme.lowMat != null) ? UnityEngine.Object.Instantiate(baseTheme.lowMat) : null;
 			thumbMat = (baseTheme.thumbMat != null) ? UnityEngine.Object.Instantiate(baseTheme.thumbMat) : null;
