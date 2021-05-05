@@ -16,7 +16,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         public static bool DebugGetModPlane = false;
         public static bool DebugNewPlanetGrid = false;
         public static bool DebugPlanetModelingManager = false;
-        public static bool DebugPlanetModelingManagerDeep = false;
+        public static bool DebugPlanetModelingManagerDeep = true;
         public static bool DebugAtmoBlur = false;
         public static bool DebugReformFix = false;
 

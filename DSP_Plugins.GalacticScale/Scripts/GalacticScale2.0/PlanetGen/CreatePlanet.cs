@@ -50,15 +50,15 @@ namespace GalacticScale
             //planetData.singularity |= gsPlanet.singularity.TidalLocked;
             planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planetData.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
             planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation * Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
-            GS2.Log("Trying to apply theme " + gsPlanet.Theme);
+            //GS2.Log("Trying to apply theme " + gsPlanet.Theme);
             planetData.type = GSSettings.ThemeLibrary[gsPlanet.Theme].PlanetType;
-            GS2.Log("Applied");
+            //GS2.Log("Applied");
             //Patch.Debug("Type set to " + planetData.type);
             planetData.scale = 1f;
             if (planetData.type == EPlanetType.Gas) planetData.scale = 10f;
             planetData.precision = (int)gsPlanet.Radius;
             gsPlanet.planetData = planetData;
-            GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
+            //GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
             planetData.luminosity = gsPlanet.Luminosity;
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
@@ -70,7 +70,7 @@ namespace GalacticScale
             //DebugPlanet(planetData);
             GSSettings.Stars[star.index].counter++;
             if (gsPlanet.MoonCount > 0) CreateMoons(ref planetData, gsPlanet);
-            Log("PLANET RADIUS "+planetData.radius);
+            //Log("PLANET RADIUS "+planetData.radius);
 
             return planetData;
         }

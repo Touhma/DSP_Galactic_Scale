@@ -171,7 +171,7 @@ namespace GalacticScale
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
 			Algo = baseTheme.Algo;
 			PlanetType = baseTheme.PlanetType;
-			LDBThemeId = baseTheme.LDBThemeId;
+			LDBThemeId = 1;
 			MaterialPath = baseTheme.MaterialPath;
 			Temperature = baseTheme.Temperature;
 			Distribute = baseTheme.Distribute;
@@ -269,6 +269,7 @@ namespace GalacticScale
         {
 			if (added) return LDBThemeId;
 			if (!initialized) InitMaterials();
+			GS2.Log("Adding Theme to Protoset:"+Name);
 			int newIndex = LDB._themes.dataArray.Length; 
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
@@ -276,6 +277,7 @@ namespace GalacticScale
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
+			GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
 			return newId;
         }
 		public int UpdateThemeProtoSet()
@@ -283,8 +285,9 @@ namespace GalacticScale
 			if (!added) return AddToThemeProtoSet();
 			else
             {
-				GS2.Log("Updating Themeprotoset");
-				LDB._themes.dataArray[LDBThemeId] = ToProto();
+				GS2.Log("Updating Themeprotoset for "+Name+". LDBThemeId is "+LDBThemeId);
+				LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
+				GS2.Log("Updated.");
 				return LDBThemeId;
             }
 		}
@@ -292,6 +295,7 @@ namespace GalacticScale
         {
 			if (initialized) return;
 			GS2.Log("Theme InitMaterials: " + Name + " " + DisplayName);
+
 			if (terrainMaterial == null)
 			{
 				Material tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
@@ -336,8 +340,8 @@ namespace GalacticScale
 			else ambientDesc = GS2.ThemeLibrary[ambient].ambientDesc;
 			ambientSfx = Resources.Load<AudioClip>(SFXPath);
 			initialized = true;
-			//ProcessTints();
-			GS2.Log("Theme InitMaterials Finished");
+            ProcessTints();
+            GS2.Log("Theme InitMaterials Finished");
 		}
 		public void SetMaterial(string material, string materialBase)
         {
@@ -373,7 +377,7 @@ namespace GalacticScale
 			if (oceanTint != new Color()) TintOcean(oceanTint);
 			if (atmosphereTint != new Color()) TintAtmosphere(atmosphereTint);
 			//TODO
-			if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint);
+			//if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint); //This doesn't appear to exist in any theme?
 			if (thumbTint != new Color()) thumbMat = TintMaterial(thumbMat, thumbTint);
 			if (minimapTint != new Color()) minimapMat = TintMaterial(minimapMat, minimapTint);
 			GS2.Log("Finished Processing Tints");
@@ -423,15 +427,13 @@ namespace GalacticScale
 				GS2.Log("Trying to tint, but no terrain material found for " + Name);
 				return;
             }
-			SetColor(terrainMat,"_Color",c, 0.5f);
-			SetColor(terrainMat, "_AmbientColor0", c,0.1f);
-			SetColor(terrainMat, "_AmbientColor1", c,0.1f);
-			SetColor(terrainMat, "_AmbientColor2", c,0.1f);
+			SetColor(terrainMat,"_Color",c, 0.8f, true);
+			SetColor(terrainMat, "_AmbientColor0", c,0.5f);
+			SetColor(terrainMat, "_AmbientColor1", c,0.5f);
+			SetColor(terrainMat, "_AmbientColor2", c,0.5f);
+			SetColor(terrainMat, "_LightColorScreen", c, 0.5f, true);
 		}
-		public void SetColor(Material mat, string name, Color c, float lerp)
-        {
-			SetColor(mat, name, c, lerp, false);
-        }
+
 		public void SetColor(Material mat, string name, Color c)
         {
 			SetColor(mat, name, c, -1f, false);
@@ -439,18 +441,13 @@ namespace GalacticScale
 		public void SetColor(Material mat, string name, Color c, float lerp, bool clear = true)
         {
 			
-			//GS2.Log(Name + "SetColor("+name+")  where mat == null:"+(mat == null));
-			if (mat == null) return;
-			if (!mat.HasProperty(name)) return;
-			//GS2.Log(Name + "SetColor(" + name + ") <" + mat?.GetColor(name) + "> where mat == null:" + (mat == null));
+			if (mat == null || !mat.HasProperty(name)) return;
 			if (lerp == -1f)
             {
 				mat.SetColor(name, c);
 				return;
             }
-			Color start = Color.clear;
-			if (!clear) start = mat.GetColor(name);
-			mat.SetColor(name, Color.Lerp(start,c, lerp));
+			mat.SetColor(name, Color.Lerp(clear?Color.clear:mat.GetColor(name),c, lerp));
 		}
 		public void TintAtmosphere(Color c)
 		{
@@ -460,8 +457,9 @@ namespace GalacticScale
 				return;
 			}
 			GS2.Log("Tinting Atmosphere of " + Name + " to " + c.ToString() + " instanceID: " + atmosMat.GetInstanceID());
+			SetColor(atmosMat, "_CausticsColor", c);
 			SetColor(atmosMat, "_Color", c, 0.5f);
-			SetColor(atmosMat,"_Color0", c, 0.5f);
+			SetColor(atmosMat, "_Color0", c, 0.5f);
 			SetColor(atmosMat, "_Color1", c, 0.5f);
 			SetColor(atmosMat, "_Color2", c, 0.5f);
 			SetColor(atmosMat, "_Color3", c, 0.5f);

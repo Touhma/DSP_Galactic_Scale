@@ -26,7 +26,7 @@ namespace GalacticScale
         public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
         public static GSThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         [SerializeField]
-        private GSThemeLibrary themeLibrary;
+        private GSThemeLibrary themeLibrary = GS2.ThemeLibrary; //testing...this may break something
         //static GSSettings()
         //{
 

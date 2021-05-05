@@ -124,7 +124,7 @@ namespace GalacticScale.Generators
                 //ColorUtility.TryParseHtmlString("#fce303", out cc);
                 temp.Process();
 
-                GSTheme temp2 = new GSTheme("TintAsh" + c.Key, "TintAsh" + c.Key, "VolcanicAsh");
+                GSTheme temp2 = new GSTheme("TintLava" + c.Key, "TintLava" + c.Key, "Lava");
                 temp2.atmosphereTint = c.Value;
                 temp2.terrainTint = c.Value;
                 temp2.oceanTint = c.Value;
@@ -149,8 +149,8 @@ namespace GalacticScale.Generators
                 tempig.Process(); 
 
                 planets.Add(new GSPlanet("Tint" + c.Key, "Tint" + c.Key, 100, 2f - (i*0.005f), -1, -1, 10000f, (float)i*15, -1, -1, -1, -1, null));
-                planets[planets.Count - 1].Moons.Add(new GSPlanet("TintAsh" + c.Key, "TintAsh" + c.Key, 100, 0.03f, -1, -1, 100f, 0, -1, -1, -1, -1, null));
-                planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIce" + c.Key, "TintIce" + c.Key, 100, 0.03f, -1, -1, 100f, 180, -1, -1, -1, -1, null));
+                planets[planets.Count - 1].Moons.Add(new GSPlanet("TintLava" + c.Key, "TintLava" + c.Key, 100, 0.02f, -1, -1, 100f, 0, -1, -1, -1, -1, null));
+                planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIce" + c.Key, "TintIce" + c.Key, 100, 0.02f, -1, -1, 100f, 180, -1, -1, -1, -1, null));
 
                 planets[planets.Count - 1].Moons.Add(new GSPlanet("TintGiant" + c.Key, "TintGiant" + c.Key, 100, .1f, -1, -1, 10000f, 0, -1, -1, -1, -1, null));
                 planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, 100, .1f, -1, -1, 10000f, 180, -1, -1, -1, -1, null));

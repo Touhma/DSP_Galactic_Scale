@@ -11,11 +11,11 @@ namespace GalacticScale
          PlanetData planet,
          GSPlanet gsPlanet)
         {
-            GS2.prog("SetPlanetTheme("+ gsPlanet.Theme + ")");
+            GS2.Log("SetPlanetTheme("+ gsPlanet.Theme + ")");
             int seed = 0;
             GSTheme gsTheme = GSSettings.ThemeLibrary[gsPlanet.Theme];
-           
-            int ThemeID = gsTheme.AddToThemeProtoSet();
+            Log("test");
+            int ThemeID = gsTheme.UpdateThemeProtoSet();
             GS2.Log("Set Theme for Planet " + planet.name + " to " + ThemeID + " which is " + LDB.themes.Select(ThemeID).name);
             GS2.prog("SetPlanetTheme");
             //ThemeProto themeProto = LDB.themes.Select(gsTheme.LDBThemeId);
@@ -23,7 +23,7 @@ namespace GalacticScale
             if (gsPlanet.Seed > -1) seed = gsPlanet.Seed;
             GS2.prog("SetPlanetTheme"); 
             System.Random rand = new System.Random(seed);
-            GS2.prog("SetPlanetTheme");
+            GS2.Log("SetPlanetTheme234");
          //int set_algo = -1;
             double rand2 = rand.NextDouble();
             double rand3 = rand.NextDouble();
@@ -44,11 +44,11 @@ namespace GalacticScale
             planet.type = gsTheme.PlanetType;
             planet.ionHeight = gsTheme.IonHeight;
             planet.windStrength = gsTheme.Wind;
-            Log("planet.windStrength = " + planet.windStrength);
+            //Log("planet.windStrength = " + planet.windStrength);
             planet.waterHeight = gsTheme.WaterHeight;
-            Log("waterheight = " + planet.waterHeight);
+            //Log("waterheight = " + planet.waterHeight);
             planet.waterItemId = gsTheme.WaterItemId;
-            Log("waterItemId = " + planet.waterItemId);
+            //Log("waterItemId = " + planet.waterItemId);
             planet.levelized = gsTheme.UseHeightForBuild;
             GS2.prog("SetPlanetTheme");
             //GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, "test_" + planet.name + ".json"), gsTheme.oceanMat);
@@ -79,7 +79,8 @@ namespace GalacticScale
             planet.gasHeatValues = numArray3;
             planet.gasTotalHeat = num1;
             GS2.prog("SetPlanetTheme", true);
-
+            GS2.Log("Finished SetPlanetTheme()");
+            GS2.Log(" ");
         }
     }
 }
