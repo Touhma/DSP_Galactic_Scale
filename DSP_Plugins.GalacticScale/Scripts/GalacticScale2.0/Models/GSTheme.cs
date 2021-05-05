@@ -426,12 +426,27 @@ namespace GalacticScale
 		}
 		public void SetColor(Material mat, string name, Color c, float lerp)
         {
+			SetColor(mat, name, c, lerp, false);
+        }
+		public void SetColor(Material mat, string name, Color c)
+        {
+			SetColor(mat, name, c, -1f, false);
+        }
+		public void SetColor(Material mat, string name, Color c, float lerp, bool clear = true)
+        {
 			
 			//GS2.Log(Name + "SetColor("+name+")  where mat == null:"+(mat == null));
 			if (mat == null) return;
 			if (!mat.HasProperty(name)) return;
 			//GS2.Log(Name + "SetColor(" + name + ") <" + mat?.GetColor(name) + "> where mat == null:" + (mat == null));
-			mat.SetColor(name, Color.Lerp(mat.GetColor(name),c, lerp));
+			if (lerp == -1f)
+            {
+				mat.SetColor(name, c);
+				return;
+            }
+			Color start = Color.clear;
+			if (!clear) start = mat.GetColor(name);
+			mat.SetColor(name, Color.Lerp(start,c, lerp));
 		}
 		public void TintAtmosphere(Color c)
 		{
@@ -466,11 +481,11 @@ namespace GalacticScale
 				return;
 			}
 			GS2.Log("tinting ocean of " + Name + " " + c.ToString() + " instanceID = " + oceanMat.GetInstanceID());
-			SetColor(oceanMat,"_CausticsColor", c, 0.1f); //Highlights
-			SetColor(oceanMat, "_Color", c, 0.5f); //Shore
-			SetColor(oceanMat, "_Color1", c, 0.4f); //Shalows
-			SetColor(oceanMat, "_Color2", c, 0.2f); //Mids
-			oceanMat.SetColor("_Color3", c); //Deep
+			SetColor(oceanMat,"_CausticsColor", c, 0.7f); //Highlights
+			SetColor(oceanMat, "_Color", c, 0.5f,true); //Shore
+			SetColor(oceanMat, "_Color1", c, 0.7f); //Shalows
+			SetColor(oceanMat, "_Color2", c, 0.9f); //Mids
+			SetColor(oceanMat, "_Color3", c); //Deep
 			SetColor(oceanMat, "_FoamColor",c, 0.3f); //Barely visible
 			SetColor(oceanMat, "_FresnelColor", c, .5f); //Horizon tint
 			//	oceanMat.SetColor("_SpeclColor", Color.clear);
