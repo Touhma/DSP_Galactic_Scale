@@ -419,7 +419,19 @@ namespace GalacticScale
 				GS2.Log("Trying to tint, but no terrain material found for " + Name);
 				return;
             }
-			terrainMat.SetColor("_Color", Color.Lerp(c, atmosMat.GetColor("_Color"), 0.5f));
+			SetColor(terrainMat,"_Color",c, 0.5f);
+			SetColor(terrainMat, "_AmbientColor0", c,0.1f);
+			SetColor(terrainMat, "_AmbientColor1", c,0.1f);
+			SetColor(terrainMat, "_AmbientColor2", c,0.1f);
+		}
+		public void SetColor(Material mat, string name, Color c, float lerp)
+        {
+			
+			//GS2.Log(Name + "SetColor("+name+")  where mat == null:"+(mat == null));
+			if (mat == null) return;
+			if (!mat.HasProperty(name)) return;
+			//GS2.Log(Name + "SetColor(" + name + ") <" + mat?.GetColor(name) + "> where mat == null:" + (mat == null));
+			mat.SetColor(name, Color.Lerp(mat.GetColor(name),c, lerp));
 		}
 		public void TintAtmosphere(Color c)
 		{
@@ -429,22 +441,22 @@ namespace GalacticScale
 				return;
 			}
 			GS2.Log("Tinting Atmosphere of " + Name + " to " + c.ToString() + " instanceID: " + atmosMat.GetInstanceID());
-			atmosMat.SetColor("_Color", Color.Lerp(c, atmosMat.GetColor("_Color"), 0.5f));
-			atmosMat.SetColor("_Color0", Color.Lerp(c, atmosMat.GetColor("_Color0"), 0.5f));
-			atmosMat.SetColor("_Color1", Color.Lerp(c, atmosMat.GetColor("_Color1"), 0.5f));
-			atmosMat.SetColor("_Color2", Color.Lerp(c, atmosMat.GetColor("_Color2"), 0.5f));
-			atmosMat.SetColor("_Color3", Color.Lerp(c, atmosMat.GetColor("_Color3"), 0.5f));
-			atmosMat.SetColor("_Color4", Color.Lerp(c, atmosMat.GetColor("_Color4"), 0.5f));
-			atmosMat.SetColor("_Color5", Color.Lerp(c, atmosMat.GetColor("_Color5"), 0.5f));
-			atmosMat.SetColor("_Color6", Color.Lerp(c, atmosMat.GetColor("_Color6"), 0.5f));
-			atmosMat.SetColor("_Color7", Color.Lerp(c, atmosMat.GetColor("_Color7"), 0.5f));
-			atmosMat.SetColor("_Color8", Color.Lerp(c, atmosMat.GetColor("_Color8"), 0.5f));
-			atmosMat.SetColor("_ColorF", Color.Lerp(c, atmosMat.GetColor("_ColorF"), 0.5f));
-			atmosMat.SetColor("_Sky0", Color.Lerp(c, atmosMat.GetColor("_Sky0"), 0.5f));
-			atmosMat.SetColor("_Sky1", Color.Lerp(c, atmosMat.GetColor("_Sky1"), 0.5f));
-			atmosMat.SetColor("_Sky2", Color.Lerp(c, atmosMat.GetColor("_Sky2"), 0.5f));
-			atmosMat.SetColor("_Sky3", Color.Lerp(c, atmosMat.GetColor("_Sky3"), 0.5f));
-			atmosMat.SetColor("_Sky4", Color.Lerp(c, atmosMat.GetColor("_Sky4"), 0.5f));
+			SetColor(atmosMat, "_Color", c, 0.5f);
+			SetColor(atmosMat,"_Color0", c, 0.5f);
+			SetColor(atmosMat, "_Color1", c, 0.5f);
+			SetColor(atmosMat, "_Color2", c, 0.5f);
+			SetColor(atmosMat, "_Color3", c, 0.5f);
+			SetColor(atmosMat, "_Color4", c, 0.5f);
+			SetColor(atmosMat, "_Color5", c, 0.5f);
+			SetColor(atmosMat, "_Color6", c, 0.5f);
+			SetColor(atmosMat, "_Color7", c, 0.5f);
+			SetColor(atmosMat, "_Color8", c, 0.5f);
+			SetColor(atmosMat, "_ColorF", c, 0.5f);
+			SetColor(atmosMat, "_Sky0", c, 0.5f);
+			SetColor(atmosMat, "_Sky1", c, 0.5f);
+			SetColor(atmosMat, "_Sky2", c, 0.5f);
+			SetColor(atmosMat, "_Sky3", c, 0.5f);
+			SetColor(atmosMat, "_Sky4", c, 0.5f);
 		}
 		public void TintOcean(Color c)
         {
@@ -454,13 +466,13 @@ namespace GalacticScale
 				return;
 			}
 			GS2.Log("tinting ocean of " + Name + " " + c.ToString() + " instanceID = " + oceanMat.GetInstanceID());
-			oceanMat.SetColor("_CausticsColor", Color.Lerp(c,Color.white, 0.1f)); //Highlights
-			oceanMat.SetColor("_Color", Color.Lerp(c, Color.clear, 0.5f)); //Shore
-			oceanMat.SetColor("_Color1", Color.Lerp(c, Color.white, 0.4f)); //Shalows
-			oceanMat.SetColor("_Color2", Color.Lerp(c, Color.white, 0.2f)); //Mids
+			SetColor(oceanMat,"_CausticsColor", c, 0.1f); //Highlights
+			SetColor(oceanMat, "_Color", c, 0.5f); //Shore
+			SetColor(oceanMat, "_Color1", c, 0.4f); //Shalows
+			SetColor(oceanMat, "_Color2", c, 0.2f); //Mids
 			oceanMat.SetColor("_Color3", c); //Deep
-			oceanMat.SetColor("_FoamColor", Color.Lerp(c, Color.white, 0.3f)); //Barely visible
-			oceanMat.SetColor("_FresnelColor", c); //Horizon tint
+			SetColor(oceanMat, "_FoamColor",c, 0.3f); //Barely visible
+			SetColor(oceanMat, "_FresnelColor", c, .5f); //Horizon tint
 			//	oceanMat.SetColor("_SpeclColor", Color.clear);
 			//oceanMat.SetColor("_SpeclColor1", Color.clear);
 			//oceanMat.SetColor("_DepthFactor", new Color(.4f, .5f, .4f, 0.1f));

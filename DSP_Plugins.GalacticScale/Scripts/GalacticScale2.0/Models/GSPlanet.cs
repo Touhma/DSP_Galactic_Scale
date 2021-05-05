@@ -116,8 +116,14 @@ namespace GalacticScale
         }
         private float GetLuminosity()
         {
+            GS2.Log("GetLuminosity " + Name);
             if (planetData == null) return -1f;
+            GS2.Log("GetLuminosity " + Name);
+            GS2.Log("planetData.orbitAround " + planetData.orbitAround);
+            GS2.Log("planetData.orbitAroundPlanet " + (planetData.orbitAroundPlanet != null));
+            
             float sunDistance = ((planetData.orbitAround != 0) ? planetData.orbitAroundPlanet.orbitRadius : planetData.orbitRadius);
+            GS2.Log("Star lightBalanceRadius. star == null?" + (planetData.star == null));
             float luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (sunDistance + 0.01f), 0.6f);
             if (luminosity > 1f)
             {
@@ -126,6 +132,7 @@ namespace GalacticScale
                 luminosity = Mathf.Log(luminosity) + 1f;
             }
             luminosity = Mathf.Round(luminosity * 100f) / 100f;
+            GS2.Log("Finished");
             return luminosity;
         }
         private int GetRadius()

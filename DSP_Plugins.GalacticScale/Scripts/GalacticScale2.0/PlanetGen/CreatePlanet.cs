@@ -17,7 +17,12 @@ namespace GalacticScale
             planetData.galaxy = galaxy;
             planetData.star = star;
             planetData.seed = 1;
-            if (isMoon) planetData.orbitAround = host.number;
+            if (isMoon)
+            {
+                planetData.orbitAround = host.number;
+                planetData.orbitAroundPlanet = host;
+
+            }
             else planetData.orbitAround = 0;
             planetData.number = index + 1;
             planetData.id = star.id * 100 + index + 1;
@@ -53,6 +58,7 @@ namespace GalacticScale
             if (planetData.type == EPlanetType.Gas) planetData.scale = 10f;
             planetData.precision = (int)gsPlanet.Radius;
             gsPlanet.planetData = planetData;
+            GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
             planetData.luminosity = gsPlanet.Luminosity;
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
