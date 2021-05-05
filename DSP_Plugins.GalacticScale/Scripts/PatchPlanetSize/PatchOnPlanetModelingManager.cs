@@ -8,9 +8,10 @@ using UnityEngine.Rendering;
 using Patch = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
 namespace GalacticScale.Scripts.PatchPlanetSize {
+    
     [HarmonyPatch(typeof(PlanetModelingManager))]
     public class PatchOnPlanetModelingManager : MonoBehaviour {
-
+        
         [HarmonyPrefix]
         [HarmonyPatch("ModelingPlanetMain")]
         public static bool ModelingPlanetMain(PlanetData planet)

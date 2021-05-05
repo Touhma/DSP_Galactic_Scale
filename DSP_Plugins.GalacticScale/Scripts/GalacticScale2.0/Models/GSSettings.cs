@@ -18,7 +18,7 @@ namespace GalacticScale
         public string version = "2.0";
         [NonSerialized]
         public bool imported = false;
-
+        public static int PlanetCount { get => instance.getPlanetCount(); }
         public static int Seed { get => instance.seed; set => instance.seed = value; }
         public static List<GSStar> Stars { get => instance.stars; set => instance.stars = value; }
         public static int starCount { get => Stars.Count; }
@@ -49,6 +49,13 @@ namespace GalacticScale
             instance = new GSSettings();
             GalaxyParams = new galaxyParams();
             Stars.Clear();
+        }
+        public int getPlanetCount()
+        {
+            int count = 0;
+            foreach (GSStar star in stars) count+=star.bodyCount;
+            GS2.Log("GetPlanetCount = " + count);
+            return count;
         }
     }
     public class galaxyParams

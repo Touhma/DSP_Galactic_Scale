@@ -103,20 +103,13 @@ namespace GalacticScale.Generators
             //test4.terrainTint = Color.yellow;
             //test4.Process();
             Dictionary<string, Color> colors = new Dictionary<string, Color>();
-            colors.Add("Red", Color.red);
-            colors.Add("White", Color.white);
-            colors.Add("Magenta", Color.magenta);
-            colors.Add("Green", Color.green);
-            colors.Add("Black", Color.black);
-            colors.Add("Grey", Color.grey);
-            colors.Add("Clear", Color.clear);
-            colors.Add("Blue", Color.blue);
-            colors.Add("Cyan", Color.cyan);
-            colors.Add("Yellow", Color.yellow);
+            colors.Add("Red", new Color(Color.red.r, Color.red.g, Color.red.b, 0.9f)); 
+
             int i = 1;
             foreach (KeyValuePair<string, Color> c in colors)
             {
                 GS2.Log("Creating Theme for Tint" + c.Key);
+                
                 GSTheme temp = new GSTheme("Tint" + c.Key, "Tint" + c.Key, "Mediterranean");
                 temp.atmosphereTint = c.Value;
                 temp.terrainTint = c.Value;
