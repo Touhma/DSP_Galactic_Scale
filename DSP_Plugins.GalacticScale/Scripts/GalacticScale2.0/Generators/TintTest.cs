@@ -112,27 +112,26 @@ namespace GalacticScale.Generators
             colors.Add("Clear", Color.clear);
             colors.Add("Blue", Color.blue);
             colors.Add("Cyan", Color.cyan);
-            colors.Add("Gray", Color.gray);
-            //colors.Add("Yellow", Color.yellow);
+            colors.Add("Yellow", Color.yellow);
             int i = 1;
             foreach (KeyValuePair<string, Color> c in colors)
             {
                 GS2.Log("Creating Theme for Tint" + c.Key);
-                GSTheme temp = new GSTheme("Mediterranean");
-                temp.Name = "Tint" + c.Key;
-                //temp.atmosphereTint = c.Value;
+                GSTheme temp = new GSTheme("Tint" + c.Key, "Tint" + c.Key, "Mediterranean");
+                temp.atmosphereTint = c.Value;
+                temp.terrainTint = c.Value;
+                temp.oceanTint = c.Value;
                 Color cc = Color.white;
                 //ColorUtility.TryParseHtmlString("#fce303", out cc);
-                temp.Process();//temp.Monkey(c.Value);
+                temp.Process();
 
-                GSTheme tempg = new GSTheme("GasGiant");
-                tempg.Name = "TintGiant" + c.Key;
-                //tempg.atmosphereTint = c.Value;
-                
+                GSTheme tempg = new GSTheme("TintGiant" + c.Key, "TintGiant" + c.Key, "GasGiant");
+                tempg.atmosphereTint = c.Value;
+                tempg.terrainTint = c.Value;
                 tempg.Process(); //tempg.Monkey(c.Value);
 
-                planets.Add(new GSPlanet("Tint" + c.Key, "Tint" + c.Key, 100, 2f, -1, -1, 10000f, (float)i, -1, -1, -1, -1, null));
-                planets.Add(new GSPlanet("TintGiant" + c.Key, "TintGiant" + c.Key, 100, 3f, -1, -1, 10000f, (float)i, -1, -1, -1, -1, null));
+                planets.Add(new GSPlanet("Tint" + c.Key, "Tint" + c.Key, 100, 2f - (i*0.005f), -1, -1, 10000f, (float)i*0.4f, -1, -1, -1, -1, null));
+                planets.Add(new GSPlanet("TintGiant" + c.Key, "TintGiant" + c.Key, 100, 2.3f, -1, -1, 10000f, (float)i*2, -1, -1, -1, -1, null));
                 i += 1;
             }
            

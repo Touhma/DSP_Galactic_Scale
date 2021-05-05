@@ -52,8 +52,7 @@ namespace GalacticScale.Generators
             for (var i=0;i<8;i++)
             {
                 GS2.Log("Creating Theme for Algo" + i);
-                GSTheme temp = new GSTheme("Mediterranean");
-                temp.Name = "Algo" + i;
+                GSTheme temp = new GSTheme("Algo" + i, "Algo" + i, "Mediterranean");
                 temp.Algo = i;
                 temp.Process();
             }

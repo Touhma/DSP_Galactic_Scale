@@ -189,7 +189,7 @@ namespace GalacticScale
             for (var i = 0; i < GS2.generators.Count; i++)
             {
                 List<GSOption> pluginOptions = new List<GSOption>();
-                GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
+                //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
                 if (GS2.generators[i] is iConfigurableGenerator gen) { GS2.Log(gen.Name + " is configurable"); foreach (GSOption o in gen.Options) pluginOptions.Add(o); }
                 generatorPluginOptions.Add(pluginOptions);
             }
@@ -202,7 +202,7 @@ namespace GalacticScale
         }
         private static void CreateOwnOptionsPostFix()
         {
-            GS2.Log("CreateGeneratorOptionsPostFix");
+            //GS2.Log("CreateGeneratorOptionsPostFix");
             var generatorIndex = 0;
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
             for (var i = 0; i < generatorNames.Count; i++) if (generatorNames[i] == GS2.generator.Name) { 
@@ -228,7 +228,7 @@ namespace GalacticScale
         // Method that handles creation of the settings tab
         private static void CreateOptionsUI()
         {
-            GS2.Log("CreateOptionsUI");
+            //GS2.Log("CreateOptionsUI");
             for (var i = 0; i < options.Count; i++)
             {
                 switch (options[i].type)
@@ -243,14 +243,14 @@ namespace GalacticScale
             //GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.generators[currentGenIndex].Name);
             for (var i = 0; i < generatorPluginOptions.Count; i++)
             { //for each canvas
-                GS2.Log("Creating Canvas " + i);
+                //GS2.Log("Creating Canvas " + i);
                 RectTransform canvas = Object.Instantiate(templateOptionsCanvas, details, false);
                 canvas.name = "testCanvas" + i;
                 generatorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.generators[i].Name;
                 if (currentGenIndex == i)
                 {
-                    GS2.Log("Setting canvas active");
+                    //GS2.Log("Setting canvas active");
                     canvas.gameObject.SetActive(true);
                 }
                 else canvas.gameObject.SetActive(false);
@@ -264,9 +264,9 @@ namespace GalacticScale
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
         {
-            GS2.Log("AddGeneratorPluginUIElements: " + GS2.generators[genIndex].Name);
+            //GS2.Log("AddGeneratorPluginUIElements: " + GS2.generators[genIndex].Name);
             List<GSOption> options = generatorPluginOptions[genIndex];
-            GS2.Log(GS2.generators[genIndex].Name + " option count = " + options.Count);
+            //GS2.Log(GS2.generators[genIndex].Name + " option count = " + options.Count);
             for (int i = 0; i < options.Count; i++)
             {
                 switch (options[i].type)
@@ -310,7 +310,7 @@ namespace GalacticScale
         // Create an input field from a GSOption definition
         private static void CreateInputField(GSOption o, RectTransform canvas, int index)
         {
-            GS2.Log("CreateInputField");
+            //GS2.Log("CreateInputField");
             RectTransform inputRect = Object.Instantiate(templateInputField, canvas);
             //GS2.Log("-1");
             inputRect.name = o.label;
@@ -345,7 +345,7 @@ namespace GalacticScale
         }           // Create a button from a GSOption definition
         private static void CreateButton(GSOption o, RectTransform canvas, int index)
         {
-            GS2.Log("CreateButton "+o.label);
+            //GS2.Log("CreateButton "+o.label);
             RectTransform buttonRect = Object.Instantiate(templateButton, canvas);
             buttonRect.name = o.label;
             buttonRect.gameObject.SetActive(true);

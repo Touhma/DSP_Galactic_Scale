@@ -192,6 +192,14 @@ namespace GalacticScale
                 g.Init();
             }
         }
+        public static void Error(string message)
+        {
+            Patch.Debug(message, BepInEx.Logging.LogLevel.Error, true);
+        }
+        public static void Warn(string message)
+        {
+            Patch.Debug(message, BepInEx.Logging.LogLevel.Warning, true);
+        }
     }
 }
 
