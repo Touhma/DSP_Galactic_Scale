@@ -482,8 +482,8 @@ namespace GalacticScale
 			SetColor(oceanMat, "_Color3", c); //Deep
 			SetColor(oceanMat, "_FoamColor", c); //Barely visible
 			SetColor(oceanMat, "_FresnelColor", c); //Horizon tint
-			//	oceanMat.SetColor("_SpeclColor", Color.clear);
-			//oceanMat.SetColor("_SpeclColor1", Color.clear);
+			SetColor(oceanMat, "_SpeclColor", c);
+			SetColor(oceanMat, "_SpeclColor1", c);
 			//oceanMat.SetColor("_DepthFactor", new Color(.4f, .5f, .4f, 0.1f));
 			//Used as Vector4 in the shader
 			//X 0.1alpha seems best, really just determines height of ripples. 0.9 looks terrible.
