@@ -83,28 +83,30 @@ namespace GalacticScale
         }
         public static void SetupBirthPlanet() {
             if (galaxy.starCount > 0)
-            {
-                StarData starData = galaxy.stars[0];
-                for (int p = 0; p < starData.planetCount; p++)
-                {
-                    //Log("Setting BirthPlanet");
-                    PlanetData planet = starData.planets[p];
-                    ThemeProto themeProto = LDB.themes.Select(planet.theme);
-                    if (themeProto != null && themeProto.Distribute == EThemeDistribute.Birth)
-                    {
-                        galaxy.birthPlanetId = planet.id;
-                        galaxy.birthStarId = starData.id;
-                        break;
-                    }
-                    else
-                    {
-                        Patch.Debug("FAILED TO SET BIRTH PLANET!", BepInEx.Logging.LogLevel.Warning, true);
-                        galaxy.birthPlanetId = galaxy.stars[0].planets[0].id;
-                        galaxy.birthStarId = galaxy.stars[0].id;
-                        //DumpObjectToJson(Path.Combine(DataDir, "error.json"), starData.planets);
-                    }
-                }
-            }
+                //{
+                //    StarData starData = galaxy.stars[0];
+                //    for (int p = 0; p < starData.planetCount; p++)
+                //    {
+                //        //Log("Setting BirthPlanet");
+                //        PlanetData planet = starData.planets[p];
+                //        ThemeProto themeProto = LDB.themes.Select(planet.theme);
+                //        if (themeProto != null && themeProto.Distribute == EThemeDistribute.Birth)
+                //        {
+                //            galaxy.birthPlanetId = planet.id;
+                //            galaxy.birthStarId = starData.id;
+                //            break;
+                //        }
+                //        else
+                //        {
+                //            Patch.Debug("FAILED TO SET BIRTH PLANET!", BepInEx.Logging.LogLevel.Warning, true);
+                //            galaxy.birthPlanetId = galaxy.stars[0].planets[0].id;
+                //            galaxy.birthStarId = galaxy.stars[0].id;
+                //            //DumpObjectToJson(Path.Combine(DataDir, "error.json"), starData.planets);
+                //        }
+                //    }
+                //}
+            galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
+            galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
         
             Assert.Positive(galaxy.birthPlanetId);
         }

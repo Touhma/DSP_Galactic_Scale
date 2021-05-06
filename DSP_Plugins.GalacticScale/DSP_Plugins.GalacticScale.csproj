@@ -111,6 +111,7 @@
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GameData\PatchNewGame.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\TintTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSTheme.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Gas2.cs" />

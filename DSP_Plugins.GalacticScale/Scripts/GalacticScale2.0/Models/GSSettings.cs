@@ -22,7 +22,9 @@ namespace GalacticScale
         public static int Seed { get => instance.seed; set => instance.seed = value; }
         public static List<GSStar> Stars { get => instance.stars; set => instance.stars = value; }
         public static int starCount { get => Stars.Count; }
-        public static GSStar BirthStar { get => Stars[0]; set => Stars[0] = value; }
+        public static GSStar BirthStar { get => Stars[birthStarId]; }
+        public static int birthStarId = 0;
+        public static int birthPlanetId = 0;
         public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
         public static GSThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         [SerializeField]
@@ -37,13 +39,13 @@ namespace GalacticScale
         //}
         public static GSSettings Instance { get { return instance; } set { instance = value; } }
       
-        public static void set(galaxyParams galaxyParams, int seed, GSStar birthStar, List<GSStar> stars)
-        {
-            GalaxyParams = galaxyParams;
-            BirthStar = birthStar;
-            Stars = stars;
-            Seed = seed;
-        }
+        //public static void set(galaxyParams galaxyParams, int seed, GSStar birthStar, List<GSStar> stars)
+        //{
+        //    GalaxyParams = galaxyParams;
+        //    //birthStarId = birthStar.assignedIndex;
+        //    Stars = stars;
+        //    Seed = seed;
+        //}
         public static void Reset()
         {
             instance = new GSSettings();

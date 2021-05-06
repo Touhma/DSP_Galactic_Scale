@@ -20,12 +20,12 @@ namespace GalacticScale
 		{
 			get
 			{
-				GS2.Log("Attempting to get baseTheme for " + Name + " it should be " + BaseName);
+				//GS2.Log("Attempting to get baseTheme for " + Name + " it should be " + BaseName);
 				return (BaseName != "" && BaseName != null) ? GS2.ThemeLibrary[this.BaseName] : null;
 			}
 			set
 			{
-				GS2.Log("Setting baseName for " + Name + " to " + value);
+				//GS2.Log("Setting baseName for " + Name + " to " + value);
 				BaseName = value.Name;
 			}
 		}
@@ -269,7 +269,7 @@ namespace GalacticScale
         {
 			if (added) return LDBThemeId;
 			if (!initialized) InitMaterials();
-			GS2.Log("Adding Theme to Protoset:"+Name);
+			//GS2.Log("Adding Theme to Protoset:"+Name);
 			int newIndex = LDB._themes.dataArray.Length; 
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
@@ -277,7 +277,7 @@ namespace GalacticScale
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
-			GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
+			//GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
 			return newId;
         }
 		public int UpdateThemeProtoSet()
@@ -285,16 +285,16 @@ namespace GalacticScale
 			if (!added) return AddToThemeProtoSet();
 			else
             {
-				GS2.Log("Updating Themeprotoset for "+Name+". LDBThemeId is "+LDBThemeId);
+				//GS2.Log("Updating Themeprotoset for "+Name+". LDBThemeId is "+LDBThemeId);
 				LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
-				GS2.Log("Updated.");
+				//GS2.Log("Updated.");
 				return LDBThemeId;
             }
 		}
 		public void InitMaterials ()
         {
 			if (initialized) return;
-			GS2.Log("Theme InitMaterials: " + Name + " " + DisplayName);
+			//GS2.Log("Theme InitMaterials: " + Name + " " + DisplayName);
 
 			if (terrainMaterial == null)
 			{
@@ -341,7 +341,7 @@ namespace GalacticScale
 			ambientSfx = Resources.Load<AudioClip>(SFXPath);
 			initialized = true;
             ProcessTints();
-            GS2.Log("Theme InitMaterials Finished");
+            //GS2.Log("Theme InitMaterials Finished");
 		}
 		public void SetMaterial(string material, string materialBase)
         {
@@ -361,10 +361,10 @@ namespace GalacticScale
         {
 			if (material == null)
 			{
-				GS2.Log("TintMaterial Failed. Material = null");
+				//GS2.Log("TintMaterial Failed. Material = null");
 				return null;
 			}
-			GS2.Log("TintMaterial " + material.name + " - " +color.ToString() );
+			//GS2.Log("TintMaterial " + material.name + " - " +color.ToString() );
 			Material newMaterial = UnityEngine.Object.Instantiate(material);
 			newMaterial.color = color;
 			return newMaterial;
@@ -372,7 +372,7 @@ namespace GalacticScale
 		public void ProcessTints()
         {
 			//return;
-			GS2.Log("ProcessTints "+Name);
+			//GS2.Log("ProcessTints "+Name);
 			if (terrainTint != new Color()) TintTerrain(terrainTint);
 			if (oceanTint != new Color()) TintOcean(oceanTint);
 			if (atmosphereTint != new Color()) TintAtmosphere(atmosphereTint);
@@ -380,7 +380,7 @@ namespace GalacticScale
 			//if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint); //This doesn't appear to exist in any theme?
 			if (thumbTint != new Color()) thumbMat = TintMaterial(thumbMat, thumbTint);
 			if (minimapTint != new Color()) minimapMat = TintMaterial(minimapMat, minimapTint);
-			GS2.Log("Finished Processing Tints");
+			//GS2.Log("Finished Processing Tints");
 		}
 		//public void Monkey(Color c)
 		//{
@@ -421,10 +421,10 @@ namespace GalacticScale
 		//}
 		public void TintTerrain(Color c)
         {
-			GS2.Log("Tinting Terrain of " + Name + " to " +c.ToString() + " instanceID: " + terrainMat.GetInstanceID());
+			//GS2.Log("Tinting Terrain of " + Name + " to " +c.ToString() + " instanceID: " + terrainMat.GetInstanceID());
 			if (terrainMat == null)
             {
-				GS2.Log("Trying to tint, but no terrain material found for " + Name);
+				//GS2.Log("Trying to tint, but no terrain material found for " + Name);
 				return;
             }
 			SetColor(terrainMat,"_Color",c);
@@ -438,17 +438,26 @@ namespace GalacticScale
         {
 			
 			if (mat == null || !mat.HasProperty(name)) return;
-			mat.SetColor(name, Color.Lerp(Color.grey,c, c.a));
+			Color origColor = mat.GetColor(name);
+			float gs = origColor.grayscale;
+			float a = origColor.a;
+			Color origGrayScale = new Color(gs, gs, gs);
+			float lerp = c.a;
+			Color toColor = new Color(c.r, c.g, c.b, a);
+			
+			mat.SetColor(name, Color.Lerp(origGrayScale,toColor, lerp));
+			//GS2.Log(":::::"+Name + ":" + mat.name + ":" + name + ":GS:" + gs + ":orig:" + origColor.ToString() + ":tint:" + c.ToString() + ":Result:" + toColor.ToString()+":MatColor:"+mat.GetColor(name).ToString());
+
 			//mat.SetColor(name, Color.Lerp( c,Color.clear, 1f-c.a));
 		}
 		public void TintAtmosphere(Color c)
 		{
 			if (atmosMat == null)
 			{
-				GS2.Log("Trying to tint, but no atmosphere material found for " + Name);
+				//GS2.Log("Trying to tint, but no atmosphere material found for " + Name);
 				return;
 			}
-			GS2.Log("Tinting Atmosphere of " + Name + " to " + c.ToString() + " instanceID: " + atmosMat.GetInstanceID());
+			//GS2.Log("Tinting Atmosphere of " + Name + " to " + c.ToString() + " instanceID: " + atmosMat.GetInstanceID());
 			SetColor(atmosMat, "_CausticsColor", c);
 			SetColor(atmosMat, "_Color", c);
 			SetColor(atmosMat, "_Color0", c);
@@ -471,12 +480,13 @@ namespace GalacticScale
         {
 			if (oceanMat == null)
 			{
-				GS2.Log("Trying to tint, but no ocean material found for " + Name);
+				//GS2.Log("Trying to tint, but no ocean material found for " + Name);
 				return;
 			}
-			GS2.Log("tinting ocean of " + Name + " " + c.ToString() + " instanceID = " + oceanMat.GetInstanceID());
+			//GS2.Log("Tinting ocean of " + Name + " " + c.ToString() + " instanceID = " + oceanMat.GetInstanceID());
 			SetColor(oceanMat,"_CausticsColor", c); //Highlights
 			SetColor(oceanMat, "_Color", c); //Shore
+			SetColor(oceanMat, "_Color0", c); 
 			SetColor(oceanMat, "_Color1", c); //Shalows
 			SetColor(oceanMat, "_Color2", c); //Mids
 			SetColor(oceanMat, "_Color3", c); //Deep
@@ -484,6 +494,8 @@ namespace GalacticScale
 			SetColor(oceanMat, "_FresnelColor", c); //Horizon tint
 			SetColor(oceanMat, "_SpeclColor", c);
 			SetColor(oceanMat, "_SpeclColor1", c);
+			SetColor(oceanMat, "_ReflectionColor", c);
+
 			//oceanMat.SetColor("_DepthFactor", new Color(.4f, .5f, .4f, 0.1f));
 			//Used as Vector4 in the shader
 			//X 0.1alpha seems best, really just determines height of ripples. 0.9 looks terrible.
