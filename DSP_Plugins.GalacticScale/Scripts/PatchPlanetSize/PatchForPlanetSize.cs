@@ -120,6 +120,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
                 Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
                 Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
+                Harmony.CreateAndPatchAll(typeof(PatchOnPowerSystem));
             }
         }
 
