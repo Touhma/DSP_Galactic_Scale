@@ -269,26 +269,27 @@ namespace GalacticScale
         {
 			if (added) return LDBThemeId;
 			if (!initialized) InitMaterials();
-			//GS2.Log("Adding Theme to Protoset:"+Name);
-			int newIndex = LDB._themes.dataArray.Length; 
+            GS2.Log("Adding Theme to Protoset:" + Name);
+            int newIndex = LDB._themes.dataArray.Length; 
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
 			LDBThemeId = newId;
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
-			//GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
-			return newId;
+            GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
+            return newId;
         }
 		public int UpdateThemeProtoSet()
         {
 			if (!added) return AddToThemeProtoSet();
 			else
             {
-				//GS2.Log("Updating Themeprotoset for "+Name+". LDBThemeId is "+LDBThemeId);
-				LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
-				//GS2.Log("Updated.");
-				return LDBThemeId;
+                GS2.Log("Updating Themeprotoset for " + Name + ". LDBThemeId is " + LDBThemeId);
+				GS2.Log(LDB._themes.dataIndices[LDBThemeId].ToString() + " " + LDB._themes.dataArray.Length);
+                LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
+                GS2.Log("Updated.");
+                return LDBThemeId;
             }
 		}
 		public void InitMaterials ()
