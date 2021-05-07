@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
@@ -10,6 +11,8 @@ namespace GalacticScale
         public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
             gameDesc = desc;
+            Log("Attempting to clean protoset");
+            CleanProtoSet();
             Log("CreateGalaxy:GenerateGalaxy()");
             GenerateGalaxy();
             Log("Galaxy Generated");
@@ -74,6 +77,14 @@ namespace GalacticScale
             //Log("EndWhile" + id + " " + galaxy.stars[i].id);
             galaxy.birthPlanetId = id;
             galaxy.birthStarId = galaxy.stars[i].id;
+        }
+        public static void CleanProtoSet()
+        {
+            ThemeProtoSet tps = LDB._themes;
+            ThemeProto[] tempData = new ThemeProto[0];
+            //Array.Copy(tps.dataArray, tempData, 16);
+            tps.dataArray = tempData;         
+            
         }
         public static List<PlanetData> GetHabitablePlanets(StarData star)
         {

@@ -11,7 +11,6 @@ namespace GalacticScale
         {
             GS2.LoadPlugins();
             GS2.LoadPreferences();
-            
         }
     }
 }

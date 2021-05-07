@@ -24,7 +24,7 @@ namespace GalacticScale
         private float _radius = -1;
         private float _acdiscRadius = -1;
         private float _lightBalanceRadius = -1;
-        private float _resourceCoef = 0.6f;
+        private float _resourceCoef = -1f;
         private float _physicsRadius = -1;
         private VectorLF3 _pos = new VectorLF3();
         [SerializeField]
