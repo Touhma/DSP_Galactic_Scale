@@ -1,6 +1,6 @@
 ﻿namespace GalacticScale
 {
-    class GSVeinParams
+    public class GSVeinParams
     {
         public float count;
         public float density;
