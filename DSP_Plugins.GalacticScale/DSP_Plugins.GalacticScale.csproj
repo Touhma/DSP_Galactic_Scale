@@ -110,7 +110,8 @@
     <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\CodeFile1.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\PatchOnPlanetAlgorithm.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\GenerateVeins.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GameData\PatchNewGame.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\BallTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\PhysicsTest.cs" />

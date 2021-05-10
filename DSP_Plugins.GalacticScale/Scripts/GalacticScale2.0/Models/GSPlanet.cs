@@ -7,8 +7,8 @@ namespace GalacticScale
     public class GSPlanet
     {
         [NonSerialized]
-        public GSPlanetVeins veinData;
-        public Dictionary<string, GSVeinParams> veins;
+        public GSPlanetVeins veinData = new GSPlanetVeins();
+        public Dictionary<string, GSVeinParams> veins = new Dictionary<string, GSVeinParams>();
         private string _name;
         private string _theme;
         private int    _radius = -1;

@@ -21,7 +21,7 @@ namespace GalacticScale
         public static GameDesc gameDesc;
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }
-
+        public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static bool LoadSettingsFromJson(string path)
         {
             if (!CheckJsonFileExists(path)) return false;
@@ -35,6 +35,10 @@ namespace GalacticScale
             GSSettings.Instance = result;
             return true;
 
+        }
+        public static GSPlanet GetGSPlanet(PlanetData planet)
+        {
+            return gsPlanets[planet.id];
         }
         private static bool CheckJsonFileExists(string path)
         {
@@ -51,6 +55,13 @@ namespace GalacticScale
             string json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
 
+        }
+        public static void LogJson(object o)
+        {
+            fsSerializer serializer = new fsSerializer();
+            serializer.TrySerialize(o, out fsData data).AssertSuccessWithoutWarnings();
+            string json = fsJsonPrinter.PrettyJson(data);
+            Log(json);
         }
         public static void DumpObjectToJson(string path, object obj)
         {
@@ -103,6 +114,7 @@ namespace GalacticScale
                 return;
             }
             GSSettings.Reset();
+            gsPlanets.Clear();
             Log("Loading Data from Generator : " + generator.Name);
             generator.Generate(gameDesc.starCount);
             return;

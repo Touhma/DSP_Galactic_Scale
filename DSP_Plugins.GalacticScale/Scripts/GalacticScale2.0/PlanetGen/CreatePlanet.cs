@@ -26,6 +26,7 @@ namespace GalacticScale
             else planetData.orbitAround = 0;
             planetData.number = index + 1;
             planetData.id = star.id * 100 + index + 1;
+            gsPlanets.Add(planetData.id, gsPlanet);
             string roman = "";
             if (isMoon) roman = Scripts.RomanNumbers.roman[host.number + 1] + " - ";
             roman += Scripts.RomanNumbers.roman[index + 1];
