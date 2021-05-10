@@ -21,8 +21,7 @@ namespace GalacticScale
         public static GameDesc gameDesc;
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }
-        
-       
+
         public static bool LoadSettingsFromJson(string path)
         {
             if (!CheckJsonFileExists(path)) return false;

@@ -11,8 +11,7 @@ namespace GalacticScale
         public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
             gameDesc = desc;
-            Log("Attempting to clean protoset");
-            CleanProtoSet();
+
             Log("CreateGalaxy:GenerateGalaxy()");
             GenerateGalaxy();
             Log("Galaxy Generated");
@@ -78,14 +77,7 @@ namespace GalacticScale
             galaxy.birthPlanetId = id;
             galaxy.birthStarId = galaxy.stars[i].id;
         }
-        public static void CleanProtoSet()
-        {
-            ThemeProtoSet tps = LDB._themes;
-            ThemeProto[] tempData = new ThemeProto[0];
-            //Array.Copy(tps.dataArray, tempData, 16);
-            tps.dataArray = tempData;         
-            
-        }
+
         public static List<PlanetData> GetHabitablePlanets(StarData star)
         {
             List<PlanetData> list = new List<PlanetData>();
