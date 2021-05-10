@@ -4,14 +4,6 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    //public class GSTheme
-    //{
-    //    public string name;
-    //    public EPlanetType type = EPlanetType.Ocean;
-    //    public int LDBThemeId = 1;
-    //    public int algo = 0;
-    //}
-
     public class GSPlanet
     {
         [NonSerialized]
@@ -19,7 +11,7 @@ namespace GalacticScale
         public Dictionary<string, GSVeinParams> veins;
         private string _name;
         private string _theme;
-        private int _radius = -1;
+        private int    _radius = -1;
         private float _orbitRadius = -1;
         private float _orbitInclination = -1;
         private float _orbitLongitude = -1;
@@ -29,39 +21,42 @@ namespace GalacticScale
         private float _rotationPeriod = -1;
         private float _rotationPhase = -1;
         private float _luminosity = -1;
+       
         [NonSerialized]
         public PlanetData planetData;
+
         private List<GSPlanet> _moons = new List<GSPlanet>();
         [SerializeField]
         public string Name { get => _name; set => _name = value; }
         [SerializeField]
-        public string Theme { get => _theme != null ? _theme : GetTheme(); set => _theme = value; }
+        public string Theme { get => _theme == null ? GetTheme() : _theme; set => _theme = value; }
         [SerializeField]
         public int Radius { get => _radius < 0 ? GetRadius():_radius; set => _radius = value; }
         [SerializeField]
-        public float OrbitRadius { get => _orbitRadius >= 0 ? _orbitRadius : GetOrbitRadius(); set => _orbitRadius = value; }
+        public float OrbitRadius { get => _orbitRadius < 0 ?  GetOrbitRadius():_orbitRadius; set => _orbitRadius = value; }
         [SerializeField]
-        public float OrbitInclination { get => _orbitInclination >= 0 ? _orbitInclination : GetOrbitInclination(); set => _orbitInclination = value; }
+        public float OrbitInclination { get => _orbitInclination < 0 ? GetOrbitInclination():_orbitInclination  ; set => _orbitInclination = value; }
         [SerializeField]
-        public float OrbitLongitude { get => _orbitLongitude >= 0 ? _orbitLongitude : GetOrbitLongitude(); set => _orbitLongitude = value; }
+        public float OrbitLongitude { get => _orbitLongitude < 0 ? GetOrbitLongitude():_orbitLongitude ; set => _orbitLongitude = value; }
         [SerializeField]
-        public float OrbitalPeriod { get => _orbitalPeriod >= 0 ? _orbitalPeriod : GetOrbitalPeriod(); set => _orbitalPeriod = value; }
+        public float OrbitalPeriod { get => _orbitalPeriod < 0 ? GetOrbitalPeriod():_orbitalPeriod ; set => _orbitalPeriod = value; }
         [SerializeField]
-        public float OrbitPhase { get => _orbitPhase >= 0 ? _orbitPhase : GetOrbitPhase(); set => _orbitPhase = value; }
+        public float OrbitPhase { get => _orbitPhase < 0 ? GetOrbitPhase() : _orbitPhase ; set => _orbitPhase = value; }
         [SerializeField]
-        public float Obliquity { get => _obliquity >= 0 ? _obliquity : GetObliquity(); set => _obliquity = value; }
+        public float Obliquity { get => _obliquity < 0 ? GetObliquity() : _obliquity  ; set => _obliquity = value; }
         [SerializeField]
-        public float RotationPeriod { get => _rotationPeriod >= 0 ? _rotationPeriod : GetRotationPeriod(); set => _rotationPeriod = value; }
+        public float RotationPeriod { get => _rotationPeriod < 0 ? GetRotationPeriod() : _rotationPeriod; set => _rotationPeriod = value; }
         [SerializeField]
-        public float RotationPhase { get => _rotationPhase >= 0 ? _rotationPhase : GetRotationPhase(); set => _rotationPhase = value; }
+        public float RotationPhase { get => _rotationPhase < 0 ? GetRotationPhase() : _rotationPhase; set => _rotationPhase = value; }
         [SerializeField]
-        public float Luminosity { get => _luminosity >= 0 ? _luminosity : GetLuminosity(); set => _luminosity = value; }
+        public float Luminosity { get => _luminosity < 0 ? GetLuminosity() : _luminosity; set => _luminosity = value; }
         [SerializeField]
         public List<GSPlanet> Moons { get => _moons; set => _moons = value; }
         public int MoonCount { get
             {
-                int count = 0;
+                
                 if (Moons == null) return 0;
+                int count = 0;
                 foreach (GSPlanet moon in Moons)
                 {
                     count++;
@@ -119,14 +114,8 @@ namespace GalacticScale
         }
         private float GetLuminosity()
         {
-            //GS2.Log("GetLuminosity " + Name);
             if (planetData == null) return -1f;
-            //GS2.Log("GetLuminosity " + Name);
-            //GS2.Log("planetData.orbitAround " + planetData.orbitAround);
-            //GS2.Log("planetData.orbitAroundPlanet " + (planetData.orbitAroundPlanet != null));
-            
             float sunDistance = ((planetData.orbitAround != 0) ? planetData.orbitAroundPlanet.orbitRadius : planetData.orbitRadius);
-            //GS2.Log("Star lightBalanceRadius. star == null?" + (planetData.star == null));
             float luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (sunDistance + 0.01f), 0.6f);
             if (luminosity > 1f)
             {
@@ -135,7 +124,6 @@ namespace GalacticScale
                 luminosity = Mathf.Log(luminosity) + 1f;
             }
             luminosity = Mathf.Round(luminosity * 100f) / 100f;
-            //GS2.Log("Finished");
             return luminosity;
         }
         private int GetRadius()

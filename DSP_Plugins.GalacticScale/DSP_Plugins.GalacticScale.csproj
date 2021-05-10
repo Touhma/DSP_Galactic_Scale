@@ -112,6 +112,8 @@
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\CodeFile1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GameData\PatchNewGame.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\BallTest.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\PhysicsTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\TintTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSVeinParams.cs" />

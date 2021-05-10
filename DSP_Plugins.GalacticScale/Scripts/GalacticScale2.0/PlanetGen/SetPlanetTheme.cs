@@ -80,7 +80,7 @@ namespace GalacticScale
             planet.gasTotalHeat = num1;
             //GS2.prog("SetPlanetTheme", true);
             //GS2.Log("Finished SetPlanetTheme()");
-            GS2.Log(" ");
+            //GS2.Log(" ");
         }
     }
 }

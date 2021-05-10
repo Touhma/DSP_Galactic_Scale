@@ -140,7 +140,7 @@ namespace GalacticScale
         {
 			DisplayName = displayName;
 			Name = name;
-			GS2.Log("Creating new Theme based on "+baseName);
+			//GS2.Log("Creating new Theme based on "+baseName);
 			if (GS2.ThemeLibrary.ContainsKey(baseName)) { 
 				this.BaseName = baseName; 
 				CopyFrom(baseTheme); 
@@ -149,7 +149,7 @@ namespace GalacticScale
 		}
 		public void Process()
         {
-			GS2.Log("GSTheme " + Name + " Process()");
+			//GS2.Log("GSTheme " + Name + " Process()");
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
 			ProcessTints();
@@ -167,7 +167,7 @@ namespace GalacticScale
 			return destination;
         }
 		public void CopyFrom(GSTheme baseTheme) {
-			GS2.Log("GSTheme CopyFrom " + Name + " copying from " + baseTheme.Name);
+			//GS2.Log("GSTheme CopyFrom " + Name + " copying from " + baseTheme.Name);
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
 			Algo = baseTheme.Algo;
 			PlanetType = baseTheme.PlanetType;
@@ -269,7 +269,7 @@ namespace GalacticScale
         {
 			if (added) return LDBThemeId;
 			if (!initialized) InitMaterials();
-            GS2.Log("Adding Theme to Protoset:" + Name);
+            //GS2.Log("Adding Theme to Protoset:" + Name);
             int newIndex = LDB._themes.dataArray.Length; 
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
@@ -277,7 +277,7 @@ namespace GalacticScale
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
-            GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
+            //GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
             return newId;
         }
 		public int UpdateThemeProtoSet()
@@ -285,10 +285,10 @@ namespace GalacticScale
 			if (!added) return AddToThemeProtoSet();
 			else
             {
-                GS2.Log("Updating Themeprotoset for " + Name + ". LDBThemeId is " + LDBThemeId);
-				GS2.Log(LDB._themes.dataIndices[LDBThemeId].ToString() + " " + LDB._themes.dataArray.Length);
+                //GS2.Log("Updating Themeprotoset for " + Name + ". LDBThemeId is " + LDBThemeId);
+				//GS2.Log(LDB._themes.dataIndices[LDBThemeId].ToString() + " " + LDB._themes.dataArray.Length);
                 LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
-                GS2.Log("Updated.");
+                //GS2.Log("Updated.");
                 return LDBThemeId;
             }
 		}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FullSerializer;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GalacticScale.Generators
@@ -20,6 +21,7 @@ namespace GalacticScale.Generators
         public List<GSOption> Options => options;
 
         private List<GSOption> options = new List<GSOption>();
+        private List<GSStar> stars = new List<GSStar>();
         public void Init()
         {
             List<string> genList = new List<string>();
@@ -28,7 +30,77 @@ namespace GalacticScale.Generators
             options.Add(new GSOption("Output Settings", "Button", "Output", OnOutputSettingsClick, () => { }));
             options.Add(new GSOption("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
             options.Add(new GSOption("Output LDBThemes", "Button", "Output", OnDumpPlanetDataClick, () => { }));
-            options.Add(new GSOption("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { }));
+            options.Add(new GSOption("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { })); 
+            options.Add(new GSOption("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
+            //OnImportPositionsClick(null);
+        }
+        public class starStuff
+        {
+            public string Name;
+            public float x;
+            public float y;
+            public float z;
+            public float mass;
+            public string spect;
+            public float radius;
+            public float luminance;
+            public float temp;
+        }
+        public ESpectrType getSpectrType(starStuff s)
+        {
+            switch (s.spect[0])
+            {
+                case 'O': return ESpectrType.O;
+                case 'F': return ESpectrType.F;
+                case 'G': return ESpectrType.G;
+                case 'B': return ESpectrType.B;
+                case 'M': return ESpectrType.M;
+                case 'A': return ESpectrType.A;
+                case 'K': return ESpectrType.K;
+                default: break;
+            }
+            return ESpectrType.X;
+        }
+        public EStarType getStarType(starStuff s)
+        {
+            switch (s.spect[0])
+            {
+                case 'O':
+                case 'F':
+                case 'G': return EStarType.MainSeqStar;
+                case 'B': return EStarType.MainSeqStar;
+                case 'M': return EStarType.MainSeqStar;
+                case 'A': return EStarType.MainSeqStar;
+                case 'K': return EStarType.MainSeqStar;
+                default: break;
+            }
+            return EStarType.WhiteDwarf;
+        }
+
+        private void OnImportPositionsClick(object o)
+        {
+            stars.Clear();
+            string path = Path.Combine(GS2.DataDir, "undefined.json");
+            GS2.Log(path);
+            fsSerializer serializer = new fsSerializer();
+            string json = File.ReadAllText(path);
+            GS2.Log(json);
+            fsData data2 = fsJsonParser.Parse(json);
+            List<starStuff> ss = new List<starStuff>();
+            serializer.TryDeserialize<List<starStuff>>(data2, ref ss);
+
+            for (var i = 0; i < ss.Count; i++)
+            {
+                stars.Add(new GSStar(1, ss[i].Name,ESpectrType.G,EStarType.MainSeqStar,new List<GSPlanet>()));
+                stars[stars.Count - 1].position = new VectorLF3(ss[i].x, ss[i].y, ss[i].z);
+                stars[stars.Count - 1].mass = ss[i].mass;
+                stars[stars.Count - 1].radius = (ss[i].radius);
+                stars[stars.Count - 1].Type = getStarType(ss[i]);
+                stars[stars.Count - 1].Spectr = getSpectrType(ss[i]);
+                stars[stars.Count - 1].luminosity = ss[i].luminance;
+                stars[stars.Count - 1].temperature = ss[i].temp;
+            }
+
         }
         private void OnDumpPlanetDataClick(object o)
         {
@@ -81,10 +153,27 @@ namespace GalacticScale.Generators
         }
         public void Generate(int starCount)
         {
+            foreach (GSStar a in stars)
+            {
+                GS2.Log(a.Name);
+            }
+            List<GSPlanet> p = new List<GSPlanet>();
+            p.Add(new GSPlanet("Test", "OceanWorld" , 100, 2f, -1, -1, -1, 2f * 1, -1, -1, -1, 1f, null));
             GS2.Log("Wow, this worked. GalacticScale2");
+            if (starCount > stars.Count) starCount = stars.Count;
             for (var i = 0; i < starCount; i++)
             {
-                GSStar s = StarDefaults.Random();
+                //int t = i % 7;
+                //ESpectrType e = (ESpectrType)t;
+                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new List<GSplanet>()));
+                
+                GSStar s = stars[i];
+                if (1 < 4) s.Planets = p;
+                GSSettings.Stars.Add(s);
+
+                //GSSettings.Stars[i].classFactor = (float)(new Random(i).NextDouble() * 6.0)-4f;
+                //GSSettings.Stars[i].Spectr = e;
+                //GSSettings.Stars[i].Name = "CF" + GSSettings.Stars[i].classFactor + "-" + e.ToString();
             }
         }
 
