@@ -4,11 +4,18 @@
     {
         public static StarData CreateBirthStar(int seed)
         {
+            Log("1");
             var gSize = galaxy.starCount > 64 ? galaxy.starCount * 4 * 100 : 25600;
+            Log("2");
+
             galaxy.astroPoses = new AstroPose[gSize];
-            StarData starData = new StarData();
+            Log("3");
+                       StarData starData = new StarData();
+            Log("4");
             starData.galaxy = galaxy;
+            Log("5");
             starData.planetCount = GSSettings.BirthStar.bodyCount;
+            Log("6");
             starData.index = 0;
             starData.level = 0.0f; 
             starData.id = 1;
@@ -34,7 +41,7 @@
             starData.spectr = GSSettings.BirthStar.Spectr;
             starData.asterBelt1OrbitIndex = 1;
             starData.asterBelt1Radius = 1.1f;
-
+            Log("%");
             return starData;
         }
     }

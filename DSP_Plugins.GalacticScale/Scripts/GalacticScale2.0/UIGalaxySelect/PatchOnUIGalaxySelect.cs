@@ -198,7 +198,7 @@ namespace GalacticScale
             GS2.gameDesc = __instance.gameDesc;
             __instance.starmapGroup.gameObject.SetActive(true);
             __instance.starmap._Open();
-            GS2.LogJson(__instance.gameDesc);
+            //GS2.LogJson(__instance.gameDesc);
             __instance.SetStarmapGalaxy();
             return false;
         }

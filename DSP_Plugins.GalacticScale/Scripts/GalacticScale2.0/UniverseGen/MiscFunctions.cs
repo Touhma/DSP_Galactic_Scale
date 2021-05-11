@@ -32,7 +32,11 @@ namespace GalacticScale
                 return points;
             }
         }
-
+        public static void EndGame()
+        {
+            UIRoot.instance.backToMainMenu = true;
+            DSPGame.EndGame();
+        }
         public class Random : System.Random
         {
             public float Range(float min, float max)=> (float)Math.Round((double)min + (NextDouble() * (double)(max - min)), 8);

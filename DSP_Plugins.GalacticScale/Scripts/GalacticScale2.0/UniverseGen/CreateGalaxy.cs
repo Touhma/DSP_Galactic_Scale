@@ -38,16 +38,18 @@ namespace GalacticScale
             galaxy.stars = new StarData[GSSettings.starCount];
             //Log("Star Count = " + GSSettings.starCount);
             if (GSSettings.starCount <= 0) return galaxy;
+            var gSize = galaxy.starCount > 64 ? galaxy.starCount * 4 * 100 : 25600;
+            galaxy.astroPoses = new AstroPose[gSize];
             for (var i = 0; i < GSSettings.starCount; i++) galaxy.stars[i] = CreateStar(i);
             for (var i = 0; i < GSSettings.starCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
             //Log("Initialize Astroposes");
             InitializeAstroPoses();
-            galaxy.birthPlanetId = 1;
+            //galaxy.birthPlanetId = 1;
             if (createPlanets)
             {
                 //Log("Creating Planets");
                 SetupBirthPlanet();
-                //Log("Generating Veins");
+                Log("Generating Veins "+galaxy.birthPlanetId);
                 //SelectBirthPlanet();
                 GenerateVeins();
             }
@@ -84,7 +86,32 @@ namespace GalacticScale
             return list;
         }
         public static void SetupBirthPlanet() {
-            if (galaxy.starCount > 0)
+            if (galaxy.starCount <= 0) return;
+            if (GSSettings.birthPlanetId >= 0)
+            {
+                GS2.Log("Using BirthPlanet from Settings");
+                galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
+                galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
+            }
+            else
+            {
+                for (int i = 0; i < GSSettings.starCount; i++)
+                {
+                    GSStar star = GSSettings.Stars[i];
+                    List<GSPlanet> bodies = star.bodies;
+                    for (int j = 0; j < star.bodyCount; j++)
+                    {
+                        GSPlanet planet = bodies[j];
+                        if (GS2.ThemeLibrary[planet.Theme].PlanetType == EPlanetType.Ocean)
+                        {
+                            galaxy.birthPlanetId = planet.planetData.id;
+                            galaxy.birthStarId = planet.planetData.star.id;
+                            j = 9001;
+                            i = 9001;
+                        }
+                    }
+                }
+            }
                 //{
                 //    StarData starData = galaxy.stars[0];
                 //    for (int p = 0; p < starData.planetCount; p++)
@@ -107,8 +134,7 @@ namespace GalacticScale
                 //        }
                 //    }
                 //}
-            galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
-            galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
+
         
             Assert.Positive(galaxy.birthPlanetId);
         }

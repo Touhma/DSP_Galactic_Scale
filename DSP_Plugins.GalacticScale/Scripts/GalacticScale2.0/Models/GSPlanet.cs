@@ -65,6 +65,15 @@ namespace GalacticScale
                 return count;
             }
         }
+        public List<GSPlanet> bodies { get
+            {
+                List<GSPlanet> b = new List<GSPlanet>() { this };
+                foreach (GSPlanet moon in Moons) {
+                    b.AddRange(moon.bodies);
+                }
+                return b;
+            } 
+        }
         public int Seed = -1;
         
         public GSPlanet()

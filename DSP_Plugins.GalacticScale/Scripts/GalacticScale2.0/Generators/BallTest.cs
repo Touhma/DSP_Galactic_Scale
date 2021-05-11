@@ -47,7 +47,7 @@ namespace GalacticScale.Generators
             {
 
                 GSStar s = StarDefaults.Random();
-                s.Planets = new List<GSPlanet>() { new GSPlanet("Test", "Mediterranean", 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null) };
+                s.Planets = new List<GSPlanet>() { new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 100, 1, -1, -1, -1, 1, -1, -1, -1, 1f, null), new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null) };
                 //double z = randomR(20.0);
 
                 //double phi = randomRadian();
@@ -59,8 +59,8 @@ namespace GalacticScale.Generators
 
                 //s.position = new VectorLF3(x,y,z);
                 s.position = random.PointOnSphere(20);
-                GSSettings.Stars.Add(s);           
-                
+                GSSettings.Stars.Add(s);
+                //GS2.EndGame();
             }
         }
         //private System.Random rand;

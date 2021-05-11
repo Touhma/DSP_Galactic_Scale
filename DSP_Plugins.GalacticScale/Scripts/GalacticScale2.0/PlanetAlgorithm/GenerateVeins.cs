@@ -187,12 +187,12 @@ namespace GalacticScale
                         planet.veinGroups[i].count++;
                         planet.veinGroups[i].amount += vein.amount;
                         planetRawData.AddVeinData(vein); //add to the planets rawdata veinpool
-                        GS2.LogJson(vein);
+                        //GS2.LogJson(vein);
                     }
                 }
             }
-            GS2.LogJson(planet.veinAmounts);
-            GS2.LogJson(planet.veinGroups);
+            //GS2.LogJson(planet.veinAmounts);
+            //GS2.LogJson(planet.veinGroups);
             tmp_vecs.Clear();
         }
 
@@ -202,7 +202,7 @@ namespace GalacticScale
             Vector3 spawnVector = InitSpawnVector(planet, random, birth);
             for (int k = 1; k < 15; k++) //for each of the vein types
             {
-                GS2.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
+                //GS2.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
                 if (veinVectorCount >= veinVectors.Length)
                 {
                     break;

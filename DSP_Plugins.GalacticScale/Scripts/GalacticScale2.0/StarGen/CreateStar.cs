@@ -5,7 +5,7 @@
         public static StarData CreateStar(int index)
         {
             int seed = random.Next();
-            if (index == 0) return CreateBirthStar(seed);
+           // if (index == 0) return CreateBirthStar(seed);
             StarData star = CreateStar(galaxy, tmp_poses[index], index + 1, seed, GSSettings.Stars[index].Type, GSSettings.Stars[index].Spectr);
             return star;
         }

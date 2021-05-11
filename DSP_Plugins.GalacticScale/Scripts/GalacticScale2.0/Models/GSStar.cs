@@ -55,6 +55,15 @@ namespace GalacticScale
                 return bodyCount;
             }
         }
+        public List<GSPlanet> bodies { get
+            {
+                List<GSPlanet> b = new List<GSPlanet>();
+                foreach (GSPlanet p in Planets)
+                {
+                    b.AddRange(p.bodies);
+                }
+                return b;
+            } }
         [NonSerialized]
         public int counter = 0;
         [SerializeField]
