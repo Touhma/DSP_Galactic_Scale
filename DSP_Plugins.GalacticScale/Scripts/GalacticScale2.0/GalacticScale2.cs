@@ -13,11 +13,12 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+
         public static List<VectorLF3> tmp_poses;
         public static List<VectorLF3> tmp_drunk;
         public static int[] tmp_state;
         public static GalaxyData galaxy;
-        public static System.Random random = new Random(2);
+        public static Random random { get => new Random(GSSettings.Seed); }
         public static GameDesc gameDesc;
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }

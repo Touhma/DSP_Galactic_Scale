@@ -38,6 +38,7 @@ namespace GalacticScale.Generators
        
         public void Generate(int starCount)
         {
+            GS2.Random random = new GS2.Random();
             List<GSPlanet> p = new List<GSPlanet>();
             for (var i = 1f;i < 50f; i++)
             p.Add(new GSPlanet("Test", "OceanWorld" , 100, (float)i, -1, -1, -1, 0, -1, -1, -1, 1f, null));
@@ -47,31 +48,32 @@ namespace GalacticScale.Generators
 
                 GSStar s = StarDefaults.Random();
 
-                double z = randomR(20.0);
+                //double z = randomR(20.0);
 
-                double phi = randomRadian();
+                //double phi = randomRadian();
 
-                double x = Mathf.Sqrt((float)(20.0 * 20.0 - (z * z))) * Mathf.Cos((float)phi);
+                //double x = Mathf.Sqrt((float)(20.0 * 20.0 - (z * z))) * Mathf.Cos((float)phi);
 
-                double y = Mathf.Sqrt((float)(20.0 * 20.0 - (z * z))) * Mathf.Sin((float)phi);
+                //double y = Mathf.Sqrt((float)(20.0 * 20.0 - (z * z))) * Mathf.Sin((float)phi);
 
 
-                s.position = new VectorLF3(x,y,z);
+                //s.position = new VectorLF3(x,y,z);
+                s.position = random.PointOnSphere(20);
                 GSSettings.Stars.Add(s);           
                 
             }
         }
-        private System.Random rand;
-        public double randomRadian()
-        {
-            if (rand == null) rand = new System.Random(GSSettings.Seed);
-            return rand.NextDouble() * Mathf.PI*2;
-        }
-        public double randomR(double r)
-        {
-            if (rand == null) rand = new System.Random(GSSettings.Seed);
-            return (rand.NextDouble() * 2 * r)-r;
-        }
+        //private System.Random rand;
+        //public double randomRadian()
+        //{
+        //    if (rand == null) rand = new System.Random(GSSettings.Seed);
+        //    return rand.NextDouble() * Mathf.PI*2;
+        //}
+        //public double randomR(double r)
+        //{
+        //    if (rand == null) rand = new System.Random(GSSettings.Seed);
+        //    return (rand.NextDouble() * 2 * r)-r;
+        //}
         public void Import(GSGenPreferences preferences)
         {
             

@@ -5,6 +5,29 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public class Random : System.Random
+        {
+            public float Range(float min, float max)=> (float)Math.Round((double)min + (NextDouble() * (double)(max - min)), 8);
+            public float Normal(float averageValue, float standardDeviation) => averageValue + standardDeviation * (float)(Math.Sqrt(-2.0 * Math.Log(1.0 - NextDouble())) * Math.Sin(2.0 * Math.PI * NextDouble()));
+            public float RangePlusMinusOne() => UnityEngine.Mathf.Sin((float)(NextDouble() * (2 * UnityEngine.Mathf.PI)));
+            public VectorLF3 PointOnSphere(double radius)
+            {
+                double z = (NextDouble() * 2 * radius) - radius;
+                double phi = NextDouble() * Math.PI * 2;
+                double x = Math.Sqrt((Math.Pow(radius,2) - Math.Pow(z ,2))) * Math.Cos(phi);
+                double y = Math.Sqrt((Math.Pow(radius,2) - Math.Pow(z ,2))) * Math.Sin(phi);
+                return new VectorLF3(x, y, z);
+            }
+            public Random(int seed) : base(seed) { }
+            public Random() : base(GSSettings.Seed) { }
+        }
+
+        public class SingletonExample //left here for future use
+        {
+            private SingletonExample() {}
+            public static SingletonExample Instance { get { return Internal.instance; } }
+            private class Internal { static Internal() {} internal static readonly SingletonExample instance = new SingletonExample(); }
+        }
         private static int progCount = 0;
         public static void prog(string name, bool end = false)
         {
@@ -16,14 +39,14 @@ namespace GalacticScale
             }
             progCount++;
         }
-        public static float RandNormal(
-                float averageValue,
-                float standardDeviation,
-                double r1,
-                double r2)
-        {
-            return averageValue + standardDeviation * (float)(Math.Sqrt(-2.0 * Math.Log(1.0 - r1)) * Math.Sin(2.0 * Math.PI * r2));
-        }
+        //public static float RandNormal(
+        //        float averageValue,
+        //        float standardDeviation,
+        //        double r1,
+        //        double r2)
+        //{
+        //    return averageValue + standardDeviation * (float)(Math.Sqrt(-2.0 * Math.Log(1.0 - r1)) * Math.Sin(2.0 * Math.PI * r2));
+        //}
 
         public static int GenerateTempPoses(
             int seed,

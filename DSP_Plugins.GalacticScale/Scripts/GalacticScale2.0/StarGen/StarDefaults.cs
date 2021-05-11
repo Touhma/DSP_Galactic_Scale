@@ -4,15 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public class GSRand : System.Random
-    {
-        public float Range(float min, float max)
-        {
-            return (float)Math.Round((double)min + (NextDouble() * (double)(max - min)), 8);
-        }
-        public GSRand(int seed) : base(seed) { }
 
-    }
     public static class StarDefaults
     {
         public static float Age(GSStar star)
@@ -20,7 +12,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole:
@@ -48,7 +40,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(48f, 75f); 
@@ -77,7 +69,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(0.9f, 0.97f); 
@@ -105,7 +97,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(0.005f, 0.0075f); 
@@ -146,7 +138,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(17f, 36f); 
@@ -186,7 +178,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole:   return r.Range(3.45f, 4.6f); 
@@ -214,7 +206,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(0.69f, 0.76f); 
@@ -253,7 +245,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return 0f;
@@ -292,7 +284,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(2.48f, 2.73f); 
@@ -333,7 +325,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(2.0f, 2.5f); 
@@ -373,7 +365,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(1.0f, 1.35f); 
@@ -401,7 +393,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
             var habitableRadius = Mathf.Pow(1.7f, 2f + ClassFactor(star)) + 0.25f * Mathf.Min(1f, OrbitScaler(star));
-            GSRand r = new GSRand(star.Seed);
+            GS2.Random r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return 0f;

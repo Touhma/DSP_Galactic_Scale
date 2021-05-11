@@ -23,7 +23,6 @@ namespace GalacticScale
                 GSSettings.ThemeLibrary = ThemeLibrary;
             }
             else GS2.ThemeLibrary = GSSettings.ThemeLibrary;
-            random = new System.Random(GSSettings.Seed);
             int tempPoses = GenerateTempPoses(
                 random.Next(),
                 GSSettings.starCount,
