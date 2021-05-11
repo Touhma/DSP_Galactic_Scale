@@ -5,6 +5,34 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static class Utils
+        {
+            public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
+            {
+                List<VectorLF3> points = new List<VectorLF3>();
+                if (count == 0) return points;
+                double a = 4.0 * Math.PI * (Math.Pow(radius, 2) / count);
+                double d = Math.Sqrt(a);
+                int m_theta = (int)Math.Round(Math.PI / d);
+                double d_theta = Math.PI / m_theta;
+                double d_phi = a / d_theta;
+                for (int m = 0; m < m_theta; m++)
+                {
+                    double theta = Math.PI * (m + 0.5) / m_theta;
+                    int m_phi = (int)Math.Round(2.0 * Math.PI * Math.Sin(theta) / d_phi);
+                    for (int n = 0; n < m_phi; n++)
+                    {
+                        double phi = 2.0 * Math.PI * n / m_phi;
+                        double x = radius * Math.Sin(theta) * Math.Cos(phi);
+                        double y = radius * Math.Sin(theta) * Math.Sin(phi);
+                        double z = radius * Math.Cos(theta);
+                        points.Add(new VectorLF3(x, y, z));
+                    }
+                }
+                return points;
+            }
+        }
+
         public class Random : System.Random
         {
             public float Range(float min, float max)=> (float)Math.Round((double)min + (NextDouble() * (double)(max - min)), 8);

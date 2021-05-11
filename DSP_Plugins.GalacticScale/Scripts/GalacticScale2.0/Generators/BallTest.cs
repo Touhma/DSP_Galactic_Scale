@@ -17,7 +17,7 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.ball";
 
-        public GSGeneratorConfig Config => new GSGeneratorConfig();
+        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 1024, 2);
 
         public List<GSOption> Options => options;
 
@@ -40,14 +40,14 @@ namespace GalacticScale.Generators
         {
             GS2.Random random = new GS2.Random();
             List<GSPlanet> p = new List<GSPlanet>();
-            for (var i = 1f;i < 50f; i++)
-            p.Add(new GSPlanet("Test", "OceanWorld" , 100, (float)i, -1, -1, -1, 0, -1, -1, -1, 1f, null));
+            //for (var i = 1f;i < 50f; i++)
+            p.Add(new GSPlanet("Test", "Mediterranean" , 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null));
 
             for (var i = 0; i < starCount-1; i++)
             {
 
                 GSStar s = StarDefaults.Random();
-
+                s.Planets = new List<GSPlanet>() { new GSPlanet("Test", "Mediterranean", 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null) };
                 //double z = randomR(20.0);
 
                 //double phi = randomRadian();

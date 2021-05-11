@@ -6,6 +6,7 @@ namespace GalacticScale
 {
     public partial class PatchOnUIGalaxySelect
     {
+
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect),"SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
@@ -23,8 +24,13 @@ namespace GalacticScale
             __instance.autoCameraYaw = true;
             __instance.lastCameraYaw = __instance.cameraPoser.yawWanted;
             __instance.autoRotateSpeed = 0.0f;
-            __instance.starCountSlider.minValue = GS2.generator.Config.MinStarCount;
-            __instance.starCountSlider.maxValue = GS2.generator.Config.MaxStarCount;
+            //GS2.LogJson(GS2.generator.Config);
+
+                
+                //__instance.starCountSlider.minValue = GS2.generator.Config.MinStarCount;
+                //__instance.starCountSlider.maxValue = GS2.generator.Config.MaxStarCount;
+
+            GS2.Log(__instance.starCountSlider.value + " " + GSSettings.starCount + "+"+ GS2.generator.Config.MinStarCount);
             if (GS2.generator.Config.DisableStarCountSlider)
             {
                 //GS2.Log("Disabling StarCount Slider");
@@ -77,8 +83,8 @@ namespace GalacticScale
             //__instance.starCountSlider.minValue = 0;
             //GS2.Log("4");
             //__instance.starCountSlider.maxValue = 1024;
-            //GS2.Log("5");
-            //__instance.starCountSlider.value = (float)galaxy.starCount;
+            GS2.Log("Setting StarCountSlider Value" +galaxy.starCount);
+            __instance.starCountSlider.value = (float)galaxy.starCount;
             //GS2.Log("6");
             __instance.starCountText.text = galaxy.starCount.ToString();
             int M = 0;
@@ -141,8 +147,9 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect),"_OnInit")]
         public static void Patch_OnInit(UIGalaxySelect __instance, ref Slider ___starCountSlider)
         {
-            ___starCountSlider.maxValue = GS2.generator.Config.MinStarCount;
-            ___starCountSlider.minValue = GS2.generator.Config.MaxStarCount;
+            GS2.Log("INIT");
+            ___starCountSlider.maxValue = GS2.generator.Config.MaxStarCount;
+            ___starCountSlider.minValue = GS2.generator.Config.MinStarCount;
         }
 
         [HarmonyPrefix]
@@ -155,6 +162,7 @@ namespace GalacticScale
             //GS2.Log("OnStarCountSliderValueChange2"); 
             if (num == ___gameDesc.starCount) return false;
             //GS2.Log("OnStarCountSliderValueChange3");
+            num = Mathf.Clamp(num, GS2.generator.Config.MinStarCount, GS2.generator.Config.MaxStarCount);
             ___gameDesc.starCount = num;
             //GS2.Log("OnStarCountSliderValueChange4");
             GS2.gameDesc = ___gameDesc;
@@ -176,6 +184,23 @@ namespace GalacticScale
         public static void UIPostfix(UIGalaxySelect __instance, ref Slider ___starCountSlider)
         {
             ___starCountSlider.onValueChanged.AddListener(__instance.OnStarCountSliderValueChange);
+        }
+
+        [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
+        public static bool _OnOpen(UIGalaxySelect __instance)
+        {
+            GS2.Log("checking if vanilla what");
+            if (GS2.generator == null) return true;
+            GS2.Log("wHAT "+ GS2.generator.Config.DefaultStarCount);
+            __instance.random = new System.Random((int)(System.DateTime.Now.Ticks / 10000L));
+            __instance.gameDesc = new GameDesc();
+            __instance.gameDesc.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.generator.Config.DefaultStarCount, 1, 1f);
+            GS2.gameDesc = __instance.gameDesc;
+            __instance.starmapGroup.gameObject.SetActive(true);
+            __instance.starmap._Open();
+            GS2.LogJson(__instance.gameDesc);
+            __instance.SetStarmapGalaxy();
+            return false;
         }
     }
 }
