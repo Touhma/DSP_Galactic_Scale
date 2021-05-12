@@ -2,11 +2,9 @@
 
 namespace GalacticScale
 {
-    [HarmonyPatch(typeof(StarGen))]
     public class PatchOnVanillaStarGen
     {
-        [HarmonyPrefix]
-        [HarmonyPatch("CreateBirthStar")]
+        [HarmonyPrefix, HarmonyPatch(typeof(StarGen), "CreateBirthStar")]
         public static bool CreateBirthStar(GalaxyData galaxy, int seed)
         {
             if (GS2.Vanilla)

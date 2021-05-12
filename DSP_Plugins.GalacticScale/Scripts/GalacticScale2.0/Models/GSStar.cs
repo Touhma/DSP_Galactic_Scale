@@ -31,15 +31,15 @@ namespace GalacticScale
         public float level = 1;
         public GSStar(int seed, string name, ESpectrType spectr, EStarType type, List<GSPlanet> planets)
         {
-            this.Name = name;
-            this.Spectr = spectr;
-            this.Type = type;
-            this.Planets = planets;
-            this.Seed = seed;
+            Name = name;
+            Spectr = spectr;
+            Type = type;
+            Planets = planets;
+            Seed = seed;
         }
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
         public int planetCount { get => Planets.Count; }
         public int bodyCount

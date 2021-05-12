@@ -1,8 +1,6 @@
-﻿using FullSerializer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
 
 namespace GalacticScale
 {
@@ -28,24 +26,9 @@ namespace GalacticScale
         public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
         public static GSThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         [SerializeField]
-        private GSThemeLibrary themeLibrary = GS2.ThemeLibrary; //testing...this may break something
-        //static GSSettings()
-        //{
-
-        //}
-        //private GSSettings()
-        //{
-
-        //}
+        private GSThemeLibrary themeLibrary = GS2.ThemeLibrary; 
         public static GSSettings Instance { get { return instance; } set { instance = value; } }
       
-        //public static void set(galaxyParams galaxyParams, int seed, GSStar birthStar, List<GSStar> stars)
-        //{
-        //    GalaxyParams = galaxyParams;
-        //    //birthStarId = birthStar.assignedIndex;
-        //    Stars = stars;
-        //    Seed = seed;
-        //}
         public static void Reset()
         {
             instance = new GSSettings();
@@ -56,7 +39,6 @@ namespace GalacticScale
         {
             int count = 0;
             foreach (GSStar star in stars) count+=star.bodyCount;
-            GS2.Log("GetPlanetCount = " + count);
             return count;
         }
     }

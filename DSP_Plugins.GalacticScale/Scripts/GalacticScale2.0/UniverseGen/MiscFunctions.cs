@@ -71,14 +71,6 @@ namespace GalacticScale
             }
             progCount++;
         }
-        //public static float RandNormal(
-        //        float averageValue,
-        //        float standardDeviation,
-        //        double r1,
-        //        double r2)
-        //{
-        //    return averageValue + standardDeviation * (float)(Math.Sqrt(-2.0 * Math.Log(1.0 - r1)) * Math.Sin(2.0 * Math.PI * r2));
-        //}
 
         public static int GenerateTempPoses(
             int seed,

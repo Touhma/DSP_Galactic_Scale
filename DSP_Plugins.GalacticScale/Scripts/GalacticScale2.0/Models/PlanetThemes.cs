@@ -118,7 +118,6 @@ namespace GalacticScale
         public GSTheme Random(List<string> themes)
         {
             int choice = random.Next(0, themes.Count);
-            //GS2.LogJson(themes);
             return this[themes[choice]];
         }
 

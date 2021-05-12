@@ -18,16 +18,8 @@ namespace GalacticScale
 		public string DisplayName = "Default Theme";
 		public GSTheme baseTheme
 		{
-			get
-			{
-				//GS2.Log("Attempting to get baseTheme for " + Name + " it should be " + BaseName);
-				return (BaseName != "" && BaseName != null) ? GS2.ThemeLibrary[this.BaseName] : null;
-			}
-			set
-			{
-				//GS2.Log("Setting baseName for " + Name + " to " + value);
-				BaseName = value.Name;
-			}
+			get => (BaseName != "" && BaseName != null) ? GS2.ThemeLibrary[this.BaseName] : null;
+			set => BaseName = value.Name;
 		}
 		public string BaseName;
 		public string MaterialPath = "Universe/Materials/Planets/Ocean 1/";
@@ -140,7 +132,6 @@ namespace GalacticScale
         {
 			DisplayName = displayName;
 			Name = name;
-			//GS2.Log("Creating new Theme based on "+baseName);
 			if (GS2.ThemeLibrary.ContainsKey(baseName)) { 
 				this.BaseName = baseName; 
 				CopyFrom(baseTheme); 
@@ -149,7 +140,6 @@ namespace GalacticScale
 		}
 		public void Process()
         {
-			//GS2.Log("GSTheme " + Name + " Process()");
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
 			ProcessTints();
@@ -167,7 +157,6 @@ namespace GalacticScale
 			return destination;
         }
 		public void CopyFrom(GSTheme baseTheme) {
-			//GS2.Log("GSTheme CopyFrom " + Name + " copying from " + baseTheme.Name);
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
 			Algo = baseTheme.Algo;
 			PlanetType = baseTheme.PlanetType;
@@ -200,12 +189,10 @@ namespace GalacticScale
 			SFXVolume = baseTheme.SFXVolume;
 			CullingRadius = baseTheme.CullingRadius;
 			terrainMat = (baseTheme.terrainMat != null)?UnityEngine.Object.Instantiate(baseTheme.terrainMat):null;
-			Material oceanTemp = null;
-			if (baseTheme.oceanMat != null)
+            if (baseTheme.oceanMat != null)
 			{
-				oceanTemp = UnityEngine.Object.Instantiate(baseTheme.oceanMat);
-				//oceanMat = (baseTheme.oceanMat != null) ? UnityEngine.Object.Instantiate(baseTheme.oceanMat) : null;
-				oceanMat = oceanTemp;
+                Material oceanTemp = UnityEngine.Object.Instantiate(baseTheme.oceanMat);
+                oceanMat = oceanTemp;
 				if (oceanTint != new Color()) TintOcean(oceanTint);
 			} 
 			atmosMat = (baseTheme.atmosMat != null) ? UnityEngine.Object.Instantiate(baseTheme.atmosMat) : null;
@@ -285,19 +272,14 @@ namespace GalacticScale
 			if (!added) return AddToThemeProtoSet();
 			else
             {
-				//GS2.Log("Updating Themeprotoset for " + Name + ". LDBThemeId is " + LDBThemeId);
-				//GS2.Log(LDB._themes.dataIndices[LDBThemeId].ToString() + " " + LDB._themes.dataArray.Length);
 				terrainMat.SetFloat("_Radius", 100f);
                 LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
-                //GS2.Log("Updated.");
                 return LDBThemeId;
             }
 		}
 		public void InitMaterials ()
         {
 			if (initialized) return;
-			//GS2.Log("Theme InitMaterials: " + Name + " " + DisplayName);
-
 			if (terrainMaterial == null)
 			{
 				Material tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
@@ -343,7 +325,6 @@ namespace GalacticScale
 			ambientSfx = Resources.Load<AudioClip>(SFXPath);
 			initialized = true;
             ProcessTints();
-            //GS2.Log("Theme InitMaterials Finished");
 		}
 		public void SetMaterial(string material, string materialBase)
         {
@@ -361,20 +342,14 @@ namespace GalacticScale
         }
 		public static Material TintMaterial(Material material, Color color)
         {
-			if (material == null)
-			{
-				//GS2.Log("TintMaterial Failed. Material = null");
-				return null;
-			}
-			//GS2.Log("TintMaterial " + material.name + " - " +color.ToString() );
+			if (material == null) return null;
+			
 			Material newMaterial = UnityEngine.Object.Instantiate(material);
 			newMaterial.color = color;
 			return newMaterial;
         }
 		public void ProcessTints()
         {
-			//return;
-			//GS2.Log("ProcessTints "+Name);
 			if (terrainTint != new Color()) TintTerrain(terrainTint);
 			if (oceanTint != new Color()) TintOcean(oceanTint);
 			if (atmosphereTint != new Color()) TintAtmosphere(atmosphereTint);
@@ -382,7 +357,6 @@ namespace GalacticScale
 			//if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint); //This doesn't appear to exist in any theme?
 			if (thumbTint != new Color()) thumbMat = TintMaterial(thumbMat, thumbTint);
 			if (minimapTint != new Color()) minimapMat = TintMaterial(minimapMat, minimapTint);
-			//GS2.Log("Finished Processing Tints");
 		}
 		//public void Monkey(Color c)
 		//{
@@ -408,10 +382,10 @@ namespace GalacticScale
 
   //          //atmosMat.SetColor("_Color8", Color.magenta);//Twilight Fog: { r: 1, g: 1, b: 1, a: 1}
   //          //atmosMat.SetColor("_ColorF", Color.yellow);//Fog Colour : { r: 0.4327686, g: 0.5402345, b: 0.7372549, a: 1}
-  //                                                    //atmosMat.SetColor("_EmissionColor", Color.clear);//?: { r: 0, g: 0, b: 0, a: 1}
-  //                                                    //atmosMat.SetColor("_LocalPos", Color.clear);//: { r: -76.93655, g: -113.229, b: 165.6604, a: 0}
-  //                                                    //atmosMat.SetColor("_PlanetPos", Color.clear);//: { r: 0, g: 0, b: 0, a: 0}
-  //                                                    //atmosMat.SetColor("_PlanetRadius", new Color(20,20,30,0));//: { r: 200, g: 199.98, b: 270, a: 0}
+  //          //atmosMat.SetColor("_EmissionColor", Color.clear);//?: { r: 0, g: 0, b: 0, a: 1}
+  //          //atmosMat.SetColor("_LocalPos", Color.clear);//: { r: -76.93655, g: -113.229, b: 165.6604, a: 0}
+  //          //atmosMat.SetColor("_PlanetPos", Color.clear);//: { r: 0, g: 0, b: 0, a: 0}
+  //          //atmosMat.SetColor("_PlanetRadius", new Color(20,20,30,0));//: { r: 200, g: 199.98, b: 270, a: 0}
 
   //          //atmosMat.SetColor("_Sky0", Color.clear);//Day Horizon from ground
   //          //atmosMat.SetColor("_Sky1", Color.clear);//Day Sky from ground
@@ -423,12 +397,7 @@ namespace GalacticScale
 		//}
 		public void TintTerrain(Color c)
         {
-			//GS2.Log("Tinting Terrain of " + Name + " to " +c.ToString() + " instanceID: " + terrainMat.GetInstanceID());
-			if (terrainMat == null)
-            {
-				//GS2.Log("Trying to tint, but no terrain material found for " + Name);
-				return;
-            }
+			if (terrainMat == null) return;
 			SetColor(terrainMat,"_Color",c);
 			SetColor(terrainMat, "_AmbientColor0", c);
 			SetColor(terrainMat, "_AmbientColor1", c);
@@ -446,20 +415,11 @@ namespace GalacticScale
 			Color origGrayScale = new Color(gs, gs, gs);
 			float lerp = c.a;
 			Color toColor = new Color(c.r, c.g, c.b, a);
-			
 			mat.SetColor(name, Color.Lerp(origGrayScale,toColor, lerp));
-			//GS2.Log(":::::"+Name + ":" + mat.name + ":" + name + ":GS:" + gs + ":orig:" + origColor.ToString() + ":tint:" + c.ToString() + ":Result:" + toColor.ToString()+":MatColor:"+mat.GetColor(name).ToString());
-
-			//mat.SetColor(name, Color.Lerp( c,Color.clear, 1f-c.a));
 		}
 		public void TintAtmosphere(Color c)
 		{
-			if (atmosMat == null)
-			{
-				//GS2.Log("Trying to tint, but no atmosphere material found for " + Name);
-				return;
-			}
-			//GS2.Log("Tinting Atmosphere of " + Name + " to " + c.ToString() + " instanceID: " + atmosMat.GetInstanceID());
+			if (atmosMat == null) return;
 			SetColor(atmosMat, "_CausticsColor", c);
 			SetColor(atmosMat, "_Color", c);
 			SetColor(atmosMat, "_Color0", c);
@@ -480,12 +440,7 @@ namespace GalacticScale
 		}
 		public void TintOcean(Color c)
         {
-			if (oceanMat == null)
-			{
-				//GS2.Log("Trying to tint, but no ocean material found for " + Name);
-				return;
-			}
-			//GS2.Log("Tinting ocean of " + Name + " " + c.ToString() + " instanceID = " + oceanMat.GetInstanceID());
+			if (oceanMat == null) return;
 			SetColor(oceanMat,"_CausticsColor", c); //Highlights
 			SetColor(oceanMat, "_Color", c); //Shore
 			SetColor(oceanMat, "_Color0", c); 

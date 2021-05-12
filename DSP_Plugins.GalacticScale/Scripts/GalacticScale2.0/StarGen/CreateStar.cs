@@ -4,26 +4,14 @@
     {
         public static StarData CreateStar(int index)
         {
-            int seed = random.Next();
-           // if (index == 0) return CreateBirthStar(seed);
-            StarData star = CreateStar(galaxy, tmp_poses[index], index + 1, seed, GSSettings.Stars[index].Type, GSSettings.Stars[index].Spectr);
-            return star;
+            return CreateStar(galaxy, index + 1); 
         }
 
-        public static StarData CreateStar(
-             GalaxyData galaxy,
-             VectorLF3 tmp_pos,
-             int id,
-             int seed,
-             EStarType needtype,
-             ESpectrType needSpectr = ESpectrType.X)
-        {
-            StarData starData = new StarData()
-            {
-                galaxy = galaxy,
-                index = id - 1
-            };
-            starData.level = galaxy.starCount <= 1 ? 0.0f : (float)starData.index / (float)(galaxy.starCount - 1);
+        public static StarData CreateStar( GalaxyData galaxy, int id )       {
+            StarData starData = new StarData();
+            starData.galaxy = galaxy;
+            starData.index = id - 1;
+            starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
             starData.id = id;
             starData.seed = GSSettings.Stars[id -1].Seed;
             GSSettings.Stars[id - 1].assignedIndex = id - 1;
@@ -48,7 +36,6 @@
             starData.dysonRadius = GSSettings.Stars[id -1].dysonRadius;
             starData.type = GSSettings.Stars[id -1].Type;
             starData.spectr = GSSettings.Stars[id -1].Spectr;
-
             return starData;
         }
     }
