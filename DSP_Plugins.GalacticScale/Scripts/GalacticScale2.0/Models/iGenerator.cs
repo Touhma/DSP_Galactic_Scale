@@ -15,7 +15,6 @@ namespace GalacticScale
         string GUID { get; }
         void Generate(int starCount);
         GSGeneratorConfig Config { get; }
-       
         void Init();
     }
     public interface iConfigurableGenerator : iGenerator
