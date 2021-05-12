@@ -114,10 +114,10 @@ namespace GalacticScale.Generators
         }
         private void OnExportLocalPlanetClick(object o)
         {
-            string outputDir = Path.Combine(GS2.DataDir, "output");
-            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
-            string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
-            GS2.DumpObjectToJson(path, GameMain.localPlanet);
+            //string outputDir = Path.Combine(GS2.DataDir, "output");
+            //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+            //string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
+            GS2.Log(GameMain.localPlanet.luminosity.ToString());
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }

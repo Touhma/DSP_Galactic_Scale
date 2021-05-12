@@ -285,8 +285,9 @@ namespace GalacticScale
 			if (!added) return AddToThemeProtoSet();
 			else
             {
-                //GS2.Log("Updating Themeprotoset for " + Name + ". LDBThemeId is " + LDBThemeId);
+				//GS2.Log("Updating Themeprotoset for " + Name + ". LDBThemeId is " + LDBThemeId);
 				//GS2.Log(LDB._themes.dataIndices[LDBThemeId].ToString() + " " + LDB._themes.dataArray.Length);
+				terrainMat.SetFloat("_Radius", 100f);
                 LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
                 //GS2.Log("Updated.");
                 return LDBThemeId;

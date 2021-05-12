@@ -17,7 +17,7 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.ball";
 
-        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 1024, 2);
+        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 3, 52, 3);
 
         public List<GSOption> Options => options;
 
@@ -48,11 +48,12 @@ namespace GalacticScale.Generators
 
                 GSStar s = StarDefaults.Random();
                 s.Name = "Star-" + i;
-                s.Planets = new List<GSPlanet>() { new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Hot).Name, 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), 
-                    new GSPlanet("Test", "Lava", 100, 10, -1, -1, -1, 1, -1, -1, -1, 1f, null), 
-                    new GSPlanet("Test", "Lava", 100, 6, -1, -1, -1, 0, -1, -1, -1, 1f, null) };
-                //double z = randomR(20.0);
-                if (i == 2)
+                s.Planets = new List<GSPlanet>() { new GSPlanet("Test","Lava", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), 
+                    new GSPlanet("Test", "Lava", 200, 10, -1, -1, 10000, 1, -1, -1, -1, 1f, null), 
+                    new GSPlanet("Test", "Lava", 300, 6, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) ,
+                new GSPlanet("Test", "Lava", 400, 2, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) };
+            //double z = randomR(20.0);
+            if (i == 2)
                 {
                     GS2.LogJson(GS2.ThemeLibrary.Habitable);
                     s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
