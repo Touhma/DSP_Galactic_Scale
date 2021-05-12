@@ -43,13 +43,20 @@ namespace GalacticScale.Generators
             //for (var i = 1f;i < 50f; i++)
             p.Add(new GSPlanet("Test", "Mediterranean" , 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null));
 
-            for (var i = 0; i < starCount-1; i++)
+            for (var i = 0; i < starCount; i++)
             {
 
                 GSStar s = StarDefaults.Random();
-                s.Planets = new List<GSPlanet>() { new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 100, 1, -1, -1, -1, 1, -1, -1, -1, 1f, null), new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null) };
+                s.Name = "Star-" + i;
+                s.Planets = new List<GSPlanet>() { new GSPlanet("Test", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Hot).Name, 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), 
+                    new GSPlanet("Test", "Lava", 100, 10, -1, -1, -1, 1, -1, -1, -1, 1f, null), 
+                    new GSPlanet("Test", "Lava", 100, 6, -1, -1, -1, 0, -1, -1, -1, 1f, null) };
                 //double z = randomR(20.0);
-
+                if (i == 2)
+                {
+                    GS2.LogJson(GS2.ThemeLibrary.Habitable);
+                    s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
+                }
                 //double phi = randomRadian();
 
                 //double x = Mathf.Sqrt((float)(20.0 * 20.0 - (z * z))) * Mathf.Cos((float)phi);
@@ -58,7 +65,7 @@ namespace GalacticScale.Generators
 
 
                 //s.position = new VectorLF3(x,y,z);
-                s.position = random.PointOnSphere(20);
+                s.position = random.PointOnSphere(10);
                 GSSettings.Stars.Add(s);
                 //GS2.EndGame();
             }

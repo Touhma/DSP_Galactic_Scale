@@ -67,17 +67,17 @@ namespace GalacticScale
 
         private static void AssignVeins(PlanetData planet, System.Random random, PlanetRawData planetRawData, float num2point1fdivbyplanetradius, int[] veinModelIndexs, int[] veinModelCounts, int[] veinProducts, float[] _vein_counts, float[] _vein_opacity, bool birth, float resourceCoef,Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
         {
-            GS2.Log("AssignVeins " + planet.name);
+            //GS2.Log("AssignVeins " + planet.name);
             Array.Clear(planet.veinAmounts, 0, planet.veinAmounts.Length);
             planetRawData.veinCursor = 1;
             planet.veinGroups = new PlanetData.VeinGroup[veinVectorCount];
             List<Vector2> tmp_vecs = new List<Vector2>();
             bool infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
             VeinData vein = default(VeinData);
-            GS2.Log("  Vein Vector Count : " + veinVectorCount);
+            //GS2.Log("  Vein Vector Count : " + veinVectorCount);
             for (int i = 0; i < veinVectorCount; i++)
             {
-                GS2.Log("  -i- " + i);
+                //GS2.Log("  -i- " + i);
                 tmp_vecs.Clear();
                 Vector3 normalized = veinVectors[i].normalized;
                 EVeinType eVeinType2 = veinVectorTypes[i];
@@ -111,7 +111,7 @@ namespace GalacticScale
                         {
                             break;
                         }
-                        GS2.Log("sqrMagnitude:" + tmp_vecs[m].sqrMagnitude);
+                        //GS2.Log("sqrMagnitude:" + tmp_vecs[m].sqrMagnitude);
                         if (tmp_vecs[m].sqrMagnitude > 36f)
                         {
                             continue; //if the tmp_vec has already been set go on to the next one?
@@ -141,7 +141,7 @@ namespace GalacticScale
                         break;
                     }
                 }
-                GS2.Log("tmp_vecs Count" + tmp_vecs.Count);
+                //GS2.Log("tmp_vecs Count" + tmp_vecs.Count);
                 int num26 = Mathf.RoundToInt(opacity * 100000f * resourceCoef);
                 if (num26 < 20)
                 {
@@ -179,10 +179,10 @@ namespace GalacticScale
                     float height = planetRawData.QueryHeight(vein.pos);
                     planetRawData.EraseVegetableAtPoint(vein.pos);
                     vein.pos = vein.pos.normalized * height;
-                    GS2.Log("Going to add vein. Height is "+height);
+                    //GS2.Log("Going to add vein. Height is "+height);
                     if (planet.waterItemId == 0 || !(height < planet.radius)) //if its not underwater
                     {
-                        GS2.Log("Adding Vein");
+                        //GS2.Log("Adding Vein");
                         planet.veinAmounts[(uint)eVeinType2] += vein.amount;
                         planet.veinGroups[i].count++;
                         planet.veinGroups[i].amount += vein.amount;
@@ -254,7 +254,7 @@ namespace GalacticScale
                     }
                     if (flag3)
                     {
-                        GS2.Log("Found a vector");
+                        //GS2.Log("Found a vector");
                         veinVectors[veinVectorCount] = potentialVector;
                         veinVectorTypes[veinVectorCount] = eVeinType;
                         veinVectorCount++;
@@ -456,7 +456,7 @@ namespace GalacticScale
             }
             if (themeProto.VeinOpacity != null)
             {
-                GS2.Log("veinOpacity not null");
+                //GS2.Log("veinOpacity not null");
                 Array.Copy(themeProto.VeinOpacity, 0, _vein_opacity, 1, Math.Min(themeProto.VeinOpacity.Length, _vein_opacity.Length - 1));
             }
             float p = InitSpecials(planet, _vein_spots, _vein_counts, _vein_opacity);

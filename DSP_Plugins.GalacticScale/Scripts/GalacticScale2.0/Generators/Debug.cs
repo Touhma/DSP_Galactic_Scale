@@ -32,6 +32,7 @@ namespace GalacticScale.Generators
             options.Add(new GSOption("Output LDBThemes", "Button", "Output", OnDumpPlanetDataClick, () => { }));
             options.Add(new GSOption("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { })); 
             options.Add(new GSOption("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
+            options.Add(new GSOption("Export LocalPlanet", "Button", "Export", OnExportLocalPlanetClick, () => { }));
             //OnImportPositionsClick(null);
         }
         public class starStuff
@@ -108,6 +109,15 @@ namespace GalacticScale.Generators
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             string path = Path.Combine(outputDir, "LDBThemes.json");
             GS2.DumpObjectToJson(path, LDB.themes);
+            //path = Path.Combine(outputDir, "LDBThemes.json");
+            //GS2.DumpObjectToJson(path, LDB.themes);
+        }
+        private void OnExportLocalPlanetClick(object o)
+        {
+            string outputDir = Path.Combine(GS2.DataDir, "output");
+            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+            string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
+            GS2.DumpObjectToJson(path, GameMain.localPlanet);
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }
