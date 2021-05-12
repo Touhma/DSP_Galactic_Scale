@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 namespace GalacticScale
 {
+    //opacity determines vein (node) amount its randomized around 100000*opacity
+    //could this be problematic due to not being thread safe?
     public class GSPlanetVeins
     {
         public Vector3[] vectors = new Vector3[1024];
@@ -15,15 +17,16 @@ namespace GalacticScale
     }
     public static class GSPlanetAlgorithm
     {
+        public static GS2.Random random = new GS2.Random();
         public static void GenerateVeins(GSPlanet gsPlanet, bool sketchOnly)
         {
-
             GS2.Log("GENERATEVEINS");
+            random = new GS2.Random(gsPlanet.Seed);
             PlanetData planet = gsPlanet.planetData;
             ThemeProto themeProto = LDB.themes.Select(planet.theme);
             if (themeProto == null) return;
-
-            System.Random random = new System.Random(planet.seed);
+            bool birth = (GSSettings.birthPlanetId == planet.id);
+            //System.Random random = new System.Random(planet.seed);
 
             int birthSeed = random.Next();
             PlanetRawData planetRawData = planet.data;
@@ -37,13 +40,10 @@ namespace GalacticScale
             float[] _vein_opacity = new float[veinProtos.Length];
 
             InitializeFromThemeProto(planet, themeProto, _vein_spots, _vein_counts, _vein_opacity);
-
-
-            bool birth = (GSSettings.birthPlanetId == planet.id);
+            
             if (birth) planet.GenBirthPoints(planetRawData, birthSeed);
        
             float resourceCoef = planet.star.resourceCoef;
-
             if (birth) resourceCoef *= 2f / 3f;
 
             Vector3[] veinVectors = gsPlanet.veinData.vectors;
@@ -67,30 +67,28 @@ namespace GalacticScale
 
         private static void FinalizeVeinGroup(PlanetData planet, System.Random random, PlanetRawData planetRawData, float num2point1fdivbyplanetradius, int[] veinModelIndexs, int[] veinModelCounts, int[] veinProducts, float[] _vein_counts, float[] _vein_opacity, bool birth, float resourceCoef,Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
         {
-            //GS2.Log("AssignVeins " + planet.name);
             Array.Clear(planet.veinAmounts, 0, planet.veinAmounts.Length);
             planetRawData.veinCursor = 1;
             planet.veinGroups = new PlanetData.VeinGroup[veinVectorCount];
             List<Vector2> node_vectors = new List<Vector2>();
             bool infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
             VeinData vein = default(VeinData);
-            //GS2.Log("  Vein Vector Count : " + veinVectorCount);
-            for (int i = 0; i < veinVectorCount; i++)
+            for (int i = 0; i < veinVectorCount; i++) // For each veingroup (patch of vein nodes)
             {
                 node_vectors.Clear();
                 Vector3 normalized = veinVectors[i].normalized;
-                EVeinType eVeinType2 = veinVectorTypes[i];
-                int veinTypeIndex = (int)eVeinType2;
+                EVeinType veinType = veinVectorTypes[i];
+                int veinTypeIndex = (int)veinType;
                 Quaternion quaternion = Quaternion.FromToRotation(Vector3.up, normalized);
                 Vector3 vector_right = quaternion * Vector3.right;
                 Vector3 vector_forward = quaternion * Vector3.forward;
-                planet.veinGroups[i].type = eVeinType2;
+                planet.veinGroups[i].type = veinType;
                 planet.veinGroups[i].pos = normalized;
                 planet.veinGroups[i].count = 0;
                 planet.veinGroups[i].amount = 0L;
                 node_vectors.Add(Vector2.zero); //Add a node at the centre of the patch/group
                 int max_count = Mathf.RoundToInt(_vein_counts[veinTypeIndex] * (float)random.Next(20, 25));
-                if (eVeinType2 == EVeinType.Oil)
+                if (veinType == EVeinType.Oil)
                 {
                     max_count = 1;
                 }
@@ -141,21 +139,21 @@ namespace GalacticScale
                     }
                 }
                 //GS2.Log("tmp_vecs Count" + tmp_vecs.Count);
-                int num26 = Mathf.RoundToInt(opacity * 100000f * resourceCoef);
-                if (num26 < 20)
+                int basevalue = Mathf.RoundToInt(opacity * 100000f * resourceCoef);
+                if (basevalue < 20)
                 {
-                    num26 = 20;
+                    basevalue = 20;
                 }
-                int num27 = ((num26 >= 16000) ? 15000 : Mathf.FloorToInt((float)num26 * 0.9375f));
-                int minValue = num26 - num27;
-                int maxValue = num26 + num27 + 1;
+                //int variance = ((basevalue >= 16000) ? 15000 : Mathf.FloorToInt((float)basevalue * 0.9375f));
+                //int minValue = basevalue - variance;
+                //int maxValue = basevalue + variance + 1;
                 for (int k = 0; k < node_vectors.Count; k++) //Create a Vein for each of tmp_vecs
                 {
                     Vector3 vector5 = (node_vectors[k].x * vector_right + node_vectors[k].y * vector_forward) * num2point1fdivbyplanetradius;
-                    vein.type = eVeinType2;
+                    vein.type = veinType;
                     vein.groupIndex = (short)i;
-                    vein.modelIndex = (short)random.Next(veinModelIndexs[veinTypeIndex], veinModelIndexs[veinTypeIndex] + veinModelCounts[veinTypeIndex]); //Choose a 3d Model for the Vein
-                    vein.amount = Mathf.RoundToInt((float)random.Next(minValue, maxValue) * 1.1f); //choose an amount
+                    vein.modelIndex = RandomVeinModelIndex(veinType);//(short)random.Next(veinModelIndexs[veinTypeIndex], veinModelIndexs[veinTypeIndex] + veinModelCounts[veinTypeIndex]); //Choose a 3d Model for the Vein
+                    vein.amount = basevalue;// Mathf.RoundToInt((float)random.Next(minValue, maxValue) * 1.1f); //choose an amount
                     if (planet.veinGroups[i].type != EVeinType.Oil)
                     {
                         vein.amount = Mathf.RoundToInt((float)vein.amount * DSPGame.GameDesc.resourceMultiplier);
@@ -172,29 +170,58 @@ namespace GalacticScale
 
                     vein.productId = veinProducts[veinTypeIndex];
                     vein.pos = normalized + vector5;
-                    if (vein.type == EVeinType.Oil) vein.pos = planet.aux.RawSnap(vein.pos); //snap to grid
+                    if (vein.type == EVeinType.Oil) SnapToGrid(ref vein.pos, planet);//vein.pos = planet.aux.RawSnap(vein.pos); 
                     
                     vein.minerCount = 0;
-                    float height = planetRawData.QueryHeight(vein.pos);
-                    planetRawData.EraseVegetableAtPoint(vein.pos);
-                    vein.pos = vein.pos.normalized * height;
-                    //GS2.Log("Going to add vein. Height is "+height);
-                    if (planet.waterItemId == 0 || !(height < planet.radius)) //if its not underwater
+                    float height = GetSurfaceHeight(vein.pos, planet);// planetRawData.QueryHeight(vein.pos);
+                    EraseVegetableAtPoint(vein.pos, planet);// planetRawData.EraseVegetableAtPoint(vein.pos);
+                    vein.pos = PositionAtSurface(vein.pos, planet); // vein.pos.normalized * height; //position on surface
+                    if (!IsUnderWater(vein.pos, planet)) //(planet.waterItemId == 0 || !(height < planet.radius)) //if its not underwater
                     {
                         //GS2.Log("Adding Vein");
-                        planet.veinAmounts[(uint)eVeinType2] += vein.amount;
+                        planet.veinAmounts[(uint)veinType] += vein.amount;
                         planet.veinGroups[i].count++;
                         planet.veinGroups[i].amount += vein.amount;
                         planetRawData.AddVeinData(vein); //add to the planets rawdata veinpool
-                        //GS2.LogJson(vein);
+                        GS2.LogJson(vein);
+
                     }
                 }
             }
-            //GS2.LogJson(planet.veinAmounts);
-            //GS2.LogJson(planet.veinGroups);
+            GS2.LogJson(planet.veinAmounts);
+            GS2.LogJson(planet.veinGroups);
             node_vectors.Clear();
         }
+        public static Vector3 PositionAtSurface(Vector3 position, PlanetData planet)
+        {
+            return (position.normalized * GetSurfaceHeight(position, planet));
+        }
+        public static bool IsUnderWater(Vector3 position, PlanetData planet)
+        {
+            if (planet.waterItemId == 0) return false;
+            if (position.magnitude < planet.radius) return true;
+            return false;
+        }
+        public static void EraseVegetableAtPoint(Vector3 position, PlanetData planet)
+        {
+            planet.data.EraseVegetableAtPoint(position);
+        }
+        public static float GetSurfaceHeight(Vector3 position, PlanetData planet)
+        {
+            return planet.data.QueryHeight(position);
+        }
+        public static Vector3 SnapToGrid(ref Vector3 position, PlanetData planet)
+        {
+            return planet.aux.RawSnap(position);
+        }
+        public static short RandomVeinModelIndex(EVeinType veinType)
+        {
+            int index = (int)veinType;
+            int[] veinModelIndexs = PlanetModelingManager.veinModelIndexs;
+            int[] veinModelCounts = PlanetModelingManager.veinModelCounts;
+            return (short)random.Next(veinModelIndexs[index], veinModelIndexs[index] + veinModelCounts[index]);
 
+        }
         private static void CalculateVectors(PlanetData planet, System.Random random, PlanetRawData planetRawData, float num2point1fdivbyplanetradius, int[] _vein_spots, Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
         {
             bool birth = planet.id == GSSettings.birthPlanetId;
@@ -268,7 +295,6 @@ namespace GalacticScale
 
         private static void InitBirthVeinVectors(PlanetData planet, Vector3[] veinVectors, EVeinType[] veinVectorTypes, int veinVectorCount)
         {
-            GS2.Log("Setting up birth vectors");
             veinVectorTypes[0] = EVeinType.Iron;
             ref Vector3 reference = ref veinVectors[0];
             reference = planet.birthResourcePoint0;
@@ -455,7 +481,6 @@ namespace GalacticScale
             }
             if (themeProto.VeinOpacity != null)
             {
-                //GS2.Log("veinOpacity not null");
                 Array.Copy(themeProto.VeinOpacity, 0, _vein_opacity, 1, Math.Min(themeProto.VeinOpacity.Length, _vein_opacity.Length - 1));
             }
             float p = InitSpecials(planet, _vein_spots, _vein_counts, _vein_opacity);
@@ -463,4 +488,3 @@ namespace GalacticScale
         }
     }
 }
-//}
