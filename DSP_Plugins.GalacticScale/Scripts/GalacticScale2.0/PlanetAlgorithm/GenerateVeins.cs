@@ -128,8 +128,11 @@ namespace GalacticScale
                     planet.birthResourcePoint1 = normalized4.normalized;
                     GS2.Log(" 6 ");
                     float num6 = planet.realRadius + 0.2f;
+                    GS2.Log(" 7 "+(planet.data == null));
+
                     if (planet.data.QueryHeight(vector2) > num6 && planet.data.QueryHeight(normalized3) > num6 && planet.data.QueryHeight(normalized4) > num6)
                     {
+                        GS2.Log(" 8 ");
                         Vector3 vpos = normalized3 + normalized * 0.03f;
                         Vector3 vpos2 = normalized3 - normalized * 0.03f;
                         Vector3 vpos3 = normalized3 + normalized2 * 0.03f;
@@ -138,9 +141,10 @@ namespace GalacticScale
                         Vector3 vpos6 = normalized4 - normalized * 0.03f;
                         Vector3 vpos7 = normalized4 + normalized2 * 0.03f;
                         Vector3 vpos8 = normalized4 - normalized2 * 0.03f;
-                        GS2.Log(" 7 ");
+                        GS2.Log(" 9 ");
                         if (planet.data.QueryHeight(vpos) > num6 && planet.data.QueryHeight(vpos2) > num6 && planet.data.QueryHeight(vpos3) > num6 && planet.data.QueryHeight(vpos4) > num6 && planet.data.QueryHeight(vpos5) > num6 && planet.data.QueryHeight(vpos6) > num6 && planet.data.QueryHeight(vpos7) > num6 && planet.data.QueryHeight(vpos8) > num6)
                         {
+                            GS2.Log(" 10 ");
                             flag = true;
                             break;
                         }
@@ -151,6 +155,7 @@ namespace GalacticScale
                     break;
                 }
             }
+            GS2.Log(" 11 ");
         }
         private static void AddVeinsToPlanet(
             PlanetData planet,
