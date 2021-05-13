@@ -51,7 +51,7 @@ namespace GalacticScale.Generators
                 s.Planets = new List<GSPlanet>() { new GSPlanet("Test","Lava", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), 
                     new GSPlanet("Test", "Lava", 200, 10, -1, -1, 10000, 1, -1, -1, -1, 1f, null), 
                     new GSPlanet("Test", "Lava", 300, 6, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) ,
-                new GSPlanet("Test", "Lava", 400, 2, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) };
+                new GSPlanet("Test", "Lava", 400, 2.5f, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) };
             //double z = randomR(20.0);
             if (i == 2)
                 {

@@ -21,6 +21,7 @@ namespace GalacticScale
         public static List<GSStar> Stars { get => instance.stars; set => instance.stars = value; }
         public static int starCount { get => Stars.Count; }
         public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId]:null; }
+        public static GSPlanet BirthPlanet { get => BirthStar.Planets[birthPlanetId]; }
         public static int birthStarId = -1;
         public static int birthPlanetId = -1;
         public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }

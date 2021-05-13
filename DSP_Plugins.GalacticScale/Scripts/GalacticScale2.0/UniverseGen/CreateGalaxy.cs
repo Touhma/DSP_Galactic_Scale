@@ -55,6 +55,8 @@ namespace GalacticScale
                         {
                             galaxy.birthPlanetId = planet.planetData.id;
                             galaxy.birthStarId = planet.planetData.star.id;
+                            GSSettings.birthPlanetId = j;
+                            GSSettings.birthStarId = i;
                             i = j = 9001;
                         }
                     }
