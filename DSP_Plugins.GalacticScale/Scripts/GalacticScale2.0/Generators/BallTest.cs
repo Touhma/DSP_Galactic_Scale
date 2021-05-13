@@ -55,7 +55,7 @@ namespace GalacticScale.Generators
             //double z = randomR(20.0);
             if (i == 2)
                 {
-                    GS2.LogJson(GS2.ThemeLibrary.Habitable);
+                    //GS2.LogJson(GS2.ThemeLibrary.Habitable);
                     s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
                 }
                 //double phi = randomRadian();

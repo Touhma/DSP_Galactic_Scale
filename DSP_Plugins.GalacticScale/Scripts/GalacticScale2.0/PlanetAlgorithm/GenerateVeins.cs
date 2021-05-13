@@ -3,6 +3,7 @@ using GalacticScale;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace GalacticScale
 {
@@ -31,12 +32,12 @@ namespace GalacticScale
             ThemeProto themeProto = LDB.themes.Select(planet.theme);
             if (themeProto == null) return;
             bool birth = GSSettings.BirthPlanet == gsPlanet;
-            int birthSeed = random.Next();
             float num2point1fdivbyplanetradius = 2.1f / planet.radius;
 
             InitializeFromThemeProto(planet, themeProto, out int[] _vein_spots, out float[] _vein_counts, out float[] _vein_opacity);
-            GS2.Log("Birth planet ID : " + GSSettings.birthPlanetId + " this planet id = " + planet.id);
-            if (birth)
+            GS2.Log("Birth planet ID : " + GSSettings.birthPlanetId + " star id =" + GSSettings.birthStarId + " this planet id = " + planet.id + " calc id = " + GSSettings.BirthPlanet.planetData.id + " " + (planet.data == null));
+            
+            if (birth && !sketchOnly)
             {
                 GS2.Log("Generating Birth Points on planet " + planet.name + " star " + planet.star.name);
                 GenBirthPoints(planet);
@@ -128,7 +129,8 @@ namespace GalacticScale
                     planet.birthResourcePoint1 = normalized4.normalized;
                     GS2.Log(" 6 ");
                     float num6 = planet.realRadius + 0.2f;
-                    GS2.Log(" 7 "+(planet.data == null));
+                    GS2.Log(" 7 " + (planet.data == null));
+
 
                     if (planet.data.QueryHeight(vector2) > num6 && planet.data.QueryHeight(normalized3) > num6 && planet.data.QueryHeight(normalized4) > num6)
                     {
@@ -202,15 +204,15 @@ namespace GalacticScale
 
                 for (int k = 0; k < node_vectors.Count; k++) 
                 {
-                    GS2.Log(node_vectors[k] + " is the node_vector[k]");
+                    //GS2.Log(node_vectors[k] + " is the node_vector[k]");
                     Vector3 vector5 = (node_vectors[k].x * vector_right + node_vectors[k].y * vector_forward) * num2point1fdivbyplanetradius;
-                    GS2.Log("and its vector5 is " + vector5);
+                    //GS2.Log("and its vector5 is " + vector5);
                     if (planet.veinGroups[i].type != EVeinType.Oil) veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
                     if (veinAmount < 1) veinAmount = 1;
                     if (infiniteResources && veinType != EVeinType.Oil) veinAmount = 1000000000;
 
                     Vector3 veinPosition = normalized + vector5;
-                    GS2.Log("veinPosition = " + veinPosition);
+                    //GS2.Log("veinPosition = " + veinPosition);
                     if (veinType == EVeinType.Oil) SnapToGrid(ref veinPosition, planet);
 
                     EraseVegetableAtPoint(veinPosition, planet);
