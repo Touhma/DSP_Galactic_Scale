@@ -23,8 +23,15 @@ namespace GalacticScale
     }
     public static class GSPlanetAlgorithm
     {
+        public delegate void VeinAlgo(GSPlanet gsPlanet, bool sketchOnly);
+        public static Dictionary<string, VeinAlgo> VeinAlgorithms = new Dictionary<string, VeinAlgo>() { ["Vanilla"] = GenerateVeinsGS2, ["GS2"] = GenerateVeinsGS2};
         public static GS2.Random random = new GS2.Random();
         public static void GenerateVeins(GSPlanet gsPlanet, bool sketchOnly)
+        {
+            GSTheme theme = GS2.ThemeLibrary[gsPlanet.Theme];
+            VeinAlgorithms[theme.VeinSettings.algorithm](gsPlanet, sketchOnly);
+        }
+        private static void GenerateVeinsVanilla(GSPlanet gsPlanet, bool sketchOnly) 
         {
             GS2.Log("GENERATEVEINS");
             random = new GS2.Random(gsPlanet.Seed);
@@ -35,70 +42,84 @@ namespace GalacticScale
             float num2point1fdivbyplanetradius = 2.1f / planet.radius;
 
             InitializeFromThemeProto(planet, themeProto, out int[] _vein_spots, out float[] _vein_counts, out float[] _vein_opacity);
-            GS2.Log("Birth planet ID : " + GSSettings.birthPlanetId + " star id =" + GSSettings.birthStarId + " this planet id = " + planet.id + " calc id = " + GSSettings.BirthPlanet.planetData.id + " " + (planet.data == null));
-            
-            if (birth && !sketchOnly)
-            {
-                GS2.Log("Generating Birth Points on planet " + planet.name + " star " + planet.star.name);
-                GenBirthPoints(planet);
-            }
 
-
+            if (birth && !sketchOnly) GenBirthPoints(planet);
             Vector3[] veinVectors = gsPlanet.veinData.vectors;
             EVeinType[] veinVectorTypes = gsPlanet.veinData.types;
             ref int veinVectorCount = ref gsPlanet.veinData.count;
             gsPlanet.veinData.Clear();
 
-            
-            
             if (sketchOnly) return;
             GS2.Log("Still Going");
             if (birth) InitBirthVeinVectors(planet, veinVectors, veinVectorTypes, ref veinVectorCount);
             GS2.Log("Initted birthveinvectors, about to calculateveinvectors");
-            CalculateVectors(planet, random, num2point1fdivbyplanetradius, _vein_spots,  veinVectors, veinVectorTypes, ref veinVectorCount);
+            CalculateVectorsVanilla(planet, random, num2point1fdivbyplanetradius, _vein_spots, veinVectors, veinVectorTypes, ref veinVectorCount);
             GS2.Log("Calculated VeinVectors, about to assignveinvectors");
             AddVeinsToPlanet(planet, random, num2point1fdivbyplanetradius, _vein_counts, _vein_opacity, birth, veinVectors, veinVectorTypes, ref veinVectorCount);
             GS2.Log("Assigned Veins. Done Generating Veins");
         }
+        private static void GenerateVeinsGS2(GSPlanet gsPlanet, bool sketchOnly)
+        {
+            GS2.Log("GENERATEVEINS GS2!!!");
+            random = new GS2.Random(gsPlanet.Seed);
+            //PlanetData planet = gsPlanet.planetData;
+            //ThemeProto themeProto = LDB.themes.Select(planet.theme);
+            //if (themeProto == null) return;
+            bool birth = GSSettings.BirthPlanet == gsPlanet;
+            float num2point1fdivbyplanetradius = 2.1f / gsPlanet.planetData.radius;
+            InitializeFromVeinSettings(gsPlanet);
+            //InitializeFromThemeProto(planet, themeProto, out int[] _vein_spots, out float[] _vein_counts, out float[] _vein_opacity);
+
+            if (birth && !sketchOnly) GenBirthPoints(gsPlanet.planetData);
+            Vector3[] veinVectors = gsPlanet.veinData.vectors;
+            EVeinType[] veinVectorTypes = gsPlanet.veinData.types;
+            ref int veinVectorCount = ref gsPlanet.veinData.count;
+            gsPlanet.veinData.Clear();
+
+            if (sketchOnly) return;
+            GS2.Log("Still Going");
+            if (birth) InitBirthVeinVectors(gsPlanet.planetData, veinVectors, veinVectorTypes, ref veinVectorCount);
+            GS2.Log("Initted birthveinvectors, about to calculateveinvectors");
+            //CalculateVectors(planet, random, num2point1fdivbyplanetradius, _vein_spots, veinVectors, veinVectorTypes, ref veinVectorCount);
+            GS2.Log("Calculated VeinVectors, about to assignveinvectors");
+            //AddVeinsToPlanet(planet, random, num2point1fdivbyplanetradius, _vein_counts, _vein_opacity, birth, veinVectors, veinVectorTypes, ref veinVectorCount);
+            GS2.Log("Assigned Veins. Done Generating Veins");
+        }
+        public static void InitializeFromVeinSettings(GSPlanet gsPlanet)
+        {
+            List<GSVeinGroup> groups = GS2.ThemeLibrary[gsPlanet.Theme].VeinSettings.veinGroups;
+            int[] veinSpots = new int[PlanetModelingManager.veinProtos.Length];
+            foreach (GSVeinGroup veinGroup in groups)
+            {
+                veinSpots[(int)veinGroup.type]++;
+            }
+            gsPlanet.planetData.veinSpotsSketch = veinSpots;
+        }
         private static void GenBirthPoints(PlanetData planet)
         {
-            GS2.Log(" 1 ");
             System.Random random = new System.Random(planet.seed);
-            GS2.Log(" 2 ");
             Pose pose;
-            GS2.Log(" 3 ");
             double n = 85.0 / planet.orbitalPeriod + (double)planet.orbitPhase / 360.0;
-            GS2.Log(" 4 ");
             int n2 = (int)(n + 0.1);
             n -= (double)n2;
             n *= Math.PI * 2.0;
-            GS2.Log(" 5 ");
             double n3 = 85.0 / planet.rotationPeriod + (double)planet.rotationPhase / 360.0;
-            GS2.Log(" 6 ");
             int n4 = (int)(n3 + 0.1);
             n3 = (n3 - (double)n4) * 360.0;
-            GS2.Log(" 7 ");
             Vector3 v = new Vector3((float)Math.Cos(n) * planet.orbitRadius, 0f, (float)Math.Sin(n) * planet.orbitRadius);
-            GS2.Log(" 8 ");
             v = Maths.QRotate(planet.runtimeOrbitRotation, v);
-            GS2.Log(" 9 ");
             if (planet.orbitAroundPlanet != null)
             {
-                GS2.Log("NOT EQUAL NULL");
                 pose = planet.orbitAroundPlanet.PredictPose(85.0);
                 v.x += pose.position.x;
                 v.y += pose.position.y;
                 v.z += pose.position.z;
             }
-            GS2.Log(" 0 ");
             pose = new Pose(v, planet.runtimeSystemRotation * Quaternion.AngleAxis((float)n3, Vector3.down));
-            GS2.Log(" 1 ");
             Vector3 vector = Maths.QInvRotateLF(pose.rotation, planet.star.uPosition - (VectorLF3)pose.position * 40000.0);
-            GS2.Log(" 2 ");
             vector.Normalize();
             Vector3 normalized = Vector3.Cross(vector, Vector3.up).normalized;
             Vector3 normalized2 = Vector3.Cross(normalized, vector).normalized;
-            GS2.Log(" 3 ");
             int num = 0;
             while (num < 256)
             {
@@ -106,9 +127,7 @@ namespace GalacticScale
                 float num3 = (float)(random.NextDouble() * 2.0 - 1.0) * 0.5f;
                 Vector3 vector2 = vector + num2 * normalized + num3 * normalized2;
                 vector2.Normalize();
-                GS2.Log(" 4 ");
                 planet.birthPoint = vector2 * (planet.realRadius + 0.2f + 1.58f);
-                GS2.Log(" 5 ");
                 normalized = Vector3.Cross(vector2, Vector3.up).normalized;
                 normalized2 = Vector3.Cross(normalized, vector2).normalized;
                 bool flag = false;
@@ -124,17 +143,13 @@ namespace GalacticScale
                     vector4.y += num5;
                     Vector3 normalized3 = (vector2 + vector3.x * normalized + vector3.y * normalized2).normalized;
                     Vector3 normalized4 = (vector2 + vector4.x * normalized + vector4.y * normalized2).normalized;
-                    GS2.Log(" 5 ");
                     planet.birthResourcePoint0 = normalized3.normalized;
                     planet.birthResourcePoint1 = normalized4.normalized;
-                    GS2.Log(" 6 ");
                     float num6 = planet.realRadius + 0.2f;
-                    GS2.Log(" 7 " + (planet.data == null));
 
 
                     if (planet.data.QueryHeight(vector2) > num6 && planet.data.QueryHeight(normalized3) > num6 && planet.data.QueryHeight(normalized4) > num6)
                     {
-                        GS2.Log(" 8 ");
                         Vector3 vpos = normalized3 + normalized * 0.03f;
                         Vector3 vpos2 = normalized3 - normalized * 0.03f;
                         Vector3 vpos3 = normalized3 + normalized2 * 0.03f;
@@ -143,10 +158,8 @@ namespace GalacticScale
                         Vector3 vpos6 = normalized4 - normalized * 0.03f;
                         Vector3 vpos7 = normalized4 + normalized2 * 0.03f;
                         Vector3 vpos8 = normalized4 - normalized2 * 0.03f;
-                        GS2.Log(" 9 ");
                         if (planet.data.QueryHeight(vpos) > num6 && planet.data.QueryHeight(vpos2) > num6 && planet.data.QueryHeight(vpos3) > num6 && planet.data.QueryHeight(vpos4) > num6 && planet.data.QueryHeight(vpos5) > num6 && planet.data.QueryHeight(vpos6) > num6 && planet.data.QueryHeight(vpos7) > num6 && planet.data.QueryHeight(vpos8) > num6)
                         {
-                            GS2.Log(" 10 ");
                             flag = true;
                             break;
                         }
@@ -157,7 +170,6 @@ namespace GalacticScale
                     break;
                 }
             }
-            GS2.Log(" 11 ");
         }
         private static void AddVeinsToPlanet(
             PlanetData planet,
@@ -320,17 +332,23 @@ namespace GalacticScale
             return (short)random.Next(veinModelIndexs[index], veinModelIndexs[index] + veinModelCounts[index]);
 
         }
-        private static void CalculateVectors(PlanetData planet, System.Random random, float num2Point1Fdivbyplanetradius, int[] _vein_spots, Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
+        public static Vector3 RandomDirection()
+        {
+            Vector3 randomVector = Vector3.zero;
+            randomVector.x = (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
+            randomVector.y = (float)random.NextDouble() * 2f - 1f;
+            randomVector.z = (float)random.NextDouble() * 2f - 1f;
+            return randomVector;
+        }
+        private static void CalculateVectorsVanilla(PlanetData planet, System.Random random, float num2Point1Fdivbyplanetradius, int[] _vein_spots, Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
         {
             bool birth = planet.id == GSSettings.birthPlanetId;
-            Vector3 spawnVector = InitSpawnVector(planet, random, birth);
+            Vector3 spawnVector = InitSpawnVector(planet, birth); //Random Vector, unless its birth planet.
             for (int k = 1; k < 15; k++) //for each of the vein types
             {
                 //GS2.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
-                if (veinVectorCount >= veinVectors.Length)
-                {
-                    break;
-                }
+                if (veinVectorCount >= veinVectors.Length)  break;//If Greater than 1024 quit
+
                 EVeinType eVeinType = (EVeinType)k;
                 int spotsCount = _vein_spots[k];
                 if (spotsCount > 1)
@@ -344,12 +362,10 @@ namespace GalacticScale
                     bool flag3 = false;
                     while (j++ < 200) //do this 200 times
                     {
-                        potentialVector.x = (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
-                        potentialVector.y = (float)random.NextDouble() * 2f - 1f;
-                        potentialVector.z = (float)random.NextDouble() * 2f - 1f;
+                        potentialVector = RandomDirection();
                         if (eVeinType != EVeinType.Oil)
                         {
-                            potentialVector += spawnVector; //if its not an oil vein, add the random spawn vector to this tiny vector
+                            potentialVector += spawnVector; //if its not an oil vein, add the random spawn vector to this tiny vector..moving the location away from spawn?
                         }
                         potentialVector.Normalize(); //make the length of the vector 1
                         float height = planet.data.QueryHeight(potentialVector);
@@ -390,7 +406,73 @@ namespace GalacticScale
                 }
             }
         }
+        private static void CalculateVectorsGS2(GSPlanet gsPlanet, float num2Point1Fdivbyplanetradius, Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
+        {
+            PlanetData planet = gsPlanet.planetData;
+            bool birth = planet.id == GSSettings.birthPlanetId;
+            Vector3 spawnVector = InitSpawnVector(planet, birth); //Random Vector, unless its birth planet.
+            for (int k = 1; k < 15; k++) //for each of the vein types
+            {
+                //GS2.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
+                if (veinVectorCount >= veinVectors.Length) break;//If Greater than 1024 quit
 
+                EVeinType eVeinType = (EVeinType)k;
+                int spotsCount = _vein_spots[k];
+                if (spotsCount > 1)
+                {
+                    spotsCount += random.Next(-1, 2); //randomly -1, 0, 1
+                }
+                for (int i = 0; i < spotsCount; i++)
+                {
+                    int j = 0;
+                    Vector3 potentialVector = Vector3.zero;
+                    bool flag3 = false;
+                    while (j++ < 200) //do this 200 times
+                    {
+                        potentialVector = RandomDirection();
+                        if (eVeinType != EVeinType.Oil)
+                        {
+                            potentialVector += spawnVector; //if its not an oil vein, add the random spawn vector to this tiny vector..moving the location away from spawn?
+                        }
+                        potentialVector.Normalize(); //make the length of the vector 1
+                        float height = planet.data.QueryHeight(potentialVector);
+                        if (height < planet.radius || (eVeinType == EVeinType.Oil && height < planet.radius + 0.5f)) //if height is less than the planets radius, or its an oil vein and its less than slightly more than the planets radius...
+                        {
+                            continue; //find another potential vector, this one was underground?
+                        }
+                        bool flag4 = false;
+                        float either196or100forveinoroil = ((eVeinType != EVeinType.Oil) ? 196f : 100f);
+                        for (int m = 0; m < veinVectorCount; m++) //check each veinvector we have already calculated
+                        {
+                            if ((veinVectors[m] - potentialVector).sqrMagnitude < num2Point1Fdivbyplanetradius * num2Point1Fdivbyplanetradius * either196or100forveinoroil)
+                            { //if the (vein vector less the potential vector (above ground)) length is less than (2.1/radius)^2 * 196
+                              //... in other words for a 200 planet 0.0196 or 0.01 vein/oil . 
+                              // I believe this is checking to see if there will be a collision between an already placed vein and this one
+                                flag4 = true; //guess thats a loser?
+                                break;
+                            }
+                        }
+                        if (flag4)
+                        {
+                            continue;
+                        }
+                        flag3 = true;//we have a winner
+                        break;
+                    }
+                    if (flag3)
+                    {
+                        //GS2.Log("Found a vector");
+                        veinVectors[veinVectorCount] = potentialVector;
+                        veinVectorTypes[veinVectorCount] = eVeinType;
+                        veinVectorCount++;
+                        if (veinVectorCount == veinVectors.Length)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         private static void InitBirthVeinVectors(PlanetData planet, Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
         {
             veinVectorTypes[0] = EVeinType.Iron;
@@ -402,7 +484,7 @@ namespace GalacticScale
             veinVectorCount = 2;
         }
 
-        private static Vector3 InitSpawnVector(PlanetData planet, System.Random random2, bool birth)
+        private static Vector3 InitSpawnVector(PlanetData planet, bool birth)
         {
             Vector3 spawnVector;
             if (birth)
@@ -413,11 +495,11 @@ namespace GalacticScale
             }
             else //randomize spawn vector
             {
-                spawnVector.x = (float)random2.NextDouble() * 2f - 1f;
-                spawnVector.y = (float)random2.NextDouble() - 0.5f;
-                spawnVector.z = (float)random2.NextDouble() * 2f - 1f;
+                spawnVector.x = (float)random.NextDouble() * 2f - 1f;
+                spawnVector.y = (float)random.NextDouble() - 0.5f;
+                spawnVector.z = (float)random.NextDouble() * 2f - 1f;
                 spawnVector.Normalize();
-                spawnVector *= (float)(random2.NextDouble() * 0.4 + 0.2);
+                spawnVector *= (float)(random.NextDouble() * 0.4 + 0.2);
             }
 
             return spawnVector;

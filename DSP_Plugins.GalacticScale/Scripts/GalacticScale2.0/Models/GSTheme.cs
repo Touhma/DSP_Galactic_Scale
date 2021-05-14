@@ -27,6 +27,21 @@ namespace GalacticScale
 		public EThemeDistribute Distribute = EThemeDistribute.Interstellar;
 		public Vector2 ModX = new Vector2(0.0f, 0.0f);
 		public Vector2 ModY = new Vector2(0.0f, 0.0f);
+		public GSVeinSettings VeinSettings = new GSVeinSettings()
+		{
+			algorithm = "GS2",
+			veinGroups = new List<GSVeinGroup>()
+			{
+				new GSVeinGroup(){ 
+					type = EVeinType.Bamboo,
+					veins = new List<GSVein>()
+						{
+							new GSVein() { }
+						} 
+				}
+			}
+			
+		};
 		public int[] Vegetables0 = new[] {
 				604,
 				605,
