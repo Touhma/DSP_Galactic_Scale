@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -16,7 +17,11 @@ namespace GalacticScale
             Distribute = EThemeDistribute.Birth,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
-            VeinSettings = new GSVeinSettings() { algorithm = "Vanilla" },
+            VeinSettings = new GSVeinSettings() { 
+                VeinAlgorithm = "Vanilla", 
+                VeinTypes = new List<GSVeinType>()
+
+            },
             Vegetables0 = new int[] {
                 604,
                 605,
@@ -39,22 +44,22 @@ namespace GalacticScale
                 101,
                 104,
                 604,
-                106 
+                106
             },
             Vegetables2 = new int[] {
                 1001,
                 1002,
-                1003 
+                1003
             },
             Vegetables3 = new int[] {
                 1005,
                 1006,
                 1007,
                 1006,
-                1007 
+                1007
             },
-            Vegetables4 = new int[] { 
-                1004 
+            Vegetables4 = new int[] {
+                1004
             },
             Vegetables5 = new int[] {
             },
@@ -74,7 +79,7 @@ namespace GalacticScale
                 0.0f,
                 1.0f,
                 1.0f,
-                1.0f 
+                1.0f
             },
             VeinOpacity = new float[] {
                 0.6f,
@@ -83,16 +88,16 @@ namespace GalacticScale
                 0.0f,
                 0.7f,
                 1.0f,
-                1.0f 
+                1.0f
             },
-            RareVeins = new int[] { 
-                11 
+            RareVeins = new int[] {
+                11
             },
             RareSettings = new float[] {
                 0.0f,
                 1.0f,
                 0.3f,
-                0.3f 
+                0.3f
             },
             GasItems = new int[] {
             },
@@ -103,8 +108,8 @@ namespace GalacticScale
             IonHeight = 60f,
             WaterHeight = 0f,
             WaterItemId = 1000,
-            Musics = new int[] { 
-                9 
+            Musics = new int[] {
+                9
             },
             SFXPath = "SFX/sfx-amb-ocean-1",
             SFXVolume = 0.53f,

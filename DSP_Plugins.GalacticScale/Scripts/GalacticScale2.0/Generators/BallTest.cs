@@ -41,22 +41,32 @@ namespace GalacticScale.Generators
             GS2.Random random = new GS2.Random();
             List<GSPlanet> p = new List<GSPlanet>();
             //for (var i = 1f;i < 50f; i++)
+            GSTheme beach = new GSTheme("Beach", "Beach", "Mediterranean");
+            //beach.oceanTint = UnityEngine.Color.green;
+            //beach.lowTint = UnityEngine.Color.green;
+            //beach.terrainTint = new UnityEngine.Color(0.0f, 0.5f, 0.2f);
+            beach.Algo = 1;
+            beach.VeinSettings.VeinPadding = 0.1f;
+            beach.VeinSettings.VeinAlgorithm = "GS2";
+            beach.Process();
             p.Add(new GSPlanet("Test", "Mediterranean" , 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null));
-
+            p.Add(new GSPlanet("Test2", "Beach", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null));
             for (var i = 0; i < starCount; i++)
             {
 
                 GSStar s = StarDefaults.Random();
                 s.Name = "Star-" + i;
-                s.Planets = new List<GSPlanet>() { new GSPlanet("Test","Lava", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), 
-                    new GSPlanet("Test", "Lava", 200, 10, -1, -1, 10000, 1, -1, -1, -1, 1f, null), 
-                    new GSPlanet("Test", "Lava", 300, 6, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) ,
-                new GSPlanet("Test", "Lava", 400, 2.5f, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) };
+                //s.Planets = new List<GSPlanet>() { new GSPlanet("Test","Lava", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null), 
+                //    new GSPlanet("Test", "Lava", 200, 10, -1, -1, 10000, 1, -1, -1, -1, 1f, null), 
+                //    new GSPlanet("Test", "Lava", 300, 6, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) ,
+                //new GSPlanet("Test", "Lava", 400, 2.5f, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) };
             //double z = randomR(20.0);
-            if (i == 2)
+            if (i == 0)
                 {
                     //GS2.LogJson(GS2.ThemeLibrary.Habitable);
-                    s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
+                    //s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
+                    s.Planets.Add(new GSPlanet("Habitable", "Mediterranean", 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
+                    s.Planets.Add(new GSPlanet("Test2", "Beach", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null));
                 }
                 //double phi = randomRadian();
 

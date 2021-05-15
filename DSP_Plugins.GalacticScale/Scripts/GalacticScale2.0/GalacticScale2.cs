@@ -153,7 +153,15 @@ namespace GalacticScale
             public string GeneratorID = "space.customizing.vanilla";
             public Dictionary<string, GSGenPreferences> PluginOptions = new Dictionary<string, GSGenPreferences>();
         }
-        
+        public static void Init()
+        {
+            List<GSTheme> themes = new List<GSTheme>();
+            foreach (KeyValuePair<string, GSTheme> t in ThemeLibrary) themes.Add(t.Value);
+            for (var i = 0; i < themes.Count; i++)
+            {
+                themes[i].Process();
+            }
+        }
         
         public static void LoadPreferences()
         {

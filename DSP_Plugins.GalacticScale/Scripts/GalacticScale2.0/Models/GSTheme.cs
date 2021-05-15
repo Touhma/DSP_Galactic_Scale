@@ -29,18 +29,8 @@ namespace GalacticScale
 		public Vector2 ModY = new Vector2(0.0f, 0.0f);
 		public GSVeinSettings VeinSettings = new GSVeinSettings()
 		{
-			algorithm = "GS2",
-			veinGroups = new List<GSVeinGroup>()
-			{
-				new GSVeinGroup(){ 
-					type = EVeinType.Bamboo,
-					veins = new List<GSVein>()
-						{
-							new GSVein() { }
-						} 
-				}
-			}
-			
+			VeinAlgorithm = "GS2",
+			VeinTypes = new List<GSVeinType>()			
 		};
 		public int[] Vegetables0 = new[] {
 				604,
@@ -157,13 +147,45 @@ namespace GalacticScale
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
+			ConvertVeinData();
+			GS2.Log("PROCESS");
+			GS2.LogJson(VeinSettings);
 			ProcessTints();
 			AddToLibrary();
         }
+
+		public void ConvertVeinData()
+		{
+			GS2.Log("ConvertVeinData");
+			for (var vType = 0; vType < VeinSpot.Length; vType++)
+			{
+				if (VeinSpot[vType] == 0) continue;
+				GSVeinType tempVeinGroup = new GSVeinType()
+				{
+						type = (EVeinType)(vType+1),
+						veins = new List<GSVein>()
+				};
+				for (var vCount = 0; vCount < VeinSpot[vType]; vCount++)
+				{
+					tempVeinGroup.veins.Add(
+						new GSVein()
+						{
+							count = (int)(VeinCount[vType] * 25),
+							density = 1,
+							richness = VeinOpacity[vType]
+						}
+					);
+				}
+				GS2.Log("tempVeinGroup "+Name);
+				GS2.LogJson(tempVeinGroup);
+				VeinSettings.VeinTypes.Add(tempVeinGroup);
+			}
+		}
 		public GSTheme() { }
 		public void AddToLibrary()
         {
 			GS2.ThemeLibrary[Name] = this;
+			GS2.Log(GS2.ThemeLibrary[Name].VeinSettings.VeinTypes.Count.ToString());
         }
 		public static int[] Clone(int[] source)
         {

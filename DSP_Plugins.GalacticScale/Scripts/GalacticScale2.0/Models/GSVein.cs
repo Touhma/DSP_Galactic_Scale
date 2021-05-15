@@ -6,43 +6,57 @@ namespace GalacticScale
 {
     public class GSVein
     {
-        public int amount;
+        public float richness;
+        public int count;
         public Vector3 position;
-        public GSVein(int amount, Vector3 position)
+        public float density = -1f;
+        public GSVein(float richness, Vector3 position, int count, float density)
         {
-            this.amount = amount;
+            this.richness = richness;
             this.position = position;
-        }
+            this.count = count;
+            this.density = density;
+    }
 
         public GSVein (PlanetData planet, int seed = -1)
         {
             if (seed < 0) seed = GSSettings.Seed;
             System.Random random = new System.Random(seed);
-            this.amount = (int)(random.Next(50000, 150000) * planet.star.resourceCoef);
+            this.richness = (int)(random.Next(50000, 150000) * planet.star.resourceCoef);
+            this.count = (int)random.Next(1, 30);
             this.position = Vector3.zero;
         }
         public GSVein ()
         {
-            this.amount = 0;
+            this.richness = 0;
+            this.count = 0;
             this.position = Vector3.zero;
         }
     }
-    public class GSVeinGroup
+    public class GSVeinType
     {
         public List<GSVein> veins = new List<GSVein>();
         public EVeinType type = EVeinType.None;
         public int Count { get => veins.Count; }
-        public int density = -1;
         [NonSerialized]
         public PlanetData planet;
     }
     public class GSVeinSettings
     {
-        public List<GSVeinGroup> veinGroups = new List<GSVeinGroup>();
-        public string algorithm = "GS2";
+        public List<GSVeinType> VeinTypes = new List<GSVeinType>();
+        public string VeinAlgorithm = "GS2";
+        public float VeinPadding = 1f;
         public GSVeinSettings ()
         {
 
         }
+    }
+    public class GSVeinData
+    {
+        public EVeinType type;
+        public int count;
+        public float richness;
+        public float density;
+        public Vector3 position;
     }
 }
