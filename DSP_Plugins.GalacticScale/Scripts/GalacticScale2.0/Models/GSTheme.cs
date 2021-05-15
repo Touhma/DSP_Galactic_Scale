@@ -27,6 +27,7 @@ namespace GalacticScale
 		public EThemeDistribute Distribute = EThemeDistribute.Interstellar;
 		public Vector2 ModX = new Vector2(0.0f, 0.0f);
 		public Vector2 ModY = new Vector2(0.0f, 0.0f);
+		public GSTerrainSettings TerrainSettings = new GSTerrainSettings();
 		public GSVeinSettings VeinSettings = new GSVeinSettings()
 		{
 			VeinAlgorithm = "GS2",
@@ -148,15 +149,15 @@ namespace GalacticScale
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
 			ConvertVeinData();
-			GS2.Log("PROCESS");
-			GS2.LogJson(VeinSettings);
+			//GS2.Log("PROCESS");
+			//GS2.LogJson(VeinSettings);
 			ProcessTints();
 			AddToLibrary();
         }
 
 		public void ConvertVeinData()
 		{
-			GS2.Log("ConvertVeinData");
+			//GS2.Log("ConvertVeinData");
 			for (var vType = 0; vType < VeinSpot.Length; vType++)
 			{
 				if (VeinSpot[vType] == 0) continue;
@@ -176,8 +177,8 @@ namespace GalacticScale
 						}
 					);
 				}
-				GS2.Log("tempVeinGroup "+Name);
-				GS2.LogJson(tempVeinGroup);
+				//GS2.Log("tempVeinGroup "+Name);
+				//GS2.LogJson(tempVeinGroup);
 				VeinSettings.VeinTypes.Add(tempVeinGroup);
 			}
 		}
@@ -185,7 +186,7 @@ namespace GalacticScale
 		public void AddToLibrary()
         {
 			GS2.ThemeLibrary[Name] = this;
-			GS2.Log(GS2.ThemeLibrary[Name].VeinSettings.VeinTypes.Count.ToString());
+			//GS2.Log(GS2.ThemeLibrary[Name].VeinSettings.VeinTypes.Count.ToString());
         }
 		public static int[] Clone(int[] source)
         {

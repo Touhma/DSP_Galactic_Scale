@@ -40,17 +40,23 @@ namespace GalacticScale.Generators
         {
             GS2.Random random = new GS2.Random();
             List<GSPlanet> p = new List<GSPlanet>();
-            //for (var i = 1f;i < 50f; i++)
-            GSTheme beach = new GSTheme("Beach", "Beach", "Mediterranean");
+            for (var i = 0; i < 10; i++)
+            {
+                GSTheme beach = new GSTheme("Beach"+i, "Beach"+i, "AshenGelisol");
+                beach.Algo = 1;
+                beach.VeinSettings.VeinPadding = 0.5f;
+                beach.VeinSettings.VeinAlgorithm = "GS2";
+                //beach.TerrainSettings.num8 = 1*i - 3;
+                beach.TerrainSettings.heightMulti = i*10;
+                //beach.TerrainSettings.baseHeight = -2f;
+                beach.Process();
+                GS2.Log("Theme " + "Beach" + i + " created");
+            }
             //beach.oceanTint = UnityEngine.Color.green;
             //beach.lowTint = UnityEngine.Color.green;
             //beach.terrainTint = new UnityEngine.Color(0.0f, 0.5f, 0.2f);
-            beach.Algo = 1;
-            beach.VeinSettings.VeinPadding = 0.1f;
-            beach.VeinSettings.VeinAlgorithm = "GS2";
-            beach.Process();
-            p.Add(new GSPlanet("Test", "Mediterranean" , 100, 1, -1, -1, -1, 0, -1, -1, -1, 1f, null));
-            p.Add(new GSPlanet("Test2", "Beach", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null));
+
+
             for (var i = 0; i < starCount; i++)
             {
 
@@ -60,13 +66,21 @@ namespace GalacticScale.Generators
                 //    new GSPlanet("Test", "Lava", 200, 10, -1, -1, 10000, 1, -1, -1, -1, 1f, null), 
                 //    new GSPlanet("Test", "Lava", 300, 6, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) ,
                 //new GSPlanet("Test", "Lava", 400, 2.5f, -1, -1, 10000, 0, -1, -1, -1, 1.38f, null) };
-            //double z = randomR(20.0);
-            if (i == 0)
+                //double z = randomR(20.0);
+                if (i == 0)
                 {
-                    //GS2.LogJson(GS2.ThemeLibrary.Habitable);
-                    //s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
-                    s.Planets.Add(new GSPlanet("Habitable", "Mediterranean", 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
-                    s.Planets.Add(new GSPlanet("Test2", "Beach", 100, 1, -1, -1, -1, 2, -1, -1, -1, 1f, null));
+                    for (var j = 0; j < 10; j++)
+                    {
+                        GS2.Log("Creating Planet with Theme " + "Beach" + j);
+                        //GS2.LogJson(GS2.ThemeLibrary.Habitable);
+                        //s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
+                        //s.Planets.Add(new GSPlanet("Habitable", "AshenGelisol", 30, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
+                        //s.Planets.Add(new GSPlanet("num8-Test[" +(0.5 * j - 0.5)+"]", "Beach"+j, 30, 1.1f, -1, -1, -1, j * (360 / 50), -1, -1, -1, 1f, null));
+                        //s.Planets.Add(new GSPlanet("num8-Test[" + (0.5 * j - 0.5) + "]", "Beach" + j, 100, 1, -1, -1, -1, j * (360 / 50), -1, -1, -1, 1f, null));
+                        s.Planets.Add(new GSPlanet("r50-Test[" + j * 2f + "]", "Beach" + j, 50, 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));
+                        s.Planets.Add(new GSPlanet("r200-Test[" + j * 2f + "]", "Beach" + j, 200, 1, -1, -1, -1, 3 + j * (360 / 50), -1, -1, -1, 1f, null));
+                        s.Planets.Add(new GSPlanet("earth[" + j*2f + "]", "Mediterranean", 50, 1, -1, -1, -1,  j * (360 / 50), -1, -1, -1, 1f, null));
+                    }
                 }
                 //double phi = randomRadian();
 

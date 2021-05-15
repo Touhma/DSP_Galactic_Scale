@@ -22,7 +22,7 @@ namespace GalacticScale
             count = 0;
         }
     }
-    public static class GSPlanetAlgorithm
+    public static partial class GSPlanetAlgorithm
     {
         public delegate void VeinAlgo(GSPlanet gsPlanet, bool sketchOnly);
         public static Dictionary<string, VeinAlgo> VeinAlgorithms = new Dictionary<string, VeinAlgo>() { ["Vanilla"] = GenerateVeinsVanilla, ["GS2"] = GenerateVeinsGS2 };
@@ -34,7 +34,7 @@ namespace GalacticScale
         }
         private static void GenerateVeinsVanilla(GSPlanet gsPlanet, bool sketchOnly)
         {
-            GS2.Log("GENERATEVEINS");
+            //GS2.Log("GENERATEVEINS");
             random = new GS2.Random(gsPlanet.Seed);
             PlanetData planet = gsPlanet.planetData;
             ThemeProto themeProto = LDB.themes.Select(planet.theme);
@@ -51,13 +51,13 @@ namespace GalacticScale
             gsPlanet.veinData.Clear();
 
             if (sketchOnly) return;
-            GS2.Log("Still Going");
+            //GS2.Log("Still Going");
             if (birth) InitBirthVeinVectors(planet, veinVectors, veinVectorTypes, ref veinVectorCount);
-            GS2.Log("Initted birthveinvectors, about to calculateveinvectors");
+            //GS2.Log("Initted birthveinvectors, about to calculateveinvectors");
             CalculateVectorsVanilla(planet, random, num2point1fdivbyplanetradius, _vein_spots, veinVectors, veinVectorTypes, ref veinVectorCount);
-            GS2.Log("Calculated VeinVectors, about to assignveinvectors");
+            //GS2.Log("Calculated VeinVectors, about to assignveinvectors");
             AddVeinsToPlanet(planet, random, num2point1fdivbyplanetradius, _vein_counts, _vein_opacity, birth, veinVectors, veinVectorTypes, ref veinVectorCount);
-            GS2.Log("Assigned Veins. Done Generating Veins");
+            //GS2.Log("Assigned Veins. Done Generating Veins");
         }
         private static void GenerateVeinsGS2(GSPlanet gsPlanet, bool sketchOnly)
         {
@@ -90,6 +90,7 @@ namespace GalacticScale
         }
         private static void GenBirthPoints(PlanetData planet)
         {
+            GS2.Log("GenBirthPoints");
             System.Random random = new System.Random(planet.seed);
             Pose pose;
             double n = 85.0 / planet.orbitalPeriod + (double)planet.orbitPhase / 360.0;
@@ -114,8 +115,9 @@ namespace GalacticScale
             Vector3 normalized = Vector3.Cross(vector, Vector3.up).normalized;
             Vector3 normalized2 = Vector3.Cross(normalized, vector).normalized;
             int num = 0;
-            while (num < 256)
+            while (num++ < 256)
             {
+                GS2.Log("num" + num);
                 float num2 = (float)(random.NextDouble() * 2.0 - 1.0) * 0.5f;
                 float num3 = (float)(random.NextDouble() * 2.0 - 1.0) * 0.5f;
                 Vector3 vector2 = vector + num2 * normalized + num3 * normalized2;
@@ -163,6 +165,7 @@ namespace GalacticScale
                     break;
                 }
             }
+            GS2.Log("Finished Birthpoints");
         }
         private static void AddVeinsToPlanet(
             PlanetData planet,
@@ -332,7 +335,7 @@ namespace GalacticScale
         }
         public static void AddVeinToPlanet(int amount, EVeinType veinType, Vector3 position, short groupIndex, PlanetData planet)
         {
-            GS2.Log("Adding Vein GroupIndex = "+groupIndex);
+            //GS2.Log("Adding Vein GroupIndex = "+groupIndex);
             VeinData vein = new VeinData();
             vein.amount = amount;
             vein.pos = position;
@@ -404,8 +407,10 @@ namespace GalacticScale
                     int j = 0;
                     Vector3 potentialVector = Vector3.zero;
                     bool flag3 = false;
-                    while (j++ < 200) //do this 200 times
+                    int c = 1;
+                    while (j++ < 50) //do this 200 times Default 50
                     {
+                        c++;
                         potentialVector = RandomDirection();
                         if (eVeinType != EVeinType.Oil)
                         {
@@ -446,6 +451,9 @@ namespace GalacticScale
                         {
                             break;
                         }
+                    } else
+                    {
+                        GS2.Warn(eVeinType + " vein unable to be placed on planet " + planet.name);
                     }
                 }
             }
@@ -463,15 +471,15 @@ namespace GalacticScale
         {
             int maxVeinGroupSize = MaxCount(veinGroups);
             List<GSVeinData> distributed = new List<GSVeinData>();
-            GS2.Log("veinGroups.Count = " + veinGroups.Count);
+            //GS2.Log("veinGroups.Count = " + veinGroups.Count);
             for (var i = 0; i < maxVeinGroupSize; i++)
             {
-                GS2.Log("Testing index " + i);
+                //GS2.Log("Testing index " + i);
                 for (var j = 0; j < veinGroups.Count; j++)
                 {
-                    GS2.Log("Testing type " + veinGroups[j].type + " which has " + veinGroups[j].veins.Count + " at index " + i);
+                    //GS2.Log("Testing type " + veinGroups[j].type + " which has " + veinGroups[j].veins.Count + " at index " + i);
                     if (veinGroups[j].veins.Count <= i) continue;
-                    GS2.Log("Adding " + veinGroups[j].type + " vein");
+                    //GS2.Log("Adding " + veinGroups[j].type + " vein");
                     if (i == 5 && veinGroups[j].type == EVeinType.Iron) GS2.LogJson(veinGroups[j]);
                     distributed.Add(new GSVeinData()
                     {
@@ -481,10 +489,10 @@ namespace GalacticScale
                         density = veinGroups[j].veins[i].density,
                         richness = veinGroups[j].veins[i].richness
                     });
-                    GS2.Log("Added new GSVeinData()");
+                    //GS2.Log("Added new GSVeinData()");
                 }
             }
-            GS2.Log("Done Distribution");
+            //GS2.Log("Done Distribution");
             return distributed;
         }
         private static List<GSVeinData> CalculateVectorsGS2(GSPlanet gsPlanet, Vector3[] veinVectors, EVeinType[] veinVectorTypes, ref int veinVectorCount)
@@ -495,10 +503,10 @@ namespace GalacticScale
             double tileSize = Math.Pow(2.1 / gsPlanet.planetData.radius, 2);
             bool birth = planet.id == GSSettings.birthPlanetId;
             Vector3 spawnVector = InitSpawnVector(planet, birth); //Random Vector, unless its birth planet.
-            GS2.Log("SpawnVector Initialized");
+            //GS2.Log("SpawnVector Initialized");
             List<GSVeinData> veinGroups = DistributeVeinTypes(GS2.ThemeLibrary[gsPlanet.Theme].VeinSettings.VeinTypes);
-            GS2.Log("Distributed veinGroups");
-            GS2.LogJson(veinGroups);
+            //GS2.Log("Distributed veinGroups");
+            //GS2.LogJson(veinGroups);
             for (var i = 0; i < veinGroups.Count; i++)
             {
                 GSVeinData v = veinGroups[i];

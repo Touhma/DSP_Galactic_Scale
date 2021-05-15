@@ -7,7 +7,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch("GenerateVeins")]
-        public static bool GenerateVeins(PlanetAlgorithm __instance, bool sketchOnly, ref PlanetData ___planet )
+        public static bool GenerateVeins(bool sketchOnly, ref PlanetData ___planet )
         {
             if (GS2.Vanilla || DSPGame.IsMenuDemo) return true;
             GSPlanet gsPlanet = GS2.GetGSPlanet(___planet);
@@ -16,6 +16,19 @@ namespace GalacticScale
                 return true;
             }
             GSPlanetAlgorithm.GenerateVeins(gsPlanet, sketchOnly);
+            return false;
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm1),"GenerateTerrain")]
+        public static bool GenerateTerrain(ref PlanetData ___planet)
+        {
+            if (GS2.Vanilla || DSPGame.IsMenuDemo) return true;
+            GSPlanet gsPlanet = GS2.GetGSPlanet(___planet);
+            if (gsPlanet == null)
+            {
+                return true;
+            }
+            GSPlanetAlgorithm.GenerateTerrain(gsPlanet);
             return false;
         }
     }
