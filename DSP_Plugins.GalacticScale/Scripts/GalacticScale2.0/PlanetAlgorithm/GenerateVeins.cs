@@ -222,7 +222,7 @@ namespace GalacticScale
 
                     EraseVegetableAtPoint(veinPosition, planet);
                     veinPosition = PositionAtSurface(veinPosition, planet);
-                    if (!IsUnderWater(veinPosition, planet)) AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)k, planet);
+                    if (!IsUnderWater(veinPosition, planet)) AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, planet);
                 }
             }
             node_vectors.Clear();
@@ -273,7 +273,7 @@ namespace GalacticScale
 
                     EraseVegetableAtPoint(veinPosition, planet);
                     veinPosition = PositionAtSurface(veinPosition, planet);
-                    if (!IsUnderWater(veinPosition, planet)) AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)k, planet);
+                    if (!IsUnderWater(veinPosition, planet)) AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, planet);
                 }
             }
             node_vectors.Clear();
@@ -342,8 +342,8 @@ namespace GalacticScale
             vein.modelIndex = RandomVeinModelIndex(veinType);
             vein.productId = PlanetModelingManager.veinProducts[(int)veinType];
             planet.veinAmounts[(int)veinType] += vein.amount;
-            planet.veinGroups[(int)veinType].count++;
-            planet.veinGroups[(int)veinType].amount += vein.amount;
+            planet.veinGroups[groupIndex].count++;
+            planet.veinGroups[groupIndex].amount += vein.amount;
             planet.data.AddVeinData(vein); //add to the planets rawdata veinpool
         }
         public static Vector3 PositionAtSurface(Vector3 position, PlanetData planet)
