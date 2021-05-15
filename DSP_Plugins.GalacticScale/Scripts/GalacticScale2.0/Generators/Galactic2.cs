@@ -1,6 +1,8 @@
-﻿namespace GalacticScale.Generators
+﻿using System.Collections.Generic;
+
+namespace GalacticScale.Generators
 {
-    public class GalacticScale2 : iGenerator
+    public class GalacticScale2 : iConfigurableGenerator
     {
         public string Name => "GalacticScale2";
 
@@ -14,20 +16,34 @@
 
         public bool DisableStarCountSlider => false;
 
-        public GSGeneratorConfig Config => new GSGeneratorConfig();
+        public GSGeneratorConfig Config => config;
 
+        public List<GSOption> Options => options;
+        private List<GSOption> options = new List<GSOption>();
+        private GSGeneratorConfig config = new GSGeneratorConfig();
+        private GSGenPreferences preferences = new GSGenPreferences();
         public void Init()
         {
-            
+            config.DefaultStarCount = 16;
+            options.Add(new GSOption("Planet Count", "Slider", new GSSliderConfig() { minValue = 1, maxValue = 99, defaultValue = 10, wholeNumbers = true }, (object o) => { }, () => { })) ;
         }
 
         public void Generate(int starCount)
         {
-            GS2.Log("Wow, this worked. GalacticScale2");
             for (var i = 0; i < starCount; i++)
             {
                 GSStar s = StarDefaults.Random();
             }
+        }
+
+        public void Import(GSGenPreferences preferences)
+        {
+            this.preferences = preferences;
+        }
+
+        public GSGenPreferences Export()
+        {
+            return preferences;
         }
     }
 }

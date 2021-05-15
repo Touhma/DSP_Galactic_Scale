@@ -8,7 +8,13 @@ using System.Reflection;
 using System.Collections.Generic;
 
 namespace GalacticScale
-{
+{   public struct GSSliderConfig
+    {
+        public float minValue;
+        public float maxValue;
+        public float defaultValue;
+        public bool wholeNumbers;
+    }
     public static class SettingsUI
     {
         private static RectTransform tabLine;
@@ -236,6 +242,8 @@ namespace GalacticScale
                     case "UIComboBox": CreateComboBox(options[i], details, i); break;
                     case "Input": CreateInputField(options[i], details, i); break;
                     case "Button": CreateButton(options[i], details, i); break;
+                    case "CheckBox": CreateCheckBox(options[i], details, i); break;
+                    case "Slider": CreateSlider(options[i], details, i); break;
                     default: break;
                 }
             }
@@ -274,6 +282,8 @@ namespace GalacticScale
                     case "ComboBox": CreateComboBox(options[i], canvas, i); break;
                     case "Button": CreateButton(options[i], canvas, i); break;
                     case "Input": CreateInputField(options[i], canvas, i); break;
+                    case "CheckBox": CreateCheckBox(options[i], canvas, i); break;
+                    case "Slider": CreateSlider(options[i], canvas, i); break;
                     default: break;
                 }
                 if (options[i].postfix != null) OptionsUIPostfix.AddListener(new UnityAction(options[i].postfix));
@@ -282,6 +292,63 @@ namespace GalacticScale
 
         // Create a combobox from a GSOption definition
         private static void CreateComboBox(GSOption o, RectTransform canvas, int index)
+        {
+            //GS2.Log("CreateComboBox");
+            RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
+            comboBoxRect.name = o.label;
+            comboBoxRect.gameObject.SetActive(true);
+            optionRects.Add(comboBoxRect);
+            o.rectTransform = comboBoxRect;
+            int offset = index * -40;
+            comboBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+            UIComboBox comboBoxUI = comboBoxRect.GetComponentInChildren<UIComboBox>();
+            comboBoxUI.name = o.label + "_comboBox";
+            comboBoxUI.Items = o.data as List<string>;
+            comboBoxUI.UpdateItems();
+            comboBoxUI.itemIndex = 0;
+            comboBoxUI.onItemIndexChange.RemoveAllListeners();
+            if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
+            comboBoxRect.GetComponentInChildren<Text>().text = o.label;
+            RectTransform tipTransform = comboBoxRect.GetChild(0).GetComponent<RectTransform>();
+            tipTransform.gameObject.name = "optionTip-" + (index);
+            Object.Destroy(tipTransform.GetComponent<Localizer>());
+            tipTransform.GetComponent<Text>().text = o.tip;
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
+            //GS2.Log("Finished Creating ComboBox");
+        }
+        private static void CreateSlider(GSOption o, RectTransform canvas, int index)
+        {
+            GS2.Log("CreateSlider");
+            RectTransform sliderRect = Object.Instantiate(templateSlider, canvas);
+            GS2.Log("CreateSlider1"); 
+            sliderRect.name = o.label;
+            GS2.Log("CreateSlider2");
+            sliderRect.gameObject.SetActive(true); GS2.Log("CreateSlider3");
+            optionRects.Add(sliderRect); GS2.Log("CreateSlider4");
+            o.rectTransform = sliderRect; GS2.Log("CreateSlider5");
+            int offset = index * -40; GS2.Log("CreateSlider6");
+            sliderRect.anchoredPosition = new Vector2(anchorX, anchorY + offset); GS2.Log("CreateSlider7");
+            Slider slider = sliderRect.GetComponentInChildren<Slider>(); GS2.Log("CreateSlider8");
+            slider.name = o.label + "_comboBox"; GS2.Log("CreateSlider9");
+            //slider.Items = o.data as List<string>;
+            //slider.UpdateItems();
+            //slider.itemIndex = 0;
+            //slider.onItemIndexChange.RemoveAllListeners();
+            GSSliderConfig gssc = (GSSliderConfig)o.data; GS2.Log("CreateSlider10");
+            slider.minValue = gssc.minValue;
+            slider.maxValue = gssc.maxValue;
+            slider.wholeNumbers = gssc.wholeNumbers;
+            slider.value = gssc.defaultValue; GS2.Log("CreateSlider11");
+            if (o.callback != null) slider.onValueChanged.AddListener(delegate { o.callback(slider.value); }); GS2.Log("CreateSlider12");
+            sliderRect.GetComponentInChildren<Text>().text = o.label; GS2.Log("CreateSlider13");
+            RectTransform tipTransform = sliderRect.GetChild(0).GetComponent<RectTransform>(); GS2.Log("CreateSlider14");
+            tipTransform.gameObject.name = "optionTip-" + (index); GS2.Log("CreateSlider15");
+            Object.Destroy(tipTransform.GetComponent<Localizer>()); GS2.Log("CreateSlider16");
+            //tipTransform.GetComponent<Text>().text = o.tip; GS2.Log("CreateSlider17");
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix)); GS2.Log("CreateSlider18");
+            GS2.Log("Finished Creating Slider");
+        }
+        private static void CreateCheckBox(GSOption o, RectTransform canvas, int index)
         {
             //GS2.Log("CreateComboBox");
             RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
