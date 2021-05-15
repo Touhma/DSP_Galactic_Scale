@@ -90,7 +90,7 @@ namespace GalacticScale
         }
         private static void GenBirthPoints(PlanetData planet)
         {
-            GS2.Log("GenBirthPoints");
+            //GS2.Log("GenBirthPoints");
             System.Random random = new System.Random(planet.seed);
             Pose pose;
             double n = 85.0 / planet.orbitalPeriod + (double)planet.orbitPhase / 360.0;
@@ -117,7 +117,7 @@ namespace GalacticScale
             int num = 0;
             while (num++ < 256)
             {
-                GS2.Log("num" + num);
+                //GS2.Log("num" + num);
                 float num2 = (float)(random.NextDouble() * 2.0 - 1.0) * 0.5f;
                 float num3 = (float)(random.NextDouble() * 2.0 - 1.0) * 0.5f;
                 Vector3 vector2 = vector + num2 * normalized + num3 * normalized2;
@@ -165,7 +165,7 @@ namespace GalacticScale
                     break;
                 }
             }
-            GS2.Log("Finished Birthpoints");
+            //GS2.Log("Finished Birthpoints");
         }
         private static void AddVeinsToPlanet(
             PlanetData planet,
@@ -480,7 +480,7 @@ namespace GalacticScale
                     //GS2.Log("Testing type " + veinGroups[j].type + " which has " + veinGroups[j].veins.Count + " at index " + i);
                     if (veinGroups[j].veins.Count <= i) continue;
                     //GS2.Log("Adding " + veinGroups[j].type + " vein");
-                    if (i == 5 && veinGroups[j].type == EVeinType.Iron) GS2.LogJson(veinGroups[j]);
+                    //if (i == 5 && veinGroups[j].type == EVeinType.Iron) GS2.LogJson(veinGroups[j]);
                     distributed.Add(new GSVeinData()
                     {
                         count = veinGroups[j].veins[i].count,

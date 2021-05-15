@@ -28,8 +28,12 @@ namespace GalacticScale
             {
                 return true;
             }
-            GSPlanetAlgorithm.GenerateTerrain(gsPlanet);
-            return false;
+            if (GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings.terrainAlgorithm == "GS2")
+            {
+                GSPlanetAlgorithm.GenerateTerrain(gsPlanet);
+                return false;
+            }
+            else return true;
         }
     }
 }

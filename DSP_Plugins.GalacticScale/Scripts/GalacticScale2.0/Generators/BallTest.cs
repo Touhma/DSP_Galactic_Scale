@@ -47,10 +47,11 @@ namespace GalacticScale.Generators
                 beach.VeinSettings.VeinPadding = 0.5f;
                 beach.VeinSettings.VeinAlgorithm = "GS2";
                 //beach.TerrainSettings.num8 = 1*i - 3;
-                beach.TerrainSettings.heightMulti = i*10;
+                beach.TerrainSettings.heightMulti = i*2;
+                beach.TerrainSettings.terrainAlgorithm = "GS2";
                 //beach.TerrainSettings.baseHeight = -2f;
                 beach.Process();
-                GS2.Log("Theme " + "Beach" + i + " created");
+                //GS2.Log("Theme " + "Beach" + i + " created");
             }
             //beach.oceanTint = UnityEngine.Color.green;
             //beach.lowTint = UnityEngine.Color.green;
@@ -71,7 +72,7 @@ namespace GalacticScale.Generators
                 {
                     for (var j = 0; j < 10; j++)
                     {
-                        GS2.Log("Creating Planet with Theme " + "Beach" + j);
+                        //GS2.Log("Creating Planet with Theme " + "Beach" + j);
                         //GS2.LogJson(GS2.ThemeLibrary.Habitable);
                         //s.Planets.Add(new GSPlanet("Habitable", GS2.ThemeLibrary.Random(GS2.ThemeLibrary.Habitable).Name, 50, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));
                         //s.Planets.Add(new GSPlanet("Habitable", "AshenGelisol", 30, 2, -1, -1, -1, -1, -1, -1, -1, -1, null));

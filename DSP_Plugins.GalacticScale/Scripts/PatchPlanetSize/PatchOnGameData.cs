@@ -25,23 +25,23 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         {
             if (planet.factory != null)
             {
-                GS2.Log("Planetfactory not null");
+                //GS2.Log("Planetfactory not null");
                 __result = planet.factory;
                 return false;
             }
-            GS2.Log("Planetfactory  null");
+            //GS2.Log("Planetfactory  null");
             PlanetFactory planetFactory = new PlanetFactory();
             planetFactory.Init(__instance, planet, ___factoryCount);
-            GS2.Log("Planetfactory 1 - " + ___factories.Length + " " + ___factoryCount);
+            //GS2.Log("Planetfactory 1 - " + ___factories.Length + " " + ___factoryCount);
             ___factories[___factoryCount] = planetFactory;
-            GS2.Log("Planetfactory 2");
+            //GS2.Log("Planetfactory 2");
             planet.factory = planetFactory;
             planet.factoryIndex = ___factoryCount;
-            GS2.Log("Planetfactory 3");
+            //GS2.Log("Planetfactory 3");
             ___statistics.production.CreateFactoryStat(___factoryCount);
             ++___factoryCount;
             __result = planetFactory;
-            GS2.Log("Planetfactory 4");
+            //GS2.Log("Planetfactory 4");
             return false;
         }
     }
