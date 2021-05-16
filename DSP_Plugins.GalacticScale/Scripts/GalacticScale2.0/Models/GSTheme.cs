@@ -152,6 +152,7 @@ namespace GalacticScale
 			//GS2.Log("PROCESS");
 			//GS2.LogJson(VeinSettings);
 			ProcessTints();
+			if (TerrainSettings.brightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
 			AddToLibrary();
         }
 
@@ -210,6 +211,8 @@ namespace GalacticScale
 			Vegetables3 = (int[])baseTheme.Vegetables3.Clone();
 			Vegetables4 = (int[])baseTheme.Vegetables4.Clone();
 			Vegetables5 = (int[])baseTheme.Vegetables5.Clone();
+			VeinSettings = baseTheme.VeinSettings.Clone();
+			TerrainSettings = baseTheme.TerrainSettings.Clone();
 			VeinSpot = (int[])baseTheme.VeinSpot.Clone(); 
 			VeinCount = (float[])baseTheme.VeinCount.Clone(); 
 			VeinOpacity = (float[])baseTheme.VeinOpacity.Clone();

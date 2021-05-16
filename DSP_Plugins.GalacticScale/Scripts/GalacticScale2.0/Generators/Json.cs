@@ -18,7 +18,7 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.customjson";
 
-        public List<GSOption> Options => options;
+        public List<GSUI> Options => options;
 
         public bool DisableStarCountSlider => true;
 
@@ -31,11 +31,11 @@ namespace GalacticScale.Generators
         {
             RefreshFileNames();
             GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
-            options.Add(new GSOption("Custom Galaxy", "ComboBox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
-            options.Add(new GSOption("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
-            options.Add(new GSOption("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
+            options.Add(new GSUI("Custom Galaxy", "Combobox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(new GSUI("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
+            options.Add(new GSUI("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
         }
-        public List<GSOption> options = new List<GSOption>();
+        public List<GSUI> options = new List<GSUI>();
         public void Generate(int starCount)
         {
             GS2.Log("Json Importer Generating");

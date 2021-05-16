@@ -18,21 +18,21 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
-        public List<GSOption> Options => options;
+        public List<GSUI> Options => options;
 
-        private List<GSOption> options = new List<GSOption>();
+        private List<GSUI> options = new List<GSUI>();
         private List<GSStar> stars = new List<GSStar>();
         public void Init()
         {
             List<string> genList = new List<string>();
             foreach (iGenerator g in GS2.generators) genList.Add(g.Name);
-            options.Add(new GSOption("Dryrun Generator", "ComboBox", genList, OnDryRunChange, () => { }));
-            options.Add(new GSOption("Output Settings", "Button", "Output", OnOutputSettingsClick, () => { }));
-            options.Add(new GSOption("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
-            options.Add(new GSOption("Output LDBThemes", "Button", "Output", OnDumpPlanetDataClick, () => { }));
-            options.Add(new GSOption("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { })); 
-            options.Add(new GSOption("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
-            options.Add(new GSOption("Export LocalPlanet", "Button", "Export", OnExportLocalPlanetClick, () => { }));
+            options.Add(new GSUI("Dryrun Generator", "Combobox", genList, OnDryRunChange, () => { }));
+            options.Add(new GSUI("Output Settings", "Button", "Output", OnOutputSettingsClick, () => { }));
+            options.Add(new GSUI("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
+            options.Add(new GSUI("Output LDBThemes", "Button", "Output", OnDumpPlanetDataClick, () => { }));
+            options.Add(new GSUI("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { })); 
+            options.Add(new GSUI("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
+            options.Add(new GSUI("Export LocalPlanet", "Button", "Export", OnExportLocalPlanetClick, () => { }));
             //OnImportPositionsClick(null);
         }
         public class starStuff

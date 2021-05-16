@@ -32,6 +32,10 @@ namespace GalacticScale
             this.count = 0;
             this.position = Vector3.zero;
         }
+        public GSVein Clone()
+        {
+            return (GSVein)MemberwiseClone();
+        }
     }
     public class GSVeinType
     {
@@ -40,7 +44,17 @@ namespace GalacticScale
         public int Count { get => veins.Count; }
         [NonSerialized]
         public PlanetData planet;
+        public GSVeinType Clone()
+        {
+            GSVeinType clone = (GSVeinType)this.MemberwiseClone();
+            clone.veins = new List<GSVein>();
+            for (var i = 0; i < veins.Count; i++) clone.veins.Add(veins[i].Clone());
+            return clone;
+        }
     }
+
+
+
     public class GSVeinSettings
     {
         public List<GSVeinType> VeinTypes = new List<GSVeinType>();
@@ -50,7 +64,16 @@ namespace GalacticScale
         {
 
         }
+        public GSVeinSettings Clone()
+        {
+            GSVeinSettings clone = (GSVeinSettings)this.MemberwiseClone();
+            clone.VeinTypes = new List<GSVeinType>();
+            for (var i = 0; i < VeinTypes.Count; i++) clone.VeinTypes.Add(VeinTypes[i].Clone());
+            return clone;
+        }
     }
+
+
     public class GSVeinData
     {
         public EVeinType type;

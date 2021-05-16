@@ -548,10 +548,10 @@ namespace GalacticScale
                         break;
                     }
                 }
-                else
-                {
-                    GS2.Log("Couldn't find a vector");
-                }
+                //else
+                //{
+                    //GS2.Log("Couldn't find a vector");
+                //}
             }
             return veinGroups;
         }

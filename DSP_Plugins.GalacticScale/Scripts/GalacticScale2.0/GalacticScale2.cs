@@ -199,13 +199,15 @@ namespace GalacticScale
 
         public static void LoadPlugins()
         {
-            //Log("***LOADING PLUGINS***");
+            Log("***LOADING PLUGINS***");
             foreach (string filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
-                foreach (Type type in Assembly.LoadFrom(filePath).GetTypes()) 
-                    foreach (Type t in type.GetInterfaces()) 
-                        if (t.Name == "iGenerator" && !type.IsAbstract && !type.IsInterface) 
+            {
+                Log(filePath);
+                foreach (Type type in Assembly.LoadFrom(filePath).GetTypes())
+                    foreach (Type t in type.GetInterfaces())
+                        if (t.Name == "iGenerator" && !type.IsAbstract && !type.IsInterface)
                             generators.Add((iGenerator)Activator.CreateInstance(type));
-
+            }
             foreach (iGenerator g in generators)
             {
                 Log("Loading Generator: " + g.Name);

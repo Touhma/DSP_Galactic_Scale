@@ -5,16 +5,16 @@ namespace GalacticScale
     public static partial class GS2
     {
         public static iGenerator generator = new Generators.Vanilla();
-        public static List<iGenerator> generators = new List<iGenerator>() { 
-            new Generators.BallTest(),  
-            new Generators.Vanilla(), 
-            new Generators.Spiral2(), 
-            new Generators.PhysicsTest(),  
-            new Generators.TintTest(), 
+        public static List<iGenerator> generators = new List<iGenerator>() {
+            new Generators.BallTest(),
+            new Generators.Vanilla(),
+            new Generators.Spiral2(),
+            new Generators.PhysicsTest(),
+            new Generators.TintTest(),
             new Generators.GalacticScale2(), 
             new Generators.JsonImport(),
-            new Generators.Spiral(), 
-            new Generators.Debug() 
+            new Generators.Spiral(),
+            new Generators.Debug()
         };
         public static iGenerator GetGeneratorByID(string guid)
         {

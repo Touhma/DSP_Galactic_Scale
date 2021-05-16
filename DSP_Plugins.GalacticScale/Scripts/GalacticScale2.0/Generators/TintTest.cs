@@ -20,7 +20,7 @@ namespace GalacticScale.Generators
 
         public bool DisableStarCountSlider => false;
 
-        public List<GSOption> Options => options;
+        public List<GSUI> Options => options;
 
         private GSGeneratorConfig config = new GSGeneratorConfig();
         public List<GSPlanet> planets = new List<GSPlanet>();
@@ -69,12 +69,12 @@ namespace GalacticScale.Generators
         }
         public void Init()
         {
-            options.Add(new GSOption("R", "Input", "1", changeValueR, () => { }));
-            options.Add(new GSOption("G", "Input", "0", changeValueG, () => { }));
-            options.Add(new GSOption("B", "Input", "0", changeValueB, () => { }));
-            options.Add(new GSOption("A", "Input", ".75", changeValueA, () => { }));
+            options.Add(new GSUI("R", "Input", "1", changeValueR, () => { }));
+            options.Add(new GSUI("G", "Input", "0", changeValueG, () => { }));
+            options.Add(new GSUI("B", "Input", "0", changeValueB, () => { }));
+            options.Add(new GSUI("A", "Input", ".75", changeValueA, () => { }));
             //options.Add(new GSOption("field", "Input", "_DepthFactor", changeValuePar, () => { }));
-            options.Add(new GSOption("Go", "Button", "Go", updateOceanMat, () => { }));
+            options.Add(new GSUI("Go", "Button", "Go", updateOceanMat, () => { }));
             GS2.Log("TT:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
@@ -160,7 +160,7 @@ namespace GalacticScale.Generators
             generate(starCount);
         }
         ////////////////////////////////////////////////////////////////////
-        public List<GSOption> options = new List<GSOption>();
+        public List<GSUI> options = new List<GSUI>();
 
 
         public void generate(int starCount)

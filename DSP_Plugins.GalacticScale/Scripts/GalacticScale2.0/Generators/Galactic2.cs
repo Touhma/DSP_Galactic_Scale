@@ -18,14 +18,17 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => config;
 
-        public List<GSOption> Options => options;
-        private List<GSOption> options = new List<GSOption>();
+        public List<GSUI> Options => options;
+        private List<GSUI> options = new List<GSUI>();
         private GSGeneratorConfig config = new GSGeneratorConfig();
         private GSGenPreferences preferences = new GSGenPreferences();
         public void Init()
         {
             config.DefaultStarCount = 16;
-            options.Add(new GSOption("Planet Count", "Slider", new GSSliderConfig() { minValue = 1, maxValue = 99, defaultValue = 10, wholeNumbers = true }, (object o) => { }, () => { })) ;
+            options.Add(GSUI.Checkbox("Ludicrous Mode", false, (object o) => { }, () => { }));
+            options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, (object o) => { }, () => { }));
+            options.Add(GSUI.Slider("Max Planet Count", 1, 10, 99, (object o) => { }, () => { }));
+            options.Add(GSUI.Checkbox("Secondary Satellites", false, (object o) => { }, () => { }));
         }
 
         public void Generate(int starCount)

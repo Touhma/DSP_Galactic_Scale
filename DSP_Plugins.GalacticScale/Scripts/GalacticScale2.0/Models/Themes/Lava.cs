@@ -17,6 +17,7 @@ namespace GalacticScale
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
             VeinSettings = new GSVeinSettings() { VeinAlgorithm = "Vanilla" },
+            TerrainSettings = new GSTerrainSettings() { brightnessFix = true },
             Vegetables0 = new int[] {
                 6,
                 7,

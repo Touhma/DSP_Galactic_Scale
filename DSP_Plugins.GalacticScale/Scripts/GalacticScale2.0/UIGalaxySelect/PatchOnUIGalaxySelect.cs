@@ -10,8 +10,7 @@ namespace GalacticScale
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect),"SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
-            SettingsUI.TryCaptureSeedInput();
-            
+           
             GalaxyData galaxy;
             if (GS2.Vanilla) galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             else galaxy = GS2.CreateGalaxy(__instance.gameDesc, false);

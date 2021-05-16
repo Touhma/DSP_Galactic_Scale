@@ -32,34 +32,14 @@ namespace GalacticScale
 
         private static List<RectTransform> optionRects = new List<RectTransform>();
         private static List<RectTransform> generatorCanvases = new List<RectTransform>();
-        private static List<List<GSOption>> generatorPluginOptions = new List<List<GSOption>>();
+        private static List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
         private static float anchorX;
         private static float anchorY;
 
-        private static List<GSOption> options = new List<GSOption>();
+        private static List<GSUI> options = new List<GSUI>();
 
         public static UnityEvent OptionsUIPostfix = new UnityEvent();
-        public static void TryCaptureSeedInput()
-        {
-            //GS2.Log("TryCaptureSeedInput(1)");
-            //if (seedInput != null) return;
-            //GameObject galaxyseed = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed");
-            //GS2.Log("TryCaptureSeedInput(2)"); if (galaxyseed != null && seedInput == null)
-            //{
-            //    GS2.Log("TryCaptureSeedInput(3)");
-            //    RectTransform seedInputRect = Object.Instantiate(galaxyseed.GetComponentInChildren<InputField>().GetComponent<RectTransform>());
-            //    GS2.Log("TryCaptureSeedInput(4)"); 
-            //    if (galaxyseed == null) GS2.Log("SeedInput Null");
-                
-            //    else
-            //    {
-            //        GS2.Log("TryCaptureSeedInput(5)");
-            //        seedInput = seedInputRect;
-            //        seedInput.gameObject.SetActive(true);
-            //    }
-            //    GS2.Log("TryCaptureSeedInput(6)");
-            //}
-        }
+
         public static void CreateGalacticScaleSettingsPage(UIButton[] _tabButtons, Text[] _tabTexts)
         {
             tabLine = GameObject.Find("Top Windows/Option Window/tab-line").GetComponent<RectTransform>();
@@ -140,7 +120,7 @@ namespace GalacticScale
             RectTransform sliderProto = GameObject.Find("Option Window/details/content-1/dofblur").GetComponent<RectTransform>(); // localizer,  a textcomponent, has child called slider which has a UI.Slider component ,
             templateSlider = CreateTemplate(sliderProto);
             //GS2.Log("CreateGalacticScaleSettingsPage TEST5");
-            TryCaptureSeedInput();
+
             //RectTransform inputFieldProto = seedInput;
             GameObject inputFieldGO = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
             //if (inputFieldGO == null) GS2.Log("SHIT");
@@ -194,9 +174,9 @@ namespace GalacticScale
         {
             for (var i = 0; i < GS2.generators.Count; i++)
             {
-                List<GSOption> pluginOptions = new List<GSOption>();
+                List<GSUI> pluginOptions = new List<GSUI>();
                 //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
-                if (GS2.generators[i] is iConfigurableGenerator gen) { GS2.Log(gen.Name + " is configurable"); foreach (GSOption o in gen.Options) pluginOptions.Add(o); }
+                if (GS2.generators[i] is iConfigurableGenerator gen) { GS2.Log(gen.Name + " is configurable"); foreach (GSUI o in gen.Options) pluginOptions.Add(o); }
                 generatorPluginOptions.Add(pluginOptions);
             }
         }
@@ -204,7 +184,7 @@ namespace GalacticScale
         {
             //GS2.Log("CreateOwnOptions()");
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
-            options.Add(new GSOption("Generator", "UIComboBox", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
+            options.Add(new GSUI("Generator", "Combobox", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
         }
         private static void CreateOwnOptionsPostFix()
         {
@@ -239,10 +219,10 @@ namespace GalacticScale
             {
                 switch (options[i].type)
                 {
-                    case "UIComboBox": CreateComboBox(options[i], details, i); break;
+                    case "Combobox": CreateComboBox(options[i], details, i); break;
                     case "Input": CreateInputField(options[i], details, i); break;
                     case "Button": CreateButton(options[i], details, i); break;
-                    case "CheckBox": CreateCheckBox(options[i], details, i); break;
+                    case "Checkbox": CreateCheckBox(options[i], details, i); break;
                     case "Slider": CreateSlider(options[i], details, i); break;
                     default: break;
                 }
@@ -273,16 +253,16 @@ namespace GalacticScale
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
         {
             //GS2.Log("AddGeneratorPluginUIElements: " + GS2.generators[genIndex].Name);
-            List<GSOption> options = generatorPluginOptions[genIndex];
+            List<GSUI> options = generatorPluginOptions[genIndex];
             //GS2.Log(GS2.generators[genIndex].Name + " option count = " + options.Count);
             for (int i = 0; i < options.Count; i++)
             {
                 switch (options[i].type)
                 {
-                    case "ComboBox": CreateComboBox(options[i], canvas, i); break;
+                    case "Combobox": CreateComboBox(options[i], canvas, i); break;
                     case "Button": CreateButton(options[i], canvas, i); break;
                     case "Input": CreateInputField(options[i], canvas, i); break;
-                    case "CheckBox": CreateCheckBox(options[i], canvas, i); break;
+                    case "Checkbox": CreateCheckBox(options[i], canvas, i); break;
                     case "Slider": CreateSlider(options[i], canvas, i); break;
                     default: break;
                 }
@@ -291,7 +271,7 @@ namespace GalacticScale
         }
 
         // Create a combobox from a GSOption definition
-        private static void CreateComboBox(GSOption o, RectTransform canvas, int index)
+        private static void CreateComboBox(GSUI o, RectTransform canvas, int index)
         {
             //GS2.Log("CreateComboBox");
             RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
@@ -316,66 +296,60 @@ namespace GalacticScale
             if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             //GS2.Log("Finished Creating ComboBox");
         }
-        private static void CreateSlider(GSOption o, RectTransform canvas, int index)
+        private static void CreateSlider(GSUI o, RectTransform canvas, int index)
         {
-            GS2.Log("CreateSlider");
             RectTransform sliderRect = Object.Instantiate(templateSlider, canvas);
-            GS2.Log("CreateSlider1"); 
             sliderRect.name = o.label;
-            GS2.Log("CreateSlider2");
-            sliderRect.gameObject.SetActive(true); GS2.Log("CreateSlider3");
-            optionRects.Add(sliderRect); GS2.Log("CreateSlider4");
-            o.rectTransform = sliderRect; GS2.Log("CreateSlider5");
-            int offset = index * -40; GS2.Log("CreateSlider6");
-            sliderRect.anchoredPosition = new Vector2(anchorX, anchorY + offset); GS2.Log("CreateSlider7");
-            Slider slider = sliderRect.GetComponentInChildren<Slider>(); GS2.Log("CreateSlider8");
-            slider.name = o.label + "_comboBox"; GS2.Log("CreateSlider9");
-            //slider.Items = o.data as List<string>;
-            //slider.UpdateItems();
-            //slider.itemIndex = 0;
-            //slider.onItemIndexChange.RemoveAllListeners();
-            GSSliderConfig gssc = (GSSliderConfig)o.data; GS2.Log("CreateSlider10");
+            sliderRect.gameObject.SetActive(true); 
+            optionRects.Add(sliderRect);
+            o.rectTransform = sliderRect; 
+            int offset = index * -40; 
+            sliderRect.anchoredPosition = new Vector2(anchorX, anchorY + offset); 
+            Slider slider = sliderRect.GetComponentInChildren<Slider>(); 
+            slider.name = o.label + "_comboBox"; 
+            Text label = slider.GetComponentInChildren<Text>();
+            
+            GSSliderConfig gssc = (GSSliderConfig)o.data; 
             slider.minValue = gssc.minValue;
             slider.maxValue = gssc.maxValue;
             slider.wholeNumbers = gssc.wholeNumbers;
-            slider.value = gssc.defaultValue; GS2.Log("CreateSlider11");
-            if (o.callback != null) slider.onValueChanged.AddListener(delegate { o.callback(slider.value); }); GS2.Log("CreateSlider12");
-            sliderRect.GetComponentInChildren<Text>().text = o.label; GS2.Log("CreateSlider13");
-            RectTransform tipTransform = sliderRect.GetChild(0).GetComponent<RectTransform>(); GS2.Log("CreateSlider14");
-            tipTransform.gameObject.name = "optionTip-" + (index); GS2.Log("CreateSlider15");
-            Object.Destroy(tipTransform.GetComponent<Localizer>()); GS2.Log("CreateSlider16");
+            slider.value = gssc.defaultValue; 
+            label.text = slider.value.ToString();
+            slider.onValueChanged.AddListener((v) => label.text = v.ToString());
+            if (o.callback != null) slider.onValueChanged.AddListener(delegate { o.callback(slider.value); }); 
+            sliderRect.GetComponentInChildren<Text>().text = o.label; 
+            RectTransform tipTransform = sliderRect.GetChild(0).GetComponent<RectTransform>();
+            tipTransform.gameObject.name = "optionTip-" + (index); 
+            Object.Destroy(tipTransform.GetComponent<Localizer>()); 
             //tipTransform.GetComponent<Text>().text = o.tip; GS2.Log("CreateSlider17");
-            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix)); GS2.Log("CreateSlider18");
-            GS2.Log("Finished Creating Slider");
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix)); 
         }
-        private static void CreateCheckBox(GSOption o, RectTransform canvas, int index)
+        private static void CreateCheckBox(GSUI o, RectTransform canvas, int index)
         {
             //GS2.Log("CreateComboBox");
-            RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
-            comboBoxRect.name = o.label;
-            comboBoxRect.gameObject.SetActive(true);
-            optionRects.Add(comboBoxRect);
-            o.rectTransform = comboBoxRect;
+            RectTransform checkBoxRect = Object.Instantiate(templateCheckBox, canvas);
+            checkBoxRect.name = o.label;
+            checkBoxRect.gameObject.SetActive(true);
+            optionRects.Add(checkBoxRect);
+            o.rectTransform = checkBoxRect;
             int offset = index * -40;
-            comboBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
-            UIComboBox comboBoxUI = comboBoxRect.GetComponentInChildren<UIComboBox>();
-            comboBoxUI.name = o.label + "_comboBox";
-            comboBoxUI.Items = o.data as List<string>;
-            comboBoxUI.UpdateItems();
-            comboBoxUI.itemIndex = 0;
-            comboBoxUI.onItemIndexChange.RemoveAllListeners();
-            if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
-            comboBoxRect.GetComponentInChildren<Text>().text = o.label;
-            RectTransform tipTransform = comboBoxRect.GetChild(0).GetComponent<RectTransform>();
-            tipTransform.gameObject.name = "optionTip-" + (index);
-            Object.Destroy(tipTransform.GetComponent<Localizer>());
-            tipTransform.GetComponent<Text>().text = o.tip;
+            checkBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+            Toggle toggle = checkBoxRect.GetComponentInChildren<Toggle>();
+            toggle.name = o.label + "_checkBox";
+            toggle.isOn = (bool)o.data;
+            toggle.onValueChanged.RemoveAllListeners();
+            if (o.callback != null) toggle.onValueChanged.AddListener(delegate { o.callback(toggle.isOn); });
+            //checkBoxRect.GetComponentInChildren<Text>().text = o.label;
+            //RectTransform tipTransform = checkBoxRect.GetChild(0).GetComponent<RectTransform>();
+            //tipTransform.gameObject.name = "optionTip-" + (index);
+            //Object.Destroy(tipTransform.GetComponent<Localizer>());
+            //tipTransform.GetComponent<Text>().text = o.tip;
             if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             //GS2.Log("Finished Creating ComboBox");
         }
 
         // Create an input field from a GSOption definition
-        private static void CreateInputField(GSOption o, RectTransform canvas, int index)
+        private static void CreateInputField(GSUI o, RectTransform canvas, int index)
         {
             //GS2.Log("CreateInputField");
             RectTransform inputRect = Object.Instantiate(templateInputField, canvas);
@@ -410,7 +384,7 @@ namespace GalacticScale
             if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));// GS2.Log("-19");
             //GS2.Log("Finished Creating InputField");
         }           // Create a button from a GSOption definition
-        private static void CreateButton(GSOption o, RectTransform canvas, int index)
+        private static void CreateButton(GSUI o, RectTransform canvas, int index)
         {
             //GS2.Log("CreateButton "+o.label);
             RectTransform buttonRect = Object.Instantiate(templateButton, canvas);

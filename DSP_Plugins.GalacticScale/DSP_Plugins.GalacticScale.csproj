@@ -110,7 +110,14 @@
     <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\GenerateTerrain.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSTerrainSettings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSUI.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGenPreferences.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGeneratorConfig.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\iConfigurableGenerator.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\Terrain Generation\GenerateTerrain5.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\Terrain Generation\GenerateTerrain6.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\Terrain Generation\GenerateTerrain1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\PatchOnPlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\GenerateVeins.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GameData\PatchNewGame.cs" />
@@ -163,7 +170,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Vanilla.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\PlanetThemes.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\iGenerator.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\iGenerator.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GS2.GeneratorData.cs" />
     <Compile Include="Scripts\GalacticScale2.0\PlanetGen\SetPlanetTheme.cs" />
     <Compile Include="Scripts\GalacticScale2.0\PlanetGen\CreatePlanet.cs" />
