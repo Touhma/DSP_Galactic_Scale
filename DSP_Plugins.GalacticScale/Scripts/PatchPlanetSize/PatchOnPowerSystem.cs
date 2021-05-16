@@ -7,7 +7,8 @@ namespace GalacticScale.Scripts.PatchPlanetSize
     static class PatchOnPowerSystem
     {
         [HarmonyPrefix]
-        [HarmonyPatch("line_arrangement_for_add_node")]
+        [HarmonyPatch("line_arragement_for_add_node")]
+
         public static bool line_arrangement_for_add_node(Node node, ref int[] ___tmp_state)
         {
             if (___tmp_state == null)
