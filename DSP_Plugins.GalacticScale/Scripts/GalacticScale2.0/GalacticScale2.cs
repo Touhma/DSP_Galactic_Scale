@@ -186,7 +186,7 @@ namespace GalacticScale
             {
                 foreach (KeyValuePair<string, GSGenPreferences> pluginOptions in p.PluginOptions)
                 {
-                    //Log("Plugin Options for " + pluginOptions.Key + "found");
+                    Log("Plugin Options for " + pluginOptions.Key + "found");
                     iConfigurableGenerator gen = GetGeneratorByID(pluginOptions.Key) as iConfigurableGenerator;
                     if (gen != null)
                     {

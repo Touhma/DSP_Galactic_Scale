@@ -23,13 +23,14 @@ namespace GalacticScale
         private static Text[] tabTexts;
         public static RectTransform seedInput;
         private static RectTransform details;
+        private static RectTransform scrollview;
         private static RectTransform templateOptionsCanvas;
         private static RectTransform templateUIComboBox;
         private static RectTransform templateCheckBox;
         private static RectTransform templateInputField;
         private static RectTransform templateSlider;
         private static RectTransform templateButton;
-
+        private static RectTransform templateScrollView;
         private static List<RectTransform> optionRects = new List<RectTransform>();
         private static List<RectTransform> generatorCanvases = new List<RectTransform>();
         private static List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
@@ -59,13 +60,29 @@ namespace GalacticScale
             tabButtons.AddItem<UIButton>(galacticButton.GetComponent<UIButton>());
             tabTexts.AddItem<Text>(galacticButton.GetComponentInChildren<Text>());
 
+
+
+            RectTransform scrollviewTemplate = GameObject.Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/list").GetComponent<RectTransform>();
+            scrollview = Object.Instantiate(scrollviewTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
+            scrollview.offsetMax = new Vector2(0, 0);
+            scrollview.offsetMin = new Vector2(0, 0);
+            scrollview.name = "GalacticScaleSettings";
+            var svContent = scrollview.GetComponentInChildren<UITools.EnsureIntPosition>();
+            while (svContent.transform.childCount > 0)
+            {
+                Object.DestroyImmediate(svContent.transform.GetChild(0).gameObject);
+            }
+            //   UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/sep-line-bottom-1
+            //  UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/sep-line-top-1
             //Create the galactic scale settings panel
             RectTransform detailsTemplate = GameObject.Find("Option Window/details/content-5").GetComponent<RectTransform>();
-            details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
-            details.gameObject.SetActive(false);
+            details = Object.Instantiate(detailsTemplate, scrollview.GetComponentInChildren<UITools.EnsureIntPosition>().GetComponent<RectTransform>(), false);
+            templateScrollView = Object.Instantiate(scrollview, details, false);
+            templateScrollView.gameObject.SetActive(false);
+            //details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
+            scrollview.gameObject.SetActive(false);
+            details.gameObject.SetActive(true);
             details.gameObject.name = "content-gs";
-
-
             //Destroy surplus ui elements
             Transform tipLevel = details.Find("tiplevel");
             if (tipLevel != null) Object.Destroy(tipLevel.gameObject);
@@ -165,7 +182,7 @@ namespace GalacticScale
             ImportCustomGeneratorOptions();
             //GS2.Log("CreateGalacticScaleSettingsPage Test9");
             CreateOptionsUI();
-
+            GS2.LoadPreferences();
             //GS2.Log("CreateGalacticScaleSettingsPage Test10");
             OptionsUIPostfix.Invoke();
             //GS2.Log("CreateGalacticScaleSettingsPage Test11");
@@ -339,7 +356,7 @@ namespace GalacticScale
             toggle.isOn = (bool)o.data;
             toggle.onValueChanged.RemoveAllListeners();
             if (o.callback != null) toggle.onValueChanged.AddListener(delegate { o.callback(toggle.isOn); });
-            //checkBoxRect.GetComponentInChildren<Text>().text = o.label;
+            checkBoxRect.GetComponentInChildren<Text>().text = o.label;
             //RectTransform tipTransform = checkBoxRect.GetChild(0).GetComponent<RectTransform>();
             //tipTransform.gameObject.name = "optionTip-" + (index);
             //Object.Destroy(tipTransform.GetComponent<Localizer>());
@@ -425,11 +442,11 @@ namespace GalacticScale
         private static void GalacticScaleTabClick()
         {
             UIRoot.instance.optionWindow.SetTabIndex(5, false);
-            details.gameObject.SetActive(true);
+            scrollview.gameObject.SetActive(true);
         }
         public static void DisableDetails()
         {
-            if (details != null && details.gameObject != null) details.gameObject.SetActive(false);
+            if (scrollview != null && scrollview.gameObject != null) scrollview.gameObject.SetActive(false);
         }
     }
 }

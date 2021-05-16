@@ -14,17 +14,17 @@ namespace GalacticScale
             string parsedString = ContainsKey(key)?this[key] is string?this[key]:forceToString?this[key].ToString():Default:Default;
             return parsedString;
         }
-        public int GetInt(string key, int Default = 0)
+        public int GetInt(string key, int Default = -1)
         {
             int parsedResult;
             return ContainsKey(key) ? (int.TryParse(this[key], out parsedResult)) ? parsedResult : Default : Default;
         }
-        public float GetFloat(string key, float Default = 0f)
+        public float GetFloat(string key, float Default = -1f)
         {
             float parsedResult;
             return ContainsKey(key) ? (float.TryParse(this[key], out parsedResult)) ? parsedResult : Default : Default;
         }
-        public double GetDouble(string key, double Default = 0.0)
+        public double GetDouble(string key, double Default = -1.0)
         {
             double parsedResult;
             return ContainsKey(key) ? (double.TryParse(this[key], out parsedResult)) ? parsedResult : Default : Default;

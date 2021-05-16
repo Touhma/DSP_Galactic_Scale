@@ -7,6 +7,11 @@ namespace GalacticScale
     {
         public static class Utils
         {
+            public static float ParsePlanetSize(float radius)
+            {
+                if (radius < 8f) return 5f;
+                return UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Clamp(radius, 10, 510) / 10) * 10;
+            }
             public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
             {
                 List<VectorLF3> points = new List<VectorLF3>();

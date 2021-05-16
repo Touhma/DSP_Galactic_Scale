@@ -110,6 +110,7 @@
     <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSOptions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSTerrainSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGenPreferences.cs" />
