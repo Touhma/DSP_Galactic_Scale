@@ -118,9 +118,11 @@ namespace GalacticScale
 		public string atmosphereMaterial;
 		public Color atmosphereTint;
 		[NonSerialized]
-		public Material lowMat;
-		public string lowMaterial;
-		public Color lowTint;
+		public Material lowMat; //can be removed
+		[NonSerialized]
+		public string lowMaterial;//can be removed
+		[NonSerialized]
+		public Color lowTint;//can be removed
 		[NonSerialized]
 		public Material thumbMat;
 		public string thumbMaterial;

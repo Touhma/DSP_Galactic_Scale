@@ -71,6 +71,7 @@ namespace GalacticScale
         public List<GSPlanet> bodies { get
             {
                 List<GSPlanet> b = new List<GSPlanet>() { this };
+                if (Moons == null) return b;
                 foreach (GSPlanet moon in Moons) {
                     b.AddRange(moon.bodies);
                 }

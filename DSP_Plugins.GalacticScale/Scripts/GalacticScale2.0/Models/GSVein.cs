@@ -8,6 +8,7 @@ namespace GalacticScale
     {
         public float richness;
         public int count;
+        [NonSerialized]
         public Vector3 position;
         //public float density = -1f;
         public GSVein(float richness, Vector3 position, int count)
