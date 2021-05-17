@@ -50,5 +50,6 @@ namespace GalacticScale
         public double minStepLength = 2.3;
         public double maxStepLength = 3.5;
         public double flatten = 0.18;
+        public bool ignoreSpecials = true; // allow special ores around regular stars
     }
 }

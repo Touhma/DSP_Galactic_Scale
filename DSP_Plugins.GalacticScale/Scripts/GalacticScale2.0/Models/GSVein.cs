@@ -9,20 +9,20 @@ namespace GalacticScale
         public float richness;
         public int count;
         public Vector3 position;
-        public float density = -1f;
-        public GSVein(float richness, Vector3 position, int count, float density)
+        //public float density = -1f;
+        public GSVein(float richness, Vector3 position, int count)
         {
             this.richness = richness;
             this.position = position;
             this.count = count;
-            this.density = density;
+            //this.density = density;
     }
 
-        public GSVein (PlanetData planet, int seed = -1)
+        public GSVein (GSPlanet gsPlanet, int seed = -1)
         {
             if (seed < 0) seed = GSSettings.Seed;
-            System.Random random = new System.Random(seed);
-            this.richness = (int)(random.Next(50000, 150000) * planet.star.resourceCoef);
+            GS2.Random random = new GS2.Random(seed);
+            this.richness =  (float)random.NextDouble() * gsPlanet.planetData.star.resourceCoef;//(int)(random.Next(50000, 150000)
             this.count = (int)random.Next(1, 30);
             this.position = Vector3.zero;
         }
@@ -41,6 +41,7 @@ namespace GalacticScale
     {
         public List<GSVein> veins = new List<GSVein>();
         public EVeinType type = EVeinType.None;
+        public bool rare = false;
         public int Count { get => veins.Count; }
         [NonSerialized]
         public PlanetData planet;
@@ -51,6 +52,11 @@ namespace GalacticScale
             for (var i = 0; i < veins.Count; i++) clone.veins.Add(veins[i].Clone());
             return clone;
         }
+        public GSVeinType (EVeinType type)
+        {
+            this.type = type;
+        }
+        public GSVeinType() { }
     }
 
 
@@ -74,12 +80,13 @@ namespace GalacticScale
     }
 
 
-    public class GSVeinData
+    public class GSVeinDescriptor
     {
         public EVeinType type;
         public int count;
         public float richness;
         public float density;
         public Vector3 position;
+        public bool rare;
     }
 }

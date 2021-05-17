@@ -21,9 +21,12 @@ namespace GalacticScale
         private float _rotationPeriod = -1;
         private float _rotationPhase = -1;
         private float _luminosity = -1;
-       
+        public bool randomizeVeinAmounts = true;
+        public bool randomizeVeinCounts = true;
         [NonSerialized]
         public PlanetData planetData;
+        [NonSerialized]
+        public GSVeinSettings veinSettings;
 
         private List<GSPlanet> _moons = new List<GSPlanet>();
         [SerializeField]

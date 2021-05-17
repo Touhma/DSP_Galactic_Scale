@@ -144,6 +144,8 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Gobi.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\VolcanicAsh.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\Mediterranean.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\Vein Generation\GS2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\PlanetAlgorithm\Vein Generation\Vanilla.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />

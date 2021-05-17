@@ -173,13 +173,41 @@ namespace GalacticScale
 						new GSVein()
 						{
 							count = (int)(VeinCount[vType] * 25),
-							density = 1,
+							//density = 1,
 							richness = VeinOpacity[vType]
 						}
 					);
 				}
 				//GS2.Log("tempVeinGroup "+Name);
 				//GS2.LogJson(tempVeinGroup);
+				VeinSettings.VeinTypes.Add(tempVeinGroup);
+			}
+			//GS2.Log(Name);
+			//GS2.LogJson(VeinSpot);
+			if (RareVeins.Length == 0) return;
+			for (var i = 0; i<RareVeins.Length;i++)
+            {
+				//GS2.Log("rareVeins" + i + " of " + RareVeins.Length);
+				float richness = RareSettings[i * 4 + 3];
+				//GS2.Log("richness" + richness);
+				int count = (int)(richness * 25);
+				//GS2.Log("Count:" + count);
+				GSVeinType tempVeinGroup = new GSVeinType()
+				{
+					type = (EVeinType)RareVeins[i],
+					veins = new List<GSVein>(),
+					rare = true
+				};
+				//GS2.Log("ttt");
+				for (var j = 0; j < count; j++)
+                {
+					tempVeinGroup.veins.Add(new GSVein()
+					{
+						count = count,
+						richness = richness
+					});
+                }
+				//GS2.Log("tgt");
 				VeinSettings.VeinTypes.Add(tempVeinGroup);
 			}
 		}

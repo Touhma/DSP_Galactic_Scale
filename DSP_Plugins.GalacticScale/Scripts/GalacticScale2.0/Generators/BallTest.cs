@@ -40,34 +40,37 @@ namespace GalacticScale.Generators
         {
             GS2.Random random = new GS2.Random();
             List<GSPlanet> p = new List<GSPlanet>();
-                //for (var j = 0; j < 20; j++)
-                //{
-                //    GSTheme modified = new GSTheme("modified" + j, "modified" + j, "Lava");
-                //    modified.Algo = 5;
-                //    //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
-                //    //modified.TerrainSettings.baseHeight = (j * modifier * -100);
-                //    modified.TerrainSettings.brightnessFix = false;
-                //    modified.TerrainSettings.terrainAlgorithm = "GS2";
-                //    modified.Process();
-                //}
-            //GSTheme lmodified = new GSTheme("modifiedl", "modifiedl", "Lava");
+            //for (var j = 0; j < 20; j++)
+            //{
+            //GSTheme modified = new GSTheme("modified" + j, "modified" + j, "RedStone");
+            //    modified.Algo = 5;
+            //    //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
+            //    //modified.TerrainSettings.baseHeight = (j * modifier * -100);
+            //    modified.TerrainSettings.brightnessFix = false;
+            //modified.TerrainSettings.terrainAlgorithm = "GS2";
+            //    modified.Process();
+            //}
+            GSTheme lmodified = new GSTheme("modifiedl", "modifiedl", "RedStone");
             //lmodified.Algo = 5;
             //lmodified.TerrainSettings.brightnessFix = false;
             //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
             //modified.TerrainSettings.baseHeight = (j * modifier * -100);
-            //lmodified.TerrainSettings.terrainAlgorithm = "GS2";
-            //lmodified.Process();
+            lmodified.TerrainSettings.terrainAlgorithm = "GS2";
+            lmodified.Process();
             for (var i = 0; i < starCount; i++)
             {
 
                 GSStar s = StarDefaults.Random();
                 s.Name = "Star-" + i;
-                if (i == 0)
-                { 
+                //if (i == 0)
+                //{ 
                     s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, -1, 1, -1, -1, -1, 1f, null));
                     s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, -1, 10, -1, -1, -1, 1f, null));
-                    //s.Planets.Add(new GSPlanet("gobi", "Gobi", 50, 0.5f, -1, -1, -1, 21, -1, -1, -1, 1f, null));
-                    //s.Planets.Add(new GSPlanet("icegel", "IceGelisol", 50, 0.5f, -1, -1, -1, 31, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone3", "modifiedl", 50, 0.5f, -1, -1, -1, 20, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone4", "modifiedl", 50, 0.5f, -1, -1, -1, 30, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone5", "modifiedl", 50, 0.5f, -1, -1, -1, 40, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("ashenGelisol", "AshenGelisol", 50, 0.5f, -1, -1, -1, 21, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("barren", "Barren", 50, 0.5f, -1, -1, -1, 31, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("lava", "Lava", 50, 0.5f, -1, -1, -1, 41, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("lavam", "modifiedl", 50, 0.5f, -1, -1, -1, 45, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("ocean", "OceanWorld", 50, 0.5f, -1, -1, -1, 51, -1, -1, -1, 1f, null));
@@ -75,12 +78,12 @@ namespace GalacticScale.Generators
                     //{
                     //    s.Planets.Add(new GSPlanet("gs2["+ (10 + (j * 10)) + "-" + ( (j * modifier) - (5*modifier)    ) + "]", "modified" + j, 10+(j*10), 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));             
                     //}
-                }
+                //}
                 s.position = random.PointOnSphere(10);
                 GSSettings.Stars.Add(s);
-                //GS2.EndGame();
-            }
+            //GS2.EndGame();
         }
+    }
         public void Import(GSGenPreferences preferences)
         {
             

@@ -16,7 +16,7 @@ namespace GalacticScale
         {
             GameObject overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;         
-            var contentGS = GameObject.Find("Option Window/details/content-gs");
+            var contentGS = GameObject.Find("Option Window/details/GalacticScaleSettings");
             if (contentGS == null)
             {
                 __instance.applyButton.button.onClick.AddListener(new UnityAction(GS2.SavePreferences));
