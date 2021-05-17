@@ -40,23 +40,23 @@ namespace GalacticScale.Generators
         {
             GS2.Random random = new GS2.Random();
             List<GSPlanet> p = new List<GSPlanet>();
-            for (var j = 0; j < 20; j++)
-            {
-                GSTheme modified = new GSTheme("modified"+j, "modified"+j, "Lava");
-                modified.Algo = 5;
-                //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
-                //modified.TerrainSettings.baseHeight = (j * modifier * -100);
-                modified.TerrainSettings.brightnessFix = false;
-                modified.TerrainSettings.terrainAlgorithm = "GS2";
-                modified.Process();
-            }
-            GSTheme lmodified = new GSTheme("modifiedl", "modifiedl", "Lava");
+                //for (var j = 0; j < 20; j++)
+                //{
+                //    GSTheme modified = new GSTheme("modified" + j, "modified" + j, "Lava");
+                //    modified.Algo = 5;
+                //    //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
+                //    //modified.TerrainSettings.baseHeight = (j * modifier * -100);
+                //    modified.TerrainSettings.brightnessFix = false;
+                //    modified.TerrainSettings.terrainAlgorithm = "GS2";
+                //    modified.Process();
+                //}
+            //GSTheme lmodified = new GSTheme("modifiedl", "modifiedl", "Lava");
             //lmodified.Algo = 5;
-            lmodified.TerrainSettings.brightnessFix = false;
+            //lmodified.TerrainSettings.brightnessFix = false;
             //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
             //modified.TerrainSettings.baseHeight = (j * modifier * -100);
             //lmodified.TerrainSettings.terrainAlgorithm = "GS2";
-            lmodified.Process();
+            //lmodified.Process();
             for (var i = 0; i < starCount; i++)
             {
 
@@ -65,16 +65,16 @@ namespace GalacticScale.Generators
                 if (i == 0)
                 { 
                     s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, -1, 1, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("ashengelisol", "AshenGelisol", 50, 0.5f, -1, -1, -1, 10, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("gobi", "Gobi", 50, 0.5f, -1, -1, -1, 21, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("icegel", "IceGelisol", 50, 0.5f, -1, -1, -1, 31, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("lava", "Lava", 50, 0.5f, -1, -1, -1, 41, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("lavam", "modifiedl", 50, 0.5f, -1, -1, -1, 45, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("ocean", "OceanWorld", 50, 0.5f, -1, -1, -1, 51, -1, -1, -1, 1f, null));
-                    for (var j = 0; j < 20; j++)
-                    {
-                        s.Planets.Add(new GSPlanet("gs2["+ (10 + (j * 10)) + "-" + ( (j * modifier) - (5*modifier)    ) + "]", "modified" + j, 10+(j*10), 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));             
-                    }
+                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, -1, 10, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("gobi", "Gobi", 50, 0.5f, -1, -1, -1, 21, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("icegel", "IceGelisol", 50, 0.5f, -1, -1, -1, 31, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("lava", "Lava", 50, 0.5f, -1, -1, -1, 41, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("lavam", "modifiedl", 50, 0.5f, -1, -1, -1, 45, -1, -1, -1, 1f, null));
+                    //s.Planets.Add(new GSPlanet("ocean", "OceanWorld", 50, 0.5f, -1, -1, -1, 51, -1, -1, -1, 1f, null));
+                    //for (var j = 0; j < 20; j++)
+                    //{
+                    //    s.Planets.Add(new GSPlanet("gs2["+ (10 + (j * 10)) + "-" + ( (j * modifier) - (5*modifier)    ) + "]", "modified" + j, 10+(j*10), 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));             
+                    //}
                 }
                 s.position = random.PointOnSphere(10);
                 GSSettings.Stars.Add(s);
