@@ -69,7 +69,7 @@ namespace GalacticScale {
         private IEnumerator Teleport(PlanetData planet)
         {
             yield return new WaitForEndOfFrame();
-            GameMain.mainPlayer.uPosition = planet.uPosition * planet.realRadius;
+            GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * planet.realRadius;
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             planet = null;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
