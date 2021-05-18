@@ -4,16 +4,12 @@ using FullSerializer;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using UnityEngine.Events;
-using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
 
 namespace GalacticScale
 {
     public static partial class GS2
     {
-
         public static List<VectorLF3> tmp_poses;
         public static List<VectorLF3> tmp_drunk;
         public static int[] tmp_state;
@@ -74,7 +70,7 @@ namespace GalacticScale
         }
         public static void Log(string s)
         {
-            Patch.Debug(s);
+            Bootstrap.Debug(s);
         }
         public static void Export(BinaryWriter w) // Export Settings to SaveGame
         {
@@ -162,6 +158,27 @@ namespace GalacticScale
                 themes[i].Process();
             }
         }
+    
+        public static GSThemeLibrary ThemeLibrary = new GSThemeLibrary()
+        {
+            ["Mediterranean"] = Themes.Mediterranean,
+            ["GasGiant"] = Themes.Gas,
+            ["GasGiant2"] = Themes.Gas2,
+            ["IceGiant"] = Themes.IceGiant,
+            ["IceGiant2"] = Themes.IceGiant2,
+            ["AridDesert"] = Themes.AridDesert,
+            ["AshenGelisol"] = Themes.AshenGelisol,
+            ["Jungle"] = Themes.OceanicJungle,
+            ["OceanicJungle"] = Themes.OceanicJungle,
+            ["Lava"] = Themes.Lava,
+            ["IceGelisol"] = Themes.IceGelisol,
+            ["BarrenDesert"] = Themes.Barren,
+            ["Gobi"] = Themes.Gobi,
+            ["VolcanicAsh"] = Themes.VolcanicAsh,
+            ["RedStone"] = Themes.RedStone,
+            ["Prairie"] = Themes.Prairie,
+            ["OceanWorld"] = Themes.OceanWorld
+        };
         
         public static void LoadPreferences()
         {
@@ -216,11 +233,11 @@ namespace GalacticScale
         }
         public static void Error(string message)
         {
-            Patch.Debug(message, BepInEx.Logging.LogLevel.Error, true);
+            Bootstrap.Debug(message, BepInEx.Logging.LogLevel.Error, true);
         }
         public static void Warn(string message)
         {
-            Patch.Debug(message, BepInEx.Logging.LogLevel.Warning, true);
+            Bootstrap.Debug(message, BepInEx.Logging.LogLevel.Warning, true);
         }
     }
 }

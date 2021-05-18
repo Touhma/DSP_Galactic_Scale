@@ -1,18 +1,14 @@
 ﻿using HarmonyLib;
-using BepInEx;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using NGPT;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace GalacticScale
 {
     public class PatchOnOptionWindow
     {
         [HarmonyPostfix, HarmonyPatch(typeof(UIOptionWindow), "_OnOpen")]
-        public static void PatchMainMenu(ref UIOptionWindow __instance, ref UIButton[] ___tabButtons, ref Text[] ___tabTexts, ref Tweener[] ___tabTweeners, ref Image ___tabSlider)
+        public static void PatchMainMenu(ref UIOptionWindow __instance, ref UIButton[] ___tabButtons, ref Text[] ___tabTexts)
         {
             GameObject overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;         

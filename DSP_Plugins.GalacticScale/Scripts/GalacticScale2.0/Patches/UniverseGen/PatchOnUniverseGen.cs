@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration
+namespace GalacticScale
 {
     [HarmonyPatch(typeof(UniverseGen))]
     public class PatchOnUniverseGen

@@ -25,7 +25,6 @@ namespace GalacticScale {
         }
         public bool Set(object o)
         {
-            GS2.Log(label + " " + o);
             if (rectTransform == null) return false;
             switch (type)
             {

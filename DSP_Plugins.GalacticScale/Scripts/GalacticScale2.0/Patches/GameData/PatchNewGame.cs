@@ -2,8 +2,8 @@
 
 namespace GalacticScale
 {
-    class PatchOnGameData
-    {
+	class PatchOnGameData
+	{
 		[HarmonyPatch(typeof(GameData), "NewGame"), HarmonyPostfix]
 		public static void NewGame(GameDesc _gameDesc, ref PlanetFactory[] ___factories)
 		{

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
-using System.Diagnostics;
 namespace GalacticScale
 {
     public static partial class GS2

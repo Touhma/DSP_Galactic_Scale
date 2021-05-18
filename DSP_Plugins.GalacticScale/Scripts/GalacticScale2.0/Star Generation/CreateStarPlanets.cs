@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Patch = GalacticScale.Scripts.PatchStarSystemGeneration.Bootstrap;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public static partial class GS2
     {

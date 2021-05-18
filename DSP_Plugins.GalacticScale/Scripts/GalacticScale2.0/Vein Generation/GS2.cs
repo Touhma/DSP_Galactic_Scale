@@ -103,14 +103,17 @@ namespace GalacticScale
                     {
                         continue;
                     }
+                    if (veinGroups[j].veins[i].count < 0) veinGroups[j].veins[i].count = random.Range(5, 25);
+                    if (veinGroups[j].veins[i].richness < 0) veinGroups[j].veins[i].richness = random.NextFloat();
                     distributed.Add(new GSVeinDescriptor()
                     {
+
                         count = veinGroups[j].veins[i].count,
                         type = veinGroups[j].type,
-                        position = veinGroups[j].veins[i].position,
+                        position = Vector3.zero,// veinGroups[j].veins[i].position,
                         rare = veinGroups[j].rare,
                         richness = veinGroups[j].veins[i].richness
-                    });
+                    }); 
                 }
             }
             return distributed;
@@ -127,7 +130,10 @@ namespace GalacticScale
             List<GSVeinDescriptor> veinGroups = DistributeVeinTypes(gsPlanet.veinSettings.VeinTypes);
             for (var i = 0; i < veinGroups.Count; i++)
             {
-                if (gsPlanet.randomizeVeinCounts && random.NextDouble() > randomFactor) continue;
+                if (gsPlanet.randomizeVeinCounts && random.NextDouble() > randomFactor)
+                {
+                    continue;
+                }
                 if (veinGroups[i].rare && (gsPlanet.planetData.star.level + 0.1) < random.NextDouble() * random.NextDouble()) continue;
                 GSVeinDescriptor v = veinGroups[i];
                 if (v.position != Vector3.zero) continue;

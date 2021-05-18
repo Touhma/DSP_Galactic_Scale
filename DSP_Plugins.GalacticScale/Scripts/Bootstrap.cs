@@ -1,9 +1,12 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using System.Collections;
+using UnityEngine;
+using GalacticScale.Scripts.PatchStarSystemGeneration;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
 
-namespace GalacticScale.Scripts.PatchStarSystemGeneration {
+namespace GalacticScale {
     [BepInPlugin("dsp.galactic-scale.GSStar-system-generation", "Galactic Scale Plug-In - Star System Generation",
         "2.0.0.0")]
     public class Bootstrap : BaseUnityPlugin {
@@ -41,8 +44,11 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
             Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm));
-            //Harmony.CreateAndPatchAll(typeof(PatchOnMainMenu));
+            //Harmony.CreateAndPatchAll(typeof(Tp));
+            //Tp tp = new Tp();
+            //tp.Start();
             //Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarMap));
+            
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
@@ -51,6 +57,22 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
         public static void Debug(object data)
         {
             Logger.LogMessage(data);
+        }
+        public static PlanetData TeleportPlanet = null;
+
+        private void Update()
+        {
+            if (TeleportPlanet == null) return;
+            StartCoroutine(Teleport(TeleportPlanet));
+
+        }
+        private IEnumerator Teleport(PlanetData planet)
+        {
+            yield return new WaitForEndOfFrame();
+            GameMain.mainPlayer.uPosition = planet.uPosition * planet.realRadius;
+            GameMain.data.mainPlayer.movementState = EMovementState.Sail;
+            planet = null;
+            GameMain.mainPlayer.transform.localScale = Vector3.one;
         }
 
     }
