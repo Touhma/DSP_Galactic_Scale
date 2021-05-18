@@ -59,19 +59,22 @@ namespace GalacticScale {
             Logger.LogMessage(data);
         }
         public static PlanetData TeleportPlanet = null;
+        public static bool TeleportEnabled = false;
 
         private void Update()
         {
-            if (TeleportPlanet == null) return;
+            if (TeleportPlanet == null || TeleportEnabled == false) return;
+            GameMain.data.ArriveStar(TeleportPlanet.star);
             StartCoroutine(Teleport(TeleportPlanet));
+
 
         }
         private IEnumerator Teleport(PlanetData planet)
         {
             yield return new WaitForEndOfFrame();
-            GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * planet.realRadius;
+            GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * (planet.realRadius);
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
-            planet = null;
+            TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
         }
 

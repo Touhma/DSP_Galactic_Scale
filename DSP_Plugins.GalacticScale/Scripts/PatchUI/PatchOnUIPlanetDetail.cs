@@ -65,9 +65,10 @@ namespace GalacticScale.Scripts.PatchUI
             GS2.Log(___viewPlanet?.name);
             GS2.Log("viewplanet null? " + (___viewPlanet == null));
             //GSTeleportHandler.planet = ___focusPlanet.planet;
-            if (___viewPlanet != null)
+            if (___viewPlanet != null &&  (VFInput.control))
             {
                 Bootstrap.TeleportPlanet = ___viewPlanet;
+                Bootstrap.TeleportEnabled = true;
                 return false;
             }
             else return true;
