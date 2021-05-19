@@ -8,12 +8,12 @@ namespace GalacticScale
         public static List<iGenerator> generators = new List<iGenerator>() {
             new Generators.BallTest(),
             new Generators.Vanilla(),
-            new Generators.Spiral2(),
-            new Generators.PhysicsTest(),
-            new Generators.TintTest(),
+            //new Generators.Spiral2(),
+            //new Generators.PhysicsTest(),
+            //new Generators.TintTest(),
             new Generators.GalacticScale2(), 
             new Generators.JsonImport(),
-            new Generators.Spiral(),
+            //new Generators.Spiral(),
             new Generators.Debug()
         };
         public static iGenerator GetGeneratorByID(string guid)

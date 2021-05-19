@@ -14,14 +14,27 @@ namespace GalacticScale
 
         protected override fsResult DoSerialize(GSVeinType model, Dictionary<string, fsData> serialized)
         {
-            // Serialize name manually
+            GS2.Warn("Serializing VeinTypes");
             List<fsData> list = new List<fsData>();
+            Dictionary<string, int> dict = new Dictionary<string, int>();
             for (var i = 0; i < model.veins.Count; i++)
             {
-                list.Add(new fsData(model.veins[i].count + "@" + model.veins[i].richness));
+                string s = model.veins[i].count + "x" + model.veins[i].richness;
+                if (!dict.ContainsKey(s)) dict.Add(s, 1);
+                else dict[s]++;
             }
-            SerializeMember(serialized, null, "type", model.type);
+            foreach (KeyValuePair<string, int> kvp in dict)
+            {
+                list.Add(new fsData(kvp.Value + "x" + kvp.Key));
+            }
+            GS2.Warn("-----"+list.Count);
+            //for (var i = 0; i < model.veins.Count; i++)
+            //{
+            //    list.Add(new fsData(model.veins[i].count + "@" + model.veins[i].richness));
+            //}
+            SerializeMember(serialized, null, "type", GSVeinType.insaneVeinTypes[model.type]);
             serialized["veins"] = new fsData(list);
+            //SerializeMember(serialized, null, "veins", dict);
             SerializeMember(serialized, null, "rare", model.rare);
             // Serialize age using helper methods
 
@@ -64,7 +77,9 @@ namespace GalacticScale
                     model.veins.Add(new GSVein());
                 }
             }
-            if ((result += DeserializeMember(data, null, "type", out model.type)).Failed) return result;
+            string type;
+            if ((result += DeserializeMember(data, null, "type", out type)).Failed) return result;
+            model.type = GSVeinType.saneVeinTypes[type];
             if ((result += DeserializeMember(data, null, "rare", out model.rare)).Failed) return result;
             return result;
         }

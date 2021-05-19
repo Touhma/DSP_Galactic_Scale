@@ -8,6 +8,41 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSVeinTypeConverter))]
     public class GSVeinType
     {
+        public static Dictionary<string, EVeinType> saneVeinTypes = new Dictionary<string, EVeinType>()
+        {
+            ["Iron"] = EVeinType.Iron,
+            ["Copper"] = EVeinType.Copper,
+            ["Coal"] = EVeinType.Coal,
+            ["Oil"] = EVeinType.Oil,
+            ["Organic"] = EVeinType.Crysrub,
+            ["Spiriform"] = EVeinType.Bamboo,
+            ["Silicon"] = EVeinType.Silicium,
+            ["Fractal"] = EVeinType.Fractal,
+            ["Titanium"] = EVeinType.Titanium,
+            ["Kimberlite"] = EVeinType.Diamond,
+            ["Fireice"] = EVeinType.Fireice,
+            ["Optical"] = EVeinType.Grat,
+            ["Unipolar"] = EVeinType.Mag,
+            ["Stone"] = EVeinType.Stone
+        };
+        public static Dictionary<EVeinType, string> insaneVeinTypes = new Dictionary<EVeinType, string>()
+        {
+            [EVeinType.Iron]="Iron",
+            [EVeinType.Copper]="Copper",
+            [EVeinType.Coal]="Coal",
+            [EVeinType.Oil]="Oil",
+            [EVeinType.Crysrub]="Organic",
+            [EVeinType.Bamboo]="Spiriform",
+            [EVeinType.Silicium]="Silicon",
+            [EVeinType.Fractal]="Fractal",
+            [EVeinType.Titanium]="Titanium",
+            [EVeinType.Diamond]="Kimberlite",
+            [EVeinType.Fireice]="Fireice",
+            [EVeinType.Grat]="Optical",
+            [EVeinType.Mag ]="Unipolar",
+            [EVeinType.Stone]="Stone",
+        };
+
         public List<GSVein> veins = new List<GSVein>();
         public EVeinType type = EVeinType.None;
         public bool rare = false;
