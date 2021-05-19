@@ -15,6 +15,7 @@ namespace GalacticScale
         protected override fsResult DoSerialize(GSVeinType model, Dictionary<string, fsData> serialized)
         {
             GS2.Warn("Serializing VeinTypes");
+            GS2.LogJson(model.veins);
             List<fsData> list = new List<fsData>();
             Dictionary<string, int> dict = new Dictionary<string, int>();
             for (var i = 0; i < model.veins.Count; i++)
@@ -56,12 +57,14 @@ namespace GalacticScale
                 model.veins = new List<GSVein>();
                 for (var i = 0; i < veins.Count; i++)
                 {
-                    var d = veins[i].AsString.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                    var d = veins[i].AsString.Split(new[] { 'x' }, StringSplitOptions.RemoveEmptyEntries);
+                    int groupCount;
                     float richness;
                     int count;
-                    if (!float.TryParse(d[1], out richness)) return fsResult.Fail("VeinRichness Not Float: " + d[1]);
-                    if (!int.TryParse(d[0], out count)) return fsResult.Fail("VeinCount Not Int: " + d[0]);
-                    model.veins.Add(new GSVein(count, richness));
+                    if (!int.TryParse(d[0], out groupCount)) return fsResult.Fail("VeinGroupCount Not Int: " + d[0]);
+                    if (!float.TryParse(d[2], out richness)) return fsResult.Fail("VeinRichness Not Float: " + d[2]);
+                    if (!int.TryParse(d[1], out count)) return fsResult.Fail("VeinCount Not Int: " + d[1]);
+                    for (var j=0;j<groupCount;j++) model.veins.Add(new GSVein(count, richness));
                 }
             }
             fsData generate;

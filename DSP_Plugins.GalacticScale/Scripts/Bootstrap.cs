@@ -5,8 +5,13 @@ using System.Collections;
 using UnityEngine;
 using GalacticScale.Scripts.PatchStarSystemGeneration;
 using PatchSize = GalacticScale.Scripts.PatchPlanetSize.PatchForPlanetSize;
-
+/// <summary>
+///  This class performs an important function.
+/// </summary>
 namespace GalacticScale {
+    /// <summary>
+    ///  This classs performs an important function.
+    /// </summary>
     [BepInPlugin("dsp.galactic-scale.GSStar-system-generation", "Galactic Scale Plug-In - Star System Generation",
         "2.0.0.0")]
     public class Bootstrap : BaseUnityPlugin {

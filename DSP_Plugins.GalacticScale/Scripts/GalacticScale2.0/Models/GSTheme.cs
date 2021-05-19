@@ -149,10 +149,10 @@ namespace GalacticScale
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
-			ConvertVeinData();
-			//GS2.Log("PROCESS");
-			//GS2.LogJson(VeinSettings);
-			ProcessTints();
+            if (VeinSettings.VeinTypes.Count == 0) ConvertVeinData();
+            GS2.Log("PROCESS "+Name);
+            //GS2.LogJson(VeinSettings);
+            ProcessTints();
 			if (TerrainSettings.brightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
 			AddToLibrary();
         }
