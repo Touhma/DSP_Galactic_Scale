@@ -51,18 +51,36 @@ namespace GalacticScale
             fsData veinData;
             if (CheckKey(data, "veins", out veinData).Succeeded)
             {
+                GS2.Log("processing veins");
                 if ((result += CheckType(veinData, fsDataType.Array)).Failed) return result;
+                GS2.Log("VeinData is Array");
                 var veins = veinData.AsList;
                 model.veins = new List<GSVein>();
-                for (var i = 0; i < veins.Count; i++)
+                if (veins[0].IsString)
+
                 {
-                    var d = veins[i].AsString.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-                    float richness;
-                    int count;
-                    if (!float.TryParse(d[1], out richness)) return fsResult.Fail("VeinRichness Not Float: " + d[1]);
-                    if (!int.TryParse(d[0], out count)) return fsResult.Fail("VeinCount Not Int: " + d[0]);
-                    model.veins.Add(new GSVein(count, richness));
+                    GS2.Log("Veins[0] is string");
+                    //new method
+                    for (var i = 0; i < veins.Count; i++)
+                    {
+                        var d = veins[i].AsString.Split(new[] { 'x' }, StringSplitOptions.RemoveEmptyEntries);
+                        int groupCount;
+                        float richness;
+                        int count;
+                        if (!int.TryParse(d[0], out groupCount)) return fsResult.Fail("groupCount Not Int: " + d[0]);
+                        if (!float.TryParse(d[2], out richness)) return fsResult.Fail("VeinRichness Not Float: " + d[2]);
+                        if (!int.TryParse(d[1], out count)) return fsResult.Fail("VeinCount Not Int: " + d[1]);
+                        for (var j=0;j<groupCount;j++)
+                        model.veins.Add(new GSVein(count, richness));
+                    }
+                }// end new method
+                else
+                {
+                    GS2.Log("Veins[0] not string");
+                    if ((result += DeserializeMember(data, null, "veins", out model.veins)).Failed) return result;
                 }
+      
+                //end old method
             }
             fsData generate;
             if (CheckKey(data, "generate", out generate).Succeeded)
@@ -79,6 +97,7 @@ namespace GalacticScale
             }
             string type;
             if ((result += DeserializeMember(data, null, "type", out type)).Failed) return result;
+            GS2.Log(type);
             model.type = GSVeinType.saneVeinTypes[type];
             if ((result += DeserializeMember(data, null, "rare", out model.rare)).Failed) return result;
             return result;

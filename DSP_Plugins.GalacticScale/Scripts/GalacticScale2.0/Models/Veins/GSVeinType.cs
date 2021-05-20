@@ -23,7 +23,13 @@ namespace GalacticScale
             ["Fireice"] = EVeinType.Fireice,
             ["Optical"] = EVeinType.Grat,
             ["Unipolar"] = EVeinType.Mag,
-            ["Stone"] = EVeinType.Stone
+            ["Stone"] = EVeinType.Stone,
+            ["Bamboo"] = EVeinType.Bamboo,
+            ["Mag"] = EVeinType.Mag,
+            ["Crysrub"] = EVeinType.Crysrub,
+            ["Silicium"] = EVeinType.Silicium,
+            ["Grat"] = EVeinType.Grat,
+            ["Diamond"] = EVeinType.Diamond
         };
         public static Dictionary<EVeinType, string> insaneVeinTypes = new Dictionary<EVeinType, string>()
         {
