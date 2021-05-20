@@ -121,10 +121,12 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGenPreferences.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGeneratorConfig.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\iConfigurableGenerator.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSFSVeinTypeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinDescriptor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain5.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain6.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain1.cs" />
@@ -136,7 +138,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\TintTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVein.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\GSTheme.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSTheme.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\Gas2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceGiant2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceGiant.cs" />
@@ -180,7 +182,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\Galactic2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Vanilla.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\ThemeLibrary.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\ThemeLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\iGenerator.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GS2.GeneratorData.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\SetPlanetTheme.cs" />

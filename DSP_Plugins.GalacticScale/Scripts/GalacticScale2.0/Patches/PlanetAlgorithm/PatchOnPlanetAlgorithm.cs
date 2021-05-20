@@ -41,6 +41,28 @@ namespace GalacticScale
             }
         }
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm3), "GenerateTerrain")]
+        public static bool GenerateTerrain3(ref PlanetData ___planet, double modX, double modY)
+        {
+            if (GS2.Vanilla || DSPGame.IsMenuDemo) return true;
+            GSPlanet gsPlanet = GS2.GetGSPlanet(___planet);
+            if (gsPlanet == null)
+            {
+                return true;
+            }
+            if (GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings.terrainAlgorithm == "GS2")
+            {
+                GS2.Log("Generating Terrain for " + gsPlanet.Name + " using GS2 algorithm");
+                GSPlanetAlgorithm.GenerateTerrain3(gsPlanet);
+                return false;
+            }
+            else
+            {
+                GS2.Log("Generating Terrain3 for " + gsPlanet.Name + " using vanilla algorithm");
+                return true;
+            }
+        }
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetAlgorithm6), "GenerateTerrain")]
         public static bool GenerateTerrain6(ref PlanetData ___planet)
         {

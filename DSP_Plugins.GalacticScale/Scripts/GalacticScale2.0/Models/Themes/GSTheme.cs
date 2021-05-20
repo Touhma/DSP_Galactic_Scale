@@ -1,13 +1,16 @@
-﻿using System;
+﻿using FullSerializer;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
 {
+	[fsObject(Converter = typeof(GSFSThemeConverter))]
 	public class GSTheme
 	{
 		public string Name;
 		public EPlanetType PlanetType = EPlanetType.Ocean;
+		[NonSerialized] 
 		public int LDBThemeId = 1;
 		[NonSerialized]
 		public bool added = false;
@@ -24,7 +27,9 @@ namespace GalacticScale
 		public string MaterialPath = "Universe/Materials/Planets/Ocean 1/";
 		public float Temperature = 0.0f;
 		public EThemeDistribute Distribute = EThemeDistribute.Interstellar;
+		[NonSerialized] 
 		public Vector2 ModX = new Vector2(0.0f, 0.0f);
+		[NonSerialized]
 		public Vector2 ModY = new Vector2(0.0f, 0.0f);
 		public GSTerrainSettings TerrainSettings = new GSTerrainSettings();
 		public GSVeinSettings VeinSettings = new GSVeinSettings()
@@ -32,39 +37,12 @@ namespace GalacticScale
 			VeinAlgorithm = "GS2",
 			VeinTypes = new List<GSVeinType>()			
 		};
-		public int[] Vegetables0 = new[] {
-				604,
-				605,
-				603,
-				604,
-				102,
-				604,
-				605,
-				105,
-				602,
-				601
-			};
-		public int[] Vegetables1 = new[] {
-			103,
-				102,
-				103,
-				104,
-				104,
-				104,
-				101,
-				104,
-				604,
-				106 };
-		public int[] Vegetables2 = new[] {1001,
-				1002,
-				1003 };
-		public int[] Vegetables3 = new[] {1005,
-				1006,
-				1007,
-				1006,
-				1007 };
-		public int[] Vegetables4 = new[] { 1004 };
-		public int[] Vegetables5 = new int[] { };
+		public int[] Vegetables0 = new int[] {};
+		public int[] Vegetables1 = new int[] {};
+		public int[] Vegetables2 = new int[] {};
+		public int[] Vegetables3 = new int[] {};
+		public int[] Vegetables4 = new int[] {};
+		public int[] Vegetables5 = new int[] {};
 		public int[] VeinSpot = new int[] { 
 			7,
 				5,
@@ -93,8 +71,8 @@ namespace GalacticScale
 				1.0f,
 				0.3f,
 				0.3f };
-		public int[] GasItems = new int[] { };
-		public float[] GasSpeeds = new float[] { };
+		public int[] GasItems = new int[] {};
+		public float[] GasSpeeds = new float[] {};
 		public bool UseHeightForBuild = false;
 		public float Wind = 1f;
 		public float IonHeight=60f;
@@ -116,12 +94,6 @@ namespace GalacticScale
 		public Material atmosMat;
 		public string atmosphereMaterial;
 		public Color atmosphereTint;
-		[NonSerialized]
-		public Material lowMat; //can be removed
-		[NonSerialized]
-		public string lowMaterial;//can be removed
-		[NonSerialized]
-		public Color lowTint;//can be removed
 		[NonSerialized]
 		public Material thumbMat;
 		public string thumbMaterial;
@@ -159,7 +131,6 @@ namespace GalacticScale
 
 		public void ConvertVeinData()
 		{
-			//GS2.Log("ConvertVeinData");
 			for (var vType = 0; vType < VeinSpot.Length; vType++)
 			{
 				if (VeinSpot[vType] == 0) continue;
@@ -174,32 +145,23 @@ namespace GalacticScale
 						new GSVein()
 						{
 							count = (int)(VeinCount[vType] * 25),
-							//density = 1,
 							richness = VeinOpacity[vType]
 						}
 					);
 				}
-				//GS2.Log("tempVeinGroup "+Name);
-				//GS2.LogJson(tempVeinGroup);
 				VeinSettings.VeinTypes.Add(tempVeinGroup);
 			}
-			//GS2.Log(Name);
-			//GS2.LogJson(VeinSpot);
 			if (RareVeins.Length == 0) return;
 			for (var i = 0; i<RareVeins.Length;i++)
             {
-				//GS2.Log("rareVeins" + i + " of " + RareVeins.Length);
 				float richness = RareSettings[i * 4 + 3];
-				//GS2.Log("richness" + richness);
 				int count = (int)(richness * 25);
-				//GS2.Log("Count:" + count);
 				GSVeinType tempVeinGroup = new GSVeinType()
 				{
 					type = (EVeinType)RareVeins[i],
 					veins = new List<GSVein>(),
 					rare = true
 				};
-				//GS2.Log("ttt");
 				for (var j = 0; j < count; j++)
                 {
 					tempVeinGroup.veins.Add(new GSVein()
@@ -208,7 +170,6 @@ namespace GalacticScale
 						richness = richness
 					});
                 }
-				//GS2.Log("tgt");
 				VeinSettings.VeinTypes.Add(tempVeinGroup);
 			}
 		}
@@ -216,7 +177,6 @@ namespace GalacticScale
 		public void AddToLibrary()
         {
 			GS2.ThemeLibrary[Name] = this;
-			//GS2.Log(GS2.ThemeLibrary[Name].VeinSettings.VeinTypes.Count.ToString());
         }
 		public static int[] Clone(int[] source)
         {
@@ -266,7 +226,6 @@ namespace GalacticScale
 				if (oceanTint != new Color()) TintOcean(oceanTint);
 			} 
 			atmosMat = (baseTheme.atmosMat != null) ? UnityEngine.Object.Instantiate(baseTheme.atmosMat) : null;
-			lowMat = (baseTheme.lowMat != null) ? UnityEngine.Object.Instantiate(baseTheme.lowMat) : null;
 			thumbMat = (baseTheme.thumbMat != null) ? UnityEngine.Object.Instantiate(baseTheme.thumbMat) : null;
 			minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
 			ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
@@ -314,7 +273,6 @@ namespace GalacticScale
 				terrainMat = terrainMat,
 				oceanMat = oceanMat,
 				atmosMat = atmosMat,
-				lowMat = lowMat,
 				thumbMat = thumbMat,
 				minimapMat = minimapMat,
 				ambientDesc = ambientDesc,
@@ -326,7 +284,6 @@ namespace GalacticScale
         {
 			if (added) return LDBThemeId;
 			if (!initialized) InitMaterials();
-            //GS2.Log("Adding Theme to Protoset:" + Name);
             int newIndex = LDB._themes.dataArray.Length; 
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
@@ -334,7 +291,6 @@ namespace GalacticScale
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
-            //GS2.Log("Finished Adding Theme to Protoset. Id is " + newId + ". Protoset Length is " + LDB._themes.Length);
             return newId;
         }
 		public int UpdateThemeProtoSet()
@@ -368,13 +324,6 @@ namespace GalacticScale
 				if (tempMat != null) atmosMat = UnityEngine.Object.Instantiate(tempMat);
 			} else atmosMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[atmosphereMaterial].atmosMat);
 
-			if (lowMaterial == null)
-			{
-				Material tempMat = Resources.Load<Material>(MaterialPath + "low");
-				if (tempMat != null) lowMat = UnityEngine.Object.Instantiate(tempMat);
-			}
-			else lowMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[lowMaterial].lowMat);
-
 			if (thumbMaterial == null)
 			{
 				Material tempMat = Resources.Load<Material>(MaterialPath + "thumb");
@@ -404,7 +353,6 @@ namespace GalacticScale
 				case "terrain":terrainMat = donorTheme.terrainMat; break;
 				case "ocean":oceanMat = donorTheme.oceanMat; break;
 				case "atmosphere":atmosMat = donorTheme.atmosMat; break;
-				case "low":lowMat = donorTheme.lowMat; break;
 				case "thumb":thumbMat = donorTheme.thumbMat;break;
 				case "minimap":minimapMat = donorTheme.minimapMat;break;
 				default: GS2.Log("Error Setting Material: " + material + " does not exist"); break;
