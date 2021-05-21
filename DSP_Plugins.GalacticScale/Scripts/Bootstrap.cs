@@ -48,7 +48,7 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
             Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm));
+            //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm));
             //Harmony.CreateAndPatchAll(typeof(Tp));
             //Tp tp = new Tp();
             //tp.Start();

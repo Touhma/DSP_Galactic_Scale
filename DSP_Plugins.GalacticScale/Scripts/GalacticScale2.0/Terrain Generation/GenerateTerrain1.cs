@@ -1,8 +1,8 @@
 ﻿namespace GalacticScale
 {
-    public static partial class GSPlanetAlgorithm
+    public static partial class VeinAlgorithms
     {
-        public static void GenerateTerrain1(GSPlanet gsPlanet)
+        public static void GenerateTerrain1(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
             
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
@@ -21,14 +21,14 @@
                 double x = data.vertices[i].x * (double)gsPlanet.planetData.radius;
                 double y = data.vertices[i].y * (double)gsPlanet.planetData.radius;
                 double z = data.vertices[i].z * (double)gsPlanet.planetData.radius;
-                double noise1 = simplexNoise1.Noise3DFBM(x * (t.xFactor+0.01), y * (0.012 + t.yFactor), z * (0.01 + t.zFactor), 6) * 3 * t.heightMulti + (-0.2 + t.baseHeight);
-                double noise2 = simplexNoise2.Noise3DFBM(x * (1.0 / 400.0), y * (1.0 / 400.0), z * (1.0 / 400.0), 3) * 3 * t.heightMulti * (t.randomFactor + 0.9) + (t.landModifier + 0.5);
+                double noise1 = simplexNoise1.Noise3DFBM(x * (t.xFactor+0.01), y * (0.012 + t.yFactor), z * (0.01 + t.zFactor), 6) * 3 * t.HeightMulti + (-0.2 + t.BaseHeight);
+                double noise2 = simplexNoise2.Noise3DFBM(x * (1.0 / 400.0), y * (1.0 / 400.0), z * (1.0 / 400.0), 3) * 3 * t.HeightMulti * (t.RandomFactor + 0.9) + (t.LandModifier + 0.5);
                 noise2 = noise2 <= 0.0 ? noise2 : noise2 * 0.5;
                 double noise = noise1 + noise2;
                 double f = noise <= 0.0 ? noise * 1.6 : noise * 0.5;
                 double num17 = f <= 0.0 ? Maths.Levelize2(f, 0.5) : Maths.Levelize3(f, 0.7);
                 double noise3 = simplexNoise2.Noise3DFBM(x * (t.xFactor + 0.01) * 2.5, y * (0.012+t.yFactor) * 8.0, z * (0.01 + t.zFactor) * 2.5, 2) * 0.6 - 0.3;
-                double num19 = f * t.biomeHeightMulti + noise3 + (t.biomeHeightModifier * 2.5) + 0.3;
+                double num19 = f * t.BiomeHeightMulti + noise3 + (t.BiomeHeightModifier * 2.5) + 0.3;
                 double num20 = num19 >= 1.0 ? (num19 - 1.0) * 0.8 + 1.0 : num19;
                 var hd = (int)((gsPlanet.planetData.radius + num17 + 0.2) * 100.0);
                 data.heightData[i] = (ushort)UnityEngine.Mathf.Clamp(hd,ushort.MinValue,ushort.MaxValue);

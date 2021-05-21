@@ -17,6 +17,7 @@ namespace GalacticScale
 		[NonSerialized]
 		public bool initialized = false;
 		public int Algo = 0;
+		public bool CustomGeneration = false;
 		public string DisplayName = "Default Theme";
 		public GSTheme baseTheme
 		{
@@ -34,8 +35,12 @@ namespace GalacticScale
 		public GSTerrainSettings TerrainSettings = new GSTerrainSettings();
 		public GSVeinSettings VeinSettings = new GSVeinSettings()
 		{
-			VeinAlgorithm = "GS2",
+			Algorithm = "GS2",
 			VeinTypes = new List<GSVeinType>()			
+		};
+		public GSVegeSettings VegeSettings = new GSVegeSettings()
+		{
+			Algorithm = "Vanilla"
 		};
 		public int[] Vegetables0 = new int[] {};
 		public int[] Vegetables1 = new int[] {};
@@ -44,7 +49,7 @@ namespace GalacticScale
 		public int[] Vegetables4 = new int[] {};
 		public int[] Vegetables5 = new int[] {};
 		public int[] VeinSpot = new int[] { 
-			7,
+				7,
 				5,
 				0,
 				0,
@@ -122,12 +127,31 @@ namespace GalacticScale
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
             if (VeinSettings.VeinTypes.Count == 0) ConvertVeinData();
+			if (VegeSettings.Group1.Count == 0) ConvertVegeData();
             GS2.Log("PROCESS "+Name);
             //GS2.LogJson(VeinSettings);
             ProcessTints();
-			if (TerrainSettings.brightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
+			if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
 			AddToLibrary();
         }
+		public void PopulateVegeData()
+        {
+			VegeSettings.Group1 = GSVegeSettings.FromIDArray(Vegetables0);
+			VegeSettings.Group2 = GSVegeSettings.FromIDArray(Vegetables1);
+			VegeSettings.Group3 = GSVegeSettings.FromIDArray(Vegetables2);
+			VegeSettings.Group4 = GSVegeSettings.FromIDArray(Vegetables3);
+			VegeSettings.Group5 = GSVegeSettings.FromIDArray(Vegetables4);
+			VegeSettings.Group6 = GSVegeSettings.FromIDArray(Vegetables5);
+		}
+		public void ConvertVegeData()
+        {
+			Vegetables0 = GSVegeSettings.ToIDArray(VegeSettings.Group1);
+			Vegetables1 = GSVegeSettings.ToIDArray(VegeSettings.Group2);
+			Vegetables2 = GSVegeSettings.ToIDArray(VegeSettings.Group3);
+			Vegetables3 = GSVegeSettings.ToIDArray(VegeSettings.Group4);
+			Vegetables4 = GSVegeSettings.ToIDArray(VegeSettings.Group5);
+			Vegetables5 = GSVegeSettings.ToIDArray(VegeSettings.Group6);
+		}
 
 		public void ConvertVeinData()
 		{

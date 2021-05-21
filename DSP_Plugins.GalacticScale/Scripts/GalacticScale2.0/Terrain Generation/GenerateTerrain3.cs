@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GSPlanetAlgorithm
+    public static partial class VeinAlgorithms
     {
-        public static void GenerateTerrain3(GSPlanet gsPlanet)
+        public static void GenerateTerrain3(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
             
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
@@ -47,8 +47,8 @@ namespace GalacticScale
                 double num17 = (double)Mathf.Abs((float)f);
                 double num18 = num17 <= 0.0 ? 0.0 : (num17 <= 2.0 ? num17 : 2.0);
                 double num19 = num18 + (num18 <= 1.8 ? num12 * 0.2 : -num12 * 0.8);
-                data.heightData[index] = (ushort)(((double)planet.radius + (num15 * t.heightMulti) + 0.2 + t.baseHeight) * 100.0);
-                data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.biomeHeightMulti + t.biomeHeightModifier), 0.0f, 200f);
+                data.heightData[index] = (ushort)(((double)planet.radius + (num15 * t.HeightMulti) + 0.2 + t.BaseHeight) * 100.0);
+                data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.BiomeHeightMulti + t.BiomeHeightModifier), 0.0f, 200f);
             }
             GS2.Log("--------------------");
            

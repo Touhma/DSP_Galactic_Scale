@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace GalacticScale
 {
-    public static partial class GSPlanetAlgorithm
+    public static partial class VeinAlgorithms
     {
-        private static void GenerateVeinsGS2(GSPlanet gsPlanet, bool sketchOnly)
+        public static void GenerateVeinsGS2(GSPlanet gsPlanet, bool sketchOnly)
         {
             InitializeFromVeinSettings(gsPlanet);
             if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly) GenBirthPoints(gsPlanet);
@@ -118,7 +118,7 @@ namespace GalacticScale
             }
             return distributed;
         }
-        private static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet)
+        public static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet)
         {
             double randomFactor = 1.0;
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + (random.NextDouble()/2);

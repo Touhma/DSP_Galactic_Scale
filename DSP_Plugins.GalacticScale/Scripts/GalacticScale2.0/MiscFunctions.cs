@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BCE;
 namespace GalacticScale
 {
@@ -7,6 +8,14 @@ namespace GalacticScale
     {
         public static class Utils
         {
+            public static T ReverseLookup<T, W>(Dictionary<T, W> dict, W val)
+            {
+                return dict.FirstOrDefault(x => x.Value.ToString() == val.ToString()).Key;
+            }
+            public static float diff(float a, float b)
+            {
+                return (!(a > b)) ? (b - a) : (a - b);
+            }
             public static float ParsePlanetSize(float radius)
             {
                 if (radius < 8f) return 5f;

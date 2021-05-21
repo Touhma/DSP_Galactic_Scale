@@ -25,9 +25,9 @@ namespace GalacticScale
         public static int birthStarId = -1;
         public static int birthPlanetId = -1;
         public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
-        public static GSThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
+        public static ThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         [SerializeField]
-        private GSThemeLibrary themeLibrary = GS2.ThemeLibrary; 
+        private ThemeLibrary themeLibrary = GS2.ThemeLibrary; 
         public static GSSettings Instance { get { return instance; } set { instance = value; } }
       
         public static void Reset()

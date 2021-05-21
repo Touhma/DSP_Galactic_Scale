@@ -10,6 +10,11 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static ThemeLibrary ThemeLibrary = ThemeLibrary.Init();
+        public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
+        public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
+        public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
+
         public static List<VectorLF3> tmp_poses;
         public static List<VectorLF3> tmp_drunk;
         public static int[] tmp_state;
@@ -159,26 +164,26 @@ namespace GalacticScale
             }
         }
     
-        public static GSThemeLibrary ThemeLibrary = new GSThemeLibrary()
-        {
-            ["Mediterranean"] = Themes.Mediterranean,
-            ["GasGiant"] = Themes.Gas,
-            ["GasGiant2"] = Themes.Gas2,
-            ["IceGiant"] = Themes.IceGiant,
-            ["IceGiant2"] = Themes.IceGiant2,
-            ["AridDesert"] = Themes.AridDesert,
-            ["AshenGelisol"] = Themes.AshenGelisol,
-            ["Jungle"] = Themes.OceanicJungle,
-            ["OceanicJungle"] = Themes.OceanicJungle,
-            ["Lava"] = Themes.Lava,
-            ["IceGelisol"] = Themes.IceGelisol,
-            ["BarrenDesert"] = Themes.Barren,
-            ["Gobi"] = Themes.Gobi,
-            ["VolcanicAsh"] = Themes.VolcanicAsh,
-            ["RedStone"] = Themes.RedStone,
-            ["Prairie"] = Themes.Prairie,
-            ["OceanWorld"] = Themes.OceanWorld
-        };
+        //public static GSThemeLibrary ThemeLibrary = new GSThemeLibrary()
+        //{
+        //    ["Mediterranean"] = Themes.Mediterranean,
+        //    ["GasGiant"] = Themes.Gas,
+        //    ["GasGiant2"] = Themes.Gas2,
+        //    ["IceGiant"] = Themes.IceGiant,
+        //    ["IceGiant2"] = Themes.IceGiant2,
+        //    ["AridDesert"] = Themes.AridDesert,
+        //    ["AshenGelisol"] = Themes.AshenGelisol,
+        //    ["Jungle"] = Themes.OceanicJungle,
+        //    ["OceanicJungle"] = Themes.OceanicJungle,
+        //    ["Lava"] = Themes.Lava,
+        //    ["IceGelisol"] = Themes.IceGelisol,
+        //    ["BarrenDesert"] = Themes.Barren,
+        //    ["Gobi"] = Themes.Gobi,
+        //    ["VolcanicAsh"] = Themes.VolcanicAsh,
+        //    ["RedStone"] = Themes.RedStone,
+        //    ["Prairie"] = Themes.Prairie,
+        //    ["OceanWorld"] = Themes.OceanWorld
+        //};
         
         public static void LoadPreferences()
         {

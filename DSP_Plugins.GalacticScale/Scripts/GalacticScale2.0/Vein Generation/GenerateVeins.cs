@@ -22,19 +22,19 @@ namespace GalacticScale
             count = 0;
         }
     }
-    public static partial class GSPlanetAlgorithm
+    public static partial class VeinAlgorithms
     {
-        public delegate void VeinAlgo(GSPlanet gsPlanet, bool sketchOnly);
-        public static Dictionary<string, VeinAlgo> VeinAlgorithms = new Dictionary<string, VeinAlgo>() { 
-            ["Vanilla"] = GenerateVeinsVanilla, 
-            ["GS2"] = GenerateVeinsGS2 
-        };
+        //public delegate void VeinAlgo(GSPlanet gsPlanet, bool sketchOnly);
+        //public static Dictionary<string, VeinAlgo> VeinAlgorithms = new Dictionary<string, VeinAlgo>() { 
+        //    ["Vanilla"] = GenerateVeinsVanilla, 
+        //    ["GS2"] = GenerateVeinsGS2 
+        //};
         public static GS2.Random random = new GS2.Random();
-        public static void GenerateVeins(GSPlanet gsPlanet, bool sketchOnly)
-        {
-            GSTheme theme = GS2.ThemeLibrary[gsPlanet.Theme];
-            VeinAlgorithms[theme.VeinSettings.VeinAlgorithm](gsPlanet, sketchOnly);
-        }
+        //public static void GenerateVeins(GSPlanet gsPlanet, bool sketchOnly)
+        //{
+        //    GSTheme theme = GS2.ThemeLibrary[gsPlanet.Theme];
+        //    VeinAlgorithms[theme.VeinSettings.Algorithm](gsPlanet, sketchOnly);
+        //}
 
         private static void GenBirthPoints(GSPlanet gsPlanet)
         {

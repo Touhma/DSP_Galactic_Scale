@@ -55,7 +55,7 @@ namespace GalacticScale.Generators
             //lmodified.TerrainSettings.brightnessFix = false;
             //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
             //modified.TerrainSettings.baseHeight = (j * modifier * -100);
-            lmodified.TerrainSettings.terrainAlgorithm = "GS2";
+            lmodified.TerrainSettings.Algorithm = "GS2";
             lmodified.Process();
             for (var i = 0; i < starCount; i++)
             {
