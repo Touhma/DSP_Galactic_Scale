@@ -127,7 +127,8 @@ namespace GalacticScale
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
             if (VeinSettings.VeinTypes.Count == 0) ConvertVeinData();
-			if (VegeSettings.Group1.Count == 0) ConvertVegeData();
+			if (VegeSettings.Group1.Count == 0) PopulateVegeData();
+			else ConvertVegeData();
             GS2.Log("PROCESS "+Name);
             //GS2.LogJson(VeinSettings);
             ProcessTints();
