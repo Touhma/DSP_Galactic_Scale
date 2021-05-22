@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme Gobi = new GSTheme()
         {
             Name = "Gobi",
+            Base = true,
             DisplayName = "Gobi Desert",
             PlanetType = EPlanetType.Desert,
             LDBThemeId = 12,

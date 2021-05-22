@@ -8,9 +8,13 @@ namespace GalacticScale
     {
         public static class Utils
         {
+            public static bool ArrayCompare<T>(T[] a1, T[] a2) {
+                return a1.SequenceEqual(a2);
+            }
             public static T ReverseLookup<T, W>(Dictionary<T, W> dict, W val)
             {
-                return dict.FirstOrDefault(x => x.Value.ToString() == val.ToString()).Key;
+                foreach (KeyValuePair<T, W> kvp in dict) if (kvp.Value.ToString() == val.ToString()) return kvp.Key;
+                return default(T);
             }
             public static float diff(float a, float b)
             {

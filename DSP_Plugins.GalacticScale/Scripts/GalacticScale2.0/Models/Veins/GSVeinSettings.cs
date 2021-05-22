@@ -8,7 +8,7 @@ namespace GalacticScale
      public class GSVeinSettings
     {
         public List<GSVeinType> VeinTypes = new List<GSVeinType>();
-        public string Algorithm = "GS2";
+        public string Algorithm = "Vanilla";
         public float VeinPadding = 1f;
         public GSVeinSettings ()
         {

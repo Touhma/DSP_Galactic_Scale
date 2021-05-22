@@ -55,11 +55,10 @@ namespace GalacticScale.Scripts {
 
         public static float GetScaleFactored(this PlanetData planet) {
             float scale;
-
             if (planet.type == EPlanetType.Gas) return planet.radius / VanillaSizeGasGiant;
-
+            //GS2.Log("PlanetDataExtension|GetScaleFactored|"+ planet.name+"|Radius = " + planet.radius);
             scale = planet.radius / VanillaSizeTelluric;
-                       
+            //GS2.Log("PlanetDataExtension|GetScaleFactored|Returning " + scale);           
             return scale;
         }
 

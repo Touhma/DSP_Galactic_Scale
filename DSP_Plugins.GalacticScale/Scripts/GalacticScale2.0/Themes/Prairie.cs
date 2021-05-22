@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme Prairie = new GSTheme()
         {
             Name = "Prairie",
+            Base = true,
             DisplayName = "Prairie",
             PlanetType = EPlanetType.Ocean,
             LDBThemeId = 15,

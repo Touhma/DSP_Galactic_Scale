@@ -10,7 +10,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static ThemeLibrary ThemeLibrary = ThemeLibrary.Init();
+        public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
@@ -27,14 +27,21 @@ namespace GalacticScale
         public static bool LoadSettingsFromJson(string path)
         {
             if (!CheckJsonFileExists(path)) return false;
-            Log("Loading Settings from " + path);
+            Log("GalacticScale2|LoadSettingsFromJson|path=" + path);
             fsSerializer serializer = new fsSerializer();
             GSSettings.Stars.Clear();
+            Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
+            Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
             string json = File.ReadAllText(path);
             GSSettings result = GSSettings.Instance;
+            Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
             fsData data2 = fsJsonParser.Parse(json);
+            Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
             serializer.TryDeserialize<GSSettings>(data2, ref result);
+            Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
             GSSettings.Instance = result;
+            Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
             return true;
 
         }
@@ -87,7 +94,7 @@ namespace GalacticScale
             w.Write(GSSettings.Instance.version);
             w.Write(json);
             Log("()()()Exported");
-            GSSettings.Reset();
+            GSSettings.Reset(GSSettings.Seed);
 
         }
         public static void Import(BinaryReader r) // Load Settings from SaveGame
@@ -115,7 +122,7 @@ namespace GalacticScale
                 Log("Settings Loaded From Save File");
                 return;
             }
-            GSSettings.Reset();
+            GSSettings.Reset(GSSettings.Seed);
             gsPlanets.Clear();
             Log("Loading Data from Generator : " + generator.Name);
             generator.Generate(gameDesc.starCount);
@@ -156,37 +163,22 @@ namespace GalacticScale
         }
         public static void Init()
         {
+            Log("GalacticScale2|Init");
+            Log("GalacticScale2|Init|ThemeLibrary.Count=" + ThemeLibrary.Count);
             List<GSTheme> themes = new List<GSTheme>();
+            Log("GalacticScale2|Creating List of Themes");
             foreach (KeyValuePair<string, GSTheme> t in ThemeLibrary) themes.Add(t.Value);
+            Log("GalacticScale2|Init|Processing Themes");
             for (var i = 0; i < themes.Count; i++)
             {
                 themes[i].Process();
             }
+            Log("GalacticScale2|Init->End");
         }
-    
-        //public static GSThemeLibrary ThemeLibrary = new GSThemeLibrary()
-        //{
-        //    ["Mediterranean"] = Themes.Mediterranean,
-        //    ["GasGiant"] = Themes.Gas,
-        //    ["GasGiant2"] = Themes.Gas2,
-        //    ["IceGiant"] = Themes.IceGiant,
-        //    ["IceGiant2"] = Themes.IceGiant2,
-        //    ["AridDesert"] = Themes.AridDesert,
-        //    ["AshenGelisol"] = Themes.AshenGelisol,
-        //    ["Jungle"] = Themes.OceanicJungle,
-        //    ["OceanicJungle"] = Themes.OceanicJungle,
-        //    ["Lava"] = Themes.Lava,
-        //    ["IceGelisol"] = Themes.IceGelisol,
-        //    ["BarrenDesert"] = Themes.Barren,
-        //    ["Gobi"] = Themes.Gobi,
-        //    ["VolcanicAsh"] = Themes.VolcanicAsh,
-        //    ["RedStone"] = Themes.RedStone,
-        //    ["Prairie"] = Themes.Prairie,
-        //    ["OceanWorld"] = Themes.OceanWorld
-        //};
-        
+          
         public static void LoadPreferences()
         {
+            Log("GalacticScale2|LoadPreferences");
             string path = Path.Combine(DataDir, "Preferences.json");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             if (!CheckJsonFileExists(path)) return;
@@ -202,7 +194,7 @@ namespace GalacticScale
         }
         private static void ParsePreferences(Preferences p)
         {
-            //Log("Parsing Preferences");
+            Log("GalacticScale2|ParsePreferences");
             generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
             {
@@ -221,7 +213,7 @@ namespace GalacticScale
 
         public static void LoadPlugins()
         {
-            Log("***LOADING PLUGINS***");
+            Log("GalacticScale2|LoadPlugins");
             foreach (string filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
             {
                 Log(filePath);
@@ -232,7 +224,7 @@ namespace GalacticScale
             }
             foreach (iGenerator g in generators)
             {
-                Log("Loading Generator: " + g.Name);
+                Log("GalacticScale2|LoadPlugins|Loading Generator:" + g.Name);
                 g.Init();
             }
         }

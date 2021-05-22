@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme Lava = new GSTheme()
         {
             Name = "Lava",
+            Base = true,
             DisplayName = "Lava",
             PlanetType = EPlanetType.Vocano,
             LDBThemeId = 9,

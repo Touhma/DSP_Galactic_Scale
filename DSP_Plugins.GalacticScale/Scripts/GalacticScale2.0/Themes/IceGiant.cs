@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme IceGiant = new GSTheme()
         {
             Name = "IceGiant",
+            Base = true,
             DisplayName = "Ice Giant",
             PlanetType = EPlanetType.Gas,
             LDBThemeId = 4,

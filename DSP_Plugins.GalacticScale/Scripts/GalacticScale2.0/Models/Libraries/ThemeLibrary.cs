@@ -1,17 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using FullSerializer;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-
+using System.Diagnostics;
 namespace GalacticScale
 {
+    [fsObject(Converter = typeof(GSFSThemeLibraryConverter))]
     public class ThemeLibrary : Dictionary<string, GSTheme>
     {
         private GS2.Random random = new GS2.Random();
         public ThemeLibrary()
         {
         }
-        public static ThemeLibrary Init()
+        public static ThemeLibrary Vanilla()
         {
-            return new ThemeLibrary()
+            GS2.Log("ThemeLibrary|Init->Begin");
+            
+            // Get call stack
+            StackTrace stackTrace = new StackTrace();
+            // Get calling method name
+            Console.WriteLine(stackTrace.GetFrame(1).GetMethod().Name);
+            //ThemeLibrary t;
+            //try
+            //{
+            //    t = new ThemeLibrary();
+            //}
+            //catch (Exception e)
+            //{
+            //    GS2.Log("Error");
+            //    GS2.Warn(e.Message);
+            //    GS2.Error(e.StackTrace);
+            //    return null;
+            //}
+            ThemeLibrary t = new ThemeLibrary()
             {
                 ["Mediterranean"] = Themes.Mediterranean,
                 ["GasGiant"] = Themes.Gas,
@@ -24,13 +45,20 @@ namespace GalacticScale
                 ["OceanicJungle"] = Themes.OceanicJungle,
                 ["Lava"] = Themes.Lava,
                 ["IceGelisol"] = Themes.IceGelisol,
-                ["BarrenDesert"] = Themes.Barren,
+                ["Barren"] = Themes.Barren,
                 ["Gobi"] = Themes.Gobi,
                 ["VolcanicAsh"] = Themes.VolcanicAsh,
                 ["RedStone"] = Themes.RedStone,
                 ["Prairie"] = Themes.Prairie,
                 ["OceanWorld"] = Themes.OceanWorld
             };
+            GS2.Log("ThemeLibrary|Init->Returning");
+            return t;
+        }
+        public GSTheme Find(string name)
+        {
+            if (!ContainsKey(name)) return Themes.Mediterranean;
+            return this[name];
         }
         public List<string> Hot
         {

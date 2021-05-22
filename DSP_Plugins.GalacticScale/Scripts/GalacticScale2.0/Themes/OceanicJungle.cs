@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme OceanicJungle = new GSTheme()
         {
             Name = "OceanicJungle",
+            Base = true,
             DisplayName = "Oceanic Jungle",
             PlanetType = EPlanetType.Ocean,
             LDBThemeId = 8,

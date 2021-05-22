@@ -6,12 +6,13 @@
         {
             
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
-            //GS2.Log("Generate Terrain for "+gsPlanet.Name + " " + t.landModifier );
+            GS2.Log("Generate Terrain for " + gsPlanet.Name + " ");
             int seed1 = random.Next();
             int seed2 = random.Next();
             SimplexNoise simplexNoise1 = new SimplexNoise(seed1);
             SimplexNoise simplexNoise2 = new SimplexNoise(seed2);
             PlanetRawData data = gsPlanet.planetData.data;
+            GS2.Log("GenerateTerrain1|" + gsPlanet.Name + "|"+(data == null));
             int maxHD = -999;
             int minHD = 999999;
             int maxBH = -999;

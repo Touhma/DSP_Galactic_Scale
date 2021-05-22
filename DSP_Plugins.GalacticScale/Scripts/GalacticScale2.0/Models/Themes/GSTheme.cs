@@ -10,7 +10,9 @@ namespace GalacticScale
 	{
 		public string Name;
 		public EPlanetType PlanetType = EPlanetType.Ocean;
-		[NonSerialized] 
+		[NonSerialized]
+		public bool Base = false;
+		[NonSerialized]
 		public int LDBThemeId = 1;
 		[NonSerialized]
 		public bool added = false;
@@ -112,6 +114,11 @@ namespace GalacticScale
 		public string ambient;
 		[NonSerialized]
 		public AudioClip ambientSfx;
+
+
+		// ////////////////////////////////////////
+		// / Constructor
+		// ////////////////////////////////////////
 		public GSTheme (string name, string displayName, string baseName)
         {
 			DisplayName = displayName;
@@ -122,21 +129,29 @@ namespace GalacticScale
 			}
 			else GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
 		}
+
+
 		public void Process()
+        {
+			Init();
+			AddToLibrary();
+        }
+		public void Init()
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
-            if (VeinSettings.VeinTypes.Count == 0) ConvertVeinData();
+			if (VeinSettings.VeinTypes.Count == 0) ConvertVeinData();
+			//GS2.Log("PROCESS " + Name + " VegeData:" + VegeSettings.Group1.Count);
 			if (VegeSettings.Group1.Count == 0) PopulateVegeData();
 			else ConvertVegeData();
-            GS2.Log("PROCESS "+Name);
-            //GS2.LogJson(VeinSettings);
-            ProcessTints();
+			//GS2.Log("PROCESS " + Name);
+			//GS2.LogJson(VeinSettings);
+			ProcessTints();
 			if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
-			AddToLibrary();
-        }
+		}
 		public void PopulateVegeData()
         {
+			//GS2.Log("Populating Vege Data for " + Name);
 			VegeSettings.Group1 = GSVegeSettings.FromIDArray(Vegetables0);
 			VegeSettings.Group2 = GSVegeSettings.FromIDArray(Vegetables1);
 			VegeSettings.Group3 = GSVegeSettings.FromIDArray(Vegetables2);
@@ -203,30 +218,47 @@ namespace GalacticScale
         {
 			GS2.ThemeLibrary[Name] = this;
         }
-		public static int[] Clone(int[] source)
+		public static int[] CloneIntegerArray(int[] source)
         {
 			int[] destination = new int[source.Length];
 			Array.Copy(source, destination, source.Length);
 			return destination;
         }
+
+		/// <summary>
+		/// Initialise this theme from another theme's data.
+		/// </summary>
+		/// <param name="baseTheme"></param>
 		public void CopyFrom(GSTheme baseTheme) {
+			//GS2.Log("CopyFrom");
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
+			//GS2.Log("CopyFrom baseTheme:" + baseTheme.Name);
+			GS2.LogJson(baseTheme);
+			//GS2.Log("1");
 			Algo = baseTheme.Algo;
+			//GS2.Log("2");
 			PlanetType = baseTheme.PlanetType;
 			LDBThemeId = 1;
 			MaterialPath = baseTheme.MaterialPath;
 			Temperature = baseTheme.Temperature;
 			Distribute = baseTheme.Distribute;
+			//GS2.Log("3");
 			ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
 			ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
+			//GS2.Log("4");
+			
 			Vegetables0 = (int[])baseTheme.Vegetables0.Clone();
-			Vegetables1 = (int[])baseTheme.Vegetables1.Clone();
-			Vegetables2 = (int[])baseTheme.Vegetables2.Clone();
-			Vegetables3 = (int[])baseTheme.Vegetables3.Clone();
-			Vegetables4 = (int[])baseTheme.Vegetables4.Clone();
-			Vegetables5 = (int[])baseTheme.Vegetables5.Clone();
+			Vegetables1 = (int[])baseTheme.Vegetables1.Clone(); 
+			Vegetables2 = (int[])baseTheme.Vegetables2.Clone(); 
+			Vegetables3 = (int[])baseTheme.Vegetables3.Clone(); 
+			Vegetables4 = (int[])baseTheme.Vegetables4.Clone(); 
+			Vegetables5 = (int[])baseTheme.Vegetables5.Clone(); 
+			//GS2.Log("Cloning VeinSettings");
 			VeinSettings = baseTheme.VeinSettings.Clone();
+			//GS2.Log("Cloning TerrainSettings");
 			TerrainSettings = baseTheme.TerrainSettings.Clone();
+			//GS2.Log("Cloning VegeSettings");
+			VegeSettings = baseTheme.VegeSettings.Clone();
 			VeinSpot = (int[])baseTheme.VeinSpot.Clone(); 
 			VeinCount = (float[])baseTheme.VeinCount.Clone(); 
 			VeinOpacity = (float[])baseTheme.VeinOpacity.Clone();
@@ -255,7 +287,19 @@ namespace GalacticScale
 			minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
 			ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
 			ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
+			//GS2.Log("CopyFrom Modified Theme:");
+			GS2.LogJson(this);
+			//InitMaterials();
 		}
+
+
+
+
+
+		/// <summary>
+		/// Convert to a ThemeProto so that the game can use the materials etc
+		/// </summary>
+		/// <returns></returns>
 		public ThemeProto ToProto()
         {
 			return new ThemeProto()
@@ -307,30 +351,41 @@ namespace GalacticScale
         }
 		public int AddToThemeProtoSet()
         {
+			//GS2.Log("Adding Theme To ProtoSet: " + Name);
 			if (added) return LDBThemeId;
+			
 			if (!initialized) InitMaterials();
-            int newIndex = LDB._themes.dataArray.Length; 
+            int newIndex = LDB._themes.dataArray.Length;
+			//GS2.Log("Resizing LDB._themes.dataArray");
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
 			LDBThemeId = newId;
+			//GS2.Log("Setting new index to ToProto()");
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
+			//GS2.Log("Theme Added to Protoset: " + Name + " ID:" + newId);
             return newId;
         }
 		public int UpdateThemeProtoSet()
         {
+			//GS2.Log("UpdateThemeProtoSet: " + Name);
 			if (!added) return AddToThemeProtoSet();
 			else
             {
+				//GS2.Log("Setting Float _Radius "+(terrainMat == null));
+				
 				terrainMat.SetFloat("_Radius", 100f);
+				//GS2.Log("Updating LDB Theme"+LDBThemeId);
                 LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
+				//GS2.Log("Returning Theme ID " + LDBThemeId);
                 return LDBThemeId;
             }
 		}
 		public void InitMaterials ()
         {
 			if (initialized) return;
+			//GS2.Log("InitializingMaterials " + Name + " " + MaterialPath);
 			if (terrainMaterial == null)
 			{
 				Material tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");

@@ -12,5 +12,11 @@ namespace GalacticScale
                 ["GS2"] = VeinAlgorithms.GenerateVeinsGS2
             };
         }
+        public GSVeinAlgorithm Find(string name)
+        {
+            GS2.Log("VeinAlgorithmLibrary|Find(" + name+")");
+            if (!ContainsKey(name)) { GS2.Warn("VeinAlgorithmLibrary|Find|Algorithm '"+name+"' Not Found. Using Default"); return VeinAlgorithms.GenerateVeinsGS2; }
+            return this[name];
+        }
     }
 }

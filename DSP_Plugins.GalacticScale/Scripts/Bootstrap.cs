@@ -47,6 +47,7 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModellingManager));
             Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
             //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm));
             //Harmony.CreateAndPatchAll(typeof(Tp));
@@ -65,12 +66,17 @@ namespace GalacticScale {
         }
         public static PlanetData TeleportPlanet = null;
         public static bool TeleportEnabled = false;
-
+        private int c = 0;
         private void Update()
         {
             if (TeleportPlanet == null || TeleportEnabled == false) return;
             GameMain.data.ArriveStar(TeleportPlanet.star);
             StartCoroutine(Teleport(TeleportPlanet));
+            if (GS2.ThemeLibrary.Count != c)
+            {
+                c = GS2.ThemeLibrary.Count;
+                GS2.Log("THEMELIBRARYCOUNT = "+c.ToString());
+            }
 
 
         }

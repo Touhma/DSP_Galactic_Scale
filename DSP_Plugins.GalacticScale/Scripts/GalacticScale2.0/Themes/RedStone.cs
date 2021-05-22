@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme RedStone = new GSTheme()
         {
             Name = "RedStone",
+            Base = true,
             DisplayName = "Red Stone",
             PlanetType = EPlanetType.Ocean,
             LDBThemeId = 14,

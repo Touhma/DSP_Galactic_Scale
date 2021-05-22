@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme AshenGelisol = new GSTheme()
         {
             Name = "AshenGelisol",
+            Base = true,
             DisplayName = "Ashen Gelisol",
             PlanetType = EPlanetType.Desert,
             LDBThemeId = 1,

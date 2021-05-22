@@ -8,6 +8,7 @@ namespace GalacticScale
         public static GSTheme OceanWorld = new GSTheme()
         {
             Name = "OceanWorld",
+            Base = true,
             DisplayName = "Ocean World",
             PlanetType = EPlanetType.Ocean,
             LDBThemeId = 16,

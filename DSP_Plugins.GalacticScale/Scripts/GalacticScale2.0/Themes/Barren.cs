@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme Barren = new GSTheme()
         {
             Name = "Barren",
+            Base = true,
             DisplayName = "Barren Desert",
             PlanetType = EPlanetType.Desert,
             LDBThemeId = 11,

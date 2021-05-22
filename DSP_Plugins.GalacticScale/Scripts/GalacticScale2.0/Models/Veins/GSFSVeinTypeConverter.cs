@@ -14,7 +14,7 @@ namespace GalacticScale
 
         protected override fsResult DoSerialize(GSVeinType model, Dictionary<string, fsData> serialized)
         {
-            GS2.Warn("Serializing VeinTypes");
+            //GS2.Warn("Serializing VeinTypes");
             List<fsData> list = new List<fsData>();
             Dictionary<string, int> dict = new Dictionary<string, int>();
             for (var i = 0; i < model.veins.Count; i++)
@@ -27,7 +27,7 @@ namespace GalacticScale
             {
                 list.Add(new fsData(kvp.Value + "x" + kvp.Key));
             }
-            GS2.Warn("-----"+list.Count);
+            //GS2.Warn("-----"+list.Count);
             //for (var i = 0; i < model.veins.Count; i++)
             //{
             //    list.Add(new fsData(model.veins[i].count + "@" + model.veins[i].richness));
@@ -44,22 +44,22 @@ namespace GalacticScale
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSVeinType model)
         {
-            GS2.Log("DoDeserialize");
+            //GS2.Log("DoDeserialize");
             var result = fsResult.Success;
             model = new GSVeinType();
             // Deserialize name mainly manually (helper methods CheckKey and CheckType)
             fsData veinData;
             if (CheckKey(data, "veins", out veinData).Succeeded)
             {
-                GS2.Log("processing veins");
+                //GS2.Log("processing veins");
                 if ((result += CheckType(veinData, fsDataType.Array)).Failed) return result;
-                GS2.Log("VeinData is Array");
+                //GS2.Log("VeinData is Array");
                 var veins = veinData.AsList;
                 model.veins = new List<GSVein>();
                 if (veins[0].IsString)
 
                 {
-                    GS2.Log("Veins[0] is string");
+                    //GS2.Log("Veins[0] is string");
                     //new method
                     for (var i = 0; i < veins.Count; i++)
                     {
@@ -76,7 +76,7 @@ namespace GalacticScale
                 }// end new method
                 else
                 {
-                    GS2.Log("Veins[0] not string");
+                    //GS2.Log("Veins[0] not string");
                     if ((result += DeserializeMember(data, null, "veins", out model.veins)).Failed) return result;
                 }
       
@@ -97,7 +97,7 @@ namespace GalacticScale
             }
             string type;
             if ((result += DeserializeMember(data, null, "type", out type)).Failed) return result;
-            GS2.Log(type);
+            //GS2.Log(type);
             model.type = GSVeinType.saneVeinTypes[type];
             if ((result += DeserializeMember(data, null, "rare", out model.rare)).Failed) return result;
             return result;

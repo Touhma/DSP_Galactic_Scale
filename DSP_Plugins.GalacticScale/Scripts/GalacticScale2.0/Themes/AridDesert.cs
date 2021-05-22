@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme AridDesert = new GSTheme()
         {
             Name = "AridDesert",
+            Base = true,
             DisplayName = "Arid Desert",
             PlanetType = EPlanetType.Desert,
             LDBThemeId = 6,
