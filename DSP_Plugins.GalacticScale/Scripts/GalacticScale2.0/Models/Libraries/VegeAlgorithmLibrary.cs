@@ -13,7 +13,7 @@ namespace GalacticScale
         }
         public GSVegeAlgorithm Find(string name)
         {
-            GS2.Log("VegeAlgorithmLibrary|Find(" + name + ")");
+            //GS2.Log("VegeAlgorithmLibrary|Find(" + name + ")");
             if (!ContainsKey(name))
             {
                 GS2.Warn("VegeAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default"); return VegeAlgorithms.GenerateVeges1;

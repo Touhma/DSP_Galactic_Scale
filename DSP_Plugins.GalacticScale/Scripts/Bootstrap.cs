@@ -75,7 +75,7 @@ namespace GalacticScale {
             if (GS2.ThemeLibrary.Count != c)
             {
                 c = GS2.ThemeLibrary.Count;
-                GS2.Log("THEMELIBRARYCOUNT = "+c.ToString());
+                //GS2.Log("THEMELIBRARYCOUNT = "+c.ToString());
             }
 
 

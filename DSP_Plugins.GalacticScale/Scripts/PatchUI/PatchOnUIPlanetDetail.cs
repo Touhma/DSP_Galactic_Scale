@@ -30,7 +30,7 @@ namespace GalacticScale.Scripts.PatchUI
                 uiButton.tips.tipText = "How large the planet is. Standard is 200";
                 uiButton.tips.tipTitle = "Planet Radius";
 
-                GS2.LogJson(uiButton.button);
+                //GS2.LogJson(uiButton.button);
                 if (uiButton.button == null) uiButton.button = uiButton.gameObject.AddComponent<Button>();
                 uiButton.button.transform.SetParent(uiButton.transform);
                
@@ -61,9 +61,9 @@ namespace GalacticScale.Scripts.PatchUI
         public static bool OnCursorFunction3Click(PlanetData ___viewPlanet)
         {
             var go = GameObject.Find("UI Root/Overlay Canvas/In Game/Starmap UIs/starmap-screen-ui/cursor-view/bg");
-            GS2.LogJson(go);
-            GS2.Log(___viewPlanet?.name);
-            GS2.Log("viewplanet null? " + (___viewPlanet == null));
+            //GS2.LogJson(go);
+            //GS2.Log(___viewPlanet?.name);
+            //GS2.Log("viewplanet null? " + (___viewPlanet == null));
             //GSTeleportHandler.planet = ___focusPlanet.planet;
             if (___viewPlanet != null &&  (VFInput.control))
             {

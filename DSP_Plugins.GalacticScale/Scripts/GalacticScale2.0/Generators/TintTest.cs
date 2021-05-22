@@ -33,28 +33,28 @@ namespace GalacticScale.Generators
         {
             float f = 1f;
             float.TryParse((string)o, out f);
-            GS2.Log(f.ToString());
+            //GS2.Log(f.ToString());
             r = f;
         }
         public void changeValueG(object o)
         {
             float f = 1f;
             float.TryParse((string)o, out f);
-            GS2.Log(f.ToString());
+            //GS2.Log(f.ToString());
             g = f;
         }
         public void changeValueB(object o)
         {
             float f = 1f;
             float.TryParse((string)o, out f);
-            GS2.Log(f.ToString());
+            //GS2.Log(f.ToString());
             b = f;
         }
         public void changeValueA(object o)
         {
             float f = 1f;
             float.TryParse((string)o, out f);
-            GS2.Log(f.ToString());
+            //GS2.Log(f.ToString());
             a = f;
         }
         public void changeValuePar(object o)
@@ -75,7 +75,7 @@ namespace GalacticScale.Generators
             options.Add(new GSUI("A", "Input", ".75", changeValueA, () => { }));
             //options.Add(new GSOption("field", "Input", "_DepthFactor", changeValuePar, () => { }));
             options.Add(new GSUI("Go", "Button", "Go", updateOceanMat, () => { }));
-            GS2.Log("TT:Initializing");
+            //GS2.Log("TT:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
             config.MaxStarCount = 1;
@@ -108,7 +108,7 @@ namespace GalacticScale.Generators
             int i = 1;
             foreach (KeyValuePair<string, Color> c in colors)
             {
-                GS2.Log("Creating Theme for Tint" + c.Key);
+                //GS2.Log("Creating Theme for Tint" + c.Key);
                 
                 GSTheme temp = new GSTheme("Tint" + c.Key, "Tint" + c.Key, "Mediterranean");
                 //temp.atmosphereTint = c.Value;
@@ -165,7 +165,7 @@ namespace GalacticScale.Generators
 
         public void generate(int starCount)
         {
-            GS2.Log("TT:Creating New Settings");
+            //GS2.Log("TT:Creating New Settings");
 
 
             //beach.InitTheme(Themes.OceanWorld);

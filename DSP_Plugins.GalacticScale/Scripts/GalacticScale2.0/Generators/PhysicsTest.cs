@@ -47,7 +47,7 @@ namespace GalacticScale.Generators
                 GSStar s = new GSStar(1, "PhysRadius" + i, ESpectrType.B, EStarType.MainSeqStar, p);
                 s.position = new VectorLF3(i * (1 + (i % 2)), i, i * (-1 + (1 % 2)));
                 s.physicsRadius = (i + 0.000001f) * 1000;
-                GS2.Log("added star " + i + " with physics radius " + s.physicsRadius);
+                //GS2.Log("added star " + i + " with physics radius " + s.physicsRadius);
                 GSSettings.Stars.Add(s);
                 
                 

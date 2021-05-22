@@ -7,7 +7,7 @@ namespace GalacticScale
 	{
 		public static void GenerateVeges1(GSPlanet gsPlanet)
 		{
-			GS2.Log("GenerateVeges1|" + gsPlanet.Name);
+			//GS2.Log("GenerateVeges1|" + gsPlanet.Name);
 			PlanetData planet = gsPlanet.planetData;
 			ThemeProto themeProto = LDB.themes.Select(planet.theme);
 			if (themeProto == null)
@@ -15,14 +15,14 @@ namespace GalacticScale
 				return;
 			}
 			//TODO convert veges in GSTheme
-			GS2.Log("GenerateVeges1|" + gsPlanet.Name+"1");
+			//GS2.Log("GenerateVeges1|" + gsPlanet.Name+"1");
 			int[] vegetables = themeProto.Vegetables0;
 			int[] vegetables2 = themeProto.Vegetables1;
 			int[] vegetables3 = themeProto.Vegetables2;
 			int[] vegetables4 = themeProto.Vegetables3;
 			int[] vegetables5 = themeProto.Vegetables4;
 			int[] vegetables6 = themeProto.Vegetables5;
-			GS2.Log("GenerateVeges1|" + gsPlanet.Name + "2");
+			//GS2.Log("GenerateVeges1|" + gsPlanet.Name + "2");
 			float num = 1.3f;
 			float num2 = -0.5f;
 			float num3 = 2.5f;
@@ -44,12 +44,12 @@ namespace GalacticScale
 			int stride = data.stride;
 			int num11 = stride / 2;
 			float num12 = planet.radius * 3.14159f * 2f / ((float)data.precision * 4f);
-			GS2.Log("GenerateVeges1|" + gsPlanet.Name + "3");
+			//GS2.Log("GenerateVeges1|" + gsPlanet.Name + "3");
 			VegeData vege = default(VegeData);
 			VegeProto[] vegeProtos = PlanetModelingManager.vegeProtos;
 			Vector4[] vegeScaleRanges = PlanetModelingManager.vegeScaleRanges;
 			short[] vegeHps = PlanetModelingManager.vegeHps;
-			GS2.Log("GenerateVeges1|" + gsPlanet.Name + "4");
+			//GS2.Log("GenerateVeges1|" + gsPlanet.Name + "4");
 			for (int i = 0; i < data.dataLength; i++)
 			{
 				int num13 = i % stride;

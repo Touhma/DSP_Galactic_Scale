@@ -21,7 +21,7 @@ namespace GalacticScale.Generators
         private GSGeneratorConfig config = new GSGeneratorConfig();
         public void Init()
         {
-            GS2.Log("Spiral:Initializing");
+            //GS2.Log("Spiral:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
             config.MaxStarCount = 1048;
@@ -51,7 +51,7 @@ namespace GalacticScale.Generators
         
             for (var i=0;i<8;i++)
             {
-                GS2.Log("Creating Theme for Algo" + i);
+                //GS2.Log("Creating Theme for Algo" + i);
                 GSTheme temp = new GSTheme("Algo" + i, "Algo" + i, "Mediterranean");
                 temp.Algo = i;
                 temp.Process();
@@ -70,8 +70,8 @@ namespace GalacticScale.Generators
 
         public void generate(int starCount)
         {
-            GS2.Log("Spiral:Creating New Settings");
-            foreach (KeyValuePair<string, GSTheme> g in GS2.ThemeLibrary) GS2.Log("Theme " + g.Key + " is in library with name " + g.Value.Name);
+            //GS2.Log("Spiral:Creating New Settings");
+            //foreach (KeyValuePair<string, GSTheme> g in GS2.ThemeLibrary) GS2.Log("Theme " + g.Key + " is in library with name " + g.Value.Name);
             List<VectorLF3> positions = new List<VectorLF3>();
             for (var i = 0; i < starCount; i++)
             {

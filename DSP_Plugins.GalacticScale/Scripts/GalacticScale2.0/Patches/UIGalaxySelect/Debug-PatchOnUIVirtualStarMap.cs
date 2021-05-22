@@ -12,7 +12,7 @@ namespace GalacticScale
 		[HarmonyPatch("OnGalaxyDataReset")]
 		public static bool OnGalaxyDataReset(ref UIVirtualStarmap __instance)
 		{
-			GS2.Log("OnGalaxyDataReset");
+			//GS2.Log("OnGalaxyDataReset");
 			foreach (UIVirtualStarmap.StarNode item in __instance.starPool)
 			{
 				item.active = false;
@@ -45,7 +45,7 @@ namespace GalacticScale
 				}
 				StarData starData = __instance._galaxyData.stars[i];
 				Color color = __instance.starColors.Evaluate(starData.color);
-				GS2.Log("Star type " + starData.type + " spectr " + starData.spectr + " color " + starData.color + " classFactor " + starData.classFactor);
+				//GS2.Log("Star type " + starData.type + " spectr " + starData.spectr + " color " + starData.color + " classFactor " + starData.classFactor);
 				if (starData.type == EStarType.NeutronStar)
 				{
 					color = __instance.neutronStarColor;

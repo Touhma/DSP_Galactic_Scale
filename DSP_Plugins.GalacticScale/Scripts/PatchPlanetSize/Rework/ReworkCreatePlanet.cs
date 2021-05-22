@@ -69,7 +69,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
                 for (int b = 0; b < 16; b++) {
                     str += classicLUT[a * 16 + b] + ", ";
                 }
-                Patch.Debug(str, LogLevel.Debug, true);
+                //Patch.Debug(str, LogLevel.Debug, true);
             }
         }
     }

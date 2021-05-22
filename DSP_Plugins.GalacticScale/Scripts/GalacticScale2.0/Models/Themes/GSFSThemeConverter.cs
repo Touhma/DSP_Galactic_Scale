@@ -61,7 +61,7 @@ namespace GalacticScale
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSTheme model)
         {
-            GS2.Log("DoDeserialize");
+            //GS2.Log("DoDeserialize");
             var result = fsResult.Success;
             model = new GSTheme();
             //// Deserialize name mainly manually (helper methods CheckKey and CheckType)
@@ -121,7 +121,7 @@ namespace GalacticScale
             //if (CheckKey(data, "PlanetType", out d).Succeeded) 
             DeserializeMember(data, null, "BaseName", out model.BaseName);
             if (model.baseTheme != null) model.CopyFrom(model.baseTheme);
-            GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
+            //GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
             if (data.ContainsKey("Name")) DeserializeMember(data, null, "Name", out model.Name); else model.Name = "Unnamed";
             if (data.ContainsKey("PlanetType")) DeserializeMember(data, null, "PlanetType", out model.PlanetType);
             if (data.ContainsKey("Algo")) DeserializeMember(data, null, "Algo", out model.Algo);
@@ -161,7 +161,7 @@ namespace GalacticScale
             if (data.ContainsKey("minimapTint")) DeserializeMember(data, null, "minimapTint", out model.minimapTint);
             if (data.ContainsKey("ambient")) DeserializeMember(data, null, "ambient", out model.ambient);
             model.Init();
-            GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
+            //GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;
         }
     }

@@ -12,7 +12,7 @@
             starData.galaxy = galaxy;
             starData.index = id - 1;
             starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
-            Log(starData.level + " " + starData.index);
+            //Log(starData.level + " " + starData.index);
             starData.id = id;
             starData.seed = GSSettings.Stars[id -1].Seed;
             GSSettings.Stars[id - 1].assignedIndex = id - 1;

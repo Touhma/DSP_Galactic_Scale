@@ -37,7 +37,7 @@ namespace GalacticScale
         }
         public static void Reset(int seed)
         {
-            GS2.Log("GSSettings|Reset");
+            //GS2.Log("GSSettings|Reset");
             instance = new GSSettings(seed);
             GalaxyParams = new galaxyParams();
             Stars.Clear();

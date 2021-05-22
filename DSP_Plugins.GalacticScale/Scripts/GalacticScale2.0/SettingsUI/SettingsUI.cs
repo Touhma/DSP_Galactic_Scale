@@ -140,7 +140,6 @@ namespace GalacticScale
 
             //RectTransform inputFieldProto = seedInput;
             GameObject inputFieldGO = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
-            //if (inputFieldGO == null) GS2.Log("SHIT");
             RectTransform inputFieldProto = Object.Instantiate(inputFieldGO.GetComponent<RectTransform>(), details, false);
             //GS2.Log("Hmm");
             //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
@@ -193,7 +192,9 @@ namespace GalacticScale
             {
                 List<GSUI> pluginOptions = new List<GSUI>();
                 //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
-                if (GS2.generators[i] is iConfigurableGenerator gen) { GS2.Log(gen.Name + " is configurable"); foreach (GSUI o in gen.Options) pluginOptions.Add(o); }
+                if (GS2.generators[i] is iConfigurableGenerator gen) { 
+                    //GS2.Log(gen.Name + " is configurable"); 
+                    foreach (GSUI o in gen.Options) pluginOptions.Add(o); }
                 generatorPluginOptions.Add(pluginOptions);
             }
         }
@@ -217,7 +218,7 @@ namespace GalacticScale
                 //GS2.Log("Setting combobox for generator index to " + generatorIndex);
                 optionRects[0].GetComponentInChildren<UIComboBox>().itemIndex = generatorIndex;
             }
-            else GS2.Log("optionRects[0] == null!@#");
+            //else GS2.Log("optionRects[0] == null!@#");
         }
         private static RectTransform CreateTemplate(RectTransform original)
         {

@@ -16,19 +16,19 @@ namespace GalacticScale
 		{
 			if (DSPGame.IsMenuDemo) return true;
 			if (GS2.Vanilla) return true;
-			GS2.Log("CHOOSING ALGORITHM FOR " + planet.displayName + " rawdata?"+(planet.data != null));
+			//GS2.Log("CHOOSING ALGORITHM FOR " + planet.displayName + " rawdata?"+(planet.data != null));
             GSPlanet gsPlanet = GS2.GetGSPlanet(planet);
 			GSTheme gsTheme = GS2.ThemeLibrary[gsPlanet.Theme];
-			GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
+			//GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
 			if (!GS2.ThemeLibrary[gsPlanet.Theme].CustomGeneration)
 			{
-				GS2.Log("CHOSE COMPLETELY VANILLA");
+				//GS2.Log("CHOSE COMPLETELY VANILLA");
 				return true;
 			}
-			GS2.Log("USING CUSTOM GENERATION FOR PLANET " + planet.displayName);
+			//GS2.Log("USING CUSTOM GENERATION FOR PLANET " + planet.displayName);
             __result = new GS2PlanetAlgorithm(gsPlanet);//new GS2PlanetAlgorithm(gsPlanet);
 			__result.Reset(5, planet);
-			GS2.Log("PatchOnPlanetModellingManager|Algorithm|"+__result.planet.name+"|End|"+__result.seed);
+			//GS2.Log("PatchOnPlanetModellingManager|Algorithm|"+__result.planet.name+"|End|"+__result.seed);
 			return false;
 		}
 	

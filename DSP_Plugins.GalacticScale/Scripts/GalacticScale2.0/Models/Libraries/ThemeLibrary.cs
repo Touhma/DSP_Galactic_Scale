@@ -1,8 +1,8 @@
 ﻿using FullSerializer;
-using System;
+//using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
+//using System.Diagnostics;
 namespace GalacticScale
 {
     [fsObject(Converter = typeof(GSFSThemeLibraryConverter))]
@@ -14,12 +14,12 @@ namespace GalacticScale
         }
         public static ThemeLibrary Vanilla()
         {
-            GS2.Log("ThemeLibrary|Init->Begin");
+            //GS2.Log("ThemeLibrary|Init->Begin");
             
             // Get call stack
-            StackTrace stackTrace = new StackTrace();
+            //StackTrace stackTrace = new StackTrace();
             // Get calling method name
-            Console.WriteLine(stackTrace.GetFrame(1).GetMethod().Name);
+            //Console.WriteLine(stackTrace.GetFrame(1).GetMethod().Name);
             //ThemeLibrary t;
             //try
             //{
@@ -52,7 +52,7 @@ namespace GalacticScale
                 ["Prairie"] = Themes.Prairie,
                 ["OceanWorld"] = Themes.OceanWorld
             };
-            GS2.Log("ThemeLibrary|Init->Returning");
+            //GS2.Log("ThemeLibrary|Init->Returning");
             return t;
         }
         public GSTheme Find(string name)

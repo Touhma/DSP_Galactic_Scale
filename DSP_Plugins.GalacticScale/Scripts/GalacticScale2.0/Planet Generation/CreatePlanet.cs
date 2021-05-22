@@ -8,7 +8,7 @@ namespace GalacticScale
         {
             bool isMoon = (host != null);
             int index = GSSettings.Stars[star.index].counter;
-            GS2.Log("GS2.CreatePlanet|" + gsPlanet.Name + "|");
+            //GS2.Log("GS2.CreatePlanet|" + gsPlanet.Name + "|");
             PlanetData planetData = new PlanetData();
             int counter = GSSettings.Stars[star.index].counter;
             planetData.index = index;

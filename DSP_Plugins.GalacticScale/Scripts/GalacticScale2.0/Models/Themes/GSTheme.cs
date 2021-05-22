@@ -233,7 +233,7 @@ namespace GalacticScale
 			//GS2.Log("CopyFrom");
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
 			//GS2.Log("CopyFrom baseTheme:" + baseTheme.Name);
-			GS2.LogJson(baseTheme);
+			//GS2.LogJson(baseTheme);
 			//GS2.Log("1");
 			Algo = baseTheme.Algo;
 			//GS2.Log("2");
@@ -288,7 +288,7 @@ namespace GalacticScale
 			ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
 			ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
 			//GS2.Log("CopyFrom Modified Theme:");
-			GS2.LogJson(this);
+			//GS2.LogJson(this);
 			//InitMaterials();
 		}
 

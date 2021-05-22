@@ -21,7 +21,7 @@ namespace GalacticScale.Generators
         private GSGeneratorConfig config = new GSGeneratorConfig();
         public void Init()
         {
-            GS2.Log("Spiral2:Initializing");
+            //GS2.Log("Spiral2:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
             config.MaxStarCount = 1048;
@@ -74,7 +74,7 @@ namespace GalacticScale.Generators
 
         public void generate(int starCount)
         {
-            GS2.Log("Spiral2:Creating New Settings");
+            //GS2.Log("Spiral2:Creating New Settings");
             
             List<VectorLF3> positions = new List<VectorLF3>();
 
@@ -205,7 +205,7 @@ namespace GalacticScale.Generators
 
             for (int i = 0; i < numOfStars; i++)
             {
-                GS2.Log(i + " / " + numOfStars);
+                //GS2.Log(i + " / " + numOfStars);
                 double part = (double)i / (double)numOfStars;
                 part = Math.Pow(part, starsAtCenterRatio);
 

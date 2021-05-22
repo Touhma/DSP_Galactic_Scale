@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using BepInEx;
+using FullSerializer;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GalacticScale.Generators
 {
@@ -22,7 +25,7 @@ namespace GalacticScale.Generators
         private GSOptions options = new GSOptions();
         private GSGeneratorConfig config = new GSGeneratorConfig();
         private GSGenPreferences preferences = new GSGenPreferences();
-
+        public List<GSStar> stars = new List<GSStar>();
         private GSUI UI_ludicrousMode;
         private GSUI UI_birthPlanetSize;
         private GSUI UI_minPlanetSize;
@@ -55,7 +58,7 @@ namespace GalacticScale.Generators
             {
                 float minSize = preferences.GetFloat("minPlanetSize");
                 if (minSize == -1f) minSize = 5;
-                GS2.Log("min = " + minSize + " max = " + o.ToString());
+                //GS2.Log("min = " + minSize + " max = " + o.ToString());
                 if (minSize > (float)o) o = minSize;
                 preferences.Set("maxPlanetSize", GS2.Utils.ParsePlanetSize((float)o));
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
@@ -92,14 +95,95 @@ namespace GalacticScale.Generators
             UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
             UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
             UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
+            ReadStarData();
+        }
+        
+        public class externalStarData
+                {
+                    public string Name;
+                    public float x;
+                    public float y;
+                    public float z;
+                    public float mass;
+                    public string spect;
+                    public float radius;
+                    public float luminance;
+                    public float temp;
+                }
+        public ESpectrType getSpectrType(externalStarData s)
+        {
+            switch (s.spect[0])
+            {
+                case 'O': return ESpectrType.O;
+                case 'F': return ESpectrType.F;
+                case 'G': return ESpectrType.G;
+                case 'B': return ESpectrType.B;
+                case 'M': return ESpectrType.M;
+                case 'A': return ESpectrType.A;
+                case 'K': return ESpectrType.K;
+                default: break;
+            }
+            return ESpectrType.X;
+        }
+        public EStarType getStarType(externalStarData s)
+        {
+            switch (s.spect[0])
+            {
+                case 'O':
+                case 'F':
+                case 'G': return EStarType.MainSeqStar;
+                case 'B': return EStarType.MainSeqStar;
+                case 'M': return EStarType.MainSeqStar;
+                case 'A': return EStarType.MainSeqStar;
+                case 'K': return EStarType.MainSeqStar;
+                default: break;
+            }
+            return EStarType.WhiteDwarf;
+        }
+        public void ReadStarData()
+        {
+            
+        stars.Clear();
+                string path = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "data"), "galaxy.json");
+                fsSerializer serializer = new fsSerializer();
+                string json = File.ReadAllText(path);
+                fsData data2 = fsJsonParser.Parse(json);
+                List<externalStarData> localStars = new List<externalStarData>();
+                serializer.TryDeserialize(data2, ref localStars);
+
+                for (var i = 0; i < localStars.Count; i++)
+                {
+                    stars.Add(new GSStar(1, localStars[i].Name, ESpectrType.G, EStarType.MainSeqStar, new List<GSPlanet>()));
+                    stars[stars.Count - 1].position = new VectorLF3(localStars[i].x, localStars[i].y, localStars[i].z);
+                    stars[stars.Count - 1].mass = localStars[i].mass;
+                    stars[stars.Count - 1].radius = (localStars[i].radius);
+                    stars[stars.Count - 1].Type = getStarType(localStars[i]);
+                    stars[stars.Count - 1].Spectr = getSpectrType(localStars[i]);
+                    stars[stars.Count - 1].luminosity = localStars[i].luminance;
+                    stars[stars.Count - 1].temperature = localStars[i].temp;
+                }
+            
         }
 
         public void Generate(int starCount)
         {
+            GSSettings.Stars.Clear();
+            if (starCount > stars.Count) starCount = stars.Count;
             for (var i = 0; i < starCount; i++)
             {
-                GSStar s = StarDefaults.Random();
+                GSStar s = stars[i];
+                GSSettings.Stars.Add(s);
             }
+            GenerateSol(GSSettings.Stars[0]);
+           
+        }
+
+        public void GenerateSol(GSStar sol)
+        {
+            List<GSPlanet> planets = sol.Planets;
+            planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7f, 252f, 10556f, 0, 0.034f, 7038, 0, 9f, null));
+            planets.Add(new GSPlanet("Venus", "VolcanicAsh", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177f, 1000, 0, 2.6f, null));
+            planets.Add(new GSPlanet("Earth", "Mediterranean", 400, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
         }
 
         public void Import(GSGenPreferences preferences)

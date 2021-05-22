@@ -9,7 +9,7 @@ namespace GalacticScale
 		{
 
 			GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
-			GS2.Log("Generate 2 Terrain ");
+			//GS2.Log("Generate 2 Terrain ");
 			int seed = random.Next();
 			int seed2 = random.Next();
 			SimplexNoise simplexNoise = new SimplexNoise(seed);
