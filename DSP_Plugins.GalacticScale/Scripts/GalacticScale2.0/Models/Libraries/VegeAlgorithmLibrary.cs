@@ -8,7 +8,7 @@ namespace GalacticScale
         public static VegeAlgorithmLibrary Init() {
             return new VegeAlgorithmLibrary()
             {
-
+                ["GS2"] = VegeAlgorithms.GenerateVeges1
             };
         }
         public GSVegeAlgorithm Find(string name)

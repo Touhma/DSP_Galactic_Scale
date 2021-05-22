@@ -14,7 +14,7 @@ namespace GalacticScale
             planetData.index = index;
             planetData.galaxy = galaxy;
             planetData.star = star;
-            planetData.seed = 1;
+            planetData.seed = gsPlanet.Seed;
             if (isMoon)
             {
                 planetData.orbitAround = host.number;

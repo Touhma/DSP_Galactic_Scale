@@ -6,6 +6,7 @@ namespace GalacticScale
 {
     public class GSPlanet
     {
+        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
         [NonSerialized]
         public GSPlanetVeins veinData = new GSPlanetVeins();
         public Dictionary<string, GSVein> veins = new Dictionary<string, GSVein>();
@@ -78,8 +79,15 @@ namespace GalacticScale
                 return b;
             } 
         }
-        public int Seed = -1;
+        public int Seed { get => (seed>=0)?seed:GetSeed(); set => seed = value; }
+        private int seed = -1;
         
+        private int GetSeed()
+        {
+            
+            seed = random.Next();
+            return seed;
+        }
         public GSPlanet()
         {
 

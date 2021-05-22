@@ -30,7 +30,7 @@ namespace GalacticScale.Generators
         public void Init()
         {
             RefreshFileNames();
-            GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
+            //GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
             options.Add(new GSUI("Custom Galaxy", "Combobox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
             options.Add(new GSUI("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
             options.Add(new GSUI("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
@@ -38,14 +38,14 @@ namespace GalacticScale.Generators
         public List<GSUI> options = new List<GSUI>();
         public void Generate(int starCount)
         {
-            GS2.Log("Json Importer Generating");
+            //GS2.Log("Json Importer Generating");
             string path = Path.Combine(Path.Combine(GS2.DataDir,"CustomGalaxies"), filename + ".json");
             GS2.LoadSettingsFromJson(path);
         }
 
         public void Import(GSGenPreferences preferences)
         {
-            GS2.Log("Importing JSON Preferences");
+            //GS2.Log("Importing JSON Preferences");
             if (preferences != null && preferences.ContainsKey("filename")) filename = (string)preferences["filename"];
             //if (preferences != null && preferences.ContainsKey("dumpFilename")) dumpFilename = (string)preferences["dumpFilename"];
             dumpFilename = preferences.GetString("dumpFilename", dumpFilename);
@@ -64,7 +64,7 @@ namespace GalacticScale.Generators
         }
         private void CustomFileSelectorPostfix()
         {
-            GS2.Log("Json:Postfix");
+            //GS2.Log("Json:Postfix");
             int index = 0;
             for (var i = 0; i < filenames.Count; i++)
             {
@@ -74,7 +74,7 @@ namespace GalacticScale.Generators
         }
         private void FilenameInputPostfix()
         {
-            GS2.Log("Json:Postfix Filename");
+            //GS2.Log("Json:Postfix Filename");
             options[1].rectTransform.GetComponentInChildren<InputField>().text = dumpFilename;
         }
         private void DumpJSONCallback(object result)
@@ -93,15 +93,15 @@ namespace GalacticScale.Generators
         {
             string fn = result as string;
             if (fn != "") dumpFilename = fn;
-            GS2.Log("Changed Dump Filename to : " + fn);
+            //GS2.Log("Changed Dump Filename to : " + fn);
         }
         private void RefreshFileNames()
         {
-            GS2.Log("Refreshing Filenames");
+            //GS2.Log("Refreshing Filenames");
             string customGalaxiesPath = Path.Combine(GS2.DataDir, "CustomGalaxies");
             if (!Directory.Exists(customGalaxiesPath)) Directory.CreateDirectory(customGalaxiesPath);
             filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll<string>((original) => Path.GetFileNameWithoutExtension(original));
-            foreach (string n in filenames) GS2.Log("File:" + n);
+            //foreach (string n in filenames) GS2.Log("File:" + n);
             if (options != null && options.Count > 0 && options[0].rectTransform != null) options[0].rectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
         }
     }
