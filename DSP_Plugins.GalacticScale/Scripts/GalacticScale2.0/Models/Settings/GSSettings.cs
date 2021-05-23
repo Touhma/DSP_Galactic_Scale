@@ -45,6 +45,8 @@ namespace GalacticScale
             instance = new GSSettings(seed);
             GalaxyParams = new GSGalaxyParams();
             Stars.Clear();
+            GS2.gsPlanets.Clear();
+            GS2.Log(starCount.ToString());
             GS2.Log("End");
         }
         public int getPlanetCount()

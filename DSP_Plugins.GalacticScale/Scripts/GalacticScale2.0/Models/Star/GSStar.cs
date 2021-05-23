@@ -9,7 +9,7 @@ namespace GalacticScale
         public string Name;
         public ESpectrType Spectr;
         public EStarType Type;
-        public List<GSPlanet> Planets = new List<GSPlanet>();
+        public GSPlanets Planets = new GSPlanets();
         public int Seed;
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
@@ -29,7 +29,7 @@ namespace GalacticScale
         private VectorLF3 _pos = new VectorLF3();
         [SerializeField]
         public float level = 1;
-        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, List<GSPlanet> planets)
+        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets)
         {
             Name = name;
             Spectr = spectr;
@@ -55,9 +55,9 @@ namespace GalacticScale
                 return bodyCount;
             }
         }
-        public List<GSPlanet> bodies { get
+        public GSPlanets bodies { get
             {
-                List<GSPlanet> b = new List<GSPlanet>();
+                GSPlanets b = new GSPlanets();
                 foreach (GSPlanet p in Planets)
                 {
                     b.AddRange(p.bodies);
@@ -192,6 +192,13 @@ namespace GalacticScale
         {
             _pos = GS2.tmp_poses[assignedIndex];
             return _pos;
+        }
+        public GSStar Clone()
+        {
+            GSStar clone;
+            clone = (GSStar)MemberwiseClone();
+            clone.Planets = new GSPlanets(Planets);
+            return clone;
         }
     }
 

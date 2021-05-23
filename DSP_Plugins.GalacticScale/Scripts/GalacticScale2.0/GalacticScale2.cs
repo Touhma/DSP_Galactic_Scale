@@ -39,12 +39,12 @@ namespace GalacticScale
             //Log(json);
             GSSettings result = GSSettings.Instance;
             Log("Parsing JSON");
-            fsData data2 = fsJsonParser.Parse(json);
+            fsData data = fsJsonParser.Parse(json);
             //LogJson(data2);
             Log("Trying To Deserialize JSON");
-            serializer.TryDeserialize<GSSettings>(data2, ref result);
+            serializer.TryDeserialize(data, ref result);
             Log("Setting GSSettings.Instance");
-            GSSettings.Instance = result;
+            //GSSettings.Instance = result;
             Log("End");
             return true;
 
@@ -230,7 +230,6 @@ namespace GalacticScale
             if (!debug) ParsePreferences(preferences);
             else
             {
-                Warn(preferences.debug.ToString() + "<- debug");
                 debugOn = preferences.debug;
             }
             Log("End");

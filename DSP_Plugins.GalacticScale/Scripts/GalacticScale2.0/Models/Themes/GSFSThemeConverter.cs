@@ -16,9 +16,7 @@ namespace GalacticScale
         {
             GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
             bool based = model.BaseName != null && model.BaseName != "";
-            GS2.Warn("Serializing Theme "+model.Name);
             SerializeMember(serialized, null, "Name", model.Name);
-            GS2.Warn("Serializing Theme " + based);
             GSTheme baseTheme = (based)?GS2.ThemeLibrary[model.BaseName]:GS2.ThemeLibrary["Mediterranean"];
             if (!based || model.PlanetType != baseTheme.PlanetType) SerializeMember(serialized, null, "PlanetType", model.PlanetType);
             if (!based || model.Algo != baseTheme.Algo) SerializeMember(serialized, null, "Algo", model.Algo);
@@ -28,7 +26,6 @@ namespace GalacticScale
             if (!based || model.Temperature != baseTheme.Temperature) SerializeMember(serialized, null, "Temperature", model.Temperature);
             if (!based || model.Distribute != baseTheme.Distribute) SerializeMember(serialized, null, "Distribute", model.Distribute);
             if (!based || model.TerrainSettings != baseTheme.TerrainSettings) SerializeMember(serialized, null, "TerrainSettings", model.TerrainSettings);
-            GS2.Warn("Serializing Theme " + model.Name);
             SerializeMember(serialized, null, "VeinSettings", model.VeinSettings);
             SerializeMember(serialized, null, "VegeSettings", model.VegeSettings);
             if ((!based || model.Vegetables0 != baseTheme.Vegetables0)&& model.Vegetables0 != null && model.Vegetables0.Length > 0 && model.VegeSettings.Group1.Count == 0) SerializeMember(serialized, null, "Vegetables0", model.Vegetables0);

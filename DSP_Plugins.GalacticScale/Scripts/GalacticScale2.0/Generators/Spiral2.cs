@@ -141,7 +141,7 @@ namespace GalacticScale.Generators
 
 
             //beach.InitTheme(Themes.OceanWorld);
-            List<GSPlanet> planets = new List<GSPlanet>();
+            GSPlanets planets = new GSPlanets();
             //{
             //new GSPlanet("Beach", "Beach", 180, 3f, -1, -1, -1, 5f, -1, -1, -1, 1f, null),
             //new GSPlanet("Mediterranian", "Mediterranian", 80, 3f, -1, -1, -1, 1, -1, -1, -1, -1, null),
@@ -174,9 +174,9 @@ namespace GalacticScale.Generators
             {
                 //int t = i % 7;
                 //ESpectrType e = (ESpectrType)t;
-                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new List<GSPlanet>()));
+                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));
                 GSStar s = StarDefaults.Random(i);
-                s.Planets = new List<GSPlanet>();
+                s.Planets = new GSPlanets();
                 GSSettings.Stars.Add(s);
                 //GS2.Log("LastFor " + i.ToString() + " of " + GSSettings.Stars.Count);
                 GSSettings.Stars[i].position = positions[i];

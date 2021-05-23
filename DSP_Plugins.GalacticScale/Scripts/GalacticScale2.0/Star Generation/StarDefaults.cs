@@ -411,7 +411,7 @@ namespace GalacticScale
             int r = GS2.random.Next(7);
             ESpectrType spectr = special ? ESpectrType.X : (ESpectrType)r;
             EStarType type = special ?(GS2.random.Next(10) > 5)?EStarType.GiantStar:(GS2.random.Next(10)<=1)?EStarType.WhiteDwarf:(GS2.random.Next(10)<=5)?EStarType.BlackHole:EStarType.NeutronStar:EStarType.MainSeqStar;
-            GSStar star = new GSStar(seed, name, spectr, type, new List<GSPlanet>());
+            GSStar star = new GSStar(seed, name, spectr, type, new GSPlanets());
             return star;
         }
     }

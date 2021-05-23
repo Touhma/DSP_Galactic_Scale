@@ -10,70 +10,71 @@ namespace GalacticScale
             bool isMoon = (host != null);
             int index = GSSettings.Stars[star.index].counter;
             GS2.Log("Creating PlanetData");
-            PlanetData planetData = new PlanetData();
+            PlanetData planet = new PlanetData();
             int counter = GSSettings.Stars[star.index].counter;
-            planetData.index = index;
-            planetData.galaxy = galaxy;
-            planetData.star = star;
-            planetData.seed = gsPlanet.Seed;
+            planet.index = index;
+            planet.galaxy = galaxy;
+            planet.star = star;
+            planet.seed = gsPlanet.Seed;
             if (isMoon)
             {
-                planetData.orbitAround = host.number;
-                planetData.orbitAroundPlanet = host;
+                planet.orbitAround = host.number;
+                planet.orbitAroundPlanet = host;
 
             }
-            else planetData.orbitAround = 0;
-            planetData.number = index + 1;
-            planetData.id = star.id * 100 + index + 1;
-            gsPlanets.Add(planetData.id, gsPlanet);
+            else planet.orbitAround = 0;
+            planet.number = index + 1;
+            planet.id = star.id * 100 + index + 1;
+            gsPlanets.Add(planet.id, gsPlanet);
             Log("Setting Roman");
             string roman = "";
             if (isMoon) roman = Scripts.RomanNumbers.roman[host.number + 1] + " - ";
             roman += Scripts.RomanNumbers.roman[index + 1];
-            planetData.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;         
-            planetData.orbitRadius = gsPlanet.OrbitRadius;        
-            planetData.orbitInclination = gsPlanet.OrbitInclination;
-            planetData.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
-            planetData.orbitalPeriod = gsPlanet.OrbitalPeriod;
-            planetData.orbitPhase = gsPlanet.OrbitPhase;//1+(index * (360/star.planetCount));
-            planetData.obliquity = gsPlanet.Obliquity;
+            planet.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;         
+            planet.orbitRadius = gsPlanet.OrbitRadius;        
+            planet.orbitInclination = gsPlanet.OrbitInclination;
+            planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
+            planet.orbitalPeriod = gsPlanet.OrbitalPeriod;
+            planet.orbitPhase = gsPlanet.OrbitPhase;//1+(index * (360/star.planetCount));
+            planet.obliquity = gsPlanet.Obliquity;
             //planetData.singularity |= gsPlanet.singularity.Layside;
-            planetData.rotationPeriod = gsPlanet.RotationPeriod;
-            planetData.rotationPhase = gsPlanet.RotationPhase;
-            if (isMoon) planetData.sunDistance = star.planets[host.index].orbitRadius;
-            else planetData.sunDistance = planetData.orbitRadius;
-            planetData.radius = gsPlanet.Radius;
-            planetData.segment = 5;
+            planet.rotationPeriod = gsPlanet.RotationPeriod;
+            planet.rotationPhase = gsPlanet.RotationPhase;
+            if (isMoon) planet.sunDistance = star.planets[host.index].orbitRadius;
+            else planet.sunDistance = planet.orbitRadius;
+            planet.radius = gsPlanet.Radius;
+            planet.segment = 5;
             //planetData.singularity |= gsPlanet.singularity.TidalLocked;
             //planetData.singularity |= gsPlanet.singularity.TidalLocked2;
             //planetData.singularity |= gsPlanet.singularity.TidalLocked4;
             //planetData.singularity |= gsPlanet.singularity.ClockwiseRotate;
             //planetData.singularity |= gsPlanet.singularity.TidalLocked;
-            planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planetData.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
-            planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation * Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
+            planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planet.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
+            planet.runtimeSystemRotation = planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
             //GS2.Log("Trying to apply theme " + gsPlanet.Theme);
-            planetData.type = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).PlanetType;
+            planet.type = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).PlanetType;
             //GS2.Log("Applied");
             //Patch.Debug("Type set to " + planetData.type);
-            planetData.scale = 1f;
-            if (planetData.type == EPlanetType.Gas) planetData.scale = 10f;
-            planetData.precision = (int)gsPlanet.Radius;
-            gsPlanet.planetData = planetData;
+            planet.scale = 1f;
+            if (planet.type == EPlanetType.Gas) planet.scale = 10f;
+            if (gsPlanet.scale > 0) planet.scale = gsPlanet.scale;
+            planet.precision = (int)gsPlanet.Radius;
+            gsPlanet.planetData = planet;
             //GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
-            planetData.luminosity = gsPlanet.Luminosity;
+            planet.luminosity = gsPlanet.Luminosity;
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
             Log("Setting Theme|"+gsPlanet.Name);
-            SetPlanetTheme(planetData, gsPlanet);
+            SetPlanetTheme(planet, gsPlanet);
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
-            star.galaxy.astroPoses[planetData.id].uRadius = planetData.realRadius;
-            star.planets[counter] = planetData;
+            star.galaxy.astroPoses[planet.id].uRadius = planet.realRadius;
+            star.planets[counter] = planet;
             //DebugPlanet(planetData);
             GSSettings.Stars[star.index].counter++;
-            if (gsPlanet.MoonCount > 0) CreateMoons(ref planetData, gsPlanet);
+            if (gsPlanet.MoonCount > 0) CreateMoons(ref planet, gsPlanet);
             //Log("PLANET RADIUS "+planetData.radius);
             Log("End|" + gsPlanet.Name);
-            return planetData;
+            return planet;
         }
 
         public static void CreateMoons(ref PlanetData planetData, GSPlanet planet)

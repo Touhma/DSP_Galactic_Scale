@@ -153,7 +153,7 @@ namespace GalacticScale.Generators
 
                 for (var i = 0; i < localStars.Count; i++)
                 {
-                    stars.Add(new GSStar(1, localStars[i].Name, ESpectrType.G, EStarType.MainSeqStar, new List<GSPlanet>()));
+                    stars.Add(new GSStar(1, localStars[i].Name, ESpectrType.G, EStarType.MainSeqStar, new GSPlanets()));
                     stars[stars.Count - 1].position = new VectorLF3(localStars[i].x, localStars[i].y, localStars[i].z);
                     stars[stars.Count - 1].mass = localStars[i].mass;
                     stars[stars.Count - 1].radius = (localStars[i].radius);
@@ -167,11 +167,12 @@ namespace GalacticScale.Generators
 
         public void Generate(int starCount)
         {
-            GSSettings.Stars.Clear();
+            GS2.Warn("Start " + GS2.GetCaller() );
+            GSSettings.Reset(GSSettings.Seed);
             if (starCount > stars.Count) starCount = stars.Count;
             for (var i = 0; i < starCount; i++)
             {
-                GSStar s = stars[i];
+                GSStar s = stars[i].Clone();
                 GSSettings.Stars.Add(s);
             }
             GenerateSol(GSSettings.Stars[0]);
@@ -180,10 +181,30 @@ namespace GalacticScale.Generators
 
         public void GenerateSol(GSStar sol)
         {
-            List<GSPlanet> planets = sol.Planets;
+            GS2.Log("Start" + sol.bodyCount);
+            GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
+            oiler.terrainTint = new UnityEngine.Color(0.388f, 0.239f, 0.113f, .9f);
+            oiler.atmosphereTint = new UnityEngine.Color(0f, 0f, 0f, 1);
+            oiler.thumbTint = new UnityEngine.Color(0.01f, 0.005f, 0f, 0.001f);
+            oiler.PlanetType = EPlanetType.Gas;
+            oiler.TerrainSettings.Algorithm = "GSTA1";
+            oiler.TerrainSettings.HeightMulti = 1.4;
+            oiler.CustomGeneration = true;
+            //oiler.GasItems = new int[3];
+            oiler.GasItems[0] = 1114;
+            oiler.GasItems[1] = 1120;
+
+            oiler.Process();
+            ref GSPlanets planets = ref sol.Planets;
             planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7f, 252f, 10556f, 0, 0.034f, 7038, 0, 9f, null));
             planets.Add(new GSPlanet("Venus", "VolcanicAsh", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177f, 1000, 0, 2.6f, null));
             planets.Add(new GSPlanet("Earth", "Mediterranean", 400, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
+            planets.Add(new GSPlanet("Jumpiter", "GasGiant", 80, 5.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
+            GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f, null));
+            oily.scale = 1f;
+
+
+
         }
 
         public void Import(GSGenPreferences preferences)

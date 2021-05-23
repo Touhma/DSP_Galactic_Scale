@@ -23,7 +23,7 @@ namespace GalacticScale.Generators
         public List<GSUI> Options => options;
 
         private GSGeneratorConfig config = new GSGeneratorConfig();
-        public List<GSPlanet> planets = new List<GSPlanet>();
+        public GSPlanets planets = new GSPlanets();
         public Material oceanMat;
         private float r = 1f;
         private float g = 0.0f;

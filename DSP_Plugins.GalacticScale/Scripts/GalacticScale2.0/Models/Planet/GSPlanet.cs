@@ -25,6 +25,8 @@ namespace GalacticScale
         public bool randomizeVeinAmounts = true;
         public bool randomizeVeinCounts = true;
         [NonSerialized]
+        public float scale = -1;
+        [NonSerialized]
         public PlanetData planetData;
         [NonSerialized]
         public GSVeinSettings veinSettings;
@@ -193,5 +195,15 @@ namespace GalacticScale
             return _rotationPhase;
         }
       
+    }
+    public class GSPlanets : List<GSPlanet>
+    {
+        public GSPlanets() : base() { }
+        public GSPlanets(GSPlanets planets) : base(planets) { }
+        public new GSPlanet Add(GSPlanet gsPlanet)
+        {
+            base.Add(gsPlanet);
+            return gsPlanet;
+        }
     }
 }

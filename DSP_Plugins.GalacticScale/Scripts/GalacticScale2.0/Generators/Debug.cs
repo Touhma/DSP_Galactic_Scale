@@ -93,7 +93,7 @@ namespace GalacticScale.Generators
 
             for (var i = 0; i < ss.Count; i++)
             {
-                stars.Add(new GSStar(1, ss[i].Name,ESpectrType.G,EStarType.MainSeqStar,new List<GSPlanet>()));
+                stars.Add(new GSStar(1, ss[i].Name,ESpectrType.G,EStarType.MainSeqStar,new GSPlanets()));
                 stars[stars.Count - 1].position = new VectorLF3(ss[i].x, ss[i].y, ss[i].z);
                 stars[stars.Count - 1].mass = ss[i].mass;
                 stars[stars.Count - 1].radius = (ss[i].radius);
@@ -168,7 +168,7 @@ namespace GalacticScale.Generators
             {
                 GS2.Log(a.Name);
             }
-            List<GSPlanet> p = new List<GSPlanet>();
+            GSPlanets p = new GSPlanets();
             p.Add(new GSPlanet("Test", "OceanWorld" , 100, 2f, -1, -1, -1, 2f * 1, -1, -1, -1, 1f, null));
             GS2.Log("Wow, this worked. GalacticScale2");
             if (starCount > stars.Count) starCount = stars.Count;
@@ -176,7 +176,7 @@ namespace GalacticScale.Generators
             {
                 //int t = i % 7;
                 //ESpectrType e = (ESpectrType)t;
-                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new List<GSplanet>()));
+                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));
                 
                 GSStar s = stars[i];
                 if (1 < 4) s.Planets = p;

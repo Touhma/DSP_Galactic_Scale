@@ -37,7 +37,7 @@ namespace GalacticScale.Generators
        
         public void Generate(int starCount)
         {
-            List<GSPlanet> p = new List<GSPlanet>();
+            GSPlanets p = new GSPlanets();
             for (var i = 1f;i < 50f; i++)
             p.Add(new GSPlanet("Test", "OceanWorld" , 100, (float)i, -1, -1, -1, 0, -1, -1, -1, 1f, null));
 
