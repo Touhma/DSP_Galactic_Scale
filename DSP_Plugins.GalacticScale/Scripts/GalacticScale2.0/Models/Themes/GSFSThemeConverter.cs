@@ -14,6 +14,7 @@ namespace GalacticScale
 
         protected override fsResult DoSerialize(GSTheme model, Dictionary<string, fsData> serialized)
         {
+            GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
             bool based = model.BaseName != null && model.BaseName != "";
             GS2.Warn("Serializing Theme "+model.Name);
             SerializeMember(serialized, null, "Name", model.Name);
@@ -41,6 +42,7 @@ namespace GalacticScale
             if (!based || model.Wind != baseTheme.Wind) SerializeMember(serialized, null, "Wind", model.Wind);
             if (!based || model.IonHeight != baseTheme.IonHeight) SerializeMember(serialized, null, "IonHeight", model.IonHeight);
             if (!based || model.WaterHeight != baseTheme.WaterHeight) SerializeMember(serialized, null, "WaterHeight", model.WaterHeight);
+            if (!based || model.WaterItemId != baseTheme.WaterItemId) SerializeMember(serialized, null, "WaterItemId", model.WaterItemId);
             if ((!based || !GS2.Utils.ArrayCompare(model.Musics , baseTheme.Musics)) && model.Musics != null && model.Musics.Length > 0) SerializeMember(serialized, null, "Musics", model.Musics);
             if (!based || model.SFXPath != baseTheme.SFXPath) SerializeMember(serialized, null, "SFXPath", model.SFXPath);
             if (!based || model.SFXVolume != baseTheme.SFXVolume) SerializeMember(serialized, null, "SFXVolume", model.SFXVolume);
@@ -56,72 +58,19 @@ namespace GalacticScale
             if ((!based || model.minimapMaterial != baseTheme.minimapMaterial) && model.minimapMaterial != null) SerializeMember(serialized, null, "minimapMaterial", model.minimapMaterial);
             if ((!based || model.minimapTint != baseTheme.minimapTint) && model.minimapTint != new UnityEngine.Color()) SerializeMember(serialized, null, "minimapTint", model.minimapTint);
             if ((!based || model.ambient != baseTheme.ambient)&&model.ambient != null) SerializeMember(serialized, null, "ambient", model.ambient);
+            GS2.Log("GSFSThemeConverter|DoSerialize|End");
             return fsResult.Success;
         }
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSTheme model)
         {
-            //GS2.Log("DoDeserialize");
+            GS2.Log("GSFSThemeConverter|DoDeserialize");
             var result = fsResult.Success;
             model = new GSTheme();
-            //// Deserialize name mainly manually (helper methods CheckKey and CheckType)
-            //fsData veinData;
-            //if (CheckKey(data, "veins", out veinData).Succeeded)
-            //{
-            //    GS2.Log("processing veins");
-            //    if ((result += CheckType(veinData, fsDataType.Array)).Failed) return result;
-            //    GS2.Log("VeinData is Array");
-            //    var veins = veinData.AsList;
-            //    model.veins = new List<GSVein>();
-            //    if (veins[0].IsString)
-
-            //    {
-            //        GS2.Log("Veins[0] is string");
-            //        //new method
-            //        for (var i = 0; i < veins.Count; i++)
-            //        {
-            //            var d = veins[i].AsString.Split(new[] { 'x' }, StringSplitOptions.RemoveEmptyEntries);
-            //            int groupCount;
-            //            float richness;
-            //            int count;
-            //            if (!int.TryParse(d[0], out groupCount)) return fsResult.Fail("groupCount Not Int: " + d[0]);
-            //            if (!float.TryParse(d[2], out richness)) return fsResult.Fail("VeinRichness Not Float: " + d[2]);
-            //            if (!int.TryParse(d[1], out count)) return fsResult.Fail("VeinCount Not Int: " + d[1]);
-            //            for (var j=0;j<groupCount;j++)
-            //            model.veins.Add(new GSVein(count, richness));
-            //        }
-            //    }// end new method
-            //    else
-            //    {
-            //        GS2.Log("Veins[0] not string");
-            //        if ((result += DeserializeMember(data, null, "veins", out model.veins)).Failed) return result;
-            //    }
-
-            //    //end old method
-            //}
-            //fsData generate;
-            //if (CheckKey(data, "generate", out generate).Succeeded)
-            //{
-            //    if (!generate.IsInt64) return fsResult.Fail("generate number not an integer"); 
-            //    var numToGenerate = (int)generate.AsInt64;
-            //    if (numToGenerate < 0) { GS2.Warn("generate number < 0"); numToGenerate = 0; }
-            //    if (numToGenerate > 64) { GS2.Warn("generate number > 64"); numToGenerate = 64; }
-            //    if (numToGenerate < model.veins.Count) { GS2.Warn("generate number < existing vein count"); numToGenerate = 0; }
-            //    numToGenerate -= model.veins.Count;
-            //    for (var i = 0; i < numToGenerate; i++) {
-            //        model.veins.Add(new GSVein());
-            //    }
-            //}
-            //string type;
-            //if ((result += DeserializeMember(data, null, "type", out type)).Failed) return result;
-            //GS2.Log(type);
-            //model.type = GSVeinType.saneVeinTypes[type];
-            //if ((result += DeserializeMember(data, null, "rare", out model.rare)).Failed) return result;
-            //fsData d;
-            //if (CheckKey(data, "PlanetType", out d).Succeeded) 
+           
             DeserializeMember(data, null, "BaseName", out model.BaseName);
             if (model.baseTheme != null) model.CopyFrom(model.baseTheme);
-            //GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
+            GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
             if (data.ContainsKey("Name")) DeserializeMember(data, null, "Name", out model.Name); else model.Name = "Unnamed";
             if (data.ContainsKey("PlanetType")) DeserializeMember(data, null, "PlanetType", out model.PlanetType);
             if (data.ContainsKey("Algo")) DeserializeMember(data, null, "Algo", out model.Algo);
@@ -144,7 +93,8 @@ namespace GalacticScale
             if (data.ContainsKey("GasSpeeds")) DeserializeMember(data, null, "GasSpeeds", out model.GasSpeeds);
             if (data.ContainsKey("Wind")) DeserializeMember(data, null, "Wind", out model.Wind);
             if (data.ContainsKey("IonHeight")) DeserializeMember(data, null, "IonHeight", out model.IonHeight);
-            if (data.ContainsKey("WaterHeight")) DeserializeMember(data, null, "WaterHeight", out model.WaterHeight);
+            if (data.ContainsKey("WaterHeight")) DeserializeMember(data, null, "WaterHeight", out model.WaterHeight); 
+            if (data.ContainsKey("WaterItemId")) DeserializeMember(data, null, "WaterItemId", out model.WaterItemId);
             if (data.ContainsKey("Musics")) DeserializeMember(data, null, "Musics", out model.Musics);
             if (data.ContainsKey("SFXPath")) DeserializeMember(data, null, "SFXPath", out model.SFXPath);
             if (data.ContainsKey("SFXVolume")) DeserializeMember(data, null, "SFXVolume", out model.SFXVolume);
@@ -161,7 +111,7 @@ namespace GalacticScale
             if (data.ContainsKey("minimapTint")) DeserializeMember(data, null, "minimapTint", out model.minimapTint);
             if (data.ContainsKey("ambient")) DeserializeMember(data, null, "ambient", out model.ambient);
             model.Init();
-            //GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
+            GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;
         }
     }

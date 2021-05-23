@@ -6,9 +6,10 @@ namespace GalacticScale
     {
         public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, PlanetData host = null)
         {
+            Log("CreatePlanet|" + gsPlanet.Name);
             bool isMoon = (host != null);
             int index = GSSettings.Stars[star.index].counter;
-            //GS2.Log("GS2.CreatePlanet|" + gsPlanet.Name + "|");
+            GS2.Log("Creating PlanetData");
             PlanetData planetData = new PlanetData();
             int counter = GSSettings.Stars[star.index].counter;
             planetData.index = index;
@@ -25,6 +26,7 @@ namespace GalacticScale
             planetData.number = index + 1;
             planetData.id = star.id * 100 + index + 1;
             gsPlanets.Add(planetData.id, gsPlanet);
+            Log("Setting Roman");
             string roman = "";
             if (isMoon) roman = Scripts.RomanNumbers.roman[host.number + 1] + " - ";
             roman += Scripts.RomanNumbers.roman[index + 1];
@@ -50,7 +52,7 @@ namespace GalacticScale
             planetData.runtimeOrbitRotation = Quaternion.AngleAxis(planetData.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planetData.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
             planetData.runtimeSystemRotation = planetData.runtimeOrbitRotation * Quaternion.AngleAxis(planetData.obliquity, Vector3.forward);
             //GS2.Log("Trying to apply theme " + gsPlanet.Theme);
-            planetData.type = GSSettings.ThemeLibrary[gsPlanet.Theme].PlanetType;
+            planetData.type = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).PlanetType;
             //GS2.Log("Applied");
             //Patch.Debug("Type set to " + planetData.type);
             planetData.scale = 1f;
@@ -61,7 +63,7 @@ namespace GalacticScale
             planetData.luminosity = gsPlanet.Luminosity;
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
-            
+            Log("Setting Theme|"+gsPlanet.Name);
             SetPlanetTheme(planetData, gsPlanet);
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
             star.galaxy.astroPoses[planetData.id].uRadius = planetData.realRadius;
@@ -70,7 +72,7 @@ namespace GalacticScale
             GSSettings.Stars[star.index].counter++;
             if (gsPlanet.MoonCount > 0) CreateMoons(ref planetData, gsPlanet);
             //Log("PLANET RADIUS "+planetData.radius);
-
+            Log("End|" + gsPlanet.Name);
             return planetData;
         }
 

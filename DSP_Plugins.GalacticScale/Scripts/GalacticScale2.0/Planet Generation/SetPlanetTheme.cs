@@ -7,8 +7,9 @@ namespace GalacticScale
          PlanetData planet,
          GSPlanet gsPlanet)
         {
+            Log("Start|" + gsPlanet.Name);
             int seed = 0;
-            GSTheme gsTheme = GSSettings.ThemeLibrary[gsPlanet.Theme];
+            GSTheme gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             int ThemeID = gsTheme.UpdateThemeProtoSet();
             if (gsPlanet.Seed > -1) seed = gsPlanet.Seed;
             System.Random rand = new System.Random(seed);
@@ -47,6 +48,7 @@ namespace GalacticScale
             planet.gasSpeeds = numArray2;
             planet.gasHeatValues = numArray3;
             planet.gasTotalHeat = num1;
+            Log("End");
         }
     }
 }

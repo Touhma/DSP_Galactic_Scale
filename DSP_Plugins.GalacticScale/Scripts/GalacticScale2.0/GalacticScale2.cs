@@ -14,7 +14,8 @@ namespace GalacticScale
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
-
+        public static bool debugOn = false;
+        public static GSUI DebugLogOption;
         public static List<VectorLF3> tmp_poses;
         public static List<VectorLF3> tmp_drunk;
         public static int[] tmp_state;
@@ -26,24 +27,35 @@ namespace GalacticScale
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static bool LoadSettingsFromJson(string path)
         {
+            Log("Start");
             if (!CheckJsonFileExists(path)) return false;
-            //Log("GalacticScale2|LoadSettingsFromJson|path=" + path);
+            Log("Path = " + path);
             fsSerializer serializer = new fsSerializer();
             GSSettings.Stars.Clear();
-            //Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            Log("Initializing ThemeLibrary");
             GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
-            //Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            Log("Reading JSON");
             string json = File.ReadAllText(path);
+            //Log(json);
             GSSettings result = GSSettings.Instance;
-            //Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            Log("Parsing JSON");
             fsData data2 = fsJsonParser.Parse(json);
-            //Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            //LogJson(data2);
+            Log("Trying To Deserialize JSON");
             serializer.TryDeserialize<GSSettings>(data2, ref result);
-            //Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            Log("Setting GSSettings.Instance");
             GSSettings.Instance = result;
-            //Log("GalacticScale2|LoadSettingsFromJson|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            Log("End");
             return true;
 
+        }
+        public static void DebugLogOptionCallback(object o)
+        {
+            debugOn = (bool)o;
+        }
+        public static void DebugLogOptionPostfix()
+        {
+            DebugLogOption.Set(debugOn);
         }
         public static GSPlanet GetGSPlanet(PlanetData planet)
         {
@@ -51,27 +63,22 @@ namespace GalacticScale
         }
         private static bool CheckJsonFileExists(string path)
         {
-            //Log("Checking if Json File Exists");
+            Log("Checking if Json File Exists");
             if (File.Exists(path)) return true;
-            //Log("Json file does not exist at " + path);
+            Log("Json file does not exist at " + path);
             return false;
         }
         public static void SaveSettingsToJson(string path)
         {
-            //Log("Saving Settings to " + path);
+            Log("Saving Settings to " + path);
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize<GSSettings>(GSSettings.Instance, out fsData data).AssertSuccessWithoutWarnings();
             string json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
+            Log("End");
 
         }
-        public static void LogJson(object o)
-        {
-            fsSerializer serializer = new fsSerializer();
-            serializer.TrySerialize(o, out fsData data).AssertSuccessWithoutWarnings();
-            string json = fsJsonPrinter.PrettyJson(data);
-            Log(json);
-        }
+
         public static void DumpObjectToJson(string path, object obj)
         {
             Log("Dumping Object to " + path);
@@ -79,32 +86,53 @@ namespace GalacticScale
             serializer.TrySerialize(obj, out fsData data).AssertSuccessWithoutWarnings();
             string json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
+            Log("End");
         }
         public static void Log(string s)
         {
-            
-            // Get call stack
+            if (debugOn) Bootstrap.Debug(GetCaller() +s);
+        }
+        public static void Error(string message)
+        {
+            Bootstrap.Debug(GetCaller()+message, BepInEx.Logging.LogLevel.Error, true);
+        }
+        public static void Warn(string message)
+        {
+            Bootstrap.Debug(GetCaller() + message, BepInEx.Logging.LogLevel.Warning, true);
+        }
+        public static void LogJson(object o)
+        {
+            if (!debugOn) return;
+            fsSerializer serializer = new fsSerializer();
+            serializer.TrySerialize(o, out fsData data).AssertSuccessWithoutWarnings();
+            string json = fsJsonPrinter.PrettyJson(data);
+            Bootstrap.Debug(GetCaller() + json);
+        }
+        public static string GetCaller()
+        {
             StackTrace stackTrace = new StackTrace();
-            // Get calling method name
-            Bootstrap.Debug(stackTrace.GetFrame(1).GetMethod().Name);
-            Bootstrap.Debug(s);
+            string methodName = stackTrace.GetFrame(2).GetMethod().Name;
+            string[] classPath = stackTrace.GetFrame(2).GetMethod().ReflectedType.ToString().Split('.');
+            string className = classPath[classPath.Length - 1];
+            if (methodName == ".ctor") methodName = "<Constructor>";
+            return className+"|"+methodName+"|";
         }
         public static void Export(BinaryWriter w) // Export Settings to SaveGame
         {
-            //Log("()()()Exporting to Save");
+            Log("Exporting to Save");
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize(GSSettings.Instance, out fsData data);
             string json = fsJsonPrinter.CompressedJson(data);
             int length = json.Length;
             w.Write(GSSettings.Instance.version);
             w.Write(json);
-            //Log("()()()Exported");
+            Log("Exported. Resetting GSSettings");
             GSSettings.Reset(GSSettings.Seed);
-
+            Log("End");
         }
         public static void Import(BinaryReader r) // Load Settings from SaveGame
         {
-            //Log("()()()Importing from Save");
+            Log("Importing from Save");
             GSSettings.Stars.Clear();
             fsSerializer serializer = new fsSerializer();
             string version = r.ReadString();
@@ -118,107 +146,119 @@ namespace GalacticScale
             }
             GSSettings.Instance = result;
             GSSettings.Instance.imported = true;
-            //Log("()()()Imported");
+            Log("End");
         }
         public static void GenerateGalaxy()
         {
+            Log("Start");
             if (GSSettings.Instance.imported)
             {
-                //Log("Settings Loaded From Save File");
+                Log("Settings Loaded From Save File");
                 return;
             }
             GSSettings.Reset(GSSettings.Seed);
             gsPlanets.Clear();
-            //Log("Loading Data from Generator : " + generator.Name);
+            Log("Loading Data from Generator : " + generator.Name);
             generator.Generate(gameDesc.starCount);
+            Log("End");
             return;
         }
         public static void SavePreferences()
         {
-            //Log("Saving Preferences");
-            Preferences preferences = new Preferences();
+            Log("Start");
+            GSPreferences preferences = new GSPreferences();
             preferences.GeneratorID = generator.GUID;
-            //Log("Set the GeneratorID, now trying to get the plugin prefs");
+            preferences.debug = debugOn;
+            Log("Set the GeneratorID, now trying to get the plugin prefs");
             foreach (iGenerator g in generators)
             {
                 if (g is iConfigurableGenerator)
                 {
                     iConfigurableGenerator gen = g as iConfigurableGenerator;
-                    //Log("trying to get prefs for " + gen.Name);
+                    Log("trying to get prefs for " + gen.Name);
                     GSGenPreferences prefs = gen.Export();
-                    //Log(gen.Name + " has supplied preferences");
+                    Log(gen.Name + " has supplied preferences");
                     preferences.PluginOptions[gen.GUID] = prefs;
-                    //Log("Finished adding preferences to GS preferences object for " + gen.Name);
+                    Log("Finished adding preferences to GS preferences object for " + gen.Name);
                 }
             }
             fsSerializer serializer = new fsSerializer();
-            //Log("Trying to serialize preferences object");
+            Log("Trying to serialize preferences object");
             serializer.TrySerialize(preferences, out fsData data);
-            //Log("serialized");
+            Log("Serialized");
             string json = fsJsonPrinter.PrettyJson(data);
-            //Log(json);
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
+            Log("End");
         }
 
 
-        private class Preferences
+        private class GSPreferences
         {
+            public bool debug = false;
             public string GeneratorID = "space.customizing.vanilla";
             public Dictionary<string, GSGenPreferences> PluginOptions = new Dictionary<string, GSGenPreferences>();
         }
         public static void Init()
         {
-            //Log("GalacticScale2|Init");
-            //Log("GalacticScale2|Init|ThemeLibrary.Count=" + ThemeLibrary.Count);
+            LoadPreferences(true);
+            Log("Start"+debugOn.ToString());
             List<GSTheme> themes = new List<GSTheme>();
-            //Log("GalacticScale2|Creating List of Themes");
+            Log("GalacticScale2|Creating List of Themes");
             foreach (KeyValuePair<string, GSTheme> t in ThemeLibrary) themes.Add(t.Value);
-            //Log("GalacticScale2|Init|Processing Themes");
+            Log("GalacticScale2|Init|Processing Themes");
             for (var i = 0; i < themes.Count; i++)
             {
                 themes[i].Process();
             }
-            //Log("GalacticScale2|Init->End");
+            Log("End");
         }
           
-        public static void LoadPreferences()
+        public static void LoadPreferences(bool debug = false)
         {
-            //Log("GalacticScale2|LoadPreferences");
+            Log("Start");
             string path = Path.Combine(DataDir, "Preferences.json");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             if (!CheckJsonFileExists(path)) return;
-            //Log("Loading Preferences from " + path);
+            Log("Loading Preferences from " + path);
             fsSerializer serializer = new fsSerializer();
             string json = File.ReadAllText(path);
-            Preferences result = new Preferences();
-            //Log("LoadPreferences Initial " + result.GeneratorID);
+            GSPreferences preferences = new GSPreferences();
+            Log("LoadPreferences Initial " + preferences.GeneratorID);
             fsData data2 = fsJsonParser.Parse(json);
-            serializer.TryDeserialize<Preferences>(data2, ref result);
-            //Log("LoadPreferences Result " + result.GeneratorID);
-            ParsePreferences(result);
+            serializer.TryDeserialize<GSPreferences>(data2, ref preferences);
+            Log("LoadPreferences Result " + preferences.GeneratorID);
+            if (!debug) ParsePreferences(preferences);
+            else
+            {
+                Warn(preferences.debug.ToString() + "<- debug");
+                debugOn = preferences.debug;
+            }
+            Log("End");
         }
-        private static void ParsePreferences(Preferences p)
+        private static void ParsePreferences(GSPreferences p)
         {
-            //Log("GalacticScale2|ParsePreferences");
+            Log("Start");
+            debugOn = p.debug;
             generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
             {
                 foreach (KeyValuePair<string, GSGenPreferences> pluginOptions in p.PluginOptions)
                 {
-                    //Log("Plugin Options for " + pluginOptions.Key + "found");
+                    Log("Plugin Options for " + pluginOptions.Key + "found");
                     iConfigurableGenerator gen = GetGeneratorByID(pluginOptions.Key) as iConfigurableGenerator;
                     if (gen != null)
                     {
-                        //Log(gen.Name + " preferences exported");
+                        Log(gen.Name + " preferences exported");
                         gen.Import(pluginOptions.Value);
                     }
                 }
             }
+            Log("End");
         }
 
         public static void LoadPlugins()
         {
-            //Log("GalacticScale2|LoadPlugins");
+            Log("Start");
             foreach (string filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
             {
                 Log(filePath);
@@ -229,18 +269,12 @@ namespace GalacticScale
             }
             foreach (iGenerator g in generators)
             {
-                //Log("GalacticScale2|LoadPlugins|Loading Generator:" + g.Name);
+                Log("GalacticScale2|LoadPlugins|Loading Generator:" + g.Name);
                 g.Init();
             }
+            Log("End");
         }
-        public static void Error(string message)
-        {
-            Bootstrap.Debug(message, BepInEx.Logging.LogLevel.Error, true);
-        }
-        public static void Warn(string message)
-        {
-            Bootstrap.Debug(message, BepInEx.Logging.LogLevel.Warning, true);
-        }
+
     }
 }
 

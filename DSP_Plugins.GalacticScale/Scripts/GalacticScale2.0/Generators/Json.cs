@@ -29,30 +29,36 @@ namespace GalacticScale.Generators
         private string dumpFilename = "_dump";
         public void Init()
         {
+            GS2.Log("Generator:Json|Init");
             RefreshFileNames();
-            //GS2.Log("Json.cs:Init: filename count = " + filenames.Count);
+            GS2.Log("Generator:Json|Init|FileCount = "+filenames.Count);
             options.Add(new GSUI("Custom Galaxy", "Combobox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
             options.Add(new GSUI("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
             options.Add(new GSUI("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
+            GS2.Log("Generator:Json|Init|End");
         }
         public List<GSUI> options = new List<GSUI>();
         public void Generate(int starCount)
         {
-            //GS2.Log("Json Importer Generating");
+            GS2.Log("Generator:Json|Generate");
             string path = Path.Combine(Path.Combine(GS2.DataDir,"CustomGalaxies"), filename + ".json");
             GS2.LoadSettingsFromJson(path);
+            GS2.Log("Generator:Json|Generate|End");
         }
 
         public void Import(GSGenPreferences preferences)
         {
-            //GS2.Log("Importing JSON Preferences");
+            GS2.Log("Importing JSON Preferences");
+            GS2.Log("Generator:Json|Import");
             if (preferences != null && preferences.ContainsKey("filename")) filename = (string)preferences["filename"];
             //if (preferences != null && preferences.ContainsKey("dumpFilename")) dumpFilename = (string)preferences["dumpFilename"];
             dumpFilename = preferences.GetString("dumpFilename", dumpFilename);
+            GS2.Log("Generator:Json|Import|End");
         }
 
         public GSGenPreferences Export()
         {
+            GS2.Log("Generator:Json|Export");
             return new GSGenPreferences() { { "filename", filename }, { "dumpFilename", dumpFilename } };
         }
         public void CustomFileSelectorCallback(object result)

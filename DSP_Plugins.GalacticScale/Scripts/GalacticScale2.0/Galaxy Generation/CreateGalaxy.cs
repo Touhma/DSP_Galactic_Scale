@@ -7,11 +7,17 @@ namespace GalacticScale
     {
         public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
+            Log("Start");
             gameDesc = desc;
+            Log("Generating Galaxy");
             GenerateGalaxy();
+            Log("Galaxy Generated");
+            Log("Stars = " + GSSettings.Stars?.ToString());
             gameDesc.starCount = GSSettings.starCount;
+            Log("Processing ThemeLibrary");
             if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
             else ThemeLibrary = GSSettings.ThemeLibrary;
+            Log("Generating TempPoses");
             int tempPoses = GenerateTempPoses(
                 random.Next(),
                 GSSettings.starCount,
@@ -21,18 +27,29 @@ namespace GalacticScale
                 GSSettings.GalaxyParams.maxStepLength,
                 GSSettings.GalaxyParams.flatten
                 );
+            Log("Creating new GalaxyData");
             galaxy = new GalaxyData();
             galaxy.seed = GSSettings.Seed;
             galaxy.starCount = GSSettings.starCount;
             galaxy.stars = new StarData[GSSettings.starCount];
-            if (GSSettings.starCount <= 0) return galaxy;
+            
+            if (GSSettings.starCount <= 0) {
+                Log("StarCount <=0, returning galaxy");
+                return galaxy;
+            }
+            Log("Initializing AstroPoses");
             InitializeAstroPoses();
+            Log("AstroPoses Initialized");
             if (createPlanets)
             {
+                Log("Setting up Birth Planet");
                 SetupBirthPlanet();
+                Log("Generating Veins");
                 GenerateVeins();
             }
+            Log("Creating Galaxy StarGraph");
             UniverseGen.CreateGalaxyStarGraph(galaxy);
+            Log("End");
             return galaxy;
         }
         public static void SetupBirthPlanet() {
@@ -76,8 +93,11 @@ namespace GalacticScale
         {
             var gSize = galaxy.starCount > 64 ? galaxy.starCount * 4 * 100 : 25600;
             galaxy.astroPoses = new AstroPose[gSize];
+            Log("Creating Stars");
             for (var i = 0; i < GSSettings.starCount; i++) galaxy.stars[i] = CreateStar(i);
+            Log("Creating Planets");
             for (var i = 0; i < GSSettings.starCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
+            Log("Planets have been creates");
             AstroPose[] astroPoses = galaxy.astroPoses;
             for (int index = 0; index < galaxy.astroPoses.Length; ++index)
             {
@@ -90,7 +110,9 @@ namespace GalacticScale
                 astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;
                 astroPoses[galaxy.stars[index].id * 100].uRadius = galaxy.stars[index].physicsRadius;
             }
+            Log("Updating Poses");
             galaxy.UpdatePoses(0.0);
+            Log("End");
         }
     }
 }

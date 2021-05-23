@@ -57,7 +57,12 @@ namespace GalacticScale
         }
         public GSTheme Find(string name)
         {
-            if (!ContainsKey(name)) return Themes.Mediterranean;
+            if (!ContainsKey(name))
+            {
+                string s = GS2.GetCaller();
+                GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > "+s);
+                return Themes.Mediterranean;
+            }
             return this[name];
         }
         public List<string> Hot

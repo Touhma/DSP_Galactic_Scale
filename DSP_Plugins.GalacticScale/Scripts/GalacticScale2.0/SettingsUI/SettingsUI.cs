@@ -37,7 +37,7 @@ namespace GalacticScale
         private static float anchorX;
         private static float anchorY;
 
-        private static List<GSUI> options = new List<GSUI>();
+        private static GSOptions options = new GSOptions();
 
         public static UnityEvent OptionsUIPostfix = new UnityEvent();
 
@@ -203,6 +203,7 @@ namespace GalacticScale
             //GS2.Log("CreateOwnOptions()");
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
             options.Add(new GSUI("Generator", "Combobox", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
+            GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log", false, GS2.DebugLogOptionCallback, GS2.DebugLogOptionPostfix));
         }
         private static void CreateOwnOptionsPostFix()
         {

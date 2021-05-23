@@ -50,34 +50,34 @@ namespace GalacticScale
 		public int[] Vegetables3 = new int[] {};
 		public int[] Vegetables4 = new int[] {};
 		public int[] Vegetables5 = new int[] {};
-		public int[] VeinSpot = new int[] { 
-				7,
-				5,
-				0,
-				0,
-				8,
-				11,
-				18 
-		};
-		public float[] VeinCount = new float[] {0.7f,
-				0.6f,
-				0.0f,
-				0.0f,
-				1.0f,
-				1.0f,
-				1.0f };
-		public float[] VeinOpacity = new float[] {0.6f,
-				0.5f,
-				0.0f,
-				0.0f,
-				0.7f,
-				1.0f,
-				1.0f };
-		public int[] RareVeins = new int[] {11 };
-		public float[] RareSettings = new float[] {0.0f,
-				1.0f,
-				0.3f,
-				0.3f };
+		public int[] VeinSpot = new int[] { };
+		//		7,
+		//		5,
+		//		0,
+		//		0,
+		//		8,
+		//		11,
+		//		18 
+		//};
+		public float[] VeinCount = new float[] { };//0.7f,
+												   //0.6f,
+												   //0.0f,
+												   //0.0f,
+												   //1.0f,
+												   //1.0f,
+												   //1.0f };
+		public float[] VeinOpacity = new float[] { };//0.6f,
+													 //0.5f,
+													 //0.0f,
+													 //0.0f,
+													 //0.7f,
+													 //1.0f,
+													 //1.0f };
+		public int[] RareVeins = new int[] { };//11 };
+		public float[] RareSettings = new float[] { };//0.0f,
+													  //1.0f,
+													  //0.3f,
+													  //0.3f };
 		public int[] GasItems = new int[] {};
 		public float[] GasSpeeds = new float[] {};
 		public bool UseHeightForBuild = false;

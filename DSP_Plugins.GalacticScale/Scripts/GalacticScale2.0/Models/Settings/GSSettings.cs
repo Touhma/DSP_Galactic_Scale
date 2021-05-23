@@ -1,18 +1,20 @@
-﻿using System;
+﻿using FullSerializer;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
 {
+    [fsObject(Converter = typeof(GSFSSettingsConverter))]
     public class GSSettings
     {
         private static GSSettings instance = new GSSettings(0);
         [SerializeField]
-        private int seed = 1;
+        public int seed = 1;
         [SerializeField]
-        private  List<GSStar> stars = new List<GSStar>();
+        public  List<GSStar> stars = new List<GSStar>();
         [SerializeField]
-        private galaxyParams galaxyParams = new galaxyParams();
+        public GSGalaxyParams galaxyParams = new GSGalaxyParams();
         public string version = "2.0";
         [NonSerialized]
         public bool imported = false;
@@ -24,23 +26,26 @@ namespace GalacticScale
         public static GSPlanet BirthPlanet { get => BirthStar.Planets[birthPlanetId]; }
         public static int birthStarId = -1;
         public static int birthPlanetId = -1;
-        public static galaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
+        public static GSGalaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
         public static ThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         [SerializeField]
-        private ThemeLibrary themeLibrary = GS2.ThemeLibrary;// ThemeLibrary.Vanilla();// new ThemeLibrary(true);//GS2.ThemeLibrary; 
+        public ThemeLibrary themeLibrary = GS2.ThemeLibrary;// ThemeLibrary.Vanilla();// new ThemeLibrary(true);//GS2.ThemeLibrary; 
         public static GSSettings Instance { get { return instance; } set { instance = value; } }
       
 
         public GSSettings(int seed)
         {
+            GS2.Log("Start");
             this.seed = seed;
+            GS2.Log("End");
         }
         public static void Reset(int seed)
         {
-            //GS2.Log("GSSettings|Reset");
+            GS2.Log("Start");
             instance = new GSSettings(seed);
-            GalaxyParams = new galaxyParams();
+            GalaxyParams = new GSGalaxyParams();
             Stars.Clear();
+            GS2.Log("End");
         }
         public int getPlanetCount()
         {
@@ -49,7 +54,7 @@ namespace GalacticScale
             return count;
         }
     }
-    public class galaxyParams
+    public class GSGalaxyParams
     {
         public int iterations = 4;
         public double minDistance = 2;
