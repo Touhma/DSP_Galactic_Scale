@@ -501,7 +501,14 @@ namespace GalacticScale
 			SetColor(terrainMat, "_AmbientColor1", c);
 			SetColor(terrainMat, "_AmbientColor2", c);
 			SetColor(terrainMat, "_LightColorScreen", c);
-		}
+            SetColor(terrainMat, "_HeightEmissionColor", c);
+            SetColor(terrainMat, "_SpeclColor", c);
+            SetColor(terrainMat, "_EmissionColor", c);
+            //SetColor(terrainMat, "_BioTex1A", c);
+            //SetColor(terrainMat, "_BioTex1N", c);
+            //SetColor(terrainMat, "_BioTex2A", c);
+            //SetColor(terrainMat, "_BioTex2N", c);
+        }
 
 		public void SetColor(Material mat, string name, Color c)
         {
@@ -513,8 +520,9 @@ namespace GalacticScale
 			Color origGrayScale = new Color(gs, gs, gs);
 			float lerp = c.a;
 			Color toColor = new Color(c.r, c.g, c.b, a);
-			mat.SetColor(name, Color.Lerp(origGrayScale,toColor, lerp));
-		}
+			//mat.SetColor(name, c);
+            mat.SetColor(name, Color.Lerp(origGrayScale, toColor, lerp));
+        }
 		public void TintAtmosphere(Color c)
 		{
 			if (atmosMat == null) return;
@@ -535,7 +543,8 @@ namespace GalacticScale
 			SetColor(atmosMat, "_Sky2", c);
 			SetColor(atmosMat, "_Sky3", c);
 			SetColor(atmosMat, "_Sky4", c);
-		}
+            SetColor(atmosMat, "_EmissionColor", c);
+        }
 		public void TintOcean(Color c)
         {
 			if (oceanMat == null) return;
