@@ -145,9 +145,11 @@ namespace GalacticScale
 			GS2.Log(Name + "-" + VeinSpot.Length.ToString());
 			List<float> _rareSettings = new List<float>();
 			List<int> _rareVeins = new List<int>();
-			VeinSpot = new int[PlanetModelingManager.veinProtos.Length];
-			VeinOpacity = new float[PlanetModelingManager.veinProtos.Length];
-			VeinCount = new float[PlanetModelingManager.veinProtos.Length];
+			int veinArrayLength = 25;
+			if (PlanetModelingManager.veinProtos != null) veinArrayLength = PlanetModelingManager.veinProtos.Length;
+			VeinSpot = new int[veinArrayLength];
+			VeinOpacity = new float[veinArrayLength];
+			VeinCount = new float[veinArrayLength];
 		
 			for (var i = 0; i < VeinSettings.VeinTypes.Count; i++)
 			{ // For each EVeinType
@@ -166,30 +168,37 @@ namespace GalacticScale
 					opacity += v.richness;
 				}
 				GS2.Log("Count:" + count + " Opacity:" + opacity);
-				if ((int)type < 7)
+				if ((int)type < 8)
 				{
-					GS2.Log("Not Rare");
+					GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)="+(int)type);
 					VeinOpacity[(int)type - 1] = opacity / veinCount;
 					VeinCount[(int)type - 1] = count / 25 / veinCount;
 					VeinSpot[(int)type - 1] = veinCount;
+					GS2.Log(type.ToString() +"| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
 				}
 				else
 				{  //Special
 					GS2.Log("Rare");
 					var specialOpacity = opacity / veinCount;
-					var specialCount = count / veinCount;
+					var specialCount = veinCount;
 					//var specialNumber = count / veinCount;
 					//var specialIndex = RareVeins.Length;
 					//var specialSettingsIndex = specialIndex * 4;
 					_rareVeins.Add((int)type);
 					_rareSettings.Add(0); //Chance to spawn on birth star planet
-					_rareSettings.Add(1); //Chance to spawn on non birth star planet
-					_rareSettings.Add(specialCount/12); //Chance for extra vein to spawn
-					_rareSettings.Add(specialOpacity * specialCount); //Stupidly combined count and opacity
+					_rareSettings.Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
+					_rareSettings.Add(specialCount/25); //Chance for extra vein to spawn
+					_rareSettings.Add(specialOpacity); //Stupidly combined count and opacity
 				}
 			}
 			RareSettings = _rareSettings.ToArray();
 			RareVeins = _rareVeins.ToArray();
+			GS2.Log("VeinSpot");
+			GS2.LogJson(VeinSpot);
+			GS2.Log("VeinCount");
+			GS2.LogJson(VeinCount);
+			GS2.Log("VeinOpacity");
+			GS2.LogJson(VeinOpacity);
 			GS2.Log("RareSettings");
 			GS2.LogJson(RareSettings);
 			GS2.Log("RareVeins");
