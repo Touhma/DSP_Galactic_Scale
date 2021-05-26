@@ -8,6 +8,10 @@ namespace GalacticScale
     {
         public static class Utils
         {
+            public static GSPlanet GetGSPlanet(PlanetData planet)
+            {
+                return gsPlanets[planet.id];
+            }
             public static bool ArrayCompare<T>(T[] a1, T[] a2) {
                 return a1.SequenceEqual(a2);
             }

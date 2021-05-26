@@ -17,7 +17,7 @@ namespace GalacticScale
 			if (DSPGame.IsMenuDemo) return true;
 			if (GS2.Vanilla) return true;
 			//GS2.Log("CHOOSING ALGORITHM FOR " + planet.displayName + " rawdata?"+(planet.data != null));
-            GSPlanet gsPlanet = GS2.GetGSPlanet(planet);
+            GSPlanet gsPlanet = GS2.Utils.GetGSPlanet(planet);
 			GSTheme gsTheme = GS2.ThemeLibrary.Find(gsPlanet.Theme);
 			//GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
 			if (!GS2.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration)

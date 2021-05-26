@@ -18,7 +18,7 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.customjson";
 
-        public List<GSUI> Options => options;
+        public GSOptions Options => options;
 
         public bool DisableStarCountSlider => true;
 
@@ -37,7 +37,7 @@ namespace GalacticScale.Generators
             options.Add(new GSUI("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
             GS2.Log("Generator:Json|Init|End");
         }
-        public List<GSUI> options = new List<GSUI>();
+        public GSOptions options = new GSOptions();
         public void Generate(int starCount)
         {
             GS2.Log("Generator:Json|Generate");

@@ -39,7 +39,7 @@ namespace GalacticScale
         {
             this[key] = value.ToString();
         }
-        public string Serialize(string key, object value)
+        public string SerializeAndSet(string key, object value)
         {
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize(value, out fsData data);
