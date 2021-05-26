@@ -91,6 +91,7 @@ namespace GalacticScale
 		public string ambient;
 		[NonSerialized]
 		public AudioClip ambientSfx;
+		public GSAmbientSettings AmbientSettings;
 
 		// ////////////////////////////////////////
 		// / Constructor
@@ -101,7 +102,8 @@ namespace GalacticScale
 			DisplayName = displayName;
 			Name = name;
 			if (GS2.ThemeLibrary.ContainsKey(baseName)) { 
-				this.BaseName = baseName; 
+				this.BaseName = baseName;
+				GS2.Log("About to Copy From");
 				CopyFrom(baseTheme); 
 			}
 			else GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
@@ -115,7 +117,16 @@ namespace GalacticScale
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
-            if (VeinSettings.Enabled) ConvertVeinData();
+			if (AmbientSettings == null)
+			{
+				AmbientSettings = new GSAmbientSettings();
+				AmbientSettings.FromTheme(this);
+			} else
+            {
+				AmbientSettings.ToTheme(this);
+            }
+			
+            if (VeinSettings.RequiresConversion) ConvertVeinData();
             else PopulateVeinData();
             if (VegeSettings.Group1.Count == 0) PopulateVegeData();
 			else ConvertVegeData();
@@ -168,29 +179,30 @@ namespace GalacticScale
 					opacity += v.richness;
 				}
 				GS2.Log("Count:" + count + " Opacity:" + opacity);
-				if ((int)type < 8)
-				{
-					GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)="+(int)type);
-					VeinOpacity[(int)type - 1] = opacity / veinCount;
-					VeinCount[(int)type - 1] = count / 25 / veinCount;
-					VeinSpot[(int)type - 1] = veinCount;
-					GS2.Log(type.ToString() +"| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
-				}
-				else
-				{  //Special
-					GS2.Log("Rare");
-					var specialOpacity = opacity / veinCount;
-					var specialCount = veinCount;
-					//var specialNumber = count / veinCount;
-					//var specialIndex = RareVeins.Length;
-					//var specialSettingsIndex = specialIndex * 4;
-					_rareVeins.Add((int)type);
-					_rareSettings.Add(0); //Chance to spawn on birth star planet
-					_rareSettings.Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
-					_rareSettings.Add(specialCount/25); //Chance for extra vein to spawn
-					_rareSettings.Add(specialOpacity); //Stupidly combined count and opacity
-				}
-			}
+                //if ((int)type < 8)
+                if (vt.rare)
+                {  //Special
+                    GS2.Log("Rare");
+                    var specialOpacity = opacity / veinCount;
+                    var specialCount = veinCount;
+                    //var specialNumber = count / veinCount;
+                    //var specialIndex = RareVeins.Length;
+                    //var specialSettingsIndex = specialIndex * 4;
+                    _rareVeins.Add((int)type);
+                    _rareSettings.Add(1); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
+                    _rareSettings.Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
+                    _rareSettings.Add(specialCount / 25); //Chance for extra vein to spawn
+                    _rareSettings.Add(specialOpacity); //Stupidly combined count and opacity
+                }
+                else
+                {
+                    GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)=" + (int)type);
+                    VeinOpacity[(int)type - 1] = opacity / veinCount;
+                    VeinCount[(int)type - 1] = count / 25 / veinCount;
+                    VeinSpot[(int)type - 1] = veinCount;
+                    GS2.Log(type.ToString() + "| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
+                }
+            }
 			RareSettings = _rareSettings.ToArray();
 			RareVeins = _rareVeins.ToArray();
 			GS2.Log("VeinSpot");
@@ -266,6 +278,7 @@ namespace GalacticScale
 		/// </summary>
 		/// <param name="baseTheme"></param>
 		public void CopyFrom(GSTheme baseTheme) {
+			GS2.Log("Copying from " + baseTheme.Name);
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
 			Algo = baseTheme.Algo;
 			PlanetType = baseTheme.PlanetType;
@@ -312,6 +325,11 @@ namespace GalacticScale
 			minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
 			ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
 			ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
+			GS2.Log("Copying ambientSettings");
+			if (PlanetType != EPlanetType.Gas) {
+				if (baseTheme.AmbientSettings == null) { baseTheme.AmbientSettings = new GSAmbientSettings(); baseTheme.AmbientSettings.FromTheme(baseTheme); }
+				if (baseTheme.AmbientSettings != null) AmbientSettings = baseTheme.AmbientSettings.Clone();
+			}
 		}
 
 		/// <summary>
@@ -524,10 +542,11 @@ namespace GalacticScale
 			Color origColor = mat.GetColor(name);
 			float gs = origColor.grayscale;
 			float a = origColor.a;
-			Color origGrayScale = new Color(gs, gs, gs);
+			Color origGrayScale = new Color(gs, gs, gs, a);
 			float lerp = c.a;
 			Color toColor = new Color(c.r, c.g, c.b, a);
-			//mat.SetColor(name, c);
+            //mat.SetColor(name, c);
+            //mat.SetColor(name, origGrayScale);
             mat.SetColor(name, Color.Lerp(origGrayScale, toColor, lerp));
         }
 		public void TintAtmosphere(Color c)

@@ -21,7 +21,7 @@ namespace GalacticScale
         public static void Import(BinaryReader r) // Load Settings from Save Game
         {
             Log("Importing from Save");
-            GSSettings.Stars.Clear();
+            GSSettings.Reset(0);
             fsSerializer serializer = new fsSerializer();
             string version = r.ReadString();
             string json = r.ReadString();

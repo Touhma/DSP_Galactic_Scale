@@ -54,6 +54,7 @@ namespace GalacticScale
             if ((!based || model.minimapMaterial != baseTheme.minimapMaterial) && model.minimapMaterial != null) SerializeMember(serialized, null, "minimapMaterial", model.minimapMaterial);
             if ((!based || model.minimapTint != baseTheme.minimapTint) && model.minimapTint != new UnityEngine.Color()) SerializeMember(serialized, null, "minimapTint", model.minimapTint);
             if ((!based || model.ambient != baseTheme.ambient)&&model.ambient != null) SerializeMember(serialized, null, "ambient", model.ambient);
+            if ((!based || model.AmbientSettings.ToString() != baseTheme.AmbientSettings.ToString()) && model.AmbientSettings != null) SerializeMember(serialized, null, "AmbientSettings", model.AmbientSettings); 
             GS2.Log("GSFSThemeConverter|DoSerialize|End");
             return fsResult.Success;
         }
@@ -103,6 +104,7 @@ namespace GalacticScale
             if (data.ContainsKey("minimapMaterial")) DeserializeMember(data, null, "minimapMaterial", out model.minimapMaterial);
             if (data.ContainsKey("minimapTint")) DeserializeMember(data, null, "minimapTint", out model.minimapTint);
             if (data.ContainsKey("ambient")) DeserializeMember(data, null, "ambient", out model.ambient);
+            if (data.ContainsKey("AmbientSettings")) DeserializeMember(data, null, "AmbientSettings", out model.AmbientSettings);
             model.Init();
             GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;

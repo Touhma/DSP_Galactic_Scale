@@ -86,10 +86,11 @@ namespace GalacticScale
         public static List<GSVeinDescriptor> DistributeVeinTypes(List<GSVeinType> veinGroups)
         {
             bool[] disabled = new bool[16];
-            for (var i = 9; i < 15; i++)
+            for (var i = 8; i < 16; i++)
             {
                 if (random.NextDouble() < 0.87) disabled[i] = true;
                 else disabled[i] = false;
+                if (GS2.Force1RareChance) disabled[i] = false;
             }
             int maxVeinGroupSize = MaxCount(veinGroups);
             List<GSVeinDescriptor> distributed = new List<GSVeinDescriptor>();
@@ -134,7 +135,7 @@ namespace GalacticScale
                 {
                     continue;
                 }
-                if (veinGroups[i].rare && (gsPlanet.planetData.star.level + 0.1) < random.NextDouble() * random.NextDouble()) continue;
+                if (!GS2.Force1RareChance && veinGroups[i].rare && (gsPlanet.planetData.star.level + 0.1) < random.NextDouble() * random.NextDouble()) continue;
                 GSVeinDescriptor v = veinGroups[i];
                 if (v.position != Vector3.zero) continue;
                 bool oreVein = v.type != EVeinType.Oil;

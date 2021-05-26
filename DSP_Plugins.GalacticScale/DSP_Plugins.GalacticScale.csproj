@@ -144,6 +144,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugOptions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain5.cs" />

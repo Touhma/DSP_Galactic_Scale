@@ -184,7 +184,8 @@ namespace GalacticScale.Generators
         {
             GS2.Log("Start" + sol.bodyCount);
             GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
-            oiler.terrainTint = new UnityEngine.Color(0.388f, 0.239f, 0.113f, .9f);
+            GS2.Log("Oiler Created");
+            oiler.terrainTint = new UnityEngine.Color(0.3f, 0.3f, 0.3f, 1f);
             oiler.atmosphereTint = new UnityEngine.Color(0f, 0f, 0f, 1);
             oiler.thumbTint = new UnityEngine.Color(0.01f, 0.005f, 0f, 0.001f);
             oiler.PlanetType = EPlanetType.Gas;
@@ -194,40 +195,51 @@ namespace GalacticScale.Generators
             //oiler.GasItems = new int[3];
             oiler.GasItems[0] = 1114;
             oiler.GasItems[1] = 1120;
-
+            GS2.Log("About to Process Oiler");
             oiler.Process();
-            GSTheme redIce = new GSTheme("RedIce", "RedIce", "IceGelisol");
-            redIce.terrainTint = new UnityEngine.Color(0.1f, 0.1f, 0.1f, 1);
-            redIce.atmosphereTint = new UnityEngine.Color(0.5f, 0.3f, 0.3f, 1);
-            redIce.oceanTint = new UnityEngine.Color(0.0f, 0f, 0f, 1);
+            GS2.Log("Oiler Processed");
+            GSTheme obsidian = new GSTheme("Obsidian", "Obsidian", "IceGelisol");
+            obsidian.terrainTint = new Color(0.2f, 0.2f, 0.2f, 1);
+            obsidian.atmosphereTint = new Color(0.5f, 0.5f, 0.5f, 1);
+            obsidian.oceanTint = new Color(0.364f, 0.933f, 0.901f, 1);
             //redIce.oceanTint = UnityEngine.Color.yellow;
             //redIce.terrainMat.SetFloat("_AmbientInc", 0f);
             //redIce.terrainMat.SetFloat("_Multiplier", 0f);
             //redIce.terrainMat.SetFloat("_SpecularHighlights", 0f);
-            redIce.TerrainSettings.Algorithm = "GSTA3";
-            redIce.TerrainSettings.BiomeHeightMulti = -10f;
-            redIce.CustomGeneration = true;
-            redIce.Process();
+            obsidian.TerrainSettings.Algorithm = "GSTA5";
+            obsidian.TerrainSettings.HeightMulti = 1;
+            obsidian.TerrainSettings.BaseHeight = 2;
+            obsidian.TerrainSettings.BiomeHeightMulti = -100f;
+            obsidian.CustomGeneration = true;
+            GS2.Log("About to Process redIce");
+            obsidian.AmbientSettings.Color1 = new Color(0.95f, 0.4f, 0.4f);
+            obsidian.AmbientSettings.Color2 = new Color(0.8f, 0.35f, 0.35f);
+            obsidian.AmbientSettings.Color3 = new Color(0.7f, 0.3f, 0.3f);
+            obsidian.AmbientSettings.CubeMap = "GS2";
+            obsidian.AmbientSettings.Reflections = new Color(1, 0.2f, 0.2f, 1f); ;
+            GS2.Log(obsidian.AmbientSettings.ToString());
+            obsidian.Process();
             //redIce.ambientDesc.ambientColor0 = Color.yellow;
             //redIce.ambientDesc.ambientColor1 = Color.yellow;
             //redIce.ambientDesc.ambientColor2 = Color.red;
             //redIce.ambientDesc.biomoColor0 = Color.red;
             //redIce.ambientDesc.biomoColor1 = Color.green;
             //redIce.ambientDesc.biomoColor2 = Color.green;
-            redIce.ambientDesc.biomoDustColor0 = Color.gray;
-            redIce.ambientDesc.biomoDustColor1 = Color.gray;
-            redIce.ambientDesc.biomoDustColor2 = Color.white;
+
+
             //redIce.ambientDesc.waterAmbientColor0 = Color.red;
             //redIce.ambientDesc.waterAmbientColor1 = Color.red;
             //redIce.ambientDesc.waterAmbientColor2 = Color.red;
-            redIce.ambientDesc.lutContribution = 0;
-            ref AssetBundle bundle = ref Scripts.PatchUI.PatchForUI.bundle;
-            if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
-            var names = bundle.GetAllAssetNames();
-            GS2.LogJson(names);
-            Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
-            GS2.Warn(x.ToString());
-            redIce.ambientDesc.reflectionMap = x;
+            //redIce.ambientDesc.lutContribution = 0;
+            //GS2.Log("About to load asset");
+            //ref AssetBundle bundle = ref Scripts.PatchUI.PatchForUI.bundle;
+            //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
+            //var names = bundle.GetAllAssetNames();
+            //GS2.LogJson(names);
+            //Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
+            //GS2.Warn(x.ToString());
+            //GS2.Log("About to set reflectionMap");
+            //redIce.ambientDesc.reflectionMap = x;
             //var x = redIce.ambientDesc.reflectionMap.GetPixels(CubemapFace.NegativeX);
 
             //redIce.terrainMat.SetColor("_AmbientColor1", UnityEngine.Color.green);
@@ -286,7 +298,7 @@ namespace GalacticScale.Generators
             planets.Add(new GSPlanet("Earth", "Mediterranean", 400, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
             planets.Add(new GSPlanet("Jumpiter", "GasGiant", 80, 5.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
             GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f, null));
-            planets.Add(new GSPlanet("redIce", "RedIce", 200, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f, null));
+            planets.Add(new GSPlanet("Obsidian", "Obsidian", 200, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f, null));
             oily.scale = 1f;
 
 

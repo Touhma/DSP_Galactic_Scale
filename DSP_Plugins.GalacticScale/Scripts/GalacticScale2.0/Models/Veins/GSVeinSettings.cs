@@ -11,7 +11,7 @@ namespace GalacticScale
         public string Algorithm = "Vanilla";
         public float VeinPadding = 1f;
 
-        public bool Enabled { get => VeinTypes.Count > 0; }
+        public bool RequiresConversion { get => VeinTypes.Count > 0 && Algorithm == "Vanilla"; }
         public GSVeinSettings ()
         {
 

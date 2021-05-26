@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 namespace GalacticScale
@@ -28,17 +30,20 @@ namespace GalacticScale
 		public float LutContribution;
 		[NonSerialized]
 		public Cubemap ReflectionMap;
+		public Color Reflections = new Color();
 		[NonSerialized]
 		public Texture2D LutTexture;
 		
 		public GSAmbientSettings () { }
-		
+
 		public void FromTheme(GSTheme theme)
-        {
-			Color1 = theme.ambientDesc.ambientColor0;
-			Color2 = theme.ambientDesc.ambientColor1;
-			Color3 = theme.ambientDesc.ambientColor2;
-			WaterColor1 = theme.ambientDesc.waterAmbientColor0;
+		{
+			GS2.Log("Start " + (theme.ambientDesc == null));
+			if (theme.ambientDesc == null) { GS2.Warn(theme.Name + " has no AmbientDesc"); return; }
+			Color1 = theme.ambientDesc.ambientColor0; //Trees Day Tint
+			Color2 = theme.ambientDesc.ambientColor1; //Trees Twilight Tint
+			Color3 = theme.ambientDesc.ambientColor2; //Trees Night Tint
+			WaterColor1 = theme.ambientDesc.waterAmbientColor0; //Water as above
 			WaterColor2 = theme.ambientDesc.waterAmbientColor1;
 			WaterColor3 = theme.ambientDesc.waterAmbientColor2;
 			BiomeColor1 = theme.ambientDesc.biomoColor0;
@@ -56,19 +61,37 @@ namespace GalacticScale
 			LutContribution = theme.ambientDesc.lutContribution;
 			ReflectionMap = theme.ambientDesc.reflectionMap;
 			LutTexture = theme.ambientDesc.lutTexture;
-			if (ReflectionMap.name.Split('_')[0] == "def") CubeMap = "Vanilla";
-			else CubeMap = ReflectionMap.name;
+			GS2.Log(".....");
+			if (ReflectionMap?.name?.Split('_')[0] == "def")
+			{
+				CubeMap = "Vanilla";
+				GS2.Log("___");
+			}
+			else CubeMap = ReflectionMap?.name; 
+			GS2.Log("_");
 		}
 		public void ToTheme(GSTheme theme)
         {
+			GS2.Log("Start");
 			// This should already been defaulted by the base theme if that exists
 			if (CubeMap == "Vanilla" || CubeMap == null)
 			{
+				GS2.Log("Vanilla");
 				//do nothing
 			}//////////// FIX RARE SPAWNING IN THEME
 			else
 			{
-				//load cubemap from asset bundle or something
+				GS2.Log(CubeMap);
+				GS2.Log(Reflections.ToString());
+				//Should move this out of here
+				ref AssetBundle bundle = ref Scripts.PatchUI.PatchForUI.bundle;
+				if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
+				if (CubeMap == "GS2")
+				{
+					Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
+					if (Reflections.a != 0) ReflectionMap = GS2.Utils.TintCubeMap(x, Reflections);
+					else ReflectionMap = x;
+				}
 			}
 			theme.ambientDesc.ambientColor0 = Color1;
 			theme.ambientDesc.ambientColor1 = Color2;
@@ -93,6 +116,21 @@ namespace GalacticScale
 			if (LutTexture != null) theme.ambientDesc.lutTexture =LutTexture ;
 
 		}
-	}
+		public GSAmbientSettings Clone()
+        {
+			GSAmbientSettings a = (GSAmbientSettings)MemberwiseClone();
+			if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] != "def") a.ReflectionMap = UnityEngine.Object.Instantiate(ReflectionMap);
+			if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] == "def") a.ReflectionMap = ReflectionMap;
+
+			GS2.Log("*");
+			if (LutTexture != null) a.LutTexture = LutTexture;
+			return a;
+        }
+        public override string ToString()
+        {
+            return "->"+Color1 + Color2 + Color3 + WaterColor1 + WaterColor2 + WaterColor3 + BiomeColor1 + BiomeColor2 + BiomeColor3 + DustColor1 + DustColor2 + DustColor3 + DustStrength1 + DustStrength2 + DustStrength3+
+				BiomeSound1.ToString() + BiomeSound2.ToString()+BiomeSound3.ToString() + LutContribution.ToString() + ReflectionMap?.name + LutTexture?.name;
+        }
+    }
 	
 }
