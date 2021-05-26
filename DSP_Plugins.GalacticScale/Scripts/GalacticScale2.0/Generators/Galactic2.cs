@@ -2,6 +2,7 @@
 using FullSerializer;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 namespace GalacticScale.Generators
 {
@@ -195,7 +196,7 @@ namespace GalacticScale.Generators
             oiler.GasItems[1] = 1120;
 
             oiler.Process();
-            GSTheme redIce = new GSTheme("RedIce", "RedIce", "Gobi");
+            GSTheme redIce = new GSTheme("RedIce", "RedIce", "IceGelisol");
             redIce.terrainTint = new UnityEngine.Color(0.1f, 0.1f, 0.1f, 1);
             redIce.atmosphereTint = new UnityEngine.Color(0.5f, 0.3f, 0.3f, 1);
             redIce.oceanTint = new UnityEngine.Color(0.0f, 0f, 0f, 1);
@@ -207,6 +208,27 @@ namespace GalacticScale.Generators
             redIce.TerrainSettings.BiomeHeightMulti = -10f;
             redIce.CustomGeneration = true;
             redIce.Process();
+            //redIce.ambientDesc.ambientColor0 = Color.yellow;
+            //redIce.ambientDesc.ambientColor1 = Color.yellow;
+            //redIce.ambientDesc.ambientColor2 = Color.red;
+            //redIce.ambientDesc.biomoColor0 = Color.red;
+            //redIce.ambientDesc.biomoColor1 = Color.green;
+            //redIce.ambientDesc.biomoColor2 = Color.green;
+            redIce.ambientDesc.biomoDustColor0 = Color.gray;
+            redIce.ambientDesc.biomoDustColor1 = Color.gray;
+            redIce.ambientDesc.biomoDustColor2 = Color.white;
+            //redIce.ambientDesc.waterAmbientColor0 = Color.red;
+            //redIce.ambientDesc.waterAmbientColor1 = Color.red;
+            //redIce.ambientDesc.waterAmbientColor2 = Color.red;
+            redIce.ambientDesc.lutContribution = 0;
+            ref AssetBundle bundle = ref Scripts.PatchUI.PatchForUI.bundle;
+            if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
+            var names = bundle.GetAllAssetNames();
+            GS2.LogJson(names);
+            Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
+            GS2.Warn(x.ToString());
+            redIce.ambientDesc.reflectionMap = x;
+            //var x = redIce.ambientDesc.reflectionMap.GetPixels(CubemapFace.NegativeX);
 
             //redIce.terrainMat.SetColor("_AmbientColor1", UnityEngine.Color.green);
 
@@ -230,7 +252,7 @@ namespace GalacticScale.Generators
             //var a = redIce.terrainMat.GetTexture("_BioTex0A");
             //var b = redIce.terrainMat.GetTexture("_BioTex1A");
             //redIce.terrainMat.SetTexture("_BioTex0A", b);
-            GS2.LogJson(redIce.terrainMat.GetTexturePropertyNames());
+            //GS2.LogJson(redIce.terrainMat.GetTexturePropertyNames());
             //redIce.terrainMat.SetTexture("_BioTex0N", null);///
             //redIce.terrainMat.SetTexture("_BioTex1A", null);
             //redIce.terrainMat.SetTexture("_BioTex1N", null);
@@ -255,9 +277,9 @@ namespace GalacticScale.Generators
 
             //_GISaturate("全局光照饱和度", Range(0, 2)) = 1
 
-            Shader s = redIce.terrainMat.shader;
-            GS2.Error("SHADER : " + s.name);
-            GS2.Error(s.GetType().ToString());
+            //Shader s = redIce.terrainMat.shader;
+            //GS2.Error("SHADER : " + s.name);
+            //GS2.Error(s.GetType().ToString());
             ref GSPlanets planets = ref sol.Planets;
             planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7f, 252f, 10556f, 0, 0.034f, 7038, 0, 9f, null));
             planets.Add(new GSPlanet("Venus", "VolcanicAsh", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177f, 1000, 0, 2.6f, null));
