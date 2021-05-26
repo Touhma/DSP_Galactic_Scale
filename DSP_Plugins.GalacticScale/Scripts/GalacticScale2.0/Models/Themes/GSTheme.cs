@@ -115,9 +115,9 @@ namespace GalacticScale
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
-			if (VeinSettings.VeinTypes.Count == 0) PopulateVeinData();
-			else ConvertVeinData();
-			if (VegeSettings.Group1.Count == 0) PopulateVegeData();
+            if (VeinSettings.Enabled) ConvertVeinData();
+            else PopulateVeinData();
+            if (VegeSettings.Group1.Count == 0) PopulateVegeData();
 			else ConvertVegeData();
 			ProcessTints();
 			if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
@@ -142,39 +142,59 @@ namespace GalacticScale
 		}
 		public void ConvertVeinData()
 		{
+			GS2.Log(Name + "-" + VeinSpot.Length.ToString());
+			List<float> _rareSettings = new List<float>();
+			List<int> _rareVeins = new List<int>();
+			VeinSpot = new int[PlanetModelingManager.veinProtos.Length];
+			VeinOpacity = new float[PlanetModelingManager.veinProtos.Length];
+			VeinCount = new float[PlanetModelingManager.veinProtos.Length];
+		
 			for (var i = 0; i < VeinSettings.VeinTypes.Count; i++)
 			{ // For each EVeinType
+				GS2.Log("Getting VeinType");
 				GSVeinType vt = VeinSettings.VeinTypes[i];
 				var type = vt.type;
 				float opacity = 0;
 				float count = 0;
 				int veinCount = vt.veins.Count;
+				GS2.Log("Type:" + type + " veinCount:" + veinCount);
 				for (var j = 0; j < veinCount; j++)
 				{
-					GSVein v = vt.veins[i];
+					GS2.Log("Getting Vein");
+					GSVein v = vt.veins[j];
 					count += v.count;
 					opacity += v.richness;
 				}
+				GS2.Log("Count:" + count + " Opacity:" + opacity);
 				if ((int)type < 7)
 				{
+					GS2.Log("Not Rare");
 					VeinOpacity[(int)type - 1] = opacity / veinCount;
-					VeinCount[(int)type - 1] = count / veinCount;
+					VeinCount[(int)type - 1] = count / 25 / veinCount;
 					VeinSpot[(int)type - 1] = veinCount;
 				}
 				else
 				{  //Special
+					GS2.Log("Rare");
 					var specialOpacity = opacity / veinCount;
 					var specialCount = count / veinCount;
 					//var specialNumber = count / veinCount;
-					var specialIndex = RareVeins.Length;
-					var specialSettingsIndex = specialIndex * 4;
-					RareVeins[specialIndex] = (int)type;
-					RareSettings[(specialSettingsIndex)] = 0; //Chance to spawn on birth star planet
-					RareSettings[(specialSettingsIndex + 1)] = 1; //Chance to spawn on non birth star planet
-					RareSettings[(specialSettingsIndex + 2)] = 0.5f; //Chance for extra vein to spawn
-					RareSettings[(specialSettingsIndex + 3)] = specialOpacity * specialCount; //Stupidly combined count and opacity
+					//var specialIndex = RareVeins.Length;
+					//var specialSettingsIndex = specialIndex * 4;
+					_rareVeins.Add((int)type);
+					_rareSettings.Add(0); //Chance to spawn on birth star planet
+					_rareSettings.Add(1); //Chance to spawn on non birth star planet
+					_rareSettings.Add(specialCount/12); //Chance for extra vein to spawn
+					_rareSettings.Add(specialOpacity * specialCount); //Stupidly combined count and opacity
 				}
 			}
+			RareSettings = _rareSettings.ToArray();
+			RareVeins = _rareVeins.ToArray();
+			GS2.Log("RareSettings");
+			GS2.LogJson(RareSettings);
+			GS2.Log("RareVeins");
+			GS2.LogJson(RareVeins);
+			GS2.Log("End");
 		}
 		public void PopulateVeinData()
 		{
