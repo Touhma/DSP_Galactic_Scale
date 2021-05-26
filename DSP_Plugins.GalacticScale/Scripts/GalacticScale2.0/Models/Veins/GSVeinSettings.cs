@@ -10,6 +10,8 @@ namespace GalacticScale
         public List<GSVeinType> VeinTypes = new List<GSVeinType>();
         public string Algorithm = "Vanilla";
         public float VeinPadding = 1f;
+
+        public bool Enabled { get => VeinTypes.Count > 0; }
         public GSVeinSettings ()
         {
 

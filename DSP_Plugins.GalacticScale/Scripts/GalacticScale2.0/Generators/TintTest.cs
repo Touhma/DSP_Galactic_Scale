@@ -20,7 +20,7 @@ namespace GalacticScale.Generators
 
         public bool DisableStarCountSlider => false;
 
-        public List<GSUI> Options => options;
+        public GSOptions Options => options;
 
         private GSGeneratorConfig config = new GSGeneratorConfig();
         public GSPlanets planets = new GSPlanets();
@@ -160,7 +160,7 @@ namespace GalacticScale.Generators
             generate(starCount);
         }
         ////////////////////////////////////////////////////////////////////
-        public List<GSUI> options = new List<GSUI>();
+        public GSOptions options = new GSOptions();
 
 
         public void generate(int starCount)

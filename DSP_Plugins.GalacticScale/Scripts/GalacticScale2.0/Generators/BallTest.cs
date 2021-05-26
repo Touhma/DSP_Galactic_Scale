@@ -19,9 +19,8 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 512, 1);
 
-        public List<GSUI> Options => options;
-        //private double modifier = 1;
-        private List<GSUI> options = new List<GSUI>();
+        public GSOptions Options => options;
+        private GSOptions options = new GSOptions();
         private List<GSStar> stars = new List<GSStar>();
         public void Init()
         {
@@ -59,6 +58,7 @@ namespace GalacticScale.Generators
             lmodified.VeinSettings.Algorithm = "GS2";
             lmodified.CustomGeneration = true;
             lmodified.Process();
+            GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
             for (var i = 0; i < starCount; i++)
             {
 

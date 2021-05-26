@@ -54,6 +54,7 @@ namespace GalacticScale
         public bool rare = false;
         public int generate;
         public int Count { get => veins.Count; }
+
         [NonSerialized]
         public PlanetData planet;
         public GSVeinType Clone()

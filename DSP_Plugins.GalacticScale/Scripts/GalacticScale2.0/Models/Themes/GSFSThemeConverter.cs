@@ -11,7 +11,6 @@ namespace GalacticScale
         {
             return new GSTheme();
         }
-
         protected override fsResult DoSerialize(GSTheme model, Dictionary<string, fsData> serialized)
         {
             GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
@@ -58,7 +57,6 @@ namespace GalacticScale
             GS2.Log("GSFSThemeConverter|DoSerialize|End");
             return fsResult.Success;
         }
-
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSTheme model)
         {
             GS2.Log("GSFSThemeConverter|DoDeserialize");
@@ -84,8 +82,6 @@ namespace GalacticScale
             if (data.ContainsKey("Vegetables3")) DeserializeMember(data, null, "Vegetables3", out model.Vegetables3);
             if (data.ContainsKey("Vegetables4")) DeserializeMember(data, null, "Vegetables4", out model.Vegetables4);
             if (data.ContainsKey("Vegetables5")) DeserializeMember(data, null, "Vegetables5", out model.Vegetables5);
-            //if (model.Vegetables5 == null) model.Vegetables5 = new int[] { };
-
             if (data.ContainsKey("GasItems")) DeserializeMember(data, null, "GasItems", out model.GasItems);
             if (data.ContainsKey("GasSpeeds")) DeserializeMember(data, null, "GasSpeeds", out model.GasSpeeds);
             if (data.ContainsKey("Wind")) DeserializeMember(data, null, "Wind", out model.Wind);

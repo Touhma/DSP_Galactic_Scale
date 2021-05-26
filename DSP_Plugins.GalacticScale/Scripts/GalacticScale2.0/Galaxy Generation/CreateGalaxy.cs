@@ -12,7 +12,6 @@ namespace GalacticScale
             Log("Generating Galaxy");
             GenerateGalaxy();
             Log("Galaxy Generated");
-            Log("Stars = " + GSSettings.Stars?.ToString());
             gameDesc.starCount = GSSettings.starCount;
             Log("Processing ThemeLibrary");
             if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
@@ -32,9 +31,8 @@ namespace GalacticScale
             galaxy.seed = GSSettings.Seed;
             galaxy.starCount = GSSettings.starCount;
             galaxy.stars = new StarData[GSSettings.starCount];
-            
             if (GSSettings.starCount <= 0) {
-                Log("StarCount <=0, returning galaxy");
+                Log("StarCount <= 0, returning galaxy");
                 return galaxy;
             }
             Log("Initializing AstroPoses");
@@ -49,7 +47,7 @@ namespace GalacticScale
             }
             Log("Creating Galaxy StarGraph");
             UniverseGen.CreateGalaxyStarGraph(galaxy);
-            Log("End");
+            Log("End of galaxy generation");
             return galaxy;
         }
         public static void SetupBirthPlanet() {
@@ -64,7 +62,7 @@ namespace GalacticScale
                 for (int i = 0; i < GSSettings.starCount; i++)
                 {
                     GSStar star = GSSettings.Stars[i];
-                    List<GSPlanet> bodies = star.bodies;
+                    List<GSPlanet> bodies = star.Bodies;
                     for (int j = 0; j < star.bodyCount; j++)
                     {
                         GSPlanet planet = bodies[j];
@@ -97,7 +95,7 @@ namespace GalacticScale
             for (var i = 0; i < GSSettings.starCount; i++) galaxy.stars[i] = CreateStar(i);
             Log("Creating Planets");
             for (var i = 0; i < GSSettings.starCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
-            Log("Planets have been creates");
+            Log("Planets have been created");
             AstroPose[] astroPoses = galaxy.astroPoses;
             for (int index = 0; index < galaxy.astroPoses.Length; ++index)
             {

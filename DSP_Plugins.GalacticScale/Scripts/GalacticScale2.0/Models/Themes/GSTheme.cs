@@ -51,33 +51,10 @@ namespace GalacticScale
 		public int[] Vegetables4 = new int[] {};
 		public int[] Vegetables5 = new int[] {};
 		public int[] VeinSpot = new int[] { };
-		//		7,
-		//		5,
-		//		0,
-		//		0,
-		//		8,
-		//		11,
-		//		18 
-		//};
-		public float[] VeinCount = new float[] { };//0.7f,
-												   //0.6f,
-												   //0.0f,
-												   //0.0f,
-												   //1.0f,
-												   //1.0f,
-												   //1.0f };
-		public float[] VeinOpacity = new float[] { };//0.6f,
-													 //0.5f,
-													 //0.0f,
-													 //0.0f,
-													 //0.7f,
-													 //1.0f,
-													 //1.0f };
-		public int[] RareVeins = new int[] { };//11 };
-		public float[] RareSettings = new float[] { };//0.0f,
-													  //1.0f,
-													  //0.3f,
-													  //0.3f };
+		public float[] VeinCount = new float[] { };
+		public float[] VeinOpacity = new float[] { };
+		public int[] RareVeins = new int[] { };
+		public float[] RareSettings = new float[] { };
 		public int[] GasItems = new int[] {};
 		public float[] GasSpeeds = new float[] {};
 		public bool UseHeightForBuild = false;
@@ -115,10 +92,10 @@ namespace GalacticScale
 		[NonSerialized]
 		public AudioClip ambientSfx;
 
-
 		// ////////////////////////////////////////
 		// / Constructor
 		// ////////////////////////////////////////
+		public GSTheme() { }
 		public GSTheme (string name, string displayName, string baseName)
         {
 			DisplayName = displayName;
@@ -129,8 +106,6 @@ namespace GalacticScale
 			}
 			else GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
 		}
-
-
 		public void Process()
         {
 			Init();
@@ -140,18 +115,15 @@ namespace GalacticScale
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
-			if (VeinSettings.VeinTypes.Count == 0) ConvertVeinData();
-			//GS2.Log("PROCESS " + Name + " VegeData:" + VegeSettings.Group1.Count);
-			if (VegeSettings.Group1.Count == 0) PopulateVegeData();
+            if (VeinSettings.Enabled) ConvertVeinData();
+            else PopulateVeinData();
+            if (VegeSettings.Group1.Count == 0) PopulateVegeData();
 			else ConvertVegeData();
-			//GS2.Log("PROCESS " + Name);
-			//GS2.LogJson(VeinSettings);
 			ProcessTints();
 			if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
 		}
 		public void PopulateVegeData()
         {
-			//GS2.Log("Populating Vege Data for " + Name);
 			VegeSettings.Group1 = GSVegeSettings.FromIDArray(Vegetables0);
 			VegeSettings.Group2 = GSVegeSettings.FromIDArray(Vegetables1);
 			VegeSettings.Group3 = GSVegeSettings.FromIDArray(Vegetables2);
@@ -168,8 +140,72 @@ namespace GalacticScale
 			Vegetables4 = GSVegeSettings.ToIDArray(VegeSettings.Group5);
 			Vegetables5 = GSVegeSettings.ToIDArray(VegeSettings.Group6);
 		}
-
 		public void ConvertVeinData()
+		{
+			GS2.Log(Name + "-" + VeinSpot.Length.ToString());
+			List<float> _rareSettings = new List<float>();
+			List<int> _rareVeins = new List<int>();
+			int veinArrayLength = 25;
+			if (PlanetModelingManager.veinProtos != null) veinArrayLength = PlanetModelingManager.veinProtos.Length;
+			VeinSpot = new int[veinArrayLength];
+			VeinOpacity = new float[veinArrayLength];
+			VeinCount = new float[veinArrayLength];
+		
+			for (var i = 0; i < VeinSettings.VeinTypes.Count; i++)
+			{ // For each EVeinType
+				GS2.Log("Getting VeinType");
+				GSVeinType vt = VeinSettings.VeinTypes[i];
+				var type = vt.type;
+				float opacity = 0;
+				float count = 0;
+				int veinCount = vt.veins.Count;
+				GS2.Log("Type:" + type + " veinCount:" + veinCount);
+				for (var j = 0; j < veinCount; j++)
+				{
+					GS2.Log("Getting Vein");
+					GSVein v = vt.veins[j];
+					count += v.count;
+					opacity += v.richness;
+				}
+				GS2.Log("Count:" + count + " Opacity:" + opacity);
+				if ((int)type < 8)
+				{
+					GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)="+(int)type);
+					VeinOpacity[(int)type - 1] = opacity / veinCount;
+					VeinCount[(int)type - 1] = count / 25 / veinCount;
+					VeinSpot[(int)type - 1] = veinCount;
+					GS2.Log(type.ToString() +"| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
+				}
+				else
+				{  //Special
+					GS2.Log("Rare");
+					var specialOpacity = opacity / veinCount;
+					var specialCount = veinCount;
+					//var specialNumber = count / veinCount;
+					//var specialIndex = RareVeins.Length;
+					//var specialSettingsIndex = specialIndex * 4;
+					_rareVeins.Add((int)type);
+					_rareSettings.Add(0); //Chance to spawn on birth star planet
+					_rareSettings.Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
+					_rareSettings.Add(specialCount/25); //Chance for extra vein to spawn
+					_rareSettings.Add(specialOpacity); //Stupidly combined count and opacity
+				}
+			}
+			RareSettings = _rareSettings.ToArray();
+			RareVeins = _rareVeins.ToArray();
+			GS2.Log("VeinSpot");
+			GS2.LogJson(VeinSpot);
+			GS2.Log("VeinCount");
+			GS2.LogJson(VeinCount);
+			GS2.Log("VeinOpacity");
+			GS2.LogJson(VeinOpacity);
+			GS2.Log("RareSettings");
+			GS2.LogJson(RareSettings);
+			GS2.Log("RareVeins");
+			GS2.LogJson(RareVeins);
+			GS2.Log("End");
+		}
+		public void PopulateVeinData()
 		{
 			for (var vType = 0; vType < VeinSpot.Length; vType++)
 			{
@@ -213,7 +249,7 @@ namespace GalacticScale
 				VeinSettings.VeinTypes.Add(tempVeinGroup);
 			}
 		}
-		public GSTheme() { }
+
 		public void AddToLibrary()
         {
 			GS2.ThemeLibrary[Name] = this;
@@ -230,34 +266,23 @@ namespace GalacticScale
 		/// </summary>
 		/// <param name="baseTheme"></param>
 		public void CopyFrom(GSTheme baseTheme) {
-			//GS2.Log("CopyFrom");
 			if (!baseTheme.initialized) baseTheme.InitMaterials();
-			//GS2.Log("CopyFrom baseTheme:" + baseTheme.Name);
-			//GS2.LogJson(baseTheme);
-			//GS2.Log("1");
 			Algo = baseTheme.Algo;
-			//GS2.Log("2");
 			PlanetType = baseTheme.PlanetType;
 			LDBThemeId = 1;
 			MaterialPath = baseTheme.MaterialPath;
 			Temperature = baseTheme.Temperature;
 			Distribute = baseTheme.Distribute;
-			//GS2.Log("3");
 			ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
 			ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
-			//GS2.Log("4");
-			
 			Vegetables0 = (int[])baseTheme.Vegetables0.Clone();
 			Vegetables1 = (int[])baseTheme.Vegetables1.Clone(); 
 			Vegetables2 = (int[])baseTheme.Vegetables2.Clone(); 
 			Vegetables3 = (int[])baseTheme.Vegetables3.Clone(); 
 			Vegetables4 = (int[])baseTheme.Vegetables4.Clone(); 
 			Vegetables5 = (int[])baseTheme.Vegetables5.Clone(); 
-			//GS2.Log("Cloning VeinSettings");
 			VeinSettings = baseTheme.VeinSettings.Clone();
-			//GS2.Log("Cloning TerrainSettings");
 			TerrainSettings = baseTheme.TerrainSettings.Clone();
-			//GS2.Log("Cloning VegeSettings");
 			VegeSettings = baseTheme.VegeSettings.Clone();
 			VeinSpot = (int[])baseTheme.VeinSpot.Clone(); 
 			VeinCount = (float[])baseTheme.VeinCount.Clone(); 
@@ -287,14 +312,7 @@ namespace GalacticScale
 			minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
 			ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
 			ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
-			//GS2.Log("CopyFrom Modified Theme:");
-			//GS2.LogJson(this);
-			//InitMaterials();
 		}
-
-
-
-
 
 		/// <summary>
 		/// Convert to a ThemeProto so that the game can use the materials etc
@@ -351,41 +369,30 @@ namespace GalacticScale
         }
 		public int AddToThemeProtoSet()
         {
-			//GS2.Log("Adding Theme To ProtoSet: " + Name);
 			if (added) return LDBThemeId;
-			
 			if (!initialized) InitMaterials();
             int newIndex = LDB._themes.dataArray.Length;
-			//GS2.Log("Resizing LDB._themes.dataArray");
 			Array.Resize(ref LDB._themes.dataArray, newIndex + 1); 
 			int newId = LDB._themes.dataArray.Length;
 			LDBThemeId = newId;
-			//GS2.Log("Setting new index to ToProto()");
 			LDB._themes.dataArray[newIndex] = ToProto();
 			LDB._themes.dataIndices[newId] = newIndex;
 			added = true;
-			//GS2.Log("Theme Added to Protoset: " + Name + " ID:" + newId);
             return newId;
         }
 		public int UpdateThemeProtoSet()
         {
-			//GS2.Log("UpdateThemeProtoSet: " + Name);
 			if (!added) return AddToThemeProtoSet();
 			else
-            {
-				//GS2.Log("Setting Float _Radius "+(terrainMat == null));
-				
+            {		
 				terrainMat.SetFloat("_Radius", 100f);
-				//GS2.Log("Updating LDB Theme"+LDBThemeId);
                 LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
-				//GS2.Log("Returning Theme ID " + LDBThemeId);
                 return LDBThemeId;
             }
 		}
 		public void InitMaterials ()
         {
 			if (initialized) return;
-			//GS2.Log("InitializingMaterials " + Name + " " + MaterialPath);
 			if (terrainMaterial == null)
 			{
 				Material tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");

@@ -16,8 +16,10 @@ namespace GalacticScale
         }
         public GSTerrainAlgorithm Find(string name)
         {
-            //GS2.Log("TerrainAlgorithmLibrary|Find(" + name + ")");
-            if (!ContainsKey(name)) { GS2.Warn("TerrainAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default"); return VeinAlgorithms.GenerateTerrain1; }
+            if (!ContainsKey(name)) { 
+                GS2.Warn("TerrainAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default"); 
+                return VeinAlgorithms.GenerateTerrain1; 
+            }
             return this[name];
         }
     }

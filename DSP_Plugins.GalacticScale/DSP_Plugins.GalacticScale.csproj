@@ -115,7 +115,11 @@
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GSTeleportHandler.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\IO\CodeFile1.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\IO\DebugLogging.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\IO\Preferences.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Boilerplate.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\IO\Json.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\IO\Save_Load.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSOptions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSTerrainSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSUI.cs" />
@@ -125,7 +129,9 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\GSFSThemeLibraryConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\VegeAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\VeinAlgorithmLibrary.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSFSSettingsConverter.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AmbientSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\VegeTypesDictionary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\GSVegeSettings.cs" />
@@ -138,6 +144,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain5.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain6.cs" />
