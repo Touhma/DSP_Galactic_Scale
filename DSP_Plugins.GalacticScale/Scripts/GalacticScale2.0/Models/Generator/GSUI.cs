@@ -9,10 +9,11 @@ namespace GalacticScale {
         public string label;
         public string type;
         public object data;
-        public GSOptionCallback callback;
-        public string tip;
+        public string tip; // Not fully implemented in all ui items yet
         public UnityEngine.RectTransform rectTransform;
+        public GSOptionCallback callback;
         public GSOptionPostfix postfix;
+
         public GSUI(string label, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
         {
             this.label = label;

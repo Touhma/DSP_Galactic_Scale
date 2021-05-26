@@ -10,11 +10,8 @@ namespace GalacticScale
         public override object CreateInstance(fsData data, Type storageType) 
         {
             GS2.Log("Start");
-            //GS2.LogJson(GS2.ThemeLibrary);
-            ThemeLibrary t = new ThemeLibrary();//ThemeLibrary.Vanilla();
-            //t.Add("Pants", null);
+            ThemeLibrary t = new ThemeLibrary();
             return t;
-           // return GS2.ThemeLibrary;
         }
 
         protected override fsResult DoSerialize(ThemeLibrary model, Dictionary<string, fsData> serialized)
@@ -32,8 +29,6 @@ namespace GalacticScale
         {
             GS2.Log("Start");
             model = ThemeLibrary.Vanilla();
-            //GS2.LogJson(model);
-            //GS2.LogJson(GS2.ThemeLibrary);
             var result = fsResult.Success;
             foreach (var kvp in data)
             {

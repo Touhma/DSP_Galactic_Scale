@@ -18,9 +18,9 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
-        public List<GSUI> Options => options;
+        public GSOptions Options => options;
 
-        private List<GSUI> options = new List<GSUI>();
+        private GSOptions options = new GSOptions();
         private List<GSStar> stars = new List<GSStar>();
         public void Init()
         {
@@ -118,7 +118,7 @@ namespace GalacticScale.Generators
             //string outputDir = Path.Combine(GS2.DataDir, "output");
             //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             //string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
-            GS2.LogJson(GS2.GetGSPlanet(GameMain.localPlanet).veinSettings);
+            GS2.LogJson(GS2.Utils.GetGSPlanet(GameMain.localPlanet).veinSettings);
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }

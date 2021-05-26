@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
@@ -11,9 +10,10 @@ namespace GalacticScale
         public EStarType Type;
         public GSPlanets Planets = new GSPlanets();
         public int Seed;
+        public float orbitScaler = 1;
+
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
-        public float orbitScaler = 1;
         private float _temperature = -1;
         private float _lifetime = -1;
         private float _age = -1;
@@ -27,20 +27,10 @@ namespace GalacticScale
         private float _resourceCoef = -1f;
         private float _physicsRadius = -1;
         private VectorLF3 _pos = new VectorLF3();
+
         [SerializeField]
         public float level = 1;
-        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets)
-        {
-            Name = name;
-            Spectr = spectr;
-            Type = type;
-            Planets = planets;
-            Seed = seed;
-        }
-        public override string ToString()
-        {
-            return Name;
-        }
+
         public int planetCount { get => Planets.Count; }
         public int bodyCount
         {
@@ -55,62 +45,74 @@ namespace GalacticScale
                 return bodyCount;
             }
         }
-        public GSPlanets bodies { get
+        public GSPlanets Bodies { get
             {
                 GSPlanets b = new GSPlanets();
                 foreach (GSPlanet p in Planets)
                 {
-                    b.AddRange(p.bodies);
+                    b.AddRange(p.Bodies);
                 }
                 return b;
             } }
         [NonSerialized]
         public int counter = 0;
         [SerializeField]
-        public float age { get => _age < 0 ? getAge() : _age; set => _age = value; }
+        public float age { get => _age < 0 ? InitAge() : _age; set => _age = value; }
         [SerializeField]
-        public float mass { get => _mass < 0 ? getMass() : _mass; set => _mass = value; }
+        public float mass { get => _mass < 0 ? InitMass() : _mass; set => _mass = value; }
         [SerializeField]
-        public float temperature { get => _temperature < 0 ? getTemperature() : _temperature; set => _temperature = value; }
+        public float temperature { get => _temperature < 0 ? InitTemperature() : _temperature; set => _temperature = value; }
         [SerializeField]
-        public float lifetime { get => _lifetime < 0 ? getLifetime() : _lifetime; set => _lifetime = value; }
+        public float lifetime { get => _lifetime < 0 ? InitLifetime() : _lifetime; set => _lifetime = value; }
         [SerializeField]
-        public float color { get => _color < 0 ? getColor() : _color; set => _color = value; }
+        public float color { get => _color < 0 ? InitColor() : _color; set => _color = value; }
         [SerializeField]
-        public float luminosity { get => _luminosity < 0 ? getLuminosity() : _luminosity; set => _luminosity = value; }
+        public float luminosity { get => _luminosity < 0 ? InitLuminosity() : _luminosity; set => _luminosity = value; }
         [SerializeField]
-        public float radius { get => _radius < 0 ? getRadius() : _radius; set => _radius = value; }
+        public float radius { get => _radius < 0 ? InitRadius() : _radius; set => _radius = value; }
         [SerializeField]
-        public float habitableRadius { get => _habitableRadius < 0 ? getHabitableRadius() : _habitableRadius; set => _habitableRadius = value; }
+        public float habitableRadius { get => _habitableRadius < 0 ? InitHabitableRadius() : _habitableRadius; set => _habitableRadius = value; }
         [SerializeField]
-        public float dysonRadius { get => _dysonRadius < 0 ? getDysonRadius() : _dysonRadius; set => _dysonRadius = value; }
+        public float dysonRadius { get => _dysonRadius < 0 ? InitDysonRadius() : _dysonRadius; set => _dysonRadius = value; }
         [SerializeField]
-        public float lightBalanceRadius { get => _lightBalanceRadius < 0 ? getLightBalanceRadius() : _lightBalanceRadius; set => _lightBalanceRadius = value; }
+        public float lightBalanceRadius { get => _lightBalanceRadius < 0 ? InitLightBalanceRadius() : _lightBalanceRadius; set => _lightBalanceRadius = value; }
         [SerializeField]
-        public float physicsRadius { get => _physicsRadius < 0 ? getPhysicsRadius() : _physicsRadius; set => _physicsRadius = value; }
+        public float physicsRadius { get => _physicsRadius < 0 ? InitPhysicsRadius() : _physicsRadius; set => _physicsRadius = value; }
         [SerializeField]
-        public float classFactor { get => _classfactor > 2 ? getClassFactor() : _classfactor; set => _classfactor = value; }
+        public float classFactor { get => _classfactor > 2 ? InitClassFactor() : _classfactor; set => _classfactor = value; }
         [SerializeField]
-        public float resourceCoef { get => _resourceCoef < 0 ? getResourceCoef() : _resourceCoef; set => _resourceCoef = value; }
+        public float resourceCoef { get => _resourceCoef < 0 ? InitResourceCoef() : _resourceCoef; set => _resourceCoef = value; }
         [SerializeField]
-        public float acDiscRadius { get => _acdiscRadius < 0 ? getAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
+        public float acDiscRadius { get => _acdiscRadius < 0 ? InitAcDiscRadius() : _acdiscRadius; set => _acdiscRadius = value; }
         [SerializeField]
-        public VectorLF3 position { get => (_pos == new VectorLF3() && assignedIndex != 0) ? getPos() : _pos; set => _pos = value; }
+        public VectorLF3 position { get => (_pos == new VectorLF3() && assignedIndex != 0) ? InitPos() : _pos; set => _pos = value; }
 
         public double magnitude { get => position.magnitude; }
         [NonSerialized]
         public int assignedIndex = 0;
 
-        float getClassFactor()
+        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets)
+        {
+            Name = name;
+            Spectr = spectr;
+            Type = type;
+            Planets = planets;
+            Seed = seed;
+        }
+        public override string ToString()
+        {
+            return Name;
+        }
+        float InitClassFactor()
         {
             _classfactor = StarDefaults.ClassFactor(this);
             return _classfactor;
         }
-        float getPhysicsRadius()
+        float InitPhysicsRadius()
         {
             return radius * 1200f;
         }
-        float getAcDiscRadius()
+        float InitAcDiscRadius()
         {
             switch (Type)
             {
@@ -127,60 +129,60 @@ namespace GalacticScale
             return _acdiscRadius;
         }
 
-        float getDysonRadius()
+        float InitDysonRadius()
         {
             _dysonRadius = StarDefaults.DysonRadius(this);
             return _dysonRadius;
         }
-        float getHabitableRadius()
+        float InitHabitableRadius()
         {
             _habitableRadius = StarDefaults.HabitableRadius(this);
             return _habitableRadius;
         }
-        float getLightBalanceRadius()
+        float InitLightBalanceRadius()
         {
             _lightBalanceRadius = StarDefaults.LightBalanceRadius(this);
             return _lightBalanceRadius;
         }
-        float getRadius()
+        float InitRadius()
         {
             _radius = StarDefaults.Radius(this);
             return _radius;
         }
-        float getAge()
+        float InitAge()
         {
             _age = StarDefaults.Age(this);
             return _age;
 
         }
-        float getMass()
+        float InitMass()
         {
             _mass = StarDefaults.Mass(this);
             return _mass;
         }
-        float getLuminosity()
+        float InitLuminosity()
         {
             _luminosity = StarDefaults.Luminosity(this);
             return _luminosity;
         }
 
-        float getTemperature()
+        float InitTemperature()
         {
             _temperature = StarDefaults.Temperature(this);
             return _temperature;
         }
-        float getLifetime()
+        float InitLifetime()
         {
             _lifetime = StarDefaults.Lifetime(this);
             return _lifetime;
         }
-        float getColor()
+        float InitColor()
         {
 
             _color = StarDefaults.Color(this);
             return _color;
         }
-        float getResourceCoef()
+        float InitResourceCoef()
         {
             float num1 = (float)position.magnitude / 32f;
             if ((double)num1 > 1.0)
@@ -188,7 +190,7 @@ namespace GalacticScale
             _resourceCoef = Mathf.Pow(7f, num1) * 0.6f;
             return resourceCoef;
         }
-        VectorLF3 getPos()
+        VectorLF3 InitPos()
         {
             _pos = GS2.tmp_poses[assignedIndex];
             return _pos;

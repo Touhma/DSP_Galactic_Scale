@@ -19,9 +19,8 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 512, 1);
 
-        public List<GSUI> Options => options;
-        //private double modifier = 1;
-        private List<GSUI> options = new List<GSUI>();
+        public GSOptions Options => options;
+        private GSOptions options = new GSOptions();
         private List<GSStar> stars = new List<GSStar>();
         public void Init()
         {

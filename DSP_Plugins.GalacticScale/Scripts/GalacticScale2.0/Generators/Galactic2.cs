@@ -21,7 +21,7 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => config;
 
-        public List<GSUI> Options => options;
+        public GSOptions Options => options;
         private GSOptions options = new GSOptions();
         private GSGeneratorConfig config = new GSGeneratorConfig();
         private GSGenPreferences preferences = new GSGenPreferences();

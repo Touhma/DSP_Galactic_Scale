@@ -17,7 +17,7 @@ namespace GalacticScale
         public double HeightMulti = 1;
         public double BaseHeight = 0;
         public string Algorithm = "Vanilla";
-        public bool BrightnessFix = false; //Fix for Lava
+        public bool   BrightnessFix = false; //Fix for Lava
         public GSTerrainSettings Clone()
         {
             return (GSTerrainSettings)MemberwiseClone();
