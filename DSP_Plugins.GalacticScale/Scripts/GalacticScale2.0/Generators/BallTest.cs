@@ -58,6 +58,7 @@ namespace GalacticScale.Generators
             lmodified.VeinSettings.Algorithm = "GS2";
             lmodified.CustomGeneration = true;
             lmodified.Process();
+            GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
             for (var i = 0; i < starCount; i++)
             {
 

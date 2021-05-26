@@ -131,6 +131,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\VeinAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSFSSettingsConverter.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AmbientSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\VegeTypesDictionary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\GSVegeSettings.cs" />
