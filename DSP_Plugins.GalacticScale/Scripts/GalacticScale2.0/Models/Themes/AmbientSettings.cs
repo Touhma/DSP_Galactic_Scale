@@ -26,7 +26,6 @@ namespace GalacticScale
 		public int BiomeSound2;
 		public int BiomeSound3;
 		public string CubeMap = "Vanilla";
-		[NonSerialized]
 		public float LutContribution;
 		[NonSerialized]
 		public Cubemap ReflectionMap;
