@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
 
 namespace GalacticScale
 {
@@ -68,26 +69,32 @@ namespace GalacticScale
 		public float CullingRadius=0f;
 		[NonSerialized]
 		public Material terrainMat;
-		public string terrainMaterial;
-		public Color terrainTint;
+		public GSMaterialSettings terrainMaterial = new GSMaterialSettings();
+		//public string terrainMaterial;
+		//public Color terrainTint;
 		[NonSerialized]
 		public Material oceanMat;
-		public string oceanMaterial;
-		public Color oceanTint;
+		public GSMaterialSettings oceanMaterial = new GSMaterialSettings();
+		//public string oceanMaterial;
+		//public Color oceanTint;
 		[NonSerialized] 
 		public Material atmosMat;
-		public string atmosphereMaterial;
-		public Color atmosphereTint;
+		public GSMaterialSettings atmosphereMaterial = new GSMaterialSettings();
+		//public string atmosphereMaterial;
+		//public Color atmosphereTint;
 		[NonSerialized]
 		public Material thumbMat;
-		public string thumbMaterial;
-		public Color thumbTint;
+		public GSMaterialSettings thumbMaterial = new GSMaterialSettings();
+		//public string thumbMaterial;
+		//public Color thumbTint;
 		[NonSerialized]
 		public Material minimapMat;
-		public string minimapMaterial;
-		public Color minimapTint;
+		public GSMaterialSettings minimapMaterial = new GSMaterialSettings();
+		//public string minimapMaterial;
+		//public Color minimapTint;
 		[NonSerialized]
 		public AmbientDesc ambientDesc;
+		[NonSerialized] 
 		public string ambient;
 		[NonSerialized]
 		public AudioClip ambientSfx;
@@ -131,7 +138,11 @@ namespace GalacticScale
             if (VegeSettings.Group1.Count == 0) PopulateVegeData();
 			else ConvertVegeData();
 			ProcessTints();
-			if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
+			if (TerrainSettings.BrightnessFix)
+			{
+				terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
+		
+			}
 		}
 		public void PopulateVegeData()
         {
@@ -313,13 +324,8 @@ namespace GalacticScale
 			SFXPath = baseTheme.SFXPath;
 			SFXVolume = baseTheme.SFXVolume;
 			CullingRadius = baseTheme.CullingRadius;
-			terrainMat = (baseTheme.terrainMat != null)?UnityEngine.Object.Instantiate(baseTheme.terrainMat):null;
-            if (baseTheme.oceanMat != null)
-			{
-                Material oceanTemp = UnityEngine.Object.Instantiate(baseTheme.oceanMat);
-                oceanMat = oceanTemp;
-				if (oceanTint != new Color()) TintOcean(oceanTint);
-			} 
+			terrainMat = (baseTheme.terrainMat != null)?UnityEngine.Object.Instantiate(baseTheme.terrainMat): null;
+			oceanMat = (baseTheme.oceanMat != null) ? UnityEngine.Object.Instantiate(baseTheme.oceanMat) : null;
 			atmosMat = (baseTheme.atmosMat != null) ? UnityEngine.Object.Instantiate(baseTheme.atmosMat) : null;
 			thumbMat = (baseTheme.thumbMat != null) ? UnityEngine.Object.Instantiate(baseTheme.thumbMat) : null;
 			minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
@@ -408,42 +414,63 @@ namespace GalacticScale
                 return LDBThemeId;
             }
 		}
+		private bool CreateMaterial(GSMaterialSettings settings, out Material material, string name)
+        {
+			if (settings.CopyFrom == null)
+			{
+				Material tempMat;
+				if (settings.Path == null) tempMat = material = Resources.Load<Material>(MaterialPath + "terrain");
+				else tempMat = material = Resources.Load<Material>(settings.Path);
+				if (tempMat != null) material = UnityEngine.Object.Instantiate(tempMat);
+				return true;
+			}
+			string[] copyFrom = settings.CopyFrom.Split('.');
+			material = material = (Material)typeof(GSTheme).GetField(name).GetValue(GS2.ThemeLibrary[settings.CopyFrom]);
+			return false;
+		}
 		public void InitMaterials ()
         {
 			if (initialized) return;
-			if (terrainMaterial == null)
-			{
-				Material tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
-				if (tempMat != null) terrainMat = UnityEngine.Object.Instantiate(tempMat);
-			} else terrainMat = GS2.ThemeLibrary[terrainMaterial].terrainMat;
-			
-			if (oceanMaterial == null)
-			{
-				Material tempMat = Resources.Load<Material>(MaterialPath + "ocean");
-				if (tempMat != null) oceanMat = UnityEngine.Object.Instantiate(tempMat);
-			} else oceanMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[oceanMaterial].oceanMat);
+			CreateMaterial(terrainMaterial,out terrainMat, "terrainMat");
+			CreateMaterial(oceanMaterial, out oceanMat, "oceanMat");
+			CreateMaterial(atmosphereMaterial, out atmosMat, "atmosMat");
+			CreateMaterial(minimapMaterial, out minimapMat, "minimapMat");
+			CreateMaterial(thumbMaterial, out thumbMat, "thumbMat");
+			//if (terrainMaterial.CopyFrom == null)
+			//{
+			//	Material tempMat;
+			//	if (terrainMaterial.Path == null) tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
+			//	else tempMat = terrainMat = Resources.Load<Material>(terrainMaterial.Path);
+			//	if (tempMat != null) terrainMat = UnityEngine.Object.Instantiate(tempMat);
+			//} else terrainMat = GS2.ThemeLibrary[terrainMaterial.CopyFrom].terrainMat;
 
-			if (atmosphereMaterial == null)
-			{
-				Material tempMat = Resources.Load<Material>(MaterialPath + "atmosphere");
-				if (tempMat != null) atmosMat = UnityEngine.Object.Instantiate(tempMat);
-			} else atmosMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[atmosphereMaterial].atmosMat);
+			//if (oceanMaterial.CopyFrom == null)
+			//{
+			//	Material tempMat = Resources.Load<Material>(MaterialPath + "ocean");
+			//	if (tempMat != null) oceanMat = UnityEngine.Object.Instantiate(tempMat);
+			//} else oceanMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[oceanMaterial.CopyFrom].oceanMat);
 
-			if (thumbMaterial == null)
-			{
-				Material tempMat = Resources.Load<Material>(MaterialPath + "thumb");
-				if (tempMat != null) thumbMat = UnityEngine.Object.Instantiate(tempMat);
-			}
-			else thumbMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[thumbMaterial].thumbMat);
+			//if (atmosphereMaterial.CopyFrom == null)
+			//{
+			//	Material tempMat = Resources.Load<Material>(MaterialPath + "atmosphere");
+			//	if (tempMat != null) atmosMat = UnityEngine.Object.Instantiate(tempMat);
+			//} else atmosMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[atmosphereMaterial.CopyFrom].atmosMat);
 
-			if (minimapMaterial == null)
-			{
-				Material tempMat = Resources.Load<Material>(MaterialPath + "minimap");
-				if (tempMat != null) minimapMat = UnityEngine.Object.Instantiate(tempMat);
-			}
-			else minimapMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[minimapMaterial].minimapMat);
+			//if (thumbMaterial.CopyFrom == null)
+			//{
+			//	Material tempMat = Resources.Load<Material>(MaterialPath + "thumb");
+			//	if (tempMat != null) thumbMat = UnityEngine.Object.Instantiate(tempMat);
+			//}
+			//else thumbMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[thumbMaterial.CopyFrom].thumbMat);
 
-			
+			//if (minimapMaterial == null)
+			//{
+			//	Material tempMat = Resources.Load<Material>(MaterialPath + "minimap");
+			//	if (tempMat != null) minimapMat = UnityEngine.Object.Instantiate(tempMat);
+			//}
+			//else minimapMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[minimapMaterial.CopyFrom].minimapMat);
+
+
 			if (ambient == null) ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
 			else ambientDesc = GS2.ThemeLibrary[ambient].ambientDesc;
 			ambientSfx = Resources.Load<AudioClip>(SFXPath);
@@ -473,13 +500,13 @@ namespace GalacticScale
         }
 		public void ProcessTints()
         {
-			if (terrainTint != new Color()) TintTerrain(terrainTint);
-			if (oceanTint != new Color()) TintOcean(oceanTint);
-			if (atmosphereTint != new Color()) TintAtmosphere(atmosphereTint);
+			if (terrainMaterial.Tint != new Color()) TintTerrain(terrainMaterial.Tint);
+			if (oceanMaterial.Tint != new Color()) TintOcean(oceanMaterial.Tint);
+			if (atmosphereMaterial.Tint != new Color()) TintAtmosphere(atmosphereMaterial.Tint);
 			//TODO
 			//if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint); //This doesn't appear to exist in any theme?
-			if (thumbTint != new Color()) thumbMat = TintMaterial(thumbMat, thumbTint);
-			if (minimapTint != new Color()) minimapMat = TintMaterial(minimapMat, minimapTint);
+			if (thumbMaterial.Tint != new Color()) thumbMat = TintMaterial(thumbMat, thumbMaterial.Tint);
+			if (minimapMaterial.Tint != new Color()) minimapMat = TintMaterial(minimapMat, minimapMaterial.Tint);
 		}
 		//public void Monkey(Color c)
 		//{
@@ -528,7 +555,7 @@ namespace GalacticScale
 			SetColor(terrainMat, "_LightColorScreen", c);
             SetColor(terrainMat, "_HeightEmissionColor", c);
             SetColor(terrainMat, "_SpeclColor", c);
-            SetColor(terrainMat, "_EmissionColor", c);
+			//SetColor(terrainMat, "_EmissionColor", c);
             //SetColor(terrainMat, "_BioTex1A", c);
             //SetColor(terrainMat, "_BioTex1N", c);
             //SetColor(terrainMat, "_BioTex2A", c);

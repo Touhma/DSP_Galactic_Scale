@@ -10,16 +10,20 @@ namespace GalacticScale
         {
             public static UnityEngine.Cubemap TintCubeMap(UnityEngine.Cubemap input, UnityEngine.Color color)
             {
+                GS2.Log("Tinting Cubemap");
                 UnityEngine.Cubemap output = UnityEngine.Object.Instantiate(input);
                 var colors = output.GetPixels(UnityEngine.CubemapFace.PositiveX);
+                GS2.Log(colors[0].ToString());
                 var tinted = new UnityEngine.Color[colors.Length];
                 for (var i=0;i<colors.Length;i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),new UnityEngine.Color(color.r,color.g,color.b), color.a);
+                Log(tinted[0].ToString());
                 output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveX);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveY);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveZ);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeX);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeY);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeZ);
+                Log("End");
                 return output;
             }
             public static GSPlanet GetGSPlanet(PlanetData planet)

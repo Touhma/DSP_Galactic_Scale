@@ -65,7 +65,7 @@ namespace GalacticScale.Generators
         public string par = "_DepthFactor";
         private void updateOceanMat(object o)
         {
-            GSSettings.ThemeLibrary["TintCustom"].oceanTint = new Color(r, g, b, a);
+            GSSettings.ThemeLibrary["TintCustom"].oceanMaterial.Tint = new Color(r, g, b, a);
         }
         public void Init()
         {
@@ -113,19 +113,19 @@ namespace GalacticScale.Generators
                 GSTheme temp = new GSTheme("Tint" + c.Key, "Tint" + c.Key, "Mediterranean");
                 //temp.atmosphereTint = c.Value;
                 //temp.terrainTint = c.Value;
-                temp.oceanTint = c.Value;
+                temp.oceanMaterial.Tint = c.Value;
                 //ColorUtility.TryParseHtmlString("#fce303", out cc);
                 temp.Process();
 
                 GSTheme temp2 = new GSTheme("TintLava" + c.Key, "TintLava" + c.Key, "Lava");
                 //temp2.atmosphereTint = c.Value;
-                temp2.terrainTint = c.Value;
+                temp2.terrainMaterial.Tint = c.Value;
                 //temp2.oceanTint = c.Value;
                 //ColorUtility.TryParseHtmlString("#fce303", out cc);
                 temp2.Process();
 
                 GSTheme temp3 = new GSTheme("TintIce" + c.Key, "TintIce" + c.Key, "IceGelisol");
-                temp3.atmosphereTint = c.Value;
+                temp3.atmosphereMaterial.Tint = c.Value;
                 //temp3.terrainTint = c.Value;
                 //temp3.oceanTint = c.Value;
                 Color cc = Color.white;
@@ -133,13 +133,13 @@ namespace GalacticScale.Generators
                 temp3.Process();
 
                 GSTheme tempg = new GSTheme("TintGiant" + c.Key, "TintGiant" + c.Key, "GasGiant");
-                tempg.atmosphereTint = c.Value;
+                tempg.atmosphereMaterial.Tint = c.Value;
                 Material tempMat = Resources.Load<Material>("Universe/Materials/Stars/" + "star-mass-a");
                 if (tempMat != null) tempg.terrainMat = UnityEngine.Object.Instantiate(tempMat);
                 //tempg.terrainTint = c.Value;
                 tempg.Process(); //tempg.Monkey(c.Value);
                 GSTheme tempig = new GSTheme("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, "IceGiant");
-                tempig.atmosphereTint = c.Value;
+                tempig.atmosphereMaterial.Tint = c.Value;
                 //tempig.terrainTint = c.Value;
                 tempig.Process(); 
 
