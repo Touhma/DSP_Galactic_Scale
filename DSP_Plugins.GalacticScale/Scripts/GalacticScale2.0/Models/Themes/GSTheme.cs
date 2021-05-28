@@ -141,7 +141,7 @@ namespace GalacticScale
 			
             if (VeinSettings.RequiresConversion) ConvertVeinData();
             else PopulateVeinData();
-            if (VegeSettings.Group1.Count == 0) PopulateVegeData();
+            if (VegeSettings.Empty) PopulateVegeData();
 			else ConvertVegeData();
 			ProcessTints();
 			if (TerrainSettings.BrightnessFix)
@@ -469,39 +469,6 @@ namespace GalacticScale
 			CreateMaterial(minimapMaterial, out minimapMat);
 			GS2.Log("Creating Thumb Material");
 			CreateMaterial(thumbMaterial, out thumbMat);
-			//if (terrainMaterial.CopyFrom == null)
-			//{
-			//	Material tempMat;
-			//	if (terrainMaterial.Path == null) tempMat = terrainMat = Resources.Load<Material>(MaterialPath + "terrain");
-			//	else tempMat = terrainMat = Resources.Load<Material>(terrainMaterial.Path);
-			//	if (tempMat != null) terrainMat = UnityEngine.Object.Instantiate(tempMat);
-			//} else terrainMat = GS2.ThemeLibrary[terrainMaterial.CopyFrom].terrainMat;
-
-			//if (oceanMaterial.CopyFrom == null)
-			//{
-			//	Material tempMat = Resources.Load<Material>(MaterialPath + "ocean");
-			//	if (tempMat != null) oceanMat = UnityEngine.Object.Instantiate(tempMat);
-			//} else oceanMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[oceanMaterial.CopyFrom].oceanMat);
-
-			//if (atmosphereMaterial.CopyFrom == null)
-			//{
-			//	Material tempMat = Resources.Load<Material>(MaterialPath + "atmosphere");
-			//	if (tempMat != null) atmosMat = UnityEngine.Object.Instantiate(tempMat);
-			//} else atmosMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[atmosphereMaterial.CopyFrom].atmosMat);
-
-			//if (thumbMaterial.CopyFrom == null)
-			//{
-			//	Material tempMat = Resources.Load<Material>(MaterialPath + "thumb");
-			//	if (tempMat != null) thumbMat = UnityEngine.Object.Instantiate(tempMat);
-			//}
-			//else thumbMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[thumbMaterial.CopyFrom].thumbMat);
-
-			//if (minimapMaterial == null)
-			//{
-			//	Material tempMat = Resources.Load<Material>(MaterialPath + "minimap");
-			//	if (tempMat != null) minimapMat = UnityEngine.Object.Instantiate(tempMat);
-			//}
-			//else minimapMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[minimapMaterial.CopyFrom].minimapMat);
 			GS2.Log("Initializing AmbientDesc");
 			if (PlanetType != EPlanetType.Gas)
 			{
@@ -616,11 +583,6 @@ namespace GalacticScale
 			SetColor(terrainMat, "_LightColorScreen", c);
             SetColor(terrainMat, "_HeightEmissionColor", c);
             SetColor(terrainMat, "_SpeclColor", c);
-			//SetColor(terrainMat, "_EmissionColor", c);
-            //SetColor(terrainMat, "_BioTex1A", c);
-            //SetColor(terrainMat, "_BioTex1N", c);
-            //SetColor(terrainMat, "_BioTex2A", c);
-            //SetColor(terrainMat, "_BioTex2N", c);
         }
 
 		public void SetColor(Material mat, string name, Color c)
@@ -633,8 +595,6 @@ namespace GalacticScale
 			Color origGrayScale = new Color(gs, gs, gs, a);
 			float lerp = c.a;
 			Color toColor = new Color(c.r, c.g, c.b, a);
-            //mat.SetColor(name, c);
-            //mat.SetColor(name, origGrayScale);
             mat.SetColor(name, Color.Lerp(origGrayScale, toColor, lerp));
         }
 		public void TintAtmosphere(Color c)

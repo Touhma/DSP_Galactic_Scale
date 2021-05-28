@@ -4,6 +4,7 @@ namespace GalacticScale
     public class GSVegeSettings
     {
         public string Algorithm = "Vanilla";
+        public bool Empty {  get { return (Group1.Count + Group2.Count + Group3.Count + Group4.Count + Group5.Count + Group6.Count == 0); } }
         public List<string> Group1 = new List<string>();
         public List<string> Group2 = new List<string>();
         public List<string> Group3 = new List<string>();

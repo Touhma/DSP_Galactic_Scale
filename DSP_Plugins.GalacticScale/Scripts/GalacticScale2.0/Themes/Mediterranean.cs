@@ -22,7 +22,6 @@ namespace GalacticScale
             {
                 Algorithm = "Vanilla",
                 VeinTypes = new List<GSVeinType>()
-
             },
             AmbientSettings = new GSAmbientSettings()
             {
@@ -48,47 +47,92 @@ namespace GalacticScale
                 Reflections = new Color(),
                 LutContribution = 0.25f
             },
-            Vegetables0 = new int[] {
-                604,
-                605,
-                603,
-                604,
-                102,
-                604,
-                605,
-                105,
-                602,
-                601
+            VegeSettings = new GSVegeSettings()
+            {
+                Group1 = new List<string>()
+                {
+                    "MedStone4",
+                    "MedStone5",
+                    "MedStone3",
+                    "MedStone4",
+                    "MedTree2",
+                    "MedStone4",
+                    "MedStone5",
+                    "MedTree5",
+                    "MedStone2",
+                    "MedStone1"
+                },
+                Group2 = new List<string>() {
+                    "MedTree3",
+                    "MedTree2",
+                    "MedTree3",
+                    "MedTree4",
+                    "MedTree4",
+                    "MedTree4",
+                    "MedTree1",
+                    "MedTree4",
+                    "MedStone4",
+                    "MedTree6"
+                },
+                Group3 = new List<string>() {
+                    "MedGrass7",
+                    "MedGrass8",
+                    "MedGrass9"
+                },
+                Group4 = new List<string>() {
+                    "MedFragment6",
+                    "MedBroken7",
+                    "MedBroken8",
+                    "MedBroken7",
+                    "MedBroken8" //This is a broken rock
+                },
+                Group5 = new List<string>() { // Lowlands - On Sand
+                    "MedGrass10",
+                },
+                Group6 = new List<string>() // In Water
+                { "LandingPod" }
             },
-            Vegetables1 = new int[] {
-                103,
-                102,
-                103,
-                104,
-                104,
-                104,
-                101,
-                104,
-                604,
-                106
-            },
-            Vegetables2 = new int[] {
-                1001,
-                1002,
-                1003
-            },
-            Vegetables3 = new int[] {
-                1005,
-                1006,
-                1007,
-                1006,
-                1007
-            },
-            Vegetables4 = new int[] {
-                1004
-            },
-            Vegetables5 = new int[] {
-            },
+            //Vegetables0 = new int[] {
+            //    604,
+            //    605,
+            //    603,
+            //    604,
+            //    102,
+            //    604,
+            //    605,
+            //    105,
+            //    602,
+            //    601
+            //},
+            //Vegetables1 = new int[] {
+            //    103,
+            //    102,
+            //    103,
+            //    104,
+            //    104,
+            //    104,
+            //    101,
+            //    104,
+            //    604,
+            //    106
+            //},
+            //Vegetables2 = new int[] {
+            //    1001,
+            //    1002,
+            //    1003
+            //},
+            //Vegetables3 = new int[] {
+            //    1005,
+            //    1006,
+            //    1007,
+            //    1006,
+            //    1007
+            //},
+            //Vegetables4 = new int[] {
+            //    1004
+            //},
+            //Vegetables5 = new int[] {
+            //},
             VeinSpot = new int[] {
                 7,
                 5,
