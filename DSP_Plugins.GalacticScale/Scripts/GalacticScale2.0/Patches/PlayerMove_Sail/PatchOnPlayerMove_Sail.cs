@@ -431,7 +431,7 @@ namespace GalacticScale
                     num4 += -1f;
             }
             __instance.targetAltitude += (float)((double)num4 * (double)dt * 20.0);
-            GS2.Log("TA"+__instance.targetAltitude);
+            //GS2.Log("TA"+__instance.targetAltitude);
             __instance.targetAltitude = 3;
             if (__instance.controller.cmd.type == ECommand.Build && !PlayerController.operationWhenBuild && (double)__instance.targetAltitude > 40.0)
                 __instance.targetAltitude = 40f;
@@ -495,7 +495,7 @@ namespace GalacticScale
             else
                 __instance.moveVelocity = Vector3.Slerp(__instance.moveVelocity, to * num3, num2);
             Vector3 vel = __instance.moveVelocity + __instance.rtsVelocity;
-            GS2.Log(num1.ToString());
+            //GS2.Log(num1.ToString());
             if ((double)num1 > 0.9)
                 vel = Vector3.ClampMagnitude(vel, num3);
             __instance.UseFlyEnergy(ref vel, __instance.mecha.walkPower * (double)dt * (double)__instance.controller.softLandingRecover);

@@ -74,28 +74,6 @@ namespace GalacticScale.Generators
             UI_tidalLockInnerPlanets = options.Add(GSUI.Checkbox("Tidal lock inner planets", false, o => preferences.Set("tidalLockInnerPlanets", o)));
             UI_moonsAreSmall = options.Add(GSUI.Checkbox("Moons are small", true, o => preferences.Set("moonsAreSmall", o)));
             UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
             ReadStarData();
         }
         
@@ -232,95 +210,22 @@ namespace GalacticScale.Generators
             obsidian.terrainMat.SetFloat("_Distance", 0f);
             //obsidian.AmbientSettings.CubeMap = "GS2";
             //obsidian.AmbientSettings.Reflections = new Color(0, 1f, 0.2f, 0.5f); ;
-            //redIce.ambientDesc.ambientColor0 = Color.yellow;
-            //redIce.ambientDesc.ambientColor1 = Color.yellow;
-            //redIce.ambientDesc.ambientColor2 = Color.red;
-            //redIce.ambientDesc.biomoColor0 = Color.red;
-            //redIce.ambientDesc.biomoColor1 = Color.green;
-            //redIce.ambientDesc.biomoColor2 = Color.green;
 
-
-            //redIce.ambientDesc.waterAmbientColor0 = Color.red;
-            //redIce.ambientDesc.waterAmbientColor1 = Color.red;
-            //redIce.ambientDesc.waterAmbientColor2 = Color.red;
-            //redIce.ambientDesc.lutContribution = 0;
-            //GS2.Log("About to load asset");
-            //ref AssetBundle bundle = ref Scripts.PatchUI.PatchForUI.bundle;
-            //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
-            //var names = bundle.GetAllAssetNames();
-            //GS2.LogJson(names);
-            //Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
-            //GS2.Warn(x.ToString());
-            //GS2.Log("About to set reflectionMap");
-            //redIce.ambientDesc.reflectionMap = x;
-            //var x = redIce.ambientDesc.reflectionMap.GetPixels(CubemapFace.NegativeX);
-
-            //redIce.terrainMat.SetColor("_AmbientColor1", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_AmbientColor0", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_AmbientColor1", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_AmbientColor2", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_Color", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_EmissionColor", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_LightColorScreen", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_SpeclColor", UnityEngine.Color.green);
-
-            //redIce.terrainMat.SetColor("_SunDir", UnityEngine.Color.green);
-            //redIce.terrainMat.SetTexture("_BioShift", null);
-            //redIce.terrainMat.SetTexture("_BioTex0A", null); //this one makes everything green...
-            //var a = redIce.terrainMat.GetTexture("_BioTex0A");
-            //var b = redIce.terrainMat.GetTexture("_BioTex1A");
-            //redIce.terrainMat.SetTexture("_BioTex0A", b);
-            //GS2.LogJson(redIce.terrainMat.GetTexturePropertyNames());
-            //redIce.terrainMat.SetTexture("_BioTex0N", null);///
-            //redIce.terrainMat.SetTexture("_BioTex1A", null);
-            //redIce.terrainMat.SetTexture("_BioTex1N", null);
-            //redIce.terrainMat.SetTexture("_BioTex2N", null);
-            //redIce.terrainMat.SetTexture("_BioTex2A", null);
-
-            // _BioTex0A("Bio 0 Albedo", 2D) = "white" { }
-            //_BioTex0N("Bio 0 Normal", 2D) = "bump" { }
-            //_BioTex1A("Bio 1 Albedo", 2D) = "white" { }
-            //_BioTex1N("Bio 1 Normal", 2D) = "bump" { }
-            //_BioTex2A("Bio 2 Albedo", 2D) = "white" { }
-            //_BioTex2N("Bio 2 Normal", 2D) = "bump" { }
-            //_BioShift("Bio Shift", 2D) = "black" { }
-            //_NormalStrength("Normal Strength", Float) = 1
-
-
-
-
-            //_GIStrengthDay("全局光照（白天）", Range(0, 1)) = 1
-
-            //_GIStrengthNight("全局光照（夜晚）", Range(0, 1)) = 0.2
-
-            //_GISaturate("全局光照饱和度", Range(0, 2)) = 1
-
-            //Shader s = redIce.terrainMat.shader;
-            //GS2.Error("SHADER : " + s.name);
-            //GS2.Error(s.GetType().ToString());
+            GSTheme redIce = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
+            redIce.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
+            redIce.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
+            redIce.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
+            redIce.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
+            redIce.Process();
             ref GSPlanets planets = ref sol.Planets;
-            planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7f, 252f, 10556f, 0, 0.034f, 7038, 0, 9f, null));
-            planets.Add(new GSPlanet("Venus", "VolcanicAsh", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177f, 1000, 0, 2.6f, null));
-            planets.Add(new GSPlanet("Earth", "Mediterranean", 400, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
-            planets.Add(new GSPlanet("Jumpiter", "GasGiant", 80, 5.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
+            //planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7f, 252f, 10556f, 0, 0.034f, 7038, 0, 9f, null));
+            //planets.Add(new GSPlanet("Venus", "VolcanicAsh", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177f, 1000, 0, 2.6f, null));
+            planets.Add(new GSPlanet("Earth", "Mediterranean", 140, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
+            //planets.Add(new GSPlanet("Jupiter", "GasGiant", 80, 5.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
             GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f, null));
-            planets.Add(new GSPlanet("Obsidian", "Obsidian", 200, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f, null));
+            planets.Add(new GSPlanet("Obsidian", "Obsidian", 100, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f, null));
+            planets.Add(new GSPlanet("IceMalusol", "IceMalusol", 100, 0.72f, 3.39f, 182f, 26964f, 10, 177f, 1000, 0, 2.6f, null));
             oily.scale = 1f;
-
-            GSMaterialSettings g = new GSMaterialSettings();
-            g.Path = "\\ocean\\test";
-            g.Colors.Add("_heightColor", new Color(0f, 1f, 0f, 1f));
-            g.Colors.Add("_speclColor", new Color(1f, 1f, 0f, 0.5f));
-            g.Params.Add("_heightStrength", 50f);
-            GS2.LogJson(g);
-            GS2.LogJson(g.Colors);
 
         }
 

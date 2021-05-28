@@ -1,6 +1,4 @@
-﻿
-using BepInEx;
-using FullSerializer;
+﻿using BepInEx;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +8,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static bool Failed = false;
         public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
@@ -25,12 +24,27 @@ namespace GalacticScale
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static bool minifyJSON = false;
-
+        private static UnityEngine.AssetBundle _bundle;
+        public static UnityEngine.AssetBundle bundle { get
+            {
+                if (_bundle == null) _bundle = UnityEngine.AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
+                if (_bundle == null)
+                {
+                   Error("Failed to load AssetBundle!");
+                    return null;
+                }
+                Warn("---Asset Bundle Contents---");
+                LogJson(_bundle.GetAllAssetNames());
+                Warn("---------------------------");
+                return _bundle;
+            } 
+        }
 
 
         public static void GenerateGalaxy()
         {
             Log("Start");
+            Failed = false;
             if (GSSettings.Instance.imported)
             {
                 Log("Settings Loaded From Save File");
@@ -38,10 +52,11 @@ namespace GalacticScale
             }
            
             GSSettings.Reset(gameDesc.galaxySeed);
-            Log("Seed = " + GSSettings.Seed);
+            Log("Seed From gameDesc = " + GSSettings.Seed);
             gsPlanets.Clear();
             Log("Loading Data from Generator : " + generator.Name);
             generator.Generate(gameDesc.starCount);
+            Log("Final Seed = " + GSSettings.Seed);
             Log("End");
             return;
         }

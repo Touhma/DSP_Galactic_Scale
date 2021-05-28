@@ -117,10 +117,11 @@ namespace GalacticScale
 		}
 		public void Process()
         {
-			GS2.Log("Start");
+			GS2.Log("Start "+Name);
 			Init();
 			GS2.Log("Adding to Library");
 			AddToLibrary();
+			GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap?.GetInstanceID());
 			GS2.Log("End");
         }
 		public void Init()
@@ -135,8 +136,12 @@ namespace GalacticScale
 				}
 				else
 				{
+					GS2.Log("Setting CubeMap for " + Name);
+					GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
 					AmbientSettings.ToTheme(this);
+					GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
 				}
+				GS2.Log("Finished Processing Ambient Settings for " + Name);
 			}
 			
             if (VeinSettings.RequiresConversion && !Base) ConvertVeinData();
@@ -169,7 +174,8 @@ namespace GalacticScale
 		}
 		public void ConvertVeinData()
 		{
-			GS2.Log(Name + "-" + VeinSpot.Length.ToString());
+			GS2.Log("Start "+Name);
+			//GS2.Log(Name + "-" + VeinSpot.Length.ToString());
 			List<float> _rareSettings = new List<float>();
 			List<int> _rareVeins = new List<int>();
 			int veinArrayLength = 25;
@@ -180,25 +186,25 @@ namespace GalacticScale
 		
 			for (var i = 0; i < VeinSettings.VeinTypes.Count; i++)
 			{ // For each EVeinType
-				GS2.Log("Getting VeinType");
+				//GS2.Log("Getting VeinType");
 				GSVeinType vt = VeinSettings.VeinTypes[i];
 				var type = vt.type;
 				float opacity = 0;
 				float count = 0;
 				int veinCount = vt.veins.Count;
-				GS2.Log("Type:" + type + " veinCount:" + veinCount);
+				//GS2.Log("Type:" + type + " veinCount:" + veinCount);
 				for (var j = 0; j < veinCount; j++)
 				{
-					GS2.Log("Getting Vein");
+					//GS2.Log("Getting Vein");
 					GSVein v = vt.veins[j];
 					count += v.count;
 					opacity += v.richness;
 				}
-				GS2.Log("Count:" + count + " Opacity:" + opacity);
+				//GS2.Log("Count:" + count + " Opacity:" + opacity);
                 //if ((int)type < 8)
                 if (vt.rare)
                 {  //Special
-                    GS2.Log("Rare");
+                    //GS2.Log("Rare");
                     var specialOpacity = opacity / veinCount;
                     var specialCount = veinCount;
                     //var specialNumber = count / veinCount;
@@ -213,27 +219,27 @@ namespace GalacticScale
                 }
                 else
                 {
-                    GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)=" + (int)type);
+                    //GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)=" + (int)type);
                     VeinOpacity[(int)type - 1] = opacity / veinCount;
                     VeinCount[(int)type - 1] = count / 25 / veinCount;
                     VeinSpot[(int)type - 1] = veinCount;
-                    GS2.Log(type.ToString() + "| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
+                    //GS2.Log(type.ToString() + "| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
                 }
             }
 			RareSettings = _rareSettings.ToArray();
 			RareVeins = _rareVeins.ToArray();
-			GS2.Log("VeinSpot");
-			GS2.LogJson(VeinSpot);
-			GS2.Log("VeinCount");
-			GS2.LogJson(VeinCount);
-			GS2.Log("VeinOpacity");
-			GS2.LogJson(VeinOpacity);
-			GS2.Log("RareSettings");
-			GS2.LogJson(RareSettings);
-			GS2.Log("RareVeins");
-			GS2.LogJson(RareVeins);
-			GS2.Log("End");
-		}
+            //GS2.Log("VeinSpot");
+            //GS2.LogJson(VeinSpot);
+            //GS2.Log("VeinCount");
+            //GS2.LogJson(VeinCount);
+            //GS2.Log("VeinOpacity");
+            //GS2.LogJson(VeinOpacity);
+            //GS2.Log("RareSettings");
+            //GS2.LogJson(RareSettings);
+            //GS2.Log("RareVeins");
+            //GS2.LogJson(RareVeins);
+            GS2.Log("End " + Name);
+        }
 		public void PopulateVeinData()
 		{
 			for (var vType = 0; vType < VeinSpot.Length; vType++)
@@ -337,7 +343,7 @@ namespace GalacticScale
 			minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
 			ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
 			ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
-			GS2.Log("Copying ambientSettings");
+			GS2.Log("Copying ambientSettings for " + Name);
 			if (PlanetType != EPlanetType.Gas) {
 				if (baseTheme.AmbientSettings == null) { baseTheme.AmbientSettings = new GSAmbientSettings(); baseTheme.AmbientSettings.FromTheme(baseTheme); }
 				if (baseTheme.AmbientSettings != null) AmbientSettings = baseTheme.AmbientSettings.Clone();
@@ -435,26 +441,60 @@ namespace GalacticScale
 				if (settings.Path == null)
 				{
 					GS2.Log("Creating Material from MaterialPath Resource @ " + MaterialPath + materialType);
-					tempMat = material = Resources.Load<Material>(MaterialPath + materialType);
+					tempMat = Resources.Load<Material>(MaterialPath + materialType);
 				}
 				else
 				{
 					GS2.Log("Creating Material from Settings Defined Resource @ " + settings.Path);
-					tempMat = material = Resources.Load<Material>(settings.Path);
+					tempMat = Resources.Load<Material>(settings.Path);
 				}
 				if (tempMat != null)
 				{
 					GS2.Log("Creating Material");
 					material = UnityEngine.Object.Instantiate(tempMat);
 				}
-				else GS2.Log("Failed to Create Material|" + Name);
-				return true;
+				else
+				{
+					GS2.Log("Failed to Create Material|" + Name);
+					material = Resources.Load<Material>(MaterialPath + materialType);
+				}
+
 			}
-			string[] copyFrom = settings.CopyFrom.Split('.');
-			GSTheme materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
-			string materialName = copyFrom[1];
-			material = (Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme);
+			else
+			{
+				string[] copyFrom = settings.CopyFrom.Split('.');
+				GSTheme materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
+				string materialName = copyFrom[1];
+				material = UnityEngine.Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
+			}
+			GS2.Log("Setting Textures for " + Name + " with " + settings.Textures.Count + " texture items in list");
+			foreach (var kvp in settings.Textures)
+			{
+				
+				string[] value = kvp.Value.Split('|');
+				string location = value[0];
+				string path = value[1];
+				string name = kvp.Key;
+				GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
+				Texture tex = null;
+				if (location == "GS2") tex = GetTextureFromBundle(path);
+				if (tex == null)
+				{
+					GS2.Error("Texture not found");
+				}
+				else
+				{
+					GS2.Log("Assigning Texture");
+					material.SetTexture(name, tex);
+				}
+
+			}
 			return false;
+		}
+		public static Texture GetTextureFromBundle(string name)
+		{
+			AssetBundle bundle = GS2.bundle;
+			return bundle.LoadAsset<Texture>(name);
 		}
 		public void InitMaterials ()
         {
@@ -490,12 +530,18 @@ namespace GalacticScale
 				ambientSfx = Resources.Load<AudioClip>(SFXPath);
 			}
 			initialized = true;
+			GS2.Log("About to process tints for "+Name);
             ProcessTints();
 			ProcessMaterialSettings();
 		}
 		public void ProcessMaterialSettings()
         {
-			foreach (var kvp in terrainMaterial?.Colors) terrainMat.SetColor(kvp.Key, kvp.Value);
+			GS2.Log("Processing MaterialSettings for " + Name);
+			foreach (var kvp in terrainMaterial?.Colors)
+			{
+				GS2.Log("Setting Terrain Material Color " + kvp.Key + " to " + kvp.Value.ToString() + " for " + Name);
+				terrainMat.SetColor(kvp.Key, kvp.Value);
+			}
 			foreach (var kvp in oceanMaterial?.Colors) oceanMat.SetColor(kvp.Key, kvp.Value);
 			foreach (var kvp in atmosphereMaterial?.Colors) atmosMat.SetColor(kvp.Key, kvp.Value);
 			foreach (var kvp in thumbMaterial?.Colors) thumbMat.SetColor(kvp.Key, kvp.Value);
@@ -529,8 +575,18 @@ namespace GalacticScale
         }
 		public void ProcessTints()
         {
+			GS2.Log("Processing Terrain Tint for " + Name);
 			if (terrainMaterial.Tint != new Color()) TintTerrain(terrainMaterial.Tint);
-			if (oceanMaterial.Tint != new Color()) TintOcean(oceanMaterial.Tint);
+			GS2.Log("Processing Ocean Tint for " + Name);
+			if (oceanMaterial.Tint != new Color())
+			{
+				GS2.Log("Color Found");
+				TintOcean(oceanMaterial.Tint);
+			} else
+            {
+				GS2.Log("No Color = " + oceanMaterial.Tint.ToString());
+				//TintOcean(new Color(.3f, .3f, 0.3f, 1));
+            }
 			if (atmosphereMaterial.Tint != new Color()) TintAtmosphere(atmosphereMaterial.Tint);
 			//TODO
 			//if (lowTint != new Color()) lowMat = TintMaterial(lowMat, lowTint); //This doesn't appear to exist in any theme?
@@ -622,7 +678,12 @@ namespace GalacticScale
         }
 		public void TintOcean(Color c)
         {
-			if (oceanMat == null) return;
+			GS2.Log("Start");
+			if (oceanMat == null)
+			{
+				GS2.Warn("oceanMat Null for " + Name);
+				return;
+			}
 			SetColor(oceanMat,"_CausticsColor", c); //Highlights
 			SetColor(oceanMat, "_Color", c); //Shore
 			SetColor(oceanMat, "_Color0", c); 
@@ -634,7 +695,7 @@ namespace GalacticScale
 			SetColor(oceanMat, "_SpeclColor", c);
 			SetColor(oceanMat, "_SpeclColor1", c);
 			SetColor(oceanMat, "_ReflectionColor", c);
-
+			GS2.Log("End");
 			//oceanMat.SetColor("_DepthFactor", new Color(.4f, .5f, .4f, 0.1f));
 			//Used as Vector4 in the shader
 			//X 0.1alpha seems best, really just determines height of ripples. 0.9 looks terrible.

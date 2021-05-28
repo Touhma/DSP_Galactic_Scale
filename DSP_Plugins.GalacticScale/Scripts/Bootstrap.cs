@@ -51,12 +51,13 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Sail));
-            //Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAlgorithm));
-            //Harmony.CreateAndPatchAll(typeof(Tp));
-            //Tp tp = new Tp();
-            //tp.Start();
-            //Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarMap));
-            
+            Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
+            //Harmony.CreateAndPatchAll(typeof());
+            //Harmony.CreateAndPatchAll(typeof());
+            //Harmony.CreateAndPatchAll(typeof());
+            //Harmony.CreateAndPatchAll(typeof());
+
+
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

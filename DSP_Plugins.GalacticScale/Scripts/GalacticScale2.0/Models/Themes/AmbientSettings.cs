@@ -84,12 +84,16 @@ namespace GalacticScale
 				GS2.Log(CubeMap);
 				GS2.Log(Reflections.ToString());
 				//Should move this out of here
-				ref AssetBundle bundle = ref Scripts.PatchUI.PatchForUI.bundle;
-				if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
+				AssetBundle bundle = GS2.bundle;
+				//if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
 				if (CubeMap == "GS2")
 				{
 					Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
-					if (Reflections.a != 0) ReflectionMap = GS2.Utils.TintCubeMap(x, Reflections);
+					if (Reflections.a != 0)
+					{
+						ReflectionMap = GS2.Utils.TintCubeMap(x, Reflections);
+						GS2.Log("Set Reflection Map to Tinted One");
+					}
 					else ReflectionMap = x;
 				}
 			}
@@ -114,8 +118,11 @@ namespace GalacticScale
 			theme.ambientDesc.biomoSound1 =BiomeSound2  ;
 			theme.ambientDesc.biomoSound2 =BiomeSound3  ;
 			theme.ambientDesc.lutContribution =LutContribution;
-			GS2.Log("Processing ReflectionMap");
-			if (ReflectionMap != null) theme.ambientDesc.reflectionMap =ReflectionMap  ;
+			if (ReflectionMap != null)
+			{
+				GS2.Log("Processing ReflectionMap");
+				theme.ambientDesc.reflectionMap = ReflectionMap;
+			}
 			if (LutTexture != null) theme.ambientDesc.lutTexture =LutTexture ;
 
 		}

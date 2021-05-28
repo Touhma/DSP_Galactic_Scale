@@ -10,19 +10,44 @@ namespace GalacticScale
         {
             public static UnityEngine.Cubemap TintCubeMap(UnityEngine.Cubemap input, UnityEngine.Color color)
             {
-                GS2.Log("Tinting Cubemap");
+                Log("Tinting Cubemap");
                 UnityEngine.Cubemap output = UnityEngine.Object.Instantiate(input);
+                
                 var colors = output.GetPixels(UnityEngine.CubemapFace.PositiveX);
-                GS2.Log(colors[0].ToString());
                 var tinted = new UnityEngine.Color[colors.Length];
-                for (var i=0;i<colors.Length;i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),new UnityEngine.Color(color.r,color.g,color.b), color.a);
-                Log(tinted[0].ToString());
-                output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveX);
+                for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
+                output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveX); 
+                
+                colors = output.GetPixels(UnityEngine.CubemapFace.PositiveY);
+                tinted = new UnityEngine.Color[colors.Length];
+                for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveY);
+                
+                colors = output.GetPixels(UnityEngine.CubemapFace.PositiveZ);
+                tinted = new UnityEngine.Color[colors.Length];
+                for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveZ);
+
+                colors = output.GetPixels(UnityEngine.CubemapFace.NegativeX);
+                tinted = new UnityEngine.Color[colors.Length];
+                for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeX);
+
+                colors = output.GetPixels(UnityEngine.CubemapFace.NegativeY);
+                tinted = new UnityEngine.Color[colors.Length];
+                for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeY);
+
+                colors = output.GetPixels(UnityEngine.CubemapFace.NegativeZ);
+                tinted = new UnityEngine.Color[colors.Length];
+                for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
                 output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeZ);
+                
+                
+                
+                
+                
+                
                 Log("End");
                 return output;
             }
@@ -74,8 +99,7 @@ namespace GalacticScale
         }
         public static void EndGame()
         {
-            UIRoot.instance.backToMainMenu = true;
-            DSPGame.EndGame();
+            GameMain.End();
         }
         public class Random : System.Random
         {

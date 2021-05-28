@@ -14,7 +14,7 @@ namespace GalacticScale.Scripts.PatchUI
     {
         public new static ManualLogSource Logger;
         public static string Version = "2.0.0";
-        public static AssetBundle bundle;
+        //public static AssetBundle bundle;
         public static class BCE
         {
             public static bool disabled = true;
@@ -87,13 +87,13 @@ namespace GalacticScale.Scripts.PatchUI
 
         public static Sprite GetSpriteAsset(string name)
         {
-            if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchForUI)).Location), "galacticbundle"));
-            if (bundle == null)
-            {
-                Debug.Log("Failed to load AssetBundle!");
-                return null;
-            }
-            return bundle.LoadAsset<Sprite>(name);
+            //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PatchForUI)).Location), "galacticbundle"));
+            //if (bundle == null)
+            //{
+            //    Debug.Log("Failed to load AssetBundle!");
+            //    return null;
+            //}
+            return GS2.bundle.LoadAsset<Sprite>(name);
         }
     }
 }

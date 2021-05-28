@@ -140,6 +140,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinDescriptor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModellingManager\PatchOnPlanetModellingManager.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />

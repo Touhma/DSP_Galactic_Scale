@@ -144,7 +144,7 @@ namespace GalacticScale
             //if (data.ContainsKey("minimapTint")) DeserializeMember(data, null, "minimapTint", out model.minimapMaterial.Tint);
             //if (data.ContainsKey("ambient")) DeserializeMember(data, null, "ambient", out model.ambient);
             if (data.ContainsKey("AmbientSettings")) DeserializeMember(data, null, "AmbientSettings", out model.AmbientSettings);
-            model.Init();
+            model.Process();
             GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;
         }
