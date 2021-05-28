@@ -162,7 +162,7 @@ namespace GalacticScale
         public static bool _OnOpen(UIGalaxySelect __instance)
         {
             if (GS2.generator == null) return true;
-            __instance.random = new System.Random((int)(System.DateTime.Now.Ticks / 10000L));
+            __instance.random = new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
             __instance.gameDesc.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.generator.Config.DefaultStarCount, 1, 1f);
             GS2.gameDesc = __instance.gameDesc;
