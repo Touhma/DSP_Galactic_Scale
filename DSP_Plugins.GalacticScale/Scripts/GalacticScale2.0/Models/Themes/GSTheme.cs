@@ -93,12 +93,12 @@ namespace GalacticScale
 		//public string minimapMaterial;
 		//public Color minimapTint;
 		[NonSerialized]
-		public AmbientDesc ambientDesc;
+		public AmbientDesc ambientDesc = new AmbientDesc();
 		[NonSerialized] 
 		public string ambient;
 		[NonSerialized]
 		public AudioClip ambientSfx;
-		public GSAmbientSettings AmbientSettings;
+		public GSAmbientSettings AmbientSettings = new GSAmbientSettings();
 
 		// ////////////////////////////////////////
 		// / Constructor
@@ -117,21 +117,27 @@ namespace GalacticScale
 		}
 		public void Process()
         {
+			GS2.Log("Start");
 			Init();
+			GS2.Log("Adding to Library");
 			AddToLibrary();
+			GS2.Log("End");
         }
 		public void Init()
         {
 			if (DisplayName == "Default Theme") DisplayName = Name;
 			if (!initialized) InitMaterials();
-			if (AmbientSettings == null)
-			{
-				AmbientSettings = new GSAmbientSettings();
-				AmbientSettings.FromTheme(this);
-			} else
-            {
-				AmbientSettings.ToTheme(this);
-            }
+			if (PlanetType != EPlanetType.Gas) {
+				if (AmbientSettings == null)
+				{
+					AmbientSettings = new GSAmbientSettings();
+					AmbientSettings.FromTheme(this);
+				}
+				else
+				{
+					AmbientSettings.ToTheme(this);
+				}
+			}
 			
             if (VeinSettings.RequiresConversion) ConvertVeinData();
             else PopulateVeinData();
@@ -141,7 +147,6 @@ namespace GalacticScale
 			if (TerrainSettings.BrightnessFix)
 			{
 				terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
-		
 			}
 		}
 		public void PopulateVegeData()
@@ -414,28 +419,56 @@ namespace GalacticScale
                 return LDBThemeId;
             }
 		}
-		private bool CreateMaterial(GSMaterialSettings settings, out Material material, string name)
+		private bool CreateMaterial(GSMaterialSettings settings, out Material material)
         {
+            GS2.Log("Start|"+Name);
+
 			if (settings.CopyFrom == null)
 			{
+				string materialType = "terrain";
+				if (settings == oceanMaterial) materialType = "ocean";
+				if (settings == atmosphereMaterial) materialType = "atmosphere";
+				if (settings == minimapMaterial) materialType = "minimap";
+				if (settings == thumbMaterial) materialType = "thumb";
 				Material tempMat;
-				if (settings.Path == null) tempMat = material = Resources.Load<Material>(MaterialPath + "terrain");
-				else tempMat = material = Resources.Load<Material>(settings.Path);
-				if (tempMat != null) material = UnityEngine.Object.Instantiate(tempMat);
+				if (settings.Path == null)
+				{
+					GS2.Log("Creating Material from MaterialPath Resource @ " + MaterialPath + materialType);
+					tempMat = material = Resources.Load<Material>(MaterialPath + materialType);
+				}
+				else
+				{
+					GS2.Log("Creating Material from Settings Defined Resource @ " + settings.Path);
+					tempMat = material = Resources.Load<Material>(settings.Path);
+				}
+				if (tempMat != null)
+				{
+					GS2.Log("Creating Material");
+					material = UnityEngine.Object.Instantiate(tempMat);
+				}
+				else GS2.Log("Failed to Create Material|" + Name);
 				return true;
 			}
 			string[] copyFrom = settings.CopyFrom.Split('.');
-			material = material = (Material)typeof(GSTheme).GetField(name).GetValue(GS2.ThemeLibrary[settings.CopyFrom]);
+			GSTheme materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
+			string materialName = copyFrom[1];
+			material = (Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme);
 			return false;
 		}
 		public void InitMaterials ()
         {
+			GS2.Log("Start");
 			if (initialized) return;
-			CreateMaterial(terrainMaterial,out terrainMat, "terrainMat");
-			CreateMaterial(oceanMaterial, out oceanMat, "oceanMat");
-			CreateMaterial(atmosphereMaterial, out atmosMat, "atmosMat");
-			CreateMaterial(minimapMaterial, out minimapMat, "minimapMat");
-			CreateMaterial(thumbMaterial, out thumbMat, "thumbMat");
+			GS2.Log("Creating Terrain Material");
+			CreateMaterial(terrainMaterial,out terrainMat);
+			GS2.Log("Creating Ocean Material");
+			CreateMaterial(oceanMaterial, out oceanMat);
+			GS2.Log("Creating Atmosphere Material");
+			CreateMaterial(atmosphereMaterial, out atmosMat);
+			GS2.Log("Creating Minimap Material");
+			CreateMaterial(minimapMaterial, out minimapMat);
+			GS2.Log("Creating Thumb Material");
+			CreateMaterial(thumbMaterial, out thumbMat);
 			//if (terrainMaterial.CopyFrom == null)
 			//{
 			//	Material tempMat;
@@ -469,13 +502,41 @@ namespace GalacticScale
 			//	if (tempMat != null) minimapMat = UnityEngine.Object.Instantiate(tempMat);
 			//}
 			//else minimapMat = UnityEngine.Object.Instantiate(GS2.ThemeLibrary[minimapMaterial.CopyFrom].minimapMat);
-
-
-			if (ambient == null) ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
-			else ambientDesc = GS2.ThemeLibrary[ambient].ambientDesc;
-			ambientSfx = Resources.Load<AudioClip>(SFXPath);
+			GS2.Log("Initializing AmbientDesc");
+			if (PlanetType != EPlanetType.Gas)
+			{
+				if (AmbientSettings.ResourcePath != null && AmbientSettings.ResourcePath != "")
+				{
+					GS2.Log("Loading AmbientDesc from AmbientSettings.ResourcePath" + AmbientSettings.ResourcePath);
+					Resources.Load<AmbientDesc>(AmbientSettings.ResourcePath);
+				}
+				else if (ambient == null)
+				{
+					GS2.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
+					ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
+				}
+				else {
+					GS2.Log("Loading AmbientDesc from base theme = "+ambient);
+					ambientDesc = GS2.ThemeLibrary[ambient].ambientDesc; 
+				}
+				ambientSfx = Resources.Load<AudioClip>(SFXPath);
+			}
 			initialized = true;
             ProcessTints();
+			ProcessMaterialSettings();
+		}
+		public void ProcessMaterialSettings()
+        {
+			foreach (var kvp in terrainMaterial?.Colors) terrainMat.SetColor(kvp.Key, kvp.Value);
+			foreach (var kvp in oceanMaterial?.Colors) oceanMat.SetColor(kvp.Key, kvp.Value);
+			foreach (var kvp in atmosphereMaterial?.Colors) atmosMat.SetColor(kvp.Key, kvp.Value);
+			foreach (var kvp in thumbMaterial?.Colors) thumbMat.SetColor(kvp.Key, kvp.Value);
+			foreach (var kvp in minimapMaterial?.Colors) minimapMat.SetColor(kvp.Key, kvp.Value);
+			foreach (var kvp in terrainMaterial?.Params) terrainMat.SetFloat(kvp.Key, kvp.Value);
+			foreach (var kvp in oceanMaterial?.Params) oceanMat.SetFloat(kvp.Key, kvp.Value);
+			foreach (var kvp in atmosphereMaterial?.Params) atmosMat.SetFloat(kvp.Key, kvp.Value);
+			foreach (var kvp in thumbMaterial?.Params) thumbMat.SetFloat(kvp.Key, kvp.Value);
+			foreach (var kvp in minimapMaterial?.Params) minimapMat.SetFloat(kvp.Key, kvp.Value);
 		}
 		public void SetMaterial(string material, string materialBase)
         {

@@ -27,6 +27,7 @@ namespace GalacticScale.Generators
         private string filename = "GSData";
         private List<string> filenames = new List<string>();
         private string dumpFilename = "_dump";
+        private GSUI minifyCheckbox;
         public void Init()
         {
             GS2.Log("Generator:Json|Init");
@@ -34,6 +35,7 @@ namespace GalacticScale.Generators
             GS2.Log("Generator:Json|Init|FileCount = "+filenames.Count);
             options.Add(new GSUI("Custom Galaxy", "Combobox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
             options.Add(new GSUI("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
+            minifyCheckbox = options.Add(GSUI.Checkbox("Minify Output JSON", false, MinifyCallback, MinifyPostfix));
             options.Add(new GSUI("Export JSON", "Button", "Export", DumpJSONCallback, ()=>{}));
             GS2.Log("Generator:Json|Init|End");
         }
@@ -53,13 +55,18 @@ namespace GalacticScale.Generators
             if (preferences != null && preferences.ContainsKey("filename")) filename = (string)preferences["filename"];
             //if (preferences != null && preferences.ContainsKey("dumpFilename")) dumpFilename = (string)preferences["dumpFilename"];
             dumpFilename = preferences.GetString("dumpFilename", dumpFilename);
+            GS2.minifyJSON = preferences.GetBool("minify", false);
             GS2.Log("Generator:Json|Import|End");
         }
 
         public GSGenPreferences Export()
         {
             GS2.Log("Generator:Json|Export");
-            return new GSGenPreferences() { { "filename", filename }, { "dumpFilename", dumpFilename } };
+            return new GSGenPreferences() { 
+                { "filename", filename }, 
+                { "dumpFilename", dumpFilename }, 
+                { "minify", GS2.minifyJSON.ToString() } 
+            };
         }
         public void CustomFileSelectorCallback(object result)
         {
@@ -67,6 +74,14 @@ namespace GalacticScale.Generators
             filename = filenames[index];
             RefreshFileNames();
 
+        }
+        public void MinifyCallback(object result)
+        {
+            GS2.minifyJSON = (bool)result;
+        }
+        public void MinifyPostfix()
+        {
+            minifyCheckbox.Set(GS2.minifyJSON);
         }
         private void CustomFileSelectorPostfix()
         {

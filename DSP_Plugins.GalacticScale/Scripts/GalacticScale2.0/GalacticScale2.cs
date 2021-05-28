@@ -24,7 +24,7 @@ namespace GalacticScale
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
-      
+        public static bool minifyJSON = false;
 
 
 

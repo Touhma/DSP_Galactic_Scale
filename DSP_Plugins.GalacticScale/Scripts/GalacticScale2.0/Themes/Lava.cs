@@ -158,7 +158,7 @@ namespace GalacticScale
                     ["_GlossMapScale"] = 1f,
                     ["_Glossiness"] = 0.5f,
                     ["_GlossyReflections"] = 1f,
-                    ["_HeightEmissionRadius"] = 199.7f,
+                    ["_HeightEmissionRadius"] = 5f,
                     ["_Metallic"] = 0f,
                     ["_Mode"] = 0f,
                     ["_Multiplier"] = 1.8f,
