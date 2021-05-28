@@ -29,7 +29,7 @@ namespace GalacticScale
         //    ["Vanilla"] = GenerateVeinsVanilla, 
         //    ["GS2"] = GenerateVeinsGS2 
         //};
-        public static GS2.Random random = new GS2.Random();
+        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
         //public static void GenerateVeins(GSPlanet gsPlanet, bool sketchOnly)
         //{
         //    GSTheme theme = GS2.ThemeLibrary[gsPlanet.Theme];

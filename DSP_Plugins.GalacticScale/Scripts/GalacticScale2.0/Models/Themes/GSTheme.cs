@@ -139,7 +139,7 @@ namespace GalacticScale
 				}
 			}
 			
-            if (VeinSettings.RequiresConversion) ConvertVeinData();
+            if (VeinSettings.RequiresConversion && !Base) ConvertVeinData();
             else PopulateVeinData();
             if (VegeSettings.Empty) PopulateVegeData();
 			else ConvertVegeData();
@@ -205,7 +205,8 @@ namespace GalacticScale
                     //var specialIndex = RareVeins.Length;
                     //var specialSettingsIndex = specialIndex * 4;
                     _rareVeins.Add((int)type);
-                    _rareSettings.Add(1); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
+					if (GS2.Force1RareChance) _rareSettings.Add(1);
+					else _rareSettings.Add(0); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
                     _rareSettings.Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
                     _rareSettings.Add(specialCount / 25); //Chance for extra vein to spawn
                     _rareSettings.Add(specialOpacity); //Stupidly combined count and opacity

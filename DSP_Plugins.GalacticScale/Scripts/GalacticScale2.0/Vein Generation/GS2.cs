@@ -85,6 +85,7 @@ namespace GalacticScale
 
         public static List<GSVeinDescriptor> DistributeVeinTypes(List<GSVeinType> veinGroups)
         {
+            
             bool[] disabled = new bool[16];
             for (var i = 8; i < 16; i++)
             {
@@ -121,6 +122,7 @@ namespace GalacticScale
         }
         public static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet)
         {
+            GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
             double randomFactor = 1.0;
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + (random.NextDouble()/2);
             
@@ -129,8 +131,10 @@ namespace GalacticScale
             bool birth = planet.id == GSSettings.birthPlanetId;
             Vector3 groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             List<GSVeinDescriptor> veinGroups = DistributeVeinTypes(gsPlanet.veinSettings.VeinTypes);
+            Dictionary<EVeinType, int> veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
             {
+                GS2.Log("VeinGroups.Count = " + veinGroups.Count);
                 if (gsPlanet.randomizeVeinCounts && random.NextDouble() > randomFactor)
                 {
                     continue;
@@ -154,9 +158,17 @@ namespace GalacticScale
                     succeeded = true;
                     break;
                 }
-                if (succeeded) veinGroups[i].position = potentialVector;
-                //else GS2.Log("Failed to calculate a vector for " +veinGroups[i].type + " on planet:"+gsPlanet.Name);
+                if (succeeded)
+                {
+
+                    if (!veinTotals.ContainsKey(v.type)) veinTotals.Add(v.type, 1);
+                    else veinTotals[v.type]++;
+                    veinGroups[i].position = potentialVector;
+                }
+                else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name);
             }
+            GS2.Log(gsPlanet.Name + " VeinTotals:");
+            GS2.LogJson(veinTotals);
             return veinGroups;
         }
         public static bool SurfaceVectorCollisionGS2(Vector3 vector, List<GSVeinDescriptor> vectors, int processedVectorCount, float padding)

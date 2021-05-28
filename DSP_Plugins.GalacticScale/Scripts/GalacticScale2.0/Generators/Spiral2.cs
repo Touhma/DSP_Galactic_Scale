@@ -201,7 +201,7 @@ namespace GalacticScale.Generators
         public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio)
         {
             List<Vector2> result = new List<Vector2>();
-            System.Random r = new System.Random();
+            GS2.Random r = GS2.random;
 
             for (int i = 0; i < numOfStars; i++)
             {

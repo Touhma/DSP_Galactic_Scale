@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Diagnostics;
+
 namespace GalacticScale
 {
     public static partial class GS2
@@ -36,7 +36,9 @@ namespace GalacticScale
                 Log("Settings Loaded From Save File");
                 return;
             }
-            GSSettings.Reset(GSSettings.Seed);
+           
+            GSSettings.Reset(gameDesc.galaxySeed);
+            Log("Seed = " + GSSettings.Seed);
             gsPlanets.Clear();
             Log("Loading Data from Generator : " + generator.Name);
             generator.Generate(gameDesc.starCount);

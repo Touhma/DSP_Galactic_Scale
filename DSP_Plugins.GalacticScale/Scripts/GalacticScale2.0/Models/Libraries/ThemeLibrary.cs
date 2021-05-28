@@ -6,7 +6,7 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSThemeLibraryConverter))]
     public class ThemeLibrary : Dictionary<string, GSTheme>
     {
-        private GS2.Random random = new GS2.Random();
+        private GS2.Random random = GS2.random;
         public ThemeLibrary()
         {
         }

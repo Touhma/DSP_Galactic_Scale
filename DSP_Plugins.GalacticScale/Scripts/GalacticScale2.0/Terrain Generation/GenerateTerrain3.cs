@@ -14,7 +14,7 @@ namespace GalacticScale
             double num1 = 0.007;
             double num2 = 0.007;
             double num3 = 0.007;
-            System.Random random = new System.Random(planet.seed);
+            GS2.Random random = new GS2.Random(planet.seed);
             int seed1 = random.Next();
             int seed2 = random.Next();
             SimplexNoise simplexNoise1 = new SimplexNoise(seed1);

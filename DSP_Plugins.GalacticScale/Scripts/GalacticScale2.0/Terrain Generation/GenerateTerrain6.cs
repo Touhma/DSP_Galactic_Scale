@@ -20,7 +20,7 @@ namespace GalacticScale
             double biomeHeightModifier = t.BiomeHeightModifier;
 
 
-            System.Random random = new System.Random(gsPlanet.Seed);
+            GS2.Random random = new GS2.Random(gsPlanet.Seed);
             int seed1 = random.Next();
             int seed2 = random.Next();
             SimplexNoise simplexNoise1 = new SimplexNoise(seed1);

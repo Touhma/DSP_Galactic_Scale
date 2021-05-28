@@ -50,7 +50,7 @@ namespace GalacticScale
             VegeSettings = new GSVegeSettings()
             {
                 Group1 = new List<string>()
-                {
+                { // Highlands
                     "MedStone4",
                     "MedStone5",
                     "MedStone3",

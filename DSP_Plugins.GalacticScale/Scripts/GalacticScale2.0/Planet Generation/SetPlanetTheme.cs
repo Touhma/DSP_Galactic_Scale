@@ -12,7 +12,7 @@ namespace GalacticScale
             GSTheme gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             int ThemeID = gsTheme.UpdateThemeProtoSet();
             if (gsPlanet.Seed > -1) seed = gsPlanet.Seed;
-            System.Random rand = new System.Random(seed);
+            GS2.Random rand = new GS2.Random(seed);
             double rand2 = rand.NextDouble();
             double rand3 = rand.NextDouble();
             double rand4 = rand.NextDouble();

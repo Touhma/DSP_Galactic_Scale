@@ -37,7 +37,7 @@ namespace GalacticScale.Generators
        
         public void Generate(int starCount)
         {
-            GS2.Random random = new GS2.Random();
+            GS2.Random random = new GS2.Random(GSSettings.Seed);
             List<GSPlanet> p = new List<GSPlanet>();
             //for (var j = 0; j < 20; j++)
             //{
