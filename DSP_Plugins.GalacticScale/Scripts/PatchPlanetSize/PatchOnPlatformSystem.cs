@@ -110,7 +110,7 @@ namespace GalacticScale.Scripts.PatchPlanetSize {
         }
         [HarmonyPrefix]
         [HarmonyPatch("Export")]
-        public static bool Export(BinaryWriter w, ref PlatformSystem __instance, ref bool ___reformNotValid)
+        public static bool Export(BinaryWriter w, ref PlatformSystem __instance)
         {
             if (__instance.reformData != null)
             {
