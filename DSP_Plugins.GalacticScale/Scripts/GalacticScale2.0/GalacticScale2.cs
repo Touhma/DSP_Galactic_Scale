@@ -8,6 +8,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static string Version = "2.0.0a37";
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Failed = false;
         public static bool Initialized = false;

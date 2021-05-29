@@ -7,7 +7,10 @@ namespace GalacticScale
 {
     public static class Utils
     {
-
+        public static Sprite GetSpriteAsset(string name)
+        {
+            return GS2.bundle.LoadAsset<Sprite>(name);
+        }
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
             GS2.Log("Tinting Cubemap");

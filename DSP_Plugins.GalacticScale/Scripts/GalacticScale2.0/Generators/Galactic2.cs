@@ -1,5 +1,5 @@
 ﻿using BepInEx;
-using FullSerializer;
+using GSFullSerializer;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;

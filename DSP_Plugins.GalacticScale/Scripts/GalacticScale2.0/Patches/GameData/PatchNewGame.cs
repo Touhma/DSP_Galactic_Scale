@@ -14,7 +14,6 @@ namespace GalacticScale
 		public static void Init(GameData _gameData, ref FactoryProductionStat[] ___factoryStatPool)
 		{
 			if (GS2.Vanilla || DSPGame.IsMenuDemo) return;
-			//GS2.Log("PRODUCTION " + _gameData.factories.Length);
 			___factoryStatPool = new FactoryProductionStat[GSSettings.PlanetCount];
 		}
 	}

@@ -38,24 +38,20 @@
       <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\stub\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>lib\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
     <Reference Include="BCE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(Plugins_Dir)\..\innominata-BepInEx_Console_Extensions\BCE.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
+    <Reference Include="BepInEx, Version=5.4.5.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\stub\publicized_assemblies\BepInEx_publicized.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="FullSerializer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\FullSerializer.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard">
-      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\netstandard.dll</HintPath>
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\ManagedOld\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,14 +74,17 @@
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\ManagedOld\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
@@ -95,31 +94,66 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scripts\Commons\Model\PlanetForGenerator.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetGeneratorSettings.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsArrayConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsDateConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsDictionaryConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsEnumConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsForwardConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsGuidConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsIEnumerableConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsKeyValuePairConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsNullableConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsPrimitiveConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsReflectedConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsTypeConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsWeakReferenceConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\AnimationCurve_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\Bounds_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\Gradient_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\GUIStyleState_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\GUIStyle_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\Keyframe_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\LayerMask_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\RectOffset_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\Rect_DirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Converters\Unity\UnityEvent_Converter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsAotCompilationManager.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsAotConfiguration.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsAotVersionInfo.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsBaseConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsConfig.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsContext.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsConverterRegistrar.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsData.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsDirectConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsExceptions.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsIAotConverter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsIgnoreAttribute.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsISerializationCallbacks.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsJsonParser.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsJsonPrinter.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsMemberSerialization.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsObjectAttribute.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsObjectProcessor.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsPropertyAttribute.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsResult.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\fsSerializer.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Internal\fsCyclicReferenceManager.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Internal\fsOption.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Internal\fsPortableReflection.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Internal\fsTypeExtensions.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Internal\fsVersionedType.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Internal\fsVersionManager.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsMetaProperty.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsMetaType.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsReflectionUtility.cs" />
+    <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\Commons\Extensions\PlanetDataExtension.cs" />
-    <Compile Include="Scripts\Commons\Extensions\PlanetRawDataExtension.cs" />
-    <Compile Include="Scripts\Commons\Extensions\PlanetThemeExtension.cs" />
-    <Compile Include="Scripts\Commons\Extensions\StarDataExtension.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\GeneratorPlanet.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\GeneratorStar.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\GeneratorSystem.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\GeneratorCluster.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorGlobalSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorOrbitsSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorPlanetThemeSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorStarSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorSystemSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\Generator\Settings\GeneratorClusterSettings.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetType.cs" />
-    <Compile Include="Scripts\Commons\Model\PlanetTheme.cs" />
-    <Compile Include="Scripts\Commons\Model\RomanNumbers.cs" />
-    <Compile Include="Scripts\Commons\Model\SystemsNames.cs" />
-    <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
-    <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
-    <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\PlanetRawDataExtension.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\ThemeViewer.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GSTeleportHandler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Plugins.cs" />
@@ -151,12 +185,28 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Export - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Import - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModellingManager\PatchOnPlanetModellingManager.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\PlanetDataExtension.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetGrid\LUT Rework.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModellingManager\Algorithm.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModellingManager\ModelingPlanetMain.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\CalcVerts.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\GetModLevel.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetGrid\CalcSegmentsAcross.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\QueryModifiedHeight.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\InitModData.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\GetModPlane.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\SetReformType.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetSimulator\UpdateUniversalPosition.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\ComputeMaxReformCount.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\GetReformType.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\Export.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\OnGameBegin.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
@@ -169,6 +219,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\Sakura.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\SaltLake.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\BCE.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Utils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vege Generation\GenerateVeges1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GenerateVeins.cs" />
@@ -197,21 +248,17 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\Mediterranean.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\Vanilla.cs" />
-    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnStarGen.cs" />
-    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchOnUIGalaxySelect.cs" />
-    <Compile Include="Scripts\PatchGalaxySizeSelection\PatchForGalaxySizeSelection.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetFactory.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnNearColliderLogic.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnBuildingGizmo.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameMain.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetGrid.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchForPlanetSize.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetAtmoBlur.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetSimulator.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnUIBuildingGrid.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetFactory\FlattenTerrain.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\NearColliderLogic\PatchOnNearColliderLogic.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BuildingGizmo\PatchOnBuildingGizmo.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\PatchOnGameMain.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetGrid\DetermineLongitudeSegmentCount.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetAtmoBlur\Update.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetSimulator\SetPlanetData.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\DetermineLongitudeSegmentCount.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerAction_Build\Legacy - Broken Code.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\PatchOnGameData.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BuildingGrid\PatchOnUIBuildingGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Export.cs" />
@@ -233,7 +280,7 @@
     <Compile Include="Scripts\GalacticScale2.0\GalacticScale2.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Star Generation\StarDefaults.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\StarGen\PatchOnStarGen.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\StarGen\CreateBirthStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Star Generation\CreateStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Star Generation\CreateStarPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\Debug-PatchOnUIVirtualStarMap.cs" />
@@ -244,31 +291,29 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\PatchOnSetTabIndex.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\CreateGalaxy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\MiscFunctions.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Common\PatchOnStationComponent.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Common\PatchOnUIPlanetDetailPrefix.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Common\PatchOnUISpaceGuide.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\StationComponent\InternalTickRemote.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\PatchOnUIPlanetDetailPrefix.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UISpaceGuide\PatchOnUISpaceGuide.cs" />
     <Compile Include="Scripts\Bootstrap.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetData.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetModelingManager.cs" />
-    <Compile Include="Scripts\PatchPlanetSize\PatchOnPlanetRawData.cs" />
-    <Compile Include="Scripts\PatchStarSystemGeneration\Common\PatchOnUIStarDetail.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\UpdateDirtyMesh.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\PatchOnUIStarDetail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen_CreateGalaxyStarGraph.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen.cs" />
     <Compile Include="Scripts\Dependencies\**\*.cs" />
-    <Compile Include="Scripts\PatchUI\PatchForUI.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIEscMenu.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIGameLoadingSplash.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIPlanetDetail.cs" />
-    <Compile Include="Scripts\PatchUI\PatchOnUIVersionText.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIEscMenu\PatchOnUIEscMenu.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\PatchOnUIGameLoadingSplash.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\PatchOnUIPlanetDetail.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIVersionText\PatchOnUIVersionText.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.png" />
     <Content Include="manifest.json" />
     <Content Include="README.md" />
+    <Content Include="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" />
     <Content Include="Scripts\Todo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ContentWithTargetPath Include="Scripts\PatchUI\galacticbundle">
+    <ContentWithTargetPath Include="Scripts\Assets\galacticbundle">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>galacticbundle</TargetPath>
     </ContentWithTargetPath>
@@ -280,6 +325,7 @@
     <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)galacticbundle" DestinationFolder="$(Plugins_Dir)" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" DestinationFolder="$(Plugins_Dir)" />
   </Target>
   <Target Name="CreateDebugMDB" AfterTargets="CopyCustomContent" Condition="'$(Configuration)' == 'Debug' AND $(pdb2mdb_Path) != ''">
     <Exec Command="start &quot;&quot; /d &quot;$(pdb2mdb_Path)&quot; pdb2mdb $(TargetPath)" />

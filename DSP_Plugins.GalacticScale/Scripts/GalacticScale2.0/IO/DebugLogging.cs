@@ -1,4 +1,4 @@
-﻿using FullSerializer;
+﻿using GSFullSerializer;
 using System.Diagnostics;
 using BepInEx.Logging;
 

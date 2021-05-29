@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
-using FullSerializer;
+using GSFullSerializer;
 
 namespace GalacticScale
 {
