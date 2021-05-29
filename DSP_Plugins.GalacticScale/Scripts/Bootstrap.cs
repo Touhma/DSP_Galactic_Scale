@@ -52,7 +52,7 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));
             //Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Sail));
             Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
-            //Harmony.CreateAndPatchAll(typeof());
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameBegin));
             //Harmony.CreateAndPatchAll(typeof());
             //Harmony.CreateAndPatchAll(typeof());
             //Harmony.CreateAndPatchAll(typeof());

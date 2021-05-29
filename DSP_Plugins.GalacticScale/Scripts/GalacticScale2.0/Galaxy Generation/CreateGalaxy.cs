@@ -9,8 +9,21 @@ namespace GalacticScale
         {
             Log("Start");
             gameDesc = desc;
+
             Log("Generating Galaxy");
-            GenerateGalaxy();
+            Failed = false;
+            if (!GSSettings.Instance.imported)
+            {
+                GSSettings.Reset(gameDesc.galaxySeed);
+                Log("Seed From gameDesc = " + GSSettings.Seed);
+                gsPlanets.Clear();
+                Log("Loading Data from Generator : " + generator.Name);
+                generator.Generate(gameDesc.starCount);
+                Log("Final Seed = " + GSSettings.Seed);
+                Log("End");
+            }
+            else Log("Settings Loaded From Save File");
+
             Log("Galaxy Generated");
             gameDesc.starCount = GSSettings.starCount;
             Log("Processing ThemeLibrary");

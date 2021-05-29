@@ -76,6 +76,10 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\UnityEngine.IMGUIModule.dll</HintPath>
@@ -116,7 +120,9 @@
     <Compile Include="Scripts\Commons\Model\TidalLevel.cs" />
     <Compile Include="Scripts\Commons\Utils\GalaxyInfosUtils.cs" />
     <Compile Include="Scripts\Commons\Utils\MathUtils.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\ThemeViewer.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GSTeleportHandler.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\IO\Plugins.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\DebugLogging.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Preferences.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Boilerplate.cs" />
@@ -145,6 +151,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModellingManager\PatchOnPlanetModellingManager.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\OnGameBegin.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
@@ -155,6 +162,11 @@
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain6.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetAlgorithm\PatchOnPlanetAlgorithm.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Themes\Hurricane.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Themes\Sakura.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Themes\IceLake.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Themes\SaltLake.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\Utils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vege Generation\GenerateVeges1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GenerateVeins.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\PatchNewGame.cs" />

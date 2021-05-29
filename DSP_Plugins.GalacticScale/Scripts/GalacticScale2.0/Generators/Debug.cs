@@ -29,7 +29,7 @@ namespace GalacticScale.Generators
             options.Add(new GSUI("Dryrun Generator", "Combobox", genList, OnDryRunChange, () => { }));
             options.Add(new GSUI("Output Settings", "Button", "Output", OnOutputSettingsClick, () => { }));
             options.Add(new GSUI("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
-            options.Add(new GSUI("Output LDBThemes", "Button", "Output", OnDumpPlanetDataClick, () => { }));
+            options.Add(new GSUI("Output LDB Data", "Button", "Output", OnDumpLDBDataClick, () => { }));
             options.Add(new GSUI("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { })); 
             options.Add(new GSUI("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
             options.Add(new GSUI("Export LocalPlanet Veinsettings", "Button", "Export", OnExportLocalPlanetClick, () => { }));
@@ -104,21 +104,36 @@ namespace GalacticScale.Generators
             }
 
         }
-        private void OnDumpPlanetDataClick(object o)
+        private void OnDumpLDBDataClick(object o)
         {
-            string outputDir = Path.Combine(GS2.DataDir, "output");
-            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
-            string path = Path.Combine(outputDir, "LDBThemes.json");
-            GS2.DumpObjectToJson(path, LDB.themes);
+            //string outputDir = Path.Combine(GS2.DataDir, "output");
+            //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+            //string path = Path.Combine(outputDir, "LDBThemes.json");
+            //GS2.DumpObjectToJson(path, LDB.themes);
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
+            string DataDir = GS2.DataDir;
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_themes.json"), LDB._themes);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_items.json"), LDB._items);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_techs.json"), LDB._techs);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_models.json"), LDB._models);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_strings.json"), LDB._strings);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_veges.json"), LDB._veges);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_veins.json"), LDB._veins);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_tutorial.json"), LDB._tutorial);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_recipes.json"), LDB._recipes);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_audios.json"), LDB._audios);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_effectEmitters.json"), LDB._effectEmitters);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_advisorTips.json"), LDB._advisorTips);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_players.json"), LDB._players);
+            GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_prompts.json"), LDB._prompts);
         }
         private void OnExportLocalPlanetClick(object o)
         {
             //string outputDir = Path.Combine(GS2.DataDir, "output");
             //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             //string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
-            GS2.LogJson(GS2.Utils.GetGSPlanet(GameMain.localPlanet).veinSettings);
+            GS2.LogJson(GS2.GetGSPlanet(GameMain.localPlanet).veinSettings);
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }
@@ -128,6 +143,10 @@ namespace GalacticScale.Generators
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             string path = Path.Combine(outputDir, "ThemeLibrary.json");
             GS2.DumpObjectToJson(path, GS2.ThemeLibrary);
+            foreach (var x in LDB._themes.dataArray)
+            {
+                GS2.DumpObjectToJson(System.IO.Path.Combine(GS2.DataDir, x.displayName), x.ambientDesc);
+            } 
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }

@@ -91,7 +91,7 @@ namespace GalacticScale
 					Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
 					if (Reflections.a != 0)
 					{
-						ReflectionMap = GS2.Utils.TintCubeMap(x, Reflections);
+						ReflectionMap = Utils.TintCubeMap(x, Reflections);
 						GS2.Log("Set Reflection Map to Tinted One");
 					}
 					else ReflectionMap = x;

@@ -30,9 +30,22 @@ namespace GalacticScale
                 ["VolcanicAsh"] = Themes.VolcanicAsh,
                 ["RedStone"] = Themes.RedStone,
                 ["Prairie"] = Themes.Prairie,
-                ["OceanWorld"] = Themes.OceanWorld
+                ["OceanWorld"] = Themes.OceanWorld,
+                ["IceLake"] = Themes.IceLake,
+                ["Hurricane"] = Themes.Hurricane,
+                ["SaltLake"] = Themes.SaltLake,
+                ["Sakura"] = Themes.Sakura
             };
             return t;
+        }
+        public ThemeLibrary Clone()
+        {
+            ThemeLibrary clone = new ThemeLibrary();
+            foreach (var kvp in this)
+            {
+                clone.Add(kvp.Key, kvp.Value);
+            }
+            return clone;
         }
         public GSTheme Find(string name)
         {

@@ -22,7 +22,7 @@ namespace GalacticScale
             {
                 //GS2.Log(i + " " + a.Length + " " + a[i]);
                 //GS2.Log(GS2.Utils.ReverseLookup(GS2.VegeTypesDictionary, a[i]));
-                l.Add(GS2.Utils.ReverseLookup(GS2.VegeTypesDictionary, a[i]));
+                l.Add(VegeTypesDictionary.Find(a[i]));
             }
             return l;
         }
@@ -32,7 +32,7 @@ namespace GalacticScale
             if (l.Count == 0) return a;
             //GS2.LogJson(l);
             //GS2.Log(l.Count.ToString());
-            for (var i = 0; i < l.Count; i++) a[i] = GS2.VegeTypesDictionary[l[i]];
+            for (var i = 0; i < l.Count; i++) a[i] = VegeTypesDictionary.Find(l[i]);
             return a;
         }
         public GSVegeSettings Clone()

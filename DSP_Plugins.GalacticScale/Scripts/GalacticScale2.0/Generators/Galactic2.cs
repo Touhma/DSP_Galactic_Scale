@@ -52,7 +52,7 @@ namespace GalacticScale.Generators
                 float maxSize = preferences.GetFloat("maxPlanetSize");
                 if (maxSize == -1f) maxSize = 510;
                 if (maxSize < (float)o) o = maxSize;
-                preferences.Set("minPlanetSize", GS2.Utils.ParsePlanetSize((float)o));
+                preferences.Set("minPlanetSize", Utils.ParsePlanetSize((float)o));
                 UI_minPlanetSize.Set(preferences.GetFloat("minPlanetSize"));
             }));
             UI_maxPlanetSize = options.Add(GSUI.Slider("Max planet size", 50, 30, 510, o =>
@@ -61,12 +61,12 @@ namespace GalacticScale.Generators
                 if (minSize == -1f) minSize = 5;
                 //GS2.Log("min = " + minSize + " max = " + o.ToString());
                 if (minSize > (float)o) o = minSize;
-                preferences.Set("maxPlanetSize", GS2.Utils.ParsePlanetSize((float)o));
+                preferences.Set("maxPlanetSize", Utils.ParsePlanetSize((float)o));
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }));
             UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
             UI_birthPlanetSize = options.Add(GSUI.Slider("Birth planet size", 20, 50, 510, o => { 
-                preferences.Set("birthPlanetSize", GS2.Utils.ParsePlanetSize((float)o)); 
+                preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o)); 
                 UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize")); 
             }));
             UI_regularBirthTheme = options.Add(GSUI.Checkbox("Regular birth theme", true, o => preferences.Set("regularBirthTheme", o)));

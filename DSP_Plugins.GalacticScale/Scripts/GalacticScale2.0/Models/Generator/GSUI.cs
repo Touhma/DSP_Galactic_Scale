@@ -36,6 +36,16 @@ namespace GalacticScale {
             }
             return false;
         }
+        public bool SetItems(List<string> items)
+        {
+            if (type != "Combobox")
+            {
+                GS2.Warn("Trying to Set Items on non Combobox UI Element");
+                return false;
+            }
+            rectTransform.GetComponentInChildren<UIComboBox>().Items = items;
+            return true;
+        }
         public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback, bool enableFloat = false, GSOptionPostfix postfix = null)
         {
             return new GSUI(label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val, wholeNumbers = !enableFloat }, callback, postfix);
@@ -46,7 +56,7 @@ namespace GalacticScale {
         }
         public static GSUI Combobox(string label, List<string> items, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
         {
-            return new GSUI(label, "Checkbox", items, callback, postfix, tip);
+            return new GSUI(label, "Combobox", items, callback, postfix, tip);
         }
         public static GSUI Input(string label, string value, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
         {

@@ -41,7 +41,7 @@ namespace GalacticScale
                 if (!based || model.IonHeight != baseTheme.IonHeight) SerializeMember(serialized, null, "IonHeight", model.IonHeight);
                 if (!based || model.WaterHeight != baseTheme.WaterHeight) SerializeMember(serialized, null, "WaterHeight", model.WaterHeight);
                 if (!based || model.WaterItemId != baseTheme.WaterItemId) SerializeMember(serialized, null, "WaterItemId", model.WaterItemId);
-                if ((!based || !GS2.Utils.ArrayCompare(model.Musics, baseTheme.Musics)) && model.Musics != null && model.Musics.Length > 0) SerializeMember(serialized, null, "Musics", model.Musics);
+                if ((!based || !Utils.ArrayCompare(model.Musics, baseTheme.Musics)) && model.Musics != null && model.Musics.Length > 0) SerializeMember(serialized, null, "Musics", model.Musics);
                 if (!based || model.SFXPath != baseTheme.SFXPath) SerializeMember(serialized, null, "SFXPath", model.SFXPath);
                 if (!based || model.SFXVolume != baseTheme.SFXVolume) SerializeMember(serialized, null, "SFXVolume", model.SFXVolume);
                 if (!based || model.MaterialPath != baseTheme.MaterialPath) SerializeMember(serialized, null, "MaterialPath", model.MaterialPath);

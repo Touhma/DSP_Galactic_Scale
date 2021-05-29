@@ -67,6 +67,7 @@ namespace GalacticScale
 		public string SFXPath= "SFX/sfx-amb-ocean-1";
 		public float SFXVolume=0.53f;
 		public float CullingRadius=0f;
+		public int IceFlag = 0;
 		[NonSerialized]
 		public Material terrainMat;
 		public GSMaterialSettings terrainMaterial = new GSMaterialSettings();
@@ -117,9 +118,9 @@ namespace GalacticScale
 		}
 		public void Process()
         {
-			GS2.Log("Start "+Name);
+			GS2.Log("-Start "+Name + " " + GS2.GetCaller());
 			Init();
-			GS2.Log("Adding to Library");
+			GS2.Log("Adding to Library "+ Name + " " + DisplayName);
 			AddToLibrary();
 			GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap?.GetInstanceID());
 			GS2.Log("End");
@@ -165,11 +166,17 @@ namespace GalacticScale
 		}
 		public void ConvertVegeData()
         {
+			GS2.Log("Converting Vege Data for " + Name + " Group 1");
 			Vegetables0 = GSVegeSettings.ToIDArray(VegeSettings.Group1);
+			GS2.Log("Converting Vege Data for " + Name + " Group 2"); 
 			Vegetables1 = GSVegeSettings.ToIDArray(VegeSettings.Group2);
+			GS2.Log("Converting Vege Data for " + Name + " Group 3");
 			Vegetables2 = GSVegeSettings.ToIDArray(VegeSettings.Group3);
+			GS2.Log("Converting Vege Data for " + Name + " Group 4");
 			Vegetables3 = GSVegeSettings.ToIDArray(VegeSettings.Group4);
+			GS2.Log("Converting Vege Data for " + Name + " Group 5"); 
 			Vegetables4 = GSVegeSettings.ToIDArray(VegeSettings.Group5);
+			GS2.Log("Converting Vege Data for " + Name + " Group 6");
 			Vegetables5 = GSVegeSettings.ToIDArray(VegeSettings.Group6);
 		}
 		public void ConvertVeinData()
@@ -477,7 +484,10 @@ namespace GalacticScale
 				string name = kvp.Key;
 				GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
 				Texture tex = null;
-				if (location == "GS2") tex = GetTextureFromBundle(path);
+				if (location == "GS2") tex = Utils.GetTextureFromBundle(path);
+                if (location == "FILE") tex = Utils.GetTextureFromFile(System.IO.Path.Combine(GS2.DataDir,path));
+				if (location == "RESOURCE") tex = Utils.GetTextureFromResource(path);
+				if (location == "BUNDLE") tex = Utils.GetTextureFromExternalBundle(path);
 				if (tex == null)
 				{
 					GS2.Error("Texture not found");
@@ -491,11 +501,7 @@ namespace GalacticScale
 			}
 			return false;
 		}
-		public static Texture GetTextureFromBundle(string name)
-		{
-			AssetBundle bundle = GS2.bundle;
-			return bundle.LoadAsset<Texture>(name);
-		}
+
 		public void InitMaterials ()
         {
 			GS2.Log("Start");

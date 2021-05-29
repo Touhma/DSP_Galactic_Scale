@@ -123,19 +123,19 @@ namespace GalacticScale
 					continue;
 				}
 				bool flag2 = true;
-				if (GS2.Utils.diff(num18, num19) > 0.2f)
+				if (Utils.diff(num18, num19) > 0.2f)
 				{
 					flag2 = false;
 				}
-				if (GS2.Utils.diff(num18, num20) > 0.2f)
+				if (Utils.diff(num18, num20) > 0.2f)
 				{
 					flag2 = false;
 				}
-				if (GS2.Utils.diff(num18, num21) > 0.2f)
+				if (Utils.diff(num18, num21) > 0.2f)
 				{
 					flag2 = false;
 				}
-				if (GS2.Utils.diff(num18, num22) > 0.2f)
+				if (Utils.diff(num18, num22) > 0.2f)
 				{
 					flag2 = false;
 				}

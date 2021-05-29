@@ -13,6 +13,7 @@ namespace GalacticScale
             //new Generators.TintTest(),
             new Generators.GalacticScale2(), 
             new Generators.JsonImport(),
+            new Generators.ThemeViewer(),
             //new Generators.Spiral(),
             new Generators.Debug()
         };
