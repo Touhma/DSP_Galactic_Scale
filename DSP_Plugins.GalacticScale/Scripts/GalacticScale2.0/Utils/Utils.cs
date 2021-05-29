@@ -8,40 +8,40 @@ namespace GalacticScale
     public static class Utils
     {
 
-        public static UnityEngine.Cubemap TintCubeMap(UnityEngine.Cubemap input, UnityEngine.Color color)
+        public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
             GS2.Log("Tinting Cubemap");
-            UnityEngine.Cubemap output = UnityEngine.Object.Instantiate(input);
+            Cubemap output = UnityEngine.Object.Instantiate(input);
 
-            var colors = output.GetPixels(UnityEngine.CubemapFace.PositiveX);
-            var tinted = new UnityEngine.Color[colors.Length];
-            for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
-            output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveX);
+            var colors = output.GetPixels(CubemapFace.PositiveX);
+            var tinted = new Color[colors.Length];
+            for (var i = 0; i < colors.Length; i++) tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+            output.SetPixels(tinted, CubemapFace.PositiveX);
 
-            colors = output.GetPixels(UnityEngine.CubemapFace.PositiveY);
-            tinted = new UnityEngine.Color[colors.Length];
-            for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
-            output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveY);
+            colors = output.GetPixels(CubemapFace.PositiveY);
+            tinted = new Color[colors.Length];
+            for (var i = 0; i < colors.Length; i++) tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+            output.SetPixels(tinted, CubemapFace.PositiveY);
 
-            colors = output.GetPixels(UnityEngine.CubemapFace.PositiveZ);
-            tinted = new UnityEngine.Color[colors.Length];
-            for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
-            output.SetPixels(tinted, UnityEngine.CubemapFace.PositiveZ);
+            colors = output.GetPixels(CubemapFace.PositiveZ);
+            tinted = new Color[colors.Length];
+            for (var i = 0; i < colors.Length; i++) tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+            output.SetPixels(tinted, CubemapFace.PositiveZ);
 
-            colors = output.GetPixels(UnityEngine.CubemapFace.NegativeX);
-            tinted = new UnityEngine.Color[colors.Length];
-            for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
-            output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeX);
+            colors = output.GetPixels(CubemapFace.NegativeX);
+            tinted = new Color[colors.Length];
+            for (var i = 0; i < colors.Length; i++) tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+            output.SetPixels(tinted, CubemapFace.NegativeX);
 
-            colors = output.GetPixels(UnityEngine.CubemapFace.NegativeY);
-            tinted = new UnityEngine.Color[colors.Length];
-            for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
-            output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeY);
+            colors = output.GetPixels(CubemapFace.NegativeY);
+            tinted = new Color[colors.Length];
+            for (var i = 0; i < colors.Length; i++) tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+            output.SetPixels(tinted, CubemapFace.NegativeY);
 
-            colors = output.GetPixels(UnityEngine.CubemapFace.NegativeZ);
-            tinted = new UnityEngine.Color[colors.Length];
-            for (var i = 0; i < colors.Length; i++) tinted[i] = UnityEngine.Color.Lerp(new UnityEngine.Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new UnityEngine.Color(color.r, color.g, color.b), color.a);
-            output.SetPixels(tinted, UnityEngine.CubemapFace.NegativeZ);
+            colors = output.GetPixels(CubemapFace.NegativeZ);
+            tinted = new Color[colors.Length];
+            for (var i = 0; i < colors.Length; i++) tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+            output.SetPixels(tinted, CubemapFace.NegativeZ);
 
             GS2.Log("End");
             return output;
@@ -61,7 +61,9 @@ namespace GalacticScale
                 return null;
             }
             Texture2D t = new Texture2D(2048,2048);
+            t.filterMode = FilterMode.Point;
             t.LoadImage(data);
+            
             return t;
             
         }
@@ -84,7 +86,7 @@ namespace GalacticScale
         public static float ParsePlanetSize(float radius)
         {
             if (radius < 8f) return 5f;
-            return UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Clamp(radius, 10, 510) / 10) * 10;
+            return Mathf.RoundToInt(Mathf.Clamp(radius, 10, 510) / 10) * 10;
         }
         public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
         {

@@ -81,16 +81,16 @@ namespace GalacticScale
                 },
                 Group4 = new List<string>() {
                     "MedFragment6",
-                    "MedBroken7",
-                    "MedBroken8",
-                    "MedBroken7",
-                    "MedBroken8" //This is a broken rock
+                    "MedFragment7",
+                    "MedFragment8",
+                    "MedFragment7",
+                    "MedFragment8" //This is a broken rock
                 },
                 Group5 = new List<string>() { // Lowlands - On Sand
                     "MedGrass10",
                 },
                 Group6 = new List<string>() // In Water
-                { "LandingPod" }
+                { }
             },
             //Vegetables0 = new int[] {
             //    604,

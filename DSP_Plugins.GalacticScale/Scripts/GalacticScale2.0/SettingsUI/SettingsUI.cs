@@ -205,6 +205,7 @@ namespace GalacticScale
             options.Add(new GSUI("Generator", "Combobox", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
             GS2.GS2RareChanceCheckbox = options.Add(GSUI.Checkbox("Force Rare Spawn", false, GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
             GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log", false, GS2.DebugLogOptionCallback, GS2.DebugLogOptionPostfix));
+            GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue", false, GS2.SkipPrologueOptionCallback, GS2.SkipPrologueOptionPostfix));
         }
         private static void CreateOwnOptionsPostFix()
         {

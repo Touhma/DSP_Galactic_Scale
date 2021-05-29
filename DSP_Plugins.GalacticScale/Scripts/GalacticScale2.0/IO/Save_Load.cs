@@ -27,7 +27,7 @@ namespace GalacticScale
             string json = r.ReadString();
             GSSettings result = GSSettings.Instance;
             fsData data2 = fsJsonParser.Parse(json);
-            serializer.TryDeserialize<GSSettings>(data2, ref result);
+            serializer.TryDeserialize(data2, ref result);
             if (version != GSSettings.Instance.version)
             {
                 Log("Version mismatch: " + GSSettings.Instance.version + " trying to load " + version + " savedata");

@@ -21,7 +21,6 @@ namespace GalacticScale
                 ["IceGiant2"] = Themes.IceGiant2,
                 ["AridDesert"] = Themes.AridDesert,
                 ["AshenGelisol"] = Themes.AshenGelisol,
-                ["Jungle"] = Themes.OceanicJungle,
                 ["OceanicJungle"] = Themes.OceanicJungle,
                 ["Lava"] = Themes.Lava,
                 ["IceGelisol"] = Themes.IceGelisol,

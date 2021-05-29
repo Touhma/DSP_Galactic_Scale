@@ -6,6 +6,11 @@ namespace GalacticScale
 {
     public partial class PatchOnUIGalaxySelect
     {
+        [HarmonyPostfix, HarmonyPatch(typeof(UIGalaxySelect), "EnterGame")]
+        public static void EnterGame(ref GameDesc ___gameDesc)
+        {
+            if (GS2.SkipPrologue) DSPGame.StartGameSkipPrologue(___gameDesc);
+        }
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect),"SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)

@@ -141,7 +141,7 @@ namespace GalacticScale.Generators
                     stars[stars.Count - 1].luminosity = localStars[i].luminance;
                     stars[stars.Count - 1].temperature = localStars[i].temp;
                 }
-            
+              
         }
 
         public void Generate(int starCount)

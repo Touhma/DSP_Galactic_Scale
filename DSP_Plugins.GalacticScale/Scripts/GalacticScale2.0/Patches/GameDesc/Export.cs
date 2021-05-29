@@ -6,12 +6,12 @@ namespace GalacticScale
 	public static class PatchOnGameDescExport
 	{
 		[HarmonyPatch(typeof(GameDesc))]
-		[HarmonyPrefix, HarmonyPatch("Export")]
-		public static bool Export(BinaryWriter w)
+		[HarmonyPostfix, HarmonyPatch("Export")]
+		public static void Export(BinaryWriter w)
 		{
-			if (GS2.IsMenuDemo) return true;
+			if (GS2.IsMenuDemo) return;
 			GS2.Export(w);
-			return true;
+			return;
 		}
 	}
 }

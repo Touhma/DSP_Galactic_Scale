@@ -310,7 +310,7 @@ namespace GalacticScale
             else
             {
                 GS2.Warn("Vege ID for " + s + " not found");
-                return 0;
+                return 9999;
             }
         }
         public static string Find(int i)
