@@ -202,6 +202,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\GetReformType.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\Export.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIEscMenu\_OnOpen.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\OnGameBegin.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
@@ -300,7 +301,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen_CreateGalaxyStarGraph.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen.cs" />
     <Compile Include="Scripts\Dependencies\**\*.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIEscMenu\PatchOnUIEscMenu.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\PatchOnUIGameLoadingSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\PatchOnUIPlanetDetail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVersionText\PatchOnUIVersionText.cs" />
