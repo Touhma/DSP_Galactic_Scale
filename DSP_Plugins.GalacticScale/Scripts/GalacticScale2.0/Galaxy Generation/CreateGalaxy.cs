@@ -72,8 +72,9 @@ namespace GalacticScale
                 Log(BirthPlanet.ToString());
                 if (BirthPlanet != null)
                 {
-                    galaxy.birthPlanetId = BirthPlanet.planetData.id;
-                    galaxy.birthStarId = BirthPlanet.planetData.star.id;
+                    Log("Found BirthPlanet, Adding ID's");
+                    GSSettings.birthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
+                    GSSettings.birthStarId = galaxy.birthStarId = BirthPlanet.planetData.star.id;
                     return;
                 }
                 Error("BirthPlanet Name Not Found In Planet List!");
@@ -82,6 +83,7 @@ namespace GalacticScale
             {
                 galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
                 galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
+                GS2.Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId);
             }
             else
             {
@@ -94,10 +96,8 @@ namespace GalacticScale
                         GSPlanet planet = bodies[j];
                         if (ThemeLibrary[planet.Theme].PlanetType == EPlanetType.Ocean)
                         {
-                            galaxy.birthPlanetId = planet.planetData.id;
-                            galaxy.birthStarId = planet.planetData.star.id;
-                            GSSettings.birthPlanetId = j;
-                            GSSettings.birthStarId = i;
+                            GSSettings.birthPlanetId =galaxy.birthPlanetId = planet.planetData.id;
+                            GSSettings.birthStarId =galaxy.birthStarId = planet.planetData.star.id;
                             i = j = 9001;
                         }
                     }

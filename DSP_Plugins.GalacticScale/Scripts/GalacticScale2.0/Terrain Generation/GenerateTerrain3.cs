@@ -7,7 +7,7 @@ namespace GalacticScale
     {
         public static void GenerateTerrain3(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
-            
+            GS2.Warn("USING GSTA3 FOR " + gsPlanet.Name);
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
             //GS2.Log("Generate Terrain for " + gsPlanet.Name + " 3 ");
             PlanetData planet = gsPlanet.planetData;

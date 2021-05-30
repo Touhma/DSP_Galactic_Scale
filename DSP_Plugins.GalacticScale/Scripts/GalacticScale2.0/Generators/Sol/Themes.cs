@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 namespace GalacticScale.Generators
 {
     public partial class Sol : iConfigurableGenerator
@@ -45,17 +45,52 @@ namespace GalacticScale.Generators
             redIce.AmbientSettings.CubeMap = "GS2";
             redIce.Process();
 
-            GSTheme venus = new GSTheme("AcidDeath", "Acid Deathworld", "VolcanicAsh");
-            venus.atmosphereMaterial.Tint =new Color(0.674f, 0.556f, 0.207f, 1);
-            venus.oceanMaterial.Tint = new Color(0.9f, 0.9f, 0.1f);
+            GSTheme venus = new GSTheme("AcidGreenhouse", "Acid Greenhouse", "VolcanicAsh");
+            venus.atmosphereMaterial.Tint =new Color(0.5f, 0.4f, 0.0f, 0.8f);
+            venus.atmosphereMaterial.Params = new Dictionary<string, float>()
+            {
+                ["_AtmoDensity"] = 1,
+                ["_Cutoff"] = 0.1f,
+                ["_FarFogDensity"] = 1f,
+                ["_FogDensity"] = 1f,
+                ["_FogSaturate"] = 1.8f,
+                ["_Intensity"] = 1.8f,
+                ["_Parallax"] = 0.02f,
+                ["_RimFogExp"] = 1.3f,
+                ["_RimFogPower"] = 3f,
+                ["_SkyAtmosPower"] = 17f,
+                ["_SunColorAdd"] = 40f,
+                ["_SunColorSkyUse"] = 0.4f,
+                ["_SunColorUse"] = 0.2f,
+                ["_SunRiseScatterPower"] = 160f
+            };
+            venus.oceanMaterial.Tint = new Color(0.7f, 0.7f, 0.07f);
             venus.terrainMaterial.Tint =new Color(0.901f, 0.686f, 0.098f, 1);
             venus.thumbMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
             venus.minimapMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
             venus.terrainMaterial.CopyFrom = "AshenGelisol.terrainMat";
+            venus.terrainMaterial.Colors = new Dictionary<string, Color>()
+            {
+                ["_AmbientColor0"] = new Color(0.9f, 0.9f, 0.1f, 1f),
+                ["_AmbientColor0"] = new Color(0.8f, 0.8f, 0.7f, 1f),
+                ["_AmbientColor0"] = new Color(0.5f, 0.5f, 0.0f, 1f),
+                ["_Color"] = new Color(0.65f, 0.5f, 0.15f, 1f),
+            };
+            venus.terrainMaterial.Params = new Dictionary<string, float>()
+            {
+                ["_AmbientInc"] = 0.5f
+            };
             venus.AmbientSettings.DustStrength1 = 10;
             venus.AmbientSettings.DustStrength2 = 10;
             venus.AmbientSettings.DustStrength3 = 10;
-            venus.AmbientSettings.DustColor1 = Color.red;
+            venus.AmbientSettings.DustColor1 = new Color(0.38f,0.38f, 0f, 1f);
+            venus.AmbientSettings.DustColor2 = new Color(0.95f, 0.75f, 0.25f, 1f);
+            venus.AmbientSettings.DustColor3 = new Color(0.9f, 0.7f, 0.2f, 1f);
+            venus.AmbientSettings.LutContribution = 0.8f;
+            venus.CustomGeneration = true;
+            venus.TerrainSettings.Algorithm = "GSTA3";
+            venus.TerrainSettings.LandModifier = 1;
+            venus.TerrainSettings.HeightMulti = 2;
             venus.Process();
         }
     }

@@ -7,7 +7,7 @@ namespace GalacticScale
     {
 		public static void GenerateTerrain5(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
 		{
-
+			GS2.Warn("USING GSTA5 FOR " + gsPlanet.Name);
 			GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
 			//GS2.Log("Generate 2 Terrain ");
 			int seed = random.Next();

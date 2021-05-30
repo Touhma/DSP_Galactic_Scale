@@ -10,6 +10,7 @@ namespace GalacticScale
         {
             public bool debug = false;
             public bool skipPrologue = false;
+            public bool noTutorials = false;
             public bool forceRare = false;
             public string GeneratorID = "space.customizing.vanilla";
             public Dictionary<string, GSGenPreferences> PluginOptions = new Dictionary<string, GSGenPreferences>();
@@ -22,6 +23,7 @@ namespace GalacticScale
             preferences.debug = debugOn;
             preferences.forceRare = Force1RareChance;
             preferences.skipPrologue = SkipPrologue;
+            preferences.noTutorials = tutorialsOff;
             Log("Retrieving preferences for plugins");
             foreach (iGenerator g in generators)
             {
@@ -69,6 +71,7 @@ namespace GalacticScale
             debugOn = p.debug;
             Force1RareChance = p.forceRare;
             SkipPrologue = p.skipPrologue;
+            tutorialsOff = p.noTutorials;
             generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
             {

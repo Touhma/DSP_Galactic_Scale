@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-	public partial class PatchOnPlanetModellingManager : MonoBehaviour
+	public partial class PatchOnPlanetModelingManager : MonoBehaviour
 	{
 	    [HarmonyPrefix]
 	    [HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]

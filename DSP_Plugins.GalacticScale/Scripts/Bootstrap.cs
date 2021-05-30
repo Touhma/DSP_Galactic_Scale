@@ -34,7 +34,7 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModellingManager));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
             Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));
             Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
@@ -43,7 +43,6 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGameLoadingSplash));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVersionText));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
-
 
             //PatchForPlanetSize
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
@@ -59,6 +58,9 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
 
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIResearchResultsWindow));
+            Harmony.CreateAndPatchAll(typeof(PatchUITutorialTip));
+            Harmony.CreateAndPatchAll(typeof(PatchUIAdvisorTip));
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

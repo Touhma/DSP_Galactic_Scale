@@ -86,7 +86,7 @@ namespace GalacticScale
 
         public static void CalculateVectorsVanilla(GSPlanet gsPlanet, float planetRadiusFactor, int[] _vein_spots)
         {
-            bool birth = gsPlanet.planetData.id == GSSettings.birthPlanetId;
+            bool birth = (gsPlanet.planetData.id == GSSettings.birthPlanetId);
             Vector3 spawnVector = InitVeinGroupVector(gsPlanet.planetData, birth); //Random Vector, unless its birth planet.
             for (int k = 1; k < 15; k++) //for each of the vein types
             {
