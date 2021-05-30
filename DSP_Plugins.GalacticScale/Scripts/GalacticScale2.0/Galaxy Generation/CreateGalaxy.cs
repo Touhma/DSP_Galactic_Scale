@@ -64,11 +64,12 @@ namespace GalacticScale
             return galaxy;
         }
         public static void SetupBirthPlanet() {
+            Log("Start");
             if (galaxy.starCount <= 0) return;
-            if (GSSettings.Instance.birthPlanet != null && GSSettings.Instance.birthPlanet != "")
+            if (GSSettings.Instance.birthPlanetName != null && GSSettings.Instance.birthPlanetName != "")
             {
-                Warn("BirthPlanet Name Found");
-                GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.birthPlanet);
+                Warn("BirthPlanetName Found");
+                GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.birthPlanetName);
                 Log(BirthPlanet.ToString());
                 if (BirthPlanet != null)
                 {
@@ -81,12 +82,18 @@ namespace GalacticScale
             }
             if (GSSettings.birthPlanetId >= 0)
             {
-                galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
-                galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
-                GS2.Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId);
+                Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId + " of " + galaxy.stars.Length);
+                Warn("Set BirthStar ID : " + GSSettings.birthStarId +" of " + galaxy.stars.Length);
+                //galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
+                
+                //galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
+                GSPlanet BirthPlanet = GetGSPlanet(GSSettings.birthPlanetId);
+                galaxy.birthPlanetId = BirthPlanet.planetData.id;
+                galaxy.birthStarId = BirthPlanet.planetData.star.id;
             }
             else
             {
+                Warn("Trying to find a birth planet via iteration");
                 for (int i = 0; i < GSSettings.starCount; i++)
                 {
                     GSStar star = GSSettings.Stars[i];

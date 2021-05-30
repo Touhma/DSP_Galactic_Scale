@@ -20,14 +20,14 @@ namespace GalacticScale
                 GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
                 GSPlanet p = GS2.GetGSPlanet(birthPlanetId);
                 if (p != null) return p;
-                GS2.Error("Could Not Get Birth Planet From ID");
+                GS2.Error("Could Not Get Birth Planet From ID. Using first Planet.");
                 return Stars[0].Planets[0];
             }
         }
         
         public static int birthStarId = -1; // this is a vanilla id, not a GS Index!
         public static int birthPlanetId = -1;// this is a vanilla id, not a GS Index!
-        public string birthPlanet = null;
+        public string birthPlanetName = null;
         private static GSSettings instance = new GSSettings(0);
         
         public string version = "2.0";
@@ -56,6 +56,8 @@ namespace GalacticScale
             instance = new GSSettings(seed);
             GalaxyParams = new GSGalaxyParams();
             Stars.Clear();
+            birthPlanetId = -1;
+            birthStarId = -1;
             GS2.gsPlanets.Clear();
             GS2.Log("End");
         }

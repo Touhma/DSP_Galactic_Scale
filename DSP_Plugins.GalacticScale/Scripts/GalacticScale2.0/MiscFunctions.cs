@@ -5,6 +5,21 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static bool AbortGameStart(string message)
+        {
+            Error("Aborting Game Start|" + message);
+            Failed = true;
+            UIRoot.instance.CloseLoadingUI();
+            UIRoot.instance.CloseGameUI();
+            UIRoot.instance.launchSplash.Restart();
+            DSPGame.StartDemoGame(0);
+            UIMessageBox.Show("Somewhat Fatal Error", "Cannot Start Game. Possibly reason: "+message, "Rats!", 3, new UIMessageBox.Response(() => {
+                UIRoot.instance.OpenMainMenuUI();
+                UIRoot.ClearFatalError();
+            }));
+            UIRoot.ClearFatalError();
+            return false;
+        }
         public static GSPlanet GetGSPlanet(PlanetData planet)
         {
             return gsPlanets[planet.id];
@@ -22,21 +37,10 @@ namespace GalacticScale
         }
         public static GSPlanet GetGSPlanet(int vanillaID)
         {
-            Log("Finding GSPlanet By ID");
-            GSPlanet p = gsPlanets[vanillaID];
-            //for (var i = 0; i < galaxy.stars.Length; i++)
-            //{
-            //    for (var j = 0; j < galaxy.stars[i].planets.Length; j++)
-            //    {
-            //        GSPlanet p = kvp.Value;
-            //        Log("Checking " + p.Name + " == " + name);
-            //        if (galaxy.stars[i].planets[j].id == vanillaID) return p;
-            //    }
-
-            //}
-            if (p != null) return p;
-            Error("Failed to get GSPlanet by ID " + vanillaID);
-            return null;
+            Log("Finding GSPlanet By ID "+vanillaID);
+            if (vanillaID < 0) return (GSPlanet)Warn("Failed to get GSPlanet. ID less than 0. ID:" + vanillaID);
+            if (!gsPlanets.ContainsKey(vanillaID)) return (GSPlanet)Warn("Failed to get GSPlanet. ID does not exist. ID:" + vanillaID);
+            return gsPlanets[vanillaID] ?? (GSPlanet)Warn("Failed to get GSPlanet. ID exists, but GSPlanet is null. ID:" + vanillaID);
         }
         public static void EndGame()
         {

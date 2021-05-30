@@ -49,7 +49,7 @@ namespace GalacticScale
             if (data.ContainsKey("themeLibrary")) DeserializeMember(data, null, "themeLibrary", out tl);
             if (data.ContainsKey("ThemeLibrary")) DeserializeMember(data, null, "ThemeLibrary", out tl);
             model.themeLibrary = tl;
-            if (data.ContainsKey("BirthPlanet")) DeserializeMember(data, null, "BirthPlanet", out model.birthPlanet);
+            if (data.ContainsKey("BirthPlanet")) DeserializeMember(data, null, "BirthPlanet", out model.birthPlanetName);
             return result;
         }
     }

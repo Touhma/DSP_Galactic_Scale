@@ -159,7 +159,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\ThemeViewer.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GSTeleportHandler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Plugins.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\IO\DebugLogging.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Logging\DebugLogging.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Preferences.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Boilerplate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Json.cs" />
@@ -186,6 +186,8 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Export - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Import - Copy.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameLoader\FixedUpdate.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\End.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\PlanetDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
@@ -260,7 +262,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetFactory\FlattenTerrain.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\NearColliderLogic\PatchOnNearColliderLogic.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildingGizmo\PatchOnBuildingGizmo.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\PatchOnGameMain.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\OnMainCameraPostRender.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetGrid\DetermineLongitudeSegmentCount.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetAtmoBlur\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetSimulator\SetPlanetData.cs" />

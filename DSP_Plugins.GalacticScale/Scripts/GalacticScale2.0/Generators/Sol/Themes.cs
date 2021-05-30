@@ -92,6 +92,17 @@ namespace GalacticScale.Generators
             venus.TerrainSettings.LandModifier = 1;
             venus.TerrainSettings.HeightMulti = 2;
             venus.Process();
+
+            GSTheme barrenSatellite = new GSTheme("BarrenSatellite", "Barren Satellite", "Barren");
+            barrenSatellite.VegeSettings.Group1 = new List<string>() {
+                    "Stone1","Stone2","Stone3","Stone4","Stone5","Stone6","Stone7","Stone8","Stone9","Stone10","Stone11","Stone12","Stone1","Stone2","Stone3","Stone4","Stone5","Stone6","Stone7","Stone8","Stone9","Stone10","Stone11","Stone12"};
+            barrenSatellite.VegeSettings.Group2 = barrenSatellite.VegeSettings.Group1;
+            barrenSatellite.VegeSettings.Group3 = barrenSatellite.VegeSettings.Group1;
+            barrenSatellite.VegeSettings.Group4 = barrenSatellite.VegeSettings.Group1;
+            barrenSatellite.VegeSettings.Group5 = barrenSatellite.VegeSettings.Group1;
+            barrenSatellite.VegeSettings.Group6 = barrenSatellite.VegeSettings.Group1;
+            barrenSatellite.atmosphereMaterial.Params = new Dictionary<string, float>() { ["_AtmoDensity"] = 0f};
+            barrenSatellite.Process();
         }
     }
 }
