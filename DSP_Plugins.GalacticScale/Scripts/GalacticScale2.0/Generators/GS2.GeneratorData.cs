@@ -11,7 +11,7 @@ namespace GalacticScale
             //new Generators.Spiral2(),
             //new Generators.PhysicsTest(),
             //new Generators.TintTest(),
-            new Generators.GalacticScale2(), 
+            new Generators.Sol(), 
             new Generators.JsonImport(),
             new Generators.ThemeViewer(),
             //new Generators.Spiral(),

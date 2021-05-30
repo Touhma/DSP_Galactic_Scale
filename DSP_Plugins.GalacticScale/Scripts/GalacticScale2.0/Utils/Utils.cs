@@ -7,6 +7,19 @@ namespace GalacticScale
 {
     public static class Utils
     {
+        public static bool CheckStarCollision(List<VectorLF3> pts, VectorLF3 pt, double min_dist)
+        {
+            double num1 = min_dist * min_dist;
+            foreach (VectorLF3 pt1 in pts)
+            {
+                double num2 = pt.x - pt1.x;
+                double num3 = pt.y - pt1.y;
+                double num4 = pt.z - pt1.z;
+                if (num2 * num2 + num3 * num3 + num4 * num4 < num1)
+                    return true;
+            }
+            return false;
+        }
         public static Sprite GetSpriteAsset(string name)
         {
             return GS2.bundle.LoadAsset<Sprite>(name);

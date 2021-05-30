@@ -2,13 +2,12 @@
 using GSFullSerializer;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using UnityEngine;
 namespace GalacticScale.Generators
 {
-    public class GalacticScale2 : iConfigurableGenerator
+    public partial class Sol : iConfigurableGenerator
     {
-        public string Name => "GalacticScale2";
+        public string Name => "Sol";
 
         public string Author => "innominata";
 
@@ -161,72 +160,14 @@ namespace GalacticScale.Generators
         public void GenerateSol(GSStar sol)
         {
             GS2.Log("Start" + sol.bodyCount);
-            GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
-            GS2.Log("Oiler Created");
-            oiler.terrainMaterial.Tint = new Color(0.3f, 0.3f, 0.3f, 1f);
-            oiler.atmosphereMaterial.Tint = new Color(0f, 0f, 0f, 1);
-            oiler.thumbMaterial.Tint = new Color(0.01f, 0.005f, 0f, 0.001f);
-            oiler.PlanetType = EPlanetType.Gas;
-            oiler.TerrainSettings.Algorithm = "GSTA1";
-            oiler.TerrainSettings.HeightMulti = 1.4;
-            oiler.CustomGeneration = true;
-            //oiler.GasItems = new int[3];
-            oiler.GasItems[0] = 1114;
-            oiler.GasItems[1] = 1120;
-            GS2.Log("About to Process Oiler");
-            oiler.Process();
-            GS2.Log("Oiler Processed");
-            GSTheme obsidian = new GSTheme("Obsidian", "Obsidian", "Lava");
-            obsidian.terrainMaterial.Tint = new Color(0.2f, 0.8f, 0.2f, 1);
-            //obsidian.atmosphereTint = new Color(0.5f, 0.5f, 0.5f, 1);
-            obsidian.oceanMaterial.Tint = new Color(0.0f, 0.533f, 0.501f, 0.5f);
-            //redIce.oceanTint = UnityEngine.Color.yellow;
-            //redIce.terrainMat.SetFloat("_AmbientInc", 0f);
-            //redIce.terrainMat.SetFloat("_Multiplier", 0f);
-            //redIce.terrainMat.SetFloat("_SpecularHighlights", 0f);
-            obsidian.TerrainSettings.Algorithm = "GSTA5";
-            obsidian.TerrainSettings.HeightMulti = 1;
-            obsidian.TerrainSettings.BaseHeight = 0;
-            obsidian.TerrainSettings.BiomeHeightMulti = 1f;
-            obsidian.CustomGeneration = true;
-            GS2.Log("About to Process redIce");
-            //obsidian.AmbientSettings.Color1 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.Color2 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.Color3 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.BiomeColor1 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.BiomeColor2 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.BiomeColor3 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.WaterColor1 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.WaterColor2 = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.AmbientSettings.WaterColor3 = new Color(0, 1f, 0.2f, 1f); ;
-            obsidian.AmbientSettings.CubeMap = "GS2";
-            //obsidian.AmbientSettings.Reflections = new Color(0, 1f, 0.2f, 1f); ;
-            //obsidian.TerrainSettings.BrightnessFix = true;
-            GS2.Log(obsidian.AmbientSettings.ToString());
-            obsidian.Process();
-            obsidian.terrainMat.SetFloat("_HeightEmissionRadius", 0f);
-            obsidian.terrainMat.SetFloat("_EmissionStrength", 0f);
-            obsidian.terrainMat.SetFloat("_NormalStrength", 0.3f);
-            obsidian.terrainMat.SetFloat("_Distance", 0f);
-            //obsidian.AmbientSettings.CubeMap = "GS2";
-            //obsidian.AmbientSettings.Reflections = new Color(0, 1f, 0.2f, 0.5f); ;
-
-            GSTheme redIce = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
-            redIce.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
-            redIce.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
-            redIce.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
-            redIce.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
-            redIce.Process();
+            InitThemes();
             ref GSPlanets planets = ref sol.Planets;
-            //planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7f, 252f, 10556f, 0, 0.034f, 7038, 0, 9f, null));
-            //planets.Add(new GSPlanet("Venus", "VolcanicAsh", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177f, 1000, 0, 2.6f, null));
             planets.Add(new GSPlanet("Earth", "Mediterranean", 140, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
-            //planets.Add(new GSPlanet("Jupiter", "GasGiant", 80, 5.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, null));
             GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f, null));
+            planets.Add(new GSPlanet("Venus", "AcidDeath", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177.4f, -1000, 0, 2.6f, null));
             planets.Add(new GSPlanet("Obsidian", "Obsidian", 100, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f, null));
             planets.Add(new GSPlanet("IceMalusol", "IceMalusol", 100, 0.72f, 3.39f, 182f, 26964f, 10, 177f, 1000, 0, 2.6f, null));
             oily.scale = 1f;
-
         }
 
         public void Import(GSGenPreferences preferences)

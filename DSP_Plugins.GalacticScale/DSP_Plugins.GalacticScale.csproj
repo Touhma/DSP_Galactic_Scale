@@ -150,6 +150,8 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsReflectionUtility.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\Sol\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\PlanetRawDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
@@ -267,7 +269,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameOption\PatchOnLoadGlobal.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Debug.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Json.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Generators\Galactic2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\Sol\Sol.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Vanilla.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\ThemeLibrary.cs" />
@@ -278,7 +280,7 @@
     <Compile Include="Scripts\GalacticScale2.0\refstubsecurity.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStar.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\GalacticScale2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Init.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Star Generation\StarDefaults.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\StarGen\CreateBirthStar.cs" />

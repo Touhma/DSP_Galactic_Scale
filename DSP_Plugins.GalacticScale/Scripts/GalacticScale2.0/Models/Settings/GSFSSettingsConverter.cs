@@ -19,6 +19,7 @@ namespace GalacticScale
             SerializeMember(serialized, null, "GalaxyParams", GSSettings.GalaxyParams);
             SerializeMember(serialized, null, "Stars", GSSettings.Stars);
             SerializeMember(serialized, null, "ThemeLibrary", GSSettings.ThemeLibrary);
+            SerializeMember(serialized, null, "BirthPlanet", GSSettings.BirthPlanet.Name);
             GS2.Log("End");
             return fsResult.Success;
         }
@@ -48,6 +49,7 @@ namespace GalacticScale
             if (data.ContainsKey("themeLibrary")) DeserializeMember(data, null, "themeLibrary", out tl);
             if (data.ContainsKey("ThemeLibrary")) DeserializeMember(data, null, "ThemeLibrary", out tl);
             model.themeLibrary = tl;
+            if (data.ContainsKey("BirthPlanet")) DeserializeMember(data, null, "BirthPlanet", out model.birthPlanet);
             return result;
         }
     }

@@ -16,11 +16,18 @@ namespace GalacticScale
         public static List<GSStar> Stars { get => instance.stars; set => instance.stars = value; }
         public static int starCount { get => Stars.Count; }
         public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId]:null; }
-        public static GSPlanet BirthPlanet { get => BirthStar.Planets[birthPlanetId]; }
+        public static GSPlanet BirthPlanet { get {
+                GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
+                GSPlanet p = GS2.GetGSPlanet(birthPlanetId);
+                if (p != null) return p;
+                GS2.Error("Could Not Get Birth Planet From ID");
+                return Stars[0].Planets[0];
+            }
+        }
         
-        public static int birthStarId = -1;
-        public static int birthPlanetId = -1;
-
+        public static int birthStarId = -1; // this is a vanilla id, not a GS Index!
+        public static int birthPlanetId = -1;// this is a vanilla id, not a GS Index!
+        public string birthPlanet = null;
         private static GSSettings instance = new GSSettings(0);
         
         public string version = "2.0";

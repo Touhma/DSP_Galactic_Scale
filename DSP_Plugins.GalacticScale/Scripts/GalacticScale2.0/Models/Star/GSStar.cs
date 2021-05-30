@@ -192,7 +192,7 @@ namespace GalacticScale
         }
         VectorLF3 InitPos()
         {
-            _pos = GS2.tmp_poses[assignedIndex];
+            _pos = StarPositions.tmp_poses[assignedIndex];
             return _pos;
         }
         public GSStar Clone()

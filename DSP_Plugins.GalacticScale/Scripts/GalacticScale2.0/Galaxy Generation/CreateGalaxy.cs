@@ -30,7 +30,7 @@ namespace GalacticScale
             if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
             else ThemeLibrary = GSSettings.ThemeLibrary;
             Log("Generating TempPoses");
-            int tempPoses = GenerateTempPoses(
+            int tempPoses = StarPositions.GenerateTempPoses(
                 random.Next(),
                 GSSettings.starCount,
                 GSSettings.GalaxyParams.iterations,
@@ -65,6 +65,19 @@ namespace GalacticScale
         }
         public static void SetupBirthPlanet() {
             if (galaxy.starCount <= 0) return;
+            if (GSSettings.Instance.birthPlanet != null && GSSettings.Instance.birthPlanet != "")
+            {
+                Warn("BirthPlanet Name Found");
+                GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.birthPlanet);
+                Log(BirthPlanet.ToString());
+                if (BirthPlanet != null)
+                {
+                    galaxy.birthPlanetId = BirthPlanet.planetData.id;
+                    galaxy.birthStarId = BirthPlanet.planetData.star.id;
+                    return;
+                }
+                Error("BirthPlanet Name Not Found In Planet List!");
+            }
             if (GSSettings.birthPlanetId >= 0)
             {
                 galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;

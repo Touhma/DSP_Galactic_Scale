@@ -25,9 +25,8 @@ namespace GalacticScale
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
 
-        public static List<VectorLF3> tmp_poses;
-        public static List<VectorLF3> tmp_drunk;
-        public static int[] tmp_state;
+
+        //public static int[] tmp_state;
         public static GalaxyData galaxy;
         public static Random random { get => new Random(GSSettings.Seed); }
         public static GameDesc gameDesc;

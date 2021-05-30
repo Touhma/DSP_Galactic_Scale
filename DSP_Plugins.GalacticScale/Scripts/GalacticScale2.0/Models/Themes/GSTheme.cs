@@ -436,14 +436,14 @@ namespace GalacticScale
 		private bool CreateMaterial(GSMaterialSettings settings, out Material material)
         {
             GS2.Log("Start|"+Name);
-
+			string materialType = "terrain";
+			if (settings == oceanMaterial) materialType = "ocean";
+			if (settings == atmosphereMaterial) materialType = "atmosphere";
+			if (settings == minimapMaterial) materialType = "minimap";
+			if (settings == thumbMaterial) materialType = "thumb";
 			if (settings.CopyFrom == null)
 			{
-				string materialType = "terrain";
-				if (settings == oceanMaterial) materialType = "ocean";
-				if (settings == atmosphereMaterial) materialType = "atmosphere";
-				if (settings == minimapMaterial) materialType = "minimap";
-				if (settings == thumbMaterial) materialType = "thumb";
+				GS2.Log("Not Copying From Another Theme");
 				Material tempMat;
 				if (settings.Path == null)
 				{
@@ -469,10 +469,19 @@ namespace GalacticScale
 			}
 			else
 			{
+				GS2.Log("Copying from Theme: " + settings.CopyFrom);
 				string[] copyFrom = settings.CopyFrom.Split('.');
-				GSTheme materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
-				string materialName = copyFrom[1];
-				material = UnityEngine.Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
+				if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null || copyFrom[1] == "")
+				{
+					GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
+					material = Resources.Load<Material>(MaterialPath + materialType);
+				}
+				else
+				{
+					GSTheme materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
+					string materialName = copyFrom[1];
+					material = UnityEngine.Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
+				}
 			}
 			GS2.Log("Setting Textures for " + Name + " with " + settings.Textures.Count + " texture items in list");
 			foreach (var kvp in settings.Textures)
