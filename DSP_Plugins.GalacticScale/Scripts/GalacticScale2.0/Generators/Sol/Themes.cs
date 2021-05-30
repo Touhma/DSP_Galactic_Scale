@@ -91,6 +91,17 @@ namespace GalacticScale.Generators
             venus.TerrainSettings.Algorithm = "GSTA3";
             venus.TerrainSettings.LandModifier = 1;
             venus.TerrainSettings.HeightMulti = 2;
+            venus.VeinSettings.VeinTypes = new List<GSVeinType>()
+                {
+                    GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Stone, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Copper, 1, 20, 0.5f, 1.5f, 5, 15, true ),
+                    GSVeinType.Generate(EVeinType.Silicium, 1, 20, 0.9f, 2.5f, 5, 25, false ),
+                    GSVeinType.Generate(EVeinType.Diamond, 1, 20, 0.5f, 1.5f, 5, 15, true ),
+                    GSVeinType.Generate(EVeinType.Fractal, 1, 20, 0.5f, 1.5f, 5, 15, true ),
+                };
+            venus.VeinSettings.Algorithm = "GS2";
+            venus.CustomGeneration = true;
             venus.Process();
 
             GSTheme barrenSatellite = new GSTheme("BarrenSatellite", "Barren Satellite", "Barren");
@@ -102,7 +113,50 @@ namespace GalacticScale.Generators
             barrenSatellite.VegeSettings.Group5 = barrenSatellite.VegeSettings.Group1;
             barrenSatellite.VegeSettings.Group6 = barrenSatellite.VegeSettings.Group1;
             barrenSatellite.atmosphereMaterial.Params = new Dictionary<string, float>() { ["_AtmoDensity"] = 0f};
+            barrenSatellite.VeinSettings.VeinTypes = new List<GSVeinType>()
+                {
+                    GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Stone, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Copper, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Silicium, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Grat, 1, 10, 0.5f, 1.5f, 5, 15, true ),
+                };
+            barrenSatellite.VeinSettings.Algorithm = "GS2";
+            barrenSatellite.CustomGeneration = true;
             barrenSatellite.Process();
+
+            GSTheme dwarf = new GSTheme("DwarfPlanet", "Dwarf Planet", "Barren");
+            dwarf.Algo = 3;
+            dwarf.CustomGeneration = true;
+            dwarf.Temperature = 0;
+            dwarf.Distribute = EThemeDistribute.Default;
+            dwarf.TerrainSettings = new GSTerrainSettings()
+            {
+                RandomFactor = 10,
+                LandModifier = .1f,
+                Algorithm = "GSTA3"
+            };
+            dwarf.VeinSettings = new GSVeinSettings()
+            {
+                Algorithm = "GS2",
+                VeinPadding = 0.5f,
+                VeinTypes = new List<GSVeinType>()
+                {
+                    GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Stone, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Copper, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Silicium, 1, 10, 0.5f, 1.5f, 5, 15, false ),
+                    GSVeinType.Generate(EVeinType.Fireice, 1, 10, 0.5f, 1.5f, 5, 15, true ),
+                }
+            };
+            dwarf.Wind = 0f;
+            dwarf.Process();
+
+            GSTheme center = new GSTheme("Center", " ", "Barren");
+            center.PlanetType = EPlanetType.Gas;
+            center.atmosphereMaterial.Tint = Color.black;
+            center.thumbMaterial.Tint = Color.black;
+            center.Process();
         }
     }
 }

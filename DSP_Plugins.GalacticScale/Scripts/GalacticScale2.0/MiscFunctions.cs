@@ -22,7 +22,7 @@ namespace GalacticScale
         }
         public static GSPlanet GetGSPlanet(PlanetData planet)
         {
-            return gsPlanets[planet.id];
+            return GetGSPlanet(planet.id);
         }
         public static GSPlanet GetGSPlanet(string name)
         {
@@ -43,11 +43,13 @@ namespace GalacticScale
                 Warn("Failed to get GSPlanet. ID less than 0. ID:" + vanillaID);
                 return null;
             }
+            Log("2Finding GSPlanet By ID " + vanillaID);
             if (!gsPlanets.ContainsKey(vanillaID))
             {
                 Warn("Failed to get GSPlanet. ID does not exist. ID:" + vanillaID);
                 return null;
             }
+            Log("3Finding GSPlanet By ID " + vanillaID);
             if (gsPlanets[vanillaID] == null)
             {
                 Warn("Failed to get GSPlanet. ID exists, but GSPlanet is null. ID:" + vanillaID);

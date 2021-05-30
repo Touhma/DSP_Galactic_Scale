@@ -161,15 +161,39 @@ namespace GalacticScale.Generators
         {
             GS2.Log("Start" + sol.bodyCount);
             InitThemes();
+            GSPlanet luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.015f, 5.145f, 0.0f, 3278f, 0, 6.68f, 3278f, 0, 1.36f);
             ref GSPlanets planets = ref sol.Planets;
-            planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7.005f, 252.25f, 10556.28f, 0, 0.034f, 7038f, 0, 9.0827f));
-            planets.Add(new GSPlanet("Earth", "Mediterranean", 140, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, new GSPlanets() { 
-            new GSPlanet("The Moon", "BarrenSatellite", 110, 0.015f,5.145f,0.0f,3278f, 0,6.68f,3278f, 0, 1.36f)}));
+            planets.Add(new GSPlanet("Mercury", "Barren", 150, 0.39f, 7.005f, 252.25f, 10556.28f, 0, 0.034f, 7038f, 0, 9.0827f));
             GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f));
             planets.Add(new GSPlanet("Venus", "AcidGreenhouse", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177.4f, -1000, 0, 2.6f));
+            planets.Add(new GSPlanet("Earth", "Mediterranean", 140, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, new GSPlanets() { luna }));
+            planets.Add(new GSPlanet("Mars", "AridDesert", 210, 1.52f, 1.85f, 355.45f, 82437f, 0f, 25.19f, 123.11f, 0, 0.58f));
+            planets.Add(new GSPlanet("Ceres", "DwarfPlanet", 30, 2.77f, 10.6f, 329.5f, 82437.6f, 120.6f, 0.034f, 45.5f, 31.7f, 0.2926f));
+            GSPlanets jovianMoons = new GSPlanets()
+            {
+                new GSPlanet("Io", "IceGelisol", 110, 0.2f, 0.04f, 0, 216f, 0, 0, 212.5f, 0, 0.05f),
+                new GSPlanet("Europa", "IceGelisol", 100, 0.25f, 0.47f, 0f, 432f, 0, 0, 426f, 0, 0.05f),
+                new GSPlanet("Ganymede", "IceGelisol", 160, 0.3f, 0.18f, 0f, 864f, 0, 0, 858.5f, 0, 0.0526f),
+                new GSPlanet("Callisto", "IceGelisol", 150, 0.35f, 0.19f, 0f, 2004f, 0, 0, 2002.5f, 0, 0.05f)
+            };
+            planets.Add(new GSPlanet("Jupiter", "GasGiant", 450, 5.2f, 1.3053f, 34.404f, 519670f, 0f, 3.13f, 49.63f, 0, 0.05026f, jovianMoons));
+            planets.Add(new GSPlanet("Saturn", "GasGiant2", 380, 9.58f, 2.48446f, 49.94432f, 1291106f, 0f, 26.73f, 53.28f, 0, 0.01482f, new GSPlanets() {
+                new GSPlanet("Titan", "AshenGelisol", 160, 0.2f, 0.33f, 0.0f, 1908f, 0f, 0f, 1913.5f, 0f, 0.01482f)}));
+            planets.Add(new GSPlanet("Uranus", "IceGiant", 160, 19.2f, 0.8f, 313.2322f, 3682248f, 0f, 97.77f, 1000f, 0, 0.00369f));
+            planets.Add(new GSPlanet("Neptune", "IceGiant2", 155, 30.05f, 1.769f, 78f, 72142680f, 0f, 28.3f, 80.55f, 0f, 0.001508f, new GSPlanets()
+            {
+                new GSPlanet("Triton", "AshenGelisol", 80, 0.2f, 157.3f, 0f, 708f, 0f, 0f, 1000f, 0f, 0.001508f)
+            }));
+            GSPlanet PlutoCharon = planets.Add(new GSPlanet(" ", "Center", 10, 39.48f, 17.16f, 238.9881f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f));
+            PlutoCharon.scale = 0.0001f;
+            PlutoCharon.Moons = new GSPlanets() {
+                new GSPlanet("Pluto", "AshenGelisol", 70, .03948f, 17.16f, 238.9881f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f),
+                new GSPlanet("Charon", "BarrenSatellite", 40, .03948f, 17.16f, 238.9881f, 10867200.0f, 180.03f, 122.53f, 1000f, 0f, 0.000873f)
+            };
             planets.Add(new GSPlanet("Obsidian", "Obsidian", 100, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f));
             planets.Add(new GSPlanet("IceMalusol", "IceMalusol", 100, 0.72f, 3.39f, 182f, 26964f, 10, 177f, 1000, 0, 2.6f));
             oily.scale = 1f;
+            GSSettings.Instance.birthPlanetName = "Pluto";
         }
 
         public void Import(GSGenPreferences preferences)

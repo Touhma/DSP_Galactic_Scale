@@ -207,12 +207,14 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\Export.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIResearchResultWindow\SetTechId.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UISpaceGuideEntry\OnObjectChange.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\_OnLateUpdate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UITutorialTip\PopupTutorialTip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIAdvisorTip\RunAdvisorTip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIAdvisorTip\PlayAdvisorTip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIEscMenu\_OnOpen.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\OnGameBegin.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\HideOrbitsForTinyPlanets.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\_OnInit.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />

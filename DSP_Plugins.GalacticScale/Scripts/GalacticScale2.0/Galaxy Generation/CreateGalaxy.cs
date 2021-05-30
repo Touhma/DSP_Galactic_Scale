@@ -70,15 +70,16 @@ namespace GalacticScale
             {
                 Warn("BirthPlanetName Found");
                 GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.birthPlanetName);
-                Log(BirthPlanet.ToString());
+                
                 if (BirthPlanet != null)
                 {
+                    Log(BirthPlanet.ToString());
                     Log("Found BirthPlanet, Adding ID's");
                     GSSettings.birthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
                     GSSettings.birthStarId = galaxy.birthStarId = BirthPlanet.planetData.star.id;
                     return;
                 }
-                Error("BirthPlanet Name Not Found In Planet List!");
+                Warn("BirthPlanet Name Not Found In Planet List!");
             }
             if (GSSettings.birthPlanetId >= 0)
             {

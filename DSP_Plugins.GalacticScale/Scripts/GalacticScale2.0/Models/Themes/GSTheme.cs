@@ -105,16 +105,16 @@ namespace GalacticScale
 		// / Constructor
 		// ////////////////////////////////////////
 		public GSTheme() { }
-		public GSTheme (string name, string displayName, string baseName)
+		public GSTheme (string name, string displayName, string baseName = null)
         {
 			DisplayName = displayName;
 			Name = name;
-			if (GS2.ThemeLibrary.ContainsKey(baseName)) { 
+			if (baseName != null && GS2.ThemeLibrary.ContainsKey(baseName)) { 
 				this.BaseName = baseName;
 				GS2.Log("About to Copy From");
 				CopyFrom(baseTheme); 
 			}
-			else GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
+			else if (baseName != null) GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
 		}
 		public void Process()
         {
