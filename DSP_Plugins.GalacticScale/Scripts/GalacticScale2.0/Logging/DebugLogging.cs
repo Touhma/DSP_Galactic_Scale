@@ -10,15 +10,13 @@ namespace GalacticScale
         {
             if (debugOn) Bootstrap.Debug(GetCaller() +s);
         }
-        public static object Error(string message)
+        public static void Error(string message)
         {
             Bootstrap.Debug(GetCaller()+message, LogLevel.Error, true);
-            return null;
         }
-        public static object Warn(string message)
+        public static void Warn(string message)
         {
             Bootstrap.Debug(GetCaller() + message, LogLevel.Warning, true);
-            return null;
         }
         public static void LogJson(object o)
         {

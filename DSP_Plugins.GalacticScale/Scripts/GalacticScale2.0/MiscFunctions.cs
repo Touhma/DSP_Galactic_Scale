@@ -38,9 +38,22 @@ namespace GalacticScale
         public static GSPlanet GetGSPlanet(int vanillaID)
         {
             Log("Finding GSPlanet By ID "+vanillaID);
-            if (vanillaID < 0) return (GSPlanet)Warn("Failed to get GSPlanet. ID less than 0. ID:" + vanillaID);
-            if (!gsPlanets.ContainsKey(vanillaID)) return (GSPlanet)Warn("Failed to get GSPlanet. ID does not exist. ID:" + vanillaID);
-            return gsPlanets[vanillaID] ?? (GSPlanet)Warn("Failed to get GSPlanet. ID exists, but GSPlanet is null. ID:" + vanillaID);
+            if (vanillaID < 0)
+            {
+                Warn("Failed to get GSPlanet. ID less than 0. ID:" + vanillaID);
+                return null;
+            }
+            if (!gsPlanets.ContainsKey(vanillaID))
+            {
+                Warn("Failed to get GSPlanet. ID does not exist. ID:" + vanillaID);
+                return null;
+            }
+            if (gsPlanets[vanillaID] == null)
+            {
+                Warn("Failed to get GSPlanet. ID exists, but GSPlanet is null. ID:" + vanillaID);
+                return null;
+            }
+            return gsPlanets[vanillaID];
         }
         public static void EndGame()
         {

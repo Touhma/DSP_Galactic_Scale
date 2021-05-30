@@ -162,12 +162,13 @@ namespace GalacticScale.Generators
             GS2.Log("Start" + sol.bodyCount);
             InitThemes();
             ref GSPlanets planets = ref sol.Planets;
+            planets.Add(new GSPlanet("Mercury", "Lava", 150, 0.39f, 7.005f, 252.25f, 10556.28f, 0, 0.034f, 7038f, 0, 9.0827f));
             planets.Add(new GSPlanet("Earth", "Mediterranean", 140, 1.0f, 0.0005f, 100f, 43830, 0, 23.44f, 119.67f, 0f, 1.36f, new GSPlanets() { 
-            new GSPlanet("The Moon", "BarrenSatellite", 110, 0.015f,5.145f,0.0f,3278f, 0,6.68f,3278f, 0, 1.36f, null)}));
-            GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f, null));
-            planets.Add(new GSPlanet("Venus", "AcidGreenhouse", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177.4f, -1000, 0, 2.6f, null));
-            planets.Add(new GSPlanet("Obsidian", "Obsidian", 100, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f, null));
-            planets.Add(new GSPlanet("IceMalusol", "IceMalusol", 100, 0.72f, 3.39f, 182f, 26964f, 10, 177f, 1000, 0, 2.6f, null));
+            new GSPlanet("The Moon", "BarrenSatellite", 110, 0.015f,5.145f,0.0f,3278f, 0,6.68f,3278f, 0, 1.36f)}));
+            GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 252f, 10556f, 355, 0.034f, 7038, 0, 9f));
+            planets.Add(new GSPlanet("Venus", "AcidGreenhouse", 320, 0.72f, 3.39f, 182f, 26964f, 0, 177.4f, -1000, 0, 2.6f));
+            planets.Add(new GSPlanet("Obsidian", "Obsidian", 100, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f));
+            planets.Add(new GSPlanet("IceMalusol", "IceMalusol", 100, 0.72f, 3.39f, 182f, 26964f, 10, 177f, 1000, 0, 2.6f));
             oily.scale = 1f;
         }
 
