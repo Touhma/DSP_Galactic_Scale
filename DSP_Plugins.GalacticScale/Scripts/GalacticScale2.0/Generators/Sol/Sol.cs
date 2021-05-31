@@ -230,8 +230,8 @@ namespace GalacticScale.Generators
             }
             string themeName = themeNames[random.Range(0, themeNames.Count)];
             float radius = 200;
-            int inverseIndex = orbitCount - orbitIndex;
-            int factor = Mathf.Min(inverseIndex, orbitIndex);
+            int inverseIndex = orbitCount - (orbitIndex+1);
+            int factor = Mathf.Min(inverseIndex, orbitIndex +1);
             float percent = factor / (orbitCount / 2);
             bool tiny = false;
             bool huge = false;
