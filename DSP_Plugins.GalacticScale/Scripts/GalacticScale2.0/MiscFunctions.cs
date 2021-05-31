@@ -26,30 +26,30 @@ namespace GalacticScale
         }
         public static GSPlanet GetGSPlanet(string name)
         {
-            Log("Checking gsPlanets. All " + gsPlanets.Count + " of them.");
+            //Log("Checking gsPlanets. All " + gsPlanets.Count + " of them.");
             foreach (var kvp in gsPlanets)
             {
                 GSPlanet p = kvp.Value;
-                Log("Checking "+ p.Name + " == " + name);
+                //Log("Checking "+ p.Name + " == " + name);
                 if (p.Name == name) return p;
             }
             return null;
         }
         public static GSPlanet GetGSPlanet(int vanillaID)
         {
-            Log("Finding GSPlanet By ID "+vanillaID);
+            //Log("Finding GSPlanet By ID "+vanillaID);
             if (vanillaID < 0)
             {
                 Warn("Failed to get GSPlanet. ID less than 0. ID:" + vanillaID);
                 return null;
             }
-            Log("2Finding GSPlanet By ID " + vanillaID);
+            //Log("2Finding GSPlanet By ID " + vanillaID);
             if (!gsPlanets.ContainsKey(vanillaID))
             {
                 Warn("Failed to get GSPlanet. ID does not exist. ID:" + vanillaID);
                 return null;
             }
-            Log("3Finding GSPlanet By ID " + vanillaID);
+            //Log("3Finding GSPlanet By ID " + vanillaID);
             if (gsPlanets[vanillaID] == null)
             {
                 Warn("Failed to get GSPlanet. ID exists, but GSPlanet is null. ID:" + vanillaID);
@@ -66,6 +66,10 @@ namespace GalacticScale
             public float NextFloat()
             {
                 return (float)NextDouble();
+            }
+            public float NextFloat(float max)
+            {
+                return (float)Range(0f,max);
             }
             public int Range(int min, int max) => (UnityEngine.Mathf.RoundToInt((float)Range((float)min, (float)max)));
             public float Range(float min, float max)=> (float)Math.Round((double)min + (NextDouble() * (double)(max - min)), 8);

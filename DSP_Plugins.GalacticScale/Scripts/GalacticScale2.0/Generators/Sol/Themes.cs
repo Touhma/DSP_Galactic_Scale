@@ -19,14 +19,15 @@ namespace GalacticScale.Generators
             oiler.GasItems[1] = 1120;
             oiler.GasSpeeds[0] = 0.1f;
             oiler.GasSpeeds[1] = 10f;
+            oiler.Private = true;
             oiler.Process();
             GS2.Log("Oiler Processed");
 
             GSTheme obsidian = new GSTheme("Obsidian", "Obsidian", "IceGelisol");
             obsidian.terrainMaterial.Tint = new Color(0.05f, 0.05f, 0.05f, 1);
-            obsidian.oceanMaterial.Tint = new Color(0.0f, 0.533f, 0.501f, 0.5f);
+            obsidian.oceanMaterial.Tint = new Color(0.0f, 0.0f, 0.0f, 0.5f);
             obsidian.atmosphereMaterial.Tint = Color.black;
-            obsidian.TerrainSettings.Algorithm = "GSTA5";
+            obsidian.TerrainSettings.Algorithm = "GSTA3";
             obsidian.TerrainSettings.BiomeHeightMulti = -10f;
             obsidian.CustomGeneration = true;
             obsidian.AmbientSettings.CubeMap = "GS2";
@@ -34,6 +35,7 @@ namespace GalacticScale.Generators
             obsidian.terrainMat.SetFloat("_EmissionStrength", 0f);
             obsidian.terrainMat.SetFloat("_NormalStrength", 0.3f);
             obsidian.terrainMat.SetFloat("_Distance", 0f);
+            obsidian.Temperature = 2f;
             obsidian.Process();
             
             GS2.Log("About to Process redIce");
@@ -157,6 +159,11 @@ namespace GalacticScale.Generators
             center.atmosphereMaterial.Tint = Color.black;
             center.thumbMaterial.Tint = Color.black;
             center.Process();
+
+            GSTheme hotGas = new GSTheme("Inferno", "Infernal Gas Giant", "GasGiant");
+            hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
+            hotGas.Temperature = 4f;
+            hotGas.Process();
         }
     }
 }

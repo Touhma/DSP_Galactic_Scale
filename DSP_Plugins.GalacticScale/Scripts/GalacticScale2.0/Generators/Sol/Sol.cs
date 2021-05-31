@@ -26,26 +26,26 @@ namespace GalacticScale.Generators
         private GSGeneratorConfig config = new GSGeneratorConfig();
         private GSGenPreferences preferences = new GSGenPreferences();
         public List<GSStar> stars = new List<GSStar>();
-        private GSUI UI_ludicrousMode;
-        private GSUI UI_birthPlanetSize;
+        //private GSUI UI_ludicrousMode;
+        //private GSUI UI_birthPlanetSize;
         private GSUI UI_minPlanetSize;
         private GSUI UI_maxPlanetSize;
-        private GSUI UI_galaxyDensity;
+        //private GSUI UI_galaxyDensity;
         private GSUI UI_maxPlanetCount;
-        private GSUI UI_secondarySatellites;
-        private GSUI UI_birthPlanetSiTi;
-        private GSUI UI_tidalLockInnerPlanets;
+        //private GSUI UI_secondarySatellites;
+        //private GSUI UI_birthPlanetSiTi;
+        //private GSUI UI_tidalLockInnerPlanets;
         private GSUI UI_moonsAreSmall;
-        private GSUI UI_hugeGasGiants;
-        private GSUI UI_regularBirthTheme;
-        private GSUI UI_systemDensity;
+        //private GSUI UI_hugeGasGiants;
+        //private GSUI UI_regularBirthTheme;
+        //private GSUI UI_systemDensity;
         private GS2.Random random = GS2.random;
         public void Init()
         {
-            config.DefaultStarCount = 1;
-            UI_ludicrousMode = options.Add(GSUI.Checkbox("Ludicrous mode", false, o => preferences.Set("ludicrousMode", o)));
-            UI_galaxyDensity = options.Add(GSUI.Slider("Galaxy density", 1, 5, 9, o => preferences.Set("galaxyDensity", o)));
-            UI_systemDensity = options.Add(GSUI.Slider("System density", 1, 5, 9, o => preferences.Set("systemDensity", o)));
+            config.DefaultStarCount = 10;
+            //UI_ludicrousMode = options.Add(GSUI.Checkbox("Ludicrous mode", false, o => preferences.Set("ludicrousMode", o)));
+            //UI_galaxyDensity = options.Add(GSUI.Slider("Galaxy density", 1, 5, 9, o => preferences.Set("galaxyDensity", o)));
+            //UI_systemDensity = options.Add(GSUI.Slider("System density", 1, 5, 9, o => preferences.Set("systemDensity", o)));
             UI_maxPlanetCount = options.Add(GSUI.Slider("Max planets per system", 1, 10, 99, o => preferences.Set("maxPlanetCount", o)));
             UI_minPlanetSize = options.Add(GSUI.Slider("Min planet size", 5, 30, 510, o =>
             {
@@ -64,17 +64,17 @@ namespace GalacticScale.Generators
                 preferences.Set("maxPlanetSize", Utils.ParsePlanetSize((float)o));
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }));
-            UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
-            UI_birthPlanetSize = options.Add(GSUI.Slider("Birth planet size", 20, 50, 510, o =>
-            {
-                preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o));
-                UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize"));
-            }));
-            UI_regularBirthTheme = options.Add(GSUI.Checkbox("Regular birth theme", true, o => preferences.Set("regularBirthTheme", o)));
-            UI_birthPlanetSiTi = options.Add(GSUI.Checkbox("Birth planet Si/Ti", false, o => preferences.Set("birthPlanetSiTi", o)));
-            UI_tidalLockInnerPlanets = options.Add(GSUI.Checkbox("Tidal lock inner planets", false, o => preferences.Set("tidalLockInnerPlanets", o)));
+            //UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
+            //UI_birthPlanetSize = options.Add(GSUI.Slider("Birth planet size", 20, 50, 510, o =>
+            //{
+            //    preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o));
+            //    UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize"));
+            //}));
+            //UI_regularBirthTheme = options.Add(GSUI.Checkbox("Regular birth theme", true, o => preferences.Set("regularBirthTheme", o)));
+            //UI_birthPlanetSiTi = options.Add(GSUI.Checkbox("Birth planet Si/Ti", false, o => preferences.Set("birthPlanetSiTi", o)));
+            //UI_tidalLockInnerPlanets = options.Add(GSUI.Checkbox("Tidal lock inner planets", false, o => preferences.Set("tidalLockInnerPlanets", o)));
             UI_moonsAreSmall = options.Add(GSUI.Checkbox("Moons are small", true, o => preferences.Set("moonsAreSmall", o)));
-            UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
+            //UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
             ReadStarData();
         }
 
@@ -159,42 +159,96 @@ namespace GalacticScale.Generators
             for (var i = 1; i < starCount; i++)
             {
                 GSStar star = GSSettings.Stars[i];
-                GSPlanets planets = new GSPlanets();
                 int bodyCount = random.Next(1, preferences.GetInt("MaxPlanetCount", 10));
-                int planetCount = random.Next(Mathf.RoundToInt(bodyCount / 3), bodyCount);
+                int planetCount = 1 + random.Next(Mathf.RoundToInt(bodyCount / 3), bodyCount - 1);
                 int moonCount = bodyCount - planetCount;
+                GS2.Log("Star " + star.Name + " planet Count = " + planetCount + " mooncount = " + moonCount);
                 for (var j = 0; j < planetCount; j++)
                 {
                     int planetMoonCount = 0;
                     for (var m = 0; m < 6; m++)
                     {
-                        if (moonCount > 0 && random.NextFloat() < (j / planetCount))
+                        GS2.Log("MoonCount calculation : random < " + (j + 1 / (float)planetCount));
+                        if (moonCount > 0 && random.NextFloat() < (j + 1 / (float)planetCount))
                         {
+                            GS2.Log("Adding Moon");
                             planetMoonCount++;
                             moonCount--;
                         }
                     }
                     string planetName = star.Name + " - " + RomanNumbers.roman[j + 1];
-                    planets.Add(RandomPlanet(star, planetName, j, planetCount, planetMoonCount));
+                    star.Planets.Add(RandomPlanet(star, planetName, j, planetCount, planetMoonCount));
                 }
+
+
             }
 
         }
+        public float CalculateOrbitPeriod(float orbitRadius)
+        {
+            float d = Mathf.PI * orbitRadius * 2;
+            float speed = 0.0005f; // AU/s
+            return d / speed;
+        }
+
+        public GSPlanet RandomMoon(GSStar star, GSPlanet host, string name, int index, int orbitCount, string heat)
+        {
+            GS2.Log("Creating moon. Badly. Heat = " + heat + " name = " + name + " index = " + index + "/" + orbitCount);
+            string theme = "Barren";
+            int radius = Utils.ParsePlanetSize(random.Range(30, 150));
+            float previousOrbitRadius = (host.MoonCount > 0)? host.Moons[host.Moons.Count - 1].OrbitRadius:0.05f;
+            float orbitRadius = previousOrbitRadius + (host.Radius * host.scale) / 40000.0f + random.NextFloat()/10;
+            name += orbitRadius.ToString();
+            float orbitalPeriod = CalculateOrbitPeriod(orbitRadius);
+            float rotationPeriod = random.Range(60, 3600);
+            if (index / orbitCount < random.NextFloat()) rotationPeriod = orbitalPeriod;
+            float luminosity = -1;
+            float orbitInclination = 0f;
+            float orbitLongitude = 0f;
+            float orbitPhase = random.NextFloat(360);
+            float orbitObliquity = random.Range(0f, 90f);
+            float rotationPhase = 0f;
+            //GS2.Log("Got this far.");
+            //GS2.Log("Host:" + host?.Name);
+            GSPlanet moon = new GSPlanet(name, theme, radius, orbitRadius, orbitInclination, orbitLongitude, orbitalPeriod, orbitPhase, orbitObliquity, rotationPeriod, rotationPhase, luminosity);
+            moon.scale = 1f;
+            GS2.LogJson(moon);
+            return moon;
+        }
         public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount)
         {
-            int hotOrbitMax = Mathf.RoundToInt(orbitCount / 6.66f);
+            GS2.Log("Creating Random Planet for " + star.Name + ". Named: " + name + " orbitIndex:" + orbitIndex + "/" + orbitCount + " moons:" + moonCount);
+            
+            float thisOrbitDistance;
+            float radius;
+            string themeName;
+            string heat;
+            int hotOrbitMax = Mathf.RoundToInt((float)orbitCount / 6.66f);
             int frozenOrbitMax = orbitCount - hotOrbitMax;
             int warmOrbitMax = hotOrbitMax * 2;
             int coldOrbitMax = frozenOrbitMax - hotOrbitMax;
-            int temperateOrbitMax = (coldOrbitMax - warmOrbitMax) / 2 + warmOrbitMax;
+            int temperateOrbitMax = Mathf.RoundToInt((float)((coldOrbitMax - warmOrbitMax) / 2) + warmOrbitMax);
             float maxOrbitDistance = 5f * star.orbitScaler;
-            float thisOrbitDistance = (((orbitIndex + 1) / orbitCount) * maxOrbitDistance) - (random.NextFloat() * (maxOrbitDistance / orbitCount) / 2);
+            //GS2.Log("maxOrbitDistance:" + maxOrbitDistance);
+
+            float thisOrbitDistanceMax = (((float)orbitIndex + 1f) / (float)orbitCount) * maxOrbitDistance;
+            //GS2.Log("thisOrbitDistanceMax = " + thisOrbitDistanceMax);
+            float previousOrbitDistance;
+            if (orbitIndex == 0) previousOrbitDistance = 0.1f;
+            else previousOrbitDistance = star.Planets[orbitIndex - 1].OrbitRadius;
+            //GS2.Log("previousOrbitDistance = " + previousOrbitDistance);
+            thisOrbitDistance = random.Range(previousOrbitDistance + 0.1f, thisOrbitDistanceMax);
+            //- (random.NextFloat() * ((maxOrbitDistance / orbitCount) / 2)
+            //GS2.Log("thisOrbitDistance:" + thisOrbitDistance);
+
             List<string> themeNames;
             float chanceTiny = 0f;
             float chanceHuge = 0f;
             float chanceGas = 0f;
             if (orbitIndex < hotOrbitMax)
             {
+                //GS2.Log("Hot");
+                heat = "Hot";
                 themeNames = GSSettings.ThemeLibrary.Hot;
                 chanceTiny = 0.8f;
                 chanceGas = 0.1f;
@@ -202,6 +256,8 @@ namespace GalacticScale.Generators
             }
             else if (orbitIndex < warmOrbitMax)
             {
+                //GS2.Log("Warm");
+                heat = "Warm";
                 themeNames = GSSettings.ThemeLibrary.Warm;
                 chanceTiny = 0.3f;
                 chanceGas = 0.1f;
@@ -209,13 +265,17 @@ namespace GalacticScale.Generators
             }
             else if (orbitIndex < temperateOrbitMax && orbitIndex > warmOrbitMax)
             {
+                //GS2.Log("Temperate");
+                heat = "Temperate";
                 themeNames = GSSettings.ThemeLibrary.Temperate;
                 chanceTiny = 0.2f;
                 chanceGas = 0.1f;
                 chanceHuge = 0.3f;
             }
-            else if (orbitIndex < frozenOrbitMax)
+            else if (orbitIndex < coldOrbitMax)
             {
+                //GS2.Log("Cold");
+                heat = "Cold";
                 themeNames = GSSettings.ThemeLibrary.Cold;
                 chanceTiny = 0.2f;
                 chanceGas = 0.8f;
@@ -223,37 +283,98 @@ namespace GalacticScale.Generators
             }
             else
             {
+                //GS2.Log("Frozen");
+                heat = "Frozen";
                 themeNames = GSSettings.ThemeLibrary.Frozen;
                 chanceTiny = 0.6f;
                 chanceGas = 0.3f;
                 chanceHuge = 0.3f;
             }
-            string themeName = themeNames[random.Range(0, themeNames.Count)];
-            float radius = 200;
-            int inverseIndex = orbitCount - (orbitIndex+1);
-            int factor = Mathf.Min(inverseIndex, orbitIndex +1);
-            float percent = factor / (orbitCount / 2);
+            //GS2.Log("ChanceGas:" + chanceGas + " ChanceTiny:" + chanceTiny + " ChanceHuge:" + chanceHuge);
+            //GS2.LogJson(themeNames);
+            themeName = themeNames[random.Range(0, themeNames.Count - 1)];
+            float scale;
             bool tiny = false;
             bool huge = false;
             bool gas = false;
             if (random.NextFloat() < chanceTiny) tiny = true;
             if (random.NextFloat() < chanceHuge) huge = true;
             if (random.NextFloat() < chanceGas) gas = true;
+            //GS2.Log("GAS:" + gas);
+            //GS2.Log("Tiny:" + tiny);
+            //GS2.Log("Huge:" + huge);
             if (gas)
             {
+                scale = 10f;
                 if (!tiny && !huge) radius = random.Range(100, 200);
                 else if (tiny && !huge) radius = random.Range(60, 200);
                 else if (huge && !tiny) radius = random.Range(200, 500);
                 else radius = random.Range(60, 200);
-            } else
+                GS2.Log("Gas. Radius " + radius);
+                if (orbitIndex < hotOrbitMax)
+                {
+                    GS2.Log("Hot Gas");
+                    themeNames = GSSettings.ThemeLibrary.HotGasGiant;
+                }
+                else if (orbitIndex < warmOrbitMax)
+                {
+                    GS2.Log("Warm Gas");
+                    themeNames = GSSettings.ThemeLibrary.GasGiant;
+                }
+                else if (orbitIndex < temperateOrbitMax && orbitIndex > warmOrbitMax)
+                {
+                    GS2.Log("Temperate Gas");
+                    themeNames = GSSettings.ThemeLibrary.GasGiant;
+                }
+                else if (orbitIndex < coldOrbitMax)
+                {
+                    GS2.Log("Cold Gas");
+                    themeNames = GSSettings.ThemeLibrary.IceGiant;
+                }
+                else
+                {
+                    GS2.Log("Frozen Gas");
+                    themeNames = GSSettings.ThemeLibrary.IceGiant;
+                    GS2.LogJson(themeNames);
+                    
+                }
+                themeName = themeNames[random.Range(0, themeNames.Count - 1)];
+            }
+            else
             {
-                if (!tiny && !huge) radius = random.Range(150, 250);
-                else if (tiny && !huge) radius = random.Range(30, 70);
-                else if (huge && !tiny) radius = random.Range(3500, 500);
+                scale = 1f;
+                if (!tiny && !huge) radius = random.Range(Mathf.Max(preferences.GetFloat("minPlanetSize"), 150), Mathf.Min(preferences.GetFloat("minPlanetSize"), 250));
+                else if (tiny && !huge) radius = random.Range(Mathf.Max(preferences.GetFloat("minPlanetSize"), 30), 70);
+                else if (huge && !tiny) radius = random.Range(350, 500); //needs more limits, but I got bored
                 else radius = random.Range(100, 500);
+                //GS2.Log("Telluric. Radius " + radius);
             }
 
-            GSPlanet g = new GSPlanet(name, themeName, Utils.ParsePlanetSize(radius), thisOrbitDistance, (random.NextFloat() + random.NextFloat()), 0, 100 * thisOrbitDistance * thisOrbitDistance, random.Next(359), random.NextFloat() * 20, 10 * thisOrbitDistance, random.Next(359), -1);
+
+
+            float orbitalPeriod = CalculateOrbitPeriod(thisOrbitDistance);
+            float rotationalPeriod = random.Range(60, 3600);
+            if (thisOrbitDistance < 1f && random.NextFloat() < 0.5f) rotationalPeriod = orbitalPeriod;
+            GSPlanet g = new GSPlanet(name, themeName, Utils.ParsePlanetSize(radius),
+                thisOrbitDistance, (random.NextFloat() + random.NextFloat()), 0, orbitalPeriod,
+                random.Next(359), random.NextFloat() * 20, rotationalPeriod, random.Next(359), -1);
+            if (moonCount > 0)
+            {
+
+                //GS2.Warn("Adding Moons");
+                g.Moons = new GSPlanets();
+                for (var i = 0; i < moonCount; i++)
+                {
+                    //GS2.Log("Trying to add moon: ");
+                    GSPlanet moon = RandomMoon(star, g, name + " - " + RomanNumbers.roman[i + 1], i, moonCount, heat);
+                    //GS2.Log("Adding Moon");
+                    g.Moons.Add(moon);
+                }
+            }
+            
+            g.Luminosity = -1;
+            g.scale = scale;
+            GS2.LogJson(g);
             return g;
         }
 
@@ -299,19 +420,19 @@ namespace GalacticScale.Generators
         public void Import(GSGenPreferences preferences)
         {
             this.preferences = preferences;
-            UI_ludicrousMode?.Set(preferences.GetBool("ludicrousMode"));
-            UI_birthPlanetSize?.Set(preferences.GetFloat("birthPlanetSize"));
+            //UI_ludicrousMode?.Set(preferences.GetBool("ludicrousMode"));
+            //UI_birthPlanetSize?.Set(preferences.GetFloat("birthPlanetSize"));
             UI_minPlanetSize?.Set(preferences.GetFloat("minPlanetSize"));
             UI_maxPlanetSize?.Set(preferences.GetFloat("maxPlanetSize"));
-            UI_galaxyDensity?.Set(preferences.GetFloat("galaxyDensity"));
+            //UI_galaxyDensity?.Set(preferences.GetFloat("galaxyDensity"));
             UI_maxPlanetCount?.Set(preferences.GetFloat("maxPlanetCount"));
-            UI_secondarySatellites?.Set(preferences.GetBool("secondarySatellites"));
-            UI_birthPlanetSiTi?.Set(preferences.GetBool("birthPlanetSiTi"));
-            UI_tidalLockInnerPlanets?.Set(preferences.GetBool("tidalLockInnerPlanets"));
+            //UI_secondarySatellites?.Set(preferences.GetBool("secondarySatellites"));
+            //UI_birthPlanetSiTi?.Set(preferences.GetBool("birthPlanetSiTi"));
+            //UI_tidalLockInnerPlanets?.Set(preferences.GetBool("tidalLockInnerPlanets"));
             UI_moonsAreSmall?.Set(preferences.GetBool("moonsAreSmall"));
-            UI_hugeGasGiants?.Set(preferences.GetBool("hugeGasGiants"));
-            UI_regularBirthTheme?.Set(preferences.GetBool("regularBirthTheme"));
-            UI_systemDensity?.Set(preferences.GetFloat("systemDensity"));
+            //UI_hugeGasGiants?.Set(preferences.GetBool("hugeGasGiants"));
+            //UI_regularBirthTheme?.Set(preferences.GetBool("regularBirthTheme"));
+            //UI_systemDensity?.Set(preferences.GetFloat("systemDensity"));
         }
 
         public GSGenPreferences Export()

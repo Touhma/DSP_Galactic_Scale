@@ -6,10 +6,10 @@ namespace GalacticScale
     {
         public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, PlanetData host = null)
         {
-            Log("CreatePlanet|" + gsPlanet.Name);
+            //Log("CreatePlanet|" + gsPlanet.Name);
             bool isMoon = (host != null);
             int index = GSSettings.Stars[star.index].counter;
-            GS2.Log("Creating PlanetData");
+            //GS2.Log("Creating PlanetData");
             PlanetData planet = new PlanetData();
             int counter = GSSettings.Stars[star.index].counter;
             planet.index = index;
@@ -26,7 +26,7 @@ namespace GalacticScale
             planet.number = index + 1;
             planet.id = star.id * 100 + index + 1;
             gsPlanets.Add(planet.id, gsPlanet);
-            Log("Setting Roman");
+            //Log("Setting Roman");
             string roman = "";
             if (isMoon) roman = RomanNumbers.roman[host.number + 1] + " - ";
             roman += RomanNumbers.roman[index + 1];
@@ -64,7 +64,7 @@ namespace GalacticScale
             planet.luminosity = gsPlanet.Luminosity;
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
-            Log("Setting Theme|"+gsPlanet.Name);
+            //Log("Setting Theme|"+gsPlanet.Name);
             SetPlanetTheme(planet, gsPlanet);
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
             star.galaxy.astroPoses[planet.id].uRadius = planet.realRadius;
@@ -73,7 +73,7 @@ namespace GalacticScale
             GSSettings.Stars[star.index].counter++;
             if (gsPlanet.MoonCount > 0) CreateMoons(ref planet, gsPlanet);
             //Log("PLANET RADIUS "+planetData.radius);
-            Log("End|" + gsPlanet.Name);
+            //Log("End|" + gsPlanet.Name);
             return planet;
         }
 

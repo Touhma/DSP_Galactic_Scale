@@ -28,6 +28,11 @@ namespace GalacticScale
 			set => BaseName = value.Name;
 		}
 		public string BaseName;
+		[NonSerialized]
+		public bool Private = false;
+		[NonSerialized]
+		public int minRadius;
+		public int maxRadius;
 		public string MaterialPath = "Universe/Materials/Planets/Ocean 1/";
 		public float Temperature = 0.0f;
 		public EThemeDistribute Distribute = EThemeDistribute.Interstellar;

@@ -136,7 +136,7 @@ namespace GalacticScale
         }
         private string InitTheme()
         {
-            _theme = "Mediterranian";
+            _theme = "Mediterranean";
             return _theme;
         }
         private float InitLuminosity()

@@ -51,7 +51,7 @@ namespace GalacticScale
             if (!ContainsKey(name))
             {
                 string s = GS2.GetCaller();
-                GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > "+s);
+                GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > " + s);
                 return Themes.Mediterranean;
             }
             return this[name];
@@ -61,7 +61,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature >= 3) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature >= 3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -70,7 +70,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature >= 0 && kv.Value.Temperature < 3) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature >= 0 && kv.Value.Temperature < 3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -79,7 +79,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature == 0) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature == 0 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -88,7 +88,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature < 0 && kv.Value.Temperature > -3) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature < 0 && kv.Value.Temperature > -3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -97,7 +97,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature <= -3) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature <= -3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -106,7 +106,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Ocean) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Ocean && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -115,7 +115,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Desert) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Desert && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -124,7 +124,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Vocano) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Vocano && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -133,7 +133,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Ice) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Ice && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }
@@ -142,7 +142,21 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Gas && kv.Value.Temperature > 0) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Gas && kv.Value.Temperature >= 0 && kv.Value.Temperature < 4 && !kv.Value.Private) list.Add(kv.Key);
+                return list;
+            }
+        }
+        public List<string> HotGasGiant
+        {
+            get
+            {
+                List<string> list = new List<string>();
+                foreach (KeyValuePair<string, GSTheme> kv in this)
+                    if (
+                        kv.Value.PlanetType == EPlanetType.Gas
+                        && kv.Value.Temperature >= 4
+                        && !kv.Value.Private
+                    ) list.Add(kv.Key);
                 return list;
             }
         }
@@ -151,7 +165,12 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Gas && kv.Value.Temperature < 0) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this)
+                    if (
+                        kv.Value.PlanetType == EPlanetType.Gas
+                        && kv.Value.Temperature < 0
+                        && !kv.Value.Private
+                    ) list.Add(kv.Key);
                 return list;
             }
         }
