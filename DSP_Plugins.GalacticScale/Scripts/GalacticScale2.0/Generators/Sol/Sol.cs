@@ -224,7 +224,7 @@ namespace GalacticScale.Generators
             else
             {
                 themeNames = GSSettings.ThemeLibrary.Frozen;
-                chanceTiny = 0.4f;
+                chanceTiny = 0.6f;
                 chanceGas = 0.3f;
                 chanceHuge = 0.3f;
             }
@@ -233,11 +233,26 @@ namespace GalacticScale.Generators
             int inverseIndex = orbitCount - orbitIndex;
             int factor = Mathf.Min(inverseIndex, orbitIndex);
             float percent = factor / (orbitCount / 2);
+            bool tiny = false;
+            bool huge = false;
+            bool gas = false;
+            if (random.NextFloat() < chanceTiny) tiny = true;
+            if (random.NextFloat() < chanceHuge) huge = true;
+            if (random.NextFloat() < chanceGas) gas = true;
+            if (gas)
+            {
+                if (!tiny && !huge) radius = random.Range(100, 200);
+                else if (tiny && !huge) radius = random.Range(60, 200);
+                else if (huge && !tiny) radius = random.Range(200, 500);
+                else radius = random.Range(60, 200);
+            } else
+            {
+                if (!tiny && !huge) radius = random.Range(150, 250);
+                else if (tiny && !huge) radius = random.Range(30, 70);
+                else if (huge && !tiny) radius = random.Range(3500, 500);
+                else radius = random.Range(100, 500);
+            }
 
-
-
-
-            //Utils.ParsePlanetSize()
             GSPlanet g = new GSPlanet(name, themeName, Utils.ParsePlanetSize(radius), thisOrbitDistance, (random.NextFloat() + random.NextFloat()), 0, 100 * thisOrbitDistance * thisOrbitDistance, random.Next(359), random.NextFloat() * 20, 10 * thisOrbitDistance, random.Next(359), -1);
             return g;
         }
