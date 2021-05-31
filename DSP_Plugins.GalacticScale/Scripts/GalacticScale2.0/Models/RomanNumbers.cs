@@ -1,4 +1,4 @@
-﻿namespace GalacticScale.Scripts {
+﻿namespace GalacticScale {
     public static class RomanNumbers {
         public static string[] roman = new string[101] {
             string.Empty,

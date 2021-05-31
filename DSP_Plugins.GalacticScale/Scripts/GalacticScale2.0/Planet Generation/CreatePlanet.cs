@@ -28,8 +28,8 @@ namespace GalacticScale
             gsPlanets.Add(planet.id, gsPlanet);
             Log("Setting Roman");
             string roman = "";
-            if (isMoon) roman = Scripts.RomanNumbers.roman[host.number + 1] + " - ";
-            roman += Scripts.RomanNumbers.roman[index + 1];
+            if (isMoon) roman = RomanNumbers.roman[host.number + 1] + " - ";
+            roman += RomanNumbers.roman[index + 1];
             planet.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;         
             planet.orbitRadius = gsPlanet.OrbitRadius;        
             planet.orbitInclination = gsPlanet.OrbitInclination;
