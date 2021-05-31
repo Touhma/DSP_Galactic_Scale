@@ -206,6 +206,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\GetReformType.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\Export.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmap\OnCursorFunction3Click.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIResearchResultWindow\SetTechId.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UISpaceGuideEntry\OnObjectChange.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\_OnLateUpdate.cs" />
@@ -305,7 +306,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\CreateGalaxy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\MiscFunctions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\StationComponent\InternalTickRemote.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\PatchOnUIPlanetDetailPrefix.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\OnPlanetDataSet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UISpaceGuide\PatchOnUISpaceGuide.cs" />
     <Compile Include="Scripts\Bootstrap.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\UpdateDirtyMesh.cs" />
@@ -314,7 +315,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen.cs" />
     <Compile Include="Scripts\Dependencies\**\*.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\PatchOnUIGameLoadingSplash.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\PatchOnUIPlanetDetail.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\SetResCount.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVersionText\PatchOnUIVersionText.cs" />
   </ItemGroup>
   <ItemGroup>
