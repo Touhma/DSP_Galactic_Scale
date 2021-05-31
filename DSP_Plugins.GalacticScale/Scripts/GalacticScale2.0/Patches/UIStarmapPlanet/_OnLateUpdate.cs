@@ -5,27 +5,12 @@ namespace GalacticScale
 {
     public partial class PatchOnUIStarmapPlanet
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(UIStarmapPlanet), "_OnLateUpdate")]
-        public static void OnLateUpdate_Postfix (ref UIStarmap ___starmap, ref GameObject ___relatedObject, ref UIStarmapPlanet __instance, PlanetData ___planet, ref LineRenderer ___orbitRenderer)
-        {
-            //if (___planet.scale < 1)
-            //{
-            //    if (___starmap.mouseHoverPlanet == __instance)
-            //    {
-            //        //___starmap.mouseHoverPlanet = null;
-            //        //___starmap.mouseOnGizmo = false;
-            //        //___starmap.cursorViewDisplayObject = null;
-            //        //___starmap.focusPlanet = null;
-            //        //___starmap.cursorFunctionIcon1.gameObject.SetActive(false);
-            //    }
-            //}
-            
-        }
+// I think these dont need GSPlanet's, can be done with regular planet. I think the reason I couldn't get it to work before was because I was reading scale from a UIStarmapPlanet.scale not UIStarmapPlanet.planet.scale
         [HarmonyPrefix, HarmonyPatch(typeof(UIStarmap), "UpdateCursorView")]
         public static bool UpdateCursorView(ref UIStarmapPlanet ___focusPlanet, ref UIStarmapPlanet ___mouseHoverPlanet)
         {
 
-            if (___mouseHoverPlanet != null) // && ___mouseHoverPlanet.id > 0)
+            if (___mouseHoverPlanet != null)
             {
                 PlanetData planet = ___mouseHoverPlanet.planet;
                 int id = planet.id;
@@ -38,8 +23,6 @@ namespace GalacticScale
                     }
                 }
             }
-            //if (___focusPlanet != null &&___focusPlanet.scale < 1) { ___focusPlanet = null; }
-            //if (___mouseHoverPlanet != null && ___mouseHoverPlanet.id > 0 && GS2.GetGSPlanet(___mouseHoverPlanet).scale < 1) ___mouseHoverPlanet = null; 
             return true;
         }
         [HarmonyPrefix, HarmonyPatch(typeof(UIStarmap), "OnPlanetClick")]
@@ -54,10 +37,7 @@ namespace GalacticScale
                         return false;
                     }
                 }
-       
-            //if (___focusPlanet != null &&___focusPlanet.scale < 1) { ___focusPlanet = null; }
-            //if (___mouseHoverPlanet != null && ___mouseHoverPlanet.id > 0 && GS2.GetGSPlanet(___mouseHoverPlanet).scale < 1) ___mouseHoverPlanet = null; 
-            return true;
+           return true;
         }
 
     }
