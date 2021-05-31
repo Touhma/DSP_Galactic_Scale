@@ -238,7 +238,7 @@ namespace GalacticScale.Generators
 
 
             //Utils.ParsePlanetSize()
-            GSPlanet g = new GSPlanet(name, themeName, radius, thisOrbitDistance, (random.NextFloat() + random.NextFloat()), 0, 100 * thisOrbitDistance * thisOrbitDistance, random.Next(359), random.NextFloat() * 20, 10 * thisOrbitDistance, random.Next(359), -1);
+            GSPlanet g = new GSPlanet(name, themeName, Utils.ParsePlanetSize(radius), thisOrbitDistance, (random.NextFloat() + random.NextFloat()), 0, 100 * thisOrbitDistance * thisOrbitDistance, random.Next(359), random.NextFloat() * 20, 10 * thisOrbitDistance, random.Next(359), -1);
             return g;
         }
 

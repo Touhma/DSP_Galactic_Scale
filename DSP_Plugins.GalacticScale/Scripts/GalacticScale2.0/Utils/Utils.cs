@@ -99,9 +99,9 @@ namespace GalacticScale
         {
             return (!(a > b)) ? (b - a) : (a - b);
         }
-        public static float ParsePlanetSize(float radius)
+        public static int ParsePlanetSize(float radius)
         {
-            if (radius < 8f) return 5f;
+            if (radius < 8f) return 5;
             return Mathf.RoundToInt(Mathf.Clamp(radius, 10, 510) / 10) * 10;
         }
         public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
