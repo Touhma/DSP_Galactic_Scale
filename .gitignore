@@ -3,12 +3,14 @@
 !galacticbundle
 !/**/
 !*.cs
+!*.md
 !*Assembly*
 !*.csproj
 !GalacticScale.sln
 
 !.gitignore
 !README.md
+
 .NETFramework,Version=v4.8.AssemblyAttributes.cs
 
 !*/**/Release/**

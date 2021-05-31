@@ -24,7 +24,7 @@ namespace GalacticScale
                 return Stars[0].Planets[0];
             }
         }
-        
+        public static string BirthPlanetName { get => instance.birthPlanetName; set => instance.birthPlanetName = value; }
         public static int birthStarId = -1; // this is a vanilla id, not a GS Index!
         public static int birthPlanetId = -1;// this is a vanilla id, not a GS Index!
         public string birthPlanetName = null;
