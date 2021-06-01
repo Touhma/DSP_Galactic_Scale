@@ -19,7 +19,11 @@ namespace GalacticScale
         public static GSPlanet BirthPlanet { get {
                 GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
                 GSPlanet p = GS2.GetGSPlanet(birthPlanetId);
-                if (p != null) return p;
+                if (p != null)
+                {
+                    GS2.Log("Found birth planet. " + p.Name);
+                    return p;
+                }
                 GS2.Error("Could Not Get Birth Planet From ID. Using first Planet.");
                 return Stars[0].Planets[0];
             }

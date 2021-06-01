@@ -17,11 +17,11 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.ball";
 
-        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 512, 1);
+        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 2048, 1);
 
         public GSOptions Options => options;
         private GSOptions options = new GSOptions();
-        private List<GSStar> stars = new List<GSStar>();
+        //private List<GSStar> stars = new List<GSStar>();
         public void Init()
         {
             //List<string> genList = new List<string>();
@@ -34,11 +34,12 @@ namespace GalacticScale.Generators
             //options.Add(new GSOption("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
             //OnImportPositionsClick(null);
         }
-       
+
         public void Generate(int starCount)
         {
+            starCount = 2048;
             GS2.Random random = new GS2.Random(GSSettings.Seed);
-            List<GSPlanet> p = new List<GSPlanet>();
+            //List<GSPlanet> p = new List<GSPlanet>();
             //for (var j = 0; j < 20; j++)
             //{
             //GSTheme modified = new GSTheme("modified" + j, "modified" + j, "RedStone");
@@ -52,20 +53,20 @@ namespace GalacticScale.Generators
             GSTheme lmodified = new GSTheme("modifiedl", "modifiedl", "RedStone");
             //lmodified.Algo = 5;
             //lmodified.TerrainSettings.brightnessFix = false;
-            //modified.TerrainSettings.heightMulti = (j*modifier)-(5*modifier);
+            //modified.TerrainSettings.heightMulti = (j * modifier) - (5 * modifier);
             //modified.TerrainSettings.baseHeight = (j * modifier * -100);
-            lmodified.TerrainSettings.Algorithm = "GSTA6";
-            lmodified.VeinSettings.Algorithm = "GS2";
-            lmodified.CustomGeneration = true;
+            //lmodified.TerrainSettings.Algorithm = "GSTA6";
+            //lmodified.VeinSettings.Algorithm = "GS2";
+            //lmodified.CustomGeneration = true;
             lmodified.Process();
-            GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
+            //GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
             for (var i = 0; i < starCount; i++)
             {
 
                 GSStar s = StarDefaults.Random();
                 s.Name = "Star-" + i;
-                //if (i == 0)
-                //{ 
+                if (i < 10)
+                {
                     s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, -1, 1, -1, -1, -1, 1f, null));
                     s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, -1, 10, -1, -1, -1, 1f, null));
                     s.Planets.Add(new GSPlanet("redstone3", "modifiedl", 50, 0.5f, -1, -1, -1, 20, -1, -1, -1, 1f, null));
@@ -79,16 +80,17 @@ namespace GalacticScale.Generators
                     //for (var j = 0; j < 20; j++)
                     //{
                     //    s.Planets.Add(new GSPlanet("gs2["+ (10 + (j * 10)) + "-" + ( (j * modifier) - (5*modifier)    ) + "]", "modified" + j, 10+(j*10), 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));             
-                    //}
+                }
                 //}
-                s.position = random.PointOnSphere(10);
+                s.position = random.PointOnSphere(30);
                 GSSettings.Stars.Add(s);
-            //GS2.EndGame();
+                //GS2.EndGame();
+                //GS2.LogJson(GSSettings.Stars);
+            }
         }
-    }
         public void Import(GSGenPreferences preferences)
         {
-            
+
         }
 
         public GSGenPreferences Export()

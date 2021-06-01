@@ -195,6 +195,16 @@ namespace GalacticScale.Generators
         {
             GS2.Log("Creating moon. Badly. Heat = " + heat + " name = " + name + " index = " + index + "/" + orbitCount);
             string theme = "Barren";
+            List<string> themeNames = new List<string>();
+            switch (heat)
+            {
+                case "Hot": themeNames = GSSettings.ThemeLibrary.Hot; break;
+                case "Warm": themeNames = GSSettings.ThemeLibrary.Warm; break;
+                case "Temperate": themeNames = GSSettings.ThemeLibrary.Temperate; break;
+                case "Cold": themeNames = GSSettings.ThemeLibrary.Cold; break;
+                default: themeNames = GSSettings.ThemeLibrary.Frozen; break;
+            }
+            theme = themeNames[random.Range(0, themeNames.Count - 1)];
             int radius = Utils.ParsePlanetSize(random.Range(30, 150));
             float previousOrbitRadius = (host.MoonCount > 0)? host.Moons[host.Moons.Count - 1].OrbitRadius:0.05f;
             float orbitRadius = previousOrbitRadius + (host.Radius * host.scale) / 40000.0f + random.NextFloat()/10;
@@ -250,7 +260,7 @@ namespace GalacticScale.Generators
                 //GS2.Log("Hot");
                 heat = "Hot";
                 themeNames = GSSettings.ThemeLibrary.Hot;
-                chanceTiny = 0.8f;
+                chanceTiny = 0.5f;
                 chanceGas = 0.1f;
                 chanceHuge = 0.1f;
             }
@@ -278,7 +288,7 @@ namespace GalacticScale.Generators
                 heat = "Cold";
                 themeNames = GSSettings.ThemeLibrary.Cold;
                 chanceTiny = 0.2f;
-                chanceGas = 0.8f;
+                chanceGas = 0.3f;
                 chanceHuge = 0.3f;
             }
             else
@@ -287,7 +297,7 @@ namespace GalacticScale.Generators
                 heat = "Frozen";
                 themeNames = GSSettings.ThemeLibrary.Frozen;
                 chanceTiny = 0.6f;
-                chanceGas = 0.3f;
+                chanceGas = 0.1f;
                 chanceHuge = 0.3f;
             }
             //GS2.Log("ChanceGas:" + chanceGas + " ChanceTiny:" + chanceTiny + " ChanceHuge:" + chanceHuge);

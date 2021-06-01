@@ -104,6 +104,7 @@ namespace GalacticScale
                         GSPlanet planet = bodies[j];
                         if (ThemeLibrary[planet.Theme].PlanetType == EPlanetType.Ocean)
                         {
+                            GS2.Log("Found a birth planet: "+planet.Name);
                             GSSettings.birthPlanetId =galaxy.birthPlanetId = planet.planetData.id;
                             GSSettings.birthStarId =galaxy.birthStarId = planet.planetData.star.id;
                             i = j = 9001;
@@ -123,7 +124,7 @@ namespace GalacticScale
         }
         public static void InitializeAstroPoses()
         {
-            var gSize = galaxy.starCount > 64 ? galaxy.starCount * 4 * 100 : 25600;
+            var gSize = galaxy.starCount > 64 ? galaxy.starCount * 40 * 100 : 25600;
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.starCount; i++) galaxy.stars[i] = CreateStar(i);
