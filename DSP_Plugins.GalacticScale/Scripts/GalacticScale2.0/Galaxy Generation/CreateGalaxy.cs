@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
@@ -8,60 +9,70 @@ namespace GalacticScale
         public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
             Log("Start");
-            gameDesc = desc;
-
-            Log("Generating Galaxy");
-            Failed = false;
-            if (!GSSettings.Instance.imported)
+            try
             {
-                GSSettings.Reset(gameDesc.galaxySeed);
-                Log("Seed From gameDesc = " + GSSettings.Seed);
-                gsPlanets.Clear();
-                Log("Loading Data from Generator : " + generator.Name);
-                generator.Generate(gameDesc.starCount);
-                Log("Final Seed = " + GSSettings.Seed);
-                Log("End");
-            }
-            else Log("Settings Loaded From Save File");
+                gameDesc = desc;
+                throw new Exception("Test");
+                Log("Generating Galaxy");
+                Failed = false;
+                if (!GSSettings.Instance.imported)
+                {
+                    GSSettings.Reset(gameDesc.galaxySeed);
+                    Log("Seed From gameDesc = " + GSSettings.Seed);
+                    gsPlanets.Clear();
+                    Log("Loading Data from Generator : " + generator.Name);
+                    generator.Generate(gameDesc.starCount);
+                    Log("Final Seed = " + GSSettings.Seed);
+                    Log("End");
+                }
+                else Log("Settings Loaded From Save File");
 
-            Log("Galaxy Generated");
-            gameDesc.starCount = GSSettings.starCount;
-            Log("Processing ThemeLibrary");
-            if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
-            else ThemeLibrary = GSSettings.ThemeLibrary;
-            Log("Generating TempPoses");
-            int tempPoses = StarPositions.GenerateTempPoses(
-                random.Next(),
-                GSSettings.starCount,
-                GSSettings.GalaxyParams.iterations,
-                GSSettings.GalaxyParams.minDistance,
-                GSSettings.GalaxyParams.minStepLength,
-                GSSettings.GalaxyParams.maxStepLength,
-                GSSettings.GalaxyParams.flatten
-                );
-            Log("Creating new GalaxyData");
-            galaxy = new GalaxyData();
-            galaxy.seed = GSSettings.Seed;
-            galaxy.starCount = GSSettings.starCount;
-            galaxy.stars = new StarData[GSSettings.starCount];
-            if (GSSettings.starCount <= 0) {
-                Log("StarCount <= 0, returning galaxy");
+                Log("Galaxy Generated");
+                gameDesc.starCount = GSSettings.starCount;
+                Log("Processing ThemeLibrary");
+                if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
+                else ThemeLibrary = GSSettings.ThemeLibrary;
+                Log("Generating TempPoses");
+                int tempPoses = StarPositions.GenerateTempPoses(
+                    random.Next(),
+                    GSSettings.starCount,
+                    GSSettings.GalaxyParams.iterations,
+                    GSSettings.GalaxyParams.minDistance,
+                    GSSettings.GalaxyParams.minStepLength,
+                    GSSettings.GalaxyParams.maxStepLength,
+                    GSSettings.GalaxyParams.flatten
+                    );
+                Log("Creating new GalaxyData");
+                galaxy = new GalaxyData();
+                galaxy.seed = GSSettings.Seed;
+                galaxy.starCount = GSSettings.starCount;
+                galaxy.stars = new StarData[GSSettings.starCount];
+                if (GSSettings.starCount <= 0)
+                {
+                    Log("StarCount <= 0, returning galaxy");
+                    return galaxy;
+                }
+                Log("Initializing AstroPoses");
+                InitializeAstroPoses();
+                Log("AstroPoses Initialized");
+                if (createPlanets)
+                {
+                    Log("Setting up Birth Planet");
+                    SetupBirthPlanet();
+                    Log("Generating Veins");
+                    GenerateVeins();
+                }
+                Log("Creating Galaxy StarGraph");
+                UniverseGen.CreateGalaxyStarGraph(galaxy);
+                Log("End of galaxy generation");
                 return galaxy;
-            }
-            Log("Initializing AstroPoses");
-            InitializeAstroPoses();
-            Log("AstroPoses Initialized");
-            if (createPlanets)
+            } catch (Exception e)
             {
-                Log("Setting up Birth Planet");
-                SetupBirthPlanet();
-                Log("Generating Veins");
-                GenerateVeins();
+                GS2.DumpException(e);
+                UIMessageBox.Show("Error", "There has been a problem creating the galaxy. \nPlease let the Galactic Scale team know in our discord server. An error log has been generated in the plugin/ErrorLog Directory", "Return", 0);
+                UIRoot.instance.OnGameLoadFailed();
+                return null;
             }
-            Log("Creating Galaxy StarGraph");
-            UniverseGen.CreateGalaxyStarGraph(galaxy);
-            Log("End of galaxy generation");
-            return galaxy;
         }
         public static void SetupBirthPlanet() {
             Log("Start");

@@ -9,6 +9,7 @@ namespace GalacticScale
         public static void LoadPlugins()
         {
             Log("Start");
+            if (!Directory.Exists(Path.Combine(DataDir, "Generators"))) Directory.CreateDirectory(Path.Combine(DataDir, "Generators"));
             foreach (string filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
             {
                 Log(filePath);

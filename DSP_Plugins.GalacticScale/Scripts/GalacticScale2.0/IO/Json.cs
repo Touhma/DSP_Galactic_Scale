@@ -1,4 +1,6 @@
-﻿using GSFullSerializer;
+﻿using BepInEx;
+using GSFullSerializer;
+using System;
 using System.IO;
 
 namespace GalacticScale
@@ -39,6 +41,35 @@ namespace GalacticScale
             Log("Dumping Object to " + path);
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize(obj, out fsData data).AssertSuccessWithoutWarnings();
+            string json = fsJsonPrinter.PrettyJson(data);
+            File.WriteAllText(path, json);
+            Log("End");
+        }
+        private class exceptionOutput
+        {
+            public string version;
+            public string generator;
+            public string exception;
+            public GSSettings settings;
+            public exceptionOutput(string e)
+            {
+                version = GS2.Version;
+                exception = e;
+                settings = GSSettings.Instance;
+                generator = GS2.generator?.Name;
+            }
+        }
+        public static void DumpException(Exception e)
+        {
+            string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            path = Path.Combine(path, DateTime.Now.ToString("yyMMddHHmmss"));
+            path += ".errorlog.json";
+            GS2.Log(path);
+            Log("Logging Error to " + path);
+            exceptionOutput eo = new exceptionOutput(e.ToString());
+            fsSerializer serializer = new fsSerializer();
+            serializer.TrySerialize(eo, out fsData data).AssertSuccessWithoutWarnings();
             string json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
             Log("End");

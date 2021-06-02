@@ -52,7 +52,7 @@ namespace GalacticScale
 
         public static void Init()
         {
-           
+            if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             LoadPreferences(true);
             Log("Start"+debugOn.ToString());
             List<GSTheme> themes = new List<GSTheme>();

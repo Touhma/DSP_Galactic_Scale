@@ -42,6 +42,7 @@ namespace GalacticScale
             serializer.TrySerialize(preferences, out fsData data);
             Log("Serialized");
             string json = fsJsonPrinter.PrettyJson(data);
+            if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
             Log("End");
         }
@@ -49,14 +50,13 @@ namespace GalacticScale
         {
             Log("Start");
             string path = Path.Combine(DataDir, "Preferences.json");
-            if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             if (!CheckJsonFileExists(path)) return;
             Log("Loading Preferences from " + path);
             fsSerializer serializer = new fsSerializer();
             string json = File.ReadAllText(path);
             GSPreferences preferences = new GSPreferences();
             fsData data2 = fsJsonParser.Parse(json);
-            serializer.TryDeserialize<GSPreferences>(data2, ref preferences);
+            serializer.TryDeserialize(data2, ref preferences);
             if (!debug) ParsePreferences(preferences);
             else
             {

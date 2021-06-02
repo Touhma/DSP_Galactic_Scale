@@ -19,7 +19,7 @@ namespace GalacticScale
             SerializeMember(serialized, null, "GalaxyParams", GSSettings.GalaxyParams);
             SerializeMember(serialized, null, "Stars", GSSettings.Stars);
             SerializeMember(serialized, null, "ThemeLibrary", GSSettings.ThemeLibrary);
-            SerializeMember(serialized, null, "BirthPlanet", GSSettings.BirthPlanet.Name);
+            if (GSSettings.BirthPlanet != null) SerializeMember(serialized, null, "BirthPlanet", GSSettings.BirthPlanet.Name);
             GS2.Log("End");
             return fsResult.Success;
         }
