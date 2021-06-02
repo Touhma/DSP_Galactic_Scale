@@ -159,7 +159,7 @@ namespace GalacticScale.Generators
             for (var i = 1; i < starCount; i++)
             {
                 GSStar star = GSSettings.Stars[i];
-                int bodyCount = random.Next(1, preferences.GetInt("MaxPlanetCount", 10));
+                int bodyCount = random.Next(1, preferences.GetInt("maxPlanetCount", 10));
                 int planetCount = 1 + random.Next(Mathf.RoundToInt(bodyCount / 3), bodyCount - 1);
                 int moonCount = bodyCount - planetCount;
                 GS2.Log("Star " + star.Name + " planet Count = " + planetCount + " mooncount = " + moonCount);
@@ -310,15 +310,12 @@ namespace GalacticScale.Generators
             if (random.NextFloat() < chanceTiny) tiny = true;
             if (random.NextFloat() < chanceHuge) huge = true;
             if (random.NextFloat() < chanceGas) gas = true;
-            //GS2.Log("GAS:" + gas);
-            //GS2.Log("Tiny:" + tiny);
-            //GS2.Log("Huge:" + huge);
             if (gas)
             {
                 scale = 10f;
                 if (!tiny && !huge) radius = random.Range(100, 200);
                 else if (tiny && !huge) radius = random.Range(60, 200);
-                else if (huge && !tiny) radius = random.Range(200, 1000);
+                else if (huge && !tiny) radius = random.Range(200, 510);
                 else radius = random.Range(60, 200);
                 GS2.Log("Gas. Radius " + radius);
                 if (orbitIndex < hotOrbitMax)

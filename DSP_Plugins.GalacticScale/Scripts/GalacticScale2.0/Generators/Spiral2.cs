@@ -26,6 +26,7 @@ namespace GalacticScale.Generators
             config.DisableStarCountSlider = false;
             config.MaxStarCount = 1048;
             config.MinStarCount = 1;
+            config.DefaultStarCount = 1;
             //GSTheme beach = new GSTheme("OceanWorld");
             //beach.name = "Beach";
             ////beach.oceanTint = UnityEngine.Color.green;
