@@ -204,7 +204,7 @@ namespace GalacticScale
             GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log", false, GS2.DebugLogOptionCallback, GS2.DebugLogOptionPostfix));
             GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue", false, GS2.SkipPrologueOptionCallback, GS2.SkipPrologueOptionPostfix));
             GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials", false, GS2.NoTutorialsOptionCallback, GS2.NoTutorialsOptionPostfix));
-            GS2.UnlockTechOption = options.Add(GSUI.Button("Unlock All Tech", "By Windows10CE", GS2.UnlockTechOptionCallback, null));
+            GS2.UnlockTechOption = options.Add(GSUI.Button("Unlock All Tech", "Execute", GS2.UnlockTechOptionCallback, null));
         }
         private static void CreateOwnOptionsPostFix()
         {

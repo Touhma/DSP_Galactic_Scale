@@ -64,6 +64,8 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnGameLoader));
             Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuideEntry));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmap));
+            Harmony.CreateAndPatchAll(typeof(PatchPlayerFootsteps));
+            Harmony.CreateAndPatchAll(typeof(PatchPlayerMove_Fly));
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

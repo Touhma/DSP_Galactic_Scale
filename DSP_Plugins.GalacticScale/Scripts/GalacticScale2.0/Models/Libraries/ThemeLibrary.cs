@@ -56,12 +56,41 @@ namespace GalacticScale
             }
             return this[name];
         }
+        public GSTheme QueryRandom()
+        {
+            return this["Mediterranean"];
+
+        }
+
+        public List<string> Query(EThemeType type, EThemeHeat heat, int radius = -1, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            List<GSTheme> list = new List<GSTheme>();
+            List<EPlanetType> types = new List<EPlanetType>();
+            float maxHeat = 5;
+            float minHeat = -1;
+            float maxRadius = 5;
+            float minRadius = -1;
+            var q = from theme in this
+                    where types.Contains(theme.Value.PlanetType)
+                    where theme.Value.Temperature > maxHeat
+                    where theme.Value.Temperature < minHeat
+                    where theme.Value.MaxRadius > maxRadius
+                    where theme.Value.MinRadius < minRadius
+                    select theme.Value.Name;
+            return q.ToList();
+                    
+        }
         public List<string> Hot
         {
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Temperature >= 3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (
+                        kv.Value.Temperature >= 3 && 
+                        kv.Value.PlanetType != EPlanetType.Gas && 
+                        !kv.Value.Private
+                        ) 
+                        list.Add(kv.Key);
                 return list;
             }
         }

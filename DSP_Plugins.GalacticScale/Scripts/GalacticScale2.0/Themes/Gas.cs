@@ -7,6 +7,7 @@ namespace GalacticScale
         public static GSTheme Gas = new GSTheme()
         {
             Name = "GasGiant",
+            PlanetOnly = true,
             Base = true,
             DisplayName = "Gas Giant",
             PlanetType = EPlanetType.Gas,

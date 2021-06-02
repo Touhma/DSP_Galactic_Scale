@@ -151,6 +151,7 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Sol\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\PlanetRawDataExtension.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSFSSettingsConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AmbientSettings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\ThemeEnums.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSMaterialSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\VegeTypesDictionary.cs" />
@@ -205,6 +207,9 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\ComputeMaxReformCount.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\GetReformType.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\Export.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerFootsteps\PlayFootstepEffect.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerFootsteps\PlayFootstepSound.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Fly\GameTick.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\PatchOnPlayerMove_Sail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmap\OnCursorFunction3Click.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIResearchResultWindow\SetTechId.cs" />
@@ -298,7 +303,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Star Generation\CreateStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Star Generation\CreateStarPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\Debug-PatchOnUIVirtualStarMap.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\UIGalaxySelect.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\CreateStarCountText.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\PatchOnUIGalaxySelect.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SettingsUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\PatchOnOptionWindow.cs" />

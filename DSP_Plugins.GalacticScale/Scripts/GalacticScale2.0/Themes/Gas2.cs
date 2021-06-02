@@ -8,6 +8,7 @@ namespace GalacticScale
         {
             Name = "GasGiant2",
             Base = true,
+            PlanetOnly = true,
             DisplayName = "Gas Giant",
             PlanetType = EPlanetType.Gas,
             LDBThemeId = 3,

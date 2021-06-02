@@ -30,9 +30,12 @@ namespace GalacticScale
 		public string BaseName;
 		[NonSerialized]
 		public bool Private = false;
+		public bool MoonOnly = false;
+		public bool PlanetOnly = false;
 		[NonSerialized]
-		public int minRadius;
-		public int maxRadius;
+		public int MinRadius;
+		[NonSerialized]
+		public int MaxRadius;
 		public string MaterialPath = "Universe/Materials/Planets/Ocean 1/";
 		public float Temperature = 0.0f;
 		public EThemeDistribute Distribute = EThemeDistribute.Interstellar;

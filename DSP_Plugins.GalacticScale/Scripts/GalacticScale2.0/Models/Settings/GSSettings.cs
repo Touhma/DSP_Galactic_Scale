@@ -14,7 +14,7 @@ namespace GalacticScale
         public static int PlanetCount { get => instance.getPlanetCount(); }
         public static int Seed { get { if (instance != null) return instance.seed; return 0; } set => instance.seed = value; }
         public static List<GSStar> Stars { get => instance.stars; set => instance.stars = value; }
-        public static int starCount { get => Stars.Count; }
+        public static int StarCount { get => Stars.Count; }
         public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId]:null; }
         public static GSPlanet BirthPlanet { get {
                 GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
@@ -25,7 +25,8 @@ namespace GalacticScale
                     return p;
                 }
                 GS2.Error("Could Not Get Birth Planet From ID. Using first Planet.");
-                return Stars[0].Planets[0];
+                if (StarCount > 0 && PlanetCount > 0) return Stars[0].Planets[0];
+                return null;
             }
         }
         public static string BirthPlanetName { get => instance.birthPlanetName; set => instance.birthPlanetName = value; }

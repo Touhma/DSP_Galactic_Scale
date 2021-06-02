@@ -12,9 +12,9 @@ namespace GalacticScale
             try
             {
                 gameDesc = desc;
-                throw new Exception("Test");
                 Log("Generating Galaxy");
                 Failed = false;
+                PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported)
                 {
                     GSSettings.Reset(gameDesc.galaxySeed);
@@ -28,14 +28,14 @@ namespace GalacticScale
                 else Log("Settings Loaded From Save File");
 
                 Log("Galaxy Generated");
-                gameDesc.starCount = GSSettings.starCount;
+                gameDesc.starCount = GSSettings.StarCount;
                 Log("Processing ThemeLibrary");
                 if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
                 else ThemeLibrary = GSSettings.ThemeLibrary;
                 Log("Generating TempPoses");
                 int tempPoses = StarPositions.GenerateTempPoses(
                     random.Next(),
-                    GSSettings.starCount,
+                    GSSettings.StarCount,
                     GSSettings.GalaxyParams.iterations,
                     GSSettings.GalaxyParams.minDistance,
                     GSSettings.GalaxyParams.minStepLength,
@@ -45,9 +45,9 @@ namespace GalacticScale
                 Log("Creating new GalaxyData");
                 galaxy = new GalaxyData();
                 galaxy.seed = GSSettings.Seed;
-                galaxy.starCount = GSSettings.starCount;
-                galaxy.stars = new StarData[GSSettings.starCount];
-                if (GSSettings.starCount <= 0)
+                galaxy.starCount = GSSettings.StarCount;
+                galaxy.stars = new StarData[GSSettings.StarCount];
+                if (GSSettings.StarCount <= 0)
                 {
                     Log("StarCount <= 0, returning galaxy");
                     return galaxy;
@@ -68,6 +68,9 @@ namespace GalacticScale
                 return galaxy;
             } catch (Exception e)
             {
+                GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button").gameObject.SetActive(false);
+                GS2.Log("EXCEPT");
+                GS2.Log(e.ToString());
                 GS2.DumpException(e);
                 UIMessageBox.Show("Error", "There has been a problem creating the galaxy. \nPlease let the Galactic Scale team know in our discord server. An error log has been generated in the plugin/ErrorLog Directory", "Return", 0);
                 UIRoot.instance.OnGameLoadFailed();
@@ -106,7 +109,7 @@ namespace GalacticScale
             else
             {
                 Warn("Trying to find a birth planet via iteration");
-                for (int i = 0; i < GSSettings.starCount; i++)
+                for (int i = 0; i < GSSettings.StarCount; i++)
                 {
                     GSStar star = GSSettings.Stars[i];
                     List<GSPlanet> bodies = star.Bodies;
@@ -138,9 +141,9 @@ namespace GalacticScale
             var gSize = galaxy.starCount > 64 ? galaxy.starCount * 40 * 100 : 25600;
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
-            for (var i = 0; i < GSSettings.starCount; i++) galaxy.stars[i] = CreateStar(i);
+            for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i);
             Log("Creating Planets");
-            for (var i = 0; i < GSSettings.starCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
+            for (var i = 0; i < GSSettings.StarCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
             Log("Planets have been created");
             AstroPose[] astroPoses = galaxy.astroPoses;
             for (int index = 0; index < galaxy.astroPoses.Length; ++index)
@@ -148,7 +151,7 @@ namespace GalacticScale
                 astroPoses[index].uRot.w = 1f;
                 astroPoses[index].uRotNext.w = 1f;
             }
-            for (int index = 0; index < GSSettings.starCount; ++index)
+            for (int index = 0; index < GSSettings.StarCount; ++index)
             {
                 astroPoses[galaxy.stars[index].id * 100].uPos = astroPoses[galaxy.stars[index].id * 100].uPosNext = galaxy.stars[index].uPosition;
                 astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;

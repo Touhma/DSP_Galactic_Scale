@@ -270,7 +270,7 @@ namespace GalacticScale.Generators
                 heat = "Warm";
                 themeNames = GSSettings.ThemeLibrary.Warm;
                 chanceTiny = 0.3f;
-                chanceGas = 0.1f;
+                chanceGas = 0.05f;
                 chanceHuge = 0.25f;
             }
             else if (orbitIndex < temperateOrbitMax && orbitIndex > warmOrbitMax)
@@ -288,7 +288,7 @@ namespace GalacticScale.Generators
                 heat = "Cold";
                 themeNames = GSSettings.ThemeLibrary.Cold;
                 chanceTiny = 0.2f;
-                chanceGas = 0.3f;
+                chanceGas = 0.2f;
                 chanceHuge = 0.3f;
             }
             else
@@ -318,7 +318,7 @@ namespace GalacticScale.Generators
                 scale = 10f;
                 if (!tiny && !huge) radius = random.Range(100, 200);
                 else if (tiny && !huge) radius = random.Range(60, 200);
-                else if (huge && !tiny) radius = random.Range(200, 500);
+                else if (huge && !tiny) radius = random.Range(200, 1000);
                 else radius = random.Range(60, 200);
                 GS2.Log("Gas. Radius " + radius);
                 if (orbitIndex < hotOrbitMax)
@@ -418,8 +418,8 @@ namespace GalacticScale.Generators
             GSPlanet PlutoCharon = planets.Add(new GSPlanet(" ", "Center", 10, 39.48f, 17.16f, 238.9881f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f));
             PlutoCharon.scale = 0.0001f;
             PlutoCharon.Moons = new GSPlanets() {
-                new GSPlanet("Pluto", "AshenGelisol", 70, .03948f, 17.16f, 238.9881f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f),
-                new GSPlanet("Charon", "BarrenSatellite", 40, .03948f, 17.16f, 238.9881f, 10867200.0f, 180.03f, 122.53f, 1000f, 0f, 0.000873f)
+                new GSPlanet("Pluto", "AshenGelisol", 70, .015f, 17.16f, 238.9881f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f),
+                new GSPlanet("Charon", "BarrenSatellite", 40, .015f, 17.16f, 238.9881f, 10867200.0f, 180.03f, 122.53f, 1000f, 0f, 0.000873f)
             };
             //planets.Add(new GSPlanet("Obsidian", "Obsidian", 100, 0.72f, 3.39f, 182f, 26964f, 180, 177f, 1000, 0, 2.6f));
             //planets.Add(new GSPlanet("IceMalusol", "IceMalusol", 100, 0.72f, 3.39f, 182f, 26964f, 10, 177f, 1000, 0, 2.6f));

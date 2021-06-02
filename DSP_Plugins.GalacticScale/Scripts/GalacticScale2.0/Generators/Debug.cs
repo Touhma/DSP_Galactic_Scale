@@ -32,9 +32,9 @@ namespace GalacticScale.Generators
             options.Add(new GSUI("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
             options.Add(new GSUI("Output LDB Data", "Button", "Output", OnDumpLDBDataClick, () => { }));
             options.Add(new GSUI("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { })); 
-            options.Add(new GSUI("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
+            //options.Add(new GSUI("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
             options.Add(new GSUI("Export LocalPlanet Veinsettings", "Button", "Export", OnExportLocalPlanetClick, () => { }));
-            options.Add(GSUI.Button("Unlock All Tech", "Go", UnlockAll, null));
+            //options.Add(GSUI.Button("Unlock All Tech", "Go", UnlockAll, null));
             //OnImportPositionsClick(null);
         }
         public class starStuff
@@ -80,31 +80,31 @@ namespace GalacticScale.Generators
             return EStarType.WhiteDwarf;
         }
 
-        private void OnImportPositionsClick(object o)
-        {
-            stars.Clear();
-            string path = Path.Combine(GS2.DataDir, "undefined.json");
-            GS2.Log(path);
-            fsSerializer serializer = new fsSerializer();
-            string json = File.ReadAllText(path);
-            GS2.Log(json);
-            fsData data2 = fsJsonParser.Parse(json);
-            List<starStuff> ss = new List<starStuff>();
-            serializer.TryDeserialize<List<starStuff>>(data2, ref ss);
+        //private void OnImportPositionsClick(object o)
+        //{
+        //    stars.Clear();
+        //    string path = Path.Combine(GS2.DataDir, "undefined.json");
+        //    GS2.Log(path);
+        //    fsSerializer serializer = new fsSerializer();
+        //    string json = File.ReadAllText(path);
+        //    GS2.Log(json);
+        //    fsData data2 = fsJsonParser.Parse(json);
+        //    List<starStuff> ss = new List<starStuff>();
+        //    serializer.TryDeserialize<List<starStuff>>(data2, ref ss);
 
-            for (var i = 0; i < ss.Count; i++)
-            {
-                stars.Add(new GSStar(1, ss[i].Name,ESpectrType.G,EStarType.MainSeqStar,new GSPlanets()));
-                stars[stars.Count - 1].position = new VectorLF3(ss[i].x, ss[i].y, ss[i].z);
-                stars[stars.Count - 1].mass = ss[i].mass;
-                stars[stars.Count - 1].radius = (ss[i].radius);
-                stars[stars.Count - 1].Type = getStarType(ss[i]);
-                stars[stars.Count - 1].Spectr = getSpectrType(ss[i]);
-                stars[stars.Count - 1].luminosity = ss[i].luminance;
-                stars[stars.Count - 1].temperature = ss[i].temp;
-            }
+        //    for (var i = 0; i < ss.Count; i++)
+        //    {
+        //        stars.Add(new GSStar(1, ss[i].Name,ESpectrType.G,EStarType.MainSeqStar,new GSPlanets()));
+        //        stars[stars.Count - 1].position = new VectorLF3(ss[i].x, ss[i].y, ss[i].z);
+        //        stars[stars.Count - 1].mass = ss[i].mass;
+        //        stars[stars.Count - 1].radius = (ss[i].radius);
+        //        stars[stars.Count - 1].Type = getStarType(ss[i]);
+        //        stars[stars.Count - 1].Spectr = getSpectrType(ss[i]);
+        //        stars[stars.Count - 1].luminosity = ss[i].luminance;
+        //        stars[stars.Count - 1].temperature = ss[i].temp;
+        //    }
 
-        }
+        //}
         private void OnDumpLDBDataClick(object o)
         {
             //string outputDir = Path.Combine(GS2.DataDir, "output");
@@ -217,41 +217,41 @@ namespace GalacticScale.Generators
         {
             return new GSGenPreferences();
         }
-        public void UnlockAll(object o)
-        {
-            foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
-            {
-                if (!GameMain.history.TechUnlocked(tech.ID))
-                    UnlockTechRecursive(tech.ID, GameMain.history);
-            }
-        }
-        private static void UnlockTechRecursive(int techId, GameHistoryData history)
-        {
-            TechState state = history.TechState(techId);
-            TechProto proto = LDB.techs.Select(techId);
+        //public void UnlockAll(object o)
+        //{
+        //    foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
+        //    {
+        //        if (!GameMain.history.TechUnlocked(tech.ID))
+        //            UnlockTechRecursive(tech.ID, GameMain.history);
+        //    }
+        //}
+        //private static void UnlockTechRecursive(int techId, GameHistoryData history)
+        //{
+        //    TechState state = history.TechState(techId);
+        //    TechProto proto = LDB.techs.Select(techId);
 
-            foreach (var techReq in proto.PreTechs)
-            {
-                if (!history.TechState(techReq).unlocked)
-                    UnlockTechRecursive(techReq, history);
-            }
-            foreach (var techReq in proto.PreTechsImplicit)
-            {
-                if (!history.TechState(techReq).unlocked)
-                    UnlockTechRecursive(techReq, history);
-            }
-            foreach (var itemReq in proto.itemArray)
-            {
-                if (itemReq.preTech != null && !history.TechState(itemReq.preTech.ID).unlocked)
-                    UnlockTechRecursive(itemReq.preTech.ID, history);
-            }
+        //    foreach (var techReq in proto.PreTechs)
+        //    {
+        //        if (!history.TechState(techReq).unlocked)
+        //            UnlockTechRecursive(techReq, history);
+        //    }
+        //    foreach (var techReq in proto.PreTechsImplicit)
+        //    {
+        //        if (!history.TechState(techReq).unlocked)
+        //            UnlockTechRecursive(techReq, history);
+        //    }
+        //    foreach (var itemReq in proto.itemArray)
+        //    {
+        //        if (itemReq.preTech != null && !history.TechState(itemReq.preTech.ID).unlocked)
+        //            UnlockTechRecursive(itemReq.preTech.ID, history);
+        //    }
 
-            int current = state.curLevel;
-            for (; current < state.maxLevel; current++)
-                for (int j = 0; j < proto.UnlockFunctions.Length; j++)
-                    history.UnlockTechFunction(proto.UnlockFunctions[j], proto.UnlockValues[j], current);
+        //    int current = state.curLevel;
+        //    for (; current < state.maxLevel; current++)
+        //        for (int j = 0; j < proto.UnlockFunctions.Length; j++)
+        //            history.UnlockTechFunction(proto.UnlockFunctions[j], proto.UnlockValues[j], current);
 
-            history.UnlockTech(techId);
-        }
+        //    history.UnlockTech(techId);
+        //}
     }
 }

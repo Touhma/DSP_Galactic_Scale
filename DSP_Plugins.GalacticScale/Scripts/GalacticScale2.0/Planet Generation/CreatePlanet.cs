@@ -24,7 +24,7 @@ namespace GalacticScale
             }
             else planet.orbitAround = 0;
             planet.number = index + 1;
-            planet.id = star.id * 1000 + index + 1;
+            planet.id = star.id * 100 + index + 1;
             gsPlanets.Add(planet.id, gsPlanet);
             //Log("Setting Roman");
             string roman = "";

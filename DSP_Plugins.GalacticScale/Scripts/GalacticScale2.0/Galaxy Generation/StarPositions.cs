@@ -45,10 +45,13 @@ namespace GalacticScale
             if (num3 < 1)
                 num3 = 1;
             int num4 = (int)(num1 * (double)(num3 - num2) + (double)num2);
+            int max = 256;
+            if (GS2.gameDesc.starCount > 1024) max = 1024;
             for (int index = 0; index < num4; ++index)
             {
                 int num5 = 0;
-                while (num5++ < 256)
+                
+                while (num5++ < max)
                 {
                     double num6 = random.NextDouble() * 2.0 - 1.0;
                     double num7 = (random.NextDouble() * 2.0 - 1.0) * flatten;
@@ -72,7 +75,10 @@ namespace GalacticScale
                 }
             }
             int num12 = 0;
-            while (num12++ < 256)
+            
+            
+
+            while (num12++ < max)
             {
                 for (int index = 0; index < tmp_drunk.Count; ++index)
                 {

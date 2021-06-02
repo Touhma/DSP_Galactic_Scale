@@ -39,17 +39,17 @@ namespace GalacticScale.Generators
             obsidian.Process();
             
             GS2.Log("About to Process redIce");
-            GSTheme redIce = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
-            redIce.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
-            redIce.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
-            redIce.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
-            redIce.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
-            redIce.AmbientSettings.CubeMap = "GS2";
-            redIce.Process();
+            GSTheme iceMalusol = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
+            iceMalusol.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
+            iceMalusol.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
+            iceMalusol.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
+            iceMalusol.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
+            iceMalusol.AmbientSettings.CubeMap = "GS2";
+            iceMalusol.Process();
 
-            GSTheme venus = new GSTheme("AcidGreenhouse", "Acid Greenhouse", "VolcanicAsh");
-            venus.atmosphereMaterial.Tint =new Color(0.5f, 0.4f, 0.0f, 0.8f);
-            venus.atmosphereMaterial.Params = new Dictionary<string, float>()
+            GSTheme acidGreenhouse = new GSTheme("AcidGreenhouse", "Acid Greenhouse", "VolcanicAsh");
+            acidGreenhouse.atmosphereMaterial.Tint =new Color(0.5f, 0.4f, 0.0f, 0.8f);
+            acidGreenhouse.atmosphereMaterial.Params = new Dictionary<string, float>()
             {
                 ["_AtmoDensity"] = 1,
                 ["_Cutoff"] = 0.1f,
@@ -66,34 +66,34 @@ namespace GalacticScale.Generators
                 ["_SunColorUse"] = 0.2f,
                 ["_SunRiseScatterPower"] = 160f
             };
-            venus.oceanMaterial.Tint = new Color(0.7f, 0.7f, 0.07f);
-            venus.terrainMaterial.Tint =new Color(0.901f, 0.686f, 0.098f, 1);
-            venus.thumbMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
-            venus.minimapMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
-            venus.terrainMaterial.CopyFrom = "AshenGelisol.terrainMat";
-            venus.terrainMaterial.Colors = new Dictionary<string, Color>()
+            acidGreenhouse.oceanMaterial.Tint = new Color(0.7f, 0.7f, 0.07f);
+            acidGreenhouse.terrainMaterial.Tint =new Color(0.901f, 0.686f, 0.098f, 1);
+            acidGreenhouse.thumbMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
+            acidGreenhouse.minimapMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
+            acidGreenhouse.terrainMaterial.CopyFrom = "AshenGelisol.terrainMat";
+            acidGreenhouse.terrainMaterial.Colors = new Dictionary<string, Color>()
             {
                 ["_AmbientColor0"] = new Color(0.9f, 0.9f, 0.1f, 1f),
                 ["_AmbientColor0"] = new Color(0.8f, 0.8f, 0.7f, 1f),
                 ["_AmbientColor0"] = new Color(0.5f, 0.5f, 0.0f, 1f),
                 ["_Color"] = new Color(0.65f, 0.5f, 0.15f, 1f),
             };
-            venus.terrainMaterial.Params = new Dictionary<string, float>()
+            acidGreenhouse.terrainMaterial.Params = new Dictionary<string, float>()
             {
                 ["_AmbientInc"] = 0.5f
             };
-            venus.AmbientSettings.DustStrength1 = 10;
-            venus.AmbientSettings.DustStrength2 = 10;
-            venus.AmbientSettings.DustStrength3 = 10;
-            venus.AmbientSettings.DustColor1 = new Color(0.38f,0.38f, 0f, 1f);
-            venus.AmbientSettings.DustColor2 = new Color(0.95f, 0.75f, 0.25f, 1f);
-            venus.AmbientSettings.DustColor3 = new Color(0.9f, 0.7f, 0.2f, 1f);
-            venus.AmbientSettings.LutContribution = 0.8f;
-            venus.CustomGeneration = true;
-            venus.TerrainSettings.Algorithm = "GSTA3";
-            venus.TerrainSettings.LandModifier = 1;
-            venus.TerrainSettings.HeightMulti = 2;
-            venus.VeinSettings.VeinTypes = new List<GSVeinType>()
+            acidGreenhouse.AmbientSettings.DustStrength1 = 10;
+            acidGreenhouse.AmbientSettings.DustStrength2 = 10;
+            acidGreenhouse.AmbientSettings.DustStrength3 = 10;
+            acidGreenhouse.AmbientSettings.DustColor1 = new Color(0.38f,0.38f, 0f, 1f);
+            acidGreenhouse.AmbientSettings.DustColor2 = new Color(0.95f, 0.75f, 0.25f, 1f);
+            acidGreenhouse.AmbientSettings.DustColor3 = new Color(0.9f, 0.7f, 0.2f, 1f);
+            acidGreenhouse.AmbientSettings.LutContribution = 0.8f;
+            acidGreenhouse.CustomGeneration = true;
+            acidGreenhouse.TerrainSettings.Algorithm = "GSTA3";
+            acidGreenhouse.TerrainSettings.LandModifier = 1;
+            acidGreenhouse.TerrainSettings.HeightMulti = 2;
+            acidGreenhouse.VeinSettings.VeinTypes = new List<GSVeinType>()
                 {
                     GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false ),
                     GSVeinType.Generate(EVeinType.Stone, 1, 10, 0.5f, 1.5f, 5, 15, false ),
@@ -102,9 +102,9 @@ namespace GalacticScale.Generators
                     GSVeinType.Generate(EVeinType.Diamond, 1, 20, 0.5f, 1.5f, 5, 15, true ),
                     GSVeinType.Generate(EVeinType.Fractal, 1, 20, 0.5f, 1.5f, 5, 15, true ),
                 };
-            venus.VeinSettings.Algorithm = "GS2";
-            venus.CustomGeneration = true;
-            venus.Process();
+            acidGreenhouse.VeinSettings.Algorithm = "GS2";
+            acidGreenhouse.CustomGeneration = true;
+            acidGreenhouse.Process();
 
             GSTheme barrenSatellite = new GSTheme("BarrenSatellite", "Barren Satellite", "Barren");
             barrenSatellite.VegeSettings.Group1 = new List<string>() {
@@ -125,6 +125,7 @@ namespace GalacticScale.Generators
                 };
             barrenSatellite.VeinSettings.Algorithm = "GS2";
             barrenSatellite.CustomGeneration = true;
+            barrenSatellite.MoonOnly = true;
             barrenSatellite.Process();
 
             GSTheme dwarf = new GSTheme("DwarfPlanet", "Dwarf Planet", "Barren");
@@ -152,17 +153,20 @@ namespace GalacticScale.Generators
                 }
             };
             dwarf.Wind = 0f;
+            dwarf.PlanetOnly = true;
             dwarf.Process();
 
             GSTheme center = new GSTheme("Center", " ", "Barren");
             center.PlanetType = EPlanetType.Gas;
             center.atmosphereMaterial.Tint = Color.black;
             center.thumbMaterial.Tint = Color.black;
+            center.Private = true;
             center.Process();
 
             GSTheme hotGas = new GSTheme("Inferno", "Infernal Gas Giant", "GasGiant");
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
+            hotGas.PlanetOnly = true;
             hotGas.Process();
         }
     }
