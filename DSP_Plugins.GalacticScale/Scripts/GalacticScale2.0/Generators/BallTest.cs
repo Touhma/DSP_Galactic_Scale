@@ -82,7 +82,7 @@ namespace GalacticScale.Generators
                     //    s.Planets.Add(new GSPlanet("gs2["+ (10 + (j * 10)) + "-" + ( (j * modifier) - (5*modifier)    ) + "]", "modified" + j, 10+(j*10), 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));             
                 }
                 //}
-                //s.position = random.PointOnSphere(30);
+                s.position = random.PointOnSphere(30);
                 GSSettings.Stars.Add(s);
                 //GS2.EndGame();
                 //GS2.LogJson(GSSettings.Stars);
