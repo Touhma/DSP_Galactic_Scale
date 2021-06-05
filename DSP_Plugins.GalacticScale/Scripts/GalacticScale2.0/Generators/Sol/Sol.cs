@@ -208,10 +208,13 @@ namespace GalacticScale.Generators
         private float CalculateNextAvailableOrbit(GSPlanet planet, GSPlanet moon)
         {
             float randomvariance = random.Range(0.005f, 0.01f);
-            float planetsize = planet.Radius / 12000f;
-            float moonsize = moon.Radius / 12000f;
-            if (planet.Moons?.Count < 1) return planetsize + moonsize + randomvariance;
-            GSPlanet lastMoon = planet.Moons[planet.Moons.Count - 1];
+            float planetsize = planet.RadiusAU;
+            float moonsize = moon.RadiusAU;
+            if (planet.Moons?.Count < 1)
+            {
+                return planetsize + moonsize + randomvariance;
+            }
+                GSPlanet lastMoon = planet.Moons[planet.Moons.Count - 1];
             float lastOrbit = lastMoon.OrbitRadius + lastMoon.SystemRadius;
             float thisMoonSystemRadius = moon.SystemRadius;
             //GS2.Log("lastOrbit:" + lastOrbit + " thisMoonSystemRadius:" + thisMoonSystemRadius + " moonsize:" + moonsize + " random:" + randomvariance);
@@ -258,7 +261,8 @@ namespace GalacticScale.Generators
                 default: themeNames = GSSettings.ThemeLibrary.Frozen; break;
             }
             theme = themeNames[random.Range(0, themeNames.Count - 1)];
-            int radius = Utils.ParsePlanetSize(random.Range(30, 150));
+            int radius = Utils.ParsePlanetSize(random.Range(30, host.Radius - 10));
+            
             //float previousOrbitRadius = (host.MoonCount > 0)? host.Moons[host.Moons.Count - 1].OrbitRadius:0.05f;
             //float orbitRadius = previousOrbitRadius + (host.Radius * host.scale) / 40000.0f + random.NextFloat()/10;
             
@@ -422,7 +426,7 @@ namespace GalacticScale.Generators
                 themeName, 
                 Utils.ParsePlanetSize(radius), // Radius
                 -1, // Orbit Radius
-                (random.NextFloat() + random.NextFloat()), // Orbit Inclination
+                (random.NextFloat()*4 + random.NextFloat()*5), // Orbit Inclination
                 -1, // Orbit Period
                 random.Next(359), // Phase
                 random.NextFloat() * 20, // Obliquity
@@ -430,8 +434,19 @@ namespace GalacticScale.Generators
                 random.Next(359), // Rotational Phase
                  -1); // Luminosity
             g.OrbitRadius = CalculateNextAvailableOrbit(star, g);
-            float orbitalPeriod = CalculateOrbitPeriod(g.OrbitRadius);
-            if (g.OrbitRadius < 1f && random.NextFloat() < 0.5f) g.RotationPeriod = g.OrbitalPeriod;
+            g.OrbitalPeriod = CalculateOrbitPeriod(g.OrbitRadius);
+            if (random.NextDouble() < 0.02)
+            {
+                GS2.Warn("ClockWise Rotation for " + g.Name);
+                g.OrbitalPeriod = -1 * g.OrbitalPeriod; // Clockwise Rotation
+            }
+            if (g.OrbitRadius < 1f && random.NextFloat() < 0.5f)
+            {
+                GS2.Warn("Tidal Lock for " + g.Name);
+                g.RotationPeriod = g.OrbitalPeriod; // Tidal Lock
+            }
+            else if (g.OrbitRadius < 1.5f && random.NextFloat() < 0.2f) g.RotationPeriod = g.OrbitalPeriod / 2; // 1:2 Resonance
+            else if (g.OrbitRadius < 2f && random.NextFloat() < 0.1f) g.RotationPeriod = g.OrbitalPeriod / 4; // 1:4 Resonance
             if ((moonCount < 6 && gas && availMoons > 10))
             {
                 GS2.Log("Moon Calculator For Gas. Available Moons: " + availMoons);
@@ -451,8 +466,19 @@ namespace GalacticScale.Generators
                     g.Moons.Add(moon);
                 }
             }
+            if (random.NextDouble() < 0.05) // Crazy Obliquity
+            {
+                GS2.Warn("Crazy Obliquity for " + g.Name);
+                g.Obliquity = random.Range(20f, 90f);
+                GS2.Warn(g.Obliquity.ToString());
+            }
+            if (random.NextDouble() < 0.05) // Crazy Inclination
+            {
+                GS2.Warn("Crazy Obliquity for " + g.Name);
+                g.OrbitInclination = random.Range(20f, 90f);
+                GS2.Warn(g.OrbitInclination.ToString());
+            }
 
-            
             g.Luminosity = -1;
             g.Scale = scale;
             //GS2.LogJson(g);
@@ -463,7 +489,7 @@ namespace GalacticScale.Generators
         {
             GS2.Log("Start" + sol.bodyCount);
             InitThemes();
-            GSPlanet luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.015f, 5.145f,  3278f, 0, 6.68f, 3278f, 0, 1.36f);
+            GSPlanet luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f,  3278f, 0, 6.68f, 3278f, 0, 1.36f);
             ref GSPlanets planets = ref sol.Planets;
             planets.Add(new GSPlanet("Mercury", "Barren", 150, 0.39f, 7.005f,  10556.28f, 0, 0.034f, 7038f, 0, 9.0827f));
             GSPlanet oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f,  10556f, 355, 0.034f, 7038, 0, 9f));

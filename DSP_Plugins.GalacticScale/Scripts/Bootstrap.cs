@@ -76,22 +76,34 @@ namespace GalacticScale {
             Logger.LogMessage(data);
         }
         public static PlanetData TeleportPlanet = null;
+        public static StarData TeleportStar = null;
         public static bool TeleportEnabled = false;
-        private int c = 0;
         private void Update()
         {
-            if (TeleportPlanet == null || TeleportEnabled == false) return;
-            GameMain.data.ArriveStar(TeleportPlanet.star);
-            StartCoroutine(Teleport(TeleportPlanet));
-            if (GS2.ThemeLibrary.Count != c)
+            if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false) return;
+            if (TeleportPlanet != null)
             {
-                c = GS2.ThemeLibrary.Count;
+                GameMain.data.ArriveStar(TeleportPlanet.star);
+                StartCoroutine(Teleport(TeleportPlanet));
+            } else if (TeleportStar != null)
+            {
+                GameMain.data.ArriveStar(TeleportStar);
+                StartCoroutine(Teleport(TeleportStar));
             }
         }
         private IEnumerator Teleport(PlanetData planet)
         {
             yield return new WaitForEndOfFrame();
             GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * (planet.realRadius);
+            GameMain.data.mainPlayer.movementState = EMovementState.Sail;
+            TeleportEnabled = false;
+            GameMain.mainPlayer.transform.localScale = Vector3.one;
+        }
+        private IEnumerator Teleport(StarData star)
+        {
+            yield return new WaitForEndOfFrame();
+            GS2.Log("Teleporting to " + star.uPosition.ToString());
+            GameMain.mainPlayer.uPosition = star.uPosition + VectorLF3.unit_z * 1;
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;

@@ -59,6 +59,7 @@ namespace GalacticScale
             else planet.sunDistance = planet.orbitRadius;
             planet.radius = gsPlanet.Radius;
             planet.segment = 5;
+            
             //planetData.singularity |= gsPlanet.singularity.TidalLocked;
             //planetData.singularity |= gsPlanet.singularity.TidalLocked2;
             //planetData.singularity |= gsPlanet.singularity.TidalLocked4;
@@ -93,6 +94,9 @@ namespace GalacticScale
             if (gsPlanet.MoonCount > 0) CreateMoons(ref planet, gsPlanet);
             //Log("PLANET RADIUS "+planetData.radius);
             //Log("End|" + gsPlanet.Name);
+            if (planet.orbitalPeriod == planet.rotationPeriod) planet.singularity |= EPlanetSingularity.TidalLocked;
+            if (planet.obliquity > 75 || planet.obliquity < -75) planet.singularity |= EPlanetSingularity.LaySide;
+            if (planet.rotationPeriod < 0) planet.singularity |= EPlanetSingularity.ClockwiseRotate;
             return planet;
         }
 
