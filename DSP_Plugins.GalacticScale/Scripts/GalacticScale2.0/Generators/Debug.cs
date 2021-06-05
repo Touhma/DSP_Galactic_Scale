@@ -189,7 +189,7 @@ namespace GalacticScale.Generators
                 GS2.Log(a.Name);
             }
             GSPlanets p = new GSPlanets();
-            p.Add(new GSPlanet("Test", "OceanWorld" , 100, 2f, -1, -1, -1, 2f * 1, -1, -1, -1, 1f, null));
+            p.Add(new GSPlanet("Test", "OceanWorld" , 100, 2f, -1,  -1, 2f * 1, -1, -1, -1, 1f, null));
             GS2.Log("Wow, this worked. GalacticScale2");
             if (starCount > stars.Count) starCount = stars.Count;
             for (var i = 0; i < starCount; i++)

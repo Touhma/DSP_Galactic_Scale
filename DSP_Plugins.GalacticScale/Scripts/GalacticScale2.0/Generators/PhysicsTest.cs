@@ -39,7 +39,7 @@ namespace GalacticScale.Generators
         {
             GSPlanets p = new GSPlanets();
             for (var i = 1f;i < 50f; i++)
-            p.Add(new GSPlanet("Test", "OceanWorld" , 100, (float)i, -1, -1, -1, 0, -1, -1, -1, 1f, null));
+            p.Add(new GSPlanet("Test", "OceanWorld" , 100, (float)i, -1, -1, 0, -1, -1, -1, 1f, null));
 
             for (var i = 0; i < 100; i++)
             {

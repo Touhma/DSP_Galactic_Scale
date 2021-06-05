@@ -73,34 +73,34 @@ namespace GalacticScale
         {
             Name = name;
         }
-        public GSPlanet(string name,
-            string theme,
-            int radius,
-            float orbitRadius,
-            float orbitInclination,
-            float orbitLongitude,
-            float orbitalPeriod,
-            float orbitPhase,
-            float obliquity,
-            float rotationPeriod,
-            float rotationPhase,
-            float luminosity,
-            GSPlanets moons = null)
-        {
-            Name = name;
-            Theme = theme;
-            Radius = radius;
-            OrbitRadius = orbitRadius;
-            OrbitInclination = orbitInclination;
-            //OrbitLongitude = orbitLongitude;
-            OrbitalPeriod = orbitalPeriod;
-            OrbitPhase = orbitPhase;
-            Obliquity = obliquity;
-            RotationPeriod = rotationPeriod;
-            RotationPhase = rotationPhase;
-            Luminosity = luminosity;
-            Moons = (moons == null)?new GSPlanets():moons;
-        }
+        //public GSPlanet(string name,
+        //    string theme,
+        //    int radius,
+        //    float orbitRadius,
+        //    float orbitInclination,
+        //    float orbitLongitude,
+        //    float orbitalPeriod,
+        //    float orbitPhase,
+        //    float obliquity,
+        //    float rotationPeriod,
+        //    float rotationPhase,
+        //    float luminosity,
+        //    GSPlanets moons = null)
+        //{
+        //    Name = name;
+        //    Theme = theme;
+        //    Radius = radius;
+        //    OrbitRadius = orbitRadius;
+        //    OrbitInclination = orbitInclination;
+        //    //OrbitLongitude = orbitLongitude;
+        //    OrbitalPeriod = orbitalPeriod;
+        //    OrbitPhase = orbitPhase;
+        //    Obliquity = obliquity;
+        //    RotationPeriod = rotationPeriod;
+        //    RotationPhase = rotationPhase;
+        //    Luminosity = luminosity;
+        //    Moons = (moons == null)?new GSPlanets():moons;
+        //}
         public GSPlanet(string name,
     string theme,
     int radius,

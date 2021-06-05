@@ -67,11 +67,11 @@ namespace GalacticScale.Generators
                 s.Name = "Star-" + i;
                 if (i < 10)
                 {
-                    s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, -1, 1, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, -1, 10, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("redstone3", "modifiedl", 50, 0.5f, -1, -1, -1, 20, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("redstone4", "modifiedl", 50, 0.5f, -1, -1, -1, 30, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("redstone5", "modifiedl", 50, 0.5f, -1, -1, -1, 40, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1,  -1, 1, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1,  -1, 10, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone3", "modifiedl", 50, 0.5f, -1,  -1, 20, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone4", "modifiedl", 50, 0.5f, -1,  -1, 30, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone5", "modifiedl", 50, 0.5f, -1,  -1, 40, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("ashenGelisol", "AshenGelisol", 50, 0.5f, -1, -1, -1, 21, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("barren", "Barren", 50, 0.5f, -1, -1, -1, 31, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("lava", "Lava", 50, 0.5f, -1, -1, -1, 41, -1, -1, -1, 1f, null));

@@ -107,7 +107,7 @@ namespace GalacticScale.Generators
             //};
             for (var i=0;i < 8;i++)
             {
-                p.Add(new GSPlanet("Algo" + i, "Algo" + i, 100, 2f, -1, -1, -1, 2f * (float)i, -1, -1, -1, 1f, null));
+                p.Add(new GSPlanet("Algo" + i, "Algo" + i, 100, 2f, -1, -1, 2f * (float)i, -1, -1, -1, 1f, null));
             }
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.G, EStarType.MainSeqStar, p));
             for (var i = 1; i < starCount; i++)
