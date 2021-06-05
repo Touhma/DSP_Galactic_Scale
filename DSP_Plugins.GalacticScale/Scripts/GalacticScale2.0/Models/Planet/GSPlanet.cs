@@ -35,14 +35,15 @@ namespace GalacticScale
         public string Name { get => _name; set => _name = value; }
         [SerializeField]
         public string Theme { get => _theme == null ? InitTheme() : _theme; set => _theme = value; }
+        public GSTheme GSTheme { get => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme]; }
         [SerializeField]
         public int Radius { get => _radius < 0 ? InitRadius():_radius; set => _radius = value; }
         [SerializeField]
         public float OrbitRadius { get => _orbitRadius < 0 ?  InitOrbitRadius():_orbitRadius; set => _orbitRadius = value; }
         [SerializeField]
         public float OrbitInclination { get => _orbitInclination < 0 ? InitOrbitInclination():_orbitInclination  ; set => _orbitInclination = value; }
-        [SerializeField]
-        public float OrbitLongitude { get => _orbitLongitude < 0 ? InitOrbitLongitude():_orbitLongitude ; set => _orbitLongitude = value; }
+       // [SerializeField]
+       // public float OrbitLongitude { get => _orbitLongitude < 0 ? InitOrbitLongitude():_orbitLongitude ; set => _orbitLongitude = value; }
         [SerializeField]
         public float OrbitalPeriod { get => _orbitalPeriod < 0 ? InitOrbitalPeriod():_orbitalPeriod ; set => _orbitalPeriod = value; }
         [SerializeField]
@@ -55,7 +56,8 @@ namespace GalacticScale
         public float RotationPhase { get => _rotationPhase < 0 ? InitRotationPhase() : _rotationPhase; set => _rotationPhase = value; }
         [SerializeField]
         public float Luminosity { get => _luminosity < 0 ? InitLuminosity() : _luminosity; set => _luminosity = value; }
-        public float scale = -1;
+        private float _scale = -1;
+        public float Scale { get => _scale < 0 ? InitScale() : _scale; set => _scale = value; }
         [NonSerialized]
         public PlanetData planetData;
         [NonSerialized]
@@ -83,23 +85,59 @@ namespace GalacticScale
             float rotationPeriod,
             float rotationPhase,
             float luminosity,
-            List<GSPlanet> moons = null)
+            GSPlanets moons = null)
         {
             Name = name;
             Theme = theme;
             Radius = radius;
             OrbitRadius = orbitRadius;
             OrbitInclination = orbitInclination;
-            OrbitLongitude = orbitLongitude;
+            //OrbitLongitude = orbitLongitude;
             OrbitalPeriod = orbitalPeriod;
             OrbitPhase = orbitPhase;
             Obliquity = obliquity;
             RotationPeriod = rotationPeriod;
             RotationPhase = rotationPhase;
             Luminosity = luminosity;
-            Moons = moons;
+            Moons = (moons == null)?new GSPlanets():moons;
         }
-
+        public GSPlanet(string name,
+    string theme,
+    int radius,
+    float orbitRadius,
+    float orbitInclination,
+    //float orbitLongitude,
+    float orbitalPeriod,
+    float orbitPhase,
+    float obliquity,
+    float rotationPeriod,
+    float rotationPhase,
+    float luminosity,
+    GSPlanets moons = null)
+        {
+            Name = name;
+            Theme = theme;
+            Radius = radius;
+            OrbitRadius = orbitRadius;
+            OrbitInclination = orbitInclination;
+            //OrbitLongitude = orbitLongitude;
+            OrbitalPeriod = orbitalPeriod;
+            OrbitPhase = orbitPhase;
+            Obliquity = obliquity;
+            RotationPeriod = rotationPeriod;
+            RotationPhase = rotationPhase;
+            Luminosity = luminosity;
+            Moons = (moons == null) ? new GSPlanets() : moons;
+        }
+        public float InitScale()
+        {
+            if (GSTheme == null)
+            {
+                GS2.Warn("Trying to read theme before setting it: " + Name);
+                return -1;
+            }
+            return (GSTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
+        }
         public int MoonCount { get
             {
                 if (Moons == null) return 0;
@@ -198,6 +236,19 @@ namespace GalacticScale
             _rotationPhase = 0;
             return _rotationPhase;
         }
-      
+        public GSPlanet MostDistantSatellite
+        {
+            get
+            {
+                if (Moons == null) GS2.Error("MOONS NULL!?");
+                if (Moons.Count == 0) return this;
+                return Moons[Moons.Count - 1].MostDistantSatellite;
+            }
+        }
+        public float RadiusAU { get => Radius * 0.00005f * Scale; }
+        public float SystemRadius { get {
+                GSPlanet mds = MostDistantSatellite;
+                if (mds == this) return RadiusAU;
+                return MostDistantSatellite.OrbitRadius + MostDistantSatellite.RadiusAU; } }
     }
 }

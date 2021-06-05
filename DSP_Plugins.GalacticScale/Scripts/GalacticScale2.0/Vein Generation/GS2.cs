@@ -122,7 +122,7 @@ namespace GalacticScale
         }
         public static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet)
         {
-            GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
+            //GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
             double randomFactor = 1.0;
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + (random.NextDouble()/2);
             
@@ -136,12 +136,12 @@ namespace GalacticScale
             {
                 if (gsPlanet.randomizeVeinCounts && random.NextDouble() > randomFactor && veinTotals.ContainsKey(veinGroups[i].type))
                 {
-                    GS2.Log("Randomly Skipping Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to 'randomizeVeinCounts:true'");
+                    //GS2.Log("Randomly Skipping Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to 'randomizeVeinCounts:true'");
                     continue;
                 }
                 if (!GS2.Force1RareChance && veinGroups[i].rare && (gsPlanet.planetData.star.level + 0.1) < random.NextDouble() * random.NextDouble())
                 {
-                    GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
+                    //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;
                 }
                 GSVeinDescriptor v = veinGroups[i];
@@ -168,12 +168,12 @@ namespace GalacticScale
                     if (!veinTotals.ContainsKey(v.type)) veinTotals.Add(v.type, 1);
                     else veinTotals[v.type]++;
                     veinGroups[i].position = potentialVector;
-                    GS2.Log("Succeeded finding a vector =" + veinGroups[i].type + " on planet:" + gsPlanet.Name);
+                    //GS2.Log("Succeeded finding a vector =" + veinGroups[i].type + " on planet:" + gsPlanet.Name);
                 }
-                else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
+                //else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
             }
-            GS2.Log(gsPlanet.Name + " VeinTotals:");
-            GS2.LogJson(veinTotals);
+            //GS2.Log(gsPlanet.Name + " VeinTotals:");
+            //GS2.LogJson(veinTotals);
             return veinGroups;
         }
         public static bool SurfaceVectorCollisionGS2(Vector3 vector, List<GSVeinDescriptor> vectors, int processedVectorCount, float padding)

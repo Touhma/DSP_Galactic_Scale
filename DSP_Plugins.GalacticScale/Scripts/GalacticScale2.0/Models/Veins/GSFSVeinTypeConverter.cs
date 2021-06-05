@@ -9,13 +9,13 @@ namespace GalacticScale
     {
         public override object CreateInstance(fsData data, Type storageType)
         {
-            GS2.Log("Start");
+            //GS2.Log("Start");
             return new GSVeinType();
         }
 
         protected override fsResult DoSerialize(GSVeinType model, Dictionary<string, fsData> serialized)
         {
-            GS2.Log("Start");
+            //GS2.Log("Start");
             List<fsData> list = new List<fsData>();
             Dictionary<string, int> dict = new Dictionary<string, int>();
             for (var i = 0; i < model.veins.Count; i++)
@@ -45,7 +45,7 @@ namespace GalacticScale
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSVeinType model)
         {
-            GS2.Log("Start");
+            //GS2.Log("Start");
             var result = fsResult.Success;
             model = new GSVeinType();
             // Deserialize name mainly manually (helper methods CheckKey and CheckType)

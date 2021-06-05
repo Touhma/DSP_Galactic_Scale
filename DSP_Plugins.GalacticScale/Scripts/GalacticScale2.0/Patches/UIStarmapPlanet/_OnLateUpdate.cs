@@ -17,7 +17,7 @@ namespace GalacticScale
                 GSPlanet p = GS2.GetGSPlanet(planet);
                 if (p != null)
                 {
-                    if (p.scale < 1 && p.scale > 0)
+                    if (p.Scale < 1 && p.Scale > 0)
                     {
                         return false;
                     }
@@ -32,7 +32,7 @@ namespace GalacticScale
                 GSPlanet p = GS2.GetGSPlanet(id);
                 if (p != null)
                 {
-                    if (p.scale < 1 && p.scale > 0)
+                    if (p.Scale < 1 && p.Scale > 0)
                     {
                         return false;
                     }

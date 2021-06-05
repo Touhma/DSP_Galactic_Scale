@@ -138,7 +138,7 @@ namespace GalacticScale
         }
         public static void InitializeAstroPoses()
         {
-            var gSize = galaxy.starCount > 64 ? galaxy.starCount * 40 * 100 : 25600;
+            var gSize = galaxy.starCount * 4000;
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i);

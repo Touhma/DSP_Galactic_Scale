@@ -64,7 +64,8 @@ namespace GalacticScale
             string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             path = Path.Combine(path, DateTime.Now.ToString("yyMMddHHmmss"));
-            path += ".errorlog.json";
+            path += ".exceptionlog.json";
+            if (File.Exists(path)) return;
             GS2.Log(path);
             Log("Logging Error to " + path);
             exceptionOutput eo = new exceptionOutput(e.ToString());
@@ -72,6 +73,32 @@ namespace GalacticScale
             serializer.TrySerialize(eo, out fsData data).AssertSuccessWithoutWarnings();
             string json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
+            Log("End");
+        }
+        private class ErrorObject
+        {
+            public string message;
+            public System.Collections.Generic.List<string> stack = new System.Collections.Generic.List<string>();
+        }
+        public static void DumpError(string message)
+        {
+            string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            path = Path.Combine(path, DateTime.Now.ToString("yyMMddHHmmss"));
+            path += ".errorlog.json";
+            GS2.Log(path);
+            Log("Logging Error to " + path);
+            ErrorObject errorObject = new ErrorObject();
+            errorObject.message = message;
+            for (var i = 0; i < 100; i++)
+            {
+                string caller = GetCaller(i);
+                if (caller != "") errorObject.stack.Add(caller);
+            }
+            fsSerializer serializer = new fsSerializer();
+            serializer.TrySerialize(errorObject, out fsData data).AssertSuccessWithoutWarnings();
+            string json = fsJsonPrinter.PrettyJson(data);
+            File.AppendAllText(path, json);
             Log("End");
         }
         private static bool CheckJsonFileExists(string path)

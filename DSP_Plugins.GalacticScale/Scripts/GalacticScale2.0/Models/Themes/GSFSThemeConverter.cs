@@ -13,7 +13,7 @@ namespace GalacticScale
         }
         protected override fsResult DoSerialize(GSTheme model, Dictionary<string, fsData> serialized)
         {
-            GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
+            //GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
             bool based = model.BaseName != null && model.BaseName != "";
             SerializeMember(serialized, null, "Name", model.Name);
             GSTheme baseTheme = (based)?GS2.ThemeLibrary[model.BaseName]:GS2.ThemeLibrary["Mediterranean"];
@@ -96,18 +96,18 @@ namespace GalacticScale
                 SerializeMember(serialized, null, "AmbientSettings", model.AmbientSettings);
 
             }
-            GS2.Log("GSFSThemeConverter|DoSerialize|End");
+            //GS2.Log("GSFSThemeConverter|DoSerialize|End");
             return fsResult.Success;
         }
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSTheme model)
         {
-            GS2.Log("GSFSThemeConverter|DoDeserialize");
+            //GS2.Log("GSFSThemeConverter|DoDeserialize");
             var result = fsResult.Success;
             model = new GSTheme();
            
             DeserializeMember(data, null, "BaseName", out model.BaseName);
             if (model.baseTheme != null) model.CopyFrom(model.baseTheme);
-            GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
+            //GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
             if (data.ContainsKey("Name")) DeserializeMember(data, null, "Name", out model.Name); else model.Name = "Unnamed";
             if (data.ContainsKey("PlanetType")) DeserializeMember(data, null, "PlanetType", out model.PlanetType);
             if (data.ContainsKey("Algo")) DeserializeMember(data, null, "Algo", out model.Algo);

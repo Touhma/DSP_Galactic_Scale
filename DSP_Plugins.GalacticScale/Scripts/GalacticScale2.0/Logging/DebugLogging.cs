@@ -13,6 +13,7 @@ namespace GalacticScale
         public static void Error(string message)
         {
             Bootstrap.Debug(GetCaller()+message, LogLevel.Error, true);
+            GS2.DumpError(message);
         }
         public static void Warn(string message)
         {
@@ -26,11 +27,13 @@ namespace GalacticScale
             string json = fsJsonPrinter.PrettyJson(data);
             Bootstrap.Debug(GetCaller() + json);
         }
-        public static string GetCaller()
+        public static string GetCaller(int depth = 0)
         {
+            depth += 2;
             StackTrace stackTrace = new StackTrace();
-            string methodName = stackTrace.GetFrame(2).GetMethod().Name;
-            string[] classPath = stackTrace.GetFrame(2).GetMethod().ReflectedType.ToString().Split('.');
+            if (stackTrace.FrameCount <= depth) return "";
+            string methodName = stackTrace.GetFrame(depth).GetMethod().Name;
+            string[] classPath = stackTrace.GetFrame(depth).GetMethod().ReflectedType.ToString().Split('.');
             string className = classPath[classPath.Length - 1];
             if (methodName == ".ctor") methodName = "<Constructor>";
             return className+"|"+methodName+"|";

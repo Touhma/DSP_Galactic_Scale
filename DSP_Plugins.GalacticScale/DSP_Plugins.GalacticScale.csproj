@@ -317,7 +317,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\UpdateDirtyMesh.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\PatchOnUIStarDetail.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen_CreateGalaxyStarGraph.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\CreateGalaxy.cs" />
     <Compile Include="Scripts\Dependencies\**\*.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\PatchOnUIGameLoadingSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\SetResCount.cs" />
