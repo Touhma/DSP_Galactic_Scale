@@ -55,10 +55,11 @@ namespace GalacticScale
                 Log("Initializing AstroPoses");
                 InitializeAstroPoses();
                 Log("AstroPoses Initialized");
+                SetupBirthPlanet();
                 if (createPlanets)
                 {
                     Log("Setting up Birth Planet");
-                    SetupBirthPlanet();
+                    //SetupBirthPlanet();
                     Log("Generating Veins");
                     GenerateVeins();
                 }

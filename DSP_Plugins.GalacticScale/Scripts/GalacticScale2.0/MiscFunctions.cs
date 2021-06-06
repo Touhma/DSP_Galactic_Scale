@@ -26,11 +26,11 @@ namespace GalacticScale
         }
         public static GSPlanet GetGSPlanet(string name)
         {
-            Log("Checking gsPlanets. All " + gsPlanets.Count + " of them.");
+            //Log("Checking gsPlanets. All " + gsPlanets.Count + " of them.");
             foreach (var kvp in gsPlanets)
             {
                 GSPlanet p = kvp.Value;
-                Log("Checking "+ p.Name + " == " + name);
+                //Log("Checking "+ p.Name + " == " + name);
                 if (p.Name == name) return p;
             }
             return null;

@@ -36,7 +36,7 @@ namespace GalacticScale
 
 		public void FromTheme(GSTheme theme)
 		{
-			GS2.Log("Start " + (theme.ambientDesc == null));
+			//GS2.Log("Start " + (theme.ambientDesc == null));
 			if (theme.ambientDesc == null) { GS2.Warn(theme.Name + " has no AmbientDesc"); return; }
 			Color1 = theme.ambientDesc.ambientColor0; //Trees Day Tint
 			Color2 = theme.ambientDesc.ambientColor1; //Trees Twilight Tint
@@ -70,17 +70,17 @@ namespace GalacticScale
 		}
 		public void ToTheme(GSTheme theme)
         {
-			GS2.Log("Start");
+			//GS2.Log("Start");
 			// This should already been defaulted by the base theme if that exists
 			if (CubeMap == "Vanilla" || CubeMap == null)
 			{
-				GS2.Log("Vanilla");
+				//GS2.Log("Vanilla");
 				//do nothing
 			}//////////// FIX RARE SPAWNING IN THEME
 			else
 			{
-				GS2.Log(CubeMap);
-				GS2.Log(Reflections.ToString());
+				//GS2.Log(CubeMap);
+				//GS2.Log(Reflections.ToString());
 				//Should move this out of here
 				AssetBundle bundle = GS2.bundle;
 				//if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
@@ -90,23 +90,23 @@ namespace GalacticScale
 					if (Reflections.a != 0)
 					{
 						ReflectionMap = Utils.TintCubeMap(x, Reflections);
-						GS2.Log("Set Reflection Map to Tinted One");
+						//GS2.Log("Set Reflection Map to Tinted One");
 					}
 					else ReflectionMap = x;
 				}
 			}
-			GS2.Log("Processing AmbientDesc for ");
+			//GS2.Log("Processing AmbientDesc for ");
 			GS2.Log(theme.Name);
-			theme.ambientDesc.ambientColor0 = Color1; GS2.Log("Processing AmbientDesc1");
-			theme.ambientDesc.ambientColor1 = Color2; GS2.Log("Processing AmbientDesc2");
-			theme.ambientDesc.ambientColor2 = Color3; GS2.Log("Processing AmbientDesc3");
-			theme.ambientDesc.waterAmbientColor0 = WaterColor1; GS2.Log("Processing AmbientDesc4");
-			theme.ambientDesc.waterAmbientColor1 =WaterColor2 ; GS2.Log("Processing AmbientDesc5");
-			theme.ambientDesc.waterAmbientColor2 =WaterColor3  ; GS2.Log("Processing AmbientDesc6");
-			theme.ambientDesc.biomoColor0= BiomeColor1  ; GS2.Log("Processing AmbientDesc7");
-			theme.ambientDesc.biomoColor1 =BiomeColor2  ; GS2.Log("Processing AmbientDesc8");
-			theme.ambientDesc.biomoColor2= BiomeColor3  ; GS2.Log("Processing AmbientDesc9");
-			theme.ambientDesc.biomoDustColor0 =DustColor1  ; GS2.Log("Processing AmbientDesc10");
+			theme.ambientDesc.ambientColor0 = Color1; //GS2.Log("Processing AmbientDesc1");
+			theme.ambientDesc.ambientColor1 = Color2; //GS2.Log("Processing AmbientDesc2");
+			theme.ambientDesc.ambientColor2 = Color3; //GS2.Log("Processing AmbientDesc3");
+			theme.ambientDesc.waterAmbientColor0 = WaterColor1; //GS2.Log("Processing AmbientDesc4");
+			theme.ambientDesc.waterAmbientColor1 =WaterColor2 ; //GS2.Log("Processing AmbientDesc5");
+			theme.ambientDesc.waterAmbientColor2 =WaterColor3  ; //GS2.Log("Processing AmbientDesc6");
+			theme.ambientDesc.biomoColor0= BiomeColor1  ; //GS2.Log("Processing AmbientDesc7");
+			theme.ambientDesc.biomoColor1 =BiomeColor2  ; //GS2.Log("Processing AmbientDesc8");
+			theme.ambientDesc.biomoColor2= BiomeColor3  ; //GS2.Log("Processing AmbientDesc9");
+			theme.ambientDesc.biomoDustColor0 =DustColor1  ; //GS2.Log("Processing AmbientDesc10");
 			theme.ambientDesc.biomoDustColor1= DustColor2  ;
 			theme.ambientDesc.biomoDustColor2 =DustColor3  ;
 			theme.ambientDesc.biomoDustStrength0 =DustStrength1  ;
@@ -118,7 +118,7 @@ namespace GalacticScale
 			theme.ambientDesc.lutContribution =LutContribution;
 			if (ReflectionMap != null)
 			{
-				GS2.Log("Processing ReflectionMap");
+				//GS2.Log("Processing ReflectionMap");
 				theme.ambientDesc.reflectionMap = ReflectionMap;
 			}
 			if (LutTexture != null) theme.ambientDesc.lutTexture =LutTexture ;
