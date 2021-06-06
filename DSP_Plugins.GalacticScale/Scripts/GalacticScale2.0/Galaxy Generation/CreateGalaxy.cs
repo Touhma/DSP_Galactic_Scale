@@ -66,6 +66,7 @@ namespace GalacticScale
                 Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log("End of galaxy generation");
+                GS2.Warn($"Galaxy Created. birthStarid:{galaxy.birthStarId} birthPlanetId:{galaxy.birthPlanetId} birthStarName: {galaxy.stars[galaxy.birthStarId -1].name} its planets length: {galaxy.stars[galaxy.birthStarId].planets.Length}");
                 return galaxy;
             } catch (Exception e)
             {
@@ -90,8 +91,10 @@ namespace GalacticScale
                 {
                     Log(BirthPlanet.ToString());
                     Log("Found BirthPlanet, Adding ID's");
+                    
                     GSSettings.birthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
-                    GSSettings.birthStarId = galaxy.birthStarId = BirthPlanet.planetData.star.id;
+                    galaxy.birthStarId = BirthPlanet.planetData.star.id;
+                    Warn("Birth Star Name = " + galaxy.stars[GSSettings.BirthStarId]);
                     return;
                 }
                 Warn("BirthPlanet Name Not Found In Planet List!");
@@ -99,7 +102,7 @@ namespace GalacticScale
             if (GSSettings.birthPlanetId >= 0)
             {
                 Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId + " of " + galaxy.stars.Length);
-                Warn("Set BirthStar ID : " + GSSettings.birthStarId +" of " + galaxy.stars.Length);
+                Warn($"Set BirthStar ID :{GSSettings.BirthStarId -1 } of { galaxy.stars.Length}");
                 //galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
                 
                 //galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
@@ -121,7 +124,7 @@ namespace GalacticScale
                         {
                             GS2.Log("Found a birth planet: "+planet.Name);
                             GSSettings.birthPlanetId =galaxy.birthPlanetId = planet.planetData.id;
-                            GSSettings.birthStarId =galaxy.birthStarId = planet.planetData.star.id;
+                            galaxy.birthStarId = planet.planetData.star.id;
                             i = j = 9001;
                         }
                     }

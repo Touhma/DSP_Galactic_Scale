@@ -2,6 +2,8 @@
 using GSFullSerializer;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 using UnityEngine;
 namespace GalacticScale.Generators
 {
@@ -136,9 +138,16 @@ namespace GalacticScale.Generators
         public void ReadStarData()
         {
             stars.Clear();
-            string path = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "data"), "galaxy.json");
+
+            //string path = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "data"), "galaxy.json");
             fsSerializer serializer = new fsSerializer();
-            string json = File.ReadAllText(path);
+            //string json = File.ReadAllText(path);
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            //var all = assembly.GetManifestResourceNames();
+            //GS2.LogJson(all, true);
+
+            StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("GalacticScale.Scripts.Assets.galaxy.json"));
+            string json = reader.ReadToEnd();
             fsData data2 = fsJsonParser.Parse(json);
             List<externalStarData> localStars = new List<externalStarData>();
             serializer.TryDeserialize(data2, ref localStars);
@@ -201,11 +210,18 @@ namespace GalacticScale.Generators
 
 
             }
+            GS2.Warn($"---------{preferences.GetBool("startInSol", true)}");
             if (!preferences.GetBool("startInSol", true))
             {
                 pickNewBirthPlanet();
                 GSSettings.BirthPlanetName = birthPlanet.Name;
+                GS2.Warn($"Set Birth Planet to {GSSettings.BirthPlanetName}");
+                GS2.LogJson(birthPlanet, true);
                 
+            } else
+            {
+                GSSettings.BirthPlanetName = "Earth";
+                GS2.Warn("Set to earth");
             }
             if (preferences.GetBool("birthPlanetSiTi", false))
             {
@@ -217,7 +233,7 @@ namespace GalacticScale.Generators
                 birthPlanet.gsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(EVeinType.Titanium,
     1, 10, 0.6f, 0.6f, 5, 10, false));
             }
-            if (preferences.GetInt("birthPlanetSize", 400) != 400) birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
+            if (preferences.GetInt("birthPlanetSize", 400) != 400) birthPlanet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
 
         }
         private void pickNewBirthPlanet()

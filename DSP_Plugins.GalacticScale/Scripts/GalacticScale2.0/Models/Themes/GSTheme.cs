@@ -606,7 +606,7 @@ namespace GalacticScale
 				TintOcean(oceanMaterial.Tint);
 			} else
             {
-				GS2.Warn("No Color = " + oceanMaterial.Tint.ToString());
+				//GS2.Log("No Color = " + oceanMaterial.Tint.ToString());
 				//TintOcean(new Color(.3f, .3f, 0.3f, 1));
             }
 			if (atmosphereMaterial.Tint != new Color()) TintAtmosphere(atmosphereMaterial.Tint);

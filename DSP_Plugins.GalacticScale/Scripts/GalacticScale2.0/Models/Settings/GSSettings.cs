@@ -15,13 +15,13 @@ namespace GalacticScale
         public static int Seed { get { if (instance != null) return instance.seed; return 0; } set => instance.seed = value; }
         public static List<GSStar> Stars { get => instance.stars; set => instance.stars = value; }
         public static int StarCount { get => Stars.Count; }
-        public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId]:null; }
+       // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }
         public static GSPlanet BirthPlanet { get {
                 //GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
                 GSPlanet p = GS2.GetGSPlanet(birthPlanetId);
                 if (p != null)
                 {
-                    //GS2.Log("Found birth planet. " + p.Name);
+                    GS2.Log("Found birth planet. " + p.Name);
                     return p;
                 }
                 GS2.Warn("Could Not Get Birth Planet From ID. Using first Planet.");
@@ -29,8 +29,9 @@ namespace GalacticScale
                 return null;
             }
         }
+        public static int BirthStarId { get => (BirthPlanet != null)?BirthPlanet.planetData.star.id:-1; }
         public static string BirthPlanetName { get => instance.birthPlanetName; set => instance.birthPlanetName = value; }
-        public static int birthStarId = -1; // this is a vanilla id, not a GS Index!
+        //public static int birthStarId = -1; // this is a vanilla id, not a GS Index!
         public static int birthPlanetId = -1;// this is a vanilla id, not a GS Index!
         public string birthPlanetName = null;
         private static GSSettings instance = new GSSettings(0);
@@ -62,7 +63,7 @@ namespace GalacticScale
             GalaxyParams = new GSGalaxyParams();
             Stars.Clear();
             birthPlanetId = -1;
-            birthStarId = -1;
+            //birthStarId = -1;
             GS2.gsPlanets.Clear();
             //GS2.Log("End");
         }
