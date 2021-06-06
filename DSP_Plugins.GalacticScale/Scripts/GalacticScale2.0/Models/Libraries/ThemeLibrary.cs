@@ -66,14 +66,22 @@ namespace GalacticScale
         {
             List<GSTheme> list = new List<GSTheme>();
             List<EPlanetType> types = new List<EPlanetType>();
-            float maxHeat = 5;
-            float minHeat = -1;
+            (float min, float max) temp = (3,6);
+            //heat switch
+            //{
+            //    EThemeHeat.Warm => 
+            //}
+            if (heat == EThemeHeat.Warm) temp = (1, 3);
+            if (heat == EThemeHeat.Temperate) temp = (0, 1);
+            if (heat == EThemeHeat.Cold) temp = (-3, 0);
+            if (heat == EThemeHeat.Frozen) temp = (-6, -3);
+            //float minHeat = -1;
             float maxRadius = 5;
             float minRadius = -1;
             var q = from theme in this
                     where types.Contains(theme.Value.PlanetType)
-                    where theme.Value.Temperature > maxHeat
-                    where theme.Value.Temperature < minHeat
+                    where theme.Value.Temperature < temp.max
+                    where theme.Value.Temperature >= temp.min
                     where theme.Value.MaxRadius > maxRadius
                     where theme.Value.MinRadius < minRadius
                     select theme.Value.Name;

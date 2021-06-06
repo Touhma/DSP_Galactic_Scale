@@ -205,6 +205,7 @@ namespace GalacticScale.Generators
             {
                 pickNewBirthPlanet();
                 GSSettings.BirthPlanetName = birthPlanet.Name;
+                
             }
             if (preferences.GetBool("birthPlanetSiTi", false))
             {

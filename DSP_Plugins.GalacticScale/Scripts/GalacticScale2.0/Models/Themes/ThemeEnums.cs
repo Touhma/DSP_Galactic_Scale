@@ -1,4 +1,6 @@
-﻿namespace GalacticScale
+﻿using System;
+
+namespace GalacticScale
 {
     public enum EThemeType
     {
