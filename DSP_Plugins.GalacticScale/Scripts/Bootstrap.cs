@@ -80,9 +80,15 @@ namespace GalacticScale {
         public static bool TeleportEnabled = false;
         private void Update()
         {
+            //GS2.Warn($"Cheatmode:{GS2.CheatMode} ResearchUnlocked:{GS2.ResearchUnlocked}");
+            if (!GS2.CheatMode) return;
+            if (DSPGame.IsMenuDemo) return;
+
+            //GS2.Warn($"Teleport Status {TeleportStar} {TeleportPlanet} {TeleportEnabled}");
             if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false) return;
             if (TeleportPlanet != null)
             {
+                //GS2.Warn("Planet not null");
                 GameMain.data.ArriveStar(TeleportPlanet.star);
                 StartCoroutine(Teleport(TeleportPlanet));
             } else if (TeleportStar != null)
@@ -90,11 +96,17 @@ namespace GalacticScale {
                 GameMain.data.ArriveStar(TeleportStar);
                 StartCoroutine(Teleport(TeleportStar));
             }
+
         }
         private IEnumerator Teleport(PlanetData planet)
         {
+
             yield return new WaitForEndOfFrame();
+            TeleportPlanet = null;
+            TeleportStar = null;
+            //GS2.Warn("Teleporting to " + planet.uPosition.ToString());
             GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * (planet.realRadius);
+            
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
@@ -102,7 +114,9 @@ namespace GalacticScale {
         private IEnumerator Teleport(StarData star)
         {
             yield return new WaitForEndOfFrame();
-            GS2.Log("Teleporting to " + star.uPosition.ToString());
+            TeleportPlanet = null;
+            TeleportStar = null;
+            //GS2.Warn("Teleporting to " + star.uPosition.ToString());
             GameMain.mainPlayer.uPosition = star.uPosition + VectorLF3.unit_z * 1;
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;

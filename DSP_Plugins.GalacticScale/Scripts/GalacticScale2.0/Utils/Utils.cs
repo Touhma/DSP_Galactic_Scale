@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -7,6 +8,17 @@ namespace GalacticScale
 {
     public static class Utils
     {
+        public static Type GetCallingType() => new StackTrace().GetFrame(2).GetMethod().ReflectedType;
+
+        public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t)
+        {
+            foreach (var g in GS2.generators)
+                if (g.GetType() == t)
+                    if (g is iConfigurableGenerator) return g as iConfigurableGenerator;
+                    else GS2.Warn($"Generator {t} is not configurable");
+            GS2.Warn($"Could not find generator of type '{t}'");
+            return null;
+        }
         public static bool CheckStarCollision(List<VectorLF3> pts, VectorLF3 pt, double min_dist)
         {
             double num1 = min_dist * min_dist;

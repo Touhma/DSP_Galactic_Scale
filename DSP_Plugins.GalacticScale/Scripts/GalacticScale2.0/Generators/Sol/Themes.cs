@@ -93,7 +93,7 @@ namespace GalacticScale.Generators
             acidGreenhouse.TerrainSettings.Algorithm = "GSTA3";
             acidGreenhouse.TerrainSettings.LandModifier = 1;
             acidGreenhouse.TerrainSettings.HeightMulti = 2;
-            acidGreenhouse.VeinSettings.VeinTypes = new List<GSVeinType>()
+            acidGreenhouse.VeinSettings.VeinTypes = new GSVeinTypes()
                 {
                     GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false ),
                     GSVeinType.Generate(EVeinType.Stone, 1, 10, 0.5f, 1.5f, 5, 15, false ),
@@ -115,7 +115,7 @@ namespace GalacticScale.Generators
             barrenSatellite.VegeSettings.Group5 = barrenSatellite.VegeSettings.Group1;
             barrenSatellite.VegeSettings.Group6 = barrenSatellite.VegeSettings.Group1;
             barrenSatellite.atmosphereMaterial.Params = new Dictionary<string, float>() { ["_AtmoDensity"] = 0f};
-            barrenSatellite.VeinSettings.VeinTypes = new List<GSVeinType>()
+            barrenSatellite.VeinSettings.VeinTypes = new GSVeinTypes()
                 {
                     GSVeinType.Generate(EVeinType.Titanium, 1, 10, 0.2f, 1.5f, 5, 15, false ),
                     GSVeinType.Generate(EVeinType.Stone, 1, 100, 0.5f, 1.5f, 5, 35, false ),
@@ -143,7 +143,7 @@ namespace GalacticScale.Generators
             {
                 Algorithm = "GS2",
                 VeinPadding = 0.5f,
-                VeinTypes = new List<GSVeinType>()
+                VeinTypes = new GSVeinTypes()
                 {
                     GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false ),
                     GSVeinType.Generate(EVeinType.Stone, 1, 10, 0.5f, 1.5f, 5, 15, false ),

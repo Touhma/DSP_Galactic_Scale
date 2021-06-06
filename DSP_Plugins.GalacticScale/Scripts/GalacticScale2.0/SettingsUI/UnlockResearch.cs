@@ -4,16 +4,21 @@ namespace GalacticScale
 {
     public static partial class GS2
     {        
+        public static void CheatModeOptionCallback(object o)
+        {
+            GS2.CheatMode = (bool)o;
+        }
         public static GSUI UnlockTechOption;
         // All credit to Windows10CE
         public static void UnlockTechOptionCallback(object o)
         {
-            GS2.Log("Unlocking Tech");
+            GS2.Warn("Unlocking Tech");
             foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
                 {
                     if (!GameMain.history.TechUnlocked(tech.ID))
                         UnlockTechRecursive(tech.ID, GameMain.history);
                 }
+            GS2.ResearchUnlocked = true;
         }
 
         private static void UnlockTechRecursive(int techId, GameHistoryData history)

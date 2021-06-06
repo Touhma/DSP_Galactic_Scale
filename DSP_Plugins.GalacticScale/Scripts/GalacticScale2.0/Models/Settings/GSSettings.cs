@@ -17,14 +17,14 @@ namespace GalacticScale
         public static int StarCount { get => Stars.Count; }
         public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId]:null; }
         public static GSPlanet BirthPlanet { get {
-                GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
+                //GS2.Warn("Trying to find GSPLANET for id " + birthPlanetId);
                 GSPlanet p = GS2.GetGSPlanet(birthPlanetId);
                 if (p != null)
                 {
-                    GS2.Log("Found birth planet. " + p.Name);
+                    //GS2.Log("Found birth planet. " + p.Name);
                     return p;
                 }
-                GS2.Error("Could Not Get Birth Planet From ID. Using first Planet.");
+                GS2.Warn("Could Not Get Birth Planet From ID. Using first Planet.");
                 if (StarCount > 0 && PlanetCount > 0) return Stars[0].Planets[0];
                 return null;
             }
@@ -51,9 +51,9 @@ namespace GalacticScale
 
         public GSSettings(int seed)
         {
-            GS2.Log("Start");
+            //GS2.Log("Start");
             this.seed = seed;
-            GS2.Log("End");
+            //GS2.Log("End");
         }
         public static void Reset(int seed)
         {
@@ -64,7 +64,7 @@ namespace GalacticScale
             birthPlanetId = -1;
             birthStarId = -1;
             GS2.gsPlanets.Clear();
-            GS2.Log("End");
+            //GS2.Log("End");
         }
         public int getPlanetCount()
         {

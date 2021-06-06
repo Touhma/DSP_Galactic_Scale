@@ -21,7 +21,7 @@ namespace GalacticScale
             VeinSettings = new GSVeinSettings()
             {
                 Algorithm = "Vanilla",
-                VeinTypes = new List<GSVeinType>()
+                VeinTypes = new GSVeinTypes()
             },
             AmbientSettings = new GSAmbientSettings()
             {

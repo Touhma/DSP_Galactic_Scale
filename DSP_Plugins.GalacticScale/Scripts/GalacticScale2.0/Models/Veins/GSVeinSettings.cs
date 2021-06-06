@@ -7,7 +7,7 @@ namespace GalacticScale
 {
      public class GSVeinSettings
     {
-        public List<GSVeinType> VeinTypes = new List<GSVeinType>();
+        public GSVeinTypes VeinTypes = new GSVeinTypes();
         public string Algorithm = "Vanilla";
         public float VeinPadding = 1f;
 
@@ -19,7 +19,7 @@ namespace GalacticScale
         public GSVeinSettings Clone()
         {
             GSVeinSettings clone = (GSVeinSettings)this.MemberwiseClone();
-            clone.VeinTypes = new List<GSVeinType>();
+            clone.VeinTypes = new GSVeinTypes();
             for (var i = 0; i < VeinTypes.Count; i++) clone.VeinTypes.Add(VeinTypes[i].Clone());
             return clone;
         }

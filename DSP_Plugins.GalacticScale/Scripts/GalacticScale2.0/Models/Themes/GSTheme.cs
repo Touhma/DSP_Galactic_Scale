@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Reflection;
 
 namespace GalacticScale
 {
@@ -47,7 +46,7 @@ namespace GalacticScale
 		public GSVeinSettings VeinSettings = new GSVeinSettings()
 		{
 			Algorithm = "GS2",
-			VeinTypes = new List<GSVeinType>()			
+			VeinTypes = new GSVeinTypes()
 		};
 		public GSVegeSettings VegeSettings = new GSVegeSettings()
 		{

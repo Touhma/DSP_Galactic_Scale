@@ -10,6 +10,7 @@ namespace GalacticScale
             ref float __result, Vector3 vpos) {
             vpos.Normalize();
             var index1 = __instance.indexMap[__instance.PositionHash(vpos)];
+            //GS2.Warn($"InstancePrecision: {__instance.precision}");
             var radiusPrecision =
                 (float) (3.14159274101257 / (__instance.precision * 2) * 1.20000004768372);
             var radiusPrecisionSq = radiusPrecision * radiusPrecision;
@@ -52,7 +53,7 @@ namespace GalacticScale
                 return false;
             }
 
-            GS2.Error("Bad Query");
+            GS2.Error($"Bad Query {magnetudeOnPrecisionDummy}");
             __result = __instance.heightData[0] * 0.01f;
 
             return false;

@@ -35,7 +35,7 @@ namespace GalacticScale
         public string Name { get => _name; set => _name = value; }
         [SerializeField]
         public string Theme { get => _theme == null ? InitTheme() : _theme; set => _theme = value; }
-        public GSTheme GSTheme { get => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme]; }
+        public GSTheme gsTheme { get => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme]; }
         [SerializeField]
         public int Radius { get => _radius < 0 ? InitRadius():_radius; set => _radius = value; }
         [SerializeField]
@@ -64,7 +64,21 @@ namespace GalacticScale
         public GSVeinSettings veinSettings;
         [NonSerialized]
         public GSPlanetVeins veinData = new GSPlanetVeins();
+        public bool isHabitable {
+            get
+            {
+                if (gsTheme.PlanetType != EPlanetType.Ocean) return false;
+                if (Radius < 50) return false;
+                if (gsTheme.WaterItemId != 1000) return false;
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil, false)) return false;
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron, false)) return false;
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper, false)) return false;
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone, false)) return false;
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Coal, false)) return false;
 
+                return true;
+            }
+        }
         public GSPlanet()
         {
 
@@ -131,12 +145,12 @@ namespace GalacticScale
         }
         public float InitScale()
         {
-            if (GSTheme == null)
+            if (gsTheme == null)
             {
                 GS2.Warn("Trying to read theme before setting it: " + Name);
                 return -1;
             }
-            return (GSTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
+            return (gsTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
         }
         public int MoonCount { get
             {

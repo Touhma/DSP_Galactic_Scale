@@ -10,6 +10,10 @@ namespace GalacticScale
         {
             if (debugOn) Bootstrap.Debug(GetCaller() +s);
         }
+        public static void LogSpace(int lineCount = 1)
+        {
+            if (debugOn) for (var i=0;i<lineCount;i++) Bootstrap.Debug(" ", LogLevel.Message, true);
+        }
         public static void Error(string message)
         {
             Bootstrap.Debug(GetCaller()+message, LogLevel.Error, true);
@@ -19,9 +23,9 @@ namespace GalacticScale
         {
             Bootstrap.Debug(GetCaller() + message, LogLevel.Warning, true);
         }
-        public static void LogJson(object o)
+        public static void LogJson(object o, bool force = false)
         {
-            if (!debugOn) return;
+            if (!debugOn && !force) return;
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize(o, out fsData data).AssertSuccessWithoutWarnings();
             string json = fsJsonPrinter.PrettyJson(data);

@@ -8,12 +8,12 @@ namespace GalacticScale
         {
             if (GSSettings.Stars[star.index].counter > 99)
             {
-                Error("Create Planet failed: Star '" + star.name + "' already has 99 bodies");
+                Error($"Create Planet failed: Star '{star.name}' already has 99 bodies");
                 return null;
             }
             //Log("CreatePlanet|" + gsPlanet.Name);
             bool isMoon = (host != null);
-            if (GSSettings.Stars[star.index] == null) Error("Star Index " + star.index + " does not exist in GSSettings.Stars");
+            if (GSSettings.Stars[star.index] == null) Error($"Star Index {star.index} does not exist in GSSettings.Stars");
             int index = GSSettings.Stars[star.index].counter;
             //GS2.Log("Creating PlanetData");
             PlanetData planet = new PlanetData();
@@ -36,10 +36,10 @@ namespace GalacticScale
             string roman = "";
             
             if (isMoon) {
-                if (RomanNumbers.roman.Length <= host.number + 1) Error("Roman Number Conversion Error for " + (host.number + 1));
+                if (RomanNumbers.roman.Length <= host.number + 1) Error($"Roman Number Conversion Error for {host.number + 1}");
                 roman = RomanNumbers.roman[host.number + 1] + " - ";
             }
-            if (RomanNumbers.roman.Length <= index + 1) Error("Roman Number Conversion Error for " + (index + 1));
+            if (RomanNumbers.roman.Length <= index + 1) Error($"Roman Number Conversion Error for {index + 1}");
             roman += RomanNumbers.roman[index + 1];
             planet.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;         
             planet.orbitRadius = gsPlanet.OrbitRadius;        
@@ -53,7 +53,7 @@ namespace GalacticScale
             planet.rotationPhase = gsPlanet.RotationPhase;
             if (isMoon)
             {
-                if (star.planets.Length <= host.index) Error("star.planets does not contain index " + host.index);
+                if (star.planets.Length <= host.index) Error($"star.planets does not contain index {host.index}");
                 planet.sunDistance = star.planets[host.index].orbitRadius;
             }
             else planet.sunDistance = planet.orbitRadius;
@@ -84,12 +84,12 @@ namespace GalacticScale
             SetPlanetTheme(planet, gsPlanet);
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
             if (star.galaxy.astroPoses == null) Error("Astroposes array does not exist");
-            if (star.galaxy.astroPoses.Length <= planet.id) Error("Astroposes does not contain index " + planet.id + " when trying to set planet uRadius");
+            if (star.galaxy.astroPoses.Length <= planet.id) Error($"Astroposes does not contain index {planet.id} when trying to set planet uRadius");
             star.galaxy.astroPoses[planet.id].uRadius = planet.realRadius;
-            if (star.planets.Length <= counter) Error("star.planets length <= counter");
+            if (star.planets.Length <= counter) Error($"star.planets length of {star.planets.Length} <= counter {counter}");
             star.planets[counter] = planet;
             //DebugPlanet(planetData);
-            if (GSSettings.Stars.Count <= star.index) Error("GSSettings.Stars[" + star.index + "] does not exist");
+            if (GSSettings.Stars.Count <= star.index) Error($"GSSettings.Stars[{star.index}] does not exist");
             GSSettings.Stars[star.index].counter++;
             if (gsPlanet.MoonCount > 0) CreateMoons(ref planet, gsPlanet);
             //Log("PLANET RADIUS "+planetData.radius);
@@ -104,10 +104,15 @@ namespace GalacticScale
         {
             for (var i = 0; i < planet.Moons.Count; i++)
             {
+                if (GSSettings.Stars[planetData.star.index].counter > 99)
+                {
+                    Error($"Create Planet failed: Star '{planetData.star.name}' already has 99 bodies");
+                    return;
+                }
                 PlanetData moon = CreatePlanet(ref planetData.star, planet.Moons[i], planetData);
                 if (moon == null)
                 {
-                    Error("Creating moons for planet '" + planet.Name + "' failed. No moon returned");
+                    Error($"Creating moons for planet '{planet.Name}' failed. No moon returned");
                     return;
                 }
                 

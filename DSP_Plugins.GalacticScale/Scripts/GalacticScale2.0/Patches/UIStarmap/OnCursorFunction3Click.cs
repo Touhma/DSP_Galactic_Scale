@@ -29,13 +29,13 @@ namespace GalacticScale
             //    " ViewPlanet:" + vp +
             //    " mouseHoverPlanet:" + mhp +
             //    " focusPlanet:" + fp);
-            if (___focusStar != null && (VFInput.control))
+            if (___focusStar != null && (VFInput.control) && GS2.CheatMode)
             {
                 Bootstrap.TeleportStar = ___focusStar.star;
                 Bootstrap.TeleportEnabled = true;
                 return false;
             }
-            if (___focusPlanet != null &&  (VFInput.control))
+            if (___focusPlanet != null &&  (VFInput.control) && GS2.CheatMode)
             {
                 Bootstrap.TeleportPlanet = ___focusPlanet.planet;
                 Bootstrap.TeleportEnabled = true;

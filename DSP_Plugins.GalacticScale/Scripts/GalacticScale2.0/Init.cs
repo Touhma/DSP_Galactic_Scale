@@ -8,10 +8,12 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static string Version = "2.0.0a40";
+        public static string Version = "2.0.0a46";
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Failed = false;
         public static bool Initialized = false;
+        public static bool CheatMode = true;
+        public static bool ResearchUnlocked = false;
         public static bool IsMenuDemo {  get
             {
                 if (DSPGame.IsMenuDemo) return true;

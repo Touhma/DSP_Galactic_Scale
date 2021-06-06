@@ -7,6 +7,7 @@ namespace GalacticScale {
 
         public static void AddFactoredRadius(this PlanetRawData planetRawData, PlanetData planet) {
             //GS2.Log("PlanetRawDataExtension|AddFactoredRadius|" + planet.name + " planetRawData:" + ((planetRawData != null)?"PlanetRawData Exists":"PlanetRawData Null"));
+            if (planet == null) return;
             FactoredRadius[planetRawData] = planet.GetScaleFactored();
         }
 

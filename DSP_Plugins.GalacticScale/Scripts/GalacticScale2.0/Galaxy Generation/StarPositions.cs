@@ -46,6 +46,7 @@ namespace GalacticScale
                 num3 = 1;
             int num4 = (int)(num1 * (double)(num3 - num2) + (double)num2);
             int max = 256;
+            //if (GS2.gameDesc.starCount > 512) max = 512;
             if (GS2.gameDesc.starCount > 1024) max = 1024;
             for (int index = 0; index < num4; ++index)
             {

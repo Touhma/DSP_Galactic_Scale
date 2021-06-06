@@ -8,6 +8,8 @@ namespace GalacticScale
         [HarmonyPrefix, HarmonyPatch(typeof(GuideMissionStandardMode), "Skip")]
         public static bool GS2_GuideMissionStandardMode_Skip_Prefix(GameData _gameData, ref GuideMissionStandardMode __instance)
         {
+            //if (GS2.Vanilla) return true;
+            if (GS2.IsMenuDemo) return true;
             if (GS2.Failed)return false;
             GS2.Log("Checking gameData... " + ((_gameData == null)?"Null":"Exists"));
             if (_gameData == null) return GS2.AbortGameStart("An error occured during game creation, resulting in no game data being created");
@@ -35,6 +37,11 @@ namespace GalacticScale
             __instance.gameData.InitLandingPlace();
             __instance.player.controller.memCameraTargetRot = __instance.targetRot;
             __instance.player.cameraTarget.rotation = __instance.targetRot;
+            if (GS2.CheatMode && !GS2.ResearchUnlocked)
+            {
+                GS2.Warn("Unlocking Research");
+                GS2.UnlockTechOptionCallback(null);
+            }
             return false;
         }
     }

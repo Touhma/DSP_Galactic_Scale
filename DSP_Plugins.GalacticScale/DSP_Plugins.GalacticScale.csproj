@@ -182,6 +182,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\VegeTypesDictionary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veges\GSVegeSettings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinTypes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSFSVeinTypeConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinDescriptor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
