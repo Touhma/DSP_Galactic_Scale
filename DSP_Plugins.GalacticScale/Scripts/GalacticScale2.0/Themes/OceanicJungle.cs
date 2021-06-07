@@ -14,6 +14,7 @@ namespace GalacticScale
             Algo = 1,
             MaterialPath = "Universe/Materials/Planets/Ocean 2/",
             Temperature = 0.0f,
+            Habitable = true,
             Distribute = EThemeDistribute.Interstellar,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),

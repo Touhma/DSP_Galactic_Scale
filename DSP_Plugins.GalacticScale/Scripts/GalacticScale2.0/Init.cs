@@ -43,11 +43,13 @@ namespace GalacticScale
                 if (_bundle == null)
                 {
                    Error("Failed to load AssetBundle!");
+                    UIMessageBox.Show("Error", "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory", "Return", 0);
+
                     return null;
                 }
-                Warn("---Asset Bundle Contents---");
-                LogJson(_bundle.GetAllAssetNames());
-                Warn("---------------------------");
+                //Warn("---Asset Bundle Contents---");
+                //LogJson(_bundle.GetAllAssetNames());
+                //Warn("---------------------------");
                 return _bundle;
             } 
         }

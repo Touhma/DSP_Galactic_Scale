@@ -14,14 +14,14 @@ namespace GalacticScale
             {
                 PlanetData planet = ___mouseHoverPlanet.planet;
                 int id = planet.id;
-                GSPlanet p = GS2.GetGSPlanet(planet);
-                if (p != null)
-                {
-                    if (p.Scale < 1 && p.Scale > 0)
+                //GSPlanet p = GS2.GetGSPlanet(planet);
+                //if (p != null)
+                //{
+                    if (planet.scale < 1 && planet.scale > 0)
                     {
                         return false;
                     }
-                }
+                //}
             }
             return true;
         }
@@ -29,14 +29,14 @@ namespace GalacticScale
         public static bool OnPlanetClick(ref UIStarmapPlanet ___focusPlanet, UIStarmapPlanet planet)
         {
                 int id = planet.planet.id;
-                GSPlanet p = GS2.GetGSPlanet(id);
-                if (p != null)
-                {
-                    if (p.Scale < 1 && p.Scale > 0)
+                //GSPlanet p = GS2.GetGSPlanet(id);
+                //if (p != null)
+                //{
+                    if (planet.planet.scale < 1 && planet.planet.scale > 0)
                     {
                         return false;
                     }
-                }
+                //}
            return true;
         }
 

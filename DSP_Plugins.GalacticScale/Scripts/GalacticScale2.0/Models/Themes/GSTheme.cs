@@ -29,8 +29,12 @@ namespace GalacticScale
 		public string BaseName;
 		[NonSerialized]
 		public bool Private = false;
+		[NonSerialized]
 		public bool MoonOnly = false;
+		[NonSerialized]
 		public bool PlanetOnly = false;
+		[NonSerialized]
+		public bool Habitable = false;
 		[NonSerialized]
 		public int MinRadius;
 		[NonSerialized]

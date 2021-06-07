@@ -8,7 +8,15 @@ namespace GalacticScale
     {
         public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
         {
-            Log("Start");
+            Log($"Start CreatePlanets:{createPlanets}");
+            if (createPlanets)
+            {
+                Log("Setting up Birth Planet");
+                //SetupBirthPlanet();
+                Log("Generating Veins");
+                GenerateVeins();
+                return galaxy;
+            }
             try
             {
                 gameDesc = desc;
@@ -55,18 +63,18 @@ namespace GalacticScale
                 Log("Initializing AstroPoses");
                 InitializeAstroPoses();
                 Log("AstroPoses Initialized");
-                SetupBirthPlanet();
-                if (createPlanets)
-                {
-                    Log("Setting up Birth Planet");
-                    //SetupBirthPlanet();
-                    Log("Generating Veins");
-                    GenerateVeins();
-                }
+                //SetupBirthPlanet();
+                galaxy.birthPlanetId = GSSettings.BirthPlanetId;
+                galaxy.birthStarId = GSSettings.BirthStarId;
+
                 Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log("End of galaxy generation");
-                GS2.Warn($"Galaxy Created. birthStarid:{galaxy.birthStarId} birthPlanetId:{galaxy.birthPlanetId} birthStarName: {galaxy.stars[galaxy.birthStarId -1].name} its planets length: {galaxy.stars[galaxy.birthStarId].planets.Length}");
+                Warn($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
+                Warn($"birthPlanetId:{galaxy.birthPlanetId}");
+                Warn($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name}");
+                Warn($"its planets length: {galaxy.stars[galaxy.birthStarId -1].planets.Length}");
+
                 return galaxy;
             } catch (Exception e)
             {
@@ -79,59 +87,59 @@ namespace GalacticScale
                 return null;
             }
         }
-        public static void SetupBirthPlanet() {
-            Log("Start");
-            if (galaxy.starCount <= 0) return;
-            if (GSSettings.Instance.birthPlanetName != null && GSSettings.Instance.birthPlanetName != "")
-            {
-                Warn("BirthPlanetName Found");
-                GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.birthPlanetName);
+        //public static void SetupBirthPlanet() {
+        //    Log("Start");
+        //    if (galaxy.starCount <= 0) return;
+        //    if (GSSettings.Instance.BirthPlanetName != null && GSSettings.Instance.BirthPlanetName != "")
+        //    {
+        //        Warn("BirthPlanetName Found");
+        //        GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.BirthPlanetName);
                 
-                if (BirthPlanet != null)
-                {
-                    Log(BirthPlanet.ToString());
-                    Log("Found BirthPlanet, Adding ID's");
+        //        if (BirthPlanet != null)
+        //        {
+        //            Log(BirthPlanet.ToString());
+        //            Log("Found BirthPlanet, Adding ID's");
                     
-                    GSSettings.birthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
-                    galaxy.birthStarId = BirthPlanet.planetData.star.id;
-                    Warn("Birth Star Name = " + galaxy.stars[GSSettings.BirthStarId]);
-                    return;
-                }
-                Warn("BirthPlanet Name Not Found In Planet List!");
-            }
-            if (GSSettings.birthPlanetId >= 0)
-            {
-                Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId + " of " + galaxy.stars.Length);
-                Warn($"Set BirthStar ID :{GSSettings.BirthStarId -1 } of { galaxy.stars.Length}");
-                //galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
+        //            GSSettings.BirthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
+        //            galaxy.birthStarId = BirthPlanet.planetData.star.id;
+        //            Warn("Birth Star Name = " + galaxy.stars[GSSettings.BirthStarId]);
+        //            return;
+        //        }
+        //        Warn("BirthPlanet Name Not Found In Planet List!");
+        //    }
+        //    if (GSSettings.BirthPlanetId >= 0)
+        //    {
+        //        Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId + " of " + galaxy.stars.Length);
+        //        Warn($"Set BirthStar ID :{GSSettings.BirthStarId -1 } of { galaxy.stars.Length}");
+        //        //galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
                 
-                //galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
-                GSPlanet BirthPlanet = GetGSPlanet(GSSettings.birthPlanetId);
-                galaxy.birthPlanetId = BirthPlanet.planetData.id;
-                galaxy.birthStarId = BirthPlanet.planetData.star.id;
-            }
-            else
-            {
-                Warn("Trying to find a birth planet via iteration");
-                for (int i = 0; i < GSSettings.StarCount; i++)
-                {
-                    GSStar star = GSSettings.Stars[i];
-                    List<GSPlanet> bodies = star.Bodies;
-                    for (int j = 0; j < star.bodyCount; j++)
-                    {
-                        GSPlanet planet = bodies[j];
-                        if (ThemeLibrary[planet.Theme].PlanetType == EPlanetType.Ocean)
-                        {
-                            GS2.Log("Found a birth planet: "+planet.Name);
-                            GSSettings.birthPlanetId =galaxy.birthPlanetId = planet.planetData.id;
-                            galaxy.birthStarId = planet.planetData.star.id;
-                            i = j = 9001;
-                        }
-                    }
-                }
-            }  
-            Assert.Positive(galaxy.birthPlanetId);
-        }
+        //        //galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
+        //        GSPlanet BirthPlanet = GetGSPlanet(GSSettings.birthPlanetId);
+        //        galaxy.birthPlanetId = BirthPlanet.planetData.id;
+        //        galaxy.birthStarId = BirthPlanet.planetData.star.id;
+        //    }
+        //    else
+        //    {
+        //        Warn("Trying to find a birth planet via iteration");
+        //        for (int i = 0; i < GSSettings.StarCount; i++)
+        //        {
+        //            GSStar star = GSSettings.Stars[i];
+        //            List<GSPlanet> bodies = star.Bodies;
+        //            for (int j = 0; j < star.bodyCount; j++)
+        //            {
+        //                GSPlanet planet = bodies[j];
+        //                if (ThemeLibrary[planet.Theme].PlanetType == EPlanetType.Ocean)
+        //                {
+        //                    GS2.Log("Found a birth planet: "+planet.Name);
+        //                    GSSettings.birthPlanetId =galaxy.birthPlanetId = planet.planetData.id;
+        //                    galaxy.birthStarId = planet.planetData.star.id;
+        //                    i = j = 9001;
+        //                }
+        //            }
+        //        }
+        //    }  
+        //    Assert.Positive(galaxy.birthPlanetId);
+        //}
         public static void GenerateVeins()
         {
             for (int i = 1; i < galaxy.starCount; ++i)

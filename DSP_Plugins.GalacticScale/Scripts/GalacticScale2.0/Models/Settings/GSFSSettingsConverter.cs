@@ -40,7 +40,7 @@ namespace GalacticScale
             if (data.ContainsKey("galaxyParams")) DeserializeMember(data, null, "galaxyParams", out galaxyParams);
             if (data.ContainsKey("GalaxyParams")) DeserializeMember(data, null, "GalaxyParams", out galaxyParams);
             GS2.Log("Deserializing Stars");
-            List<GSStar> stars = null;
+            GSStars stars = null;
             if (data.ContainsKey("stars")) DeserializeMember(data, null, "stars", out stars);
             if (data.ContainsKey("Stars")) DeserializeMember(data, null, "Stars", out stars);
             model.stars = stars;
@@ -49,7 +49,9 @@ namespace GalacticScale
             if (data.ContainsKey("themeLibrary")) DeserializeMember(data, null, "themeLibrary", out tl);
             if (data.ContainsKey("ThemeLibrary")) DeserializeMember(data, null, "ThemeLibrary", out tl);
             model.themeLibrary = tl;
-            if (data.ContainsKey("BirthPlanet")) DeserializeMember(data, null, "BirthPlanet", out model.birthPlanetName);
+            string birthPlanetName = null;
+            if (data.ContainsKey("BirthPlanet")) DeserializeMember(data, null, "BirthPlanet", out birthPlanetName);
+            if (!string.IsNullOrEmpty(birthPlanetName)) GSSettings.BirthPlanetName = birthPlanetName;
             return result;
         }
     }

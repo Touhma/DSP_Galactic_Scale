@@ -128,7 +128,7 @@ namespace GalacticScale
             
             PlanetData planet = gsPlanet.planetData;
             double planetRadiusFactor = Math.Pow(2.1 / gsPlanet.planetData.radius, 2);
-            bool birth = planet.id == GSSettings.birthPlanetId;
+            bool birth = planet.id == GSSettings.BirthPlanetId;
             Vector3 groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             List<GSVeinDescriptor> veinGroups = DistributeVeinTypes(gsPlanet.veinSettings.VeinTypes);
             Dictionary<EVeinType, int> veinTotals = new Dictionary<EVeinType, int>();

@@ -21,7 +21,7 @@ namespace GalacticScale.Generators
 
         public GSOptions Options => options;
         private GSOptions options = new GSOptions();
-        //private List<GSStar> stars = new List<GSStar>();
+        //private GSStars stars = new GSStars();
         public void Init()
         {
             //List<string> genList = new List<string>();

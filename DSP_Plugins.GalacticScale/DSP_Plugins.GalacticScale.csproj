@@ -157,8 +157,8 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Sol\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\PlanetRawDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\ThemeViewer.cs" />
     <Compile Include="Scripts\GalacticScale2.0\GSTeleportHandler.cs" />

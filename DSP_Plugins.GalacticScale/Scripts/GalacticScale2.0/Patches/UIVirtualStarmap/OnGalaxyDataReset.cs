@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIVirtualStarmap {
+    public partial class PatchOnUIVirtualStarmap
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(UIVirtualStarmap), "OnGalaxyDataReset")]
         public static bool OnGalaxyDataReset(ref UIVirtualStarmap __instance)
         {
             //GS2.Error("............................................");
             if (GS2.Vanilla) return true;
-            GS2.Warn("Working");
             foreach (UIVirtualStarmap.StarNode starNode in __instance.starPool)
             {
                 starNode.active = false;
@@ -66,7 +66,7 @@ namespace GalacticScale
                     str += "黑洞".Translate();
                 else if (star1.type == EStarType.MainSeqStar)
                     str = str + star1.spectr.ToString() + "型恒星".Translate();
-                if (star1.index == GSSettings.BirthStarId -1)
+                if (star1.index == GSSettings.BirthPlanet.planetData.star.index)
                     str = "即将登陆".Translate() + "\r\n" + str;
                 __instance.starPool[index2].active = true;
                 __instance.starPool[index2].starData = star1;
@@ -79,7 +79,7 @@ namespace GalacticScale
                 __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(__instance.starPool[index2].nameText.preferredWidth, __instance.starPool[index2].nameText.preferredHeight);
                 __instance.starPool[index2].nameText.rectTransform.anchoredPosition = new Vector2(-2000f, -2000f);
                 __instance.starPool[index2].textContent = str;
-                if (star1.index == GSSettings.BirthStarId -1)
+                if (star1.index == GSSettings.BirthPlanet.planetData.star.index)
                     __instance.starPool[index2].nameText.gameObject.SetActive(true);
                 else
                     __instance.starPool[index2].nameText.gameObject.SetActive(false);

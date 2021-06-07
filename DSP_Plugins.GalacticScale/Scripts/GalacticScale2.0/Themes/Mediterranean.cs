@@ -16,6 +16,7 @@ namespace GalacticScale
             MaterialPath = "Universe/Materials/Planets/Ocean 1/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Birth,
+            Habitable = true,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
             VeinSettings = new GSVeinSettings()

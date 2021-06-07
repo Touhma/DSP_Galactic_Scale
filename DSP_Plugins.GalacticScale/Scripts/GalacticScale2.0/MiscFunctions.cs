@@ -37,7 +37,7 @@ namespace GalacticScale
         }
         public static GSPlanet GetGSPlanet(int vanillaID)
         {
-            //Log("Finding GSPlanet By ID "+vanillaID);
+            Warn($"Finding GSPlanet By ID '{vanillaID}' requested by {GS2.GetCaller(2)}");
             if (vanillaID < 0)
             {
                 Warn("Failed to get GSPlanet. ID less than 0. ID:" + vanillaID);
@@ -71,6 +71,8 @@ namespace GalacticScale
             {
                 return (float)Range(0f,max);
             }
+            public bool Bool(double chance) => (NextDouble() < chance);
+            public bool Bool() => (NextDouble() < 0.5);
             public int Range(int min, int max) => (UnityEngine.Mathf.RoundToInt((float)Range((float)min, (float)max)));
             public float Range(float min, float max)=> (float)Math.Round((double)min + (NextDouble() * (double)(max - min)), 8);
             public float Normal(float averageValue, float standardDeviation) => averageValue + standardDeviation * (float)(Math.Sqrt(-2.0 * Math.Log(1.0 - NextDouble())) * Math.Sin(2.0 * Math.PI * NextDouble()));

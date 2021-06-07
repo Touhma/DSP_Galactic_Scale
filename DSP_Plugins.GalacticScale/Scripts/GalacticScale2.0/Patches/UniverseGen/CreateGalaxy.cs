@@ -14,6 +14,7 @@ namespace GalacticScale
             GS2.gameDesc = gameDesc;
             if (DSPGame.IsMenuDemo) return true;
             if (GS2.Vanilla) return true;
+            GS2.Warn("Create Galaxy");
             __result = GS2.CreateGalaxy(gameDesc);
             return false;
         }

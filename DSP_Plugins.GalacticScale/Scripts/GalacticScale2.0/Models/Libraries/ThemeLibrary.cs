@@ -143,7 +143,7 @@ namespace GalacticScale
             get
             {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.PlanetType == EPlanetType.Ocean && !kv.Value.Private) list.Add(kv.Key);
+                foreach (KeyValuePair<string, GSTheme> kv in this) if (kv.Value.Habitable && !kv.Value.Private) list.Add(kv.Key);
                 return list;
             }
         }

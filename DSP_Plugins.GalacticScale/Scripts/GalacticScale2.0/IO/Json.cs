@@ -61,6 +61,7 @@ namespace GalacticScale
         }
         public static void DumpException(Exception e)
         {
+            Error($"{e.Message} {GetCaller(1)} {GetCaller(2)} {GetCaller(3)} {GetCaller(4)} {GetCaller(5)}");
             string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             path = Path.Combine(path, DateTime.Now.ToString("yyMMddHHmmss"));

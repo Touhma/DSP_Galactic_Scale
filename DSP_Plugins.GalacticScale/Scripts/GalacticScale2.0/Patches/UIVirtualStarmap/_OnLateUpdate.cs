@@ -8,6 +8,7 @@ namespace GalacticScale
         [HarmonyPrefix, HarmonyPatch(typeof(UIVirtualStarmap), "_OnLateUpdate")]
         public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)
         {
+            if (GS2.Vanilla) return true;
             int index1 = -1;
             float num1 = 1.7f;
             for (int index2 = 0; index2 < __instance.starPool.Count; ++index2)
@@ -29,7 +30,7 @@ namespace GalacticScale
                         index1 = index2;
                     }
                     //GS2.Warn($"index2 = {index2} GSSettings.birthStarId:{GSSettings.birthStarId}");
-                    if (index2 == GSSettings.BirthStarId -1)
+                    if (index2 == GSSettings.BirthPlanet.planetData.star.index)
                     {
                         Color color = __instance.starColors.Evaluate(starData.color);
                         __instance.starPointBirth.gameObject.SetActive(true);
@@ -59,7 +60,7 @@ namespace GalacticScale
             }
             bool flag3 = index1 >= 0 && __instance.starPool[index1].active;
             __instance.starPointSelection.gameObject.SetActive(flag3);
-            __instance.starPool[GSSettings.BirthStarId -1].nameText.gameObject.SetActive(true);
+            __instance.starPool[GSSettings.BirthPlanet.planetData.star.index].nameText.gameObject.SetActive(true);
             if (!flag3)
                 return false;
             StarData starData1 = __instance.starPool[index1].starData;
