@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <AssemblyVersion>2.0.51.2</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,15 +98,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AssemblyInfo.tt">
+    <None Include="Properties\AssemblyInfo.tft">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AssemblyInfo1.cs</LastGenOutput>
-    </Content>
-    <Compile Include="Properties\AssemblyInfo1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssemblyInfo.tt</DependentUpon>
-    </Compile>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
     <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsArrayConverter.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsDateConverter.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsDictionaryConverter.cs" />
@@ -161,7 +157,7 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsMetaType.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsReflectionUtility.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
-    <None Include="Properties\AssemblyInfo.bak" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Sol\Themes.cs" />
@@ -387,4 +383,9 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

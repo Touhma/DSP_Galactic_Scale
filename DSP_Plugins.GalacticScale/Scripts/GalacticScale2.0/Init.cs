@@ -56,6 +56,8 @@ namespace GalacticScale
 
         public static void Init()
         {
+            System.Version v = Assembly.GetExecutingAssembly().GetName().Version;
+            Version = $"2.0a{v.Build}.{v.Revision}";
             NebulaCompatibility.init();
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             LoadPreferences(true);

@@ -12,7 +12,7 @@ namespace GalacticScale
         public static ThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         public static GSGalaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
         public static int PlanetCount { get => instance.getPlanetCount(); }
-        public static int Seed { get => 1; set => instance.seed = value; }//{ GS2.Warn($"Seed Accessed and instance null = {instance == null} returning {(instance != null?instance.seed:0)} accessor:{GS2.GetCaller(1)}"); if (instance != null) return instance.seed; return 0; } set => instance.seed = value; }
+        public static int Seed { get { if (instance != null) return instance.seed; return 0; } set => instance.seed = value; }
         public static GSStars Stars { get => instance.stars; set => instance.stars = value; }
         public static int StarCount { get => Stars.Count; }
         // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }

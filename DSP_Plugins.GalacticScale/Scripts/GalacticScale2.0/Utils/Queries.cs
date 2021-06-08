@@ -9,6 +9,7 @@
 
         public static GSStar GetGSStar(int id)
         {
+            Warn($"{id}/{gsStars.Count}");
             return gsStars[id];
         }
         public static GSStar GetGSStar(string name)

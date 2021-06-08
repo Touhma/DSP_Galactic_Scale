@@ -15,7 +15,7 @@ namespace GalacticScale
             w.Write(GSSettings.Instance.version);
             w.Write(json);
             Log("Exported. Resetting GSSettings");
-            GSSettings.Reset(GSSettings.Seed);
+            //GSSettings.Reset(GSSettings.Seed);
             Log("End");
         }
         public static void Import(BinaryReader r) // Load Settings from Save Game
@@ -30,7 +30,7 @@ namespace GalacticScale
             serializer.TryDeserialize(data2, ref result);
             if (version != GSSettings.Instance.version)
             {
-                Log("Version mismatch: " + GSSettings.Instance.version + " trying to load " + version + " savedata");
+                Warn("Version mismatch: " + GSSettings.Instance.version + " trying to load " + version + " savedata");
             }
             GSSettings.Instance = result;
             GSSettings.Instance.imported = true;
