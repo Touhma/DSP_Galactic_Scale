@@ -1,9 +1,7 @@
-﻿// PlanetAlgorithm
-using GalacticScale;
-using System;
+﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Threading;
+
 
 namespace GalacticScale
 {
@@ -11,12 +9,13 @@ namespace GalacticScale
     {
         public static void GenerateVeinsVanilla(GSPlanet gsPlanet, bool sketchOnly)
         {
+            random = new GS2.Random(gsPlanet.Seed);
             ThemeProto themeProto = LDB.themes.Select(gsPlanet.planetData.theme);
             if (themeProto == null) return;
             bool birth = GSSettings.BirthPlanet == gsPlanet;
             float planetRadiusFactor = 2.1f / gsPlanet.planetData.radius;
             InitializeFromThemeProto(gsPlanet, themeProto, out int[] _vein_spots, out float[] _vein_counts, out float[] _vein_opacity);
-            if (birth && !sketchOnly) GenBirthPoints(gsPlanet);
+            if (birth && !sketchOnly) gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next()); //GenBirthPoints(gsPlanet);
             gsPlanet.veinData.Clear();
             if (sketchOnly) return;
             if (birth) InitBirthVeinVectors(gsPlanet);
@@ -31,6 +30,7 @@ namespace GalacticScale
             float[] _vein_opacity,
             bool birth)
         {
+            //random = new GS2.Random(GSSettings.Seed);
             float resourceCoef = gsPlanet.planetData.star.resourceCoef;
             if (birth) resourceCoef *= 2f / 3f;
             InitializePlanetVeins(gsPlanet.planetData, gsPlanet.veinData.count);
@@ -86,6 +86,7 @@ namespace GalacticScale
 
         public static void CalculateVectorsVanilla(GSPlanet gsPlanet, float planetRadiusFactor, int[] _vein_spots)
         {
+            //random = new GS2.Random(GSSettings.Seed);
             bool birth = (gsPlanet.planetData.id == GSSettings.BirthPlanetId);
             Vector3 spawnVector = InitVeinGroupVector(gsPlanet.planetData, birth); //Random Vector, unless its birth planet.
             for (int k = 1; k < 15; k++) //for each of the vein types
@@ -158,7 +159,7 @@ namespace GalacticScale
         }
         public static float InitSpecials(GSPlanet gsPlanet, int[] _vein_spots, float[] _vein_counts, float[] _vein_opacity)
         {
-            System.Random random = GS2.random;
+            //random = new GS2.Random(GSSettings.Seed);
             float p = 1f;
             ESpectrType _star_spectr = gsPlanet.planetData.star.spectr;
             switch (gsPlanet.planetData.star.type)
@@ -270,7 +271,7 @@ namespace GalacticScale
         }
         public static void InitRares(GSPlanet gsPlanet, ThemeProto themeProto, int[] _vein_spots, float[] _vein_counts, float[] _vein_opacity, float p)
         {
-            System.Random random = GS2.random;
+            //random = new GS2.Random(GSSettings.Seed);
             for (int n = 0; n < themeProto.RareVeins.Length; n++)
             {
                 int _rareVeinId = themeProto.RareVeins[n];

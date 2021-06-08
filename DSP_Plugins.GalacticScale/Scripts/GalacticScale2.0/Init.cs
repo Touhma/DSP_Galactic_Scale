@@ -8,7 +8,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static string Version = "2.0.0a47";
+        public static string Version = "2.0.0a50";
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Failed = false;
         public static bool Initialized = false;
@@ -30,12 +30,12 @@ namespace GalacticScale
 
         //public static int[] tmp_state;
         public static GalaxyData galaxy;
-        public static Random random { get => new Random(GSSettings.Seed); }
+        public static Random random;
         public static GameDesc gameDesc;
         
         public static bool Vanilla { get => generator.GUID == "space.customizing.generators.vanilla"; }
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
-        
+        public static Dictionary<int, GSStar> gsStars = new Dictionary<int, GSStar>();
         private static UnityEngine.AssetBundle _bundle;
         public static UnityEngine.AssetBundle bundle { get
             {
@@ -56,6 +56,7 @@ namespace GalacticScale
 
         public static void Init()
         {
+            NebulaCompatibility.init();
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             LoadPreferences(true);
             Log("Start"+debugOn.ToString());

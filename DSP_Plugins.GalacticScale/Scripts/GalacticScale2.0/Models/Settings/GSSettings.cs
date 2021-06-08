@@ -12,7 +12,7 @@ namespace GalacticScale
         public static ThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         public static GSGalaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
         public static int PlanetCount { get => instance.getPlanetCount(); }
-        public static int Seed { get { if (instance != null) return instance.seed; return 0; } set => instance.seed = value; }
+        public static int Seed { get => 1; set => instance.seed = value; }//{ GS2.Warn($"Seed Accessed and instance null = {instance == null} returning {(instance != null?instance.seed:0)} accessor:{GS2.GetCaller(1)}"); if (instance != null) return instance.seed; return 0; } set => instance.seed = value; }
         public static GSStars Stars { get => instance.stars; set => instance.stars = value; }
         public static int StarCount { get => Stars.Count; }
         // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }
@@ -22,7 +22,7 @@ namespace GalacticScale
             get
             {
                 if (birthPlanet != null) return birthPlanet;
-                GS2.Warn($"BirthPlanet Requested by {GS2.GetCaller(1)}");
+                GS2.Warn($"BirthPlanet Requested by {GS2.GetCaller(1)} {GS2.GetCaller(2)} {GS2.GetCaller(3)}");
                 if (birthPlanetId > 100)
                 {
                     GS2.Warn($"Trying to find GSPlanet for id {birthPlanetId} on behalf of {GS2.GetCaller()}");
@@ -113,6 +113,7 @@ namespace GalacticScale
             birthPlanet = null;
             //birthStarId = -1;
             GS2.gsPlanets.Clear();
+            GS2.gsStars.Clear();
             //GS2.Log("End");
         }
         private int getPlanetCount()
@@ -129,6 +130,8 @@ namespace GalacticScale
         public double minStepLength = 2.3;
         public double maxStepLength = 3.5;
         public double flatten = 0.18;
+        public int graphDistance = 64;
+        public int graphMaxStars = 64;
         public bool ignoreSpecials = false; // allow special ores around regular stars
     }
 }

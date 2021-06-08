@@ -18,7 +18,7 @@ namespace GalacticScale
             GS2.Log("Start");
             GalaxyData galaxy;
             if (GS2.Vanilla) galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
-            else galaxy = GS2.CreateGalaxy(__instance.gameDesc, false);
+            else galaxy = GS2.ProcessGalaxy(__instance.gameDesc, false);
             if (__instance.starmap.galaxyData != null)
                 __instance.starmap.galaxyData.Free();
             __instance.starmap.galaxyData = galaxy;
@@ -170,7 +170,7 @@ namespace GalacticScale
             if (StartButton == null) StartButton = __instance.GetComponentInChildren<UIButton>().gameObject;
             StartButton?.SetActive(true);
             GS2.Log(StartButton?.name);
-            __instance.random = new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));
+            __instance.random = new DotNet35Random(GSSettings.Seed);//new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
             __instance.gameDesc.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.generator.Config.DefaultStarCount, 1, 1f);
             GS2.gameDesc = __instance.gameDesc;

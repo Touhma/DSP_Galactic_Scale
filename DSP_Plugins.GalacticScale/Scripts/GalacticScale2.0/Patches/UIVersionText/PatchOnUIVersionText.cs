@@ -35,7 +35,7 @@ namespace GalacticScale
                     else
                     {
                         ___textComp.fontSize = 24;
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + GS2.Version;
+                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() + "\r\n" + userName + " - Galactic Scale v" + GS2.Version + "\r\nSeed:"+GSSettings.Seed + " " + GameMain.galaxy.seed;
                     }
                 }
             }

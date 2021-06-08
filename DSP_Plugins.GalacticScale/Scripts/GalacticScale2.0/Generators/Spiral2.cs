@@ -80,7 +80,7 @@ namespace GalacticScale.Generators
             List<VectorLF3> positions = new List<VectorLF3>();
 
 
-            System.Random random = new System.Random(GSSettings.Seed);
+            GS2.Random random = new GS2.Random(GSSettings.Seed);
             List<VectorLF3> points = new List<VectorLF3>();
 
             //float p = 0.05f;

@@ -157,7 +157,8 @@ namespace GalacticScale.Generators
             fsData data2 = fsJsonParser.Parse(json);
             List<externalStarData> localStars = new List<externalStarData>();
             serializer.TryDeserialize(data2, ref localStars);
-
+            HighStopwatch stopwatch = new HighStopwatch();
+            stopwatch.Begin();
             for (var i = 0; i < localStars.Count; i++)
             {
                 stars.Add(new GSStar(1, localStars[i].Name, ESpectrType.G, EStarType.MainSeqStar, new GSPlanets()));
@@ -168,15 +169,71 @@ namespace GalacticScale.Generators
                 stars[stars.Count - 1].Spectr = getSpectrType(localStars[i]);
                 stars[stars.Count - 1].luminosity = localStars[i].luminance;
                 stars[stars.Count - 1].temperature = localStars[i].temp;
-            }
+                if (stars.Count > 2)
+                {
+                    GSStar s1 = stars[stars.Count - 1];
+                    GSStar s2 = stars[stars.Count - 2];
+                    GSStar s3 = stars[stars.Count - 3];
+                    //double s1mag = s1.position.magnitude;
+                    //double s2mag = s2.position.magnitude;
+                    //double s3mag = s3.position.magnitude;
+                    //double absMag = System.Math.Abs(s1mag - s2mag);
+                    //double absMag2 = System.Math.Abs(s1mag - s3mag);
+                    double d2 = Utils.DistanceVLF3(s1.position, s2.position);
+                    double d3 = Utils.DistanceVLF3(s1.position, s3.position);
+                    //GS2.Warn($"Distance Between {s2.Name} ->{d2}<- {s1.Name} => {d3} <- {s3.Name}");
+                    if (d2 < .01) //Inside each other
+                    {
+                        //GS2.Warn($"Distance:{d2} moving {s2.Name} 0.01 in x,y and z");
+                        s2.position = new VectorLF3(s2.position.x + 0.01, s2.position.y + 0.01, s2.position.z + 0.01);
+                        //GS2.Warn($"Distance:{d2} after move");
+                    }
+                    if (d3 < .01) //Inside each other
+                    {
+                        //GS2.Warn($"Distance:{d3} moving {s3.Name} 0.01 in x,y and z");
+                        s3.position = new VectorLF3(s3.position.x + 0.01, s3.position.y + 0.01, s3.position.z + 0.01);
+                        //GS2.Warn($"Distance:{d2} after move");
+                    }
+                    if (d2 < .2 && !s1.Decorative && !s2.Decorative)
+                    { // Right next to each other
+                        
+                        if (s1.mass > s2.mass) s2.Decorative = true;
+                        else s1.Decorative = true;
+                        //GS2.Warn($"Distance:{d2} setting {(s1.Decorative?s1.Name:s2.Name)} decorative");
+                    }
+                    if (d3 < .2 && !s1.Decorative && !s3.Decorative)
+                    { // Right next to each other
 
+                        if (s1.mass > s3.mass) s3.Decorative = true;
+                        else s1.Decorative = true;
+                        //GS2.Warn($"Distance:{d3} setting {(s1.Decorative ? s1.Name : s3.Name)} decorative");
+                    }
+                    if (d2 < 3 && !s1.Decorative && !s2.Decorative)
+                    {
+                        //GS2.Warn($"Proximity Alert: {s1.Name} vs {s2.Name} Making OrbitRadius Smaller:{d2 * 20f}");
+                        s1.MaxOrbit = Mathf.Min(s1.MaxOrbit, (float)d2 * 20f);
+                        s2.MaxOrbit = Mathf.Min(s2.MaxOrbit, (float)d2 * 20f);
+                    }
+                    if (d3 < 3 && !s1.Decorative && !s3.Decorative)
+                    {
+                        //GS2.Warn($"Proximity Alert: {s1.Name} vs {s3.Name} Making OrbitRadius Smaller:{d3 * 20f}");
+                        s1.MaxOrbit = Mathf.Min(s1.MaxOrbit, (float)d3 * 20f);
+                        s3.MaxOrbit = Mathf.Min(s3.MaxOrbit, (float)d3 * 20f);
+                    }
+                }
+            }
+            GS2.Warn("Star Parse Time: " + stopwatch.duration.ToString("0.000") + " s");
         }
         private int availMoons;
         public void Generate(int starCount)
         {
-            //GS2.Warn($"Start {GS2.GetCaller()}");
+            
+            GS2.Warn($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
+            GSSettings.GalaxyParams.graphDistance = 48;
+            GSSettings.GalaxyParams.graphMaxStars = 512;
             random = new GS2.Random(GSSettings.Seed);
+            GS2.Warn(random.Next(1000).ToString()); GS2.Warn(random.Next(1000).ToString());
             if (starCount > stars.Count) starCount = stars.Count;
             for (var i = 0; i < starCount; i++)
             {
@@ -203,7 +260,16 @@ namespace GalacticScale.Generators
                 if (star.Planets.Count > 0)
                 {
                     GS2.Log($"{star.Name} already has generated planets. Returning.");
+                    continue;
                 }
+                //if (star.Name.EndsWith(" B"))
+                //{
+                //    GS2.Warn($"Found a B Star:{star.Name}");
+                //    star.Decorative = true;
+                //    star.Planets = new GSPlanets();
+                //    continue;
+                //}
+                if (star.Decorative) continue;
                 int bodyCount = random.Next(1, preferences.GetInt("maxPlanetCount", 10));
                 int planetCount = 1 + random.Next(Mathf.RoundToInt(bodyCount / 3), bodyCount - 1);
                 int moonCount = bodyCount - planetCount;
@@ -224,8 +290,9 @@ namespace GalacticScale.Generators
                     string planetName = star.Name + " - " + RomanNumbers.roman[j + 1];
                     GSPlanet p = RandomPlanet(star, planetName, j, planetCount, planetMoonCount, moonCount);
                     availMoons -= p.MoonCount;
-                    GS2.Log($"Adding Planet with {p.MoonCount} moons. Remaining moons for other planets = {availMoons}. Planet BodyCount = {p.Bodies.Count}");
-                    star.Planets.Add(p);
+                    //GS2.Log($"Adding Planet with {p.MoonCount} moons. Remaining moons for other planets = {availMoons}. Planet BodyCount = {p.Bodies.Count}");
+                    if (p.OrbitRadius < star.MaxOrbit) star.Planets.Add(p);
+                    //else GS2.Warn($"Skipping Planet '{p.Name}' as orbit exceeded max of {star.MaxOrbit}");
                 }
 
 
@@ -257,7 +324,7 @@ namespace GalacticScale.Generators
                     1, 10, 0.6f, 0.6f, 5, 10, false));
             }
             if (preferences.GetInt("birthPlanetSize", 400) != 400) birthPlanet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
-
+            GS2.Warn(":" + random.Next(1000) + " " + random.Next(1000));
         }
         private void pickNewBirthPlanet()
         {
@@ -330,6 +397,7 @@ namespace GalacticScale.Generators
             GSPlanet lastMoon = planet.Moons[planet.Moons.Count - 1];
             float lastOrbit = lastMoon.OrbitRadius + lastMoon.SystemRadius;
             float thisMoonSystemRadius = moon.SystemRadius;
+            //GS2.Warn($"Calculating moon orbit. last orbit:{lastOrbit} thisMoonSystemRadius:{moon.SystemRadius} randomVariance:{randomvariance}");
             return lastOrbit + thisMoonSystemRadius + randomvariance;
         }
         private float CalculateNextAvailableOrbit(GSStar star, GSPlanet planet)
@@ -581,8 +649,8 @@ namespace GalacticScale.Generators
             GSPlanet PlutoCharon = planets.Add(new GSPlanet(" ", "Center", 10, 39.48f, 17.16f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f));
             PlutoCharon.Scale = 0.0001f;
             PlutoCharon.Moons = new GSPlanets() {
-                new GSPlanet("Pluto", "AshenGelisol", 70, .015f, 17.16f,  10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f),
-                new GSPlanet("Charon", "BarrenSatellite", 40, .015f, 17.16f,  10867200.0f, 180.03f, 122.53f, 1000f, 0f, 0.000873f)
+                new GSPlanet("Pluto", "AshenGelisol", 70, .002f, 17.16f,  108.0f, 0, 122.53f, 1000f, 0f, 0.000873f),
+                new GSPlanet("Charon", "BarrenSatellite", 30, .015f, 17.16f,  108.0f, 180.03f, 122.53f, 1000f, 0f, 0.000873f)
             };
             oily.Scale = 1f;
             if (preferences.GetBool("startInSol", true))

@@ -16,6 +16,7 @@ namespace GalacticScale
                 star.planetCount = gsStar.bodyCount;
             }
             star.planets = new PlanetData[Math.Min(100,gsStar.bodyCount)];
+            Log("Creating Planet");
             for (var i = 0; i < gsStar.planetCount; i++) CreatePlanet(ref star, gsStar.Planets[i], null);
             Log($"End|{star.name}");
         }

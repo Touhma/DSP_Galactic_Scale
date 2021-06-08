@@ -18,12 +18,12 @@ namespace GalacticScale {
         public static bool DebugStarNamingGen = false;
 
         internal void Awake() {
+            BCE.console.init();
             var harmony = new Harmony("dsp.galactic-scale.star-system-generation");
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGenStarGraph));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescImport));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDescExport));
             Harmony.CreateAndPatchAll(typeof(PatchOnOptionWindow));

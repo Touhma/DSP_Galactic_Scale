@@ -97,6 +97,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Properties\AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo1.cs</LastGenOutput>
+    </Content>
+    <Compile Include="Properties\AssemblyInfo1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsArrayConverter.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsDateConverter.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Converters\fsDictionaryConverter.cs" />
@@ -152,7 +161,7 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsMetaType.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsReflectionUtility.cs" />
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Properties\AssemblyInfo.bak" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Sol\Themes.cs" />
@@ -190,6 +199,9 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinDescriptor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\Init.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\OnActivePlanetLoaded.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetOrCreateFactory.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Export - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Import - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameLoader\FixedUpdate.cs" />
@@ -245,10 +257,12 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\SaltLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\BCE.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\NebulaCompatibility.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\Queries.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Utils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vege Generation\GenerateVeges1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GenerateVeins.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\PatchNewGame.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\NewGame.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\BallTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\PhysicsTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral2.cs" />
@@ -282,7 +296,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetSimulator\SetPlanetData.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\DetermineLongitudeSegmentCount.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerAction_Build\Legacy - Broken Code.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\PatchOnGameData.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetNearestStarPlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildingGrid\PatchOnUIBuildingGrid.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkPlanetAtmoBlur.cs" />
@@ -313,7 +327,7 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SettingsUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\PatchOnOptionWindow.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\PatchOnSetTabIndex.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\CreateGalaxy.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\ProcessGalaxy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\MiscFunctions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\StationComponent\InternalTickRemote.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\OnPlanetDataSet.cs" />
@@ -321,7 +335,7 @@
     <Compile Include="Scripts\Bootstrap.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\UpdateDirtyMesh.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\PatchOnUIStarDetail.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\PatchOnUniverseGen_CreateGalaxyStarGraph.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\CreateGalaxyStarGraph.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UniverseGen\CreateGalaxy.cs" />
     <Compile Include="Scripts\Dependencies\**\*.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\PatchOnUIGameLoadingSplash.cs" />
@@ -344,11 +358,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Scripts\Assets\galaxy.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
     <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)GalacticScale.pdb" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)galacticbundle" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" DestinationFolder="$(Plugins_Dir)" />
   </Target>
@@ -365,4 +383,8 @@
   <Target Name="AfterClean">
     <Delete Files="$(TargetPath).mdb" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

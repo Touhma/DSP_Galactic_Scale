@@ -7,7 +7,7 @@ namespace GalacticScale
 
     public static class StarDefaults
     {
-        private static GS2.Random r = new GS2.Random();
+        private static GS2.Random r;
         public static float Age(GSStar star)
         {
             EStarType t = star.Type;
@@ -139,7 +139,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            r = new GS2.Random(star.Seed);
+            //r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(17f, 36f); 
@@ -326,7 +326,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            r = new GS2.Random(star.Seed);
+          //  r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(2.0f, 2.5f); 
@@ -366,7 +366,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
-            r = new GS2.Random(star.Seed);
+          //  r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return r.Range(1.0f, 1.35f); 
@@ -394,7 +394,7 @@ namespace GalacticScale
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
             var habitableRadius = Mathf.Pow(1.7f, 2f + ClassFactor(star)) + 0.25f * Mathf.Min(1f, OrbitScaler(star));
-            r = new GS2.Random(star.Seed);
+          //  r = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return 0f;
@@ -407,7 +407,8 @@ namespace GalacticScale
         }
         public static GSStar Random(int seed = -1, string name = null, bool special = false)
         {
-            if (seed == -1) seed = GS2.random.Next();
+            //if (seed == -1) seed = GS2.random.Next();
+            if (seed == -1) seed = GSSettings.Seed;
             if (name == null) name = "Star-" + seed;
             int rand = r.Next(7);
             ESpectrType spectr = special ? ESpectrType.X : (ESpectrType)rand;

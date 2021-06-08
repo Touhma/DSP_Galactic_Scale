@@ -8,8 +8,9 @@ namespace GalacticScale
     {
         public static void GenerateVeinsGS2(GSPlanet gsPlanet, bool sketchOnly)
         {
+            random = new GS2.Random(gsPlanet.Seed);
             InitializeFromVeinSettings(gsPlanet);
-            if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly) GenBirthPoints(gsPlanet);
+            if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly) gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next());// GenBirthPoints(gsPlanet);
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
             if (sketchOnly) return;

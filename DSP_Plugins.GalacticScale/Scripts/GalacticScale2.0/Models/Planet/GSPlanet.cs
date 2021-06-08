@@ -6,11 +6,11 @@ namespace GalacticScale
 {
     public class GSPlanet
     {
-        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
+        public GS2.Random random;
 
         private string _name;
         private string _theme;
-        private int    _radius = -1;
+        private int _radius = -1;
         private float _orbitRadius = -1;
         private float _orbitInclination = -1;
         private float _orbitLongitude = -1;
@@ -26,9 +26,16 @@ namespace GalacticScale
         public Dictionary<string, GSVein> veins = new Dictionary<string, GSVein>();
         public bool randomizeVeinAmounts = true;
         public bool randomizeVeinCounts = true;
-       
+
         [SerializeField]
-        public int Seed { get => (seed >= 0) ? seed : InitSeed(); set => seed = value; }
+        public int Seed
+        {
+            get
+            {
+                return seed;
+            }
+            set => seed = value;
+        }
         [SerializeField]
         public List<GSPlanet> Moons { get => _moons; set => _moons = value; }
         [SerializeField]
@@ -37,19 +44,19 @@ namespace GalacticScale
         public string Theme { get => _theme == null ? InitTheme() : _theme; set => _theme = value; }
         public GSTheme gsTheme { get => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme]; }
         [SerializeField]
-        public int Radius { get => _radius < 0 ? InitRadius():_radius; set => _radius = value; }
+        public int Radius { get => _radius < 0 ? InitRadius() : _radius; set => _radius = value; }
         [SerializeField]
-        public float OrbitRadius { get => _orbitRadius < 0 ?  InitOrbitRadius():_orbitRadius; set => _orbitRadius = value; }
+        public float OrbitRadius { get => _orbitRadius < 0 ? InitOrbitRadius() : _orbitRadius; set => _orbitRadius = value; }
         [SerializeField]
-        public float OrbitInclination { get => _orbitInclination < 0 ? InitOrbitInclination():_orbitInclination  ; set => _orbitInclination = value; }
-       // [SerializeField]
-       // public float OrbitLongitude { get => _orbitLongitude < 0 ? InitOrbitLongitude():_orbitLongitude ; set => _orbitLongitude = value; }
+        public float OrbitInclination { get => _orbitInclination < 0 ? InitOrbitInclination() : _orbitInclination; set => _orbitInclination = value; }
+        // [SerializeField]
+        // public float OrbitLongitude { get => _orbitLongitude < 0 ? InitOrbitLongitude():_orbitLongitude ; set => _orbitLongitude = value; }
         [SerializeField]
-        public float OrbitalPeriod { get => _orbitalPeriod < 0 ? InitOrbitalPeriod():_orbitalPeriod ; set => _orbitalPeriod = value; }
+        public float OrbitalPeriod { get => _orbitalPeriod < 0 ? InitOrbitalPeriod() : _orbitalPeriod; set => _orbitalPeriod = value; }
         [SerializeField]
-        public float OrbitPhase { get => _orbitPhase < 0 ? InitOrbitPhase() : _orbitPhase ; set => _orbitPhase = value; }
+        public float OrbitPhase { get => _orbitPhase < 0 ? InitOrbitPhase() : _orbitPhase; set => _orbitPhase = value; }
         [SerializeField]
-        public float Obliquity { get => _obliquity < 0 ? InitObliquity() : _obliquity  ; set => _obliquity = value; }
+        public float Obliquity { get => _obliquity < 0 ? InitObliquity() : _obliquity; set => _obliquity = value; }
         [SerializeField]
         public float RotationPeriod { get => _rotationPeriod < 0 ? InitRotationPeriod() : _rotationPeriod; set => _rotationPeriod = value; }
         [SerializeField]
@@ -64,7 +71,8 @@ namespace GalacticScale
         public GSVeinSettings veinSettings;
         [NonSerialized]
         public GSPlanetVeins veinData = new GSPlanetVeins();
-        public bool isHabitable {
+        public bool isHabitable
+        {
             get
             {
                 if (gsTheme.PlanetType != EPlanetType.Ocean) return false;
@@ -87,54 +95,25 @@ namespace GalacticScale
         {
             Name = name;
         }
-        //public GSPlanet(string name,
-        //    string theme,
-        //    int radius,
-        //    float orbitRadius,
-        //    float orbitInclination,
-        //    float orbitLongitude,
-        //    float orbitalPeriod,
-        //    float orbitPhase,
-        //    float obliquity,
-        //    float rotationPeriod,
-        //    float rotationPhase,
-        //    float luminosity,
-        //    GSPlanets moons = null)
-        //{
-        //    Name = name;
-        //    Theme = theme;
-        //    Radius = radius;
-        //    OrbitRadius = orbitRadius;
-        //    OrbitInclination = orbitInclination;
-        //    //OrbitLongitude = orbitLongitude;
-        //    OrbitalPeriod = orbitalPeriod;
-        //    OrbitPhase = orbitPhase;
-        //    Obliquity = obliquity;
-        //    RotationPeriod = rotationPeriod;
-        //    RotationPhase = rotationPhase;
-        //    Luminosity = luminosity;
-        //    Moons = (moons == null)?new GSPlanets():moons;
-        //}
+
         public GSPlanet(string name,
-    string theme,
-    int radius,
-    float orbitRadius,
-    float orbitInclination,
-    //float orbitLongitude,
-    float orbitalPeriod,
-    float orbitPhase,
-    float obliquity,
-    float rotationPeriod,
-    float rotationPhase,
-    float luminosity,
-    GSPlanets moons = null)
+            string theme,
+            int radius,
+            float orbitRadius,
+            float orbitInclination,
+            float orbitalPeriod,
+            float orbitPhase,
+            float obliquity,
+            float rotationPeriod,
+            float rotationPhase,
+            float luminosity,
+            GSPlanets moons = null)
         {
             Name = name;
             Theme = theme;
             Radius = radius;
             OrbitRadius = orbitRadius;
             OrbitInclination = orbitInclination;
-            //OrbitLongitude = orbitLongitude;
             OrbitalPeriod = orbitalPeriod;
             OrbitPhase = orbitPhase;
             Obliquity = obliquity;
@@ -152,7 +131,9 @@ namespace GalacticScale
             }
             return (gsTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
         }
-        public int MoonCount { get
+        public int MoonCount
+        {
+            get
             {
                 if (Moons == null) return 0;
                 int count = 0;
@@ -164,27 +145,30 @@ namespace GalacticScale
                 return count;
             }
         }
-        public List<GSPlanet> Bodies { get
+        public List<GSPlanet> Bodies
+        {
+            get
             {
                 List<GSPlanet> b = new List<GSPlanet>() { this };
                 if (Moons == null) return b;
-                foreach (GSPlanet moon in Moons) {
+                foreach (GSPlanet moon in Moons)
+                {
                     b.AddRange(moon.Bodies);
                 }
                 return b;
-            } 
+            }
         }
 
-        
-        private int InitSeed()
-        {
-            seed = random.Next();
-            return seed;
-        }
+
+        //private int InitSeed()
+        //{
+        //    seed = random.Next();
+        //    return seed;
+        //}
 
         public override string ToString()
         {
-          return this.Name;
+            return this.Name;
         }
         private string InitTheme()
         {
@@ -210,7 +194,7 @@ namespace GalacticScale
             _radius = 200;
             return _radius;
         }
-        private float InitOrbitRadius ()
+        private float InitOrbitRadius()
         {
             _orbitRadius = GS2.random.Next(10);
             return _orbitRadius;
@@ -260,9 +244,14 @@ namespace GalacticScale
             }
         }
         public float RadiusAU { get => Radius * 0.00005f * Scale; }
-        public float SystemRadius { get {
+        public float SystemRadius
+        {
+            get
+            {
                 GSPlanet mds = MostDistantSatellite;
                 if (mds == this) return RadiusAU;
-                return MostDistantSatellite.OrbitRadius + MostDistantSatellite.RadiusAU; } }
+                return MostDistantSatellite.OrbitRadius + MostDistantSatellite.RadiusAU;
+            }
+        }
     }
 }

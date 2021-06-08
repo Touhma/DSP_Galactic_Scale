@@ -6,31 +6,28 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static GalaxyData CreateGalaxy(GameDesc desc, bool createPlanets = true)
+        public static GalaxyData ProcessGalaxy(GameDesc desc, bool createPlanets = true)
         {
             Log($"Start CreatePlanets:{createPlanets}");
-            if (createPlanets)
-            {
-                Log("Setting up Birth Planet");
-                //SetupBirthPlanet();
-                Log("Generating Veins");
-                GenerateVeins();
-                return galaxy;
-            }
+
             try
             {
+                random = new Random(GSSettings.Seed);
                 gameDesc = desc;
                 Log("Generating Galaxy");
                 Failed = false;
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported)
                 {
+                    Warn("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
                     Log("Seed From gameDesc = " + GSSettings.Seed);
                     gsPlanets.Clear();
-                    Log("Loading Data from Generator : " + generator.Name);
+                    gsStars.Clear();
+                    Warn("Cleared");
+                    Warn("Loading Data from Generator : " + generator.Name);
                     generator.Generate(gameDesc.starCount);
-                    Log("Final Seed = " + GSSettings.Seed);
+                    Warn("Final Seed = " + GSSettings.Seed);
                     Log("End");
                 }
                 else Log("Settings Loaded From Save File");
@@ -66,7 +63,14 @@ namespace GalacticScale
                 //SetupBirthPlanet();
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
-
+                if (createPlanets)
+                {
+                    Log("Setting up Birth Planet");
+                    //SetupBirthPlanet();
+                    Log("Generating Veins");
+                    GenerateVeins();
+                    //if (GS2.CheatMode) return galaxy;
+                }
                 Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log("End of galaxy generation");
@@ -74,7 +78,7 @@ namespace GalacticScale
                 Warn($"birthPlanetId:{galaxy.birthPlanetId}");
                 Warn($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name}");
                 Warn($"its planets length: {galaxy.stars[galaxy.birthStarId -1].planets.Length}");
-
+                Warn($"First System Radius = {galaxy.stars[0].systemRadius}");
                 return galaxy;
             } catch (Exception e)
             {

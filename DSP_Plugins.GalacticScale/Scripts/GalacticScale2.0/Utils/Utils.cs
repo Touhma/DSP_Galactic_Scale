@@ -9,7 +9,8 @@ namespace GalacticScale
     public static class Utils
     {
         public static Type GetCallingType() => new StackTrace().GetFrame(2).GetMethod().ReflectedType;
-
+        public static double DistanceVLF3(VectorLF3 a, VectorLF3 b) => new VectorLF3(a.x - b.x, a.y- b.y, a.z - b.z).magnitude;
+        
         public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t)
         {
             foreach (var g in GS2.generators)

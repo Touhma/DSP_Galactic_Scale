@@ -24,23 +24,14 @@ namespace GalacticScale
     }
     public static partial class VeinAlgorithms
     {
-        //public delegate void VeinAlgo(GSPlanet gsPlanet, bool sketchOnly);
-        //public static Dictionary<string, VeinAlgo> VeinAlgorithms = new Dictionary<string, VeinAlgo>() { 
-        //    ["Vanilla"] = GenerateVeinsVanilla, 
-        //    ["GS2"] = GenerateVeinsGS2 
-        //};
-        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
-        //public static void GenerateVeins(GSPlanet gsPlanet, bool sketchOnly)
-        //{
-        //    GSTheme theme = GS2.ThemeLibrary[gsPlanet.Theme];
-        //    VeinAlgorithms[theme.VeinSettings.Algorithm](gsPlanet, sketchOnly);
-        //}
+        public static GS2.Random random;// = new GS2.Random(GSSettings.Seed);
 
         private static void GenBirthPoints(GSPlanet gsPlanet)
         {
+            random = new GS2.Random(GSSettings.Seed);
             PlanetData planet = gsPlanet.planetData;
             //GS2.Log("GenBirthPoints");
-            System.Random random = new System.Random(planet.seed);
+            //System.Random random = new System.Random(planet.seed);
             Pose pose;
             double n = 85.0 / planet.orbitalPeriod + (double)planet.orbitPhase / 360.0;
             int n2 = (int)(n + 0.1);
@@ -119,6 +110,7 @@ namespace GalacticScale
 
         private static void GenerateNodeVectors(List<Vector2> node_vectors, int max_count)
         {
+            //random = new GS2.Random(GSSettings.Seed);
             int j = 0;
             while (j++ < 20) //do this 20 times
             {
@@ -216,6 +208,7 @@ namespace GalacticScale
         }
         public static Vector3 RandomDirection()
         {
+            //random = new GS2.Random(GSSettings.Seed);
             Vector3 randomVector = Vector3.zero;
             randomVector.x = (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
             randomVector.y = (float)random.NextDouble() * 2f - 1f;
@@ -250,6 +243,7 @@ namespace GalacticScale
 
         private static Vector3 InitVeinGroupVector(PlanetData planet, bool birth)
         {
+            //random = new GS2.Random(GSSettings.Seed);
             Vector3 groupVector;
             if (birth)
             {

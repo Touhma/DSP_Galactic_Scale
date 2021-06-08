@@ -69,7 +69,7 @@ namespace GalacticScale
             this.type = type;
         }
         public GSVeinType() { }
-        public static GS2.Random random = new GS2.Random();
+        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
         public static GSVeinType Generate(EVeinType type, int min, int max, float min_richness, float max_richness, int min_patchSize, int max_patchSize, bool rare)
         {
             GSVeinType vt = new GSVeinType(type);

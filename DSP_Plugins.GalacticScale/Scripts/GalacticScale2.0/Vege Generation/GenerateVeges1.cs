@@ -5,15 +5,18 @@ namespace GalacticScale
 {
 	public static partial class VegeAlgorithms
 	{
+		private static GS2.Random random = new GS2.Random(GSSettings.Seed);
 		public static void GenerateVeges1(GSPlanet gsPlanet)
 		{
 			//GS2.Log("GenerateVeges1|" + gsPlanet.Name);
+			GS2.Warn($"USING GS2 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
 			PlanetData planet = gsPlanet.planetData;
 			ThemeProto themeProto = LDB.themes.Select(planet.theme);
 			if (themeProto == null)
 			{
 				return;
 			}
+			random = new GS2.Random(GSSettings.Seed);
 			//TODO convert veges in GSTheme
 			//GS2.Log("GenerateVeges1|" + gsPlanet.Name+"1");
 			int[] vegetables = themeProto.Vegetables0;
@@ -32,14 +35,14 @@ namespace GalacticScale
 			float num7 = 2f;
 			float num8 = -0.2f;
 			float num9 = 1.4f;
-            System.Random random = new System.Random(planet.seed);
+            //System.Random random = new System.Random(planet.seed);
             random.Next();
 			random.Next();
 			random.Next();
 			int num10 = random.Next();
-			System.Random random2 = new System.Random(num10);
-			SimplexNoise simplexNoise = new SimplexNoise(random2.Next());
-			SimplexNoise simplexNoise2 = new SimplexNoise(random2.Next());
+			//System.Random random2 = new System.Random(num10);
+			SimplexNoise simplexNoise = new SimplexNoise(random.Next());
+			SimplexNoise simplexNoise2 = new SimplexNoise(random.Next());
 			PlanetRawData data = planet.data;
 			int stride = data.stride;
 			int num11 = stride / 2;
@@ -139,15 +142,15 @@ namespace GalacticScale
 				{
 					flag2 = false;
 				}
-				double num29 = random2.NextDouble();
+				double num29 = random.NextDouble();
 				num29 *= num29;
-				double num30 = random2.NextDouble();
-				float num31 = (float)random2.NextDouble() - 0.5f;
-				float num32 = (float)random2.NextDouble() - 0.5f;
-				float num33 = (float)Math.Sqrt(random2.NextDouble());
-				float angle = (float)random2.NextDouble() * 360f;
-				float num34 = (float)random2.NextDouble();
-				float num35 = (float)random2.NextDouble();
+				double num30 = random.NextDouble();
+				float num31 = (float)random.NextDouble() - 0.5f;
+				float num32 = (float)random.NextDouble() - 0.5f;
+				float num33 = (float)Math.Sqrt(random.NextDouble());
+				float angle = (float)random.NextDouble() * 360f;
+				float num34 = (float)random.NextDouble();
+				float num35 = (float)random.NextDouble();
 				float num36 = 1f;
 				float num37 = 0.5f;
 				float num38 = 1f;
@@ -249,12 +252,12 @@ namespace GalacticScale
 					Vector4 vector9 = vegeScaleRanges[vege.protoId];
 					for (int j = 0; j < num44; j++)
 					{
-						float num49 = (float)random2.NextDouble() - 0.5f;
-						float num50 = (float)random2.NextDouble() - 0.5f;
-						float num51 = (float)Math.Sqrt(random2.NextDouble());
-						float angle2 = (float)random2.NextDouble() * 360f;
-						float num52 = (float)random2.NextDouble();
-						float num53 = (float)random2.NextDouble();
+						float num49 = (float)random.NextDouble() - 0.5f;
+						float num50 = (float)random.NextDouble() - 0.5f;
+						float num51 = (float)Math.Sqrt(random.NextDouble());
+						float angle2 = (float)random.NextDouble() * 360f;
+						float num52 = (float)random.NextDouble();
+						float num53 = (float)random.NextDouble();
 						Vector3 vector10 = vector * num18;
 						Vector3 normalized2 = (vector8 * num49 + vector7 * num50).normalized;
 						float num54 = num51 * num9;

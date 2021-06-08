@@ -24,7 +24,7 @@ namespace GalacticScale.Generators
 
         public GSGeneratorConfig Config => new GSGeneratorConfig(true, true);
 
-        private string filename = "GSData";
+        private string filename = "";
         private List<string> filenames = new List<string>();
         private string dumpFilename = "_dump";
         private GSUI minifyCheckbox;
@@ -43,6 +43,11 @@ namespace GalacticScale.Generators
         public void Generate(int starCount)
         {
             GS2.Log("Generator:Json|Generate");
+            if (string.IsNullOrEmpty(filename))
+            {
+                UIMessageBox.Show("Error", "To use the Custom JSON Generator you must select a file to load.", "Ok", 1);
+                RefreshFileNames();
+            }
             string path = Path.Combine(Path.Combine(GS2.DataDir,"CustomGalaxies"), filename + ".json");
             GS2.LoadSettingsFromJson(path);
             GS2.Log("Generator:Json|Generate|End");
@@ -52,7 +57,12 @@ namespace GalacticScale.Generators
         {
             GS2.Log("Importing JSON Preferences");
             GS2.Log("Generator:Json|Import");
-            if (preferences != null && preferences.ContainsKey("filename")) filename = (string)preferences["filename"];
+            filename = preferences.GetString("filename");
+            GS2.Warn("Filename" + filename);
+            if (!filenames.Contains(filename))
+            {
+                filename = filenames[0];
+            }
             //if (preferences != null && preferences.ContainsKey("dumpFilename")) dumpFilename = (string)preferences["dumpFilename"];
             dumpFilename = preferences.GetString("dumpFilename", dumpFilename);
             GS2.minifyJSON = preferences.GetBool("minify", false);
@@ -109,6 +119,7 @@ namespace GalacticScale.Generators
             //    starlist+=s.classFactor+","+s.type + "," + s.spectr + "," + s.age + "," + s.mass +"," + s.color + "," + s.luminosity + "," + s.lifetime + "," + s.radius + "," + s.dysonRadius + "," + s.temperature + "," + s.orbitScaler+"," + s.lightBalanceRadius+"\n";
             //}
             GS2.DumpObjectToJson(path, GSSettings.Instance);
+            RefreshFileNames();
         }
         private void FilenameInputCallback(object result)
         {

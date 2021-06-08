@@ -50,12 +50,12 @@ namespace GalacticScale
             public string version;
             public string generator;
             public string exception;
-            public GSSettings settings;
+            //public GSSettings settings;
             public exceptionOutput(string e)
             {
                 version = GS2.Version;
                 exception = e;
-                settings = GSSettings.Instance;
+                //settings = GSSettings.Instance;
                 generator = GS2.generator?.Name;
             }
         }

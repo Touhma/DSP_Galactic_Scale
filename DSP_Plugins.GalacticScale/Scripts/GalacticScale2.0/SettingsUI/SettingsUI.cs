@@ -14,6 +14,7 @@ namespace GalacticScale
     }
     public static class SettingsUI
     {
+        public static int MainTabIndex = 5;
         private static RectTransform tabLine;
         private static RectTransform galacticButton;
         private static UIButton[] tabButtons;
@@ -46,6 +47,7 @@ namespace GalacticScale
 
             //Add Tab Button
             Transform tabParent = GameObject.Find("Option Window/tab-line/tab-button-5").GetComponent<RectTransform>().parent;
+            MainTabIndex = tabParent.childCount -1;
             RectTransform tabButtonTemplate = tabParent.GetChild(tabParent.childCount - 1).GetComponent<RectTransform>();
             galacticButton = Object.Instantiate(tabButtonTemplate, tabLine, false);
             galacticButton.name = "tab-button-gs";
@@ -309,7 +311,8 @@ namespace GalacticScale
             comboBoxUI.UpdateItems();
             comboBoxUI.itemIndex = 0;
             comboBoxUI.onItemIndexChange.RemoveAllListeners();
-            if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
+            if (o.callback != null) comboBoxUI.onSubmit.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
+            //if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
             comboBoxRect.GetComponentInChildren<Text>().text = o.label;
             RectTransform tipTransform = comboBoxRect.GetChild(0).GetComponent<RectTransform>();
             tipTransform.gameObject.name = "optionTip-" + (index);
@@ -446,7 +449,7 @@ namespace GalacticScale
         }
         private static void GalacticScaleTabClick()
         {
-            UIRoot.instance.optionWindow.SetTabIndex(5, false);
+            UIRoot.instance.optionWindow.SetTabIndex(MainTabIndex, false);
             scrollview.gameObject.SetActive(true);
         }
         public static void DisableDetails()

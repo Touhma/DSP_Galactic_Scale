@@ -10,8 +10,12 @@ namespace GalacticScale
         public EStarType Type;
         public GSPlanets Planets = new GSPlanets();
         public int Seed;
+        [SerializeField]
         public float orbitScaler = 1;
-
+        [SerializeField]
+        public bool Decorative = false;
+        [SerializeField]
+        public float MaxOrbit = 60f;
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
         private float _temperature = -1;
@@ -202,6 +206,7 @@ namespace GalacticScale
             clone.Planets = new GSPlanets(Planets);
             return clone;
         }
+        //public float SystemRadius => Planets[Planets.Count -1].SystemRadius;
     }
-
 }
+

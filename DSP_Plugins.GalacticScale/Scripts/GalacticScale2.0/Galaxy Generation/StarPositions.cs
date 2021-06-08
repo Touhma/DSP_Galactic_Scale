@@ -35,7 +35,7 @@ namespace GalacticScale
         }
         private static void RandomPoses(int seed, int maxCount, double minDist, double minStepLen, double maxStepLen, double flatten)
         {
-            System.Random random = new System.Random(seed);
+            GS2.Random random = new GS2.Random(GSSettings.Seed);
             double num1 = random.NextDouble();
             tmp_poses.Add(VectorLF3.zero);
             int num2 = 6;

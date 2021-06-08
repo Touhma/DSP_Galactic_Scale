@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class VeinAlgorithms
-    {
+    public static partial class TerrainAlgorithms
+	{
+		private static GS2.Random random;
 		public static void GenerateTerrain5(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
 		{
-			GS2.Warn("USING GSTA5 FOR " + gsPlanet.Name);
+			random = new GS2.Random(gsPlanet.Seed);
+			GS2.Warn($"USING GSTA5 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
 			GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
 			//GS2.Log("Generate 2 Terrain ");
 			int seed = random.Next();

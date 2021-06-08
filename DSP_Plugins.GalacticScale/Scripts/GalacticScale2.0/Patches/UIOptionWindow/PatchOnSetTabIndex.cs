@@ -9,7 +9,7 @@ namespace GalacticScale
       
         public static bool Prefix(int index, bool immediate, ref UIOptionWindow __instance)
         {
-            if (index != 5) SettingsUI.DisableDetails(); return true;
+            if (index != SettingsUI.MainTabIndex) SettingsUI.DisableDetails(); return true;
         }
     }
 }

@@ -19,9 +19,14 @@ namespace GalacticScale
             Habitable = true,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
+            CustomGeneration = true,
+            TerrainSettings = new GSTerrainSettings()
+            {
+                Algorithm="GSTA1"
+            },
             VeinSettings = new GSVeinSettings()
             {
-                Algorithm = "Vanilla",
+                Algorithm = "GS2",
                 VeinTypes = new GSVeinTypes()
             },
             AmbientSettings = new GSAmbientSettings()
@@ -50,6 +55,7 @@ namespace GalacticScale
             },
             VegeSettings = new GSVegeSettings()
             {
+                Algorithm = "GS2",
                 Group1 = new List<string>()
                 { // Highlands
                     "MedStone4",

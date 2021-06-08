@@ -10,6 +10,8 @@ namespace GalacticScale
         {
             //if (GS2.Vanilla) return true;
             if (GS2.IsMenuDemo) return true;
+            GS2.Warn(NebulaCompatibility.IsMasterClient.ToString());
+            //if (NebulaCompatibility.Initialized || !NebulaCompatibility.LocalPlayer.IsMasterClient) return false;
             if (GS2.Failed)return false;
             GS2.Log("Checking gameData... " + ((_gameData == null)?"Null":"Exists"));
             if (_gameData == null) return GS2.AbortGameStart("An error occured during game creation, resulting in no game data being created");

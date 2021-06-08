@@ -21,7 +21,8 @@ namespace GalacticScale
             planet.index = index;
             planet.galaxy = galaxy;
             planet.star = star;
-            planet.seed = gsPlanet.Seed;
+            //if (gsPlanet.Seed < 0) gsPlanet.Seed = random.Next();
+            planet.seed = gsPlanet.Seed = (gsPlanet.Seed < 0)?random.Next():gsPlanet.Seed;
             if (isMoon)
             {
                 planet.orbitAround = host.number;
@@ -41,7 +42,8 @@ namespace GalacticScale
             }
             if (RomanNumbers.roman.Length <= index + 1) Error($"Roman Number Conversion Error for {index + 1}");
             roman += RomanNumbers.roman[index + 1];
-            planet.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;         
+            planet.name = (gsPlanet.Name != "") ? gsPlanet.Name : star.name + " " + roman;
+            GS2.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
             planet.orbitRadius = gsPlanet.OrbitRadius;        
             planet.orbitInclination = gsPlanet.OrbitInclination;
             //planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
