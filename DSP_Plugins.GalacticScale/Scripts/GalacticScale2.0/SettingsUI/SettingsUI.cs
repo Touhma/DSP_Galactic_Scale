@@ -264,6 +264,8 @@ namespace GalacticScale
                 {
                     //GS2.Log("Setting canvas active");
                     canvas.gameObject.SetActive(true);
+                    Canvas.ForceUpdateCanvases();
+                   
                 }
                 else canvas.gameObject.SetActive(false);
                 AddGeneratorPluginUIElements(canvas, i);
