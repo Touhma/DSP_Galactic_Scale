@@ -8,6 +8,11 @@ namespace GalacticScale
 {
     public static class Utils
     {
+        public static float CalculateOrbitPeriod(float orbitRadius, float speed = 0.0005f)
+        {
+            float d = Mathf.PI * orbitRadius * 2;
+            return d / speed;
+        }
         public static Type GetCallingType() => new StackTrace().GetFrame(2).GetMethod().ReflectedType;
         public static double DistanceVLF3(VectorLF3 a, VectorLF3 b) => new VectorLF3(a.x - b.x, a.y- b.y, a.z - b.z).magnitude;
         
