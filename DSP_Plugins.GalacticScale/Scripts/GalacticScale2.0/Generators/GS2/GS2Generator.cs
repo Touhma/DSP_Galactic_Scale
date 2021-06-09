@@ -7,7 +7,7 @@ using System.Resources;
 using UnityEngine;
 namespace GalacticScale.Generators
 {
-    public partial class Sol : iConfigurableGenerator
+    public partial class GS2Generator : iConfigurableGenerator
     {
         public string Name => "Sol";
 
@@ -622,7 +622,7 @@ namespace GalacticScale.Generators
         public void GenerateSol(GSStar sol)
         {
             GS2.Log("Start");
-            GS2Generator.InitThemes();
+            InitThemes();
             GSPlanet luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f, 3278f, 0, 6.68f, 3278f, 0, 1.36f);
             ref GSPlanets planets = ref sol.Planets;
             planets.Add(new GSPlanet("Mercury", "Barren", 150, 0.39f, 7.005f, 10556.28f, 0, 0.034f, 7038f, 0, 9.0827f));

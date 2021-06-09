@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 namespace GalacticScale.Generators
 {
-    public partial class Sol : iConfigurableGenerator
+    public partial class GS2Generator : iConfigurableGenerator
     {
-        public void InitThemes()
+        public static void InitThemes()
         {
             GS2.Log("Creating Themes for Sol");
             GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");

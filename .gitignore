@@ -3,6 +3,7 @@
 !galacticbundle
 !/**/
 !*.cs
+!*.json
 !*.md
 !*Assembly*
 !*.csproj
