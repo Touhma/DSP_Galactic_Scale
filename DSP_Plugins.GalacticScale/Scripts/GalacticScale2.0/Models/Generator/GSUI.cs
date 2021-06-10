@@ -30,7 +30,7 @@ namespace GalacticScale {
         {
             
             if (rectTransform == null) return false;
-            GS2.Warn($"Trying to Set({o}) with type {o.GetType()}");
+            //GS2.Warn($"Trying to Set({o}) with type {o.GetType()}");
             switch (type)
             {
                 case "Slider":

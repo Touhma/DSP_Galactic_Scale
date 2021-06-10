@@ -10,7 +10,7 @@
         public static GSStar GetGSStar(int id)
         {
             //Warn($"{id}/{gsStars.Count}");
-            if (gsStars.Count <= id) Error("Star not in gsStars collection.");
+            if (!gsStars.ContainsKey(id)) Error($"Star {id} not in gsStars collection.");
             GSStar star = gsStars[id];
             if (star == null) Error("Star is null");
             return star;

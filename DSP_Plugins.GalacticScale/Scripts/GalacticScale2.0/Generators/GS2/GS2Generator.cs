@@ -120,62 +120,6 @@ namespace GalacticScale.Generators
             }
 
         }
-
-        public class externalStarData
-        {
-            public string Name;
-            public float x;
-            public float y;
-            public float z;
-            public float mass;
-            public string spect;
-            public float radius;
-            public float luminance;
-            public float temp;
-        }
-        public ESpectrType getSpectrType(externalStarData s)
-        {
-            switch (s.spect[0])
-            {
-                case 'O': return ESpectrType.O;
-                case 'F': return ESpectrType.F;
-                case 'G': return ESpectrType.G;
-                case 'B': return ESpectrType.B;
-                case 'M': return ESpectrType.M;
-                case 'A': return ESpectrType.A;
-                case 'K': return ESpectrType.K;
-                default: break;
-            }
-            return ESpectrType.X;
-        }
-
-        public EStarType RandomSpecialStarType()
-        {
-            double chance = random.NextDouble();
-            if (chance < 0.2) return EStarType.NeutronStar;
-            if (chance < 0.4) return EStarType.BlackHole;
-            if (chance < 0.8) return EStarType.WhiteDwarf;
-            return EStarType.GiantStar; 
-        }
-        public EStarType getStarType(externalStarData s)
-        {
-            bool AccurateStars = preferences.GetBool("accurateStars", true);
-            //GS2.Warn($"AccurateStars:{AccurateStars}");
-            //if (!AccurateStars && random.Bool(0.05)) return RandomSpecialStarType();
-            switch (s.spect[0])
-            {
-                case 'O':
-                case 'F':
-                case 'G': return EStarType.MainSeqStar;
-                case 'B': return EStarType.MainSeqStar;
-                case 'M': return EStarType.MainSeqStar;
-                case 'A': return EStarType.MainSeqStar;
-                case 'K': return EStarType.MainSeqStar;
-                default: break;
-            }
-            return EStarType.WhiteDwarf;
-        }
-
         public void Generate(int starCount)
         {
             
@@ -188,12 +132,20 @@ namespace GalacticScale.Generators
             for (var i = 1; i < starCount; i++)
             {
                 GSStar star = GSSettings.Stars.Add(StarDefaults.Random());
-                star.Planets.Add(RandomPlanet(star, "Planet", 0, 1, 1, 0));
+                star.Name = SystemNames.GetName(i);
+                GeneratePlanetsForStar(star);
 
             }
             pickNewBirthPlanet();
             if (preferences.GetBool("birthPlanetSiTi", false)) AddSiTiToBirthPlanet();
             if (preferences.GetInt("birthPlanetSize", 400) != 400) birthPlanet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
+        }
+        private void GeneratePlanetsForStar(GSStar star)
+        {
+            for (var i = 0; i < 20; i++)
+            {
+                star.Planets.Add(RandomPlanet(star, star.Name + "-Planet-" + i, 0, 1, 1, 0));
+            }
         }
         private void AddSiTiToBirthPlanet()
         {
@@ -458,6 +410,7 @@ namespace GalacticScale.Generators
 
             g.Luminosity = -1;
             g.Scale = scale;
+            GS2.Warn($"Planet {g.Name} scale:{g.Scale}");
             return g;
         }
 

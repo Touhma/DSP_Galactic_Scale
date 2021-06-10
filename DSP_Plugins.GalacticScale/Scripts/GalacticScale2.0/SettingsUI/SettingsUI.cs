@@ -34,6 +34,7 @@ namespace GalacticScale
         private static List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
         private static float anchorX;
         private static float anchorY;
+        public static int generatorIndex = 0;
 
         private static GSOptions options = new GSOptions();
 
@@ -186,6 +187,20 @@ namespace GalacticScale
             //GS2.Log("CreateGalacticScaleSettingsPage Test10");
             OptionsUIPostfix.Invoke();
             //GS2.Log("CreateGalacticScaleSettingsPage Test11");
+            //UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/list/scroll-view/viewport/content
+            //UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport
+            UpdateContentRect();
+            //viewportRect.sizeDelta = this.keyScrollVbarRect.gameObject.activeSelf ? new Vector2(-10f, 0.0f) : Vector2.zero;
+        }
+        private static void UpdateContentRect()
+        {
+            var optionlist = generatorPluginOptions[generatorIndex];
+            int entries = optionlist.Count; 
+            //GS2.LogJson(optionlist, true);
+            //GS2.Warn("Option List Count = " + entries);
+            var contentRect = GameObject.Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content").GetComponent<RectTransform>();
+            contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, (float)(42 * entries + 8));
+            contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x), Mathf.Round(contentRect.anchoredPosition.y));
         }
         private static void ImportCustomGeneratorOptions()
         {
@@ -213,7 +228,7 @@ namespace GalacticScale
         private static void CreateOwnOptionsPostFix()
         {
             //GS2.Log("CreateGeneratorOptionsPostFix");
-            var generatorIndex = 0;
+
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
             for (var i = 0; i < generatorNames.Count; i++) if (generatorNames[i] == GS2.generator.Name) { 
                     /*GS2.Log("index found!" + i);*/ 
@@ -271,6 +286,7 @@ namespace GalacticScale
                 AddGeneratorPluginUIElements(canvas, i);
 
             }
+            
         }
 
 
@@ -446,6 +462,8 @@ namespace GalacticScale
             for (var i = 0; i < generatorCanvases.Count; i++) generatorCanvases[i].gameObject.SetActive(false);
             //GS2.Log("trying to setactive");
             generatorCanvases[(int)result].gameObject.SetActive(true);
+            generatorIndex = (int)result;
+            UpdateContentRect();
             //GS2.Log("trying to save prefs");
             GS2.SavePreferences();
         }
