@@ -461,10 +461,10 @@ namespace GalacticScale
             Object.Destroy(l);
             if (o.callback != null) uiButton.button.onClick.AddListener(delegate { o.callback(null); });
             buttonRect.GetComponentInChildren<Text>().text = o.label;
-            RectTransform tipTransform = buttonRect.GetChild(0).GetComponent<RectTransform>();
-            tipTransform.gameObject.name = "optionTip-" + (index);
-            Object.Destroy(tipTransform.GetComponent<Localizer>());
-            tipTransform.GetComponent<Text>().text = o.tip;
+            //RectTransform tipTransform = buttonRect.GetChild(0).GetComponent<RectTransform>();
+            //tipTransform.gameObject.name = "optionTip-" + (index);
+            //Object.Destroy(tipTransform.GetComponent<Localizer>());
+            //tipTransform.GetComponent<Text>().text = o.tip;
             if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             //GS2.Log("Finished Creating Button");
         }
