@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GalacticScale {
     public static class PlanetRawDataExtension {
@@ -7,8 +8,17 @@ namespace GalacticScale {
 
         public static void AddFactoredRadius(this PlanetRawData planetRawData, PlanetData planet) {
             //GS2.Log("PlanetRawDataExtension|AddFactoredRadius|" + planet.name + " planetRawData:" + ((planetRawData != null)?"PlanetRawData Exists":"PlanetRawData Null"));
-            if (planet == null) return;
-            FactoredRadius[planetRawData] = planet.GetScaleFactored();
+            if (planet == null) { GS2.Warn("planet Null"); return; }
+            if (planetRawData == null) { GS2.Warn($"RawData Null for planet {planet.name} of radius {planet.radius}"); return; }
+            float scaleFactored = planet.GetScaleFactored();
+            try
+            {
+                FactoredRadius[planetRawData] = scaleFactored;
+            }
+            catch (Exception e)
+            {
+                GS2.Error(e.Message);
+            }
         }
 
         public static float GetFactoredScale(this PlanetRawData planetRawData) {

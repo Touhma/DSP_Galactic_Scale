@@ -79,6 +79,7 @@ namespace GalacticScale
         private class ErrorObject
         {
             public string message;
+            public string version = GS2.Version;
             public System.Collections.Generic.List<string> stack = new System.Collections.Generic.List<string>();
         }
         public static void DumpError(string message)
