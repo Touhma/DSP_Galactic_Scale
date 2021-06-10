@@ -69,7 +69,6 @@ namespace GalacticScale {
         {
             Type t = Utils.GetCallingType();
             string id = $"{Utils.GetConfigurableGeneratorInstance(t).GUID}|{key}";
-            if (LoadedUIElements.ContainsKey(id)) { GS2.Warn("Error adding GSUI element Slider with key {id}. Element already exists."); return LoadedUIElements[id]; }
             LoadedUIElements.Add(id, new GSUI(
                 label, 
                 "Slider", 
@@ -88,7 +87,6 @@ namespace GalacticScale {
         {
             Type t = Utils.GetCallingType();
             string id = $"{Utils.GetConfigurableGeneratorInstance(t).GUID}|{key}";
-            if (LoadedUIElements.ContainsKey(id)) { GS2.Warn("Error adding GSUI element Checkbox with key {id}. Element already exists."); return LoadedUIElements[id]; }
             LoadedUIElements.Add(id, new GSUI(label, "Checkbox", defaultValue, CreateDefaultCallback(id, callback), CreateDefaultPostfix(id, defaultValue), tip));
             return LoadedUIElements[id];
         }
@@ -101,7 +99,6 @@ namespace GalacticScale {
         {
             Type t = Utils.GetCallingType();
             string id = $"{Utils.GetConfigurableGeneratorInstance(t).GUID}|{key}";
-            if (LoadedUIElements.ContainsKey(id)) { GS2.Warn("Error adding GSUI element Combobox with key {id}. Element already exists."); return LoadedUIElements[id]; }
             LoadedUIElements.Add(id, new GSUI(label, "Combobox", items, CreateDefaultCallback(id, callback), CreateDefaultPostfix(id, defaultValue), tip));
             return LoadedUIElements[id];
         }
@@ -113,7 +110,6 @@ namespace GalacticScale {
         {
             Type t = Utils.GetCallingType();
             string id = $"{Utils.GetConfigurableGeneratorInstance(t).GUID}|{key}";
-            if (LoadedUIElements.ContainsKey(id)) { GS2.Warn("Error adding GSUI element Input with key {id}. Element already exists."); return LoadedUIElements[id]; }
             LoadedUIElements.Add(id, new GSUI(label, "Input", defaultValue, CreateDefaultCallback(id, callback), CreateDefaultPostfix(id, defaultValue), tip));
             return LoadedUIElements[id];
         }

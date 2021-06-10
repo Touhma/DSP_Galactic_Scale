@@ -9,11 +9,8 @@
 
         public static GSStar GetGSStar(int id)
         {
-            //Warn($"{id}/{gsStars.Count}");
-            if (gsStars.Count <= id) Error("Star not in gsStars collection.");
-            GSStar star = gsStars[id];
-            if (star == null) Error("Star is null");
-            return star;
+            Warn($"{id}/{gsStars.Count}");
+            return gsStars[id];
         }
         public static GSStar GetGSStar(string name)
         {
@@ -24,7 +21,6 @@
                 //Log("Checking "+ p.Name + " == " + name);
                 if (s.Name == name) return s;
             }
-            Error("Star not found");
             return null;
         }
         public static GSPlanet GetGSPlanet(PlanetData planet)
@@ -40,7 +36,6 @@
                 //Log("Checking "+ p.Name + " == " + name);
                 if (p.Name == name) return p;
             }
-            Error("Planet not found");
             return null;
         }
         public static GSPlanet GetGSPlanet(int vanillaID)

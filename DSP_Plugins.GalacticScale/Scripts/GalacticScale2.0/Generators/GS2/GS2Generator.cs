@@ -51,6 +51,7 @@ namespace GalacticScale.Generators
             options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => enableLudicrousMode()));
             options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9,"galaxyDensity"));
             options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount"));
+            options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity"));
             options.Add(GSUI.Slider("Starting Planet Size", 20, 50, 510, "birthPlanetSize"));
             options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock"));
             options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi"));
@@ -107,7 +108,6 @@ namespace GalacticScale.Generators
 
             for (var i=0; i<14; i++)
             {
-                GS2.Warn($"Adding option for {typeDesc[i]} {typeLetter[i]}");
                 //options.Add(GSUI.Header("$Type K Star Override", "Settings for K type stars only"));
                 options.Add(GSUI.Slider($"{typeDesc[i]} Min Planets", 1, 4, 50, $"{typeLetter[i]}minPlanetCount"));
                 options.Add(GSUI.Slider($"{typeDesc[i]} Max Planets", 1, 10, 50, $"{typeLetter[i]}maxPlanetCount"));
