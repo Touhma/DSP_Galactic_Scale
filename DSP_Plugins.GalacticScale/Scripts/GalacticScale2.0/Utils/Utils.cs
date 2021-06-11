@@ -8,6 +8,41 @@ namespace GalacticScale
 {
     public static class Utils
     {
+        public static bool ContainsLocalStarPlanet(IEnumerable<PlanetData> genPlanetReqList)
+        {
+            bool containsLocalPlanet = false;
+            int localPlanets = 0;
+            int otherPlanets = 0;
+            foreach (PlanetData p in genPlanetReqList)
+            {
+                if (p.star == GameMain.localStar)
+                {
+                    localPlanets++;
+                    containsLocalPlanet = true;
+                    GS2.Warn("Contains Local Planet");
+                } else
+                {
+                    otherPlanets++;
+                }
+            }
+            GS2.Warn($"Checking Planets while in System {GameMain.localStar.name}. {localPlanets} planets in queue are local, {otherPlanets} planets are from other stars.");
+            return containsLocalPlanet;
+        }
+        public static bool PlanetInStar(PlanetData planet, StarData star)
+        {
+            GS2.Warn($"Checking if {planet.name} is in star {star.name}");
+            bool planetIsLocal = false;
+            foreach (PlanetData p in star.planets)
+            {
+                if (p == planet)
+                {
+                    planetIsLocal = true;
+                    break;
+                }
+            }
+            GS2.Warn($"PlanetIsLocal:{planetIsLocal}");
+            return planetIsLocal;
+        }
         public static float CalculateOrbitPeriod(float orbitRadius, float speed = 0.0005f)
         {
             float d = Mathf.PI * orbitRadius * 2;

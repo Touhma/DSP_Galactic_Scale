@@ -204,6 +204,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetGrid\LUT Rework.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\Algorithm.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\PlanetComputeMainThread.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetMain.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\CalcVerts.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\GetModLevel.cs" />
@@ -382,7 +383,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
