@@ -4,11 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale {
-    [HarmonyPatch(typeof(UIStarDetail))]
     public class PatchOnUIStarDetail {
-        
-        [HarmonyPrefix]
-        [HarmonyPatch("OnStarDataSet")]
+        [HarmonyPrefix, HarmonyPatch(typeof(UIStarDetail),"OnStarDataSet")]
         private static bool OnStarDataSet(
             StarData ____star,
             InputField ___nameInput,

@@ -3,10 +3,9 @@ using HarmonyLib;
 
 namespace GalacticScale
 {
-	public static class PatchOnGameDescImport
+	public static partial class PatchOnGameDesc
 	{
-		[HarmonyPatch(typeof(GameDesc))]
-		[HarmonyPostfix, HarmonyPatch("Import")]
+		[HarmonyPostfix, HarmonyPatch(typeof(GameDesc),"Import")]
 		public static void Import(BinaryReader r, ref GameDesc __instance)
 		{
 			if (!GS2.IsMenuDemo)

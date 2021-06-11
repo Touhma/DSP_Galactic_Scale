@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace GalacticScale
 {
-    public class PatchOnOptionWindow
+    public partial class PatchOnUIOptionWindow
     {
         [HarmonyPostfix, HarmonyPatch(typeof(UIOptionWindow), "_OnOpen")]
         public static void PatchMainMenu(ref UIOptionWindow __instance, ref UIButton[] ___tabButtons, ref Text[] ___tabTexts)

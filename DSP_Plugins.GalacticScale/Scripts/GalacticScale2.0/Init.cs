@@ -70,6 +70,8 @@ namespace GalacticScale
             {
                 themes[i].Process();
             }
+            LoadPlugins();
+            LoadPreferences();
             Log("End");
         }
           

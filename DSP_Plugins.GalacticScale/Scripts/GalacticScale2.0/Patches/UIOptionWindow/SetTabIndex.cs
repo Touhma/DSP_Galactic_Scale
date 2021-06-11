@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace GalacticScale
 {
-    public static class PatchOnSetTabIndex {
+    public static partial class PatchOnUIOptionWindow {
         [HarmonyPatch]
         static MethodBase TargetMethod() => AccessTools.Method(typeof(UIOptionWindow), "SetTabIndex");
       

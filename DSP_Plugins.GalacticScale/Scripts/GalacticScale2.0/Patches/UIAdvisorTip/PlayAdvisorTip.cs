@@ -2,10 +2,10 @@
 
 namespace GalacticScale
 {
-    public class PatchUITutorialTip
+    public partial class PatchUIAdvisorTip
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(UITutorialTip), "PopupTutorialTip")]
-        public static bool PopupTutorialTip()
+        [HarmonyPrefix, HarmonyPatch(typeof(UIAdvisorTip), "PlayAdvisorTip")]
+        public static bool PlayAdvisorTip()
         {
             if (GS2.tutorialsOff) return false;
             return true;

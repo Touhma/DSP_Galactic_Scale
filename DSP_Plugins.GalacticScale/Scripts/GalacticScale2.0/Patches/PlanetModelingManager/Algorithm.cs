@@ -2,8 +2,7 @@
 
 namespace GalacticScale
 {
-
-    public partial class PatchOnPlanetModelingManager
+	public partial class PatchOnPlanetModelingManager
     {
 		[HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "Algorithm")]
 		public static bool Algorithm(PlanetData planet, ref PlanetAlgorithm __result)

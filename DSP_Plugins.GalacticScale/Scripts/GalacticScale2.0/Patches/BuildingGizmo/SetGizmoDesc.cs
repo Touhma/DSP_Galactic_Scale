@@ -1,13 +1,12 @@
 ﻿using HarmonyLib;
 using UnityEngine;
-
-
+/// <summary>
+/// Rotate minerfan to follow curvature of smaller planets
+/// </summary>
 namespace GalacticScale {
-    [HarmonyPatch(typeof(BuildingGizmo))]
     static class PatchOnBuildingGizmo
     {
-        [HarmonyPostfix]
-        [HarmonyPatch("SetGizmoDesc")]
+        [HarmonyPostfix,HarmonyPatch(typeof(BuildingGizmo),"SetGizmoDesc")]
         public static void SetGizmoDesc(BuildGizmoDesc _desc, Transform ___minerFan)
         {
             if (_desc.desc.minerType == EMinerType.Vein)

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-
     public partial class PatchOnPlanetGrid
     {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetGrid),"CalcSegmentsAcross")]

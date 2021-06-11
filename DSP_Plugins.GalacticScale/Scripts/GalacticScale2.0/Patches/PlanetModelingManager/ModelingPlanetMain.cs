@@ -8,7 +8,6 @@ using UnityEngine.Rendering;
 
 namespace GalacticScale
 {
-
     public partial class PatchOnPlanetModelingManager : MonoBehaviour
     {
 

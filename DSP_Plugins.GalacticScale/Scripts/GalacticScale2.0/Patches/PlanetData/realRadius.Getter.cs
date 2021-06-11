@@ -2,7 +2,6 @@
 
 namespace GalacticScale
 {
-
     public partial class PatchOnPlanetData
     {
         [HarmonyPrefix,HarmonyPatch(typeof(PlanetData), "realRadius", MethodType.Getter)]

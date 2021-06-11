@@ -5,14 +5,11 @@ using UnityEngine.Rendering;
 
 namespace GalacticScale
 {
-    public class PatchUIBuildingGrid
+    public partial class PatchUIBuildingGrid
     {
-
         public static int refreshGridRadius = -1;
-
         //segment count to 512 lut
         public static Dictionary<int, int[]> LUT512 = new Dictionary<int, int[]>();
-
         [HarmonyPrefix, HarmonyPatch(typeof(UIBuildingGrid), "Update")]
         public static bool Update(UIBuildingGrid __instance, Material ___material, Material ___altMaterial)
         {

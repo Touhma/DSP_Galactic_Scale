@@ -4,13 +4,10 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    [HarmonyPatch(typeof(NearColliderLogic))]
     static class PatchOnNearColliderLogic
     {
         public static int offset = -20;
-
-        [HarmonyPrefix]
-        [HarmonyPatch("GetVeinsInAreaNonAlloc")]
+        [HarmonyPrefix,HarmonyPatch(typeof(NearColliderLogic),"GetVeinsInAreaNonAlloc")]
         public static bool GetVeinsInAreaNonAlloc(ref NearColliderLogic __instance, ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
         {
             if (veinIds == null)

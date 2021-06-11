@@ -23,51 +23,46 @@ namespace GalacticScale {
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
-            Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGameDescImport));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGameDescExport));
-            Harmony.CreateAndPatchAll(typeof(PatchOnOptionWindow));
-            Harmony.CreateAndPatchAll(typeof(PatchOnSetTabIndex));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGameOption));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
-            Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
-            Harmony.CreateAndPatchAll(typeof(PatchOnVanillaStarGen)); // Only used when using vanilla generator, to allow 1024 stars
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGameBegin));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIEscMenu));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIGameLoadingSplash));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIVersionText));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
-
-            //PatchForPlanetSize
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
             Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
-            Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
-            Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
-            Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
-            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
-
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIResearchResultsWindow));
-            Harmony.CreateAndPatchAll(typeof(PatchUITutorialTip));
-            Harmony.CreateAndPatchAll(typeof(PatchUIAdvisorTip));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameDesc));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameLoader));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuideEntry));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmap));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameOption));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
+            Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));   
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetData));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetFactory));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetGrid));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetModelingManager));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetRawData));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));         
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
+            //PatchOnPlayerAction_Build // new dsp patch completely changed this, removed for now
             Harmony.CreateAndPatchAll(typeof(PatchPlayerFootsteps));
             Harmony.CreateAndPatchAll(typeof(PatchPlayerMove_Fly));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Sail));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap));
+            Harmony.CreateAndPatchAll(typeof(PatchOnStarGen)); // Only used when using vanilla generator, to allow 1024 stars
+            Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
+            Harmony.CreateAndPatchAll(typeof(PatchUIAdvisorTip));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIEscMenu));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIGameLoadingSplash));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIOptionWindow));  
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));           
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIResearchResultsWindow));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIRoot)); 
+            Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuide));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUISpaceGuideEntry));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmap));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));         
+            Harmony.CreateAndPatchAll(typeof(PatchUITutorialTip)); 
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIVersionText));                              
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap)); 
+            Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive) {

@@ -4,8 +4,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 
 namespace GalacticScale {
-    [HarmonyPatch(typeof(UISpaceGuide))]
-    public class PatchOnUISpaceGuide {
+    public partial class PatchOnUISpaceGuide {
 
         //Strategy: Replace ldc.i4.s 10 instructions with a dynamic addition equal to the current system's planet count
         // Get the local system:
@@ -16,21 +15,12 @@ namespace GalacticScale {
         /* 0x000E0751 6F970A0006   */// IL_0355: ldfld instance int StarData::planetCount
         //
         //
-        [HarmonyTranspiler]
-        [HarmonyPatch("_OnLateUpdate")]
-        public static IEnumerable<CodeInstruction> UpdateTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            return ReplaceLd10(instructions);
-        }
-
-        [HarmonyTranspiler]
-        [HarmonyPatch("CheckVisible")]
+        [HarmonyTranspiler, HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
         public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             return ReplaceLd10(instructions);
         }
-        [HarmonyTranspiler]
-        [HarmonyPatch("CheckVisible")]
+        [HarmonyTranspiler, HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
         public static IEnumerable<CodeInstruction> VisibleTranspiler2(IEnumerable<CodeInstruction> instructions)
         {
             return ReplaceLd25(instructions);
