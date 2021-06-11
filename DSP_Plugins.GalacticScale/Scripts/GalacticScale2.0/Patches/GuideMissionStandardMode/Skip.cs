@@ -10,7 +10,7 @@ namespace GalacticScale
         {
             //if (GS2.Vanilla) return true;
             if (GS2.IsMenuDemo) return true;
-            GS2.Warn(NebulaCompatibility.IsMasterClient.ToString());
+            //GS2.Warn(NebulaCompatibility.IsMasterClient.ToString());
             //if (NebulaCompatibility.Initialized || !NebulaCompatibility.LocalPlayer.IsMasterClient) return false;
             if (GS2.Failed)return false;
             GS2.Log("Checking gameData... " + ((_gameData == null)?"Null":"Exists"));
@@ -41,7 +41,7 @@ namespace GalacticScale
             __instance.player.cameraTarget.rotation = __instance.targetRot;
             if (GS2.CheatMode && !GS2.ResearchUnlocked)
             {
-                GS2.Warn("Unlocking Research");
+                GS2.Warn("Cheatmode Enabled. Unlocking Research");
                 GS2.UnlockTechOptionCallback(null);
             }
             return false;

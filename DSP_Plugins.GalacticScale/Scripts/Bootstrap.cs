@@ -85,7 +85,7 @@ namespace GalacticScale {
             if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false) return;
             if (TeleportPlanet != null)
             {
-                //GS2.Warn("Planet not null");
+                GS2.Warn($"TP to Planet {TeleportPlanet.name} of star {TeleportPlanet.star?.name}");
                 GameMain.data.ArriveStar(TeleportPlanet.star);
                 StartCoroutine(Teleport(TeleportPlanet));
             } else if (TeleportStar != null)
@@ -101,23 +101,25 @@ namespace GalacticScale {
             yield return new WaitForEndOfFrame();
             TeleportPlanet = null;
             TeleportStar = null;
-            //GS2.Warn("Teleporting to " + planet.uPosition.ToString());
+            //GS2.Warn($"Teleporting to {planet.name} @ {planet.uPosition}");
             GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * (planet.realRadius);
             
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
+            //GS2.Warn($"End of TP, LocalPlanet:{GameMain.localPlanet?.name} LocalStar:{GameMain.localStar?.name}");
         }
         private IEnumerator Teleport(StarData star)
         {
             yield return new WaitForEndOfFrame();
             TeleportPlanet = null;
             TeleportStar = null;
-            //GS2.Warn("Teleporting to " + star.uPosition.ToString());
+            //GS2.Warn($"Teleporting to {star.name}" + star.uPosition.ToString());
             GameMain.mainPlayer.uPosition = star.uPosition + VectorLF3.unit_z * 1;
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
+            //GS2.Warn($"End of TP, LocalPlanet:{GameMain.localPlanet?.name} LocalStar:{GameMain.localStar?.name}");
         }
     }
 }

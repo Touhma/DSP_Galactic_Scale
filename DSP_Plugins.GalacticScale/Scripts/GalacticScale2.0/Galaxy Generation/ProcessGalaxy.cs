@@ -19,15 +19,15 @@ namespace GalacticScale
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported)
                 {
-                    Warn("Start");
+                    //Warn("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
                     Log("Seed From gameDesc = " + GSSettings.Seed);
                     gsPlanets.Clear();
                     gsStars.Clear();
-                    Warn("Cleared");
-                    Warn("Loading Data from Generator : " + generator.Name);
+                    //Warn("Cleared");
+                    //Warn("Loading Data from Generator : " + generator.Name);
                     generator.Generate(gameDesc.starCount);
-                    Warn("Final Seed = " + GSSettings.Seed);
+                    //Warn("Final Seed = " + GSSettings.Seed);
                     Log("End");
                 }
                 else Log("Settings Loaded From Save File");
@@ -74,16 +74,15 @@ namespace GalacticScale
                 Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log("End of galaxy generation");
-                Warn($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
-                Warn($"birthPlanetId:{galaxy.birthPlanetId}");
-                Warn($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name}");
-                Warn($"its planets length: {galaxy.stars[galaxy.birthStarId -1].planets.Length}");
-                Warn($"First System Radius = {galaxy.stars[0].systemRadius}");
+                Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
+                Log($"birthPlanetId:{galaxy.birthPlanetId}");
+                Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name}");
+                Log($"its planets length: {galaxy.stars[galaxy.birthStarId -1].planets.Length}");
+                Log($"First System Radius = {galaxy.stars[0].systemRadius}");
                 return galaxy;
             } catch (Exception e)
             {
                 GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button").gameObject.SetActive(false);
-                GS2.Log("EXCEPT");
                 GS2.Log(e.ToString());
                 GS2.DumpException(e);
                 UIMessageBox.Show("Error", "There has been a problem creating the galaxy. \nPlease let the Galactic Scale team know in our discord server. An error log has been generated in the plugin/ErrorLog Directory", "Return", 0);

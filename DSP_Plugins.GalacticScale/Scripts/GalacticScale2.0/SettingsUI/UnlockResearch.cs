@@ -12,7 +12,7 @@ namespace GalacticScale
         // All credit to Windows10CE
         public static void UnlockTechOptionCallback(object o)
         {
-            GS2.Warn("Unlocking Tech");
+            //GS2.Warn("Unlocking Tech");
             foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
                 {
                     if (!GameMain.history.TechUnlocked(tech.ID))

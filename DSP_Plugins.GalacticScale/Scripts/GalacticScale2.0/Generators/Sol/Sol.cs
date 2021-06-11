@@ -297,23 +297,23 @@ namespace GalacticScale.Generators
 
 
             }
-            GS2.Warn($"---------{preferences.GetBool("startInSol", true)}");
+            //GS2.Warn($"---------{preferences.GetBool("startInSol", true)}");
             if (!preferences.GetBool("startInSol", true))
             {
                 pickNewBirthPlanet();
                 GSSettings.BirthPlanetName = birthPlanet.Name;
-                GS2.Warn($"Set Birth Planet to {GSSettings.BirthPlanetName}");
-                GS2.LogJson(birthPlanet, true);
+                GS2.Log($"Set Birth Planet to {GSSettings.BirthPlanetName}");
+                GS2.LogJson(birthPlanet);
 
             }
             else
             {
                 GSSettings.BirthPlanetName = "Earth";
-                GS2.Warn("Set to earth");
+                GS2.Log("Set to earth");
             }
             if (preferences.GetBool("birthPlanetSiTi", false))
             {
-                GS2.Warn("Setting SI/TI");
+                //GS2.Warn("Setting SI/TI");
                 birthPlanet.gsTheme.VeinSettings.Algorithm = "GS2";
                 birthPlanet.gsTheme.CustomGeneration = true;
                 birthPlanet.gsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
@@ -324,44 +324,44 @@ namespace GalacticScale.Generators
                     1, 10, 0.6f, 0.6f, 5, 10, false));
             }
             if (preferences.GetInt("birthPlanetSize", 400) != 400) birthPlanet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
-            GS2.Warn(":" + random.Next(1000) + " " + random.Next(1000));
         }
         private void pickNewBirthPlanet()
         {
-            GS2.LogJson(GSSettings.Stars.HabitablePlanets, true);
+            GS2.Log("Habitable Planets:");
+            GS2.LogJson(GSSettings.Stars.HabitablePlanets);
             if (GSSettings.StarCount < 2)
             {
                 birthPlanet = GSSettings.Stars[0].Planets[3];
-                GS2.Warn("There are no other stars to pick a birth planet from. Using Earth");
+                GS2.Log("There are no other stars to pick a birth planet from. Using Earth");
                 return;
             }
             GSPlanets HabitablePlanets = GSSettings.Stars.HabitablePlanets;
             if (HabitablePlanets.Count == 1)
             {
-                GS2.Warn("There are no habitable planets other than Earth generated");
-                GS2.Warn("Generating new habitable planet by overwriting an existing one");
+                GS2.Log("There are no habitable planets other than Earth generated");
+                GS2.Log("Generating new habitable planet by overwriting an existing one");
                 GSStar star = GSSettings.Stars.RandomStar;
                 int index = 0;
-                GS2.Warn("Getting index");
+                GS2.Log("Getting index");
                 if (star.planetCount > 1) index = Mathf.RoundToInt((star.planetCount - 1) / 2);
                 GSPlanet planet = star.Planets[index];
-                GS2.Warn("Getting themeNames");
+                GS2.Log("Getting themeNames");
                 List<string> themeNames = GSSettings.ThemeLibrary.Habitable;
-                GS2.Warn($"Count = {themeNames.Count}");
+                GS2.Log($"Count = {themeNames.Count}");
                 string themeName = themeNames[random.Next(themeNames.Count)];
-                GS2.Warn($"Setting Planet Theme to {themeName}");
+                GS2.Log($"Setting Planet Theme to {themeName}");
                 planet.Theme = themeName;
                 planet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize",400));
-                GS2.Warn("Setting birthPlanet");
+                GS2.Log("Setting birthPlanet");
                 birthPlanet = planet;
-                GS2.Warn($"Selected {birthPlanet.Name}");
+                GS2.Log($"Selected {birthPlanet.Name}");
                 return;
             }
             else if (HabitablePlanets.Count > 1)
             {
-                GS2.Warn("Selecting random habitable planet");
+                GS2.Log("Selecting random habitable planet");
                 birthPlanet = HabitablePlanets[random.Range(1, HabitablePlanets.Count - 1)];
-                GS2.Warn($"Selected {birthPlanet.Name}");
+                GS2.Log($"Selected {birthPlanet.Name}");
                 return;
             }
             //int attempts = 1;
@@ -433,7 +433,7 @@ namespace GalacticScale.Generators
                 default: themeNames = GSSettings.ThemeLibrary.Frozen; break;
             }
             theme = themeNames[random.Range(0, themeNames.Count - 1)];
-            int radius = Utils.ParsePlanetSize(random.Range(30, host.Radius - 10));
+            int radius = random.Range(30, host.Radius - 10);
             if (preferences.GetBool("moonsAreSmall", true) && radius > 200) radius = random.Range(30, 190);
             float rotationPeriod = random.Range(60, 3600);
 
@@ -563,7 +563,7 @@ namespace GalacticScale.Generators
                 else if (huge && !tiny) radius = random.Range(350, 500); //needs more limits, but I got bored
                 else radius = random.Range(100, 500);
             }
-
+            radius = Utils.ParsePlanetSize(radius);
             float rotationalPeriod = random.Range(60, 3600);
 
             GSPlanet g = new GSPlanet(
@@ -616,6 +616,7 @@ namespace GalacticScale.Generators
 
             g.Luminosity = -1;
             g.Scale = scale;
+            GS2.Log($"Created Planet {g.Name} radius:{g.Radius} scale:{g.Scale}");
             return g;
         }
 

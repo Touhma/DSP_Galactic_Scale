@@ -5,7 +5,7 @@
         public static void GenerateTerrain1(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
             random = new GS2.Random(gsPlanet.Seed);
-            GS2.Warn($"USING GSTA1 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            GS2.Log($"USING GSTA1 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
             //GS2.Log("Generate Terrain for " + gsPlanet.Name + " ");
             int seed1 = random.Next();

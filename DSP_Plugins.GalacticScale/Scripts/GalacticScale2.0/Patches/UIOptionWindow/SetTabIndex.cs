@@ -1,15 +1,12 @@
 ﻿using HarmonyLib;
-using System.Reflection;
-
 namespace GalacticScale
 {
-    public static partial class PatchOnUIOptionWindow {
-        [HarmonyPatch]
-        static MethodBase TargetMethod() => AccessTools.Method(typeof(UIOptionWindow), "SetTabIndex");
-      
-        public static bool Prefix(int index, bool immediate, ref UIOptionWindow __instance)
+    public static partial class PatchOnUIOptionWindow
+    {
+        [HarmonyPostfix, HarmonyPatch(typeof(UIOptionWindow), "SetTabIndex")]
+        public static void SetTabIndex (int index, bool immediate, ref UIOptionWindow __instance)
         {
-            if (index != SettingsUI.MainTabIndex) SettingsUI.DisableDetails(); return true;
+            if (index != SettingsUI.MainTabIndex) SettingsUI.DisableDetails();
         }
     }
 }

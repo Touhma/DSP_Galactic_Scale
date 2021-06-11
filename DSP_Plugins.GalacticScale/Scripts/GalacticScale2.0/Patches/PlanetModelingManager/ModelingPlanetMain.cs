@@ -10,7 +10,18 @@ namespace GalacticScale
 {
     public partial class PatchOnPlanetModelingManager : MonoBehaviour
     {
-
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
+        public static bool ModelingPlanetMain(PlanetData planet)
+        {
+            planet.data.AddFactoredRadius(planet);
+            return true;
+        }
+        [HarmonyPostfix, HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
+        public static void ModelingPlanetMain2(PlanetData planet)
+        {
+            GS2.Log($"{planet.name} end of modeling planet main");
+            return;
+        }
         //public static int vertCount = 0;
         //[HarmonyPrefix]
         //[HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]

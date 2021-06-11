@@ -19,18 +19,18 @@ namespace GalacticScale
                 {
                     localPlanets++;
                     containsLocalPlanet = true;
-                    GS2.Warn("Contains Local Planet");
+                    //GS2.Warn("Contains Local Planet");
                 } else
                 {
                     otherPlanets++;
                 }
             }
-            GS2.Warn($"Checking Planets while in System {GameMain.localStar.name}. {localPlanets} planets in queue are local, {otherPlanets} planets are from other stars.");
+            //GS2.Warn($"Checking Planets while in System {GameMain.localStar.name}. {localPlanets} planets in queue are local, {otherPlanets} planets are from other stars.");
             return containsLocalPlanet;
         }
         public static bool PlanetInStar(PlanetData planet, StarData star)
         {
-            GS2.Warn($"Checking if {planet.name} is in star {star.name}");
+            //GS2.Warn($"Checking if {planet.name} is in star {star.name}");
             bool planetIsLocal = false;
             foreach (PlanetData p in star.planets)
             {
@@ -40,7 +40,7 @@ namespace GalacticScale
                     break;
                 }
             }
-            GS2.Warn($"PlanetIsLocal:{planetIsLocal}");
+            //GS2.Warn($"PlanetIsLocal:{planetIsLocal}");
             return planetIsLocal;
         }
         public static float CalculateOrbitPeriod(float orbitRadius, float speed = 0.0005f)
@@ -155,7 +155,10 @@ namespace GalacticScale
         public static int ParsePlanetSize(float radius)
         {
             if (radius < 8f) return 5;
-            return Mathf.RoundToInt(Mathf.Clamp(radius, 10, 510) / 10) * 10;
+            radius = Mathf.Clamp(radius, 10, 510) / 10 ;
+            radius = Mathf.RoundToInt(radius) * 10;
+            //GS2.Warn(radius.ToString());
+            return (int)radius;
         }
         public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
         {

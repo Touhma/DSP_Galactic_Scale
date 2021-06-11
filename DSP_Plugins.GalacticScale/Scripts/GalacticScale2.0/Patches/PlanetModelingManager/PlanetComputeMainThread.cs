@@ -38,7 +38,7 @@ namespace GalacticScale
                         planetData = genPlanetReqList.Dequeue();
                         while (planetData.star != GameMain.localStar && (genPlanetReqList.Count > GameMain.localStar.planetCount || !Utils.PlanetInStar(planetData, GameMain.localStar)) && Utils.ContainsLocalStarPlanet(genPlanetReqList)) //Added check to see if we are trying to load a planet we don't care about
                         {
-                            GS2.Warn($"Skipping generation of {planetData.name} as there are local planets waiting");
+                            GS2.Log($"Skipping generation of {planetData.name} as there are local planets waiting");
                             genPlanetReqList.Enqueue(planetData); //Put it to back of the list
                             planetData = genPlanetReqList.Dequeue(); //Get another and try again
                         }
@@ -86,7 +86,7 @@ namespace GalacticScale
                                 lock (planetComputeThreadLogs)
                                 {
                                     planetComputeThreadLogs.Add($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
-                                    GS2.Warn($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                    GS2.Log($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                 }
                             }
                         }

@@ -44,7 +44,7 @@ namespace GalacticScale
         public string Theme { get => _theme == null ? InitTheme() : _theme; set => _theme = value; }
         public GSTheme gsTheme { get => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme]; }
         [SerializeField]
-        public int Radius { get => _radius < 0 ? InitRadius() : _radius; set => _radius = value; }
+        public int Radius { get => _radius < 0 ? InitRadius() : _radius; set => _radius = Utils.ParsePlanetSize(value); }
         [SerializeField]
         public float OrbitRadius { get => _orbitRadius < 0 ? InitOrbitRadius() : _orbitRadius; set => _orbitRadius = value; }
         [SerializeField]
