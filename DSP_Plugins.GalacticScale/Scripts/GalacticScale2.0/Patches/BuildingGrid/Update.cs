@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace GalacticScale
 {
-    public partial class PatchUIBuildingGrid
+    public partial class PatchOnUIBuildingGrid
     {
         public static int refreshGridRadius = -1;
         //segment count to 512 lut

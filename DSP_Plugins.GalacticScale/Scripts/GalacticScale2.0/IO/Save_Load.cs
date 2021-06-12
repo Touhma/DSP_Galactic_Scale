@@ -25,6 +25,7 @@ namespace GalacticScale
             fsSerializer serializer = new fsSerializer();
             string version = r.ReadString();
             string json = r.ReadString();
+            File.WriteAllText(GS2.DataDir+ "\\save.json", json);
             GSSettings result = GSSettings.Instance;
             fsData data2 = fsJsonParser.Parse(json);
             serializer.TryDeserialize(data2, ref result);

@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace GalacticScale
 {
-    public class PatchPlayerMove_Fly
+    public class PatchOnPlayerMove_Fly
     {
         [HarmonyPrefix, HarmonyPatch(typeof(PlayerMove_Fly), "GameTick")]
         public static bool GameTick(ref PlayerMove_Fly __instance)

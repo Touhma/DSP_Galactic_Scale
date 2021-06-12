@@ -12,11 +12,11 @@ namespace GalacticScale
             if (!GS2.Vanilla)
             {
                 int segments = (int)(planet.radius / 4f + 0.1f) * 4;
-                if (!PatchUIBuildingGrid.LUT512.ContainsKey(segments))
+                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
                 {
                     GS2.SetLuts(segments, planet.radius);
                 }
-                PatchUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
+                PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
             }
         }
     }

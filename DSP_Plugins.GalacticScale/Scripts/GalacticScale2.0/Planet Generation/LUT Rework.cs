@@ -12,7 +12,7 @@ namespace GalacticScale
 
             if (!DSPGame.IsMenuDemo && (!Vanilla))
             { // Prevent special LUT's being created in main menu
-                if (keyedLUTs.ContainsKey(segments) && keyedLUTs.ContainsKey(segments) && PatchUIBuildingGrid.LUT512.ContainsKey(segments))
+                if (keyedLUTs.ContainsKey(segments) && keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
                 {
                     return;
                 }
@@ -66,9 +66,9 @@ namespace GalacticScale
                 {
                     keyedLUTs.Add(segments, lut);
                 }
-                if (!PatchUIBuildingGrid.LUT512.ContainsKey(segments))
+                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
                 {
-                    PatchUIBuildingGrid.LUT512.Add(segments, classicLUT);
+                    PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
                 }
             }
         }

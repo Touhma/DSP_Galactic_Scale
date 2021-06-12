@@ -2,7 +2,7 @@
 // Fix error when localPlanet not defined
 namespace GalacticScale
 {
-    public partial class PatchPlayerFootsteps
+    public partial class PatchOnPlayerFootsteps
     {
         [HarmonyPrefix, HarmonyPatch(typeof(PlayerFootsteps), "PlayFootstepSound")]
         public static bool PlayFootstepSound(ref PlayerFootsteps __instance)

@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public class PatchUITutorialTip
+    public class PatchOnUITutorialTip
     {
         [HarmonyPrefix, HarmonyPatch(typeof(UITutorialTip), "PopupTutorialTip")]
         public static bool PopupTutorialTip()

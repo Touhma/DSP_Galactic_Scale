@@ -27,7 +27,8 @@ namespace GalacticScale {
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
-            Harmony.CreateAndPatchAll(typeof(PatchUIBuildingGrid));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIBuildingGrid));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Path));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDesc));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameLoader));
@@ -44,12 +45,12 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetSimulator));         
             Harmony.CreateAndPatchAll(typeof(PatchOnPlatformSystem));
             //PatchOnPlayerAction_Build // new dsp patch completely changed this, removed for now
-            Harmony.CreateAndPatchAll(typeof(PatchPlayerFootsteps));
-            Harmony.CreateAndPatchAll(typeof(PatchPlayerMove_Fly));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlayerFootsteps));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Fly));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Sail));
             Harmony.CreateAndPatchAll(typeof(PatchOnStarGen)); // Only used when using vanilla generator, to allow 1024 stars
             Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
-            Harmony.CreateAndPatchAll(typeof(PatchUIAdvisorTip));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIAdvisorTip));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIEscMenu));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGameLoadingSplash));
@@ -62,7 +63,7 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmap));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));         
-            Harmony.CreateAndPatchAll(typeof(PatchUITutorialTip)); 
+            Harmony.CreateAndPatchAll(typeof(PatchOnUITutorialTip)); 
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVersionText));                              
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap)); 
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
