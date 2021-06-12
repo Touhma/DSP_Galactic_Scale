@@ -61,12 +61,13 @@ namespace GalacticScale
             else planet.sunDistance = planet.orbitRadius;
             planet.radius = gsPlanet.Radius;
             planet.segment = 5;
-            
-            //planetData.singularity |= gsPlanet.singularity.TidalLocked;
-            //planetData.singularity |= gsPlanet.singularity.TidalLocked2;
-            //planetData.singularity |= gsPlanet.singularity.TidalLocked4;
-            //planetData.singularity |= gsPlanet.singularity.ClockwiseRotate;
-            //planetData.singularity |= gsPlanet.singularity.TidalLocked;
+            int segments = (int)(planet.radius / 4f + 0.1f) * 4;
+            if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
+            {
+                GS2.SetLuts(segments, planet.radius);
+            }
+            PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
+
             planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planet.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
             planet.runtimeSystemRotation = planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
             //GS2.Log("Trying to apply theme " + gsPlanet.Theme);

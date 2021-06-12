@@ -17,109 +17,10 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.gs2";
 
-        public bool DisableStarCountSlider => false;
-
-        public GSGeneratorConfig Config => config;
-
-        public GSOptions Options => options;
-        private GSOptions options = new GSOptions();
-        private GSGeneratorConfig config = new GSGeneratorConfig();
-        private GSGenPreferences preferences = new GSGenPreferences();
-        //private GSUI UI_ludicrousMode;
-        //private GSUI UI_birthPlanetSize;
-        private GSUI UI_minPlanetSize;
-        private GSUI UI_maxPlanetSize;
-        //private GSUI UI_accurateStars;
-        //private GSUI UI_galaxyDensity;
-        //private GSUI UI_maxPlanetCount;
-        //private GSUI UI_secondarySatellites;
-        //private GSUI UI_birthPlanetSiTi;
-        //private GSUI UI_tidalLockInnerPlanets;
-        //private GSUI UI_moonsAreSmall;
-        //private GSUI UI_hugeGasGiants;
-        //private GSUI UI_regularBirthTheme;
-        //private GSUI UI_systemDensity;
         private GS2.Random random;
         private GSPlanet birthPlanet;
-        public void enableLudicrousMode()
-        {
 
-        }
-        public void Init()
-        {
-            config.DefaultStarCount = 10;
-            options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => enableLudicrousMode()));
-            options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9,"galaxyDensity"));
-            options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount"));
-            options.Add(GSUI.Slider("Starting Planet Size", 20, 50, 510, "birthPlanetSize"));
-            options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock"));
-            options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi"));
-            options.Add(GSUI.Checkbox("Moons are small", true, "moonsAreSmall"));
-            options.Add(GSUI.Checkbox("Huge gas giants", true, "hugeGasGiants"));
-            options.Add(GSUI.Checkbox("Tidal Lock Inner Planets", false, "tidalLockInnerPlanets"));
-            options.Add(GSUI.Checkbox("Secondary satellites", false, "secondarySatellites"));
-
-            options.Add(GSUI.Slider("Freq. Type K", 1, 40, 100, "freqK"));
-            options.Add(GSUI.Slider("Freq. Type M", 1, 50, 100, "freqM"));
-            options.Add(GSUI.Slider("Freq. Type G", 1, 30, 100, "freqG"));
-            options.Add(GSUI.Slider("Freq. Type F", 1, 25, 100, "freqF"));
-            options.Add(GSUI.Slider("Freq. Type A", 1, 10, 100, "freqA"));
-            options.Add(GSUI.Slider("Freq. Type B", 1, 4, 100, "freqB"));
-            options.Add(GSUI.Slider("Freq. Type O", 1, 2, 100, "freqO"));
-            options.Add(GSUI.Slider("Freq. BlackHole", 1, 1, 100, "freqBH"));
-            options.Add(GSUI.Slider("Freq. Neutron", 1, 1, 100, "freqN"));
-            options.Add(GSUI.Slider("Freq. WhiteDwarf", 1, 2, 100, "freqW"));
-            options.Add(GSUI.Slider("Freq. Red Giant", 1, 1, 100, "freqRG"));
-            options.Add(GSUI.Slider("Freq. Yellow Giant", 1, 1, 100, "freqYG"));
-            options.Add(GSUI.Slider("Freq. White Giant", 1, 1, 100, "freqWG"));
-            options.Add(GSUI.Slider("Freq. Blue Giant", 1, 1, 100, "freqBG"));
-
-            //options.Add(GSUI.Header("Default Settings", "Changing These Will Reset All Star Specific Options Below"));
-            options.Add(GSUI.Slider("Min Planets/System", 1, 4, 50, "minPlanetCount"));
-            options.Add(GSUI.Slider("Max Planets/System", 1, 10, 50, "maxPlanetCount"));
-            UI_maxPlanetSize = options.Add(GSUI.Slider("Max planet size", 50, 30, 510, o =>
-            {
-                float minSize = preferences.GetFloat("minPlanetSize");
-                if (minSize == -1f) minSize = 5;
-                if (minSize > (float)o) o = minSize;
-                preferences.Set("maxPlanetSize", Utils.ParsePlanetSize((float)o));
-                UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
-            }));
-            UI_minPlanetSize = options.Add(GSUI.Slider("Min planet size", 5, 30, 510, o =>
-            {
-                float maxSize = preferences.GetFloat("maxPlanetSize");
-                if (maxSize == -1f) maxSize = 510;
-                if (maxSize < (float)o) o = maxSize;
-                preferences.Set("minPlanetSize", Utils.ParsePlanetSize((float)o));
-                UI_minPlanetSize.Set(preferences.GetFloat("minPlanetSize"));
-            }));
-            
-            options.Add(GSUI.Slider("Planet Size Bias", 0, 50, 100, "sizeBias"));
-            options.Add(GSUI.Slider("Chance Gas", 10, 20, 50, "chanceGas"));
-            options.Add(GSUI.Slider("Chance Moon", 10, 20, 80, "chanceMoon"));
-            options.Add(GSUI.Slider("System Density", 1, 3, 5, "systemDensity"));
-
-            
-
-            string[] typeDesc = {"Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant", "Yellow Giant", "White Giant",
-                "Blue Giant", "Neutron Star", "Black Hole" };
-            string[] typeLetter = { "K", "M", "F", "G", "A", "B", "O", "WD", "RG", "YG", "WG", "BG", "NS", "BH" };
-
-            for (var i=0; i<14; i++)
-            {
-                GS2.Warn($"Adding option for {typeDesc[i]} {typeLetter[i]}");
-                //options.Add(GSUI.Header("$Type K Star Override", "Settings for K type stars only"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} Min Planets", 1, 4, 50, $"{typeLetter[i]}minPlanetCount"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} Max Planets", 1, 10, 50, $"{typeLetter[i]}maxPlanetCount"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} Min Size", 1, 4, 50, $"{typeLetter[i]}minPlanetSize"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} Max Size", 1, 10, 50, $"{typeLetter[i]}maxPlanetSize"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} Size Bias", 0, 50, 100, $"{typeLetter[i]}sizeBias"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} %Gas", 10, 20, 50, $"{typeLetter[i]}chanceGas"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} %Moon", 10, 20, 80, $"{typeLetter[i]}chanceMoon"));
-                options.Add(GSUI.Slider($"{typeDesc[i]} Density", 1, 3, 5, $"{typeLetter[i]}systemDensity"));
-            }
-
-        }
+       
         public void Generate(int starCount)
         {
             
@@ -412,17 +313,6 @@ namespace GalacticScale.Generators
             g.Scale = scale;
             GS2.Warn($"Planet {g.Name} scale:{g.Scale}");
             return g;
-        }
-
-
-        public void Import(GSGenPreferences preferences)
-        {
-            this.preferences = preferences;
-        }
-
-        public GSGenPreferences Export()
-        {
-            return preferences;
         }
     }
 }
