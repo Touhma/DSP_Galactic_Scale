@@ -18,7 +18,7 @@ namespace GSFullSerializer {
     }
 
     public abstract class fsDirectConverter<TModel> : fsDirectConverter {
-        public override Type ModelType { get { return typeof(TModel); } }
+        public override Type ModelType => typeof(TModel);
 
         public sealed override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
             var serializedDictionary = new Dictionary<string, fsData>();
@@ -29,7 +29,9 @@ namespace GSFullSerializer {
 
         public sealed override fsResult TryDeserialize(fsData data, ref object instance, Type storageType) {
             var result = fsResult.Success;
-            if ((result += CheckType(data, fsDataType.Object)).Failed) return result;
+            if ((result += CheckType(data, fsDataType.Object)).Failed) {
+                return result;
+            }
 
             var obj = (TModel)instance;
             result += DoDeserialize(data.AsDictionary, ref obj);

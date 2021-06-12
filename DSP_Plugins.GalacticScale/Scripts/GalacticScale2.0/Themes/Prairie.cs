@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme Prairie = new GSTheme()
         {
             Name = "Prairie",
@@ -44,7 +42,7 @@ namespace GalacticScale
                 DustStrength3 = 0.5f,
                 BiomeSound1 = 0,
                 BiomeSound2 = 1,
-                BiomeSound3 =2 ,
+                BiomeSound3 = 2,
                 CubeMap = "Vanilla",
                 Reflections = new Color(),
                 LutContribution = 0.25f

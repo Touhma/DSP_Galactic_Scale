@@ -10,20 +10,21 @@ namespace GSFullSerializer.Internal {
                 type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>);
         }
 
-        public override bool RequestCycleSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestCycleSupport(Type storageType) => false;
 
-        public override bool RequestInheritanceSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestInheritanceSupport(Type storageType) => false;
 
         public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType) {
             var result = fsResult.Success;
 
             fsData keyData, valueData;
-            if ((result += CheckKey(data, "Key", out keyData)).Failed) return result;
-            if ((result += CheckKey(data, "Value", out valueData)).Failed) return result;
+            if ((result += CheckKey(data, "Key", out keyData)).Failed) {
+                return result;
+            }
+
+            if ((result += CheckKey(data, "Value", out valueData)).Failed) {
+                return result;
+            }
 
             var genericArguments = storageType.GetGenericArguments();
             Type keyType = genericArguments[0], valueType = genericArguments[1];
@@ -53,8 +54,13 @@ namespace GSFullSerializer.Internal {
             result.AddMessages(Serializer.TrySerialize(valueType, valueObject, out valueData));
 
             serialized = fsData.CreateDictionary();
-            if (keyData != null) serialized.AsDictionary["Key"] = keyData;
-            if (valueData != null) serialized.AsDictionary["Value"] = valueData;
+            if (keyData != null) {
+                serialized.AsDictionary["Key"] = keyData;
+            }
+
+            if (valueData != null) {
+                serialized.AsDictionary["Value"] = valueData;
+            }
 
             return result;
         }

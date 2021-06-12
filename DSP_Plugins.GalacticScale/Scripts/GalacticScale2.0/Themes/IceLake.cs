@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme IceLake = new GSTheme()
         {
             Name = "IceLake",
@@ -23,9 +21,9 @@ namespace GalacticScale
                 Color1 = new Color(0.1098037f, 0.1067106f, 0.1059606f, 1.0f),
                 Color2 = new Color(0.01777778f, 0.03657109f, 0.07999983f, 1.0f),
                 Color3 = new Color(0.01944444f, 0.03333334f, 0.04999998f, 1.0f),
-                WaterColor1 = new Color(0.0f,0.0f,0.0f,1.0f),
-                WaterColor2 = new Color(0.0f,0.0f,0.0f,1.0f),
-                WaterColor3 = new Color(0.0f,0.0f,0.0f,1.0f),
+                WaterColor1 = new Color(0.0f, 0.0f, 0.0f, 1.0f),
+                WaterColor2 = new Color(0.0f, 0.0f, 0.0f, 1.0f),
+                WaterColor3 = new Color(0.0f, 0.0f, 0.0f, 1.0f),
                 BiomeColor1 = new Color(0.2117647f, 0.06666668f, 0.07812721f, 1.0f),
                 BiomeColor2 = new Color(0.509804f, 0.3163699f, 0.2078431f, 1.0f),
                 BiomeColor3 = new Color(1.0f, 1.0f, 1.0f, 1.0f),

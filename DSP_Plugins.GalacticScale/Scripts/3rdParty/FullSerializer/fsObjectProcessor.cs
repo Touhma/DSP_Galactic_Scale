@@ -23,7 +23,7 @@ namespace GSFullSerializer {
         /// <returns>
         /// True if the processor should be applied, false otherwise.
         /// </returns>
-        public virtual bool CanProcess(Type type) { throw new NotImplementedException(); }
+        public virtual bool CanProcess(Type type) => throw new NotImplementedException();
 
         /// <summary>
         /// Called before serialization.

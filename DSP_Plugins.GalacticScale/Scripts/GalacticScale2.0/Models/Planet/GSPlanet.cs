@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public class GSPlanet
-    {
+namespace GalacticScale {
+    public class GSPlanet {
         public GS2.Random random;
 
         private string _name;
@@ -28,12 +26,8 @@ namespace GalacticScale
         public bool randomizeVeinCounts = true;
 
         [SerializeField]
-        public int Seed
-        {
-            get
-            {
-                return seed;
-            }
+        public int Seed {
+            get => seed;
             set => seed = value;
         }
         [SerializeField]
@@ -42,7 +36,7 @@ namespace GalacticScale
         public string Name { get => _name; set => _name = value; }
         [SerializeField]
         public string Theme { get => _theme == null ? InitTheme() : _theme; set => _theme = value; }
-        public GSTheme gsTheme { get => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme]; }
+        public GSTheme gsTheme => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme];
         [SerializeField]
         public int Radius { get => _radius < 0 ? InitRadius() : _radius; set => _radius = Utils.ParsePlanetSize(value); }
         [SerializeField]
@@ -71,28 +65,47 @@ namespace GalacticScale
         public GSVeinSettings veinSettings;
         [NonSerialized]
         public GSPlanetVeins veinData = new GSPlanetVeins();
-        public bool isHabitable
-        {
-            get
-            {
-                if (gsTheme.PlanetType != EPlanetType.Ocean) return false;
-                if (Radius < 50) return false;
-                if (gsTheme.WaterItemId != 1000) return false;
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil, false)) return false;
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron, false)) return false;
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper, false)) return false;
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone, false)) return false;
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Coal, false)) return false;
+        public bool isHabitable {
+            get {
+                if (gsTheme.PlanetType != EPlanetType.Ocean) {
+                    return false;
+                }
+
+                if (Radius < 50) {
+                    return false;
+                }
+
+                if (gsTheme.WaterItemId != 1000) {
+                    return false;
+                }
+
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil, false)) {
+                    return false;
+                }
+
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron, false)) {
+                    return false;
+                }
+
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper, false)) {
+                    return false;
+                }
+
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone, false)) {
+                    return false;
+                }
+
+                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Coal, false)) {
+                    return false;
+                }
 
                 return true;
             }
         }
-        public GSPlanet()
-        {
+        public GSPlanet() {
 
         }
-        public GSPlanet(string name)
-        {
+        public GSPlanet(string name) {
             Name = name;
         }
 
@@ -107,8 +120,7 @@ namespace GalacticScale
             float rotationPeriod,
             float rotationPhase,
             float luminosity,
-            GSPlanets moons = null)
-        {
+            GSPlanets moons = null) {
             Name = name;
             Theme = theme;
             Radius = radius;
@@ -122,37 +134,35 @@ namespace GalacticScale
             Luminosity = luminosity;
             Moons = (moons == null) ? new GSPlanets() : moons;
         }
-        public float InitScale()
-        {
-            if (gsTheme == null)
-            {
+        public float InitScale() {
+            if (gsTheme == null) {
                 GS2.Warn("Trying to read theme before setting it: " + Name);
                 return -1;
             }
             return (gsTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
         }
-        public int MoonCount
-        {
-            get
-            {
-                if (Moons == null) return 0;
+        public int MoonCount {
+            get {
+                if (Moons == null) {
+                    return 0;
+                }
+
                 int count = 0;
-                foreach (GSPlanet moon in Moons)
-                {
+                foreach (GSPlanet moon in Moons) {
                     count++;
                     count += moon.MoonCount;
                 }
                 return count;
             }
         }
-        public List<GSPlanet> Bodies
-        {
-            get
-            {
+        public List<GSPlanet> Bodies {
+            get {
                 List<GSPlanet> b = new List<GSPlanet>() { this };
-                if (Moons == null) return b;
-                foreach (GSPlanet moon in Moons)
-                {
+                if (Moons == null) {
+                    return b;
+                }
+
+                foreach (GSPlanet moon in Moons) {
                     b.AddRange(moon.Bodies);
                 }
                 return b;
@@ -166,22 +176,19 @@ namespace GalacticScale
         //    return seed;
         //}
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
-        private string InitTheme()
-        {
+        public override string ToString() => this.Name;
+        private string InitTheme() {
             _theme = "Mediterranean";
             return _theme;
         }
-        private float InitLuminosity()
-        {
-            if (planetData == null) return -1f;
+        private float InitLuminosity() {
+            if (planetData == null) {
+                return -1f;
+            }
+
             float sunDistance = ((planetData.orbitAround != 0) ? planetData.orbitAroundPlanet.orbitRadius : planetData.orbitRadius);
             float luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (sunDistance + 0.01f), 0.6f);
-            if (luminosity > 1f)
-            {
+            if (luminosity > 1f) {
                 luminosity = Mathf.Log(luminosity) + 1f;
                 luminosity = Mathf.Log(luminosity) + 1f;
                 luminosity = Mathf.Log(luminosity) + 1f;
@@ -189,68 +196,67 @@ namespace GalacticScale
             luminosity = Mathf.Round(luminosity * 100f) / 100f;
             return luminosity;
         }
-        private int InitRadius()
-        {
+        private int InitRadius() {
             _radius = 200;
             return _radius;
         }
-        private float InitOrbitRadius()
-        {
-            if (random == null) random = new GS2.Random(GSSettings.Seed);
+        private float InitOrbitRadius() {
+            if (random == null) {
+                random = new GS2.Random(GSSettings.Seed);
+            }
+
             _orbitRadius = random.Next(10);
             return _orbitRadius;
         }
-        private float InitOrbitInclination()
-        {
+        private float InitOrbitInclination() {
             _orbitInclination = 0;
             return _orbitInclination;
         }
-        private float InitOrbitLongitude()
-        {
+        private float InitOrbitLongitude() {
             _orbitLongitude = 0;
             return _orbitLongitude;
         }
-        private float InitOrbitalPeriod()
-        {
+        private float InitOrbitalPeriod() {
             _orbitalPeriod = 1000;
             return _orbitalPeriod;
         }
-        private float InitOrbitPhase()
-        {
+        private float InitOrbitPhase() {
             _orbitPhase = 0;
             return _orbitPhase;
         }
-        private float InitObliquity()
-        {
+        private float InitObliquity() {
             _obliquity = 0;
             return _obliquity;
         }
-        private float InitRotationPeriod()
-        {
+        private float InitRotationPeriod() {
             _rotationPeriod = 1000;
             return _rotationPeriod;
         }
-        private float InitRotationPhase()
-        {
+        private float InitRotationPhase() {
             _rotationPhase = 0;
             return _rotationPhase;
         }
-        public GSPlanet MostDistantSatellite
-        {
-            get
-            {
-                if (Moons == null) GS2.Error("MOONS NULL!?");
-                if (Moons.Count == 0) return this;
+        public GSPlanet MostDistantSatellite {
+            get {
+                if (Moons == null) {
+                    GS2.Error("MOONS NULL!?");
+                }
+
+                if (Moons.Count == 0) {
+                    return this;
+                }
+
                 return Moons[Moons.Count - 1].MostDistantSatellite;
             }
         }
-        public float RadiusAU { get => Radius * 0.00005f * Scale; }
-        public float SystemRadius
-        {
-            get
-            {
+        public float RadiusAU => Radius * 0.00005f * Scale;
+        public float SystemRadius {
+            get {
                 GSPlanet mds = MostDistantSatellite;
-                if (mds == this) return RadiusAU;
+                if (mds == this) {
+                    return RadiusAU;
+                }
+
                 return MostDistantSatellite.OrbitRadius + MostDistantSatellite.RadiusAU;
             }
         }

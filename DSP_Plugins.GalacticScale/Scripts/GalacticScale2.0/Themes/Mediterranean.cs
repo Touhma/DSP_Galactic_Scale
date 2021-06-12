@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme Mediterranean = new GSTheme()
         {
             Name = "Mediterranean",
@@ -22,7 +20,7 @@ namespace GalacticScale
             CustomGeneration = true,
             TerrainSettings = new GSTerrainSettings()
             {
-                Algorithm="GSTA1"
+                Algorithm = "GSTA1"
             },
             VeinSettings = new GSVeinSettings()
             {

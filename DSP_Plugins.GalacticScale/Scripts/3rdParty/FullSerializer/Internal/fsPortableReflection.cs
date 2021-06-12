@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 #if USE_TYPEINFO
 namespace System {
@@ -66,30 +66,22 @@ namespace GSFullSerializer.Internal {
         /// <summary>
         /// Returns true if the given attribute is defined on the given element.
         /// </summary>
-        public static bool HasAttribute<TAttribute>(MemberInfo element) {
-            return HasAttribute(element, typeof(TAttribute));
-        }
+        public static bool HasAttribute<TAttribute>(MemberInfo element) => HasAttribute(element, typeof(TAttribute));
 
         /// <summary>
         /// Returns true if the given attribute is defined on the given element.
         /// </summary>
-        public static bool HasAttribute<TAttribute>(MemberInfo element, bool shouldCache) {
-            return HasAttribute(element, typeof(TAttribute), shouldCache);
-        }
+        public static bool HasAttribute<TAttribute>(MemberInfo element, bool shouldCache) => HasAttribute(element, typeof(TAttribute), shouldCache);
 
         /// <summary>
         /// Returns true if the given attribute is defined on the given element.
         /// </summary>
-        public static bool HasAttribute(MemberInfo element, Type attributeType) {
-            return HasAttribute(element, attributeType, true);
-        }
+        public static bool HasAttribute(MemberInfo element, Type attributeType) => HasAttribute(element, attributeType, true);
 
         /// <summary>
         /// Returns true if the given attribute is defined on the given element.
         /// </summary>
-        public static bool HasAttribute(MemberInfo element, Type attributeType, bool shouldCache) {
-            return element.IsDefined(attributeType, true);
-        }
+        public static bool HasAttribute(MemberInfo element, Type attributeType, bool shouldCache) => element.IsDefined(attributeType, true);
 
         /// <summary>
         /// Fetches the given attribute from the given MemberInfo. This method
@@ -102,7 +94,8 @@ namespace GSFullSerializer.Internal {
         /// <param name="attributeType">The type of attribute to fetch.</param>
         /// <returns>The attribute or null.</returns>
         public static Attribute GetAttribute(MemberInfo element, Type attributeType, bool shouldCache) {
-            var query = new AttributeQuery {
+            var query = new AttributeQuery
+            {
                 MemberInfo = element,
                 AttributeType = attributeType
             };
@@ -110,10 +103,13 @@ namespace GSFullSerializer.Internal {
             Attribute attribute;
             if (_cachedAttributeQueries.TryGetValue(query, out attribute) == false) {
                 var attributes = element.GetCustomAttributes(attributeType, /*inherit:*/ true);
-                if (attributes.Any())
+                if (attributes.Any()) {
                     attribute = (Attribute)attributes.First();
-                if (shouldCache)
+                }
+
+                if (shouldCache) {
                     _cachedAttributeQueries[query] = attribute;
+                }
             }
 
             return attribute;
@@ -134,18 +130,14 @@ namespace GSFullSerializer.Internal {
         /// </param>
         /// <returns>The attribute or null.</returns>
         public static TAttribute GetAttribute<TAttribute>(MemberInfo element, bool shouldCache)
-            where TAttribute : Attribute {
-            return (TAttribute)GetAttribute(element, typeof(TAttribute), shouldCache);
-        }
+            where TAttribute : Attribute => (TAttribute)GetAttribute(element, typeof(TAttribute), shouldCache);
         public static TAttribute GetAttribute<TAttribute>(MemberInfo element)
-            where TAttribute : Attribute {
-            return GetAttribute<TAttribute>(element, /*shouldCache:*/true);
-        }
+            where TAttribute : Attribute => GetAttribute<TAttribute>(element, /*shouldCache:*/true);
         private struct AttributeQuery {
             public MemberInfo MemberInfo;
             public Type AttributeType;
         }
-        private static IDictionary<AttributeQuery, Attribute> _cachedAttributeQueries =
+        private static readonly IDictionary<AttributeQuery, Attribute> _cachedAttributeQueries =
             new Dictionary<AttributeQuery, Attribute>(new AttributeQueryComparator());
         private class AttributeQueryComparator : IEqualityComparer<AttributeQuery> {
             public bool Equals(AttributeQuery x, AttributeQuery y) {
@@ -163,7 +155,7 @@ namespace GSFullSerializer.Internal {
         #endregion Attribute Queries
 
 #if !USE_TYPEINFO
-        private static BindingFlags DeclaredFlags =
+        private static readonly BindingFlags DeclaredFlags =
             BindingFlags.NonPublic |
             BindingFlags.Public |
             BindingFlags.Instance |
@@ -201,15 +193,21 @@ namespace GSFullSerializer.Internal {
             for (int i = 0; i < ctors.Length; ++i) {
                 var ctor = ctors[i];
 
-                if (ctor.IsStatic) continue; // Ignore static constructors.
+                if (ctor.IsStatic) {
+                    continue; // Ignore static constructors.
+                }
 
                 var ctorParams = ctor.GetParameters();
 
-                if (parameters.Length != ctorParams.Length) continue;
+                if (parameters.Length != ctorParams.Length) {
+                    continue;
+                }
 
                 for (int j = 0; j < ctorParams.Length; ++j) {
                     // require an exact match
-                    if (ctorParams[j].ParameterType != parameters[j]) continue;
+                    if (ctorParams[j].ParameterType != parameters[j]) {
+                        continue;
+                    }
                 }
 
                 return ctor;
@@ -218,13 +216,13 @@ namespace GSFullSerializer.Internal {
             return null;
         }
 
-        public static ConstructorInfo[] GetDeclaredConstructors(this Type type) {
+        public static ConstructorInfo[] GetDeclaredConstructors(this Type type) =>
 #if USE_TYPEINFO
             return type.GetTypeInfo().DeclaredConstructors.ToArray();
 #else
-            return type.GetConstructors(DeclaredFlags);
+            type.GetConstructors(DeclaredFlags);
 #endif
-        }
+
 
         public static MemberInfo[] GetFlattenedMember(this Type type, string memberName) {
             var result = new List<MemberInfo>();
@@ -302,70 +300,68 @@ namespace GSFullSerializer.Internal {
             return null;
         }
 
-        public static MethodInfo[] GetDeclaredMethods(this Type type) {
+        public static MethodInfo[] GetDeclaredMethods(this Type type) =>
 #if USE_TYPEINFO
             return type.GetTypeInfo().DeclaredMethods.ToArray();
 #else
-            return type.GetMethods(DeclaredFlags);
+            type.GetMethods(DeclaredFlags);
 #endif
-        }
 
-        public static PropertyInfo[] GetDeclaredProperties(this Type type) {
+
+        public static PropertyInfo[] GetDeclaredProperties(this Type type) =>
 #if USE_TYPEINFO
             return type.GetTypeInfo().DeclaredProperties.ToArray();
 #else
-            return type.GetProperties(DeclaredFlags);
+            type.GetProperties(DeclaredFlags);
 #endif
-        }
 
-        public static FieldInfo[] GetDeclaredFields(this Type type) {
+
+        public static FieldInfo[] GetDeclaredFields(this Type type) =>
 #if USE_TYPEINFO
             return type.GetTypeInfo().DeclaredFields.ToArray();
 #else
-            return type.GetFields(DeclaredFlags);
+            type.GetFields(DeclaredFlags);
 #endif
-        }
 
-        public static MemberInfo[] GetDeclaredMembers(this Type type) {
+
+        public static MemberInfo[] GetDeclaredMembers(this Type type) =>
 #if USE_TYPEINFO
             return type.GetTypeInfo().DeclaredMembers.ToArray();
 #else
-            return type.GetMembers(DeclaredFlags);
+            type.GetMembers(DeclaredFlags);
 #endif
-        }
 
-        public static MemberInfo AsMemberInfo(Type type) {
+
+        public static MemberInfo AsMemberInfo(Type type) =>
 #if USE_TYPEINFO
             return type.GetTypeInfo();
 #else
-            return type;
+            type;
 #endif
-        }
 
-        public static bool IsType(MemberInfo member) {
+
+        public static bool IsType(MemberInfo member) =>
 #if USE_TYPEINFO
             return member is TypeInfo;
 #else
-            return member is Type;
+            member is Type;
 #endif
-        }
 
-        public static Type AsType(MemberInfo member) {
+
+        public static Type AsType(MemberInfo member) =>
 #if USE_TYPEINFO
             return ((TypeInfo)member).AsType();
 #else
-            return (Type)member;
+            (Type)member;
 #endif
-        }
+
 
 #if USE_TYPEINFO
         public static TypeInfo Resolve(this Type type) {
             return type.GetTypeInfo();
         }
 #else
-        public static Type Resolve(this Type type) {
-            return type;
-        }
+        public static Type Resolve(this Type type) => type;
 #endif
 
         #region Extensions

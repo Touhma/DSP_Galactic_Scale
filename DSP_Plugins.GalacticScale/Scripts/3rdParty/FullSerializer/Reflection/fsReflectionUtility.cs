@@ -35,8 +35,7 @@ namespace GSFullSerializer.Internal {
                         if (interfaceType == iface.GetGenericTypeDefinition()) {
                             return iface;
                         }
-                    }
-                    else if (interfaceType == iface) {
+                    } else if (interfaceType == iface) {
                         return iface;
                     }
                 }

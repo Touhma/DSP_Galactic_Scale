@@ -1,11 +1,5 @@
-﻿using GSFullSerializer;
-using System.Collections.Generic;
-using System.IO;
-
-namespace GalacticScale.Generators
-{
-    public class PhysicsTest : iConfigurableGenerator
-    {
+﻿namespace GalacticScale.Generators {
+    public class PhysicsTest : iConfigurableGenerator {
         public string Name => "PhysicsTest";
 
         public string Author => "innominata";
@@ -20,10 +14,9 @@ namespace GalacticScale.Generators
 
         public GSOptions Options => options;
 
-        private GSOptions options = new GSOptions();
-        private GSStars stars = new GSStars();
-        public void Init()
-        {
+        private readonly GSOptions options = new GSOptions();
+        private readonly GSStars stars = new GSStars();
+        public void Init() {
             //List<string> genList = new List<string>();
             //foreach (iGenerator g in GS2.generators) genList.Add(g.Name);
             //options.Add(new GSOption("Dryrun Generator", "ComboBox", genList, OnDryRunChange, () => { }));
@@ -34,34 +27,29 @@ namespace GalacticScale.Generators
             //options.Add(new GSOption("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
             //OnImportPositionsClick(null);
         }
-       
-        public void Generate(int starCount)
-        {
-            GSPlanets p = new GSPlanets();
-            for (var i = 1f;i < 50f; i++)
-            p.Add(new GSPlanet("Test", "OceanWorld" , 100, (float)i, -1, -1, 0, -1, -1, -1, 1f, null));
 
-            for (var i = 0; i < 100; i++)
-            {
+        public void Generate(int starCount) {
+            GSPlanets p = new GSPlanets();
+            for (var i = 1f; i < 50f; i++) {
+                p.Add(new GSPlanet("Test", "OceanWorld", 100, (float)i, -1, -1, 0, -1, -1, -1, 1f, null));
+            }
+
+            for (var i = 0; i < 100; i++) {
 
                 GSStar s = new GSStar(1, "PhysRadius" + i, ESpectrType.B, EStarType.MainSeqStar, p);
                 s.position = new VectorLF3(i * (1 + (i % 2)), i, i * (-1 + (1 % 2)));
                 s.physicsRadius = (i + 0.000001f) * 1000;
                 //GS2.Log("added star " + i + " with physics radius " + s.physicsRadius);
                 GSSettings.Stars.Add(s);
-                
-                
+
+
             }
         }
 
-        public void Import(GSGenPreferences preferences)
-        {
-            
+        public void Import(GSGenPreferences preferences) {
+
         }
 
-        public GSGenPreferences Export()
-        {
-            return new GSGenPreferences();
-        }
+        public GSGenPreferences Export() => new GSGenPreferences();
     }
 }

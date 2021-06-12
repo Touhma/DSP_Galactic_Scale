@@ -1,15 +1,10 @@
-﻿using System;
-
-namespace GalacticScale
-{
-    public enum EThemeType
-    {
+﻿namespace GalacticScale {
+    public enum EThemeType {
         Gas,
         Planet,
         Moon
     }
-    public enum EThemeHeat
-    {
+    public enum EThemeHeat {
         Hot,
         Warm,
         Temperate,

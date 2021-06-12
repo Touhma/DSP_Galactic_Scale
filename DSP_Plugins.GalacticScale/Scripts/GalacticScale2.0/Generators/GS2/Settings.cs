@@ -1,34 +1,26 @@
-﻿using GSFullSerializer;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using UnityEngine;
-namespace GalacticScale.Generators
-{
-    public partial class GS2Generator : iConfigurableGenerator
-    {
+﻿using System.Collections.Generic;
+namespace GalacticScale.Generators {
+    public partial class GS2Generator : iConfigurableGenerator {
         public bool DisableStarCountSlider => false;
 
         public GSGeneratorConfig Config => config;
 
         public GSOptions Options => options;
-        private GSOptions options = new GSOptions();
-        private GSGeneratorConfig config = new GSGeneratorConfig();
+        private readonly GSOptions options = new GSOptions();
+        private readonly GSGeneratorConfig config = new GSGeneratorConfig();
         private GSGenPreferences preferences = new GSGenPreferences();
-        private Dictionary<string, GSUI> UI = new Dictionary<string, GSUI>();
+        private readonly Dictionary<string, GSUI> UI = new Dictionary<string, GSUI>();
 
-        public void enableLudicrousMode()
-        {
+        public void enableLudicrousMode() {
 
         }
-        public void Init()
-        {
+        public void Init() {
             config.DefaultStarCount = 10;
             AddUIElements();
         }
-        private void AddUIElements() { 
+        private void AddUIElements() {
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => enableLudicrousMode())));
-            UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9,"galaxyDensity")));
+            UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));
             UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount")));
             UI.Add("birthPlanetSize", options.Add(GSUI.Slider("Starting Planet Size", 20, 50, 510, "birthPlanetSize")));
             UI.Add("birthPlanetUnlock", options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
@@ -53,22 +45,32 @@ namespace GalacticScale.Generators
             UI.Add("freqWG", options.Add(GSUI.Slider("Freq. White Giant", 1, 1, 100, "freqWG")));
             UI.Add("freqBG", options.Add(GSUI.Slider("Freq. Blue Giant", 1, 1, 100, "freqBG")));
 
-             //options.Add(GSUI.Header("Default Settings", "Changing These Will Reset All Star Specific Options Below"));
+            //options.Add(GSUI.Header("Default Settings", "Changing These Will Reset All Star Specific Options Below"));
             UI.Add("minPlanetCount", options.Add(GSUI.Slider("Min Planets/System", 1, 4, 50, "minPlanetCount")));
             UI.Add("maxPlanetCount", options.Add(GSUI.Slider("Max Planets/System", 1, 10, 50, "maxPlanetCount")));
-            UI.Add("maxPlanetSize", options.Add(GSUI.Slider("Max planet size", 50, 30, 510, o =>
-            {
+            UI.Add("maxPlanetSize", options.Add(GSUI.Slider("Max planet size", 50, 30, 510, o => {
                 float minSize = preferences.GetFloat("minPlanetSize");
-                if (minSize == -1f) minSize = 5;
-                if (minSize > (float)o) o = minSize;
+                if (minSize == -1f) {
+                    minSize = 5;
+                }
+
+                if (minSize > (float)o) {
+                    o = minSize;
+                }
+
                 preferences.Set("maxPlanetSize", Utils.ParsePlanetSize((float)o));
                 UI["maxPlanetSize"].Set(preferences.GetFloat("maxPlanetSize"));
             })));
-            UI.Add("minPlanetSize", options.Add(GSUI.Slider("Min planet size", 5, 30, 510, o =>
-            {
+            UI.Add("minPlanetSize", options.Add(GSUI.Slider("Min planet size", 5, 30, 510, o => {
                 float maxSize = preferences.GetFloat("maxPlanetSize");
-                if (maxSize == -1f) maxSize = 510;
-                if (maxSize < (float)o) o = maxSize;
+                if (maxSize == -1f) {
+                    maxSize = 510;
+                }
+
+                if (maxSize < (float)o) {
+                    o = maxSize;
+                }
+
                 preferences.Set("minPlanetSize", Utils.ParsePlanetSize((float)o));
                 UI["minPlanetSize"].Set(preferences.GetFloat("minPlanetSize"));
             })));
@@ -78,14 +80,13 @@ namespace GalacticScale.Generators
             UI.Add("chanceMoon", options.Add(GSUI.Slider("Chance Moon", 10, 20, 80, "chanceMoon")));
             UI.Add("systemDensity", options.Add(GSUI.Slider("System Density", 1, 3, 5, "systemDensity")));
 
-            
+
 
             string[] typeDesc = {"Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant", "Yellow Giant", "White Giant",
                 "Blue Giant", "Neutron Star", "Black Hole" };
             string[] typeLetter = { "K", "M", "F", "G", "A", "B", "O", "WD", "RG", "YG", "WG", "BG", "NS", "BH" };
 
-            for (var i=0; i<14; i++)
-            {
+            for (var i = 0; i < 14; i++) {
                 //options.Add(GSUI.Header("$Type K Star Override", "Settings for K type stars only"));
                 UI.Add($"{typeLetter[i]}minPlanetCount", options.Add(GSUI.Slider($"{typeDesc[i]} Min Planets", 1, 4, 50, $"{typeLetter[i]}minPlanetCount")));
                 UI.Add($"{typeLetter[i]}maxPlanetCount", options.Add(GSUI.Slider($"{typeDesc[i]} Max Planets", 1, 10, 50, $"{typeLetter[i]}maxPlanetCount")));
@@ -99,14 +100,8 @@ namespace GalacticScale.Generators
 
         }
 
-        public void Import(GSGenPreferences preferences)
-        {
-            this.preferences = preferences;
-        }
+        public void Import(GSGenPreferences preferences) => this.preferences = preferences;
 
-        public GSGenPreferences Export()
-        {
-            return preferences;
-        }
+        public GSGenPreferences Export() => preferences;
     }
 }

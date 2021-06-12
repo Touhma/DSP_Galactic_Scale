@@ -17,12 +17,12 @@ namespace GSFullSerializer.Internal {
         /// <summary>
         /// Assemblies indexed by their name.
         /// </summary>
-        private static Dictionary<string, Assembly> _assembliesByName;
+        private static readonly Dictionary<string, Assembly> _assembliesByName;
 
         /// <summary>
         /// A list of assemblies, by index.
         /// </summary>
-        private static List<Assembly> _assembliesByIndex;
+        private static readonly List<Assembly> _assembliesByIndex;
 
         static fsTypeCache() {
             lock (typeof(fsTypeCache)) {
@@ -129,9 +129,7 @@ namespace GSFullSerializer.Internal {
         /// <summary>
         /// Removes any cached type lookup results.
         /// </summary>
-        public static void Reset() {
-            _cachedTypes = new Dictionary<string, Type>();
-        }
+        public static void Reset() => _cachedTypes = new Dictionary<string, Type>();
 
         /// <summary>
         /// Find a type with the given name. An exception is thrown if no type
@@ -140,9 +138,7 @@ namespace GSFullSerializer.Internal {
         /// then null will be returned.
         /// </summary>
         /// <param name="name">The fully qualified name of the type.</param>
-        public static Type GetType(string name) {
-            return GetType(name, null);
-        }
+        public static Type GetType(string name) => GetType(name, null);
 
         /// <summary>
         /// Find a type with the given name. An exception is thrown if no type

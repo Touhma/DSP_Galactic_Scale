@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System.Collections.Generic;
 
 namespace GalacticScale {
     public partial class PatchOnUISpaceGuide {
@@ -13,10 +13,7 @@ namespace GalacticScale {
         /* 0x000E0751 6F970A0006   */// IL_0355: ldfld instance int StarData::planetCount
         //
         //
-        [HarmonyTranspiler, HarmonyPatch(typeof(UISpaceGuide),"_OnLateUpdate")]
-        public static IEnumerable<CodeInstruction> UpdateTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            return ReplaceLd10(instructions);
-        }
+        [HarmonyTranspiler, HarmonyPatch(typeof(UISpaceGuide), "_OnLateUpdate")]
+        public static IEnumerable<CodeInstruction> UpdateTranspiler(IEnumerable<CodeInstruction> instructions) => ReplaceLd10(instructions);
     }
 }

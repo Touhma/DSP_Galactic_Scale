@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GSFullSerializer.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using GSFullSerializer.Internal;
 
 namespace GSFullSerializer {
     /// <summary>
@@ -48,7 +48,9 @@ namespace GSFullSerializer {
         /// being serialized.
         /// </param>
         public virtual bool RequestCycleSupport(Type storageType) {
-            if (storageType == typeof(string)) return false;
+            if (storageType == typeof(string)) {
+                return false;
+            }
 
             return storageType.Resolve().IsClass || storageType.Resolve().IsInterface;
         }
@@ -61,9 +63,7 @@ namespace GSFullSerializer {
         /// The field/property type that is currently storing the object that is
         /// being serialized.
         /// </param>
-        public virtual bool RequestInheritanceSupport(Type storageType) {
-            return storageType.Resolve().IsSealed == false;
-        }
+        public virtual bool RequestInheritanceSupport(Type storageType) => storageType.Resolve().IsSealed == false;
 
         /// <summary>
         /// Serialize the actual object into the given data storage.
@@ -106,9 +106,7 @@ namespace GSFullSerializer {
             return fsResult.Success;
         }
 
-        protected fsResult CheckKey(fsData data, string key, out fsData subitem) {
-            return CheckKey(data.AsDictionary, key, out subitem);
-        }
+        protected fsResult CheckKey(fsData data, string key, out fsData subitem) => CheckKey(data.AsDictionary, key, out subitem);
 
         protected fsResult CheckKey(Dictionary<string, fsData> data, string key, out fsData subitem) {
             if (data.TryGetValue(key, out subitem) == false) {
@@ -120,7 +118,10 @@ namespace GSFullSerializer {
         protected fsResult SerializeMember<T>(Dictionary<string, fsData> data, Type overrideConverterType, string name, T value) {
             fsData memberData;
             var result = Serializer.TrySerialize(typeof(T), overrideConverterType, value, out memberData);
-            if (result.Succeeded) data[name] = memberData;
+            if (result.Succeeded) {
+                data[name] = memberData;
+            }
+
             return result;
         }
 

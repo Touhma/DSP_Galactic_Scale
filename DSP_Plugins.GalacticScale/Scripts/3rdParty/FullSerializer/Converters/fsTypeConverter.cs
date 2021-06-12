@@ -7,17 +7,11 @@ using System.Reflection;
 
 namespace GSFullSerializer.Internal {
     public class fsTypeConverter : fsConverter {
-        public override bool CanProcess(Type type) {
-            return typeof(Type).IsAssignableFrom(type);
-        }
+        public override bool CanProcess(Type type) => typeof(Type).IsAssignableFrom(type);
 
-        public override bool RequestCycleSupport(Type type) {
-            return false;
-        }
+        public override bool RequestCycleSupport(Type type) => false;
 
-        public override bool RequestInheritanceSupport(Type type) {
-            return false;
-        }
+        public override bool RequestInheritanceSupport(Type type) => false;
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
             var type = (Type)instance;
@@ -37,8 +31,6 @@ namespace GSFullSerializer.Internal {
             return fsResult.Success;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return storageType;
-        }
+        public override object CreateInstance(fsData data, Type storageType) => storageType;
     }
 }

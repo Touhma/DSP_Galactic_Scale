@@ -14,7 +14,7 @@
 //            if (planet == null && star == null) return;
 //            if (planet != null) StartCoroutine(Teleport(planet));
 //            else if (star != null) StartCoroutine(Teleport(star));
-            
+
 //        }
 
 //        private IEnumerator Teleport(PlanetData planet)

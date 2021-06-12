@@ -47,7 +47,7 @@ namespace GSFullSerializer.Internal {
         /// <summary>
         /// Internal handle to the reflected member.
         /// </summary>
-        private MemberInfo _memberInfo;
+        private readonly MemberInfo _memberInfo;
 
         /// <summary>
         /// The type of value that is stored inside of the property. For example,
@@ -127,8 +127,7 @@ namespace GSFullSerializer.Internal {
 
             if (field != null) {
                 field.SetValue(context, value);
-            }
-            else if (property != null) {
+            } else if (property != null) {
                 MethodInfo setMethod = property.GetSetMethod(/*nonPublic:*/ true);
                 if (setMethod != null) {
                     setMethod.Invoke(context, new object[] { value });
@@ -143,8 +142,7 @@ namespace GSFullSerializer.Internal {
         public object Read(object context) {
             if (_memberInfo is PropertyInfo) {
                 return ((PropertyInfo)_memberInfo).GetValue(context, new object[] { });
-            }
-            else {
+            } else {
                 return ((FieldInfo)_memberInfo).GetValue(context);
             }
         }

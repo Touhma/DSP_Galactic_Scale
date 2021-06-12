@@ -10,13 +10,9 @@ namespace GSFullSerializer.Internal {
     // processing in general is a bit more advanced because a few of the
     // collection implementations are buggy.
     public class fsDictionaryConverter : fsConverter {
-        public override bool CanProcess(Type type) {
-            return typeof(IDictionary).IsAssignableFrom(type);
-        }
+        public override bool CanProcess(Type type) => typeof(IDictionary).IsAssignableFrom(type);
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return fsMetaType.Get(Serializer.Config, storageType).CreateInstance();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => fsMetaType.Get(Serializer.Config, storageType).CreateInstance();
 
         public override fsResult TryDeserialize(fsData data, ref object instance_, Type storageType) {
             var instance = (IDictionary)instance_;
@@ -31,31 +27,49 @@ namespace GSFullSerializer.Internal {
                     var item = list[i];
 
                     fsData keyData, valueData;
-                    if ((result += CheckType(item, fsDataType.Object)).Failed) return result;
-                    if ((result += CheckKey(item, "Key", out keyData)).Failed) return result;
-                    if ((result += CheckKey(item, "Value", out valueData)).Failed) return result;
+                    if ((result += CheckType(item, fsDataType.Object)).Failed) {
+                        return result;
+                    }
+
+                    if ((result += CheckKey(item, "Key", out keyData)).Failed) {
+                        return result;
+                    }
+
+                    if ((result += CheckKey(item, "Value", out valueData)).Failed) {
+                        return result;
+                    }
 
                     object keyInstance = null, valueInstance = null;
-                    if ((result += Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed) return result;
-                    if ((result += Serializer.TryDeserialize(valueData, valueStorageType, ref valueInstance)).Failed) return result;
+                    if ((result += Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed) {
+                        return result;
+                    }
+
+                    if ((result += Serializer.TryDeserialize(valueData, valueStorageType, ref valueInstance)).Failed) {
+                        return result;
+                    }
 
                     AddItemToDictionary(instance, keyInstance, valueInstance);
                 }
-            }
-            else if (data.IsDictionary) {
+            } else if (data.IsDictionary) {
                 foreach (var entry in data.AsDictionary) {
-                    if (fsSerializer.IsReservedKeyword(entry.Key)) continue;
+                    if (fsSerializer.IsReservedKeyword(entry.Key)) {
+                        continue;
+                    }
 
                     fsData keyData = new fsData(entry.Key), valueData = entry.Value;
                     object keyInstance = null, valueInstance = null;
 
-                    if ((result += Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed) return result;
-                    if ((result += Serializer.TryDeserialize(valueData, valueStorageType, ref valueInstance)).Failed) return result;
+                    if ((result += Serializer.TryDeserialize(keyData, keyStorageType, ref keyInstance)).Failed) {
+                        return result;
+                    }
+
+                    if ((result += Serializer.TryDeserialize(valueData, valueStorageType, ref valueInstance)).Failed) {
+                        return result;
+                    }
 
                     AddItemToDictionary(instance, keyInstance, valueInstance);
                 }
-            }
-            else {
+            } else {
                 return FailExpectedType(data, fsDataType.Array, fsDataType.Object);
             }
 
@@ -81,8 +95,13 @@ namespace GSFullSerializer.Internal {
             var serializedValues = new List<fsData>(instance.Count);
             while (enumerator.MoveNext()) {
                 fsData keyData, valueData;
-                if ((result += Serializer.TrySerialize(keyStorageType, enumerator.Key, out keyData)).Failed) return result;
-                if ((result += Serializer.TrySerialize(valueStorageType, enumerator.Value, out valueData)).Failed) return result;
+                if ((result += Serializer.TrySerialize(keyStorageType, enumerator.Key, out keyData)).Failed) {
+                    return result;
+                }
+
+                if ((result += Serializer.TrySerialize(valueStorageType, enumerator.Value, out valueData)).Failed) {
+                    return result;
+                }
 
                 serializedKeys.Add(keyData);
                 serializedValues.Add(valueData);
@@ -99,8 +118,7 @@ namespace GSFullSerializer.Internal {
                     fsData value = serializedValues[i];
                     serializedDictionary[key.AsString] = value;
                 }
-            }
-            else {
+            } else {
                 serialized = fsData.CreateList(serializedKeys.Count);
                 var serializedList = serialized.AsList;
 
@@ -168,8 +186,7 @@ namespace GSFullSerializer.Internal {
                 var genericArgs = interfaceType.GetGenericArguments();
                 keyStorageType = genericArgs[0];
                 valueStorageType = genericArgs[1];
-            }
-            else {
+            } else {
                 // Fetching IDictionary<,> failed... we have to encode full type
                 // information :(
                 keyStorageType = typeof(object);

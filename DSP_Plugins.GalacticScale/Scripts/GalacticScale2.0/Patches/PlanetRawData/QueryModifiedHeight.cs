@@ -1,46 +1,36 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public partial class PatchOnPlanetRawData
-    {
+namespace GalacticScale {
+    public partial class PatchOnPlanetRawData {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetRawData), "QueryModifiedHeight")]
         public static bool QueryModifiedHeight(ref PlanetRawData __instance,
-        ref float __result, Vector3 vpos)
-        {
+        ref float __result, Vector3 vpos) {
             //GS2.Warn((__instance == null).ToString());
             vpos.Normalize();
-            int index1 = __instance.indexMap[ __instance.PositionHash(vpos, 0)];
-            float radiusPrecision = 3.1415927f / (float)(__instance.precision * 2) * 1.2f;
+            int index1 = __instance.indexMap[__instance.PositionHash(vpos, 0)];
+            float radiusPrecision = 3.1415927f / (__instance.precision * 2) * 1.2f;
             float radiusPrecisionSq = radiusPrecision * radiusPrecision;
             float magnitudeOnPrecisionDummy = 0f;
             float HeightTimePrecision = 0f;
             int stride = __instance.stride;
-            for (int index2 = -1; index2 <= 3; index2++)
-                for (int index3 = -1; index3 <= 3; index3++)
-                {
+            for (int index2 = -1; index2 <= 3; index2++) {
+                for (int index3 = -1; index3 <= 3; index3++) {
                     int index4 = index1 + index2 + index3 * stride;
-                    if ((ulong)index4 < (ulong)((long)__instance.dataLength))
-                    {
+                    if ((ulong)index4 < (ulong)__instance.dataLength) {
                         float sqrMagnitude = (__instance.vertices[index4] - vpos).sqrMagnitude;
-                        if (sqrMagnitude <= radiusPrecisionSq)
-                        {
+                        if (sqrMagnitude <= radiusPrecisionSq) {
                             float magnitudeOnPrecision = 1f - Mathf.Sqrt(sqrMagnitude) / radiusPrecision;
                             magnitudeOnPrecision *= __instance.GetFactoredScale();
                             int modLevel = __instance.GetModLevel(index4);
-                            float HeightDataFinal = (float)__instance.heightData[index4];
-                            if (modLevel > 0)
-                            {
-                                float modPlane = (float)__instance.GetModPlaneInt(index4);
-                                if (modLevel == 3)
-                                {
+                            float HeightDataFinal = __instance.heightData[index4];
+                            if (modLevel > 0) {
+                                float modPlane = __instance.GetModPlaneInt(index4);
+                                if (modLevel == 3) {
                                     HeightDataFinal = modPlane;
-                                }
-                                else
-                                {
-                                    float num11 = (float)modLevel * 0.3333333f;
-                                    HeightDataFinal = (float)__instance.heightData[index4] * (1f - num11) + modPlane * num11;
+                                } else {
+                                    float num11 = modLevel * 0.3333333f;
+                                    HeightDataFinal = __instance.heightData[index4] * (1f - num11) + modPlane * num11;
                                 }
                             }
                             magnitudeOnPrecisionDummy += magnitudeOnPrecision;
@@ -48,10 +38,11 @@ namespace GalacticScale
                         }
                     }
                 }
-            if (magnitudeOnPrecisionDummy == 0f)
-            {
+            }
+
+            if (magnitudeOnPrecisionDummy == 0f) {
                 GS2.Warn("Bad Query");
-                __result = (float)__instance.heightData[0] * 0.01f;
+                __result = __instance.heightData[0] * 0.01f;
                 return false;
             }
             __result = HeightTimePrecision / magnitudeOnPrecisionDummy * 0.01f;

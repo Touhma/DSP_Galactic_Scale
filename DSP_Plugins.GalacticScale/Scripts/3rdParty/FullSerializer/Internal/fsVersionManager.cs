@@ -55,7 +55,8 @@ namespace GSFullSerializer.Internal {
                         }
 
                         // construct the actual versioned type instance
-                        fsVersionedType versionedType = new fsVersionedType {
+                        fsVersionedType versionedType = new fsVersionedType
+                        {
                             Ancestors = ancestors,
                             VersionString = attr.VersionString,
                             ModelType = type

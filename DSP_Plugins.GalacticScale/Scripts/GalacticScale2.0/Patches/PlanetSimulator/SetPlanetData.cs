@@ -15,10 +15,11 @@ namespace GalacticScale {
                 }.transform;
                 __instance.atmoTrans0.parent = __instance.transform;
                 __instance.atmoTrans0.localPosition = Vector3.zero;
-                if (planet.GetScaleFactored() >= 1)
+                if (planet.GetScaleFactored() >= 1) {
                     __instance.atmoTrans0.localScale *= planet.GetScaleFactored();
-                else
+                } else {
                     __instance.atmoTrans0.localScale /= planet.GetScaleFactored();
+                }
 
                 var primitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 primitive.layer = 31;
@@ -43,6 +44,6 @@ namespace GalacticScale {
             ___star = ___universe.FindStarSimulator(planet.star);
 
             return false;
-        }     
+        }
     }
 }

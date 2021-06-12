@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GSFullSerializer {
-    partial class fsConverterRegistrar {
+    public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.GUIStyle_DirectConverter Register_GUIStyle_DirectConverter;
     }
 }
@@ -154,9 +154,7 @@ namespace GSFullSerializer.Internal.DirectConverters {
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return new GUIStyle();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => new GUIStyle();
     }
 }
 #endif

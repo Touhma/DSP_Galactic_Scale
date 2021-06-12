@@ -71,8 +71,11 @@ namespace GSFullSerializer {
 
             // Copy messages over
             if (other._messages != null) {
-                if (_messages == null) _messages = new List<string>(other._messages);
-                else _messages.AddRange(other._messages);
+                if (_messages == null) {
+                    _messages = new List<string>(other._messages);
+                } else {
+                    _messages.AddRange(other._messages);
+                }
             }
 
             return this;
@@ -81,7 +84,8 @@ namespace GSFullSerializer {
         /// <summary>
         /// A successful result.
         /// </summary>
-        public static fsResult Success = new fsResult {
+        public static fsResult Success = new fsResult
+        {
             _success = true
         };
 
@@ -119,39 +123,30 @@ namespace GSFullSerializer {
         /// Did this result fail? If so, you can see the reasons why in
         /// `RawMessages`.
         /// </summary>
-        public bool Failed {
-            get {
-                return _success == false;
-            }
-        }
+        public bool Failed => _success == false;
 
         /// <summary>
         /// Was the result a success? Note that even successful operations may
         /// have warning messages (`RawMessages`) associated with them.
         /// </summary>
-        public bool Succeeded {
-            get {
-                return _success;
-            }
-        }
+        public bool Succeeded => _success;
 
         /// <summary>
         /// Does this result have any warnings? This says nothing about if it
         /// failed or succeeded, just if it has warning messages associated with
         /// it.
         /// </summary>
-        public bool HasWarnings {
-            get {
-                return _messages != null && _messages.Any();
-            }
-        }
+        public bool HasWarnings => _messages != null && _messages.Any();
 
         /// <summary>
         /// A simply utility method that will assert that this result is
         /// successful. If it is not, then an exception is thrown.
         /// </summary>
         public fsResult AssertSuccess() {
-            if (Failed) throw AsException;
+            if (Failed) {
+                throw AsException;
+            }
+
             return this;
         }
 
@@ -161,7 +156,10 @@ namespace GSFullSerializer {
         /// exception if either of those asserts are false.
         /// </summary>
         public fsResult AssertSuccessWithoutWarnings() {
-            if (Failed || RawMessages.Any()) throw AsException;
+            if (Failed || RawMessages.Any()) {
+                throw AsException;
+            }
+
             return this;
         }
 
@@ -171,7 +169,10 @@ namespace GSFullSerializer {
         /// </summary>
         public Exception AsException {
             get {
-                if (!Failed && !RawMessages.Any()) throw new Exception("Only a failed result can be converted to an exception");
+                if (!Failed && !RawMessages.Any()) {
+                    throw new Exception("Only a failed result can be converted to an exception");
+                }
+
                 return new Exception(FormattedMessages);
             }
         }
@@ -185,10 +186,6 @@ namespace GSFullSerializer {
             }
         }
 
-        public string FormattedMessages {
-            get {
-                return string.Join(",\n", RawMessages.ToArray());
-            }
-        }
+        public string FormattedMessages => string.Join(",\n", RawMessages.ToArray());
     }
 }

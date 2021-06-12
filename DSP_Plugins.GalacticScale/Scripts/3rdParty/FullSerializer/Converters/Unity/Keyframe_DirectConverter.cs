@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GSFullSerializer {
-    partial class fsConverterRegistrar {
+    public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.Keyframe_DirectConverter Register_Keyframe_DirectConverter;
     }
 }
@@ -55,9 +55,7 @@ namespace GSFullSerializer.Internal.DirectConverters {
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return new Keyframe();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => new Keyframe();
     }
 }
 #endif

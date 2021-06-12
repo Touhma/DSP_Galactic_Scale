@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GSFullSerializer.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using GSFullSerializer.Internal;
 
 namespace GSFullSerializer {
     /// <summary>
@@ -17,8 +17,9 @@ namespace GSFullSerializer {
         public static fsMetaType Get(fsConfig config, Type type) {
             Dictionary<Type, fsMetaType> metaTypes;
             lock (typeof(fsMetaType)) {
-                if (_configMetaTypes.TryGetValue(config, out metaTypes) == false)
+                if (_configMetaTypes.TryGetValue(config, out metaTypes) == false) {
                     metaTypes = _configMetaTypes[config] = new Dictionary<Type, fsMetaType>();
+                }
             }
 
             fsMetaType metaType;
@@ -102,8 +103,7 @@ namespace GSFullSerializer {
                     if (CanSerializeProperty(config, property, members, requireOptOut)) {
                         properties.Add(new fsMetaProperty(config, property));
                     }
-                }
-                else if (field != null) {
+                } else if (field != null) {
                     if (CanSerializeField(config, field, requireOptOut)) {
                         properties.Add(new fsMetaProperty(config, field));
                     }
@@ -222,7 +222,7 @@ namespace GSFullSerializer {
         }
 
         public class AotFailureException : Exception {
-            public AotFailureException(string reason) : base(reason) {}
+            public AotFailureException(string reason) : base(reason) { }
         }
 
         /// <summary>
@@ -231,8 +231,9 @@ namespace GSFullSerializer {
         /// <returns>True if AOT data was emitted, false otherwise.</returns>
         public void EmitAotData(bool throwException) {
             fsAotCompilationManager.AotCandidateTypes.Add(ReflectedType);
-            if (!throwException)
+            if (!throwException) {
                 return;
+            }
 
             // NOTE: Even if the type has derived types, we can still
             // generate a direct converter for it. Direct converters are not
@@ -242,17 +243,20 @@ namespace GSFullSerializer {
 
             for (int i = 0; i < Properties.Length; ++i) {
                 // Cannot AOT compile since we need to public member access.
-                if (Properties[i].IsPublic == false)
+                if (Properties[i].IsPublic == false) {
                     throw new AotFailureException(ReflectedType.CSharpName(true) + "::" + Properties[i].MemberName + " is not public");
+                }
                 // Cannot AOT compile since readonly members can only be
                 // modified using reflection.
-                if (Properties[i].IsReadOnly)
+                if (Properties[i].IsReadOnly) {
                     throw new AotFailureException(ReflectedType.CSharpName(true) + "::" + Properties[i].MemberName + " is readonly");
+                }
             }
 
             // Cannot AOT compile since we need a default ctor.
-            if (HasDefaultConstructor == false)
+            if (HasDefaultConstructor == false) {
                 throw new AotFailureException(ReflectedType.CSharpName(true) + " does not have a default constructor");
+            }
         }
 
         public fsMetaProperty[] Properties {
@@ -278,8 +282,7 @@ namespace GSFullSerializer {
                     else if (ReflectedType.Resolve().IsValueType) {
                         _hasDefaultConstructorCache = true;
                         _isDefaultConstructorPublicCache = true;
-                    }
-                    else {
+                    } else {
                         // consider private constructors as well
                         var ctor = ReflectedType.GetDeclaredConstructor(fsPortableReflection.EmptyTypes);
                         _hasDefaultConstructorCache = ctor != null;
@@ -361,8 +364,7 @@ namespace GSFullSerializer {
 #endif
             catch (TargetInvocationException e) {
                 throw new InvalidOperationException("Constructor of " + ReflectedType + " threw an exception when creating an instance", e);
-            }
-            catch (MemberAccessException e) {
+            } catch (MemberAccessException e) {
                 throw new InvalidOperationException("Unable to access constructor of " + ReflectedType, e);
             }
         }

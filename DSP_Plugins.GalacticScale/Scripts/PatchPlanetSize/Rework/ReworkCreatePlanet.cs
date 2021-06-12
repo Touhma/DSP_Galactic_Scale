@@ -1,6 +1,6 @@
 ﻿//namespace GalacticScale {
 //    public static class ReworkPlanetGen {
-        
+
 //        private static void DebugClassicLut(int[] classicLUT) {
 
 //            for (int a = 0; a < 32; a++) {

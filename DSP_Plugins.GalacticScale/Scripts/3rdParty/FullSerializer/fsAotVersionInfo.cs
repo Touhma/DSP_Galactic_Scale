@@ -17,13 +17,16 @@ namespace GSFullSerializer {
                 JsonName = property.JsonName;
                 StorageType = property.StorageType.CSharpName(true);
                 OverrideConverterType = null;
-                if (property.OverrideConverterType != null)
+                if (property.OverrideConverterType != null) {
                     OverrideConverterType = property.OverrideConverterType.CSharpName();
+                }
             }
 
             public override bool Equals(object obj) {
-                if (obj is Member == false)
+                if (obj is Member == false) {
                     return false;
+                }
+
                 return this == ((Member)obj);
             }
             public override int GetHashCode() {

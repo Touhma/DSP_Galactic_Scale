@@ -1,30 +1,43 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public class PatchOnGuideMissionStandardMode
-    {
+namespace GalacticScale {
+    public class PatchOnGuideMissionStandardMode {
         [HarmonyPrefix, HarmonyPatch(typeof(GuideMissionStandardMode), "Skip")]
-        public static bool GS2_GuideMissionStandardMode_Skip_Prefix(GameData _gameData, ref GuideMissionStandardMode __instance)
-        {
+        public static bool GS2_GuideMissionStandardMode_Skip_Prefix(GameData _gameData, ref GuideMissionStandardMode __instance) {
             //if (GS2.Vanilla) return true;
-            if (GS2.IsMenuDemo) return true;
+            if (GS2.IsMenuDemo) {
+                return true;
+            }
             //GS2.Warn(NebulaCompatibility.IsMasterClient.ToString());
             //if (NebulaCompatibility.Initialized || !NebulaCompatibility.LocalPlayer.IsMasterClient) return false;
-            if (GS2.Failed)return false;
-            GS2.Log("Checking gameData... " + ((_gameData == null)?"Null":"Exists"));
-            if (_gameData == null) return GS2.AbortGameStart("An error occured during game creation, resulting in no game data being created");
+            if (GS2.Failed) {
+                return false;
+            }
+
+            GS2.Log("Checking gameData... " + ((_gameData == null) ? "Null" : "Exists"));
+            if (_gameData == null) {
+                return GS2.AbortGameStart("An error occured during game creation, resulting in no game data being created");
+            }
+
             __instance.gameData = _gameData;
             GS2.Log("Checking mainPlayer... " + ((__instance.gameData.mainPlayer == null) ? "Null" : "Exists"));
-            if (__instance.gameData.mainPlayer == null) return GS2.AbortGameStart("An error occured during game creation, resulting in no player character being created");
+            if (__instance.gameData.mainPlayer == null) {
+                return GS2.AbortGameStart("An error occured during game creation, resulting in no player character being created");
+            }
+
             __instance.player = __instance.gameData.mainPlayer;
 
             GS2.Log("Checking controller... " + ((__instance.player.controller == null) ? "Null" : "Exists"));
             __instance.controller = __instance.player.controller;
-            if (__instance.player.controller == null) return GS2.AbortGameStart("Player controller failed to initialize. Probably an issue with galaxy generation.");
+            if (__instance.player.controller == null) {
+                return GS2.AbortGameStart("Player controller failed to initialize. Probably an issue with galaxy generation.");
+            }
+
             GS2.Log("Checking localPlanet... " + ((__instance.gameData.localPlanet == null) ? "Null" : "Exists"));
-            if (__instance.gameData.localPlanet == null) return GS2.AbortGameStart("Unable to find a habitable starting planet. If loading from a custon JSON, please check it for errors with an online tool.");
+            if (__instance.gameData.localPlanet == null) {
+                return GS2.AbortGameStart("Unable to find a habitable starting planet. If loading from a custon JSON, please check it for errors with an online tool.");
+            }
 
             __instance.localPlanet = __instance.gameData.localPlanet;
             GS2.Log("Checking birthPoint... " + ((__instance.localPlanet.birthPoint == null) ? "Null" : "Exists"));
@@ -39,8 +52,7 @@ namespace GalacticScale
             __instance.gameData.InitLandingPlace();
             __instance.player.controller.memCameraTargetRot = __instance.targetRot;
             __instance.player.cameraTarget.rotation = __instance.targetRot;
-            if (GS2.CheatMode && !GS2.ResearchUnlocked)
-            {
+            if (GS2.CheatMode && !GS2.ResearchUnlocked) {
                 GS2.Warn("Cheatmode Enabled. Unlocking Research");
                 GS2.UnlockTech(null);
             }

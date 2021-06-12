@@ -26,7 +26,9 @@ namespace GSFullSerializer.Internal {
 
             for (int i = 0; i < metaType.Properties.Length; ++i) {
                 fsMetaProperty property = metaType.Properties[i];
-                if (property.CanRead == false) continue;
+                if (property.CanRead == false) {
+                    continue;
+                }
 
                 fsData serializedData;
 
@@ -56,7 +58,9 @@ namespace GSFullSerializer.Internal {
 
             for (int i = 0; i < metaType.Properties.Length; ++i) {
                 fsMetaProperty property = metaType.Properties[i];
-                if (property.CanWrite == false) continue;
+                if (property.CanWrite == false) {
+                    continue;
+                }
 
                 fsData propertyData;
                 if (data.AsDictionary.TryGetValue(property.JsonName, out propertyData)) {
@@ -78,7 +82,9 @@ namespace GSFullSerializer.Internal {
                     var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType,
                                                                property.OverrideConverterType, ref deserializedValue);
                     result.AddMessages(itemResult);
-                    if (itemResult.Failed) continue;
+                    if (itemResult.Failed) {
+                        continue;
+                    }
 
                     property.Write(instance, deserializedValue);
                 }

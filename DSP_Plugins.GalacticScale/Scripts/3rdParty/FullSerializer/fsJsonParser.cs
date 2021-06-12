@@ -11,7 +11,7 @@ namespace GSFullSerializer {
     /// </summary>
     public class fsJsonParser {
         private int _start;
-        private string _input;
+        private readonly string _input;
 
         private fsResult MakeFailure(string message) {
             int start = Math.Max(0, _start - 20);
@@ -31,21 +31,13 @@ namespace GSFullSerializer {
             return false;
         }
 
-        private bool HasValue() {
-            return HasValue(0);
-        }
+        private bool HasValue() => HasValue(0);
 
-        private bool HasValue(int offset) {
-            return (_start + offset) >= 0 && (_start + offset) < _input.Length;
-        }
+        private bool HasValue(int offset) => (_start + offset) >= 0 && (_start + offset) < _input.Length;
 
-        private char Character() {
-            return Character(0);
-        }
+        private char Character() => Character(0);
 
-        private char Character(int offset) {
-            return _input[_start + offset];
-        }
+        private char Character(int offset) => _input[_start + offset];
 
         /// <summary>
         /// Skips input such that Character() will return a non-whitespace
@@ -69,8 +61,7 @@ namespace GSFullSerializer {
                             TryMoveNext();
                         }
                         continue;
-                    }
-                    else if (Character(1) == '*') {
+                    } else if (Character(1) == '*') {
                         // skip to comment close
                         TryMoveNext();
                         TryMoveNext();
@@ -80,8 +71,7 @@ namespace GSFullSerializer {
                                 TryMoveNext();
                                 TryMoveNext();
                                 break;
-                            }
-                            else {
+                            } else {
                                 TryMoveNext();
                             }
                         }
@@ -103,12 +93,14 @@ namespace GSFullSerializer {
 
         private uint ParseSingleChar(char c1, uint multipliyer) {
             uint p1 = 0;
-            if (c1 >= '0' && c1 <= '9')
+            if (c1 >= '0' && c1 <= '9') {
                 p1 = (uint)(c1 - '0') * multipliyer;
-            else if (c1 >= 'A' && c1 <= 'F')
+            } else if (c1 >= 'A' && c1 <= 'F') {
                 p1 = (uint)((c1 - 'A') + 10) * multipliyer;
-            else if (c1 >= 'a' && c1 <= 'f')
+            } else if (c1 >= 'a' && c1 <= 'f') {
                 p1 = (uint)((c1 - 'a') + 10) * multipliyer;
+            }
+
             return p1;
         }
 
@@ -222,9 +214,7 @@ namespace GSFullSerializer {
             return fail;
         }
 
-        private bool IsSeparator(char c) {
-            return char.IsWhiteSpace(c) || c == ',' || c == '}' || c == ']';
-        }
+        private bool IsSeparator(char c) => char.IsWhiteSpace(c) || c == ',' || c == '}' || c == ']';
 
         /// <summary>
         /// Parses numbers that follow the regular expression [-+](\d+|\d*\.\d*)
@@ -252,8 +242,7 @@ namespace GSFullSerializer {
 
                 data = new fsData(doubleValue);
                 return fsResult.Success;
-            }
-            else {
+            } else {
                 Int64 intValue;
                 if (Int64.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture, out intValue) == false) {
                     data = null;
@@ -348,7 +337,10 @@ namespace GSFullSerializer {
                 // parse the comma
                 SkipSpace();
                 if (HasValue() && Character() == ',') {
-                    if (TryMoveNext() == false) break;
+                    if (TryMoveNext() == false) {
+                        break;
+                    }
+
                     SkipSpace();
                 }
             }
@@ -412,7 +404,10 @@ namespace GSFullSerializer {
                 // parse the comma
                 SkipSpace();
                 if (HasValue() && Character() == ',') {
-                    if (TryMoveNext() == false) break;
+                    if (TryMoveNext() == false) {
+                        break;
+                    }
+
                     SkipSpace();
                 }
             }

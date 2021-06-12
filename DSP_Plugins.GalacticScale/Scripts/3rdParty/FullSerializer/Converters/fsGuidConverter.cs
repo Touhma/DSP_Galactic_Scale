@@ -5,17 +5,11 @@ namespace GSFullSerializer.Internal {
     /// Serializes and deserializes guids.
     /// </summary>
     public class fsGuidConverter : fsConverter {
-        public override bool CanProcess(Type type) {
-            return type == typeof(Guid);
-        }
+        public override bool CanProcess(Type type) => type == typeof(Guid);
 
-        public override bool RequestCycleSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestCycleSupport(Type storageType) => false;
 
-        public override bool RequestInheritanceSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestInheritanceSupport(Type storageType) => false;
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
             var guid = (Guid)instance;
@@ -32,8 +26,6 @@ namespace GSFullSerializer.Internal {
             return fsResult.Fail("fsGuidConverter encountered an unknown JSON data type");
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return new Guid();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => new Guid();
     }
 }

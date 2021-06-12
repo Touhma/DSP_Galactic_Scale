@@ -1,11 +1,8 @@
 ﻿using System;
 
-namespace GalacticScale
-{
-    public static partial class GS2
-    {
-        public static void CreateStarPlanets(ref  StarData star, GameDesc gameDesc)
-        {
+namespace GalacticScale {
+    public static partial class GS2 {
+        public static void CreateStarPlanets(ref StarData star, GameDesc gameDesc) {
             Log($"Start|{star.name}");
             GSStar gsStar = GSSettings.Stars[star.index];
             gsStar.counter = 0;
@@ -15,9 +12,12 @@ namespace GalacticScale
                 Warn($"New BodyCount = {gsStar.bodyCount}, existing planetCount was {star.planetCount}");
                 star.planetCount = gsStar.bodyCount;
             }
-            star.planets = new PlanetData[Math.Min(100,gsStar.bodyCount)];
+            star.planets = new PlanetData[Math.Min(100, gsStar.bodyCount)];
             Log("Creating Planet");
-            for (var i = 0; i < gsStar.planetCount; i++) CreatePlanet(ref star, gsStar.Planets[i], null);
+            for (var i = 0; i < gsStar.planetCount; i++) {
+                CreatePlanet(ref star, gsStar.Planets[i], null);
+            }
+
             Log($"End|{star.name}");
         }
     }

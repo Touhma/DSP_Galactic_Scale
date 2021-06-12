@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme IceGelisol = new GSTheme()
         {
             Name = "IceGelisol",
@@ -19,7 +17,7 @@ namespace GalacticScale
             ModY = new Vector2(1.0f, 1.0f),
             VeinSettings = new GSVeinSettings() { Algorithm = "Vanilla" },
             AmbientSettings = new GSAmbientSettings(),
-            
+
             Vegetables0 = new int[] {
 
             },

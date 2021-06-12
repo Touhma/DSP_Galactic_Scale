@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme Sakura = new GSTheme()
         {
             Name = "Sakura",
@@ -20,7 +18,7 @@ namespace GalacticScale
             ModY = new Vector2(0.0f, 0.0f),
             VeinSettings = new GSVeinSettings() { Algorithm = "Vanilla" },
             VegeSettings = new GSVegeSettings() { Algorithm = "Vanilla" },
-            AmbientSettings = new GSAmbientSettings() 
+            AmbientSettings = new GSAmbientSettings()
             {
                 Color1 = new Color(0.1264865f, 0.09135135f, 0.13f, 1.0f),
                 Color2 = new Color(0.1385069f, 0.09019608f, 0.1411765f, 1.0f),

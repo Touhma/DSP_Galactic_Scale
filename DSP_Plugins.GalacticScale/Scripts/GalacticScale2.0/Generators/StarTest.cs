@@ -1,12 +1,5 @@
-﻿using GSFullSerializer;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-
-namespace GalacticScale.Generators
-{
-    public class StarTest : iConfigurableGenerator
-    {
+﻿namespace GalacticScale.Generators {
+    public class StarTest : iConfigurableGenerator {
         public string Name => "StarTest";
 
         public string Author => "innominata";
@@ -20,10 +13,9 @@ namespace GalacticScale.Generators
         public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 4096, 1);
 
         public GSOptions Options => options;
-        private GSOptions options = new GSOptions();
+        private readonly GSOptions options = new GSOptions();
         //private GSStars stars = new GSStars();
-        public void Init()
-        {
+        public void Init() {
             //List<string> genList = new List<string>();
             //foreach (iGenerator g in GS2.generators) genList.Add(g.Name);
             //options.Add(new GSOption("Dryrun Generator", "ComboBox", genList, OnDryRunChange, () => { }));
@@ -35,8 +27,7 @@ namespace GalacticScale.Generators
             //OnImportPositionsClick(null);
         }
 
-        public void Generate(int starCount)
-        {
+        public void Generate(int starCount) {
             starCount = 4096;
             GS2.Random random = new GS2.Random(GSSettings.Seed);
             //List<GSPlanet> p = new List<GSPlanet>();
@@ -60,15 +51,13 @@ namespace GalacticScale.Generators
             //lmodified.CustomGeneration = true;
             //lmodified.Process();
             //GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
-            for (var i = 0; i < starCount; i++)
-            {
+            for (var i = 0; i < starCount; i++) {
 
                 GSStar s = StarDefaults.Random();
                 s.Name = "Star-" + i;
-                if (i < 10)
-                {
-                    s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1,  -1, 1, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1,  -1, 10, -1, -1, -1, 1f, null));
+                if (i < 10) {
+                    s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, 1, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, 10, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("redstone3", "modifiedl", 50, 0.5f, -1, -1, -1, 20, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("redstone4", "modifiedl", 50, 0.5f, -1, -1, -1, 30, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("redstone5", "modifiedl", 50, 0.5f, -1, -1, -1, 40, -1, -1, -1, 1f, null));
@@ -88,14 +77,10 @@ namespace GalacticScale.Generators
                 //GS2.LogJson(GSSettings.Stars);
             }
         }
-        public void Import(GSGenPreferences preferences)
-        {
+        public void Import(GSGenPreferences preferences) {
 
         }
 
-        public GSGenPreferences Export()
-        {
-            return new GSGenPreferences();
-        }
+        public GSGenPreferences Export() => new GSGenPreferences();
     }
 }

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale {
     public class PatchOnUIStarDetail {
-        [HarmonyPrefix, HarmonyPatch(typeof(UIStarDetail),"OnStarDataSet")]
+        [HarmonyPrefix, HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         private static bool OnStarDataSet(
             StarData ____star,
             InputField ___nameInput,
@@ -25,7 +25,7 @@ namespace GalacticScale {
             ref UIStarDetail __instance
         ) {
             var getEntry = Traverse.Create(__instance).Method("GetEntry");
-            
+
             for (int index = 0; index < __instance.entries.Count; ++index) {
                 UIResAmountEntry entry = __instance.entries[index];
                 entry.SetEmpty();
@@ -38,16 +38,18 @@ namespace GalacticScale {
             double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
             bool _observed = GameMain.history.universeObserveLevel >= (__instance.star != GameMain.localStar ? (magnitude >= 14400000.0 ? 4 : 3) : 2);
             ___nameInput.text = __instance.star.displayName;
-            ___typeText.text =(__instance.star.typeString);
-            ___massValueText.text =(__instance.star.mass.ToString("0.000") + " M    ");
-            ___spectrValueText.text =(__instance.star.spectr.ToString());
-            ___radiusValueText.text =(__instance.star.radius.ToString("0.00") + " R    ");
-            ___luminoValueText.text =(((double) __instance.star.dysonLumino).ToString("0.000") + " L    ");
-            ___temperatureValueText.text =(__instance.star.temperature.ToString("#,##0") + " K");
-            if (Localization.isKMG)
-                ___ageValueText.text =((__instance.star.age * __instance.star.lifetime).ToString("#,##0 ") + "百万亿年".Translate());
-            else
-                ___ageValueText.text =(((float) (__instance.star.age * (double) __instance.star.lifetime * 0.00999999977648258)).ToString("#,##0.00 ") + "百万亿年".Translate());
+            ___typeText.text = (__instance.star.typeString);
+            ___massValueText.text = (__instance.star.mass.ToString("0.000") + " M    ");
+            ___spectrValueText.text = (__instance.star.spectr.ToString());
+            ___radiusValueText.text = (__instance.star.radius.ToString("0.00") + " R    ");
+            ___luminoValueText.text = (((double)__instance.star.dysonLumino).ToString("0.000") + " L    ");
+            ___temperatureValueText.text = (__instance.star.temperature.ToString("#,##0") + " K");
+            if (Localization.isKMG) {
+                ___ageValueText.text = ((__instance.star.age * __instance.star.lifetime).ToString("#,##0 ") + "百万亿年".Translate());
+            } else {
+                ___ageValueText.text = (((float)(__instance.star.age * (double)__instance.star.lifetime * 0.00999999977648258)).ToString("#,##0.00 ") + "百万亿年".Translate());
+            }
+
             int num = 0;
             for (int type = 1; type < 15; ++type) {
                 int id = type;
@@ -82,28 +84,27 @@ namespace GalacticScale {
                     }
                 }
             }
-            
+
             //*
-            Dictionary<int,float> ressources = new Dictionary<int,float>();
-            
+            Dictionary<int, float> ressources = new Dictionary<int, float>();
+
             for (int index1 = 0; index1 < __instance.star.planetCount; ++index1) {
                 PlanetData planet = __instance.star.planets[index1];
                 if (planet.type == EPlanetType.Gas && planet.gasItems != null) {
                     for (var i = 0; i < planet.gasItems.Length; i++) {
                         if (ressources.ContainsKey(planet.gasItems[i])) {
                             ressources[planet.gasItems[i]] += planet.gasSpeeds[i];
-                        }
-                        else {
+                        } else {
                             ressources[planet.gasItems[i]] = planet.gasSpeeds[i];
                         }
                     }
                 }
             }
-            
-            
+
+
             foreach (var keyValuePair in ressources) {
                 ItemProto itemProto = LDB.items.Select(keyValuePair.Key);
-                
+
                 UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                 __instance.entries.Add(entry);
                 if (_observed) {
@@ -111,19 +112,17 @@ namespace GalacticScale {
                     if (__instance.star.loaded) {
                         StringBuilderUtility.WritePositiveFloat(entry.sb, 0, 7, keyValuePair.Value);
                         entry.DisplayStringBuilder();
-                    }
-                    else {
+                    } else {
                         entry.valueString = "探测到信号".Translate();
                     }
-                }
-                else {
+                } else {
                     entry.SetInfo(num, "未知".Translate(), ___unknownResIcon, string.Empty, false, false, "        /s");
                     entry.valueString = "未知".Translate();
                 }
                 entry.SetObserved(_observed);
                 ++num;
             }
-            
+
             if (!_observed) {
                 UIResAmountEntry entry = getEntry.GetValue<UIResAmountEntry>();
                 __instance.entries.Add(entry);

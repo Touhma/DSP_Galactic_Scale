@@ -15,14 +15,14 @@ namespace GSFullSerializer {
         /// Returns a pretty name for the type in the style of one that you'd see
         /// in C# without the namespace.
         /// </summary>
-        public static string CSharpName(this Type type) {
-            return CSharpName(type, /*includeNamespace:*/false);
-        }
+        public static string CSharpName(this Type type) => CSharpName(type, /*includeNamespace:*/false);
 
         public static string CSharpName(this Type type, bool includeNamespace, bool ensureSafeDeclarationName) {
             var name = CSharpName(type, includeNamespace);
-            if (ensureSafeDeclarationName)
+            if (ensureSafeDeclarationName) {
                 name = name.Replace('>', '_').Replace('<', '_').Replace('.', '_').Replace(',', '_');
+            }
+
             return name;
         }
 
@@ -35,12 +35,29 @@ namespace GSFullSerializer {
         /// </parparam>
         public static string CSharpName(this Type type, bool includeNamespace) {
             // we special case some of the common type names
-            if (type == typeof(void)) return "void";
-            if (type == typeof(int)) return "int";
-            if (type == typeof(float)) return "float";
-            if (type == typeof(bool)) return "bool";
-            if (type == typeof(double)) return "double";
-            if (type == typeof(string)) return "string";
+            if (type == typeof(void)) {
+                return "void";
+            }
+
+            if (type == typeof(int)) {
+                return "int";
+            }
+
+            if (type == typeof(float)) {
+                return "float";
+            }
+
+            if (type == typeof(bool)) {
+                return "bool";
+            }
+
+            if (type == typeof(double)) {
+                return "double";
+            }
+
+            if (type == typeof(string)) {
+                return "string";
+            }
 
             // Generic parameter, ie, T in Okay<T> We special-case this logic
             // otherwise we will recurse on the T
@@ -69,8 +86,7 @@ namespace GSFullSerializer {
 
             if (genericArguments.Any() == false) {
                 name += type.Name;
-            }
-            else {
+            } else {
                 var genericsTic = type.Name.IndexOf('`');
                 if (genericsTic > 0) {
                     name += type.Name.Substring(0, genericsTic);
@@ -85,31 +101,28 @@ namespace GSFullSerializer {
             return name;
         }
 
-        public static bool IsInterface(this Type type)
-        {
+        public static bool IsInterface(this Type type) =>
 #if NETFX_CORE
             return type.GetTypeInfo().IsInterface;
 #else
-            return type.IsInterface;
+            type.IsInterface;
 #endif
-        }
 
-        public static bool IsAbstract(this Type type)
-        {
+
+        public static bool IsAbstract(this Type type) =>
 #if NETFX_CORE
             return type.GetTypeInfo().IsAbstract;
 #else
-            return type.IsAbstract;
+            type.IsAbstract;
 #endif
-        }
 
-        public static bool IsGenericType(this Type type)
-        {
+
+        public static bool IsGenericType(this Type type) =>
 #if NETFX_CORE
             return type.GetTypeInfo().IsGenericType;
 #else
-            return type.IsGenericType;
+            type.IsGenericType;
 #endif
-        }
+
     }
 }

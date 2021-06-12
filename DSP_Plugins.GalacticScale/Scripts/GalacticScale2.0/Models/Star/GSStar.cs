@@ -1,10 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public class GSStar
-    {
+namespace GalacticScale {
+    public class GSStar {
         public string Name;
         public ESpectrType Spectr;
         public EStarType Type;
@@ -35,29 +33,26 @@ namespace GalacticScale
         [SerializeField]
         public float level = 1;
 
-        public int planetCount { get => Planets.Count; }
-        public int bodyCount
-        {
-            get
-            {
+        public int planetCount => Planets.Count;
+        public int bodyCount {
+            get {
                 int bodyCount = 0;
-                foreach (GSPlanet p in Planets)
-                {
+                foreach (GSPlanet p in Planets) {
                     bodyCount++;
                     bodyCount += p.MoonCount;
                 }
                 return bodyCount;
             }
         }
-        public GSPlanets Bodies { get
-            {
+        public GSPlanets Bodies {
+            get {
                 GSPlanets b = new GSPlanets();
-                foreach (GSPlanet p in Planets)
-                {
+                foreach (GSPlanet p in Planets) {
                     b.AddRange(p.Bodies);
                 }
                 return b;
-            } }
+            }
+        }
         [NonSerialized]
         public int counter = 0;
         [SerializeField]
@@ -91,35 +86,28 @@ namespace GalacticScale
         [SerializeField]
         public VectorLF3 position { get => (_pos == new VectorLF3() && assignedIndex != 0) ? InitPos() : _pos; set => _pos = value; }
 
-        public double magnitude { get => position.magnitude; }
+        public double magnitude => position.magnitude;
         [NonSerialized]
         public int assignedIndex = 0;
 
-        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets)
-        {
+        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets) {
             Name = name;
             Spectr = spectr;
             Type = type;
             Planets = planets;
             Seed = seed;
         }
-        public override string ToString()
-        {
-            return Name;
-        }
-        float InitClassFactor()
-        {
+        public override string ToString() => Name;
+
+        private float InitClassFactor() {
             _classfactor = StarDefaults.ClassFactor(this);
             return _classfactor;
         }
-        float InitPhysicsRadius()
-        {
-            return radius * 1200f;
-        }
-        float InitAcDiscRadius()
-        {
-            switch (Type)
-            {
+
+        private float InitPhysicsRadius() => radius * 1200f;
+
+        private float InitAcDiscRadius() {
+            switch (Type) {
                 case EStarType.BlackHole:
                     _acdiscRadius = radius * 5f;
                     break;
@@ -133,74 +121,73 @@ namespace GalacticScale
             return _acdiscRadius;
         }
 
-        float InitDysonRadius()
-        {
+        private float InitDysonRadius() {
             _dysonRadius = StarDefaults.DysonRadius(this);
             return _dysonRadius;
         }
-        float InitHabitableRadius()
-        {
+
+        private float InitHabitableRadius() {
             _habitableRadius = StarDefaults.HabitableRadius(this);
             return _habitableRadius;
         }
-        float InitLightBalanceRadius()
-        {
+
+        private float InitLightBalanceRadius() {
             _lightBalanceRadius = StarDefaults.LightBalanceRadius(this);
             return _lightBalanceRadius;
         }
-        float InitRadius()
-        {
+
+        private float InitRadius() {
             _radius = StarDefaults.Radius(this);
             return _radius;
         }
-        float InitAge()
-        {
+
+        private float InitAge() {
             _age = StarDefaults.Age(this);
             return _age;
 
         }
-        float InitMass()
-        {
+
+        private float InitMass() {
             _mass = StarDefaults.Mass(this);
             return _mass;
         }
-        float InitLuminosity()
-        {
+
+        private float InitLuminosity() {
             _luminosity = StarDefaults.Luminosity(this);
             return _luminosity;
         }
 
-        float InitTemperature()
-        {
+        private float InitTemperature() {
             _temperature = StarDefaults.Temperature(this);
             return _temperature;
         }
-        float InitLifetime()
-        {
+
+        private float InitLifetime() {
             _lifetime = StarDefaults.Lifetime(this);
             return _lifetime;
         }
-        float InitColor()
-        {
+
+        private float InitColor() {
 
             _color = StarDefaults.Color(this);
             return _color;
         }
-        float InitResourceCoef()
-        {
+
+        private float InitResourceCoef() {
             float num1 = (float)position.magnitude / 32f;
-            if ((double)num1 > 1.0)
+            if (num1 > 1.0) {
                 num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
+            }
+
             _resourceCoef = Mathf.Pow(7f, num1) * 0.6f;
             return resourceCoef;
         }
-        VectorLF3 InitPos()
-        {
+
+        private VectorLF3 InitPos() {
             _pos = StarPositions.tmp_poses[assignedIndex];
             return _pos;
         }
-        public GSStar Clone()
-        {
+        public GSStar Clone() {
             GSStar clone;
             clone = (GSStar)MemberwiseClone();
             clone.Planets = new GSPlanets(Planets);

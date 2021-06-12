@@ -2,17 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GalacticScale
-{
+namespace GalacticScale {
 
-    public partial class PatchOnUIPlanetDetail
-    {
+    public partial class PatchOnUIPlanetDetail {
         [HarmonyPostfix, HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
-        public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText, ref PlanetData ____planet)
-        {
+        public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText, ref PlanetData ____planet) {
             // Add the planets radius to the Planet Detail UI
-            if (___obliquityValueText.transform.parent.transform.parent.childCount == 6)
-            {
+            if (___obliquityValueText.transform.parent.transform.parent.childCount == 6) {
 
                 GameObject radiusLabel;
                 GameObject obliquityLabel = ___obliquityValueText.transform.parent.gameObject;
@@ -27,7 +23,10 @@ namespace GalacticScale
                 uiButton.tips.tipTitle = "Planet Radius";
 
                 //GS2.LogJson(uiButton.button);
-                if (uiButton.button == null) uiButton.button = uiButton.gameObject.AddComponent<Button>();
+                if (uiButton.button == null) {
+                    uiButton.button = uiButton.gameObject.AddComponent<Button>();
+                }
+
                 uiButton.button.transform.SetParent(uiButton.transform);
 
                 radiusIcon.sprite = Utils.GetSpriteAsset("ruler");
@@ -35,12 +34,13 @@ namespace GalacticScale
                 radiusLabelText.text = "Planetary Radius";
                 radiusValueText.text = __instance.planet.realRadius.ToString();
             }
-            if (___obliquityValueText.transform.parent.transform.parent.childCount == 7)
-            {
+            if (___obliquityValueText.transform.parent.transform.parent.childCount == 7) {
                 Transform p = ___obliquityValueText.transform.parent.parent;
                 GameObject radiusLabel = p.GetChild(p.childCount - 1).gameObject;
                 Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
-                if (__instance.planet != null) radiusValueText.text = __instance.planet.realRadius.ToString();
+                if (__instance.planet != null) {
+                    radiusValueText.text = __instance.planet.realRadius.ToString();
+                }
             }
         }
         [HarmonyPrefix, HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
@@ -58,13 +58,11 @@ namespace GalacticScale
             ref Sprite ___unknownResIcon,
             ref Sprite ___sprite6,
             ref Sprite ___sprite8,
-            ref Sprite ___sprite9)
-        {
+            ref Sprite ___sprite9) {
             var getEntry = Traverse.Create(__instance).Method("GetEntry");
 
             getEntry.GetValue<UIResAmountEntry>();
-            for (var index = 0; index < __instance.entries.Count; ++index)
-            {
+            for (var index = 0; index < __instance.entries.Count; ++index) {
                 var entry = __instance.entries[index];
                 entry.SetEmpty();
                 __instance.pool.Add(entry);
@@ -72,8 +70,10 @@ namespace GalacticScale
 
             __instance.entries.Clear();
             ___tipEntry = null;
-            if (__instance.planet == null)
+            if (__instance.planet == null) {
                 return false;
+            }
+
             var _observed = GameMain.history.universeObserveLevel >=
                             (__instance.planet != GameMain.localPlanet ? 2 : 1);
             ___nameInput.text = __instance.planet.displayName;
@@ -89,26 +89,27 @@ namespace GalacticScale
             var num1 = Mathf.Abs(__instance.planet.orbitInclination);
             var num2 = (int)num1;
             var num3 = (int)((num1 - (double)num2) * 60.0);
-            if (__instance.planet.orbitInclination < 0.0)
+            if (__instance.planet.orbitInclination < 0.0) {
                 num2 = -num2;
+            }
+
             var num4 = Mathf.Abs(__instance.planet.obliquity);
             var num5 = (int)num4;
             var num6 = (int)((num4 - (double)num5) * 60.0);
-            if (__instance.planet.obliquity < 0.0)
+            if (__instance.planet.obliquity < 0.0) {
                 num5 = -num5;
+            }
+
             ___inclinationValueText.text = string.Format("{0}° {1}′", num2, num3);
             ___obliquityValueText.text = string.Format("{0}° {1}′", num5, num6);
             var num7 = 0;
-            if (__instance.planet.type != EPlanetType.Gas)
-            {
+            if (__instance.planet.type != EPlanetType.Gas) {
                 // Logger.LogMessage("TEST");
-                for (var index = 0; index < 6; ++index)
-                {
+                for (var index = 0; index < 6; ++index) {
                     var id = index + 1;
                     var veinProto = LDB.veins.Select(id);
                     var itemProto = LDB.items.Select(veinProto.MiningItem);
-                    if (veinProto != null && itemProto != null)
-                    {
+                    if (veinProto != null && itemProto != null) {
                         var entry = getEntry.GetValue<UIResAmountEntry>();
                         ;
                         __instance.entries.Add(entry);
@@ -122,11 +123,12 @@ namespace GalacticScale
                 var waterItemId = __instance.planet.waterItemId;
                 Sprite icon = null;
                 var str = "无".Translate();
-                if (waterItemId < 0)
+                if (waterItemId < 0) {
                     str = waterItemId != -1 ? "未知".Translate() : "熔岩".Translate();
+                }
+
                 var itemProto1 = LDB.items.Select(waterItemId);
-                if (itemProto1 != null)
-                {
+                if (itemProto1 != null) {
                     icon = itemProto1.iconSprite;
                     str = itemProto1.name;
                 }
@@ -143,8 +145,7 @@ namespace GalacticScale
                 ;
                 __instance.entries.Add(entry2);
                 entry2.SetInfo(index1, "适建区域".Translate(), ___sprite6, string.Empty, false, false, "      %");
-                if (__instance.planet.landPercentDirty)
-                {
+                if (__instance.planet.landPercentDirty) {
                     PlanetAlgorithm.CalcLandPercent(__instance.planet);
                     __instance.planet.landPercentDirty = false;
                 }
@@ -170,13 +171,11 @@ namespace GalacticScale
                     (uint)(__instance.planet.luminosity * 100.0 + 0.499900013208389));
                 entry4.DisplayStringBuilder();
                 num7 = index3 + 1;
-                for (var index4 = 7; index4 < 15; ++index4)
-                {
+                for (var index4 = 7; index4 < 15; ++index4) {
                     var id = index4;
                     var veinProto = LDB.veins.Select(id);
                     var itemProto2 = LDB.items.Select(veinProto.MiningItem);
-                    if (veinProto != null && itemProto2 != null && __instance.planet.veinAmounts[id] > 0L)
-                    {
+                    if (veinProto != null && itemProto2 != null && __instance.planet.veinAmounts[id] > 0L) {
                         var entry5 = getEntry.GetValue<UIResAmountEntry>();
                         ;
                         __instance.entries.Add(entry5);
@@ -187,8 +186,7 @@ namespace GalacticScale
                     }
                 }
 
-                if (!_observed)
-                {
+                if (!_observed) {
                     var entry5 = getEntry.GetValue<UIResAmountEntry>();
                     ;
                     __instance.entries.Add(entry5);
@@ -196,26 +194,19 @@ namespace GalacticScale
                     ___tipEntry = entry5;
                     ++num7;
                 }
-            }
-            else
-            {
-                for (var index = 0; index < __instance.planet.gasItems.Length; ++index)
-                {
+            } else {
+                for (var index = 0; index < __instance.planet.gasItems.Length; ++index) {
                     var itemProto = LDB.items.Select(__instance.planet.gasItems[index]);
-                    if (itemProto != null)
-                    {
+                    if (itemProto != null) {
                         var entry = getEntry.GetValue<UIResAmountEntry>();
                         ;
                         __instance.entries.Add(entry);
-                        if (_observed)
-                        {
+                        if (_observed) {
                             entry.SetInfo(num7, "可采集".Translate() + itemProto.name, itemProto.iconSprite,
                                 "环绕行星手动采集".Translate(), false, false, "        /s");
                             StringBuilderUtility.WritePositiveFloat(entry.sb, 0, 7, __instance.planet.gasSpeeds[index]);
                             entry.DisplayStringBuilder();
-                        }
-                        else
-                        {
+                        } else {
                             entry.SetInfo(num7, "未知".Translate(), ___unknownResIcon, "环绕行星手动采集".Translate(),
                                 false, false, "        /s");
                             entry.valueString = "未知".Translate();

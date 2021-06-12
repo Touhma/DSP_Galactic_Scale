@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GSFullSerializer.Internal;
+using System;
 using System.Collections.Generic;
-using GSFullSerializer.Internal;
 
 #if !UNITY_EDITOR && UNITY_WSA
 // For System.Reflection.TypeExtensions
@@ -10,7 +10,7 @@ using System.Reflection;
 namespace GSFullSerializer {
     public class fsSerializer {
         #region Keys
-        private static HashSet<string> _reservedKeywords;
+        private static readonly HashSet<string> _reservedKeywords;
         static fsSerializer() {
             _reservedKeywords = new HashSet<string> {
                 Key_ObjectReference,
@@ -25,9 +25,7 @@ namespace GSFullSerializer {
         /// serializer uses to add additional metadata on top of the emitted
         /// JSON.
         /// </summary>
-        public static bool IsReservedKeyword(string key) {
-            return _reservedKeywords.Contains(key);
-        }
+        public static bool IsReservedKeyword(string key) => _reservedKeywords.Contains(key);
 
         /// <summary>
         /// This is an object reference in part of a cyclic graph.
@@ -57,23 +55,38 @@ namespace GSFullSerializer {
         private static readonly string Key_Content = string.Format("{0}content", fsGlobalConfig.InternalFieldPrefix);
 
         private static bool IsObjectReference(fsData data) {
-            if (data.IsDictionary == false) return false;
+            if (data.IsDictionary == false) {
+                return false;
+            }
+
             return data.AsDictionary.ContainsKey(Key_ObjectReference);
         }
         private static bool IsObjectDefinition(fsData data) {
-            if (data.IsDictionary == false) return false;
+            if (data.IsDictionary == false) {
+                return false;
+            }
+
             return data.AsDictionary.ContainsKey(Key_ObjectDefinition);
         }
         private static bool IsVersioned(fsData data) {
-            if (data.IsDictionary == false) return false;
+            if (data.IsDictionary == false) {
+                return false;
+            }
+
             return data.AsDictionary.ContainsKey(Key_Version);
         }
         private static bool IsTypeSpecified(fsData data) {
-            if (data.IsDictionary == false) return false;
+            if (data.IsDictionary == false) {
+                return false;
+            }
+
             return data.AsDictionary.ContainsKey(Key_InstanceType);
         }
         private static bool IsWrappedData(fsData data) {
-            if (data.IsDictionary == false) return false;
+            if (data.IsDictionary == false) {
+                return false;
+            }
+
             return data.AsDictionary.ContainsKey(Key_Content);
         }
 
@@ -105,12 +118,16 @@ namespace GSFullSerializer {
         /// so that the import process can be unified and ignore the old format.
         /// </summary>
         private static void ConvertLegacyData(ref fsData data) {
-            if (data.IsDictionary == false) return;
+            if (data.IsDictionary == false) {
+                return;
+            }
 
             var dict = data.AsDictionary;
 
             // fast-exit: metadata never had more than two items
-            if (dict.Count > 2) return;
+            if (dict.Count > 2) {
+                return;
+            }
 
             // Key strings used in the legacy system
             string referenceIdString = "ReferenceId";
@@ -198,15 +215,14 @@ namespace GSFullSerializer {
         /// we have entirely finished serializing it.
         /// </summary>
         internal class fsLazyCycleDefinitionWriter {
-            private Dictionary<int, fsData> _pendingDefinitions = new Dictionary<int, fsData>();
-            private HashSet<int> _references = new HashSet<int>();
+            private readonly Dictionary<int, fsData> _pendingDefinitions = new Dictionary<int, fsData>();
+            private readonly HashSet<int> _references = new HashSet<int>();
 
             public void WriteDefinition(int id, fsData data) {
                 if (_references.Contains(id)) {
                     EnsureDictionary(data);
                     data.AsDictionary[Key_ObjectDefinition] = new fsData(id.ToString());
-                }
-                else {
+                } else {
                     _pendingDefinitions[id] = data;
                 }
             }
@@ -218,8 +234,7 @@ namespace GSFullSerializer {
                     EnsureDictionary(data);
                     data.AsDictionary[Key_ObjectDefinition] = new fsData(id.ToString());
                     _pendingDefinitions.Remove(id);
-                }
-                else {
+                } else {
                     _references.Add(id);
                 }
 
@@ -238,7 +253,7 @@ namespace GSFullSerializer {
         // of _cachedConverters, but there is a semantic difference because
         // _cachedConverters goes
         /// from serialized type to converter. </summary>
-        private Dictionary<Type, fsBaseConverter> _cachedConverterTypeInstances;
+        private readonly Dictionary<Type, fsBaseConverter> _cachedConverterTypeInstances;
 
         /// <summary>
         /// A cache from type to it's converter.
@@ -285,8 +300,9 @@ namespace GSFullSerializer {
         private readonly Dictionary<Type, Type> _abstractTypeRemap;
 
         private void RemapAbstractStorageTypeToDefaultType(ref Type storageType) {
-            if ((storageType.IsInterface() || storageType.IsAbstract()) == false)
+            if ((storageType.IsInterface() || storageType.IsAbstract()) == false) {
                 return;
+            }
 
             if (storageType.IsGenericType()) {
                 Type remappedGenericType;
@@ -294,12 +310,11 @@ namespace GSFullSerializer {
                     Type[] genericArguments = storageType.GetGenericArguments();
                     storageType = remappedGenericType.MakeGenericType(genericArguments);
                 }
-            }
-
-            else {
+            } else {
                 Type remappedType;
-                if (_abstractTypeRemap.TryGetValue(storageType, out remappedType))
+                if (_abstractTypeRemap.TryGetValue(storageType, out remappedType)) {
                     storageType = remappedType;
+                }
             }
         }
 
@@ -387,8 +402,7 @@ namespace GSFullSerializer {
             while (i < _processors.Count) {
                 if (_processors[i] is TProcessor) {
                     _processors.RemoveAt(i);
-                }
-                else {
+                } else {
                     ++i;
                 }
             }
@@ -407,8 +421,10 @@ namespace GSFullSerializer {
         /// IList{T} => List{T} or IDictionary{TKey, TValue} => Dictionary{TKey, TValue}.
         /// </summary>
         public void SetDefaultStorageType(Type abstractType, Type defaultStorageType) {
-            if ((abstractType.IsInterface() || abstractType.IsAbstract()) == false)
+            if ((abstractType.IsInterface() || abstractType.IsAbstract()) == false) {
                 throw new ArgumentException("|abstractType| must be an interface or abstract type");
+            }
+
             _abstractTypeRemap[abstractType] = defaultStorageType;
         }
 
@@ -428,8 +444,7 @@ namespace GSFullSerializer {
                 processors = new List<fsObjectProcessor>();
                 processors.Add(processor);
                 _cachedProcessors[type] = processors;
-            }
-            else if (_cachedProcessors.TryGetValue(type, out processors) == false) {
+            } else if (_cachedProcessors.TryGetValue(type, out processors) == false) {
                 processors = new List<fsObjectProcessor>();
 
                 for (int i = 0; i < _processors.Count; ++i) {
@@ -460,11 +475,9 @@ namespace GSFullSerializer {
             if (converter is fsDirectConverter) {
                 var directConverter = (fsDirectConverter)converter;
                 _availableDirectConverters[directConverter.ModelType] = directConverter;
-            }
-            else if (converter is fsConverter) {
+            } else if (converter is fsConverter) {
                 _availableConverters.Insert(0, (fsConverter)converter);
-            }
-            else {
+            } else {
                 throw new InvalidOperationException("Unable to add converter " + converter +
                     "; the type association strategy is unknown. Please use either " +
                     "fsDirectConverter or fsConverter as your base type.");
@@ -531,8 +544,7 @@ namespace GSFullSerializer {
                 if (_availableDirectConverters.ContainsKey(type)) {
                     converter = _availableDirectConverters[type];
                     return _cachedConverters[type] = converter;
-                }
-                else {
+                } else {
                     for (int i = 0; i < _availableConverters.Count; ++i) {
                         if (_availableConverters[i].CanProcess(type)) {
                             converter = _availableConverters[i];
@@ -549,9 +561,7 @@ namespace GSFullSerializer {
         /// Helper method that simply forwards the call to
         /// TrySerialize(typeof(T), instance, out data);
         /// </summary>
-        public fsResult TrySerialize<T>(T instance, out fsData data) {
-            return TrySerialize(typeof(T), instance, out data);
-        }
+        public fsResult TrySerialize<T>(T instance, out fsData data) => TrySerialize(typeof(T), instance, out data);
 
         /// <summary>
         /// Generic wrapper around TryDeserialize that simply forwards the call.
@@ -578,9 +588,7 @@ namespace GSFullSerializer {
         /// </param>
         /// <param name="data">The serialized state of the object.</param>
         /// <returns>If serialization was successful.</returns>
-        public fsResult TrySerialize(Type storageType, object instance, out fsData data) {
-            return TrySerialize(storageType, null, instance, out data);
-        }
+        public fsResult TrySerialize(Type storageType, object instance, out fsData data) => TrySerialize(storageType, null, instance, out data);
 
         /// <summary>
         /// Serialize the given value.
@@ -656,13 +664,14 @@ namespace GSFullSerializer {
                 // actual object. InternalSerialize will handle inheritance
                 // correctly for us.
                 var result = InternalSerialize_2_Inheritance(storageType, overrideConverterType, instance, out data);
-                if (result.Failed) return result;
+                if (result.Failed) {
+                    return result;
+                }
 
                 _lazyReferenceWriter.WriteDefinition(_references.GetReferenceId(instance), data);
 
                 return result;
-            }
-            finally {
+            } finally {
                 if (_references.Exit()) {
                     _lazyReferenceWriter.Clear();
                 }
@@ -672,7 +681,9 @@ namespace GSFullSerializer {
             // Serialize the actual object with the field type being the same as
             // the object type so that we won't go into an infinite loop.
             var serializeResult = InternalSerialize_3_ProcessVersioning(overrideConverterType, instance, out data);
-            if (serializeResult.Failed) return serializeResult;
+            if (serializeResult.Failed) {
+                return serializeResult;
+            }
 
             // Do we need to add type information? If the field type and the
             // instance type are different then we will not be able to recover
@@ -707,7 +718,9 @@ namespace GSFullSerializer {
                 // Serialize the actual object content; we'll just wrap it with
                 // versioning metadata here.
                 var result = InternalSerialize_4_Converter(overrideConverterType, instance, out data);
-                if (result.Failed) return result;
+                if (result.Failed) {
+                    return result;
+                }
 
                 // Add the versioning information
                 EnsureDictionary(data);
@@ -728,9 +741,7 @@ namespace GSFullSerializer {
         /// <summary>
         /// Attempts to deserialize a value from a serialized state.
         /// </summary>
-        public fsResult TryDeserialize(fsData data, Type storageType, ref object result) {
-            return TryDeserialize(data, storageType, null, ref result);
-        }
+        public fsResult TryDeserialize(fsData data, Type storageType, ref object result) => TryDeserialize(data, storageType, null, ref result);
 
         /// <summary>
         /// Attempts to deserialize a value from a serialized state.
@@ -760,8 +771,7 @@ namespace GSFullSerializer {
                     Invoke_OnAfterDeserialize(processors, storageType, result);
                 }
                 return r;
-            }
-            finally {
+            } finally {
                 _references.Exit();
             }
         }
@@ -810,7 +820,9 @@ namespace GSFullSerializer {
 
                     // deserialize as the original type
                     deserializeResult += InternalDeserialize_3_Inheritance(overrideConverterType, data, path[0].ModelType, ref result, out processors);
-                    if (deserializeResult.Failed) return deserializeResult;
+                    if (deserializeResult.Failed) {
+                        return deserializeResult;
+                    }
 
                     // TODO: we probably should be invoking object processors all
                     //       along this pipeline
@@ -879,8 +891,9 @@ namespace GSFullSerializer {
             // deserialization.
             processors = GetProcessors(objectType);
 
-            if (deserializeResult.Failed)
+            if (deserializeResult.Failed) {
                 return deserializeResult;
+            }
 
             Invoke_OnBeforeDeserialize(processors, storageType, ref data);
 

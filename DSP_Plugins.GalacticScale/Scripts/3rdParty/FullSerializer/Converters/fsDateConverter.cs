@@ -11,11 +11,7 @@ namespace GSFullSerializer.Internal {
         private const string DefaultDateTimeFormatString = @"o";
         private const string DateTimeOffsetFormatString = @"o";
 
-        private string DateTimeFormatString {
-            get {
-                return Serializer.Config.CustomDateTimeFormatString ?? DefaultDateTimeFormatString;
-            }
-        }
+        private string DateTimeFormatString => Serializer.Config.CustomDateTimeFormatString ?? DefaultDateTimeFormatString;
 
         public override bool CanProcess(Type type) {
             return
@@ -64,8 +60,7 @@ namespace GSFullSerializer.Internal {
                     try {
                         instance = Convert.ToDateTime(data.AsString);
                         return fsResult.Success;
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         return fsResult.Fail("Unable to parse " + data.AsString + " into a DateTime; got exception " + e);
                     }
                 }

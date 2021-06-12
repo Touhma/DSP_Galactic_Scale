@@ -1,14 +1,15 @@
 ﻿namespace GalacticScale {
     public static class SystemNames {
         public static int startIndex = -1;
-        public static void Reset()
-        {
+        public static void Reset() {
             GS2.Random random = new GS2.Random(GSSettings.Seed);
-            startIndex = random.Next(names.Length -1);
+            startIndex = random.Next(names.Length - 1);
         }
-        public static string GetName(int index)
-        {
-            if (startIndex < 0) Reset();
+        public static string GetName(int index) {
+            if (startIndex < 0) {
+                Reset();
+            }
+
             int calcIndex = (index + startIndex) % names.Length;
             return names[calcIndex];
         }

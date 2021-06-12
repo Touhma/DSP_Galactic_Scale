@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GSFullSerializer.Internal;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using GSFullSerializer.Internal;
 
 namespace GSFullSerializer {
     /// <summary>
@@ -10,8 +10,9 @@ namespace GSFullSerializer {
     public class fsAotCompilationManager {
         private static bool HasMember(fsAotVersionInfo versionInfo, fsAotVersionInfo.Member member) {
             foreach (fsAotVersionInfo.Member foundMember in versionInfo.Members) {
-                if (foundMember == member)
+                if (foundMember == member) {
                     return true;
+                }
             }
 
             return false;
@@ -22,11 +23,13 @@ namespace GSFullSerializer {
         /// be recompiled.
         /// </summary>
         public static bool IsAotModelUpToDate(fsMetaType currentModel, fsIAotConverter aotModel) {
-            if (currentModel.IsDefaultConstructorPublic != aotModel.VersionInfo.IsConstructorPublic)
+            if (currentModel.IsDefaultConstructorPublic != aotModel.VersionInfo.IsConstructorPublic) {
                 return false;
+            }
 
-            if (currentModel.Properties.Length != aotModel.VersionInfo.Members.Length)
+            if (currentModel.Properties.Length != aotModel.VersionInfo.Members.Length) {
                 return false;
+            }
 
             foreach (fsMetaProperty property in currentModel.Properties) {
                 if (HasMember(aotModel.VersionInfo, new fsAotVersionInfo.Member(property)) == false) {
@@ -70,8 +73,10 @@ namespace GSFullSerializer {
                 sb.AppendLine(prefix + "            MemberName = \"" + member.MemberName + "\",");
                 sb.AppendLine(prefix + "            JsonName = \"" + member.JsonName + "\",");
                 sb.AppendLine(prefix + "            StorageType = \"" + member.StorageType.CSharpName(true) + "\",");
-                if (member.OverrideConverterType != null)
+                if (member.OverrideConverterType != null) {
                     sb.AppendLine(prefix + "            OverrideConverterType = \"" + member.OverrideConverterType.CSharpName(true) + "\",");
+                }
+
                 sb.AppendLine(prefix + "        },");
             }
             sb.AppendLine(prefix + "    }");
@@ -81,16 +86,15 @@ namespace GSFullSerializer {
         }
 
         private static string GetConverterString(fsMetaProperty member) {
-            if (member.OverrideConverterType == null)
+            if (member.OverrideConverterType == null) {
                 return "null";
+            }
 
             return string.Format("typeof({0})",
                                  member.OverrideConverterType.CSharpName(/*includeNamespace:*/ true));
         }
 
-        public static string GetQualifiedConverterNameForType(Type type) {
-            return "FullSerializer.Speedup." + type.CSharpName(true, true) + "_DirectConverter";
-        }
+        public static string GetQualifiedConverterNameForType(Type type) => "FullSerializer.Speedup." + type.CSharpName(true, true) + "_DirectConverter";
 
         /// <summary>
         /// AOT compiles the object (in C#).
@@ -140,8 +144,7 @@ namespace GSFullSerializer {
             sb.AppendLine("        public override object CreateInstance(fsData data, Type storageType) {");
             if (isConstructorPublic) {
                 sb.AppendLine("            return new " + typeName + "();");
-            }
-            else {
+            } else {
                 sb.AppendLine("            return Activator.CreateInstance(typeof(" + typeName + "), /*nonPublic:*/true);");
             }
             sb.AppendLine("        }");

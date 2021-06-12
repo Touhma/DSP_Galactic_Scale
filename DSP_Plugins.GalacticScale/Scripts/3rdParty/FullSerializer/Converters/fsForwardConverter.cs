@@ -35,15 +35,13 @@ namespace GSFullSerializer {
 
 namespace GSFullSerializer.Internal {
     public class fsForwardConverter : fsConverter {
-        private string _memberName;
+        private readonly string _memberName;
 
         public fsForwardConverter(fsForwardAttribute attribute) {
             _memberName = attribute.MemberName;
         }
 
-        public override bool CanProcess(Type type) {
-            throw new NotSupportedException("Please use the [fsForward(...)] attribute.");
-        }
+        public override bool CanProcess(Type type) => throw new NotSupportedException("Please use the [fsForward(...)] attribute.");
 
         private fsResult GetProperty(object instance, out fsMetaProperty property) {
             var properties = fsMetaType.Get(Serializer.Config, instance.GetType()).Properties;
@@ -63,7 +61,9 @@ namespace GSFullSerializer.Internal {
             var result = fsResult.Success;
 
             fsMetaProperty property;
-            if ((result += GetProperty(instance, out property)).Failed) return result;
+            if ((result += GetProperty(instance, out property)).Failed) {
+                return result;
+            }
 
             var actualInstance = property.Read(instance);
             return Serializer.TrySerialize(property.StorageType, actualInstance, out serialized);
@@ -73,18 +73,19 @@ namespace GSFullSerializer.Internal {
             var result = fsResult.Success;
 
             fsMetaProperty property;
-            if ((result += GetProperty(instance, out property)).Failed) return result;
+            if ((result += GetProperty(instance, out property)).Failed) {
+                return result;
+            }
 
             object actualInstance = null;
-            if ((result += Serializer.TryDeserialize(data, property.StorageType, ref actualInstance)).Failed)
+            if ((result += Serializer.TryDeserialize(data, property.StorageType, ref actualInstance)).Failed) {
                 return result;
+            }
 
             property.Write(instance, actualInstance);
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return fsMetaType.Get(Serializer.Config, storageType).CreateInstance();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => fsMetaType.Get(Serializer.Config, storageType).CreateInstance();
     }
 }

@@ -25,7 +25,7 @@ namespace GSFullSerializer {
                 State = state;
             }
         }
-		public List<Entry> aotTypes = new List<Entry>();
+        public List<Entry> aotTypes = new List<Entry>();
         public string outputDirectory = "Assets/AotModels";
 
         public bool TryFindEntry(Type type, out Entry result) {
@@ -51,6 +51,6 @@ namespace GSFullSerializer {
 
             aotTypes.Add(entry);
         }
-	}
+    }
 }
 #endif

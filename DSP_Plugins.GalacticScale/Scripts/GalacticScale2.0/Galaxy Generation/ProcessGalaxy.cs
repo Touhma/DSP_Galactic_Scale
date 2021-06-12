@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class GS2
-    {
-        public static GalaxyData ProcessGalaxy(GameDesc desc, bool createPlanets = true)
-        {
+namespace GalacticScale {
+    public static partial class GS2 {
+        public static GalaxyData ProcessGalaxy(GameDesc desc, bool createPlanets = true) {
             Log($"Start CreatePlanets:{createPlanets}");
 
-            try
-            {
+            try {
                 random = new Random(GSSettings.Seed);
                 gameDesc = desc;
                 Log("Generating Galaxy");
                 Failed = false;
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
-                if (!GSSettings.Instance.imported)
-                {
+                if (!GSSettings.Instance.imported) {
                     //Warn("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
                     Log("Seed From gameDesc = " + GSSettings.Seed);
@@ -29,14 +23,19 @@ namespace GalacticScale
                     generator.Generate(gameDesc.starCount);
                     //Warn("Final Seed = " + GSSettings.Seed);
                     Log("End");
+                } else {
+                    Log("Settings Loaded From Save File");
                 }
-                else Log("Settings Loaded From Save File");
 
                 Log("Galaxy Generated");
                 gameDesc.starCount = GSSettings.StarCount;
                 Log("Processing ThemeLibrary");
-                if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) GSSettings.ThemeLibrary = ThemeLibrary;
-                else ThemeLibrary = GSSettings.ThemeLibrary;
+                if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) {
+                    GSSettings.ThemeLibrary = ThemeLibrary;
+                } else {
+                    ThemeLibrary = GSSettings.ThemeLibrary;
+                }
+
                 Log("Generating TempPoses");
                 int tempPoses = StarPositions.GenerateTempPoses(
                     random.Next(),
@@ -52,8 +51,7 @@ namespace GalacticScale
                 galaxy.seed = GSSettings.Seed;
                 galaxy.starCount = GSSettings.StarCount;
                 galaxy.stars = new StarData[GSSettings.StarCount];
-                if (GSSettings.StarCount <= 0)
-                {
+                if (GSSettings.StarCount <= 0) {
                     Log("StarCount <= 0, returning galaxy");
                     return galaxy;
                 }
@@ -63,8 +61,7 @@ namespace GalacticScale
                 //SetupBirthPlanet();
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
-                if (createPlanets)
-                {
+                if (createPlanets) {
                     Log("Setting up Birth Planet");
                     //SetupBirthPlanet();
                     Log("Generating Veins");
@@ -77,11 +74,10 @@ namespace GalacticScale
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
                 Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name}");
-                Log($"its planets length: {galaxy.stars[galaxy.birthStarId -1].planets.Length}");
+                Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
                 Log($"First System Radius = {galaxy.stars[0].systemRadius}");
                 return galaxy;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button").gameObject.SetActive(false);
                 GS2.Log(e.ToString());
                 GS2.DumpException(e);
@@ -97,12 +93,12 @@ namespace GalacticScale
         //    {
         //        Warn("BirthPlanetName Found");
         //        GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.BirthPlanetName);
-                
+
         //        if (BirthPlanet != null)
         //        {
         //            Log(BirthPlanet.ToString());
         //            Log("Found BirthPlanet, Adding ID's");
-                    
+
         //            GSSettings.BirthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
         //            galaxy.birthStarId = BirthPlanet.planetData.star.id;
         //            Warn("Birth Star Name = " + galaxy.stars[GSSettings.BirthStarId]);
@@ -115,7 +111,7 @@ namespace GalacticScale
         //        Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId + " of " + galaxy.stars.Length);
         //        Warn($"Set BirthStar ID :{GSSettings.BirthStarId -1 } of { galaxy.stars.Length}");
         //        //galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
-                
+
         //        //galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
         //        GSPlanet BirthPlanet = GetGSPlanet(GSSettings.birthPlanetId);
         //        galaxy.birthPlanetId = BirthPlanet.planetData.id;
@@ -143,31 +139,34 @@ namespace GalacticScale
         //    }  
         //    Assert.Positive(galaxy.birthPlanetId);
         //}
-        public static void GenerateVeins()
-        {
-            for (int i = 1; i < galaxy.starCount; ++i)
-            {
+        public static void GenerateVeins() {
+            for (int i = 1; i < galaxy.starCount; ++i) {
                 StarData star = galaxy.stars[i];
-                for (int j = 0; j < star.planetCount; ++j) PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins(true);
+                for (int j = 0; j < star.planetCount; ++j) {
+                    PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins(true);
+                }
             }
         }
-        public static void InitializeAstroPoses()
-        {
+        public static void InitializeAstroPoses() {
             var gSize = galaxy.starCount * 4000;
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
-            for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i);
+            for (var i = 0; i < GSSettings.StarCount; i++) {
+                galaxy.stars[i] = CreateStar(i);
+            }
+
             Log("Creating Planets");
-            for (var i = 0; i < GSSettings.StarCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc);
+            for (var i = 0; i < GSSettings.StarCount; i++) {
+                CreateStarPlanets(ref galaxy.stars[i], gameDesc);
+            }
+
             Log("Planets have been created");
             AstroPose[] astroPoses = galaxy.astroPoses;
-            for (int index = 0; index < galaxy.astroPoses.Length; ++index)
-            {
+            for (int index = 0; index < galaxy.astroPoses.Length; ++index) {
                 astroPoses[index].uRot.w = 1f;
                 astroPoses[index].uRotNext.w = 1f;
             }
-            for (int index = 0; index < GSSettings.StarCount; ++index)
-            {
+            for (int index = 0; index < GSSettings.StarCount; ++index) {
                 astroPoses[galaxy.stars[index].id * 100].uPos = astroPoses[galaxy.stars[index].id * 100].uPosNext = galaxy.stars[index].uPosition;
                 astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;
                 astroPoses[galaxy.stars[index].id * 100].uRadius = galaxy.stars[index].physicsRadius;

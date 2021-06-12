@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GSFullSerializer.Internal;
+using System;
 using System.Collections.Generic;
-using GSFullSerializer.Internal;
 
 namespace GSFullSerializer {
     /// <summary>
@@ -15,13 +15,15 @@ namespace GSFullSerializer {
             Converters = new List<Type>();
 
             foreach (var field in typeof(fsConverterRegistrar).GetDeclaredFields()) {
-                if (field.Name.StartsWith("Register_"))
+                if (field.Name.StartsWith("Register_")) {
                     Converters.Add(field.FieldType);
+                }
             }
 
             foreach (var method in typeof(fsConverterRegistrar).GetDeclaredMethods()) {
-                if (method.Name.StartsWith("Register_"))
+                if (method.Name.StartsWith("Register_")) {
                     method.Invoke(null, null);
+                }
             }
 
             // Make sure we do not use any AOT Models which are out of date.
@@ -30,7 +32,7 @@ namespace GSFullSerializer {
                 object instance = null;
                 try {
                     instance = Activator.CreateInstance(t);
-                } catch (Exception) {}
+                } catch (Exception) { }
 
                 var aotConverter = instance as fsIAotConverter;
                 if (aotConverter != null) {

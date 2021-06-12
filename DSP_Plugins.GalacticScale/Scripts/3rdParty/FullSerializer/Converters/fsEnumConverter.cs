@@ -7,30 +7,22 @@ namespace GSFullSerializer.Internal {
     /// Serializes and deserializes enums by their current name.
     /// </summary>
     public class fsEnumConverter : fsConverter {
-        public override bool CanProcess(Type type) {
-            return type.Resolve().IsEnum;
-        }
+        public override bool CanProcess(Type type) => type.Resolve().IsEnum;
 
-        public override bool RequestCycleSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestCycleSupport(Type storageType) => false;
 
-        public override bool RequestInheritanceSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestInheritanceSupport(Type storageType) => false;
 
-        public override object CreateInstance(fsData data, Type storageType) {
+        public override object CreateInstance(fsData data, Type storageType) =>
             // In .NET compact, Enum.ToObject(Type, Object) is defined but the
             // overloads like Enum.ToObject(Type, int) are not -- so we get
             // around this by boxing the value.
-            return Enum.ToObject(storageType, (object)0);
-        }
+            Enum.ToObject(storageType, (object)0);
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
             if (Serializer.Config.SerializeEnumsAsInteger) {
                 serialized = new fsData(Convert.ToInt64(instance));
-            }
-            else if (fsPortableReflection.GetAttribute<FlagsAttribute>(storageType) != null) {
+            } else if (fsPortableReflection.GetAttribute<FlagsAttribute>(storageType) != null) {
                 long instanceValue = Convert.ToInt64(instance);
                 var result = new StringBuilder();
 
@@ -40,15 +32,17 @@ namespace GSFullSerializer.Internal {
                     bool isSet = (instanceValue & integralValue) != 0;
 
                     if (isSet) {
-                        if (first == false) result.Append(",");
+                        if (first == false) {
+                            result.Append(",");
+                        }
+
                         first = false;
                         result.Append(value.ToString());
                     }
                 }
 
                 serialized = new fsData(result.ToString());
-            }
-            else {
+            } else {
                 serialized = new fsData(Enum.GetName(storageType, instance));
             }
             return fsResult.Success;
@@ -74,8 +68,7 @@ namespace GSFullSerializer.Internal {
 
                 instance = Enum.ToObject(storageType, (object)instanceValue);
                 return fsResult.Success;
-            }
-            else if (data.IsInt64) {
+            } else if (data.IsInt64) {
                 int enumValue = (int)data.AsInt64;
 
                 // In .NET compact, Enum.ToObject(Type, Object) is defined but

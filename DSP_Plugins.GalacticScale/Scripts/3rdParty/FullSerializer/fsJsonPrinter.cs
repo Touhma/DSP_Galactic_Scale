@@ -94,8 +94,12 @@ namespace GSFullSerializer {
                     break;
 
                 case fsDataType.Boolean:
-                    if (data.AsBool) stream.Write("true");
-                    else stream.Write("false");
+                    if (data.AsBool) {
+                        stream.Write("true");
+                    } else {
+                        stream.Write("false");
+                    }
+
                     break;
 
                 case fsDataType.Double:
@@ -117,7 +121,10 @@ namespace GSFullSerializer {
                         stream.Write('{');
                         bool comma = false;
                         foreach (var entry in data.AsDictionary) {
-                            if (comma) stream.Write(',');
+                            if (comma) {
+                                stream.Write(',');
+                            }
+
                             comma = true;
                             stream.Write('"');
                             stream.Write(entry.Key);
@@ -133,7 +140,10 @@ namespace GSFullSerializer {
                         stream.Write('[');
                         bool comma = false;
                         foreach (var entry in data.AsList) {
-                            if (comma) stream.Write(',');
+                            if (comma) {
+                                stream.Write(',');
+                            }
+
                             comma = true;
                             BuildCompressedString(entry, stream);
                         }
@@ -153,8 +163,12 @@ namespace GSFullSerializer {
                     break;
 
                 case fsDataType.Boolean:
-                    if (data.AsBool) stream.Write("true");
-                    else stream.Write("false");
+                    if (data.AsBool) {
+                        stream.Write("true");
+                    } else {
+                        stream.Write("false");
+                    }
+
                     break;
 
                 case fsDataType.Double:
@@ -199,8 +213,7 @@ namespace GSFullSerializer {
                     // between the brackets
                     if (data.AsList.Count == 0) {
                         stream.Write("[]");
-                    }
-                    else {
+                    } else {
                         bool comma = false;
 
                         stream.Write('[');
@@ -227,9 +240,7 @@ namespace GSFullSerializer {
         /// </summary>
         /// <param name="data">The data to print.</param>
         /// <param name="outputStream">Where to write the printed data.</param>
-        public static void PrettyJson(fsData data, TextWriter outputStream) {
-            BuildPrettyString(data, outputStream, 0);
-        }
+        public static void PrettyJson(fsData data, TextWriter outputStream) => BuildPrettyString(data, outputStream, 0);
 
         /// <summary>
         /// Returns the data in a pretty printed JSON format.
@@ -247,9 +258,7 @@ namespace GSFullSerializer {
         /// </summary>
         /// <param name="data">The data to print.</param>
         /// <param name="outputStream">Where to write the printed data.</param>
-        public static void CompressedJson(fsData data, StreamWriter outputStream) {
-            BuildCompressedString(data, outputStream);
-        }
+        public static void CompressedJson(fsData data, StreamWriter outputStream) => BuildCompressedString(data, outputStream);
 
         /// <summary>
         /// Returns the data in a relatively compressed JSON format.
@@ -266,8 +275,9 @@ namespace GSFullSerializer {
         /// Utility method that converts a double to a string.
         /// </summary>
         private static string ConvertDoubleToString(double d) {
-            if (Double.IsInfinity(d) || Double.IsNaN(d))
+            if (Double.IsInfinity(d) || Double.IsNaN(d)) {
                 return d.ToString(CultureInfo.InvariantCulture);
+            }
 
             string doubledString = d.ToString(CultureInfo.InvariantCulture);
 

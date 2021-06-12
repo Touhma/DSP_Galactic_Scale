@@ -5,18 +5,17 @@ namespace GSFullSerializer.Internal {
     /// Simple option type. This is akin to nullable types.
     /// </summary>
     public struct fsOption<T> {
-        private bool _hasValue;
-        private T _value;
+        private readonly bool _hasValue;
+        private readonly T _value;
 
-        public bool HasValue {
-            get { return _hasValue; }
-        }
-        public bool IsEmpty {
-            get { return _hasValue == false; }
-        }
+        public bool HasValue => _hasValue;
+        public bool IsEmpty => _hasValue == false;
         public T Value {
             get {
-                if (IsEmpty) throw new InvalidOperationException("fsOption is empty");
+                if (IsEmpty) {
+                    throw new InvalidOperationException("fsOption is empty");
+                }
+
                 return _value;
             }
         }
@@ -30,8 +29,6 @@ namespace GSFullSerializer.Internal {
     }
 
     public static class fsOption {
-        public static fsOption<T> Just<T>(T value) {
-            return new fsOption<T>(value);
-        }
+        public static fsOption<T> Just<T>(T value) => new fsOption<T>(value);
     }
 }

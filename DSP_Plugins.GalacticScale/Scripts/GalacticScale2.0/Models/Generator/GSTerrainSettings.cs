@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace GalacticScale
-{
-    public class GSTerrainSettings
-    {
+namespace GalacticScale {
+    public class GSTerrainSettings {
         [NonSerialized]
         public double xFactor = 0;
-        [NonSerialized] 
+        [NonSerialized]
         public double yFactor = 0;
         [NonSerialized]
         public double zFactor = 0;
@@ -17,10 +15,7 @@ namespace GalacticScale
         public double HeightMulti = 1;
         public double BaseHeight = 0;
         public string Algorithm = "Vanilla";
-        public bool   BrightnessFix = false; //Fix for Lava
-        public GSTerrainSettings Clone()
-        {
-            return (GSTerrainSettings)MemberwiseClone();
-        }
+        public bool BrightnessFix = false; //Fix for Lava
+        public GSTerrainSettings Clone() => (GSTerrainSettings)MemberwiseClone();
     }
 }

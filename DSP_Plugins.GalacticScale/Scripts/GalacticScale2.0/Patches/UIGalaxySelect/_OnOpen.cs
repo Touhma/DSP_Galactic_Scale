@@ -1,17 +1,19 @@
 ﻿using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace GalacticScale
-{
-    public partial class PatchOnUIGalaxySelect
-    {
+namespace GalacticScale {
+    public partial class PatchOnUIGalaxySelect {
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
-        public static bool _OnOpen(UIGalaxySelect __instance)
-        {
-            if (GS2.generator == null) return true;
-            if (StartButton == null) StartButton = __instance.GetComponentInChildren<UIButton>().gameObject;
+        public static bool _OnOpen(UIGalaxySelect __instance) {
+            if (GS2.generator == null) {
+                return true;
+            }
+
+            if (StartButton == null) {
+                StartButton = __instance.GetComponentInChildren<UIButton>().gameObject;
+            }
+
             StartButton?.SetActive(true);
             GS2.Log(StartButton?.name);
             __instance.random = new DotNet35Random(GSSettings.Seed);//new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));

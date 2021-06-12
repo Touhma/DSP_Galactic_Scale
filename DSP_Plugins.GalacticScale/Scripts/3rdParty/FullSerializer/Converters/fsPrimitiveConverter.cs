@@ -9,17 +9,11 @@ namespace GSFullSerializer.Internal {
                 type == typeof(decimal);
         }
 
-        public override bool RequestCycleSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestCycleSupport(Type storageType) => false;
 
-        public override bool RequestInheritanceSupport(Type storageType) {
-            return false;
-        }
+        public override bool RequestInheritanceSupport(Type storageType) => false;
 
-        private static bool UseBool(Type type) {
-            return type == typeof(bool);
-        }
+        private static bool UseBool(Type type) => type == typeof(bool);
 
         private static bool UseInt64(Type type) {
             return type == typeof(sbyte) || type == typeof(byte) ||
@@ -100,17 +94,13 @@ namespace GSFullSerializer.Internal {
             if (UseDouble(storageType) || UseInt64(storageType)) {
                 if (storage.IsDouble) {
                     instance = Convert.ChangeType(storage.AsDouble, storageType);
-                }
-                else if (storage.IsInt64) {
+                } else if (storage.IsInt64) {
                     instance = Convert.ChangeType(storage.AsInt64, storageType);
-                }
-                else if (storage.IsString &&
-                    (Serializer.Config.Serialize64BitIntegerAsString && (storageType == typeof(Int64) || storageType == typeof(UInt64)) ||
-                    Serializer.Config.CoerceStringsToNumbers))
-                {
+                } else if (storage.IsString &&
+                      (Serializer.Config.Serialize64BitIntegerAsString && (storageType == typeof(Int64) || storageType == typeof(UInt64)) ||
+                      Serializer.Config.CoerceStringsToNumbers)) {
                     instance = Convert.ChangeType(storage.AsString, storageType);
-                }
-                else {
+                } else {
                     return fsResult.Fail(GetType().Name + " expected number but got " + storage.Type + " in " + storage);
                 }
                 return fsResult.Success;

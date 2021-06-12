@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GSFullSerializer {
-    partial class fsConverterRegistrar {
+    public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.LayerMask_DirectConverter Register_LayerMask_DirectConverter;
     }
 }
@@ -29,9 +29,7 @@ namespace GSFullSerializer.Internal.DirectConverters {
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return new LayerMask();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => new LayerMask();
     }
 }
 #endif

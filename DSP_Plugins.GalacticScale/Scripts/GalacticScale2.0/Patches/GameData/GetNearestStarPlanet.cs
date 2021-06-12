@@ -77,7 +77,7 @@
 //                    double transitionRadius = (__instance.galaxy.stars[i].systemRadius + 2) * 40000;
 //                    if (distanceToStar < transitionRadius)
 //					{
-						
+
 //						nearestStar = __instance.galaxy.stars[i];
 //						GS2.Log($"At {((distanceToStar / 40000) - 2)}AU, Approaching Star {nearestStar.name}");
 //						status = "Looking for planet";

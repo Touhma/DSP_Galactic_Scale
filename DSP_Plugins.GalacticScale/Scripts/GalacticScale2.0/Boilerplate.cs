@@ -1,7 +1,5 @@
-﻿namespace GalacticScale
-{
-    public static partial class GS2
-    {
+﻿namespace GalacticScale {
+    public static partial class GS2 {
 
     }
 }

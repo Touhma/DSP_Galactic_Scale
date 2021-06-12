@@ -15,23 +15,17 @@ namespace GSFullSerializer {
         /// <summary>
         /// Removes all context objects from the context.
         /// </summary>
-        public void Reset() {
-            _contextObjects.Clear();
-        }
+        public void Reset() => _contextObjects.Clear();
 
         /// <summary>
         /// Sets the context object for the given type with the given value.
         /// </summary>
-        public void Set<T>(T obj) {
-            _contextObjects[typeof(T)] = obj;
-        }
+        public void Set<T>(T obj) => _contextObjects[typeof(T)] = obj;
 
         /// <summary>
         /// Returns true if there is a context object for the given type.
         /// </summary>
-        public bool Has<T>() {
-            return _contextObjects.ContainsKey(typeof(T));
-        }
+        public bool Has<T>() => _contextObjects.ContainsKey(typeof(T));
 
         /// <summary>
         /// Fetches the context object for the given type.

@@ -1,13 +1,10 @@
 ﻿using HarmonyLib;
 
-namespace GalacticScale
-{
+namespace GalacticScale {
 
-    public partial class PatchOnPlanetRawData
-    {
+    public partial class PatchOnPlanetRawData {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetRawData), "GetModPlane")]
-        public static bool GetModPlane(int index, ref PlanetRawData __instance, ref short __result)
-        {
+        public static bool GetModPlane(int index, ref PlanetRawData __instance, ref short __result) {
             float baseHeight = 20;
 
             baseHeight += __instance.GetFactoredScale() * 200 * 100;

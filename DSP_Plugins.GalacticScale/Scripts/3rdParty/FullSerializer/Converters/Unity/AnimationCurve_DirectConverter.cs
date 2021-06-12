@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GSFullSerializer {
-    partial class fsConverterRegistrar {
+    public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.AnimationCurve_DirectConverter Register_AnimationCurve_DirectConverter;
     }
 }
@@ -39,9 +39,7 @@ namespace GSFullSerializer.Internal.DirectConverters {
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) {
-            return new AnimationCurve();
-        }
+        public override object CreateInstance(fsData data, Type storageType) => new AnimationCurve();
     }
 }
 #endif

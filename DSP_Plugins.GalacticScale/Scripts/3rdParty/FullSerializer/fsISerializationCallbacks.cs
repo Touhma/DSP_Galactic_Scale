@@ -53,20 +53,20 @@ namespace GSFullSerializer {
 
 namespace GSFullSerializer.Internal {
     public class fsSerializationCallbackProcessor : fsObjectProcessor {
-        public override bool CanProcess(Type type) {
-            return typeof(fsISerializationCallbacks).IsAssignableFrom(type);
-        }
+        public override bool CanProcess(Type type) => typeof(fsISerializationCallbacks).IsAssignableFrom(type);
 
         public override void OnBeforeSerialize(Type storageType, object instance) {
             // Don't call the callback on null instances.
-            if (instance == null) return;
-            ((fsISerializationCallbacks)instance).OnBeforeSerialize(storageType);
+            if (instance == null) {
+                return;
+            } ((fsISerializationCallbacks)instance).OnBeforeSerialize(storageType);
         }
 
         public override void OnAfterSerialize(Type storageType, object instance, ref fsData data) {
             // Don't call the callback on null instances.
-            if (instance == null) return;
-            ((fsISerializationCallbacks)instance).OnAfterSerialize(storageType, ref data);
+            if (instance == null) {
+                return;
+            } ((fsISerializationCallbacks)instance).OnAfterSerialize(storageType, ref data);
         }
 
         public override void OnBeforeDeserializeAfterInstanceCreation(Type storageType, object instance, ref fsData data) {
@@ -79,27 +79,28 @@ namespace GSFullSerializer.Internal {
 
         public override void OnAfterDeserialize(Type storageType, object instance) {
             // Don't call the callback on null instances.
-            if (instance == null) return;
-            ((fsISerializationCallbacks)instance).OnAfterDeserialize(storageType);
+            if (instance == null) {
+                return;
+            } ((fsISerializationCallbacks)instance).OnAfterDeserialize(storageType);
         }
     }
 
 #if !NO_UNITY
     public class fsSerializationCallbackReceiverProcessor : fsObjectProcessor {
-        public override bool CanProcess(Type type) {
-            return typeof(ISerializationCallbackReceiver).IsAssignableFrom(type);
-        }
+        public override bool CanProcess(Type type) => typeof(ISerializationCallbackReceiver).IsAssignableFrom(type);
 
         public override void OnBeforeSerialize(Type storageType, object instance) {
             // Don't call the callback on null instances.
-            if (instance == null) return;
-            ((ISerializationCallbackReceiver)instance).OnBeforeSerialize();
+            if (instance == null) {
+                return;
+            } ((ISerializationCallbackReceiver)instance).OnBeforeSerialize();
         }
 
         public override void OnAfterDeserialize(Type storageType, object instance) {
             // Don't call the callback on null instances.
-            if (instance == null) return;
-            ((ISerializationCallbackReceiver)instance).OnAfterDeserialize();
+            if (instance == null) {
+                return;
+            } ((ISerializationCallbackReceiver)instance).OnAfterDeserialize();
         }
     }
 #endif

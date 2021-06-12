@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
 
-namespace GalacticScale.Generators
-{
-    public class TintTest : iConfigurableGenerator
-    {
+namespace GalacticScale.Generators {
+    public class TintTest : iConfigurableGenerator {
         public string Name => "CrashTest";
 
         public string Author => "innominata";
@@ -22,7 +17,7 @@ namespace GalacticScale.Generators
 
         public GSOptions Options => options;
 
-        private GSGeneratorConfig config = new GSGeneratorConfig();
+        private readonly GSGeneratorConfig config = new GSGeneratorConfig();
         //public GSPlanets planets = new GSPlanets();
         //public Material oceanMat;
         //private float r = 1f;
@@ -67,8 +62,7 @@ namespace GalacticScale.Generators
         //{
         //    GSSettings.ThemeLibrary["TintCustom"].oceanMaterial.Tint = new Color(r, g, b, a);
         //}
-        public void Init()
-        {
+        public void Init() {
             //options.Add(new GSUI("R", "Input", "1", changeValueR, () => { }));
             //options.Add(new GSUI("G", "Input", "0", changeValueG, () => { }));
             //options.Add(new GSUI("B", "Input", "0", changeValueB, () => { }));
@@ -109,88 +103,83 @@ namespace GalacticScale.Generators
             //foreach (KeyValuePair<string, Color> c in colors)
             //{
             //    //GS2.Log("Creating Theme for Tint" + c.Key);
-                
+
             //    GSTheme temp = new GSTheme("Tint" + c.Key, "Tint" + c.Key, "Mediterranean");
             //    //temp.atmosphereTint = c.Value;
-                ////temp.terrainTint = c.Value;
-                //temp.oceanMaterial.Tint = c.Value;
-                ////ColorUtility.TryParseHtmlString("#fce303", out cc);
-                //temp.Process();
+            ////temp.terrainTint = c.Value;
+            //temp.oceanMaterial.Tint = c.Value;
+            ////ColorUtility.TryParseHtmlString("#fce303", out cc);
+            //temp.Process();
 
-                //GSTheme temp2 = new GSTheme("TintLava" + c.Key, "TintLava" + c.Key, "Lava");
-                ////temp2.atmosphereTint = c.Value;
-                //temp2.terrainMaterial.Tint = c.Value;
-                ////temp2.oceanTint = c.Value;
-                ////ColorUtility.TryParseHtmlString("#fce303", out cc);
-                //temp2.Process();
+            //GSTheme temp2 = new GSTheme("TintLava" + c.Key, "TintLava" + c.Key, "Lava");
+            ////temp2.atmosphereTint = c.Value;
+            //temp2.terrainMaterial.Tint = c.Value;
+            ////temp2.oceanTint = c.Value;
+            ////ColorUtility.TryParseHtmlString("#fce303", out cc);
+            //temp2.Process();
 
-                //GSTheme temp3 = new GSTheme("TintIce" + c.Key, "TintIce" + c.Key, "IceGelisol");
-                //temp3.atmosphereMaterial.Tint = c.Value;
-                ////temp3.terrainTint = c.Value;
-                ////temp3.oceanTint = c.Value;
-                //Color cc = Color.white;
-                ////ColorUtility.TryParseHtmlString("#fce303", out cc);
-                //temp3.Process();
+            //GSTheme temp3 = new GSTheme("TintIce" + c.Key, "TintIce" + c.Key, "IceGelisol");
+            //temp3.atmosphereMaterial.Tint = c.Value;
+            ////temp3.terrainTint = c.Value;
+            ////temp3.oceanTint = c.Value;
+            //Color cc = Color.white;
+            ////ColorUtility.TryParseHtmlString("#fce303", out cc);
+            //temp3.Process();
 
-                //GSTheme tempg = new GSTheme("TintGiant" + c.Key, "TintGiant" + c.Key, "GasGiant");
-                //tempg.atmosphereMaterial.Tint = c.Value;
-                //Material tempMat = Resources.Load<Material>("Universe/Materials/Stars/" + "star-mass-a");
-                //if (tempMat != null) tempg.terrainMat = UnityEngine.Object.Instantiate(tempMat);
-                ////tempg.terrainTint = c.Value;
-                //tempg.Process(); //tempg.Monkey(c.Value);
-                //GSTheme tempig = new GSTheme("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, "IceGiant");
-                //tempig.atmosphereMaterial.Tint = c.Value;
-                ////tempig.terrainTint = c.Value;
-                //tempig.Process(); 
+            //GSTheme tempg = new GSTheme("TintGiant" + c.Key, "TintGiant" + c.Key, "GasGiant");
+            //tempg.atmosphereMaterial.Tint = c.Value;
+            //Material tempMat = Resources.Load<Material>("Universe/Materials/Stars/" + "star-mass-a");
+            //if (tempMat != null) tempg.terrainMat = UnityEngine.Object.Instantiate(tempMat);
+            ////tempg.terrainTint = c.Value;
+            //tempg.Process(); //tempg.Monkey(c.Value);
+            //GSTheme tempig = new GSTheme("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, "IceGiant");
+            //tempig.atmosphereMaterial.Tint = c.Value;
+            ////tempig.terrainTint = c.Value;
+            //tempig.Process(); 
 
-                //planets.Add(new GSPlanet("Tint" + c.Key, "Tint" + c.Key, 100, 2f - (i*0.005f), -1, -1, 10000f, (float)i*15, -1, -1, -1, -1, null));
-                //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintLava" + c.Key, "TintLava" + c.Key, 100, 0.02f, -1, -1, 100f, 0, -1, -1, -1, -1, null));
-                //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIce" + c.Key, "TintIce" + c.Key, 100, 0.02f, -1, -1, 100f, 180, -1, -1, -1, -1, null));
+            //planets.Add(new GSPlanet("Tint" + c.Key, "Tint" + c.Key, 100, 2f - (i*0.005f), -1, -1, 10000f, (float)i*15, -1, -1, -1, -1, null));
+            //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintLava" + c.Key, "TintLava" + c.Key, 100, 0.02f, -1, -1, 100f, 0, -1, -1, -1, -1, null));
+            //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIce" + c.Key, "TintIce" + c.Key, 100, 0.02f, -1, -1, 100f, 180, -1, -1, -1, -1, null));
 
-                //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintGiant" + c.Key, "TintGiant" + c.Key, 100, .1f, -1, -1, 10000f, 0, -1, -1, -1, -1, null));
-                //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, 100, .1f, -1, -1, 10000f, 180, -1, -1, -1, -1, null));
-                //i += 1;
+            //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintGiant" + c.Key, "TintGiant" + c.Key, 100, .1f, -1, -1, 10000f, 0, -1, -1, -1, -1, null));
+            //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, 100, .1f, -1, -1, 10000f, 180, -1, -1, -1, -1, null));
+            //i += 1;
             //}
-           
+
         }
 
 
-        public void Generate(int starCount)
-        {
-            throw new Exception("Doh");
-            //generate(starCount);
-        }
+        public void Generate(int starCount) => throw new Exception("Doh");//generate(starCount);
         ////////////////////////////////////////////////////////////////////
         public GSOptions options = new GSOptions();
 
 
-        public void generate(int starCount)
-        {
+        public void generate(int starCount) {
             //GS2.Log("TT:Creating New Settings");
 
 
             //beach.InitTheme(Themes.OceanWorld);
             //{
-                //new GSPlanet("Beach", "Beach", 180, 3f, -1, -1, -1, 5f, -1, -1, -1, 1f, null),
-                //new GSPlanet("Mediterranian", "Mediterranian", 80, 3f, -1, -1, -1, 1, -1, -1, -1, -1, null),
-                //new GSPlanet("Gas", "Gas", 80, 3f, -1, -1, -1, 15, -1, -1, -1, -1, null),
-                //new GSPlanet("Gas2", "Gas2", 80, 3f, -1, -1, -1, 30, -1, -1, -1, -1, null),
-                //new GSPlanet("IceGiant", "IceGiant", 80, 3f, -1, -1, -1, 45, -1, -1, -1, -1, null),
-                //new GSPlanet("IceGiant2", "IceGiant2", 80, 3f, -1, -1, -1, 60, -1, -1, -1, -1, null),
-                //new GSPlanet("Arid", "Arid", 80, 3f, -1, -1, -1, 75, -1, -1, -1, -1, null),
-                //new GSPlanet("AshenGelisol", "AshenGelisol", 80, 3f, -1, -1, -1, 90, -1, -1, -1, -1, null),
-                //new GSPlanet("Jungle", "Jungle", 80, 3f, -1, -1, -1, 105, -1, -1, -1, -1, null),
-                //new GSPlanet("Lava", "Lava", 80, 3f, -1, -1, -1, 120, -1, -1, -1, -1, null),
-                //new GSPlanet("YellowGas", "YellowGas", 180, 3f, -1, -1, -1, 3f, -1, -1, -1, -1, null),
-                //new GSPlanet("GreenGas", "GreenGas", 180, 3f, -1, -1, -1, 6f, -1, -1, -1, -1, null),
-                //new GSPlanet("MagentaGas", "MagentaGas", 180, 3f, -1, -1, -1, 9f, -1, -1, -1, -1, null),
-                //new GSPlanet("Ice", "Ice", 80, 3f, -1, -1, -1, 150, -1, -1, -1, -1, null),
-                //new GSPlanet("Barren", "Barren", 80, 3f, -1, -1, -1, 165, -1, -1, -1, -1, null),
-                //new GSPlanet("Gobi", "Gobi", 80, 3f, -1, -1, -1, 180, -1, -1, -1, -1, null),
-                //new GSPlanet("VolcanicAsh", "VolcanicAsh", 80, 3f, -1, -1, -1, 195, -1, -1, -1, -1, null),
-                //new GSPlanet("RedStone", "RedStone", 80, 3f, -1, -1, -1, 210, -1, -1, -1, -1, null),
-                //new GSPlanet("Prarie", "Prarie", 80, 3f, -1, -1, -1, 225, -1, -1, -1, -1, null),
-                //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
+            //new GSPlanet("Beach", "Beach", 180, 3f, -1, -1, -1, 5f, -1, -1, -1, 1f, null),
+            //new GSPlanet("Mediterranian", "Mediterranian", 80, 3f, -1, -1, -1, 1, -1, -1, -1, -1, null),
+            //new GSPlanet("Gas", "Gas", 80, 3f, -1, -1, -1, 15, -1, -1, -1, -1, null),
+            //new GSPlanet("Gas2", "Gas2", 80, 3f, -1, -1, -1, 30, -1, -1, -1, -1, null),
+            //new GSPlanet("IceGiant", "IceGiant", 80, 3f, -1, -1, -1, 45, -1, -1, -1, -1, null),
+            //new GSPlanet("IceGiant2", "IceGiant2", 80, 3f, -1, -1, -1, 60, -1, -1, -1, -1, null),
+            //new GSPlanet("Arid", "Arid", 80, 3f, -1, -1, -1, 75, -1, -1, -1, -1, null),
+            //new GSPlanet("AshenGelisol", "AshenGelisol", 80, 3f, -1, -1, -1, 90, -1, -1, -1, -1, null),
+            //new GSPlanet("Jungle", "Jungle", 80, 3f, -1, -1, -1, 105, -1, -1, -1, -1, null),
+            //new GSPlanet("Lava", "Lava", 80, 3f, -1, -1, -1, 120, -1, -1, -1, -1, null),
+            //new GSPlanet("YellowGas", "YellowGas", 180, 3f, -1, -1, -1, 3f, -1, -1, -1, -1, null),
+            //new GSPlanet("GreenGas", "GreenGas", 180, 3f, -1, -1, -1, 6f, -1, -1, -1, -1, null),
+            //new GSPlanet("MagentaGas", "MagentaGas", 180, 3f, -1, -1, -1, 9f, -1, -1, -1, -1, null),
+            //new GSPlanet("Ice", "Ice", 80, 3f, -1, -1, -1, 150, -1, -1, -1, -1, null),
+            //new GSPlanet("Barren", "Barren", 80, 3f, -1, -1, -1, 165, -1, -1, -1, -1, null),
+            //new GSPlanet("Gobi", "Gobi", 80, 3f, -1, -1, -1, 180, -1, -1, -1, -1, null),
+            //new GSPlanet("VolcanicAsh", "VolcanicAsh", 80, 3f, -1, -1, -1, 195, -1, -1, -1, -1, null),
+            //new GSPlanet("RedStone", "RedStone", 80, 3f, -1, -1, -1, 210, -1, -1, -1, -1, null),
+            //new GSPlanet("Prarie", "Prarie", 80, 3f, -1, -1, -1, 225, -1, -1, -1, -1, null),
+            //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             //};
 
             //GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.X, EStarType.BlackHole, planets));
@@ -205,14 +194,10 @@ namespace GalacticScale.Generators
             //GS2.DumpObjectToJson(path, GSSettings.Instance);
         }
 
-        public void Import(GSGenPreferences preferences)
-        {
-            
+        public void Import(GSGenPreferences preferences) {
+
         }
 
-        public GSGenPreferences Export()
-        {
-            return new GSGenPreferences();
-        }
+        public GSGenPreferences Export() => new GSGenPreferences();
     }
 }

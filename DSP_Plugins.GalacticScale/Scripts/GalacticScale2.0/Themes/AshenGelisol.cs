@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme AshenGelisol = new GSTheme()
         {
             Name = "AshenGelisol",
@@ -20,18 +18,18 @@ namespace GalacticScale
             VeinSettings = new GSVeinSettings() { Algorithm = "Vanilla" },
             AmbientSettings = new GSAmbientSettings()
             {
-                Color1 = new Color(0.01481844f,  0.06821825f, 0.08490568f, 1),
-                Color2 = new Color(0.01568628f,  0.05103511f, 0.05490196f, 1),
-                Color3 = new Color(0.01735494f,  0.04482913f, 0.05660379f, 1),
-                WaterColor1 = new Color(0f,  0f, 0f, 1f),
-                WaterColor2 = new Color(0.06047527f,  0.07024744f, 0.08490568f, 1),
-                WaterColor3 = new Color(0.0260324f,  0.03199927f, 0.1415094f, 1),
-                BiomeColor1 = new Color(0.1215686f,  0.2470588f, 0.4117647f, 1),
-                BiomeColor2 = new Color(0.3215686f,  0.4117647f, 0.5921569f, 1),
-                BiomeColor3 = new Color(0.3510854f,  0.3328587f, 0.8301887f, 1),
-                DustColor1 = new Color(0.3254902f,  0.4246865f, 0.5176471f, 1),
-                DustColor2 = new Color(0.7128f,  0.7480628f, 0.825f, 1),
-                DustColor3 = new Color(0.590764f,  0.5864831f, 0.762f, 1),
+                Color1 = new Color(0.01481844f, 0.06821825f, 0.08490568f, 1),
+                Color2 = new Color(0.01568628f, 0.05103511f, 0.05490196f, 1),
+                Color3 = new Color(0.01735494f, 0.04482913f, 0.05660379f, 1),
+                WaterColor1 = new Color(0f, 0f, 0f, 1f),
+                WaterColor2 = new Color(0.06047527f, 0.07024744f, 0.08490568f, 1),
+                WaterColor3 = new Color(0.0260324f, 0.03199927f, 0.1415094f, 1),
+                BiomeColor1 = new Color(0.1215686f, 0.2470588f, 0.4117647f, 1),
+                BiomeColor2 = new Color(0.3215686f, 0.4117647f, 0.5921569f, 1),
+                BiomeColor3 = new Color(0.3510854f, 0.3328587f, 0.8301887f, 1),
+                DustColor1 = new Color(0.3254902f, 0.4246865f, 0.5176471f, 1),
+                DustColor2 = new Color(0.7128f, 0.7480628f, 0.825f, 1),
+                DustColor3 = new Color(0.590764f, 0.5864831f, 0.762f, 1),
                 DustStrength1 = 7f,
                 DustStrength2 = 6f,
                 DustStrength3 = 3f,

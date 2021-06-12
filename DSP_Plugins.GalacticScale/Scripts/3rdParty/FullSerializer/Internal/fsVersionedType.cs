@@ -20,13 +20,9 @@ namespace GSFullSerializer.Internal {
         /// <summary>
         /// Migrate from an instance of an ancestor.
         /// </summary>
-        public object Migrate(object ancestorInstance) {
-            return Activator.CreateInstance(ModelType, ancestorInstance);
-        }
+        public object Migrate(object ancestorInstance) => Activator.CreateInstance(ModelType, ancestorInstance);
 
-        public override string ToString() {
-            return "fsVersionedType [ModelType=" + ModelType + ", VersionString=" + VersionString + ", Ancestors.Length=" + Ancestors.Length + "]";
-        }
+        public override string ToString() => "fsVersionedType [ModelType=" + ModelType + ", VersionString=" + VersionString + ", Ancestors.Length=" + Ancestors.Length + "]";
 
         public static bool operator ==(fsVersionedType a, fsVersionedType b) {
             return a.ModelType == b.ModelType;
@@ -42,8 +38,6 @@ namespace GSFullSerializer.Internal {
                 ModelType == ((fsVersionedType)obj).ModelType;
         }
 
-        public override int GetHashCode() {
-            return ModelType.GetHashCode();
-        }
+        public override int GetHashCode() => ModelType.GetHashCode();
     }
 }

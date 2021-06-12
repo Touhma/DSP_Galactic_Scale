@@ -1,24 +1,21 @@
 ﻿using System.Collections.Generic;
 
-namespace GalacticScale
-{
+namespace GalacticScale {
 
     public class SingletonExample //left here for future use
     {
         private SingletonExample() { }
-        public static SingletonExample Instance { get { return Internal.instance; } }
+        public static SingletonExample Instance => Internal.instance;
         private class Internal { static Internal() { } internal static readonly SingletonExample instance = new SingletonExample(); }
     }
 
 
-    public class VegeTypesDictionary
-    {
-        public static Dictionary<string,int> Instance { get { return Internal.instance; } }
-        private class Internal
-        {
+    public class VegeTypesDictionary {
+        public static Dictionary<string, int> Instance => Internal.instance;
+        private class Internal {
             static Internal() { }
-            internal static readonly Dictionary<string,int> instance = new Dictionary<string, int>()
-            {          
+            internal static readonly Dictionary<string, int> instance = new Dictionary<string, int>()
+            {
                 ["Stone1"] = 1,
                 ["Stone2"] = 2,
                 ["Stone3"] = 3,
@@ -30,7 +27,7 @@ namespace GalacticScale
                 ["Stone9"] = 9,
                 ["Stone10"] = 10,
                 ["Stone11"] = 11,
-                ["Stone12"] = 12, 
+                ["Stone12"] = 12,
                 ["Tree1"] = 13,
                 ["Tree2"] = 14,
                 ["Tree3"] = 15,
@@ -143,7 +140,7 @@ namespace GalacticScale
                 ["MedStone4"] = 604,
                 ["MedStone5"] = 605,
 
-                
+
                 ["MedGrass7"] = 1001,
                 ["MedGrass8"] = 1002,
                 ["MedGrass9"] = 1003,
@@ -300,22 +297,22 @@ namespace GalacticScale
         //    ["JungleGrass9"] = 1023
         //}
         //}
-        public static int Find(string s)
-        {
-            if (s == null)
-            {
+        public static int Find(string s) {
+            if (s == null) {
                 GS2.Warn("Vege code null");
             }
-            if (Instance.ContainsKey(s)) return Instance[s];
-            else
-            {
+            if (Instance.ContainsKey(s)) {
+                return Instance[s];
+            } else {
                 GS2.Warn("Vege ID for " + s + " not found");
                 return 9999;
             }
         }
-        public static string Find(int i)
-        {
-            if (Instance.ContainsValue(i)) return Utils.ReverseLookup(Instance, i);
+        public static string Find(int i) {
+            if (Instance.ContainsValue(i)) {
+                return Utils.ReverseLookup(Instance, i);
+            }
+
             return "LandingPod";
         }
         private VegeTypesDictionary() { }
