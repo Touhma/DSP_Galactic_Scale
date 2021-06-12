@@ -17,6 +17,7 @@ namespace GalacticScale
                 {
                     if (asm.GetName().Name == "BCE")
                     {
+                        GS2.Warn("FOUND BCE");
                         t = asm.GetType("BCE.console");
                         disabled = false;
                     }

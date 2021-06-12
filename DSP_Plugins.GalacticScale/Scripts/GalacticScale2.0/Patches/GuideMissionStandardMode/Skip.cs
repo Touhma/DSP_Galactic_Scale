@@ -42,7 +42,7 @@ namespace GalacticScale
             if (GS2.CheatMode && !GS2.ResearchUnlocked)
             {
                 GS2.Warn("Cheatmode Enabled. Unlocking Research");
-                GS2.UnlockTechOptionCallback(null);
+                GS2.UnlockTech(null);
             }
             return false;
         }

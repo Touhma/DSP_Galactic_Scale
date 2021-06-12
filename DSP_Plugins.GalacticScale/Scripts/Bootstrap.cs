@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 namespace GalacticScale {
@@ -18,6 +19,8 @@ namespace GalacticScale {
         public static bool DebugStarNamingGen = false;
 
         internal void Awake() {
+            System.Version v = Assembly.GetExecutingAssembly().GetName().Version;
+            GS2.Version = $"2.0a{v.Build}.{v.Revision}";
             BCE.console.init();
             var harmony = new Harmony("dsp.galactic-scale.star-system-generation");
             Logger = new ManualLogSource("GS2");
@@ -82,7 +85,7 @@ namespace GalacticScale {
             if (DSPGame.IsMenuDemo) return;
 
             //GS2.Warn($"Teleport Status {TeleportStar} {TeleportPlanet} {TeleportEnabled}");
-            if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false) return;
+            if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false || !GameMain.localStar.loaded) return;
             if (TeleportPlanet != null)
             {
                 GS2.Warn($"TP to Planet {TeleportPlanet.name} of star {TeleportPlanet.star?.name}");

@@ -16,12 +16,12 @@ namespace GalacticScale
             planet.data.AddFactoredRadius(planet);
             return true;
         }
-        [HarmonyPostfix, HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
-        public static void ModelingPlanetMain2(PlanetData planet)
-        {
-            GS2.Log($"{planet.name} end of modeling planet main");
-            return;
-        }
+        //[HarmonyPostfix, HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
+        //public static void ModelingPlanetMain2(PlanetData planet)
+        //{
+        //    //GS2.Log($"{planet.name} end of modeling planet main");
+        //    return;
+        //}
         //public static int vertCount = 0;
         //[HarmonyPrefix]
         //[HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]

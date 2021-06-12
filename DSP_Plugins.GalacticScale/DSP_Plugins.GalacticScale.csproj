@@ -245,7 +245,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\UnlockResearch.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\CheatMode.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\NoTutorials.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
@@ -259,6 +259,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\SaltLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\BCE.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\HandleLocalStarPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\NebulaCompatibility.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Queries.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Utils.cs" />

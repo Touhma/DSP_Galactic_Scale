@@ -12,7 +12,7 @@ namespace GalacticScale
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"),"config");
         public static bool Failed = false;
         public static bool Initialized = false;
-        public static bool CheatMode = true;
+        public static bool CheatMode = false;
         public static bool ResearchUnlocked = false;
         public static bool IsMenuDemo {  get
             {
@@ -56,8 +56,7 @@ namespace GalacticScale
 
         public static void Init()
         {
-            System.Version v = Assembly.GetExecutingAssembly().GetName().Version;
-            Version = $"2.0a{v.Build}.{v.Revision}";
+
             NebulaCompatibility.init();
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             LoadPreferences(true);

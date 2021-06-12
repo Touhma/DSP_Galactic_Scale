@@ -90,6 +90,7 @@ namespace GalacticScale.Generators
             acidGreenhouse.AmbientSettings.DustColor3 = new Color(0.9f, 0.7f, 0.2f, 1f);
             acidGreenhouse.AmbientSettings.LutContribution = 0.8f;
             acidGreenhouse.CustomGeneration = true;
+            acidGreenhouse.TerrainSettings.BrightnessFix = true;
             acidGreenhouse.TerrainSettings.Algorithm = "GSTA3";
             acidGreenhouse.TerrainSettings.LandModifier = 1;
             acidGreenhouse.TerrainSettings.HeightMulti = 2;

@@ -33,6 +33,7 @@ namespace GalacticScale
                 if (__instance.localPlanet.loaded)
                 {
                     GS2.Log($"{planet.name} is loaded, calling OnActivePlanetLoaded");
+                    GameMain.mainPlayer.transform.localScale = UnityEngine.Vector3.one;
                     __instance.OnActivePlanetLoaded(__instance.localPlanet);
                     return false;
                 }

@@ -6,11 +6,16 @@ namespace GalacticScale
     {        
         public static void CheatModeOptionCallback(object o)
         {
-            GS2.CheatMode = (bool)o;
+            CheatMode = (bool)o;
+            Warn($"Cheatmode set to {CheatMode}");
         }
-        public static GSUI UnlockTechOption;
+        public static void CheatModeOptionPostfix()
+        {
+            CheatModeOption.Set(CheatMode);
+        }
+        public static GSUI CheatModeOption;
         // All credit to Windows10CE
-        public static void UnlockTechOptionCallback(object o)
+        public static void UnlockTech(object o)
         {
             //GS2.Warn("Unlocking Tech");
             foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))

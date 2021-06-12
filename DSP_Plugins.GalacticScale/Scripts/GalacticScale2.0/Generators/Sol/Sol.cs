@@ -254,6 +254,8 @@ namespace GalacticScale.Generators
                 GSSettings.Stars.Add(s);
             }
             GenerateSol(GSSettings.Stars[0]);
+            (float min, float max) hz = Utils.CalculateHabitableZone(GSSettings.Stars[0].luminosity);
+            GS2.Warn($"Habitable Zone for Star with Luminosity {GSSettings.Stars[0].luminosity} is {hz.min} , {hz.max}");
             for (var i = 1; i < starCount; i++)
             {
                 GSStar star = GSSettings.Stars[i];
@@ -446,14 +448,15 @@ namespace GalacticScale.Generators
             moon.Scale = 1f;
             moon.OrbitRadius = CalculateNextAvailableOrbit(host, moon);
             moon.OrbitalPeriod = CalculateOrbitPeriod(moon.OrbitRadius);
-            if (index / orbitCount < random.NextFloat()) moon.RotationPeriod = moon.OrbitalPeriod;
+            if (index / orbitCount < random.NextFloat() && random.Bool()) moon.RotationPeriod = moon.OrbitalPeriod;
             //GS2.LogJson(moon);
             return moon;
         }
         public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount, int availMoons)
         {
             GS2.Log($"Creating Random Planet for {star.Name}. Named: {name}. orbitIndex:{orbitIndex}/{orbitCount} moons:{moonCount}");
-
+            (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
+            GS2.Warn($"Habitable Zone for Star with Luminosity {star.luminosity} is {hz.min} , {hz.max}");
             //float thisOrbitDistance;
             float radius;
             string themeName;
@@ -580,13 +583,15 @@ namespace GalacticScale.Generators
                  -1                                             // Luminosity
               );
             g.OrbitRadius = CalculateNextAvailableOrbit(star, g);
-            g.OrbitalPeriod = CalculateOrbitPeriod(g.OrbitRadius);
+            g.OrbitalPeriod = Utils.CalculateOrbitPeriodFromStarMass(g.OrbitRadius, star.mass);
+            //GS2.Warn($"Periods for {g.Name} : Current:{g.OrbitalPeriod} Kepler:{Utils.CalculateOrbitPeriodFromStarMass(g.OrbitRadius, star.mass)}");
             if (random.NextDouble() < 0.02)
             {
                 g.OrbitalPeriod = -1 * g.OrbitalPeriod; // Clockwise Rotation
             }
             if (g.OrbitRadius < 1f && random.NextFloat() < 0.5f)
             {
+                GS2.Warn($"Tidal Locking {g.Name}");
                 g.RotationPeriod = g.OrbitalPeriod; // Tidal Lock
             }
             else if (g.OrbitRadius < 1.5f && random.NextFloat() < 0.2f) g.RotationPeriod = g.OrbitalPeriod / 2; // 1:2 Resonance
@@ -622,7 +627,8 @@ namespace GalacticScale.Generators
 
         public void GenerateSol(GSStar sol)
         {
-            GS2.Log("Start");
+            GS2.Log("Generating the Sol System");
+
             GS2Generator.InitThemes();
             GSPlanet luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f, 3278f, 0, 6.68f, 3278f, 0, 1.36f);
             ref GSPlanets planets = ref sol.Planets;
@@ -640,8 +646,9 @@ namespace GalacticScale.Generators
                 new GSPlanet("Callisto", "IceGelisol", 150, 0.35f, 0.19f,  2004f, 0, 0, 2002.5f, 0, 0.05f)
             };
             planets.Add(new GSPlanet("Jupiter", "GasGiant", 450, 5.2f, 1.3053f, 519670f, 0f, 3.13f, 49.63f, 0, 0.05026f, jovianMoons));
-            planets.Add(new GSPlanet("Saturn", "GasGiant2", 380, 9.58f, 2.48446f, 1291106f, 0f, 26.73f, 53.28f, 0, 0.01482f, new GSPlanets() {
+            GSPlanet g = planets.Add(new GSPlanet("Saturn", "GasGiant2", 380, 9.58f, 2.48446f, 1291106f, 0f, 26.73f, 53.28f, 0, 0.01482f, new GSPlanets() {
                 new GSPlanet("Titan", "AshenGelisol", 160, 0.2f, 0.33f,  1908f, 0f, 0f, 1913.5f, 0f, 0.01482f)}));
+            //GS2.Warn($"Periods for {g.Name} : Current:{g.OrbitalPeriod} Kepler:{Utils.CalculateOrbitPeriodFromStarMass(g.OrbitRadius, sol.mass)}");
             planets.Add(new GSPlanet("Uranus", "IceGiant", 160, 19.2f, 0.8f, 3682248f, 0f, 97.77f, 1000f, 0, 0.00369f));
             planets.Add(new GSPlanet("Neptune", "IceGiant2", 155, 30.05f, 1.769f, 72142680f, 0f, 28.3f, 80.55f, 0f, 0.001508f, new GSPlanets()
             {
@@ -659,26 +666,11 @@ namespace GalacticScale.Generators
                 birthPlanet = Earth;
                 GSSettings.BirthPlanetName = "Earth";
             }
-
         }
 
         public void Import(GSGenPreferences preferences)
         {
             this.preferences = preferences;
-            //UI_ludicrousMode?.Set(preferences.GetBool("ludicrousMode"));
-            //UI_birthPlanetSize?.Set(preferences.GetFloat("birthPlanetSize"));
-            //UI_minPlanetSize?.Set(preferences.GetFloat("minPlanetSize"));
-            //UI_maxPlanetSize?.Set(preferences.GetFloat("maxPlanetSize"));
-            ////UI_galaxyDensity?.Set(preferences.GetFloat("galaxyDensity"));
-            //UI_maxPlanetCount?.Set(preferences.GetFloat("maxPlanetCount"));
-            ////UI_secondarySatellites?.Set(preferences.GetBool("secondarySatellites"));
-            ////UI_birthPlanetSiTi?.Set(preferences.GetBool("birthPlanetSiTi"));
-            ////UI_tidalLockInnerPlanets?.Set(preferences.GetBool("tidalLockInnerPlanets"));
-            //UI_moonsAreSmall?.Set(preferences.GetBool("moonsAreSmall"));
-            //UI_accurateStars?.Set(preferences.GetBool("accurateStars"));
-            //UI_hugeGasGiants?.Set(preferences.GetBool("hugeGasGiants"));
-            //UI_regularBirthTheme?.Set(preferences.GetBool("regularBirthTheme"));
-            //UI_systemDensity?.Set(preferences.GetFloat("systemDensity"));
         }
 
         public GSGenPreferences Export()

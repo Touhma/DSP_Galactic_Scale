@@ -48,6 +48,17 @@ namespace GalacticScale
             float d = Mathf.PI * orbitRadius * 2;
             return d / speed;
         }
+        public static float CalculateOrbitPeriodFromStarMass(float orbitRadius, float massStar)
+        {
+            double G = 6.67408 * Math.Pow(10, -11);
+            double fourPIsquared = 39.4784176;
+            double radiusCubed = Math.Pow(orbitRadius, 3);
+            double psquared = radiusCubed * (fourPIsquared / (G / massStar));
+            double periodFactor = Math.Sqrt(psquared) / 365 / 24 / 3600 * 40;
+            return (float)(36000 * periodFactor);
+        }
+        public static (float, float) CalculateHabitableZone(float luminosity) => ((float)Math.Sqrt(luminosity / 0.53), (float)Math.Sqrt(luminosity / 1.1));
+
         public static Type GetCallingType() => new StackTrace().GetFrame(2).GetMethod().ReflectedType;
         public static double DistanceVLF3(VectorLF3 a, VectorLF3 b) => new VectorLF3(a.x - b.x, a.y- b.y, a.z - b.z).magnitude;
         
