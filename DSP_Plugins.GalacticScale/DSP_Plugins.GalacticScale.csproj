@@ -301,7 +301,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlatformSystem\DetermineLongitudeSegmentCount.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerAction_Build\Legacy - Broken Code.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetNearestStarPlanet.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\BuildingGrid\Update.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIBuildingGrid\Update.cs" />
     <Compile Include="Scripts\PatchPlanetSize\Rework\ReworkCreatePlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Export.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameDesc\Import.cs" />
