@@ -6,7 +6,7 @@ namespace GalacticScale
 {
     public partial class PatchOnPlatformSystem
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "Export")]
+        [HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "Export")] //Increase the size of the array to prevent the game only saving part of it
         public static bool Export(BinaryWriter w, ref PlatformSystem __instance)
         {
             if (__instance.reformData != null)

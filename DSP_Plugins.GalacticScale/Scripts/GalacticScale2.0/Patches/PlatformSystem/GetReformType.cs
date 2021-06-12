@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public partial class PatchOnPlatformSystem
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "GetReformType")]
+        [HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "GetReformType")] //Increase size of array
         public static bool GetReformType (ref int __result, int index, ref PlatformSystem __instance) {
             int len = __instance.reformData.Length;
             if (index > len -1)

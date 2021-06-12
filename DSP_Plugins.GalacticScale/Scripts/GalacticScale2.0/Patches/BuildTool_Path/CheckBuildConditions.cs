@@ -40,6 +40,8 @@ namespace GalacticScale
                     __result = true; // Override the build condition check
                     UICursor.SetCursor(ECursor.Default); // Get rid of that ban cursor
                     __instance.actionBuild.model.cursorText = "Click to build";
+                    __instance.actionBuild.model.cursorState = 0;
+                   
                 }
             }
 
