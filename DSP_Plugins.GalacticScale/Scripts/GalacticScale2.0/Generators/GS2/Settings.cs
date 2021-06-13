@@ -100,6 +100,11 @@ namespace GalacticScale.Generators {
 
         }
 
+        private void CalculateFrequencies() {
+            Dictionary<string, double> StarFreq = new Dictionary<string, double>();
+
+        }
+
         public void Import(GSGenPreferences preferences) => this.preferences = preferences;
 
         public GSGenPreferences Export() => preferences;
