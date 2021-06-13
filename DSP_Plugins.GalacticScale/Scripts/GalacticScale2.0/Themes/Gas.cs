@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme Gas = new GSTheme()
         {
             Name = "GasGiant",
+            PlanetOnly = true,
             Base = true,
             DisplayName = "Gas Giant",
             PlanetType = EPlanetType.Gas,

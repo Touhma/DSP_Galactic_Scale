@@ -1,13 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class VeinAlgorithms
-    {
-        public static void GenerateTerrain6(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
-        {
-
+namespace GalacticScale {
+    public static partial class TerrainAlgorithms {
+        public static void GenerateTerrain6(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0) {
+            random = new GS2.Random(gsPlanet.Seed);
+            GS2.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
             //GS2.Log("Generate Terrain for "+gsPlanet.Name + " " + t.landModifier );
             double xPrecision = t.xFactor;
@@ -20,7 +18,7 @@ namespace GalacticScale
             double biomeHeightModifier = t.BiomeHeightModifier;
 
 
-            GS2.Random random = new GS2.Random(gsPlanet.Seed);
+            //GS2.Random random = new GS2.Random(gsPlanet.Seed);
             int seed1 = random.Next();
             int seed2 = random.Next();
             SimplexNoise simplexNoise1 = new SimplexNoise(seed1);
@@ -28,11 +26,10 @@ namespace GalacticScale
             PlanetRawData data = gsPlanet.planetData.data;
             float radius = gsPlanet.Radius;
             PlanetData planet = gsPlanet.planetData;
-            for (int i = 0; i < data.dataLength; ++i)
-            {
-                double num1 = (double)data.vertices[i].x * (double)radius;
-                double num2 = (double)data.vertices[i].y * (double)radius;
-                double num3 = (double)data.vertices[i].z * (double)radius;
+            for (int i = 0; i < data.dataLength; ++i) {
+                double num1 = data.vertices[i].x * (double)radius;
+                double num2 = data.vertices[i].y * (double)radius;
+                double num3 = data.vertices[i].z * (double)radius;
                 double num4 = 0.0;
                 double num5 = Maths.Levelize(num1 * 0.007);
                 double num6 = Maths.Levelize(num2 * 0.007);
@@ -48,12 +45,13 @@ namespace GalacticScale
                 double num13 = num12 <= 0.0 ? 0.0 : (num12 <= 1.0 ? num12 : 1.0);
                 double num14 = Math.Abs(simplexNoise2.Noise3DFBM(xin * 1.5, yin * 1.5, zin * 1.5, 2));
                 double num15 = num4 - num11 * 1.2 * num13;
-                if (num15 >= 0.0)
+                if (num15 >= 0.0) {
                     num15 += num8 * 0.25 + num14 * 0.6;
+                }
+
                 double num16 = num15 - 0.1;
                 double num17 = -0.3 - num16;
-                if (num17 > 0.0)
-                {
+                if (num17 > 0.0) {
                     double num18 = num17 <= 1.0 ? num17 : 1.0;
                     num16 = -0.3 - (3.0 - num18 - num18) * num18 * num18 * 3.70000004768372;
                 }
@@ -62,9 +60,11 @@ namespace GalacticScale
                 double hdEndValue = num20 <= -1.20000004768372 ? -1.20000004768372 : num20;
                 hdEndValue = hdEndValue * t.HeightMulti + t.BaseHeight;
                 double bEndValue = hdEndValue * num11 + (num8 * 2.1 * t.BiomeHeightMulti + 0.800000011920929 + t.BiomeHeightModifier);
-                if (bEndValue > 1.70000004768372 && bEndValue < 2.0)
+                if (bEndValue > 1.70000004768372 && bEndValue < 2.0) {
                     bEndValue = 2.0;
-                data.heightData[i] = (ushort)(((double)radius + hdEndValue + 0.2) * 100.0);
+                }
+
+                data.heightData[i] = (ushort)((radius + hdEndValue + 0.2) * 100.0);
                 data.biomoData[i] = (byte)Mathf.Clamp((float)(bEndValue * 100.0), 0.0f, 200f);
                 //double num3 = data.vertices[i].x * planet.radius;
                 //double num4 = data.vertices[i].y * planet.radius;

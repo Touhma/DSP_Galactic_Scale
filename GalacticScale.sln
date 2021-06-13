@@ -20,6 +20,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_AssemblyInfoFilename = DSP_Plugins.GalacticScale\Properties\AssemblyInfo.cs
+		BuildVersion_StartDate = 2000/1/1
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_BuildVersioningStyle = None.None.Increment.None
 		SolutionGuid = {405E238F-B77D-4674-9152-6CE30C33BCD3}
 	EndGlobalSection
 EndGlobal

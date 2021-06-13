@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         //Note: Culling Radius is -10
         public static GSTheme OceanWorld = new GSTheme()
         {

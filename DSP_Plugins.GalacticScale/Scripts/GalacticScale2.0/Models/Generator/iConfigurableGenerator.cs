@@ -1,7 +1,5 @@
-﻿namespace GalacticScale
-{
-    public interface iConfigurableGenerator : iGenerator
-    {
+﻿namespace GalacticScale {
+    public interface iConfigurableGenerator : iGenerator {
         GSOptions Options { get; }
         void Import(GSGenPreferences preferences);
         GSGenPreferences Export();

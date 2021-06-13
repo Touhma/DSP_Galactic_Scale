@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme IceGiant2 = new GSTheme()
         {
             Name = "IceGiant2",
             Base = true,
+            PlanetOnly = true,
             DisplayName = "Ice Giant",
             PlanetType = EPlanetType.Gas,
             LDBThemeId = 5,

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale.Generators
-{
-    public class Spiral2 : iGenerator
-    {
+namespace GalacticScale.Generators {
+    public class Spiral2 : iGenerator {
         public string Name => "Spiral2";
 
         public string Author => "innominata";
@@ -18,14 +16,14 @@ namespace GalacticScale.Generators
         public GSGeneratorConfig Config => config;
 
         public bool DisableStarCountSlider => false;
-        private GSGeneratorConfig config = new GSGeneratorConfig();
-        public void Init()
-        {
+        private readonly GSGeneratorConfig config = new GSGeneratorConfig();
+        public void Init() {
             //GS2.Log("Spiral2:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
             config.MaxStarCount = 1048;
             config.MinStarCount = 1;
+            config.DefaultStarCount = 1;
             //GSTheme beach = new GSTheme("OceanWorld");
             //beach.name = "Beach";
             ////beach.oceanTint = UnityEngine.Color.green;
@@ -33,7 +31,7 @@ namespace GalacticScale.Generators
             ////beach.terrainTint = new UnityEngine.Color(0.0f, 0.5f, 0.2f);
             //beach.algo = 1;
             //beach.Process();
-            
+
             //GSTheme test2 = new GSTheme("Gas");
             //test2.name = "GreenGas";
             //test2.terrainTint = Color.green;
@@ -43,43 +41,37 @@ namespace GalacticScale.Generators
             //test3.name = "MagentaGas";
             //test3.terrainTint = Color.magenta;
             //test3.Process(); 
-            
+
             //GSTheme test4 = new GSTheme("Gas");
             //test4.name = "YellowGas";
             //test4.terrainTint = Color.yellow;
             //test4.Process();
-        
-            for (var i=0;i<8;i++)
-            {
+
+            for (var i = 0; i < 8; i++) {
                 //GS2.Log("Creating Theme for Algo" + i);
                 GSTheme temp = new GSTheme("Algo" + i, "Algo" + i, "Mediterranean");
                 temp.Algo = i;
                 temp.Process();
             }
-            
+
         }
 
 
-        public void Generate(int starCount)
-        {
-            generate(starCount);
-        }
+        public void Generate(int starCount) => generate(starCount);
         ////////////////////////////////////////////////////////////////////
 
-        public double getZ(Vector2 xy)
-        {
+        public double getZ(Vector2 xy) {
             float dist = Vector2.SqrMagnitude(xy);
             return (1 + 5 * (float)Math.Exp(-1 * ((dist * dist) / 500f)));
         }
 
-        public void generate(int starCount)
-        {
+        public void generate(int starCount) {
             //GS2.Log("Spiral2:Creating New Settings");
-            
+
             List<VectorLF3> positions = new List<VectorLF3>();
 
 
-            System.Random random = new System.Random(GSSettings.Seed);
+            GS2.Random random = new GS2.Random(GSSettings.Seed);
             List<VectorLF3> points = new List<VectorLF3>();
 
             //float p = 0.05f;
@@ -118,7 +110,9 @@ namespace GalacticScale.Generators
             //    GS2.Log("Zheight for " + i + " is " + getZ(new Vector2(x1, y1)) + " " + x1+" "+y1);
             List<Vector2> vectors = GenerateGalaxy(1020, 2, 3f, 0.6d, 2);
             //GS2.Log("heh" + vectors.Count);
-            foreach (Vector2 v in vectors) positions.Add(new VectorLF3(v.x*20, 0, v.y*20));
+            foreach (Vector2 v in vectors) {
+                positions.Add(new VectorLF3(v.x * 20, 0, v.y * 20));
+            }
             //GS2.Log(positions.Count.ToString());
 
             //int remaining = starCount;
@@ -164,14 +158,12 @@ namespace GalacticScale.Generators
             //new GSPlanet("Prarie", "Prarie", 80, 3f, -1, -1, -1, 225, -1, -1, -1, -1, null),
             //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             //};
-            for (var i = 0; i < 1; i++)
-            {
-                planets.Add(new GSPlanet("Algo" + i, "Algo" + i, 100, 2f, -1, -1, -1, 2f * (float)i, -1, -1, -1, 1f, null));
+            for (var i = 0; i < 1; i++) {
+                planets.Add(new GSPlanet("Algo" + i, "Algo" + i, 100, 2f, -1, -1, 2f * i, -1, -1, -1, 1f, null));
             }
             //GS2.Log("**");
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.G, EStarType.MainSeqStar, planets));
-            for (var i = 1; i < positions.Count; i++)
-            {
+            for (var i = 1; i < positions.Count; i++) {
                 //int t = i % 7;
                 //ESpectrType e = (ESpectrType)t;
                 //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));
@@ -188,25 +180,21 @@ namespace GalacticScale.Generators
 
         }
 
-        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread, double starsAtCenterRatio)
-        {
+        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread, double starsAtCenterRatio) {
             List<Vector2> result = new List<Vector2>();
-            for (int i = 0; i < numOfArms; i++)
-            {
-                result.AddRange(GenerateArm(numOfStars / numOfArms, (float)i / (float)numOfArms, spin, armSpread, starsAtCenterRatio));
+            for (int i = 0; i < numOfArms; i++) {
+                result.AddRange(GenerateArm(numOfStars / numOfArms, i / (float)numOfArms, spin, armSpread, starsAtCenterRatio));
             }
             return result;
         }
 
-        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio)
-        {
+        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio) {
             List<Vector2> result = new List<Vector2>();
             GS2.Random r = GS2.random;
 
-            for (int i = 0; i < numOfStars; i++)
-            {
+            for (int i = 0; i < numOfStars; i++) {
                 //GS2.Log(i + " / " + numOfStars);
-                double part = (double)i / (double)numOfStars;
+                double part = i / (double)numOfStars;
                 part = Math.Pow(part, starsAtCenterRatio);
 
                 float distanceFromCenter = (float)part;
@@ -218,25 +206,38 @@ namespace GalacticScale.Generators
                 float resultX = (float)Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float)xFluctuation;
                 float resultY = (float)Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float)yFluctuation;
 
-                result.Add( new Vector2(resultX, resultY));
+                result.Add(new Vector2(resultX, resultY));
             }
 
             return result;
         }
 
-        public static double Pow3Constrained(double x)
-        {
+        public static double Pow3Constrained(double x) {
             double value = Math.Pow(x - 0.5, 3) * 4 + 0.5d;
             return Math.Max(Math.Min(1, value), 0);
         }
 
-        public static int VLF3Sort(VectorLF3 a,VectorLF3 b)
-        {
-            if (a == null && b == null) return 0;
-            if (a == null) return -1;
-            if (b == null) return 1;
-            if (a.magnitude == b.magnitude) return 0;
-            if (a.magnitude > b.magnitude) return 1;
+        public static int VLF3Sort(VectorLF3 a, VectorLF3 b) {
+            if (a == null && b == null) {
+                return 0;
+            }
+
+            if (a == null) {
+                return -1;
+            }
+
+            if (b == null) {
+                return 1;
+            }
+
+            if (a.magnitude == b.magnitude) {
+                return 0;
+            }
+
+            if (a.magnitude > b.magnitude) {
+                return 1;
+            }
+
             return -1;
         }
 

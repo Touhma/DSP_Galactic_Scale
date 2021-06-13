@@ -1,20 +1,6 @@
-﻿*
-!Directory.Build.props.example
-!galacticbundle
-!/**/
-!*.cs
-!*Assembly*
-!*.csproj
-!GalacticScale.sln
 
-!.gitignore
-!README.md
-.NETFramework,Version=v4.8.AssemblyAttributes.cs
-
-!*/**/Release/**
-bin/
-obj/
-DSP_Plugins.GalacticScale/Directory.Build.props.example
-DSP_Plugins.GalacticScale/DSP_Plugins.GalacticScale.csproj
-DSP_Plugins.GalacticScale/DSP_Plugins.GalacticScale.csproj
-DSP_Plugins.GalacticScale/Directory.Build.props.example
+.idea*
+.vs*
+**/Debug/**
+GalacticScale.sln.DotSettings.user
+DSP_Plugins.GalacticScale/Directory.Build.props

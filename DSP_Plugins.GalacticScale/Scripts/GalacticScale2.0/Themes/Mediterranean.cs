@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale
-{
-    public static partial class Themes
-    {
+namespace GalacticScale {
+    public static partial class Themes {
         public static GSTheme Mediterranean = new GSTheme()
         {
             Name = "Mediterranean",
@@ -16,12 +14,18 @@ namespace GalacticScale
             MaterialPath = "Universe/Materials/Planets/Ocean 1/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Birth,
+            Habitable = true,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
+            CustomGeneration = true,
+            TerrainSettings = new GSTerrainSettings()
+            {
+                Algorithm = "GSTA1"
+            },
             VeinSettings = new GSVeinSettings()
             {
-                Algorithm = "Vanilla",
-                VeinTypes = new List<GSVeinType>()
+                Algorithm = "GS2",
+                VeinTypes = new GSVeinTypes()
             },
             AmbientSettings = new GSAmbientSettings()
             {
@@ -49,6 +53,7 @@ namespace GalacticScale
             },
             VegeSettings = new GSVegeSettings()
             {
+                Algorithm = "GS2",
                 Group1 = new List<string>()
                 { // Highlands
                     "MedStone4",
