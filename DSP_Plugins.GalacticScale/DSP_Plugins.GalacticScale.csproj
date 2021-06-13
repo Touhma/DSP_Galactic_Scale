@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GalacticScale</RootNamespace>
     <AssemblyName>GalacticScale</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -161,6 +161,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSButton.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
@@ -172,9 +173,9 @@
     <Compile Include="Scripts\GalacticScale2.0\Boilerplate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Json.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Save_Load.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSOptions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSOptions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSTerrainSettings.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSUI.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGenPreferences.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGeneratorConfig.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\iConfigurableGenerator.cs" />
@@ -316,7 +317,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2.GeneratorData.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\SetPlanetTheme.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\CreatePlanet.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\refstubsecurity.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Publicizer.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Init.cs" />
@@ -391,7 +392,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

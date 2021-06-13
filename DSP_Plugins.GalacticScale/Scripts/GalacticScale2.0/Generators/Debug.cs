@@ -25,13 +25,13 @@ namespace GalacticScale.Generators {
                 genList.Add(g.Name);
             }
 
-            options.Add(new GSUI("Dryrun Generator", "Combobox", genList, OnDryRunChange, () => { }));
-            options.Add(new GSUI("Output Settings", "Button", "Output", OnOutputSettingsClick, () => { }));
-            options.Add(new GSUI("Output StarData", "Button", "Output", OnOutputStarDataClick, () => { }));
-            options.Add(new GSUI("Output LDB Data", "Button", "Output", OnDumpLDBDataClick, () => { }));
-            options.Add(new GSUI("Output Theme Library", "Button", "Output", OnDumpThemesDataClick, () => { }));
+            options.Add(GSUI.Combobox("Dryrun Generator", genList, OnDryRunChange, () => { }));
+            options.Add(GSUI.Button("Output Settings", "Output", OnOutputSettingsClick, () => { }));
+            options.Add(GSUI.Button("Output StarData",  "Output", OnOutputStarDataClick, () => { }));
+            options.Add(GSUI.Button("Output LDB Data",  "Output", OnDumpLDBDataClick, () => { }));
+            options.Add(GSUI.Button("Output Theme Library", "Output", OnDumpThemesDataClick, () => { }));
             //options.Add(new GSUI("Import Positions", "Button", "Import", OnImportPositionsClick, () => { }));
-            options.Add(new GSUI("Export LocalPlanet Veinsettings", "Button", "Export", OnExportLocalPlanetClick, () => { }));
+            options.Add(GSUI.Button("Export LocalPlanet Veinsettings", "Export", OnExportLocalPlanetClick, () => { }));
             //options.Add(GSUI.Button("Unlock All Tech", "Go", UnlockAll, null));
             //OnImportPositionsClick(null);
         }

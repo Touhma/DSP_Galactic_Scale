@@ -6,19 +6,18 @@ namespace GalacticScale {
     public class GSPlanet {
         public GS2.Random random;
 
-        private string _name;
-        private string _theme;
-        private int _radius = -1;
-        private float _orbitRadius = -1;
-        private float _orbitInclination = -1;
-        private float _orbitLongitude = -1;
-        private float _orbitalPeriod = -1;
-        private float _orbitPhase = -1;
-        private float _obliquity = -1;
-        private float _rotationPeriod = -1;
-        private float _rotationPhase = -1;
-        private float _luminosity = -1;
-        private List<GSPlanet> _moons = new List<GSPlanet>();
+        private string name;
+        private string theme;
+        private int    radius = -1;
+        private float  orbitRadius = -1;
+        private float  orbitInclination = -1;
+        private float  orbitalPeriod = -1;
+        private float  orbitPhase = -1;
+        private float  obliquity = -1;
+        private float  rotationPeriod = -1;
+        private float  rotationPhase = -1;
+        private float  luminosity = -1;
+        private List<GSPlanet> moons = new List<GSPlanet>();
         private int seed = -1;
 
         public Dictionary<string, GSVein> veins = new Dictionary<string, GSVein>();
@@ -31,43 +30,41 @@ namespace GalacticScale {
             set => seed = value;
         }
         [SerializeField]
-        public List<GSPlanet> Moons { get => _moons; set => _moons = value; }
+        public List<GSPlanet> Moons { get => moons; set => moons = value; }
         [SerializeField]
-        public string Name { get => _name; set => _name = value; }
+        public string Name { get => name; set => name = value; }
         [SerializeField]
-        public string Theme { get => _theme == null ? InitTheme() : _theme; set => _theme = value; }
-        public GSTheme gsTheme => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme];
+        public string Theme { get => theme == null ? InitTheme() : theme; set => theme = value; }
+        public GSTheme GsTheme => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme];
         [SerializeField]
-        public int Radius { get => _radius < 0 ? InitRadius() : _radius; set => _radius = Utils.ParsePlanetSize(value); }
+        public int Radius { get => radius < 0 ? InitRadius() : radius; set => radius = Utils.ParsePlanetSize(value); }
         [SerializeField]
-        public float OrbitRadius { get => _orbitRadius < 0 ? InitOrbitRadius() : _orbitRadius; set => _orbitRadius = value; }
+        public float OrbitRadius { get => orbitRadius < 0 ? InitOrbitRadius() : orbitRadius; set => orbitRadius = value; }
         [SerializeField]
-        public float OrbitInclination { get => _orbitInclination < 0 ? InitOrbitInclination() : _orbitInclination; set => _orbitInclination = value; }
-        // [SerializeField]
-        // public float OrbitLongitude { get => _orbitLongitude < 0 ? InitOrbitLongitude():_orbitLongitude ; set => _orbitLongitude = value; }
+        public float OrbitInclination { get => orbitInclination < 0 ? InitOrbitInclination() : orbitInclination; set => orbitInclination = value; }
         [SerializeField]
-        public float OrbitalPeriod { get => _orbitalPeriod < 0 ? InitOrbitalPeriod() : _orbitalPeriod; set => _orbitalPeriod = value; }
+        public float OrbitalPeriod { get => orbitalPeriod < 0 ? InitOrbitalPeriod() : orbitalPeriod; set => orbitalPeriod = value; }
         [SerializeField]
-        public float OrbitPhase { get => _orbitPhase < 0 ? InitOrbitPhase() : _orbitPhase; set => _orbitPhase = value; }
+        public float OrbitPhase { get => orbitPhase < 0 ? InitOrbitPhase() : orbitPhase; set => orbitPhase = value; }
         [SerializeField]
-        public float Obliquity { get => _obliquity < 0 ? InitObliquity() : _obliquity; set => _obliquity = value; }
+        public float Obliquity { get => obliquity < 0 ? InitObliquity() : obliquity; set => obliquity = value; }
         [SerializeField]
-        public float RotationPeriod { get => _rotationPeriod < 0 ? InitRotationPeriod() : _rotationPeriod; set => _rotationPeriod = value; }
+        public float RotationPeriod { get => rotationPeriod < 0 ? InitRotationPeriod() : rotationPeriod; set => rotationPeriod = value; }
         [SerializeField]
-        public float RotationPhase { get => _rotationPhase < 0 ? InitRotationPhase() : _rotationPhase; set => _rotationPhase = value; }
+        public float RotationPhase { get => rotationPhase < 0 ? InitRotationPhase() : rotationPhase; set => rotationPhase = value; }
         [SerializeField]
-        public float Luminosity { get => _luminosity < 0 ? InitLuminosity() : _luminosity; set => _luminosity = value; }
-        private float _scale = -1;
-        public float Scale { get => _scale < 0 ? InitScale() : _scale; set => _scale = value; }
+        public float Luminosity { get => luminosity < 0 ? InitLuminosity() : luminosity; set => luminosity = value; }
+        private float scale = -1;
+        public float Scale { get => scale < 0 ? InitScale() : scale; set => scale = value; }
         [NonSerialized]
         public PlanetData planetData;
         [NonSerialized]
         public GSVeinSettings veinSettings;
         [NonSerialized]
         public GSPlanetVeins veinData = new GSPlanetVeins();
-        public bool isHabitable {
+        public bool IsHabitable {
             get {
-                if (gsTheme.PlanetType != EPlanetType.Ocean) {
+                if (GsTheme.PlanetType != EPlanetType.Ocean) {
                     return false;
                 }
 
@@ -75,27 +72,27 @@ namespace GalacticScale {
                     return false;
                 }
 
-                if (gsTheme.WaterItemId != 1000) {
+                if (GsTheme.WaterItemId != 1000) {
                     return false;
                 }
 
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil, false)) {
+                if (!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil, false)) {
                     return false;
                 }
 
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron, false)) {
+                if (!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron, false)) {
                     return false;
                 }
 
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper, false)) {
+                if (!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper, false)) {
                     return false;
                 }
 
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone, false)) {
+                if (!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone, false)) {
                     return false;
                 }
 
-                if (!gsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Coal, false)) {
+                if (!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Coal, false)) {
                     return false;
                 }
 
@@ -135,11 +132,11 @@ namespace GalacticScale {
             Moons = (moons == null) ? new GSPlanets() : moons;
         }
         public float InitScale() {
-            if (gsTheme == null) {
+            if (GsTheme == null) {
                 GS2.Warn("Trying to read theme before setting it: " + Name);
                 return -1;
             }
-            return (gsTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
+            return (GsTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
         }
         public int MoonCount {
             get {
@@ -169,17 +166,10 @@ namespace GalacticScale {
             }
         }
 
-
-        //private int InitSeed()
-        //{
-        //    seed = random.Next();
-        //    return seed;
-        //}
-
         public override string ToString() => this.Name;
         private string InitTheme() {
-            _theme = "Mediterranean";
-            return _theme;
+            theme = "Mediterranean";
+            return theme;
         }
         private float InitLuminosity() {
             if (planetData == null) {
@@ -197,44 +187,40 @@ namespace GalacticScale {
             return luminosity;
         }
         private int InitRadius() {
-            _radius = 200;
-            return _radius;
+            radius = 200;
+            return radius;
         }
         private float InitOrbitRadius() {
             if (random == null) {
                 random = new GS2.Random(GSSettings.Seed);
             }
 
-            _orbitRadius = random.Next(10);
-            return _orbitRadius;
+            orbitRadius = random.Next(10);
+            return orbitRadius;
         }
         private float InitOrbitInclination() {
-            _orbitInclination = 0;
-            return _orbitInclination;
-        }
-        private float InitOrbitLongitude() {
-            _orbitLongitude = 0;
-            return _orbitLongitude;
+            orbitInclination = 0;
+            return orbitInclination;
         }
         private float InitOrbitalPeriod() {
-            _orbitalPeriod = 1000;
-            return _orbitalPeriod;
+            orbitalPeriod = 1000;
+            return orbitalPeriod;
         }
         private float InitOrbitPhase() {
-            _orbitPhase = 0;
-            return _orbitPhase;
+            orbitPhase = 0;
+            return orbitPhase;
         }
         private float InitObliquity() {
-            _obliquity = 0;
-            return _obliquity;
+            obliquity = 0;
+            return obliquity;
         }
         private float InitRotationPeriod() {
-            _rotationPeriod = 1000;
-            return _rotationPeriod;
+            rotationPeriod = 1000;
+            return rotationPeriod;
         }
         private float InitRotationPhase() {
-            _rotationPhase = 0;
-            return _rotationPhase;
+            rotationPhase = 0;
+            return rotationPhase;
         }
         public GSPlanet MostDistantSatellite {
             get {

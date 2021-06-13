@@ -28,10 +28,10 @@ namespace GalacticScale.Generators {
             GS2.Log("Generator:Json|Init");
             RefreshFileNames();
             GS2.Log("Generator:Json|Init|FileCount = " + filenames.Count);
-            options.Add(new GSUI("Custom Galaxy", "Combobox", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
-            options.Add(new GSUI("Output File Name", "Input", "Output", FilenameInputCallback, FilenameInputPostfix));
+            options.Add(GSUI.Combobox("Custom Galaxy",filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(GSUI.Input("Output File Name", "Output", FilenameInputCallback, FilenameInputPostfix));
             minifyCheckbox = options.Add(GSUI.Checkbox("Minify Output JSON", false, MinifyCallback, MinifyPostfix));
-            options.Add(new GSUI("Export JSON", "Button", "Export", DumpJSONCallback, () => { }));
+            options.Add(GSUI.Button("Export JSON", "Export", DumpJSONCallback, () => { }));
             GS2.Log("Generator:Json|Init|End");
         }
         public GSOptions options = new GSOptions();
@@ -84,11 +84,11 @@ namespace GalacticScale.Generators {
                     index = i;
                 }
             }
-            options[0].rectTransform.GetComponentInChildren<UIComboBox>().itemIndex = index;
+            options[0].RectTransform.GetComponentInChildren<UIComboBox>().itemIndex = index;
         }
         private void FilenameInputPostfix() =>
             //GS2.Log("Json:Postfix Filename");
-            options[1].rectTransform.GetComponentInChildren<InputField>().text = dumpFilename;
+            options[1].RectTransform.GetComponentInChildren<InputField>().text = dumpFilename;
         private void DumpJSONCallback(object result) {
             string outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
             string path = Path.Combine(outputDir, dumpFilename + ".json");
@@ -119,8 +119,8 @@ namespace GalacticScale.Generators {
 
             filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll<string>((original) => Path.GetFileNameWithoutExtension(original));
             //foreach (string n in filenames) GS2.Log("File:" + n);
-            if (options != null && options.Count > 0 && options[0].rectTransform != null) {
-                options[0].rectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
+            if (options != null && options.Count > 0 && options[0].RectTransform != null) {
+                options[0].RectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
             }
         }
     }

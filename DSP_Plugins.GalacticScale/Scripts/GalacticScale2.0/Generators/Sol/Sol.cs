@@ -228,17 +228,16 @@ namespace GalacticScale.Generators {
                     }
                 }
             }
-            GS2.Warn("Star Parse Time: " + stopwatch.duration.ToString("0.000") + " s");
+            GS2.Log("Star Parse Time: " + stopwatch.duration.ToString("0.000") + " s");
         }
         private int availMoons;
         public void Generate(int starCount) {
 
-            GS2.Warn($"Start {GSSettings.Seed}");
+            GS2.Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
             GSSettings.GalaxyParams.graphDistance = 48;
             GSSettings.GalaxyParams.graphMaxStars = 512;
             random = new GS2.Random(GSSettings.Seed);
-            GS2.Warn(random.Next(1000).ToString()); GS2.Warn(random.Next(1000).ToString());
             if (starCount > stars.Count) {
                 starCount = stars.Count;
             }
@@ -328,12 +327,12 @@ namespace GalacticScale.Generators {
             }
             if (preferences.GetBool("birthPlanetSiTi", false)) {
                 //GS2.Warn("Setting SI/TI");
-                birthPlanet.gsTheme.VeinSettings.Algorithm = "GS2";
-                birthPlanet.gsTheme.CustomGeneration = true;
-                birthPlanet.gsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
+                birthPlanet.GsTheme.VeinSettings.Algorithm = "GS2";
+                birthPlanet.GsTheme.CustomGeneration = true;
+                birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
                     EVeinType.Silicium,
                     1, 10, 0.6f, 0.6f, 5, 10, false));
-                birthPlanet.gsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
+                birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
                     EVeinType.Titanium,
                     1, 10, 0.6f, 0.6f, 5, 10, false));
             }
