@@ -1,16 +1,6 @@
-*
-!*.cs
-!*.json
-!*.md
-!*Assembly*
-!*.csproj
-!GalacticScale.sln
 
-!.gitignore
-!README.md
-
-!*/**/Release/**
-DSP_Plugins.GalacticScale/**
-DSP_Plugins.GalacticScale/DSP_Plugins.GalacticScale.csproj
-DSP_Plugins.GalacticScale/DSP_Plugins.GalacticScale.csproj
-DSP_Plugins.GalacticScale/Directory.Build.props.example
+.idea*
+.vs*
+**/Debug/**
+GalacticScale.sln.DotSettings.user
+DSP_Plugins.GalacticScale/Directory.Build.props

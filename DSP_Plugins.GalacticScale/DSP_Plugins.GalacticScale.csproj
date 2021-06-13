@@ -161,11 +161,9 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\ThemeViewer.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\GSTeleportHandler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Plugins.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\DebugLogging.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Preferences.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Boilerplate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Json.cs" />
     <Compile Include="Scripts\GalacticScale2.0\IO\Save_Load.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSOptions.cs" />
@@ -257,6 +255,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\SaltLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\BCE.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\Random.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\HandleLocalStarPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\NebulaCompatibility.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Queries.cs" />
@@ -326,7 +325,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\_OnOpen.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\SetTabIndex.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\ProcessGalaxy.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\MiscFunctions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\GameState.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\StationComponent\InternalTickRemote.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\OnPlanetDataSet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UISpaceGuide\_OnLateUpdate.cs" />
@@ -345,7 +344,6 @@
     <Content Include="manifest.json" />
     <Content Include="README.md" />
     <Content Include="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" />
-    <Content Include="Scripts\Todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="Scripts\Assets\galacticbundle">
@@ -387,7 +385,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

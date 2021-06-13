@@ -245,7 +245,7 @@ namespace GalacticScale.Generators {
             for (var i = 0; i < starCount; i++) {
                 GSStar s = stars[i].Clone();
                 if (!preferences.GetBool("accurateStars", true)) {
-                    if (random.Bool(0.05)) {
+                    if (random.NextBool(0.05)) {
                         s.Type = RandomSpecialStarType();
                     } else {
                         double chance = random.NextDouble();
@@ -463,7 +463,7 @@ namespace GalacticScale.Generators {
             moon.Scale = 1f;
             moon.OrbitRadius = CalculateNextAvailableOrbit(host, moon);
             moon.OrbitalPeriod = CalculateOrbitPeriod(moon.OrbitRadius);
-            if (index / orbitCount < random.NextFloat() && random.Bool()) {
+            if (index / orbitCount < random.NextFloat() && random.NextBool()) {
                 moon.RotationPeriod = moon.OrbitalPeriod;
             }
             //GS2.LogJson(moon);

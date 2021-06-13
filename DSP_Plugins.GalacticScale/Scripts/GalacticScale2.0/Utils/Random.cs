@@ -2,28 +2,11 @@
 
 namespace GalacticScale {
     public static partial class GS2 {
-        public static bool AbortGameStart(string message) {
-            Error("Aborting Game Start|" + message);
-            Failed = true;
-            UIRoot.instance.CloseLoadingUI();
-            UIRoot.instance.CloseGameUI();
-            UIRoot.instance.launchSplash.Restart();
-            DSPGame.StartDemoGame(0);
-            UIMessageBox.Show("Somewhat Fatal Error", "Cannot Start Game. Possibly reason: " + message, "Rats!", 3, new UIMessageBox.Response(() => {
-                UIRoot.instance.OpenMainMenuUI();
-                UIRoot.ClearFatalError();
-            }));
-            UIRoot.ClearFatalError();
-            return false;
-        }
-
-        public static void EndGame() => GameMain.End();
         public class Random : System.Random {
             public float NextFloat() => (float)NextDouble();
             public float NextFloat(float max) => (float)Range(0f, max);
-            public bool Bool(double chance) => (NextDouble() < chance);
-
-            public bool Bool() => (NextDouble() < 0.5);
+            public bool NextBool(double chance) => (NextDouble() < chance);
+            public bool NextBool() => (NextDouble() < 0.5);
 
             public int Range(int min, int max) => (UnityEngine.Mathf.RoundToInt((float)Range(min, (float)max)));
 
@@ -43,16 +26,5 @@ namespace GalacticScale {
             public Random(int seed) : base(seed) { }
             private Random() { }
         }
-
-        public class SingletonExample //left here for future use
-        {
-            private SingletonExample() { }
-            public static SingletonExample Instance => Internal.instance;
-            private class Internal { static Internal() { } internal static readonly SingletonExample instance = new SingletonExample(); }
-        }
-
-
-
-
-    }
+    } 
 }
