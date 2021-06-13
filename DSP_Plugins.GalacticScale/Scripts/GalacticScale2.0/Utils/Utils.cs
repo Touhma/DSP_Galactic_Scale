@@ -63,7 +63,7 @@ namespace GalacticScale {
                 }
             }
 
-            GS2.Warn($"Could not find generator of type '{t}'");
+            if (t.GetType().Name != "GalacticScale.SettingsUI") GS2.Warn($"Could not find generator of type '{t}'");
             return null;
         }
         public static bool CheckStarCollision(List<VectorLF3> pts, VectorLF3 pt, double min_dist) {

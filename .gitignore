@@ -4,3 +4,4 @@
 **/Debug/**
 GalacticScale.sln.DotSettings.user
 DSP_Plugins.GalacticScale/Directory.Build.props
+DSP_Plugins.GalacticScale/lib/**

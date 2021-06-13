@@ -11,7 +11,7 @@ namespace GalacticScale {
                 Assembly[] asms = AppDomain.CurrentDomain.GetAssemblies();
                 foreach (Assembly asm in asms) {
                     if (asm.GetName().Name == "BCE") {
-                        GS2.Warn("FOUND BCE");
+                        //GS2.Warn("FOUND BCE");
                         t = asm.GetType("BCE.console");
                         disabled = false;
                     }

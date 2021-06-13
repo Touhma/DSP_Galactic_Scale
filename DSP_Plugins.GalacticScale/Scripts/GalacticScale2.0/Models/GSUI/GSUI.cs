@@ -9,10 +9,10 @@ namespace GalacticScale {
 
     public class GSUI {
         //public static Dictionary<string, GSUI> LoadedUIElements = new Dictionary<string, GSUI>();
-        private string label;
-        private string key;
-        private iConfigurableGenerator generator;
-        private iConfigurableGenerator Generator {
+        protected string label;
+        protected string key;
+        protected iConfigurableGenerator generator;
+        protected iConfigurableGenerator Generator {
             get {
                 if (generator != null) return generator;
                 GS2.Error($"GSUI ${label}Tried accessing Generator instance when Generator = null.");
@@ -20,9 +20,9 @@ namespace GalacticScale {
             }
         }
         public string Label { get => label; }
-        private string type;
-        public string Type { get => type; }
-        private object data;
+        protected string type;
+        public virtual string Type { get => type; }
+        protected object data;
         public object Data { get => data; }
         public object DefaultValue {
             get {
@@ -50,15 +50,16 @@ namespace GalacticScale {
                 return null;
             }
         }
-        private bool disabled = false;
+        protected bool disabled = false;
         public bool Disabled { get => disabled; }
-        private string tip; // Not fully implemented in all ui items yet
+        protected string tip; // Not fully implemented in all ui items yet
         public string Tip { get => tip; }
         public RectTransform RectTransform;
         public GSOptionCallback callback;
-        private GSOptionPostfix postfix;
+        protected GSOptionPostfix postfix;
         public GSOptionPostfix Postfix { get => postfix; }
-        private static Dictionary<int, Color> colors = new Dictionary<int, Color>();
+        protected static Dictionary<int, Color> colors = new Dictionary<int, Color>();
+        protected GSUI() { }
         public GSUI(string label, string key, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             Type t = Utils.GetCallingType();
             this.generator = Utils.GetConfigurableGeneratorInstance(t);
@@ -72,6 +73,7 @@ namespace GalacticScale {
                 this.postfix = postfix;
             }
             this.tip = tip;
+            GS2.Warn("Created GSUI " + label);
         }
         public GSUI(iConfigurableGenerator generator, string key, string label, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             this.generator = generator;
@@ -87,24 +89,24 @@ namespace GalacticScale {
             }
             this.tip = tip;
         }
-        (bool succeeded,float value) GetFloat(object o) {
+        protected (bool succeeded,float value) GetFloat(object o) {
             if (o is float) return (true, (float)o);
             //float result;
             bool success = float.TryParse(o.ToString(), out float result);
             return (success, result);
         }
-        (bool succeeded, int value) GetInt(object o) {
+        protected (bool succeeded, int value) GetInt(object o) {
             if (o is int) return (true, (int)o);
             bool success = int.TryParse(o.ToString(), out int result);
             return (success,result);
         }
-        (bool succeeded, bool value) GetBool(object o) {
+        protected (bool succeeded, bool value) GetBool(object o) {
             if (o is bool) return (true, (bool)o);
             bool success = bool.TryParse(o.ToString(), out bool result);
             return (success, result);
         }
         public void Reset() => Set(DefaultValue);
-        public bool Disable() {
+        public virtual bool Disable() {
             GS2.Warn("Disabling element" + label);
             if (disabled) {
                 GS2.Warn("Trying to disable UI Element that is already disabled");
@@ -127,7 +129,7 @@ namespace GalacticScale {
             }
             return false;
         }
-        public bool Enable() {
+        public virtual bool Enable() {
             GS2.Warn("Enabling element" + label);
             if (!disabled) {
                 GS2.Warn("Trying to disable UI Element that is already enabled");
@@ -147,7 +149,7 @@ namespace GalacticScale {
             }
             return false;
         }
-        public bool Set(GSSliderConfig cfg) {
+        public virtual bool Set(GSSliderConfig cfg) {
             GS2.Warn("Setting Slider? : "+label);
             if (RectTransform == null) {
                 return false;
@@ -161,7 +163,7 @@ namespace GalacticScale {
             GS2.Warn("Slider Set."); 
             return true;
         }
-        public bool Set(object o) {
+        public virtual bool Set(object o) {
 
             if (RectTransform == null) {
                 return false;
@@ -187,38 +189,43 @@ namespace GalacticScale {
                     RectTransform.GetComponentInChildren<InputField>().text = (string)o; 
                     return true;
                 case "Checkbox":
-                    bool checkboxValue;
-                    if ((o is string || o is bool) && bool.TryParse(o.ToString(), out checkboxValue)) {
-                        GS2.Log($"Parsed as bool {checkboxValue}");
-                    } else {
+                    var checkboxResult = GetBool(o);
+                    if (!checkboxResult.succeeded) { 
                         GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
                         return false;
                     }
-                    RectTransform.GetComponentInChildren<Toggle>().isOn = checkboxValue;
-                    return true;
-                case "Combobox":
-                    int comboboxValue;
-                    if ((o is int || o is float || o is double || o is string) && int.TryParse(o as string, out comboboxValue))
-                        GS2.Log($"Parsed as int {comboboxValue}");
-                    else {
-                        GS2.Error($"Failed to parse combobox Set method input of {o} for combobox '{label}'");
+                    Toggle toggle = RectTransform.GetComponentInChildren<Toggle>();
+                    if (toggle is null) {
+                        GS2.Error($"Failed to find Toggle for {label}");
                         return false;
                     }
-                    if ((int)o < 0) {
-                        GS2.Error($"Failed to set {o} for combobox '{label}': Value < 0");
+                    toggle.isOn = checkboxResult.value;
+                    return true;
+                case "Combobox":
+                    var comboResult = GetInt(o);
+                    if (!comboResult.succeeded) {
+                        GS2.Error($"Failed to parse combobox Set method input of {o} for combobox '{label}'");
+                        return false;
+                    } //else GS2.Log($"Parsed as int {comboboxValue}");
+                    if (comboResult.value < 0) {
+                        GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value < 0");
                         return false;
                     }
                     UIComboBox cb = RectTransform.GetComponentInChildren<UIComboBox>();
-                    if ((int)o > cb.Items.Count - 1) {
-                        GS2.Error($"Failed to set {o} for combobox '{label}': Value > Item Count");
+                    if (cb is null) {
+                        GS2.Error($"Failed to find UICombobox for {label}");
                         return false;
                     }
-                    cb.itemIndex = (int)o; 
+                    if (comboResult.value > cb.Items.Count - 1) {
+                        GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value > Item Count");
+                        return false;
+                    }
+                    cb.itemIndex = comboResult.value; 
                     return true;
             }
             return false;
         }
-        public bool SetItems(List<string> items) {
+        public virtual bool SetItems(List<string> items) {
             if (type != "Combobox") {
                 GS2.Warn("Trying to Set Items on non Combobox UI Element");
                 return false;
@@ -282,7 +289,7 @@ namespace GalacticScale {
             return instance; 
         }
 
-        private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null) {
+        protected GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null) {
             return (o) => {
                 if (Generator is null) {
                     GS2.Error($"{label} Trying to create Default Callback when Generator = null");
@@ -296,7 +303,7 @@ namespace GalacticScale {
                 }
             };
         }
-        private GSOptionPostfix CreateDefaultPostfix() {
+        protected GSOptionPostfix CreateDefaultPostfix() {
             return () => {
                 if (Generator is null) {
                     GS2.Error($"{label} Trying to create Default Postfix when Generator = null");
@@ -309,7 +316,7 @@ namespace GalacticScale {
                 Set(value);
             };
         }
-        private void SetPreference(object value) {
+        protected void SetPreference(object value) {
             if (Generator is null) { 
                 GS2.Error($"{label} Trying to set preference '{key}' when Generator = null"); 
                 return; 

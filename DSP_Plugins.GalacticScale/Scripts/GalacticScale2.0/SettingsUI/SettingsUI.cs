@@ -220,8 +220,13 @@ namespace GalacticScale {
                 //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
                 if (GS2.generators[i] is iConfigurableGenerator gen) {
                     //GS2.Log(gen.Name + " is configurable"); 
-                    foreach (GSUI o in gen.Options) {
-                        pluginOptions.Add(o);
+                    for (var j = 0; j < gen.Options.Count; j++) {// (GSUI o in gen.Options) {
+                        if (!(gen.Options[j] is GSUI)) GS2.Error($"Non UI Element Found in UI Element List for generator {gen.Name}");
+                        else {
+                            GSUI o = (GSUI)gen.Options[j];
+                            GS2.Warn(o.Label);
+                            pluginOptions.Add(o);
+                        }
                     }
                 }
                 generatorPluginOptions.Add(pluginOptions);
@@ -269,13 +274,14 @@ namespace GalacticScale {
         private static void CreateOptionsUI() {
             //GS2.Log("CreateOptionsUI");
             for (var i = 0; i < options.Count; i++) {
+
                 switch (options[i].Type) {
                     case "Combobox": CreateComboBox(options[i], details, i); break;
                     case "Input": CreateInputField(options[i], details, i); break;
-                    case "Button": CreateButton(options[i], details, i); break;
+                    case "Button": CreateButton((GSUI)options[i], details, i); break;
                     case "Checkbox": CreateCheckBox(options[i], details, i); break;
                     case "Slider": CreateSlider(options[i], details, i); break;
-                    default: break;
+                    default: GS2.Warn($"Couldn't create option {options[i].Label}"); break;
                 }
             }
             int currentGenIndex = GS2.GetCurrentGeneratorIndex();
@@ -311,11 +317,11 @@ namespace GalacticScale {
             for (int i = 0; i < options.Count; i++) {
                 switch (options[i].Type) {
                     case "Combobox": CreateComboBox(options[i], canvas, i); break;
-                    case "Button": CreateButton(options[i], canvas, i); break;
+                    case "Button": CreateButton((GSUI)options[i], canvas, i); break;
                     case "Input": CreateInputField(options[i], canvas, i); break;
                     case "Checkbox": CreateCheckBox(options[i], canvas, i); break;
                     case "Slider": CreateSlider(options[i], canvas, i); break;
-                    default: break;
+                    default: GS2.Warn($"Couldn't create option {options[i].Label}"); break;
                 }
                 if (options[i].Postfix != null) {
                     OptionsUIPostfix.AddListener(new UnityAction(options[i].Postfix));
@@ -480,7 +486,6 @@ namespace GalacticScale {
             if (o.Postfix != null) {
                 OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
             }
-            //GS2.Log("Finished Creating Button");
         }
 
         // Callback for own Generator ComboBox Selection Event

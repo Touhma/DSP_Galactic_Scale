@@ -18,6 +18,7 @@ namespace GalacticScale.Generators {
                 "Blue Giant", "Neutron Star", "Black Hole" };
         string[] typeLetter = { "K", "M", "F", "G", "A", "B", "O", "WD", "RG", "YG", "WG", "BG", "NS", "BH" };
         public void EnableLudicrousMode() {
+
             UI["safeMode"].Set(false);
             preferences.Set("safeMode", false);
             UI["minPlanetSize"].Set(new GSSliderConfig(5, 30, 500));
@@ -71,6 +72,7 @@ namespace GalacticScale.Generators {
                 LockUI($"{typeLetter[i]}chanceMoon", 50);
                 LockUI($"{typeLetter[i]}systemDensity", 3);
             }
+
         }
         private void LockUI(string key, object value) {
             GS2.Warn("LockUI " + key +" " + value.ToString());
@@ -108,6 +110,7 @@ namespace GalacticScale.Generators {
             AddUIElements();
         }
         private void AddUIElements() {
+            //UI.Add("test", options.Add(new GSButton("Test", "TEST", (_) => GS2.Warn("What"))));
             UI.Add("safeMode", options.Add(GSUI.Checkbox("Safe Mode", false, "safeMode", o => { if ((bool)o) EnableSafeMode(); else DisableSafeMode(); })));
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => { if ((bool)o) EnableLudicrousMode(); else DisableLudicrousMode(); })));
             UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));
