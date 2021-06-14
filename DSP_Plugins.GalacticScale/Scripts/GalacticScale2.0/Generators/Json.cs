@@ -50,7 +50,7 @@ namespace GalacticScale.Generators {
             GS2.Log("Importing JSON Preferences");
             GS2.Log("Generator:Json|Import");
             filename = preferences.GetString("filename");
-            GS2.Warn("Filename" + filename);
+            //GS2.Warn("Filename" + filename);
             if (!filenames.Contains(filename)) {
                 filename = filenames[0];
             }

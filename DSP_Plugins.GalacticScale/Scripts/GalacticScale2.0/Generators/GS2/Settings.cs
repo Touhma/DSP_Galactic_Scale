@@ -110,7 +110,6 @@ namespace GalacticScale.Generators {
             AddUIElements();
         }
         private void AddUIElements() {
-            //UI.Add("test", options.Add(new GSButton("Test", "TEST", (_) => GS2.Warn("What"))));
             UI.Add("safeMode", options.Add(GSUI.Checkbox("Safe Mode", false, "safeMode", o => { if ((bool)o) EnableSafeMode(); else DisableSafeMode(); })));
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => { if ((bool)o) EnableLudicrousMode(); else DisableLudicrousMode(); })));
             UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));

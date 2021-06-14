@@ -13,7 +13,7 @@ namespace GalacticScale {
 
             BuildPreview preview = __instance.buildPreviews[0];
             int objId = preview.inputObjId;
-            GS2.Warn(objId.ToString());
+            //GS2.Warn(objId.ToString());
             PlanetFactory ___factory = __instance.factory;
             if (objId < 0 || objId >= ___factory.entityPool.Length) {
                 return __result; // Sanity Check

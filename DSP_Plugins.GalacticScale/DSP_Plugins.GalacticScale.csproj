@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2.0.54.0</AssemblyVersion>
+    <AssemblyVersion>2.0.54.1</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -156,7 +156,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSButton.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
@@ -168,7 +168,6 @@
     <Compile Include="Scripts\GalacticScale2.0\IO\Save_Load.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSOptions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSTerrainSettings.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGenPreferences.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\GSGeneratorConfig.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Generator\iConfigurableGenerator.cs" />
@@ -188,6 +187,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinDescriptor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\-Debug\Debug.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Path\CheckBuildConditions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\ArrivePlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\DetermineLocalPlanet.cs" />
@@ -385,7 +385,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

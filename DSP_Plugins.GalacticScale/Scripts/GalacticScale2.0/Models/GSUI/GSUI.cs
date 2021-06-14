@@ -8,11 +8,10 @@ namespace GalacticScale {
     public delegate void GSOptionPostfix();
 
     public class GSUI {
-        //public static Dictionary<string, GSUI> LoadedUIElements = new Dictionary<string, GSUI>();
-        protected string label;
-        protected string key;
-        protected iConfigurableGenerator generator;
-        protected iConfigurableGenerator Generator {
+        private string label;
+        private string key;
+        private iConfigurableGenerator generator;
+        private iConfigurableGenerator Generator {
             get {
                 if (generator != null) return generator;
                 GS2.Error($"GSUI ${label}Tried accessing Generator instance when Generator = null.");
@@ -20,9 +19,9 @@ namespace GalacticScale {
             }
         }
         public string Label { get => label; }
-        protected string type;
-        public virtual string Type { get => type; }
-        protected object data;
+        private string type;
+        public string Type { get => type; }
+        private object data;
         public object Data { get => data; }
         public object DefaultValue {
             get {
@@ -50,16 +49,16 @@ namespace GalacticScale {
                 return null;
             }
         }
-        protected bool disabled = false;
+        private bool disabled = false;
         public bool Disabled { get => disabled; }
-        protected string tip; // Not fully implemented in all ui items yet
+        private string tip; // Not fully implemented in all ui items yet
         public string Tip { get => tip; }
         public RectTransform RectTransform;
         public GSOptionCallback callback;
-        protected GSOptionPostfix postfix;
+        private GSOptionPostfix postfix;
         public GSOptionPostfix Postfix { get => postfix; }
-        protected static Dictionary<int, Color> colors = new Dictionary<int, Color>();
-        protected GSUI() { }
+        private static Dictionary<int, Color> colors = new Dictionary<int, Color>();
+        private GSUI() { }
         public GSUI(string label, string key, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             Type t = Utils.GetCallingType();
             this.generator = Utils.GetConfigurableGeneratorInstance(t);
@@ -89,24 +88,24 @@ namespace GalacticScale {
             }
             this.tip = tip;
         }
-        protected (bool succeeded,float value) GetFloat(object o) {
+        private (bool succeeded,float value) GetFloat(object o) {
             if (o is float) return (true, (float)o);
             //float result;
             bool success = float.TryParse(o.ToString(), out float result);
             return (success, result);
         }
-        protected (bool succeeded, int value) GetInt(object o) {
+        private (bool succeeded, int value) GetInt(object o) {
             if (o is int) return (true, (int)o);
             bool success = int.TryParse(o.ToString(), out int result);
             return (success,result);
         }
-        protected (bool succeeded, bool value) GetBool(object o) {
+        private (bool succeeded, bool value) GetBool(object o) {
             if (o is bool) return (true, (bool)o);
             bool success = bool.TryParse(o.ToString(), out bool result);
             return (success, result);
         }
         public void Reset() => Set(DefaultValue);
-        public virtual bool Disable() {
+        public bool Disable() {
             GS2.Warn("Disabling element" + label);
             if (disabled) {
                 GS2.Warn("Trying to disable UI Element that is already disabled");
@@ -129,7 +128,7 @@ namespace GalacticScale {
             }
             return false;
         }
-        public virtual bool Enable() {
+        public bool Enable() {
             GS2.Warn("Enabling element" + label);
             if (!disabled) {
                 GS2.Warn("Trying to disable UI Element that is already enabled");
@@ -149,7 +148,7 @@ namespace GalacticScale {
             }
             return false;
         }
-        public virtual bool Set(GSSliderConfig cfg) {
+        public bool Set(GSSliderConfig cfg) {
             GS2.Warn("Setting Slider? : "+label);
             if (RectTransform == null) {
                 return false;
@@ -163,7 +162,7 @@ namespace GalacticScale {
             GS2.Warn("Slider Set."); 
             return true;
         }
-        public virtual bool Set(object o) {
+        public bool Set(object o) {
 
             if (RectTransform == null) {
                 return false;
@@ -225,7 +224,7 @@ namespace GalacticScale {
             }
             return false;
         }
-        public virtual bool SetItems(List<string> items) {
+        public bool SetItems(List<string> items) {
             if (type != "Combobox") {
                 GS2.Warn("Trying to Set Items on non Combobox UI Element");
                 return false;
@@ -285,11 +284,11 @@ namespace GalacticScale {
         }
         public static GSUI Button(string label, string caption, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Button", caption, callback, postfix, tip);
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null ,label, "Button", caption, callback, null, tip);
             return instance; 
         }
 
-        protected GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null) {
+        private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null) {
             return (o) => {
                 if (Generator is null) {
                     GS2.Error($"{label} Trying to create Default Callback when Generator = null");
@@ -303,7 +302,7 @@ namespace GalacticScale {
                 }
             };
         }
-        protected GSOptionPostfix CreateDefaultPostfix() {
+        private GSOptionPostfix CreateDefaultPostfix() {
             return () => {
                 if (Generator is null) {
                     GS2.Error($"{label} Trying to create Default Postfix when Generator = null");
@@ -316,7 +315,7 @@ namespace GalacticScale {
                 Set(value);
             };
         }
-        protected void SetPreference(object value) {
+        private void SetPreference(object value) {
             if (Generator is null) { 
                 GS2.Error($"{label} Trying to set preference '{key}' when Generator = null"); 
                 return; 

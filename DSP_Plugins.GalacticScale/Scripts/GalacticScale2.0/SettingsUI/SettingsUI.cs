@@ -224,7 +224,7 @@ namespace GalacticScale {
                         if (!(gen.Options[j] is GSUI)) GS2.Error($"Non UI Element Found in UI Element List for generator {gen.Name}");
                         else {
                             GSUI o = (GSUI)gen.Options[j];
-                            GS2.Warn(o.Label);
+                            //GS2.Warn(o.Label);
                             pluginOptions.Add(o);
                         }
                     }

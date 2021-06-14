@@ -27,6 +27,7 @@ namespace GalacticScale {
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
+            Harmony.CreateAndPatchAll(typeof(PatchOnWhatever));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIBuildingGrid));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Path));
