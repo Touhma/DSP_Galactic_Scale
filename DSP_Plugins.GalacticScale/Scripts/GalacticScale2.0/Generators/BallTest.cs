@@ -53,7 +53,7 @@
             //GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
             for (var i = 0; i < starCount; i++) {
 
-                GSStar s = StarDefaults.Random();
+                GSStar s = StarDefaults.Random(random);
                 s.Name = "Star-" + i;
                 if (i < 10) {
                     s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, 1, -1, -1, -1, 1f, null));

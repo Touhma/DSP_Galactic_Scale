@@ -70,7 +70,7 @@ namespace GalacticScale.Generators {
                 double z = i / 4;
                 positions.Add(new VectorLF3(y, z, x));
             }
-
+            GS2.Random random = new GS2.Random(GSSettings.Seed);
             //beach.InitTheme(Themes.OceanWorld);
             GSPlanets p = new GSPlanets();
             //{
@@ -103,7 +103,7 @@ namespace GalacticScale.Generators {
                 //int t = i % 7;
                 //ESpectrType e = (ESpectrType)t;
                 //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));
-                GSStar s = StarDefaults.Random(i);
+                GSStar s = StarDefaults.Random(random, i);
                 GSSettings.Stars.Add(s);
                 GSSettings.Stars[i].position = positions[i];
                 //GSSettings.Stars[i].classFactor = (float)(new Random(i).NextDouble() * 6.0)-4f;

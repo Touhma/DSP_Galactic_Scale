@@ -49,7 +49,7 @@ namespace GalacticScale {
                 GS2.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
                 if (Stars.HabitablePlanets.Count > 0) {
                     GS2.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");
-                    GSPlanet randomPlanet = Stars.HabitablePlanets[GS2.random.Next(Stars.HabitablePlanets.Count)];
+                    GSPlanet randomPlanet = Stars.HabitablePlanets[new GS2.Random(Seed).Next(Stars.HabitablePlanets.Count)];
                     birthPlanet = randomPlanet;
                     GS2.Log($"Selected {birthPlanet.Name}");
                     return randomPlanet;

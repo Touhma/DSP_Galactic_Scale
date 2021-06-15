@@ -33,7 +33,7 @@ namespace GalacticScale {
 
         //public static int[] tmp_state;
         public static GalaxyData galaxy;
-        public static Random random;
+        //private static Random random;
         public static GameDesc gameDesc;
 
         public static bool Vanilla => generator.GUID == "space.customizing.generators.vanilla";

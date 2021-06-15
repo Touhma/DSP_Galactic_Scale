@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace GalacticScale {
     public static partial class GS2 {
-        public static GalaxyData ProcessGalaxy(GameDesc desc, bool createPlanets = true) {
-            Log($"Start CreatePlanets:{createPlanets}");
-
+        public static GalaxyData ProcessGalaxy(GameDesc desc, bool sketchOnly = false) {
+            Log($"Start CreatePlanets:{sketchOnly}");
+            GS2.Random random = new Random(GSSettings.Seed);
             try {
-                random = new Random(GSSettings.Seed);
                 gameDesc = desc;
                 Log("Generating Galaxy");
                 Failed = false;
@@ -56,18 +55,18 @@ namespace GalacticScale {
                     return galaxy;
                 }
                 Log("Initializing AstroPoses");
-                InitializeAstroPoses();
+                InitializeAstroPoses(random);
                 Log("AstroPoses Initialized");
                 //SetupBirthPlanet();
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
-                if (createPlanets) {
+                //if (createPlanets) {
                     Log("Setting up Birth Planet");
                     //SetupBirthPlanet();
                     Log("Generating Veins");
-                    GenerateVeins();
+                    GenerateVeins(!sketchOnly);
                     //if (GS2.CheatMode) return galaxy;
-                }
+                //}
                 Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log("End of galaxy generation");
@@ -139,25 +138,25 @@ namespace GalacticScale {
         //    }  
         //    Assert.Positive(galaxy.birthPlanetId);
         //}
-        public static void GenerateVeins() {
+        public static void GenerateVeins(bool SketchOnly) {
             for (int i = 1; i < galaxy.starCount; ++i) {
                 StarData star = galaxy.stars[i];
                 for (int j = 0; j < star.planetCount; ++j) {
-                    PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins(true);
+                    PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins(SketchOnly);
                 }
             }
         }
-        public static void InitializeAstroPoses() {
+        public static void InitializeAstroPoses(GS2.Random random) {
             var gSize = galaxy.starCount * 4000;
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++) {
-                galaxy.stars[i] = CreateStar(i);
+                galaxy.stars[i] = CreateStar(i, random);
             }
 
             Log("Creating Planets");
             for (var i = 0; i < GSSettings.StarCount; i++) {
-                CreateStarPlanets(ref galaxy.stars[i], gameDesc);
+                CreateStarPlanets(ref galaxy.stars[i], gameDesc, random);
             }
 
             Log("Planets have been created");

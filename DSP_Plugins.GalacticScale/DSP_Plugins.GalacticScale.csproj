@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2.0.54.1</AssemblyVersion>
+    <AssemblyVersion>2.0.55.2</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -265,7 +265,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\NewGame.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\BallTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\PhysicsTest.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Generators\Spiral2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\SizeTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\TintTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVein.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSTheme.cs" />

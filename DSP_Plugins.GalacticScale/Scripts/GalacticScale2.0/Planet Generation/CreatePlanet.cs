@@ -2,7 +2,7 @@
 using UnityEngine;
 namespace GalacticScale {
     public static partial class GS2 {
-        public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, PlanetData host = null) {
+        public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, Random random, PlanetData host = null) {
             if (GSSettings.Stars[star.index].counter > 99) {
                 Error($"Create Planet failed: Star '{star.name}' already has 99 bodies");
                 return null;
@@ -122,7 +122,7 @@ namespace GalacticScale {
 
             GSSettings.Stars[star.index].counter++;
             if (gsPlanet.MoonCount > 0) {
-                CreateMoons(ref planet, gsPlanet);
+                CreateMoons(ref planet, gsPlanet, random);
             }
             //Log("PLANET RADIUS "+planetData.radius);
             //Log("End|" + gsPlanet.Name);
@@ -141,13 +141,13 @@ namespace GalacticScale {
             return planet;
         }
 
-        public static void CreateMoons(ref PlanetData planetData, GSPlanet planet) {
+        public static void CreateMoons(ref PlanetData planetData, GSPlanet planet, GS2.Random random) {
             for (var i = 0; i < planet.Moons.Count; i++) {
                 if (GSSettings.Stars[planetData.star.index].counter > 99) {
                     Error($"Create Planet failed: Star '{planetData.star.name}' already has 99 bodies");
                     return;
                 }
-                PlanetData moon = CreatePlanet(ref planetData.star, planet.Moons[i], planetData);
+                PlanetData moon = CreatePlanet(ref planetData.star, planet.Moons[i], random, planetData);
                 if (moon == null) {
                     Error($"Creating moons for planet '{planet.Name}' failed. No moon returned");
                     return;

@@ -66,7 +66,7 @@ namespace GalacticScale {
             int HalfLatitudeCount = __instance.latitudeCount / 2;
             int y = (LatitudeSegment > 0) ? (LatitudeSegment - 1) : (HalfLatitudeCount - LatitudeSegment - 1);
             int LongSegmentCount = PlatformSystem.DetermineLongitudeSegmentCount(Mathf.FloorToInt(Mathf.Abs(_latitudeSeg)), __instance.segment);
-            GS2.Warn($"LongSegmentCount:{LongSegmentCount}, LongitudeSegment:{LongitudeSegment}, segment:{__instance.segment} {GS2.GetCaller(1)}");
+            //GS2.Warn($"LongSegmentCount:{LongSegmentCount}, LongitudeSegment:{LongitudeSegment}, segment:{__instance.segment} {GS2.GetCaller(1)}");
             if (LongitudeSegment > LongSegmentCount * 5 / 2) {
                 LongitudeSegment = LongitudeSegment - LongSegmentCount * 5 - 1;
             }
@@ -95,7 +95,7 @@ namespace GalacticScale {
         //public static bool IsTerrainReformed() {
         //    GS2.Warn("."); return true;
         //}
-
+        static bool output = false;
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetGrid), "ReformSnapTo")]
 
         public static bool ReformSnapTo(ref int __result, ref PlanetGrid __instance, Vector3 pos, int reformSize, int reformType, int reformColor, Vector3[] reformPoints, int[] reformIndices, PlatformSystem platform, out Vector3 reformCenter) {
@@ -107,8 +107,12 @@ namespace GalacticScale {
             int LSC = PlanetGrid.DetermineLongitudeSegmentCount(latitudeIndex, __instance.segment);
             float fLSC = (float)LSC;
             float longitude = AtanXZ / 6.2831855f * fLSC;
-            GS2.Warn($"Latitude:{latitude}, Longitude:{longitude}, LSC:{LSC}, Segment:{__instance.segment}, AsinY:{AsinY}, AtanXZ:{AtanXZ}");
-            float LatitudeX10 = Mathf.Round(latitude * 10f);
+            if (VFInput.control && !output) {
+                GS2.Warn($"Latitude:{latitude}:{latitudeIndex}, Longitude:{longitude}, LSC:{LSC}, Segment:{__instance.segment}, AsinY:{AsinY}, AtanXZ:{AtanXZ} Pos:{pos}");
+                output = true;
+            }
+            if (!VFInput.control) output = false;
+                float LatitudeX10 = Mathf.Round(latitude * 10f);
             float LongitudeX10 = Mathf.Round(longitude * 10f);
             float num9 = Mathf.Abs(LatitudeX10);
             float absLongitudeX10 = Mathf.Abs(LongitudeX10);

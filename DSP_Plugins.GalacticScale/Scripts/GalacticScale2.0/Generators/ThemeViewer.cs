@@ -54,7 +54,7 @@ namespace GalacticScale.Generators {
                 p.Add(new GSPlanet(kvp.Key, kvp.Key, 100, random.NextFloat() * 10 + 1, 0, 10000, random.Next(359), 0, 10000, 0, -1, null));
                 i++;
             }
-            GSStar s = StarDefaults.Random();
+            GSStar s = StarDefaults.Random(random);
             s.Name = "ThemeTest";
             s.Planets = p;
             GSSettings.Stars.Add(s);

@@ -7,7 +7,7 @@ namespace GalacticScale {
             new Generators.BallTest(),
             new Generators.Vanilla(),
             new Generators.GS2Generator(),
-            //new Generators.PhysicsTest(),
+            new Generators.SizeTest(),
             new Generators.TintTest(),
             new Generators.Sol(),
             new Generators.JsonImport(),

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale.Generators {
-    public class Spiral2 : iGenerator {
-        public string Name => "Spiral2";
+    public class SizeTest : iGenerator {
+        public string Name => "SizeTest";
 
         public string Author => "innominata";
 
@@ -12,7 +12,7 @@ namespace GalacticScale.Generators {
 
         public string Version => "0.0";
 
-        public string GUID => "space.customizing.generators.Spiral2";
+        public string GUID => "space.customizing.generators.SizeTest";
         public GSGeneratorConfig Config => config;
 
         public bool DisableStarCountSlider => false;
@@ -21,7 +21,7 @@ namespace GalacticScale.Generators {
             //GS2.Log("Spiral2:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
-            config.MaxStarCount = 1048;
+            config.MaxStarCount = 1;
             config.MinStarCount = 1;
             config.DefaultStarCount = 1;
             //GSTheme beach = new GSTheme("OceanWorld");
@@ -47,12 +47,12 @@ namespace GalacticScale.Generators {
             //test4.terrainTint = Color.yellow;
             //test4.Process();
 
-            for (var i = 0; i < 8; i++) {
-                //GS2.Log("Creating Theme for Algo" + i);
-                GSTheme temp = new GSTheme("Algo" + i, "Algo" + i, "Mediterranean");
-                temp.Algo = i;
-                temp.Process();
-            }
+            //for (var i = 0; i < 8; i++) {
+            //    //GS2.Log("Creating Theme for Algo" );
+            //    GSTheme temp = new GSTheme("Algo" , "Algo" , "Mediterranean");
+            //    temp.Algo = i;
+            //    temp.Process();
+            //}
 
         }
 
@@ -107,7 +107,7 @@ namespace GalacticScale.Generators {
             //    points.Add(new VectorLF3(x2 + rand3, getZ(new Vector2(x2, y2)), y2 + rand4));
             //    points.Add(new VectorLF3(x3 + rand5, getZ(new Vector2(x3, y3)), y3 + rand6));
             //    points.Add(new VectorLF3(x4 + rand7, getZ(new Vector2(x4, y4)), y4 + rand8));
-            //    GS2.Log("Zheight for " + i + " is " + getZ(new Vector2(x1, y1)) + " " + x1+" "+y1);
+            //    GS2.Log("Zheight for "  + " is " + getZ(new Vector2(x1, y1)) + " " + x1+" "+y1);
             List<Vector2> vectors = GenerateGalaxy(1020, 2, 3f, 0.6d, 2);
             //GS2.Log("heh" + vectors.Count);
             foreach (Vector2 v in vectors) {
@@ -158,25 +158,38 @@ namespace GalacticScale.Generators {
             //new GSPlanet("Prarie", "Prarie", 80, 3f, -1, -1, -1, 225, -1, -1, -1, -1, null),
             //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             //};
-            for (var i = 0; i < 1; i++) {
-                planets.Add(new GSPlanet("Algo" + i, "Algo" + i, 100, 2f, -1, -1, 2f * i, -1, -1, -1, 1f, null));
-            }
+            //for (var i = 0; i < 1; i++) {
+                planets.Add(new GSPlanet("50", "Mediterranean" , 50, 2f, -1, -1, 2f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("60", "Mediterranean" , 50, 2f, -1, -1, 1f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("70", "Mediterranean" , 50, 2f, -1, -1, 3f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("80", "Mediterranean" , 50, 2f, -1, -1, 4f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("90", "Mediterranean" , 50, 2f, -1, -1, 5f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("100", "Mediterranean" , 50, 2f, -1, -1, 6f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("130", "Mediterranean" , 50, 2f, -1, -1, 8f , -1, -1, -1, 1f, null));
+
+            planets.Add(new GSPlanet("150", "Mediterranean" , 50, 2f, -1, -1, 12f , -1, -1, -1, 1f, null));
+
+            planets.Add(new GSPlanet("200", "Mediterranean" , 50, 2f, -1, -1, 22f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("300", "Mediterranean" , 50, 2f, -1, -1, 32f , -1, -1, -1, 1f, null));
+
+
+            //}
             //GS2.Log("**");
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.G, EStarType.MainSeqStar, planets));
-            for (var i = 1; i < positions.Count; i++) {
-                //int t = i % 7;
-                //ESpectrType e = (ESpectrType)t;
-                //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));
-                GSStar s = StarDefaults.Random(i);
-                s.Planets = new GSPlanets();
-                GSSettings.Stars.Add(s);
-                //GS2.Log("LastFor " + i.ToString() + " of " + GSSettings.Stars.Count);
-                GSSettings.Stars[i].position = positions[i];
-                //GSSettings.Stars[i].classFactor = (float)(new Random(i).NextDouble() * 6.0)-4f;
-                //GSSettings.Stars[i].Spectr = e;
-                //GSSettings.Stars[i].Name = "CF" + GSSettings.Stars[i].classFactor + "-" + e.ToString();
-                //GS2.Log("Done" + i);
-            }
+            //for (var i = 1; i < positions.Count; i++) {
+            //    //int t = i % 7;
+            //    //ESpectrType e = (ESpectrType)t;
+            //    //GSSettings.Stars.Add(new GSStar(1, "Star" .ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));
+            //    GSStar s = StarDefaults.Random(i);
+            //    s.Planets = new GSPlanets();
+            //    GSSettings.Stars.Add(s);
+            //    //GS2.Log("LastFor " .ToString() + " of " + GSSettings.Stars.Count);
+            //    GSSettings.Stars[i].position = positions[i];
+            //    //GSSettings.Stars[i].classFactor = (float)(new Random(i).NextDouble() * 6.0)-4f;
+            //    //GSSettings.Stars[i].Spectr = e;
+            //    //GSSettings.Stars[i].Name = "CF" + GSSettings.Stars[i].classFactor + "-" + e.ToString();
+            //    //GS2.Log("Done" );
+            //}
 
         }
 
@@ -190,7 +203,7 @@ namespace GalacticScale.Generators {
 
         public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio) {
             List<Vector2> result = new List<Vector2>();
-            GS2.Random r = GS2.random;
+            GS2.Random r = new GS2.Random(GSSettings.Seed);
 
             for (int i = 0; i < numOfStars; i++) {
                 //GS2.Log(i + " / " + numOfStars);

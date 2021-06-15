@@ -4,6 +4,7 @@ using System.Linq;
 namespace GalacticScale {
 
     public class GSStars : List<GSStar> {
+        GS2.Random random = new GS2.Random(GSSettings.Seed);
         public GSStars(IEnumerable<GSStar> i) : base(i) { }
         public GSStars() : base() { }
         public new GSStar Add(GSStar star) {
@@ -26,7 +27,7 @@ namespace GalacticScale {
                     return this[0];
                 }
 
-                return this[GS2.random.Next(this.Count)];
+                return this[random.Next(this.Count)];
             }
         }
     }

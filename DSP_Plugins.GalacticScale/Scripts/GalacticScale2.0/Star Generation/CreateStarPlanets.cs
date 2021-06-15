@@ -2,7 +2,7 @@
 
 namespace GalacticScale {
     public static partial class GS2 {
-        public static void CreateStarPlanets(ref StarData star, GameDesc gameDesc) {
+        public static void CreateStarPlanets(ref StarData star, GameDesc gameDesc, GS2.Random random) {
             Log($"Start|{star.name}");
             GSStar gsStar = GSSettings.Stars[star.index];
             gsStar.counter = 0;
@@ -15,7 +15,7 @@ namespace GalacticScale {
             star.planets = new PlanetData[Math.Min(100, gsStar.bodyCount)];
             Log("Creating Planet");
             for (var i = 0; i < gsStar.planetCount; i++) {
-                CreatePlanet(ref star, gsStar.Planets[i], null);
+                CreatePlanet(ref star, gsStar.Planets[i], random, null);
             }
 
             Log($"End|{star.name}");
