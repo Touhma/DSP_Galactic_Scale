@@ -21,21 +21,21 @@ namespace GalacticScale {
                     //Warn("Loading Data from Generator : " + generator.Name);
                     generator.Generate(gameDesc.starCount);
                     //Warn("Final Seed = " + GSSettings.Seed);
-                    Log("End");
+                    //Log("End");
                 } else {
                     Log("Settings Loaded From Save File");
                 }
 
                 Log("Galaxy Generated");
                 gameDesc.starCount = GSSettings.StarCount;
-                Log("Processing ThemeLibrary");
+                //Log("Processing ThemeLibrary");
                 if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) {
                     GSSettings.ThemeLibrary = ThemeLibrary;
                 } else {
                     ThemeLibrary = GSSettings.ThemeLibrary;
                 }
 
-                Log("Generating TempPoses");
+                //Log("Generating TempPoses");
                 int tempPoses = StarPositions.GenerateTempPoses(
                     random.Next(),
                     GSSettings.StarCount,
@@ -45,7 +45,7 @@ namespace GalacticScale {
                     GSSettings.GalaxyParams.maxStepLength,
                     GSSettings.GalaxyParams.flatten
                     );
-                Log("Creating new GalaxyData");
+                //Log("Creating new GalaxyData");
                 galaxy = new GalaxyData();
                 galaxy.seed = GSSettings.Seed;
                 galaxy.starCount = GSSettings.StarCount;
@@ -56,12 +56,12 @@ namespace GalacticScale {
                 }
                 Log("Initializing AstroPoses");
                 InitializeAstroPoses(random);
-                Log("AstroPoses Initialized");
+                //Log("AstroPoses Initialized");
                 //SetupBirthPlanet();
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
                 //if (createPlanets) {
-                    Log("Setting up Birth Planet");
+                    //Log("Setting up Birth Planet");
                     //SetupBirthPlanet();
                     Log("Generating Veins");
                     GenerateVeins(!sketchOnly);

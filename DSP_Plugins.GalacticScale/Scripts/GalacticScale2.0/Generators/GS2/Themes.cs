@@ -18,7 +18,7 @@ namespace GalacticScale.Generators {
             oiler.GasSpeeds[1] = 10f;
             oiler.Private = true;
             oiler.Process();
-            GS2.Log("Oiler Processed");
+            //GS2.Log("Oiler Processed");
 
             GSTheme obsidian = new GSTheme("Obsidian", "Obsidian", "IceGelisol");
             obsidian.terrainMaterial.Tint = new Color(0.05f, 0.05f, 0.05f, 1);
@@ -35,7 +35,7 @@ namespace GalacticScale.Generators {
             obsidian.Temperature = 2f;
             obsidian.Process();
 
-            GS2.Log("About to Process redIce");
+            //GS2.Log("About to Process redIce");
             GSTheme iceMalusol = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
