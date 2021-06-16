@@ -8,7 +8,7 @@ namespace GalacticScale {
             GS2.Random random = new Random(GSSettings.Seed);
             try {
                 gameDesc = desc;
-                Log("Generating Galaxy");
+                Log($"Generating Galaxy of {GSSettings.StarCount}|{gameDesc.starCount} stars");
                 Failed = false;
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported) {
@@ -26,7 +26,7 @@ namespace GalacticScale {
                     Log("Settings Loaded From Save File");
                 }
 
-                Log("Galaxy Generated");
+                Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
                 Log("Processing ThemeLibrary");
                 if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary()) {

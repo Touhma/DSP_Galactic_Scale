@@ -1,12 +1,15 @@
 ﻿using BepInEx.Logging;
 using GSFullSerializer;
 using System.Diagnostics;
-
+using System.Runtime.CompilerServices;
 namespace GalacticScale {
     public static partial class GS2 {
-        public static void Log(string s) {
+        public static void Log(string s,
+            [CallerLineNumber] int lineNumber = 0,
+            [CallerMemberName] string caller = null) {
             if (debugOn) {
-                Bootstrap.Debug(GetCaller() + s);
+                Bootstrap.Debug(lineNumber + ":" + caller + ":" + GetCaller() + s);
+                 
             }
         }
         public static void LogSpace(int lineCount = 1) {
@@ -16,8 +19,10 @@ namespace GalacticScale {
                 }
             }
         }
-        public static void Error(string message) {
-            Bootstrap.Debug(GetCaller() + message, LogLevel.Error, true);
+        public static void Error(string message, 
+            [CallerLineNumber] int lineNumber = 0,
+            [CallerMemberName] string caller = null) {
+            Bootstrap.Debug($"{caller}:{lineNumber}::"+GetCaller() + message, LogLevel.Error, true);
             GS2.DumpError(message);
         }
         public static void Warn(string message) => Bootstrap.Debug(GetCaller() + message, LogLevel.Warning, true);

@@ -209,7 +209,7 @@ namespace GalacticScale.Generators {
             double fWG = preferences.GetDouble("freqWG",1);
             double fBG = preferences.GetDouble("freqBG",1);
             double total = fK + fM + fG + fF + fA + fB + fO + fBH + fN + fW + fRG +fYG + fWG +fBG;
-            GS2.Warn($"{total} = {fK} + {fM} + {fG} + {fF} + {fA} + {fB} + {fO} + {fBH} + {fN} + {fW} + {fRG} + {fYG} + {fWG} + {fBG}");
+            //GS2.Warn($"{total} = {fK} + {fM} + {fG} + {fF} + {fA} + {fB} + {fO} + {fBH} + {fN} + {fW} + {fRG} + {fYG} + {fWG} + {fBG}");
             
             StarFreqTupleArray[0] = ("K", fK /total);
             StarFreqTupleArray[1] = ("M", fM /total);
@@ -226,7 +226,7 @@ namespace GalacticScale.Generators {
             StarFreqTupleArray[12] = ("WG",fWG/total);
             StarFreqTupleArray[13] = ("BG",fBG/total);
             //string[] keys = StarFreq.Keys.ToArray();
-            GS2.LogJson(StarFreqTupleArray, true);
+            //GS2.LogJson(StarFreqTupleArray, true);
             starFreq = new Dictionary<string, double>();
             for (var i=1;i<StarFreqTupleArray.Length;i++) {
                 var element = StarFreqTupleArray[i];
@@ -234,7 +234,7 @@ namespace GalacticScale.Generators {
                 starFreq.Add(element.type, (element.chance + previousElement.chance));
                 StarFreqTupleArray[i].chance += previousElement.chance;
             }
-            GS2.LogJson(starFreq, true);
+            //GS2.LogJson(starFreq, true);
 
             return starFreq;
         }
@@ -244,7 +244,7 @@ namespace GalacticScale.Generators {
             for (var i=0;i<starFreq.Count;i++) {
                 if (choice < starFreq.ElementAt(i).Value) {
                     starType = starFreq.ElementAt(i).Key;
-                    GS2.Warn($"Picked Startype {starType} with choice {choice} and value {starFreq.ElementAt(i).Value}");
+                    //GS2.Warn($"Picked Startype {starType} with choice {choice} and value {starFreq.ElementAt(i).Value}");
                     break;
                 }
             }

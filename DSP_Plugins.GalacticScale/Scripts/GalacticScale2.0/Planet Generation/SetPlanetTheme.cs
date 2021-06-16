@@ -4,7 +4,7 @@ namespace GalacticScale {
         public static void SetPlanetTheme(
          PlanetData planet,
          GSPlanet gsPlanet) {
-            Log("Start|" + gsPlanet.Name);
+            //Log("Start|" + gsPlanet.Name);
             int seed = 0;
             GSTheme gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             int ThemeID = gsTheme.UpdateThemeProtoSet();
@@ -51,7 +51,7 @@ namespace GalacticScale {
             planet.gasSpeeds = numArray2;
             planet.gasHeatValues = numArray3;
             planet.gasTotalHeat = num1;
-            Log("End");
+            //Log("End");
         }
     }
 }
