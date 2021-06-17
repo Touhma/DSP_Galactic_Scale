@@ -18,6 +18,7 @@ namespace GalacticScale {
                 return null;
             }
         }
+        private Slider slider { get => RectTransform.GetComponentInChildren<Slider>(); }
         public string Label { get => label; }
         private string type;
         public string Type { get => type; }
@@ -27,14 +28,14 @@ namespace GalacticScale {
             get {
                 switch (Type) {
                     case "Slider":
-                    GSSliderConfig cfg = (Data is GSSliderConfig)?(GSSliderConfig)data:new GSSliderConfig(-1,-1,-1);
-                    return cfg.defaultValue;
+                        GSSliderConfig cfg = (Data is GSSliderConfig)?(GSSliderConfig)data:new GSSliderConfig(-1,-1,-1);
+                        return cfg.defaultValue;
                     case "Checkbox":
                         var bresult = GetBool(Data);
                         if (bresult.succeeded) return bresult.value;
                         GS2.Warn($"No default value found for Checkbox {label}");
                         return false;
-                    case "Button": 
+                    case "Button":
                         GS2.Error("Trying to get default value for button {label}");
                         return null;
                     case "Input":
@@ -56,6 +57,7 @@ namespace GalacticScale {
         public RectTransform RectTransform;
         public GSOptionCallback callback;
         private GSOptionPostfix postfix;
+        public float increment;
         public GSOptionPostfix Postfix { get => postfix; }
         private static Dictionary<int, Color> colors = new Dictionary<int, Color>();
         private GSUI() { }
@@ -88,7 +90,7 @@ namespace GalacticScale {
             }
             this.tip = tip;
         }
-        private (bool succeeded,float value) GetFloat(object o) {
+        private (bool succeeded, float value) GetFloat(object o) {
             if (o is float) return (true, (float)o);
             //float result;
             bool success = float.TryParse(o.ToString(), out float result);
@@ -97,7 +99,7 @@ namespace GalacticScale {
         private (bool succeeded, int value) GetInt(object o) {
             if (o is int) return (true, (int)o);
             bool success = int.TryParse(o.ToString(), out int result);
-            return (success,result);
+            return (success, result);
         }
         private (bool succeeded, bool value) GetBool(object o) {
             if (o is bool) return (true, (bool)o);
@@ -111,20 +113,20 @@ namespace GalacticScale {
                 GS2.Warn("Trying to disable UI Element that is already disabled");
                 return false;
             }
-            
+
             var c = RectTransform.GetComponentsInChildren<Image>();
             foreach (Image i in c) {
                 int id = i.GetInstanceID();
                 if (colors.ContainsKey(id)) colors[id] = i.color;
                 else colors.Add(id, i.color);
-                i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a/2);
+                i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a / 2);
             }
             switch (type) {
-                case "Checkbox": RectTransform.GetComponentInChildren<Toggle>().interactable = false;       disabled = true; return true;
-                case "Combobox": RectTransform.GetComponentInChildren<Button>().interactable = false;       disabled = true; return true;
-                case "Button":   RectTransform.GetComponentInChildren<Button>().interactable =  false;      disabled = true; return true;
-                case "Input":    RectTransform.GetComponentInChildren<InputField>().interactable = false;   disabled = true; return true;
-                case "Slider":   RectTransform.GetComponentInChildren<Slider>().interactable = false;       disabled = true; return true;
+                case "Checkbox": RectTransform.GetComponentInChildren<Toggle>().interactable = false; disabled = true; return true;
+                case "Combobox": RectTransform.GetComponentInChildren<Button>().interactable = false; disabled = true; return true;
+                case "Button": RectTransform.GetComponentInChildren<Button>().interactable = false; disabled = true; return true;
+                case "Input": RectTransform.GetComponentInChildren<InputField>().interactable = false; disabled = true; return true;
+                case "Slider": RectTransform.GetComponentInChildren<Slider>().interactable = false; disabled = true; return true;
             }
             return false;
         }
@@ -140,26 +142,26 @@ namespace GalacticScale {
                 i.color = colors[id];
             }
             switch (type) {
-                case "Checkbox": RectTransform.GetComponentInChildren<Toggle>().interactable = true;        disabled = false; return true;
-                case "Combobox": RectTransform.GetComponentInChildren<Button>().interactable = true;        disabled = false; return true;
-                case "Button":   RectTransform.GetComponentInChildren<Button>().interactable = true;        disabled = false; return true;
-                case "Input":    RectTransform.GetComponentInChildren<InputField>().interactable = true;    disabled = false; return true;
-                case "Slider":   RectTransform.GetComponentInChildren<Slider>().interactable = true;        disabled = false; return true;
+                case "Checkbox": RectTransform.GetComponentInChildren<Toggle>().interactable = true; disabled = false; return true;
+                case "Combobox": RectTransform.GetComponentInChildren<Button>().interactable = true; disabled = false; return true;
+                case "Button": RectTransform.GetComponentInChildren<Button>().interactable = true; disabled = false; return true;
+                case "Input": RectTransform.GetComponentInChildren<InputField>().interactable = true; disabled = false; return true;
+                case "Slider": RectTransform.GetComponentInChildren<Slider>().interactable = true; disabled = false; return true;
             }
             return false;
         }
         public bool Set(GSSliderConfig cfg) {
-            GS2.Warn("Setting Slider? : "+label);
+            GS2.Warn("Setting Slider? : " + label);
             if (RectTransform == null) {
                 return false;
             }
             Slider slider = RectTransform.GetComponentInChildren<Slider>();
             if (slider == null) return false;
             GS2.Warn("Slider Setting...");
-            slider.minValue = cfg.minValue     >= 0 ? cfg.minValue     : slider.minValue;
-            slider.maxValue = cfg.maxValue     >= 0 ? cfg.maxValue     : slider.maxValue;
-            slider.value    = cfg.defaultValue >= 0 ? cfg.defaultValue : slider.value;
-            GS2.Warn("Slider Set."); 
+            slider.minValue = cfg.minValue >= 0 ? cfg.minValue : slider.minValue;
+            slider.maxValue = cfg.maxValue >= 0 ? cfg.maxValue : slider.maxValue;
+            slider.value = cfg.defaultValue >= 0 ? cfg.defaultValue : slider.value;
+            GS2.Warn("Slider Set.");
             return true;
         }
         public bool Set(object o) {
@@ -185,11 +187,11 @@ namespace GalacticScale {
                         GS2.Error($"Failed to set input {label} as value was null");
                         return false;
                     }
-                    RectTransform.GetComponentInChildren<InputField>().text = (string)o; 
+                    RectTransform.GetComponentInChildren<InputField>().text = (string)o;
                     return true;
                 case "Checkbox":
                     var checkboxResult = GetBool(o);
-                    if (!checkboxResult.succeeded) { 
+                    if (!checkboxResult.succeeded) {
                         GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
                         return false;
                     }
@@ -219,7 +221,7 @@ namespace GalacticScale {
                         GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value > Item Count");
                         return false;
                     }
-                    cb.itemIndex = comboResult.value; 
+                    cb.itemIndex = comboResult.value;
                     return true;
             }
             return false;
@@ -233,20 +235,92 @@ namespace GalacticScale {
             return true;
         }
 
-        public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback, bool enableFloat = false, GSOptionPostfix postfix = null, string tip = "") {
+        public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback, float increment = 1f, bool planetSizes = false, GSOptionPostfix postfix = null, string tip = "") {
+            GSOptionCallback CB;
             Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val, wholeNumbers = !enableFloat }, callback, postfix, tip);
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, postfix, tip);
+
+
+            if (increment != 1f) {
+                CB = (o) => {
+                    float value;
+                    if (!float.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse increment {o} for slider {label}");
+                    else if (callback is GSOptionCallback) {
+                        if (value >= max - (increment / 2)) {
+                            GSSliderConfig cfg = (GSSliderConfig)instance.data;
+                            float iMax = cfg.maxValue;
+                            instance.Set(iMax);
+                            callback(iMax);
+                        } else { 
+                            callback(value - (value % increment)); 
+                            instance.Set(value - (value % increment)); 
+                        }
+                    }
+                };
+            } else CB = callback;
+            if (planetSizes) {
+                CB = (o) => {
+                    int value = 200;
+                    if (!int.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse planet size {o} for slider {label}");
+                    else if (callback is GSOptionCallback) {
+                        float parsedSize = Utils.ParsePlanetSize(value);
+                        instance.Set(parsedSize);
+                        callback(parsedSize);
+                    }
+
+                };
+            }
+            instance.callback = CB;
+            instance.increment = increment;
             return instance;
         }
-        public static GSUI Slider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, bool enableFloat = false, string tip = "") {
+        public static GSUI Slider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, float increment = 1f, bool planetSizes = false, string tip = "") {
             Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),key,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val, wholeNumbers = !enableFloat },null,null,tip);
-            instance.callback = instance.CreateDefaultCallback(callback);
+
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),key,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},null,null,tip);
+            GSOptionCallback defaultCallback = instance.CreateDefaultCallback(callback);
+            GSOptionCallback CB;
+            if (increment != 1f) {
+                CB = (o) => {
+                    float value = 0.1f;
+                    if (!float.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse increment {o} for slider {label}");
+                    else {
+                        if (value >= max - (increment / 2)) {
+                            //GS2.Warn($"Max hit on {label}");
+                            GSSliderConfig cfg = (GSSliderConfig)instance.data;
+                            float iMax = cfg.maxValue;
+                            instance.Set(iMax);
+                            defaultCallback(iMax);
+                        } else {
+                            //GS2.Warn($"Executing increment test of {increment} on {label}");
+                            defaultCallback(value - (value % increment));
+                            if (value - (value % increment) != instance.slider.value) instance.Set(value - (value % increment));
+                        }
+                    }
+                };
+                //GS2.Warn($"implemented increment test {increment} on {label}");
+            } else CB = defaultCallback;
+            if (planetSizes) {
+                CB = (o) => {
+                    int value = 200;
+                    if (!int.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse planet size {o} for slider {label}");
+                    else {
+                        float parsedSize = Utils.ParsePlanetSize(value);
+                        //GS2.Warn($"Executing planetsize test {parsedSize} on {label}");
+                        if (parsedSize != instance.slider.value) instance.Set(parsedSize);
+                        defaultCallback(parsedSize);
+                    }
+
+                };
+                //GS2.Warn($"implemented planetSize test on {label}");
+            }
+            instance.callback = CB;
             instance.postfix = instance.CreateDefaultPostfix();
+            instance.increment = increment;
             return instance;
         }
         public static GSUI Checkbox(string label, bool value, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
-            Type t = Utils.GetCallingType(); 
+            Type t = Utils.GetCallingType();
             GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Checkbox", value, callback, postfix, tip);
             return instance;
         }
@@ -267,7 +341,7 @@ namespace GalacticScale {
             Type t = Utils.GetCallingType();
             GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Combobox", items, null,null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix  = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
         public static GSUI Input(string label, string value, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
@@ -279,13 +353,13 @@ namespace GalacticScale {
             Type t = Utils.GetCallingType();
             GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Input", defaultValue, null,null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix  = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
         public static GSUI Button(string label, string caption, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             Type t = Utils.GetCallingType();
             GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null ,label, "Button", caption, callback, null, tip);
-            return instance; 
+            return instance;
         }
 
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null) {
@@ -297,6 +371,7 @@ namespace GalacticScale {
                 GSGenPreferences p = Generator.Export();
                 p.Set(key, o);
                 Generator.Import(p);
+                GS2.Warn($"Executing default callback on {label}");
                 if (callback is GSOptionCallback) {
                     callback(o);
                 }
@@ -316,15 +391,15 @@ namespace GalacticScale {
             };
         }
         private void SetPreference(object value) {
-            if (Generator is null) { 
-                GS2.Error($"{label} Trying to set preference '{key}' when Generator = null"); 
-                return; 
+            if (Generator is null) {
+                GS2.Error($"{label} Trying to set preference '{key}' when Generator = null");
+                return;
             }
             GSGenPreferences p = Generator.Export();
             p.Set(key, value);
             Generator.Import(p);
         }
-        
+
     }
 
 }

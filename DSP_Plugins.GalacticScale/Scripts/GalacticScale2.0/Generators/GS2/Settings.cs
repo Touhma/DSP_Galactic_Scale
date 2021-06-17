@@ -113,8 +113,8 @@ namespace GalacticScale.Generators {
             UI.Add("safeMode", options.Add(GSUI.Checkbox("Safe Mode", false, "safeMode", o => { if ((bool)o) EnableSafeMode(); else DisableSafeMode(); })));
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => { if ((bool)o) EnableLudicrousMode(); else DisableLudicrousMode(); })));
             UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));
-            UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount")));
-            UI.Add("birthPlanetSize", options.Add(GSUI.Slider("Starting Planet Size", 20, 50, 510, "birthPlanetSize")));
+            UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount", null, 2)));
+            UI.Add("birthPlanetSize", options.Add(GSUI.Slider("Starting Planet Size", 20, 50, 510, "birthPlanetSize", null, 1, true)));
             UI.Add("birthPlanetUnlock", options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
             UI.Add("moonsAreSmall", options.Add(GSUI.Checkbox("Moons are small", true, "moonsAreSmall")));

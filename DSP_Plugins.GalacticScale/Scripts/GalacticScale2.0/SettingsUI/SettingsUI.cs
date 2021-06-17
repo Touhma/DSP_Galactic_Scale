@@ -9,12 +9,10 @@ namespace GalacticScale {
         public float minValue;
         public float maxValue;
         public float defaultValue;
-        public bool wholeNumbers;
-        public GSSliderConfig(float minValue, float value, float maxValue, bool wholeNumbers = true) {
+        public GSSliderConfig(float minValue, float value, float maxValue) {
             this.minValue = minValue;
             this.maxValue = maxValue;
             this.defaultValue = value;
-            this.wholeNumbers = wholeNumbers;
         }
     }
     public static class SettingsUI {
@@ -374,7 +372,7 @@ namespace GalacticScale {
             GSSliderConfig gssc = (GSSliderConfig)o.Data;
             slider.minValue = gssc.minValue;
             slider.maxValue = gssc.maxValue;
-            slider.wholeNumbers = gssc.wholeNumbers;
+            slider.wholeNumbers = o.increment % 1 == 0;
             slider.value = gssc.defaultValue;
             label.text = slider.value.ToString();
             slider.onValueChanged.AddListener((v) => label.text = v.ToString());
