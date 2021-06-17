@@ -134,7 +134,7 @@ namespace GalacticScale {
                         continue;
                     }
                     if (veinGroups[j].veins[i].count < 0) {
-                        veinGroups[j].veins[i].count = random.Range(5, 25);
+                        veinGroups[j].veins[i].count = random.Next(5, 25);
                     }
 
                     if (veinGroups[j].veins[i].richness < 0) {

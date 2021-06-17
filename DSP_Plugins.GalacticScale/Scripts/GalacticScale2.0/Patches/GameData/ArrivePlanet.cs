@@ -5,7 +5,7 @@ namespace GalacticScale {
     public partial class PatchOnGameData {
         [HarmonyPrefix, HarmonyPatch(typeof(GameData), "ArrivePlanet")]
         public static bool ArrivePlanet(GameData __instance, PlanetData planet) {
-            GS2.Log($"Arrived at {planet.name}");
+            GS2.Log($"Arrived at {planet.name} Planet ID:{planet.id} Index:{planet.index}");
             if (planet == __instance.localPlanet) {
                 GS2.Log($"{planet.name} is __instance.localPlanet");
                 return false;

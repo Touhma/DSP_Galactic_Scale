@@ -79,22 +79,22 @@ namespace GalacticScale {
         //    //GS2.Warn($"x:{x}, y:{y}, _latitudeSeg:{_latitudeSeg}, _longitudeSeg:{_longitudeSeg}. Result of DLSC:{LongSegmentCount}");
         //    return false;
         //}
-        //[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "GetReformType")]
-        //public static bool GetReformType() {
-        //    GS2.Warn("."); return true;
-        //}
-        //[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "InitReformData")]
-        //public static bool InitReformData() {
-        //    GS2.Warn("."); return true;
-        //}
-        //[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "IsTerrainMapping")]
-        //public static bool IsTerrainMapping() {
-        //    GS2.Warn("."); return true;
-        //}
-        //[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "IsTerrainReformed")]
-        //public static bool IsTerrainReformed() {
-        //    GS2.Warn("."); return true;
-        //}
+        ////[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "GetReformType")]
+        ////public static bool GetReformType() {
+        ////    GS2.Warn("."); return true;
+        ////}
+        ////[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "InitReformData")]
+        ////public static bool InitReformData() {
+        ////    GS2.Warn("."); return true;
+        ////}
+        ////[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "IsTerrainMapping")]
+        ////public static bool IsTerrainMapping() {
+        ////    GS2.Warn("."); return true;
+        ////}
+        ////[HarmonyPrefix, HarmonyPatch(typeof(PlatformSystem), "IsTerrainReformed")]
+        ////public static bool IsTerrainReformed() {
+        ////    GS2.Warn("."); return true;
+        ////}
         //static bool output = false;
         //[HarmonyPrefix, HarmonyPatch(typeof(PlanetGrid), "ReformSnapTo")]
 

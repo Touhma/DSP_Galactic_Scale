@@ -203,7 +203,7 @@ namespace GalacticScale.Generators {
 
         public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio) {
             List<Vector2> result = new List<Vector2>();
-            GS2.Random r = new GS2.Random(GSSettings.Seed);
+            GS2.Random random = new GS2.Random(GSSettings.Seed);
 
             for (int i = 0; i < numOfStars; i++) {
                 //GS2.Log(i + " / " + numOfStars);
@@ -213,8 +213,8 @@ namespace GalacticScale.Generators {
                 float distanceFromCenter = (float)part;
                 double position = (part * spin + rotation) * Math.PI * 2;
 
-                double xFluctuation = (Pow3Constrained(r.NextDouble()) - Pow3Constrained(r.NextDouble())) * armSpread;
-                double yFluctuation = (Pow3Constrained(r.NextDouble()) - Pow3Constrained(r.NextDouble())) * armSpread;
+                double xFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) * armSpread;
+                double yFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) * armSpread;
 
                 float resultX = (float)Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float)xFluctuation;
                 float resultY = (float)Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float)yFluctuation;

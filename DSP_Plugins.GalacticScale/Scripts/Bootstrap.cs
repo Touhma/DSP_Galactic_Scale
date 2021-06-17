@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using System;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
@@ -69,13 +70,20 @@ namespace GalacticScale {
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
         }
-
+        public static Queue buffer = new System.Collections.Queue();
         public static void Debug(object data, LogLevel logLevel, bool isActive) {
             if (isActive) {
-                Logger.Log(logLevel, data);
+                if (Logger != null) {
+                    while (buffer.Count > 0) {
+                        var o = buffer.Dequeue();
+                        var l = ((object data, LogLevel loglevel, bool isActive))o;
+                        if (l.isActive) Logger.Log( l.loglevel,"Q:" +l.data);
+                    }
+                    Logger.Log(logLevel, data);
+                } else buffer.Enqueue((data, logLevel, isActive));
             }
         }
-        public static void Debug(object data) => Logger.LogMessage(data);
+        public static void Debug(object data) => Debug(data, LogLevel.Message, true);
         public static PlanetData TeleportPlanet = null;
         public static StarData TeleportStar = null;
         public static bool TeleportEnabled = false;

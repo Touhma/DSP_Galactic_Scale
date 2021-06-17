@@ -6,7 +6,9 @@ namespace GalacticScale {
     public class GSStars : List<GSStar> {
         GS2.Random random = new GS2.Random(GSSettings.Seed);
         public GSStars(IEnumerable<GSStar> i) : base(i) { }
-        public GSStars() : base() { }
+        public GSStars() : base() {
+            random = new GS2.Random(GSSettings.Seed);
+        }
         public new GSStar Add(GSStar star) {
             base.Add(star);
             return star;
@@ -22,7 +24,7 @@ namespace GalacticScale {
         }
         public GSStar RandomStar {
             get {
-                GS2.Warn($"Star Count:{this.Count}");
+                GS2.Warn($"Star Count:{this.Count} random:{random.Id}");
                 if (this.Count == 1) {
                     return this[0];
                 }

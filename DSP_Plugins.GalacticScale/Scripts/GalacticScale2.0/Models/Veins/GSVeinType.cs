@@ -74,7 +74,7 @@ namespace GalacticScale {
             vt.rare = rare;
             int amount = Mathf.RoundToInt(Mathf.Clamp(random.Next(min, max + 1), 0, 99));
             for (var i = 0; i < amount; i++) {
-                vt.veins.Add(new GSVein(random.Range(min_patchSize, max_patchSize + 1), random.Range(min_richness, max_richness + float.MinValue)));
+                vt.veins.Add(new GSVein(random.Next(min_patchSize, max_patchSize + 1), random.NextFloat(min_richness, max_richness + float.MinValue)));
             }
 
             return vt;

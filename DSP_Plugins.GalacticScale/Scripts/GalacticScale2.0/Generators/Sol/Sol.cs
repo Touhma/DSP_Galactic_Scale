@@ -245,7 +245,7 @@ namespace GalacticScale.Generators {
             for (var i = 0; i < starCount; i++) {
                 GSStar s = stars[i].Clone();
                 if (!preferences.GetBool("accurateStars", true)) {
-                    if (random.NextBool(0.05)) {
+                    if (random.NextPick(0.05)) {
                         s.Type = RandomSpecialStarType();
                     } else {
                         double chance = random.NextDouble();
@@ -270,7 +270,7 @@ namespace GalacticScale.Generators {
             }
             GenerateSol(GSSettings.Stars[0]);
             (float min, float max) hz = Utils.CalculateHabitableZone(GSSettings.Stars[0].luminosity);
-            GS2.Warn($"Habitable Zone for Star with Luminosity {GSSettings.Stars[0].luminosity} is {hz.min} , {hz.max}");
+            //GS2.Warn($"Habitable Zone for Star with Luminosity {GSSettings.Stars[0].luminosity} is {hz.min} , {hz.max}");
             for (var i = 1; i < starCount; i++) {
                 GSStar star = GSSettings.Stars[i];
                 if (star.Planets.Count > 0) {
@@ -373,7 +373,7 @@ namespace GalacticScale.Generators {
                 return;
             } else if (HabitablePlanets.Count > 1) {
                 GS2.Log("Selecting random habitable planet");
-                birthPlanet = HabitablePlanets[random.Range(1, HabitablePlanets.Count - 1)];
+                birthPlanet = HabitablePlanets[random.Next(1, HabitablePlanets.Count - 1)];
                 GS2.Log($"Selected {birthPlanet.Name}");
                 return;
             }
@@ -399,7 +399,7 @@ namespace GalacticScale.Generators {
         }
 
         private float CalculateNextAvailableOrbit(GSPlanet planet, GSPlanet moon) {
-            float randomvariance = random.Range(0.005f, 0.01f);
+            float randomvariance = random.NextFloat(0.005f, 0.01f);
             float planetsize = planet.RadiusAU;
             float moonsize = moon.RadiusAU;
             if (planet.Moons?.Count < 1) {
@@ -414,9 +414,9 @@ namespace GalacticScale.Generators {
         private float CalculateNextAvailableOrbit(GSStar star, GSPlanet planet) {
             float randomvariance;
             if (random.NextDouble() < 0.1) {
-                randomvariance = random.Range(0.05f, 2f);
+                randomvariance = random.NextFloat(0.05f, 2f);
             } else {
-                randomvariance = random.Range(0.4f, 1f);
+                randomvariance = random.NextFloat(0.4f, 1f);
             }
 
             float planetsize = planet.RadiusAU;
@@ -446,18 +446,18 @@ namespace GalacticScale.Generators {
                 case "Cold": themeNames = GSSettings.ThemeLibrary.Cold; break;
                 default: themeNames = GSSettings.ThemeLibrary.Frozen; break;
             }
-            theme = themeNames[random.Range(0, themeNames.Count - 1)];
-            int radius = random.Range(30, host.Radius - 10);
+            theme = themeNames[random.Next(0, themeNames.Count - 1)];
+            int radius = random.Next(30, host.Radius - 10);
             if (preferences.GetBool("moonsAreSmall", true) && radius > 200) {
-                radius = random.Range(30, 190);
+                radius = random.Next(30, 190);
             }
 
-            float rotationPeriod = random.Range(60, 3600);
+            float rotationPeriod = random.Next(60, 3600);
 
             float luminosity = -1;
             float orbitInclination = 0f;
             float orbitPhase = random.NextFloat(360);
-            float orbitObliquity = random.Range(0f, 90f);
+            float orbitObliquity = random.NextFloat(0f, 90f);
             float rotationPhase = 0f;
             GSPlanet moon = new GSPlanet(name, theme, radius, -1, orbitInclination, -1, orbitPhase, orbitObliquity, rotationPeriod, rotationPhase, luminosity);
             moon.Scale = 1f;
@@ -527,7 +527,7 @@ namespace GalacticScale.Generators {
                 chanceHuge = 0.3f;
             }
 
-            themeName = themeNames[random.Range(0, themeNames.Count - 1)];
+            themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             float scale;
             bool tiny = false;
             bool huge = false;
@@ -547,13 +547,13 @@ namespace GalacticScale.Generators {
             if (gas) {
                 scale = 10f;
                 if (!tiny && !huge) {
-                    radius = random.Range(100, 200);
+                    radius = random.Next(100, 200);
                 } else if (tiny && !huge) {
-                    radius = random.Range(60, 200);
+                    radius = random.Next(60, 200);
                 } else if (huge && !tiny) {
-                    radius = random.Range(200, 510);
+                    radius = random.Next(200, 510);
                 } else {
-                    radius = random.Range(60, 200);
+                    radius = random.Next(60, 200);
                 }
 
                 GS2.Log("Gas. Radius " + radius);
@@ -568,21 +568,21 @@ namespace GalacticScale.Generators {
                 } else {
                     themeNames = GSSettings.ThemeLibrary.IceGiant;
                 }
-                themeName = themeNames[random.Range(0, themeNames.Count - 1)];
+                themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             } else {
                 scale = 1f;
                 if (!tiny && !huge) {
-                    radius = random.Range(Mathf.Max(preferences.GetFloat("minPlanetSize"), 150), Mathf.Min(preferences.GetFloat("minPlanetSize"), 250));
+                    radius = random.NextFloat(Mathf.Max(preferences.GetFloat("minPlanetSize"), 150), Mathf.Min(preferences.GetFloat("minPlanetSize"), 250));
                 } else if (tiny && !huge) {
-                    radius = random.Range(Mathf.Max(preferences.GetFloat("minPlanetSize"), 30), 70);
+                    radius = random.NextFloat(Mathf.Max(preferences.GetFloat("minPlanetSize"), 30), 70);
                 } else if (huge && !tiny) {
-                    radius = random.Range(350, 500); //needs more limits, but I got bored
+                    radius = random.Next(350, 500); //needs more limits, but I got bored
                 } else {
-                    radius = random.Range(100, 500);
+                    radius = random.Next(100, 500);
                 }
             }
             radius = Utils.ParsePlanetSize(radius);
-            float rotationalPeriod = random.Range(60, 3600);
+            float rotationalPeriod = random.Next(60, 3600);
 
             GSPlanet g = new GSPlanet(
                 name,
@@ -613,7 +613,7 @@ namespace GalacticScale.Generators {
             }
 
             if ((moonCount < 6 && gas && availMoons > 10)) {
-                moonCount = random.Range(moonCount, 7);
+                moonCount = random.Next(moonCount, 7);
             }
 
             if (moonCount > 0 && availMoons > moonCount) {
@@ -625,11 +625,11 @@ namespace GalacticScale.Generators {
             }
             if (random.NextDouble() < 0.05) // Crazy Obliquity
             {
-                g.Obliquity = random.Range(20f, 85f);
+                g.Obliquity = random.NextFloat(20f, 85f);
             }
             if (random.NextDouble() < 0.05) // Crazy Inclination
             {
-                g.OrbitInclination = random.Range(20f, 85f);
+                g.OrbitInclination = random.NextFloat(20f, 85f);
             }
 
             g.Luminosity = -1;
