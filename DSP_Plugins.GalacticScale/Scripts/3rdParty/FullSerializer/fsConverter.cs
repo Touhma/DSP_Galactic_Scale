@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The serialization converter allows for customization of the serialization
     /// process.

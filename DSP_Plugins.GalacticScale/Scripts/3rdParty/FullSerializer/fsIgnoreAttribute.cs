@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The given property or field annotated with [JsonIgnore] will not be
     /// serialized.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.UI;
+
 
 namespace GalacticScale.Generators {
     public partial class GS2Generator : iConfigurableGenerator {

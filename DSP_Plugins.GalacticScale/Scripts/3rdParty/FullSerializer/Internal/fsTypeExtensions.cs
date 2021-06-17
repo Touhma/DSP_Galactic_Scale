@@ -9,7 +9,7 @@ using System.Reflection;
 using FullSerializer.Internal;
 #endif
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public static class fsTypeExtensions {
         /// <summary>
         /// Returns a pretty name for the type in the style of one that you'd see

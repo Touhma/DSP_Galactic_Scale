@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     // Global configuration options.
     public static class fsGlobalConfig {
         /// <summary>

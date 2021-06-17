@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// Explicitly mark a property to be serialized. This can also be used to
     /// give the name that the property should use during serialization.

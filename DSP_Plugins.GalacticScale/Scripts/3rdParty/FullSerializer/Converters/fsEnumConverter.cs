@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// Serializes and deserializes enums by their current name.
     /// </summary>

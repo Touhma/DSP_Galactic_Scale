@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// A property or field on a MetaType. This unifies the FieldInfo and
     /// PropertyInfo classes.

@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.Keyframe_DirectConverter Register_Keyframe_DirectConverter;
     }
 }
 
-namespace GSFullSerializer.Internal.DirectConverters {
+namespace GSSerializer.Internal.DirectConverters {
     public class Keyframe_DirectConverter : fsDirectConverter<Keyframe> {
         protected override fsResult DoSerialize(Keyframe model, Dictionary<string, fsData> serialized) {
             var result = fsResult.Success;

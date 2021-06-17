@@ -1,6 +1,6 @@
 using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// Interface that AOT generated converters extend. Used to check to see if
     /// the AOT converter is up to date.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsKeyValuePairConverter : fsConverter {
         public override bool CanProcess(Type type) {
             return

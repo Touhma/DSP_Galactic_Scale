@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     // While the generic IEnumerable converter can handle dictionaries, we
     // process them separately here because we support a few more advanced
     // use-cases with dictionaries, such as inline strings. Further, dictionary

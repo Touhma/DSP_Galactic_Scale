@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     // TODO: properly propagate warnings/etc for fsResult states
 
     /// <summary>

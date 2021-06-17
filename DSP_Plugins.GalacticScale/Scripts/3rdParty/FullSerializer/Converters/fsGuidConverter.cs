@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// Serializes and deserializes guids.
     /// </summary>

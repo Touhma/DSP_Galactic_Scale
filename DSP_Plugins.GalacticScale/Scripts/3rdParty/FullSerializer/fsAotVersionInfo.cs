@@ -1,6 +1,6 @@
-using GSFullSerializer.Internal;
+using GSSerializer.Internal;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// Version information stored on an AOT model. This is used to determine
     /// if the AOT model is up to date.

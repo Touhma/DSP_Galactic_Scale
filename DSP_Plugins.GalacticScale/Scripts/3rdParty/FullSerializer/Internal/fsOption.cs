@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// Simple option type. This is akin to nullable types.
     /// </summary>

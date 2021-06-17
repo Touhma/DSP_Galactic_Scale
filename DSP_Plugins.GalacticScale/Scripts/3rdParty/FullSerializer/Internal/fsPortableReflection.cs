@@ -39,7 +39,7 @@ namespace System {
 }
 #endif
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// This wraps reflection types so that it is portable across different Unity
     /// runtimes.

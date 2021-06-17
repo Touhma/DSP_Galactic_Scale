@@ -256,6 +256,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\IceLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\SaltLake.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\BCE.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Utils\NebulaCompatibility - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Random.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\HandleLocalStarPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\NebulaCompatibility.cs" />

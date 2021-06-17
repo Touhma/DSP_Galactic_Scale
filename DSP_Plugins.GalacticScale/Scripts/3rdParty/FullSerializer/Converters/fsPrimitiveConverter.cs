@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsPrimitiveConverter : fsConverter {
         public override bool CanProcess(Type type) {
             return

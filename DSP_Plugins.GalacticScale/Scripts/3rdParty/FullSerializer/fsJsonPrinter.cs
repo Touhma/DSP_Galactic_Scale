@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public static class fsJsonPrinter {
         /// <summary>
         /// Inserts the given number of indents into the builder.

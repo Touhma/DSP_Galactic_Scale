@@ -1,5 +1,5 @@
 ﻿using BepInEx;
-using GSFullSerializer;
+using GSSerializer;
 using System;
 using System.IO;
 

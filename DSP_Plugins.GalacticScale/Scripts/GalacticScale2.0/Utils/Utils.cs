@@ -6,6 +6,14 @@ using UnityEngine;
 
 namespace GalacticScale {
     public static class Utils {
+        public static string Serialize(object value, bool pretty = true) {
+            GSSerializer.fsSerializer serializer = new GSSerializer.fsSerializer();
+            serializer.TrySerialize(value, out GSSerializer.fsData data);
+            if (!pretty) {
+                return GSSerializer.fsJsonPrinter.CompressedJson(data);
+            }
+            return GSSerializer.fsJsonPrinter.PrettyJson(data);
+        }
         public static bool ContainsLocalStarPlanet(IEnumerable<PlanetData> genPlanetReqList) {
             bool containsLocalPlanet = false;
             int localPlanets = 0;

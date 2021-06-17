@@ -1,4 +1,4 @@
-﻿using GSFullSerializer;
+﻿using GSSerializer;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;

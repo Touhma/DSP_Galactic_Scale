@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// This allows you to forward serialization of an object to one of its
     /// members. For example,
@@ -33,7 +33,7 @@ namespace GSFullSerializer {
     }
 }
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsForwardConverter : fsConverter {
         private readonly string _memberName;
 

@@ -5,7 +5,7 @@
 using System.Reflection;
 #endif
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsTypeConverter : fsConverter {
         public override bool CanProcess(Type type) => typeof(Type).IsAssignableFrom(type);
 

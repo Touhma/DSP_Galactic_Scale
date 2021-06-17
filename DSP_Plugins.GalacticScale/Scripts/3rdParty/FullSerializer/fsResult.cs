@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The result of some sort of operation. A result is either successful or
     /// not, but if it is successful then there may be a set of warnings/messages
