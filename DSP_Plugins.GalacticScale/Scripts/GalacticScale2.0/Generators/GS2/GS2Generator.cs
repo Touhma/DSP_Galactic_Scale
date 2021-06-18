@@ -77,6 +77,7 @@ namespace GalacticScale.Generators {
                 }
 
                 GSPlanet planet = star.Planets[index];
+                GS2.LogJson(planet, true);
                 GS2.Warn("Getting themeNames");
                 List<string> themeNames = GSSettings.ThemeLibrary.Habitable;
                 GS2.Warn($"Count = {themeNames.Count}");
@@ -87,6 +88,7 @@ namespace GalacticScale.Generators {
                 GS2.Warn("Setting birthPlanet");
                 birthPlanet = planet;
                 GS2.Warn($"Selected {birthPlanet.Name}");
+                GS2.LogJson(planet, true);
                 return;
             } else if (HabitablePlanets.Count > 1) {
                 GS2.Warn("Selecting random habitable planet");

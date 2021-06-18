@@ -2,8 +2,10 @@
 using System.IO;
 using UnityEngine.UI;
 
-namespace GalacticScale.Generators {
-    public class JsonImport : iConfigurableGenerator {
+namespace GalacticScale.Generators
+{
+    public class JsonImport : iConfigurableGenerator
+    {
         public string Name => "Custom Json";
 
         public string Author => "innominata";
@@ -24,20 +26,23 @@ namespace GalacticScale.Generators {
         private List<string> filenames = new List<string>();
         private string dumpFilename = "_dump";
         private GSUI minifyCheckbox;
-        public void Init() {
+        public void Init()
+        {
             GS2.Log("Generator:Json|Init");
             RefreshFileNames();
             GS2.Log("Generator:Json|Init|FileCount = " + filenames.Count);
-            options.Add(GSUI.Combobox("Custom Galaxy",filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(GSUI.Combobox("Custom Galaxy", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
             options.Add(GSUI.Input("Output File Name", "Output", FilenameInputCallback, FilenameInputPostfix));
             minifyCheckbox = options.Add(GSUI.Checkbox("Minify Output JSON", false, MinifyCallback, MinifyPostfix));
             options.Add(GSUI.Button("Export JSON", "Export", DumpJSONCallback, () => { }));
             GS2.Log("Generator:Json|Init|End");
         }
         public GSOptions options = new GSOptions();
-        public void Generate(int starCount) {
+        public void Generate(int starCount)
+        {
             GS2.Log("Generator:Json|Generate");
-            if (string.IsNullOrEmpty(filename)) {
+            if (string.IsNullOrEmpty(filename))
+            {
                 UIMessageBox.Show("Error", "To use the Custom JSON Generator you must select a file to load.", "Ok", 1);
                 RefreshFileNames();
             }
@@ -46,12 +51,14 @@ namespace GalacticScale.Generators {
             GS2.Log("Generator:Json|Generate|End");
         }
 
-        public void Import(GSGenPreferences preferences) {
+        public void Import(GSGenPreferences preferences)
+        {
             GS2.Log("Importing JSON Preferences");
             GS2.Log("Generator:Json|Import");
             filename = preferences.GetString("filename");
             //GS2.Warn("Filename" + filename);
-            if (!filenames.Contains(filename)) {
+            if (!filenames.Contains(filename))
+            {
                 filename = filenames[0];
             }
             //if (preferences != null && preferences.ContainsKey("dumpFilename")) dumpFilename = (string)preferences["dumpFilename"];
@@ -60,7 +67,8 @@ namespace GalacticScale.Generators {
             GS2.Log("Generator:Json|Import|End");
         }
 
-        public GSGenPreferences Export() {
+        public GSGenPreferences Export()
+        {
             GS2.Log("Generator:Json|Export");
             return new GSGenPreferences() {
                 { "filename", filename },
@@ -68,19 +76,25 @@ namespace GalacticScale.Generators {
                 { "minify", GS2.minifyJSON.ToString() }
             };
         }
-        public void CustomFileSelectorCallback(object result) {
+        public void CustomFileSelectorCallback(object result)
+        {
             int index = (int)result;
+            if (index > filenames.Count - 1) index = 0;
             filename = filenames[index];
+            if (filename == "No Files Found") filename = "";
             RefreshFileNames();
 
         }
         public void MinifyCallback(object result) => GS2.minifyJSON = (bool)result;
         public void MinifyPostfix() => minifyCheckbox.Set(GS2.minifyJSON);
-        private void CustomFileSelectorPostfix() {
+        private void CustomFileSelectorPostfix()
+        {
             //GS2.Log("Json:Postfix");
             int index = 0;
-            for (var i = 0; i < filenames.Count; i++) {
-                if (filename == filenames[i]) {
+            for (var i = 0; i < filenames.Count; i++)
+            {
+                if (filename == filenames[i])
+                {
                     index = i;
                 }
             }
@@ -89,10 +103,12 @@ namespace GalacticScale.Generators {
         private void FilenameInputPostfix() =>
             //GS2.Log("Json:Postfix Filename");
             options[1].RectTransform.GetComponentInChildren<InputField>().text = dumpFilename;
-        private void DumpJSONCallback(object result) {
+        private void DumpJSONCallback(object result)
+        {
             string outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
             string path = Path.Combine(outputDir, dumpFilename + ".json");
-            if (!Directory.Exists(outputDir)) {
+            if (!Directory.Exists(outputDir))
+            {
                 Directory.CreateDirectory(outputDir);
             }
             //string starlist = "ClassFactor,Type,Spectr,Age,Mass,Color,Luminosity,Lifetime,Radius,Dyson Radius,Temperature,Orbit Scaler,LightbalRadius\n";
@@ -103,23 +119,28 @@ namespace GalacticScale.Generators {
             GS2.DumpObjectToJson(path, GSSettings.Instance);
             RefreshFileNames();
         }
-        private void FilenameInputCallback(object result) {
+        private void FilenameInputCallback(object result)
+        {
             string fn = result as string;
-            if (fn != "") {
+            if (fn != "")
+            {
                 dumpFilename = fn;
             }
             //GS2.Log("Changed Dump Filename to : " + fn);
         }
-        private void RefreshFileNames() {
+        private void RefreshFileNames()
+        {
             //GS2.Log("Refreshing Filenames");
             string customGalaxiesPath = Path.Combine(GS2.DataDir, "CustomGalaxies");
-            if (!Directory.Exists(customGalaxiesPath)) {
+            if (!Directory.Exists(customGalaxiesPath))
+            {
                 Directory.CreateDirectory(customGalaxiesPath);
             }
 
             filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll<string>((original) => Path.GetFileNameWithoutExtension(original));
-            //foreach (string n in filenames) GS2.Log("File:" + n);
-            if (options != null && options.Count > 0 && options[0].RectTransform != null) {
+            if (filenames.Count == 0) filenames.Add("No Files Found"); //foreach (string n in filenames) GS2.Log("File:" + n);
+            if (options != null && options.Count > 0 && options[0].RectTransform != null)
+            {
                 options[0].RectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
             }
         }
