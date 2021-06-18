@@ -57,7 +57,7 @@ namespace GalacticScale {
         public RectTransform RectTransform;
         public GSOptionCallback callback;
         private GSOptionPostfix postfix;
-        public float increment;
+        public float increment = 1f;
         public GSOptionPostfix Postfix { get => postfix; }
         private static Dictionary<int, Color> colors = new Dictionary<int, Color>();
         private GSUI() { }
@@ -74,7 +74,7 @@ namespace GalacticScale {
                 this.postfix = postfix;
             }
             this.tip = tip;
-            GS2.Warn("Created GSUI " + label);
+            //GS2.Warn("Created GSUI " + label);
         }
         public GSUI(iConfigurableGenerator generator, string key, string label, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             this.generator = generator;
@@ -108,7 +108,7 @@ namespace GalacticScale {
         }
         public void Reset() => Set(DefaultValue);
         public bool Disable() {
-            GS2.Warn("Disabling element" + label);
+            //GS2.Warn("Disabling element" + label);
             if (disabled) {
                 GS2.Warn("Trying to disable UI Element that is already disabled");
                 return false;
@@ -131,7 +131,7 @@ namespace GalacticScale {
             return false;
         }
         public bool Enable() {
-            GS2.Warn("Enabling element" + label);
+            //GS2.Warn("Enabling element" + label);
             if (!disabled) {
                 GS2.Warn("Trying to disable UI Element that is already enabled");
                 return false;
@@ -151,17 +151,17 @@ namespace GalacticScale {
             return false;
         }
         public bool Set(GSSliderConfig cfg) {
-            GS2.Warn("Setting Slider? : " + label);
+            //GS2.Warn("Setting Slider? : " + label);
             if (RectTransform == null) {
                 return false;
             }
             Slider slider = RectTransform.GetComponentInChildren<Slider>();
             if (slider == null) return false;
-            GS2.Warn("Slider Setting...");
+            //GS2.Warn("Slider Setting...");
             slider.minValue = cfg.minValue >= 0 ? cfg.minValue : slider.minValue;
             slider.maxValue = cfg.maxValue >= 0 ? cfg.maxValue : slider.maxValue;
             slider.value = cfg.defaultValue >= 0 ? cfg.defaultValue : slider.value;
-            GS2.Warn("Slider Set.");
+            //GS2.Warn("Slider Set.");
             return true;
         }
         public bool Set(object o) {
@@ -171,11 +171,11 @@ namespace GalacticScale {
             }
             switch (type) {
                 case "Slider":
-                    GS2.Warn("Setting Slider " + label);
-                    GS2.Warn(o.ToString());
+                    //GS2.Warn("Setting Slider " + label);
+                    //GS2.Warn(o.ToString());
                     var sliderResult = GetFloat(o);
                     if (sliderResult.succeeded) {
-                        GS2.Warn($"Parsed as float:{sliderResult.value}");
+                        //GS2.Warn($"Parsed as float:{sliderResult.value}");
                     } else {
                         GS2.Error($"Failed to parse slider Set method input of {o} for slider '{label}'");
                         return false;
@@ -235,87 +235,59 @@ namespace GalacticScale {
             return true;
         }
 
-        public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback, float increment = 1f, bool planetSizes = false, GSOptionPostfix postfix = null, string tip = "") {
-            GSOptionCallback CB;
+        // Slider (Integer, no key)
+        public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "") {
             Type t = Utils.GetCallingType();
             GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, postfix, tip);
-
-
-            if (increment != 1f) {
-                CB = (o) => {
-                    float value;
-                    if (!float.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse increment {o} for slider {label}");
-                    else if (callback is GSOptionCallback) {
-                        if (value >= max - (increment / 2)) {
-                            GSSliderConfig cfg = (GSSliderConfig)instance.data;
-                            float iMax = cfg.maxValue;
-                            instance.Set(iMax);
-                            callback(iMax);
-                        } else { 
-                            callback(value - (value % increment)); 
-                            instance.Set(value - (value % increment)); 
-                        }
-                    }
-                };
-            } else CB = callback;
-            if (planetSizes) {
-                CB = (o) => {
-                    int value = 200;
-                    if (!int.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse planet size {o} for slider {label}");
-                    else if (callback is GSOptionCallback) {
-                        float parsedSize = Utils.ParsePlanetSize(value);
-                        instance.Set(parsedSize);
-                        callback(parsedSize);
-                    }
-
-                };
-            }
+            instance.callback = callback;
+            instance.postfix = postfix;
+            return instance;
+        }
+        // Slider for Planet Sizes with key
+        public static GSUI PlanetSizeSlider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, string tip = "") {
+            Type t = Utils.GetCallingType();
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),key,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},null,null,tip);
+            GSOptionCallback defaultCallback = instance.CreateDefaultCallback(callback);
+            instance.callback = CreatePlanetSizeCallback(instance, defaultCallback);
+            instance.postfix = instance.CreateDefaultPostfix();
+            return instance;
+        }
+        // Slider for Planet Sizes without key
+        public static GSUI PlanetSizeSlider(string label, float min, float val, float max, GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "") {
+            Type t = Utils.GetCallingType();
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),null,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},callback, postfix,tip);
+            instance.callback = CreatePlanetSizeCallback(instance, callback);
+            instance.postfix = postfix;
+            return instance;
+        }
+        //Slider with preferences Key
+        public static GSUI Slider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, string tip = "") {
+            Type t = Utils.GetCallingType();
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),key,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},null,null,tip);
+            instance.callback = instance.CreateDefaultCallback(callback);
+            instance.postfix = instance.CreateDefaultPostfix();
+            return instance;
+        }
+        //Slider with increment and preferences Key
+        public static GSUI Slider(string label, float min, float val, float max, float increment, string key, GSOptionCallback callback = null, string tip = "") {
+            Type t = Utils.GetCallingType();
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),key,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},null,null,tip);
+            GSOptionCallback defaultCallback = instance.CreateDefaultCallback(callback);
+            GSOptionCallback CB = defaultCallback;
+            if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
+            //if (planetSizes) CB = CreatePlanetSizeCallback(instance, defaultCallback);
             instance.callback = CB;
+            instance.postfix = instance.CreateDefaultPostfix();
             instance.increment = increment;
             return instance;
         }
-        public static GSUI Slider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, float increment = 1f, bool planetSizes = false, string tip = "") {
+        //Slider with increment and no Key
+        public static GSUI Slider(string label, float min, float val, float max, float increment, GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "") {
             Type t = Utils.GetCallingType();
-
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),key,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},null,null,tip);
-            GSOptionCallback defaultCallback = instance.CreateDefaultCallback(callback);
-            GSOptionCallback CB;
-            if (increment != 1f) {
-                CB = (o) => {
-                    float value = 0.1f;
-                    if (!float.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse increment {o} for slider {label}");
-                    else {
-                        if (value >= max - (increment / 2)) {
-                            //GS2.Warn($"Max hit on {label}");
-                            GSSliderConfig cfg = (GSSliderConfig)instance.data;
-                            float iMax = cfg.maxValue;
-                            instance.Set(iMax);
-                            defaultCallback(iMax);
-                        } else {
-                            //GS2.Warn($"Executing increment test of {increment} on {label}");
-                            defaultCallback(value - (value % increment));
-                            if (value - (value % increment) != instance.slider.value) instance.Set(value - (value % increment));
-                        }
-                    }
-                };
-                //GS2.Warn($"implemented increment test {increment} on {label}");
-            } else CB = defaultCallback;
-            if (planetSizes) {
-                CB = (o) => {
-                    int value = 200;
-                    if (!int.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse planet size {o} for slider {label}");
-                    else {
-                        float parsedSize = Utils.ParsePlanetSize(value);
-                        //GS2.Warn($"Executing planetsize test {parsedSize} on {label}");
-                        if (parsedSize != instance.slider.value) instance.Set(parsedSize);
-                        defaultCallback(parsedSize);
-                    }
-
-                };
-                //GS2.Warn($"implemented planetSize test on {label}");
-            }
+            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t),null,label,"Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val},null,postfix,tip);
+            GSOptionCallback CB = callback;
+            if (increment != 1f) CB = CreateIncrementCallback(increment, instance, callback);
             instance.callback = CB;
-            instance.postfix = instance.CreateDefaultPostfix();
             instance.increment = increment;
             return instance;
         }
@@ -361,7 +333,37 @@ namespace GalacticScale {
             GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null ,label, "Button", caption, callback, null, tip);
             return instance;
         }
+        private static GSOptionCallback CreateIncrementCallback(float increment, GSUI instance, GSOptionCallback existingCallback) {
+            return (o) => {
+                float value = 0.1f;
+                if (!float.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse increment {o} for slider {instance.label}");
+                else {
+                    GSSliderConfig cfg = (GSSliderConfig)instance.data;
+                    if (value >= cfg.maxValue - (increment / 2)) {
+                        //GS2.Warn($"Max hit on {label}");
 
+                        float iMax = cfg.maxValue;
+                        instance.Set(iMax);
+                        existingCallback(iMax);
+                    } else {
+                        //GS2.Warn($"Executing increment test of {increment} on {label}");
+                        existingCallback(value - (value % increment));
+                        if (value - (value % increment) != instance.slider.value) instance.Set(value - (value % increment));
+                    }
+                }
+            };
+        }
+        private static GSOptionCallback CreatePlanetSizeCallback(GSUI instance, GSOptionCallback existingCallback) {
+            return (o) => {
+                int value = 200;
+                if (!int.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse planet size {o} for slider {instance.label}");
+                else {
+                    float parsedSize = Utils.ParsePlanetSize(value);
+                    if (parsedSize != instance.slider.value) instance.Set(parsedSize);
+                    existingCallback(parsedSize);
+                }
+            };
+        }
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null) {
             return (o) => {
                 if (Generator is null) {
@@ -371,7 +373,7 @@ namespace GalacticScale {
                 GSGenPreferences p = Generator.Export();
                 p.Set(key, o);
                 Generator.Import(p);
-                GS2.Warn($"Executing default callback on {label}");
+                //GS2.Warn($"Executing default callback on {label}");
                 if (callback is GSOptionCallback) {
                     callback(o);
                 }

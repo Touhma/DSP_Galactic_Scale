@@ -51,34 +51,31 @@ namespace GalacticScale.Generators {
             options.Add(GSUI.Checkbox("Accurate Stars", true, "accurateStars"));//, (o) => { ReadStarData(); }));
             options.Add(GSUI.Checkbox("Start in Sol", true, "startInSol"));
             options.Add(GSUI.Slider("Max planets per system", 1, 10, 99, "maxPlanetCount"));
-            UI_minPlanetSize = options.Add(GSUI.Slider("Min planet size", 5, 30, 510, o => {
-                float maxSize = preferences.GetFloat("maxPlanetSize");
+            UI_minPlanetSize = options.Add(GSUI.PlanetSizeSlider("Min planet size", 20, 30, 510, o => {
+                float maxSize = preferences.GetFloat("maxPlanetSize", 300);
                 if (maxSize == -1f) {
-                    maxSize = 510;
+                    maxSize = 500;
                 }
 
                 if (maxSize < (float)o) {
                     o = maxSize;
                 }
 
-                preferences.Set("minPlanetSize", Utils.ParsePlanetSize((float)o));
+                preferences.Set("minPlanetSize",(float)o);
                 UI_minPlanetSize.Set(preferences.GetFloat("minPlanetSize"));
-            }));
-            UI_maxPlanetSize = options.Add(GSUI.Slider("Max planet size", 50, 30, 510, o => {
-                float minSize = preferences.GetFloat("minPlanetSize");
-                if (minSize == -1f) {
-                    minSize = 5;
-                }
-                //GS2.Log("min = " + minSize + " max = " + o.ToString());
-                if (minSize > (float)o) {
-                    o = minSize;
-                }
+            }, () => UI_minPlanetSize.Set(preferences.Get("minPlanetSize"))));
 
-                preferences.Set("maxPlanetSize", Utils.ParsePlanetSize((float)o));
+            
+
+            UI_maxPlanetSize = options.Add(GSUI.PlanetSizeSlider("Max planet size", 50, 300, 510, o => {
+                float minSize = preferences.GetFloat("minPlanetSize", 30);
+                if (minSize == -1f) minSize = 5;
+                if (minSize > (float)o)  o = minSize;
+                preferences.Set("maxPlanetSize", (float)o);
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
-            }));
+            }, () => UI_maxPlanetSize.Set(preferences.Get("maxPlanetSize"))));
             //UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
-            options.Add(GSUI.Slider("Starting planet size", 20, 50, 510, "birthPlanetSize"));
+            options.Add(GSUI.PlanetSizeSlider("Starting planet size", 20, 50, 510, "birthPlanetSize"));
             //{
             //    preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o));
             //    UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize"));
@@ -91,7 +88,7 @@ namespace GalacticScale.Generators {
             ReadStarData();
         }
 
-        public class externalStarData {
+        public class ExternalStarData {
             public string Name;
             public float x;
             public float y;
@@ -102,7 +99,7 @@ namespace GalacticScale.Generators {
             public float luminance;
             public float temp;
         }
-        public ESpectrType getSpectrType(externalStarData s) {
+        public ESpectrType getSpectrType(ExternalStarData s) {
             switch (s.spect[0]) {
                 case 'O': return ESpectrType.O;
                 case 'F': return ESpectrType.F;
@@ -132,7 +129,7 @@ namespace GalacticScale.Generators {
 
             return EStarType.GiantStar;
         }
-        public EStarType getStarType(externalStarData s) {
+        public EStarType GetStarType(ExternalStarData s) {
             bool AccurateStars = preferences.GetBool("accurateStars", true);
             //GS2.Warn($"AccurateStars:{AccurateStars}");
             //if (!AccurateStars && random.Bool(0.05)) return RandomSpecialStarType();
@@ -161,7 +158,7 @@ namespace GalacticScale.Generators {
             StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("GalacticScale.Scripts.Assets.galaxy.json"));
             string json = reader.ReadToEnd();
             fsData data2 = fsJsonParser.Parse(json);
-            List<externalStarData> localStars = new List<externalStarData>();
+            List<ExternalStarData> localStars = new List<ExternalStarData>();
             serializer.TryDeserialize(data2, ref localStars);
             HighStopwatch stopwatch = new HighStopwatch();
             stopwatch.Begin();
@@ -170,7 +167,7 @@ namespace GalacticScale.Generators {
                 stars[stars.Count - 1].position = new VectorLF3(localStars[i].x, localStars[i].y, localStars[i].z);
                 stars[stars.Count - 1].mass = localStars[i].mass;
                 stars[stars.Count - 1].radius = (localStars[i].radius);
-                stars[stars.Count - 1].Type = getStarType(localStars[i]);
+                stars[stars.Count - 1].Type = GetStarType(localStars[i]);
                 stars[stars.Count - 1].Spectr = getSpectrType(localStars[i]);
                 stars[stars.Count - 1].luminosity = localStars[i].luminance;
                 stars[stars.Count - 1].temperature = localStars[i].temp;
