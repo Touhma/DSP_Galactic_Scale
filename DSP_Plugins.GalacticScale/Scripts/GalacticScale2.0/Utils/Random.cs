@@ -25,13 +25,15 @@ namespace GalacticScale {
 
             //public float RangePlusMinusOne() => UnityEngine.Mathf.Sin((float)(NextDouble() * (2 * UnityEngine.Mathf.PI)));
             public new float NextFloat(float min, float max) {
-                //Log($"{Id} NextFloat {min} {max} {GetCaller()}");
+                Log($"{Id} NextFloat {min} {max} {GetCaller()}");
                 if (min == max) return min;
                 if (min > max) {
-                    Error($"NextFloat: Min > Max. {min} {max}");
+                    Warn($"{GetCaller()}-NextFloat: Min > Max. {min} {max}");
                     return max;
                 }
-                return base.NextFloat(min, max);
+                float result = base.NextFloat(min, max);
+                GS2.Warn(result.ToString());
+                return result;
             }
             public new int Next(int min, int max) {
                 //Log($"{Id} Next {min} {max} {GetCaller()}");
