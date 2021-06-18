@@ -1,9 +1,9 @@
-﻿using GSFullSerializer.Internal;
+﻿using GSSerializer.Internal;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The AOT compilation manager
     /// </summary>

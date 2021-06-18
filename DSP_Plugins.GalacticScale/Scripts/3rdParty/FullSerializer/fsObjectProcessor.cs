@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// <para>
     /// Enables injecting code before/after an object has been serialized. This

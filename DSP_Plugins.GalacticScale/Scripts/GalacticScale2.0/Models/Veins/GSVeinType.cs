@@ -1,4 +1,4 @@
-﻿using GSFullSerializer;
+﻿using GSSerializer;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

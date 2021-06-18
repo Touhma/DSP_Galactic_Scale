@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// Supports serialization for DateTime, DateTimeOffset, and TimeSpan.
     /// </summary>

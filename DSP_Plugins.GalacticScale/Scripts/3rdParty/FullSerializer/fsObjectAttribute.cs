@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// This attribute controls some serialization behavior for a type. See the
     /// comments on each of the fields for more information.

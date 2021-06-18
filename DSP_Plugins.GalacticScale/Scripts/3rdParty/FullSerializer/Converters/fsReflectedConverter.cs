@@ -6,7 +6,7 @@ using System.Collections;
 using System.Reflection;
 #endif
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsReflectedConverter : fsConverter {
         public override bool CanProcess(Type type) {
             if (type.Resolve().IsArray ||

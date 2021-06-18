@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.RectOffset_DirectConverter Register_RectOffset_DirectConverter;
     }
 }
 
-namespace GSFullSerializer.Internal.DirectConverters {
+namespace GSSerializer.Internal.DirectConverters {
     public class RectOffset_DirectConverter : fsDirectConverter<RectOffset> {
         protected override fsResult DoSerialize(RectOffset model, Dictionary<string, fsData> serialized) {
             var result = fsResult.Success;

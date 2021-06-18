@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The direct converter is similar to a regular converter, except that it
     /// targets specifically only one type. This means that it can be used

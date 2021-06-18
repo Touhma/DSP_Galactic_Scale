@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public struct fsVersionedType {
         /// <summary>
         /// The direct ancestors that this type can import.

@@ -1,8 +1,8 @@
-﻿using GSFullSerializer.Internal;
+﻿using GSSerializer.Internal;
 using System;
 using System.Collections.Generic;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// This class allows arbitrary code to easily register global converters. To
     /// add a converter, simply declare a new field called "Register_*" that

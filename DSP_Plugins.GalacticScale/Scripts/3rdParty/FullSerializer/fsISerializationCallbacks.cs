@@ -8,7 +8,7 @@ using UnityEngine;
 using System.Reflection;
 #endif
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// Extend this interface on your type to receive notifications about
     /// serialization/deserialization events. If you don't have access to the
@@ -51,7 +51,7 @@ namespace GSFullSerializer {
     }
 }
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsSerializationCallbackProcessor : fsObjectProcessor {
         public override bool CanProcess(Type type) => typeof(fsISerializationCallbacks).IsAssignableFrom(type);
 

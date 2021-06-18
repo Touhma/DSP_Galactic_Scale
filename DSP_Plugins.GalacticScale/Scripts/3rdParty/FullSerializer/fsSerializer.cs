@@ -1,4 +1,4 @@
-﻿using GSFullSerializer.Internal;
+﻿using GSSerializer.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 #endif
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public class fsSerializer {
         #region Keys
         private static readonly HashSet<string> _reservedKeywords;

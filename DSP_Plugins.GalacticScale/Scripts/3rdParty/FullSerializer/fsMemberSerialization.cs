@@ -1,4 +1,4 @@
-﻿namespace GSFullSerializer {
+﻿namespace GSSerializer {
     /// <summary>
     /// Controls how the reflected converter handles member serialization.
     /// </summary>

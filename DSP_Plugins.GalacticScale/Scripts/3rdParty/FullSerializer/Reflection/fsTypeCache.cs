@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     /// <summary>
     /// Caches type name to type lookups. Type lookups occur in all loaded
     /// assemblies.

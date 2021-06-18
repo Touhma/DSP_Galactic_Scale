@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.GUIStyleState_DirectConverter Register_GUIStyleState_DirectConverter;
     }
 }
 
-namespace GSFullSerializer.Internal.DirectConverters {
+namespace GSSerializer.Internal.DirectConverters {
     public class GUIStyleState_DirectConverter : fsDirectConverter<GUIStyleState> {
         protected override fsResult DoSerialize(GUIStyleState model, Dictionary<string, fsData> serialized) {
             var result = fsResult.Success;

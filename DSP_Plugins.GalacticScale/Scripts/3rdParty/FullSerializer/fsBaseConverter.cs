@@ -1,9 +1,9 @@
-﻿using GSFullSerializer.Internal;
+﻿using GSSerializer.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The serialization converter allows for customization of the serialization
     /// process.

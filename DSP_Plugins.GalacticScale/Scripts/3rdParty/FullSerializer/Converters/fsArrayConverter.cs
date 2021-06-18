@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsArrayConverter : fsConverter {
         public override bool CanProcess(Type type) => type.IsArray && type.GetArrayRank() == 1;
 

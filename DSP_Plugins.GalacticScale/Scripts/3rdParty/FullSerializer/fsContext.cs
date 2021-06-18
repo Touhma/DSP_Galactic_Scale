@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// fsContext stores global metadata that can be used to customize how
     /// fsConverters operate during serialization.

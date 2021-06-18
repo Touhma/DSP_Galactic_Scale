@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     [CreateAssetMenu(menuName = "Full Serializer AOT Configuration")]
     public class fsAotConfiguration : ScriptableObject {
         public enum AotState {

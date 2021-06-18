@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public class fsCyclicReferenceManager {
         // We use the default ReferenceEquals when comparing two objects because
         // custom objects may override equals methods. These overriden equals may

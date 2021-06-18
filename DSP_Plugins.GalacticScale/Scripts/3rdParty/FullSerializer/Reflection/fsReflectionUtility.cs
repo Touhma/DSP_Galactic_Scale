@@ -5,7 +5,7 @@
 using System.Reflection;
 #endif
 
-namespace GSFullSerializer.Internal {
+namespace GSSerializer.Internal {
     public static class fsReflectionUtility {
         /// <summary>
         /// Searches for a particular implementation of the given interface type

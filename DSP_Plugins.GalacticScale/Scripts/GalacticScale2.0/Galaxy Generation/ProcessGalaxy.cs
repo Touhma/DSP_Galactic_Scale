@@ -153,7 +153,7 @@ namespace GalacticScale {
             for (var i = 0; i < GSSettings.StarCount; i++) {
                 galaxy.stars[i] = CreateStar(i, random);
             }
-
+            for (var i = 0; i < galaxy.stars.Length; i++) GS2.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
             Log("Creating Planets");
             for (var i = 0; i < GSSettings.StarCount; i++) {
                 CreateStarPlanets(ref galaxy.stars[i], gameDesc, random);

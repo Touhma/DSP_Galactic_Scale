@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     public partial class fsConverterRegistrar {
         public static Internal.DirectConverters.AnimationCurve_DirectConverter Register_AnimationCurve_DirectConverter;
     }
 }
 
-namespace GSFullSerializer.Internal.DirectConverters {
+namespace GSSerializer.Internal.DirectConverters {
     public class AnimationCurve_DirectConverter : fsDirectConverter<AnimationCurve> {
         protected override fsResult DoSerialize(AnimationCurve model, Dictionary<string, fsData> serialized) {
             var result = fsResult.Success;

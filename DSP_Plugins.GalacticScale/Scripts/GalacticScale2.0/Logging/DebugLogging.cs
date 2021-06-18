@@ -1,5 +1,5 @@
 ﻿using BepInEx.Logging;
-using GSFullSerializer;
+using GSSerializer;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 namespace GalacticScale {

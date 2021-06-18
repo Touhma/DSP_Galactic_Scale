@@ -1,4 +1,4 @@
-﻿using GSFullSerializer;
+﻿using GSSerializer;
 using System.IO;
 
 namespace GalacticScale {

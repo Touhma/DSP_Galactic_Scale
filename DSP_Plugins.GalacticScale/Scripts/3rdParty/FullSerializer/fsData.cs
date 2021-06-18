@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// The actual type that a JsonData instance can store.
     /// </summary>

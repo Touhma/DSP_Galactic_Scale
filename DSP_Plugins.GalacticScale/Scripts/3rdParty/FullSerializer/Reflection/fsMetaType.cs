@@ -1,11 +1,11 @@
-﻿using GSFullSerializer.Internal;
+﻿using GSSerializer.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace GSFullSerializer {
+namespace GSSerializer {
     /// <summary>
     /// MetaType contains metadata about a type. This is used by the reflection
     /// serializer.

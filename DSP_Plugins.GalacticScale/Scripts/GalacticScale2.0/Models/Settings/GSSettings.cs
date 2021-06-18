@@ -1,10 +1,28 @@
-﻿using GSFullSerializer;
+﻿using GSSerializer;
 using System;
 using UnityEngine;
 
 namespace GalacticScale {
     [fsObject(Converter = typeof(GSFSSettingsConverter))]
     public class GSSettings {
+        public static string ToString(bool pretty) {
+            return Utils.Serialize(pretty);
+        }
+        public new static string ToString() {
+            return ToString(false);
+        }
+        public static bool FromString(string json) {
+            fsSerializer serializer = new fsSerializer();
+            GSSettings result = GSSettings.Instance;
+            fsData data2 = fsJsonParser.Parse(json);
+            bool success = serializer.TryDeserialize(data2, ref result).Succeeded;
+            if (result.version != GSSettings.Instance.version) {
+                GS2.Warn("Version mismatch: " + GSSettings.Instance.version + " trying to load " + result.version + " savedata");
+            }
+            GSSettings.Instance = result;
+            GSSettings.Instance.imported = true;
+            return success;
+        }
         public static GSSettings Instance { get => instance; set => instance = value; }
         public static ThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         public static GSGalaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }
