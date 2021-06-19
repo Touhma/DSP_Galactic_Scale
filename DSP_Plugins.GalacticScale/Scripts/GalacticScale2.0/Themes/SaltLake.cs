@@ -10,6 +10,8 @@ namespace GalacticScale {
             PlanetType = EPlanetType.Desert,
             LDBThemeId = 17,
             Algo = 2,
+            MinRadius = 5,
+            MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Desert 5/",
             Temperature = 1.0f,
             Distribute = EThemeDistribute.Default,

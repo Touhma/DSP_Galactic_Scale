@@ -122,8 +122,9 @@ namespace GalacticScale {
                 SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
                 SerializeMember(serialized, null, "DisplayName", model.DisplayName);
                 SerializeMember(serialized, null, "BaseName", model.BaseName);
-                SerializeMember(serialized, null, "PlanetOnly", model.PlanetOnly);
-                SerializeMember(serialized, null, "MoonOnly", model.MoonOnly);
+                //SerializeMember(serialized, null, "PlanetOnly", model.PlanetOnly);
+                //SerializeMember(serialized, null, "MoonOnly", model.MoonOnly);
+                SerializeMember(serialized, null, "ThemeType", model.ThemeType);
                 SerializeMember(serialized, null, "Temperature", model.Temperature);
                 SerializeMember(serialized, null, "Distribute", model.Distribute);
                 SerializeMember(serialized, null, "TerrainSettings", model.TerrainSettings);
@@ -194,14 +195,17 @@ namespace GalacticScale {
             if (data.ContainsKey("Temperature")) {
                 DeserializeMember(data, null, "Temperature", out model.Temperature);
             }
-
-            if (data.ContainsKey("PlanetOnly")) {
-                DeserializeMember(data, null, "PlanetOnly", out model.PlanetOnly);
+            if (data.ContainsKey("ThemeType"))
+            {
+                DeserializeMember(data, null, "ThemeType", out model.ThemeType);
             }
+            //if (data.ContainsKey("PlanetOnly")) {
+            //    DeserializeMember(data, null, "PlanetOnly", out model.PlanetOnly);
+            //}
 
-            if (data.ContainsKey("MoonOnly")) {
-                DeserializeMember(data, null, "MoonOnly", out model.MoonOnly);
-            }
+            //if (data.ContainsKey("MoonOnly")) {
+            //    DeserializeMember(data, null, "MoonOnly", out model.MoonOnly);
+            //}
 
             if (data.ContainsKey("Distribute")) {
                 DeserializeMember(data, null, "Distribute", out model.Distribute);

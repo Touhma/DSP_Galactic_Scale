@@ -61,6 +61,7 @@ namespace GalacticScale {
         public static double DistanceVLF3(VectorLF3 a, VectorLF3 b) => new VectorLF3(a.x - b.x, a.y - b.y, a.z - b.z).magnitude;
 
         public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t) {
+            //GS2.Warn("Getting iconfig instance");
             foreach (var g in GS2.generators) {
                 if (g.GetType() == t) {
                     if (g is iConfigurableGenerator) {
@@ -71,7 +72,8 @@ namespace GalacticScale {
                 }
             }
 
-            if (t.GetType().Name != "GalacticScale.SettingsUI") GS2.Warn($"Could not find generator of type '{t}'");
+            if (t.GetType() != typeof(SettingsUI)) GS2.Warn($"Could not find generator of type '{t}'");
+            //GS2.Warn("returning null");
             return null;
         }
         public static bool CheckStarCollision(List<VectorLF3> pts, VectorLF3 pt, double min_dist) {

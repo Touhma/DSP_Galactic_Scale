@@ -10,6 +10,8 @@ namespace GalacticScale {
             PlanetType = EPlanetType.Ice,
             LDBThemeId = 10,
             Algo = 3,
+            MinRadius = 5,
+            MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Ice 1/",
             Temperature = -5.0f,
             Distribute = EThemeDistribute.Default,

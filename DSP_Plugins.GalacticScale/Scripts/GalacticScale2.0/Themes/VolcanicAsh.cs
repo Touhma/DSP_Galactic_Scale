@@ -10,6 +10,8 @@ namespace GalacticScale {
             PlanetType = EPlanetType.Vocano,
             LDBThemeId = 13,
             Algo = 3,
+            MinRadius = 5,
+            MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Volcanic 1/",
             Temperature = 4.0f,
             Distribute = EThemeDistribute.Interstellar,

@@ -16,7 +16,7 @@ namespace GalacticScale.Generators {
             oiler.GasItems[1] = 1120;
             oiler.GasSpeeds[0] = 0.1f;
             oiler.GasSpeeds[1] = 10f;
-            oiler.Private = true;
+            oiler.ThemeType = EThemeType.Private;
             oiler.Process();
             //GS2.Log("Oiler Processed");
 
@@ -120,7 +120,7 @@ namespace GalacticScale.Generators {
                 };
             barrenSatellite.VeinSettings.Algorithm = "GS2";
             barrenSatellite.CustomGeneration = true;
-            barrenSatellite.MoonOnly = true;
+            barrenSatellite.ThemeType = EThemeType.Moon;
             barrenSatellite.Process();
 
             GSTheme dwarf = new GSTheme("DwarfPlanet", "Dwarf Planet", "Barren");
@@ -146,20 +146,19 @@ namespace GalacticScale.Generators {
                 }
             };
             dwarf.Wind = 0f;
-            dwarf.PlanetOnly = true;
+            dwarf.ThemeType = EThemeType.Planet;
             dwarf.Process();
 
             GSTheme center = new GSTheme("Center", " ", "Barren");
             center.PlanetType = EPlanetType.Gas;
             center.atmosphereMaterial.Tint = Color.black;
             center.thumbMaterial.Tint = Color.black;
-            center.Private = true;
+            center.ThemeType = EThemeType.Private;
             center.Process();
 
             GSTheme hotGas = new GSTheme("Inferno", "Infernal Gas Giant", "GasGiant");
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
-            hotGas.PlanetOnly = true;
             hotGas.Process();
         }
     }

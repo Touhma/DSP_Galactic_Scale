@@ -42,6 +42,7 @@ namespace GalacticScale.Generators {
             if (preferences.GetInt("birthPlanetSize", 400) != 400) {
                 birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
             }
+            GS2.LogJson(birthPlanet, true);
 
         }
         public void SetGalaxyDensity(int density) {
@@ -84,9 +85,9 @@ namespace GalacticScale.Generators {
                 string themeName = themeNames[random.Next(themeNames.Count)];
                 GS2.Warn($"Setting Planet Theme to {themeName}");
                 planet.Theme = themeName;
-                planet.Radius = preferences.GetInt("birthPlanetSize", 400);
                 GS2.Warn("Setting birthPlanet");
                 birthPlanet = planet;
+                birthPlanet.Scale = 1;
                 GS2.Warn($"Selected {birthPlanet.Name}");
                 GS2.LogJson(planet, true);
                 return;
@@ -134,19 +135,29 @@ namespace GalacticScale.Generators {
             //GS2.Log($"Creating moon. Heat = {heat} name = {name} index = {index}/{orbitCount}");
             string theme;
             List<string> themeNames;
-            switch (heat) {
-                case "Hot": themeNames = GSSettings.ThemeLibrary.Hot; break;
-                case "Warm": themeNames = GSSettings.ThemeLibrary.Warm; break;
-                case "Temperate": themeNames = GSSettings.ThemeLibrary.Temperate; break;
-                case "Cold": themeNames = GSSettings.ThemeLibrary.Cold; break;
-                default: themeNames = GSSettings.ThemeLibrary.Frozen; break;
-            }
-            theme = themeNames[random.Next(0, themeNames.Count - 1)];
+            //switch (heat) {
+            //    case "Hot": themeNames = GSSettings.ThemeLibrary.Hot; break;
+            //    case "Warm": themeNames = GSSettings.ThemeLibrary.Warm; break;
+            //    case "Temperate": themeNames = GSSettings.ThemeLibrary.Temperate; break;
+            //    case "Cold": themeNames = GSSettings.ThemeLibrary.Cold; break;
+            //    default: themeNames = GSSettings.ThemeLibrary.Frozen; break;
+            //}
+            //theme = themeNames[random.Next(0, themeNames.Count - 1)];
             int radius = random.Next(30, host.Radius - 10);
             if (preferences.GetBool("moonsAreSmall", true) && radius > 200) {
                 radius = random.Next(30, 190);
             }
-
+            EThemeHeat ThemeHeat = EThemeHeat.Frozen;
+            switch (heat)
+            {
+                case "Hot": ThemeHeat = EThemeHeat.Hot; break;
+                case "Warm": ThemeHeat = EThemeHeat.Warm; break;
+                case "Temperate": ThemeHeat = EThemeHeat.Temperate; break;
+                case "Cold": ThemeHeat = EThemeHeat.Cold; break;
+                default: break;
+            }
+            themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Moon, ThemeHeat, radius);
+            theme = themeNames[random.Next(0, themeNames.Count - 1)];
             float rotationPeriod = random.Next(60, 3600);
 
             float luminosity = -1;
@@ -183,37 +194,37 @@ namespace GalacticScale.Generators {
             float chanceGas;
             if (orbitIndex < hotOrbitMax) {
                 heat = "Hot";
-                themeNames = GSSettings.ThemeLibrary.Hot;
+                //themeNames = GSSettings.ThemeLibrary.Hot;
                 chanceTiny = 0.5f;
                 chanceGas = 0.1f;
                 chanceHuge = 0.1f;
             } else if (orbitIndex < warmOrbitMax) {
                 heat = "Warm";
-                themeNames = GSSettings.ThemeLibrary.Warm;
+                //themeNames = GSSettings.ThemeLibrary.Warm;
                 chanceTiny = 0.3f;
                 chanceGas = 0.05f;
                 chanceHuge = 0.25f;
             } else if (orbitIndex < temperateOrbitMax && orbitIndex > warmOrbitMax) {
                 heat = "Temperate";
-                themeNames = GSSettings.ThemeLibrary.Temperate;
+                //themeNames = GSSettings.ThemeLibrary.Temperate;
                 chanceTiny = 0.2f;
                 chanceGas = 0.1f;
                 chanceHuge = 0.3f;
             } else if (orbitIndex < coldOrbitMax) {
                 heat = "Cold";
-                themeNames = GSSettings.ThemeLibrary.Cold;
+                //themeNames = GSSettings.ThemeLibrary.Cold;
                 chanceTiny = 0.2f;
                 chanceGas = 0.2f;
                 chanceHuge = 0.3f;
             } else {
                 heat = "Frozen";
-                themeNames = GSSettings.ThemeLibrary.Frozen;
+                //themeNames = GSSettings.ThemeLibrary.Frozen;
                 chanceTiny = 0.6f;
                 chanceGas = 0.1f;
                 chanceHuge = 0.3f;
             }
 
-            themeName = themeNames[random.Next(0, themeNames.Count - 1)];
+            //themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             float scale;
             bool tiny = false;
             bool huge = false;
@@ -229,7 +240,15 @@ namespace GalacticScale.Generators {
             if (random.NextFloat() < chanceGas) {
                 gas = true;
             }
-
+            EThemeHeat ThemeHeat = EThemeHeat.Frozen;
+            switch (heat)
+            {
+                case "Hot": ThemeHeat = EThemeHeat.Hot; break;
+                case "Warm": ThemeHeat = EThemeHeat.Warm; break;
+                case "Temperate": ThemeHeat = EThemeHeat.Temperate; break;
+                case "Cold": ThemeHeat = EThemeHeat.Cold; break;
+                default: break;
+            }
             if (gas) {
                 scale = 10f;
                 if (!tiny && !huge) {
@@ -241,20 +260,22 @@ namespace GalacticScale.Generators {
                 } else {
                     radius = random.Next(60, 200);
                 }
-
-                //GS2.Log("Gas. Radius " + radius);
-                if (orbitIndex < hotOrbitMax) {
-                    themeNames = GSSettings.ThemeLibrary.HotGasGiant;
-                } else if (orbitIndex < warmOrbitMax) {
-                    themeNames = GSSettings.ThemeLibrary.GasGiant;
-                } else if (orbitIndex < temperateOrbitMax && orbitIndex > warmOrbitMax) {
-                    themeNames = GSSettings.ThemeLibrary.GasGiant;
-                } else if (orbitIndex < coldOrbitMax) {
-                    themeNames = GSSettings.ThemeLibrary.IceGiant;
-                } else {
-                    themeNames = GSSettings.ThemeLibrary.IceGiant;
-                }
+                themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Gas, ThemeHeat, radius);
                 themeName = themeNames[random.Next(0, themeNames.Count - 1)];
+                ////GS2.Log("Gas. Radius " + radius);
+                //if (orbitIndex < hotOrbitMax) {
+                //    themeNames = GSSettings.ThemeLibrary.HotGasGiant;
+                //} else if (orbitIndex < warmOrbitMax) {
+                //    themeNames = GSSettings.ThemeLibrary.GasGiant;
+                //} else if (orbitIndex < temperateOrbitMax && orbitIndex > warmOrbitMax) {
+                //    themeNames = GSSettings.ThemeLibrary.GasGiant;
+                //} else if (orbitIndex < coldOrbitMax) {
+                //    themeNames = GSSettings.ThemeLibrary.IceGiant;
+                //} else {
+                //    themeNames = GSSettings.ThemeLibrary.IceGiant;
+                //}
+
+                //themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             } else {
                 scale = 1f;
                 var mn = preferences.GetInt("minPlanetSize");
@@ -274,6 +295,8 @@ namespace GalacticScale.Generators {
                 } else {
                     radius = random.Next(100, 500);
                 }
+                themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Planet, ThemeHeat, radius);
+                themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             }
             radius = Utils.ParsePlanetSize(radius);
             float rotationalPeriod = random.Next(60, 3600);

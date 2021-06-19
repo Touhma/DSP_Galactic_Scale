@@ -51,13 +51,32 @@ namespace GalacticScale {
         public GSTheme QueryRandom() => this["Mediterranean"];
 
         public List<string> Query(EThemeType type, EThemeHeat heat, int radius = -1, EThemeDistribute distribute = EThemeDistribute.Default) {
-            List<GSTheme> list = new List<GSTheme>();
+            //List<GSTheme> list = new List<GSTheme>();
             List<EPlanetType> types = new List<EPlanetType>();
+            List<EThemeDistribute> distributes = new List<EThemeDistribute>();
+            if (type == EThemeType.Gas)
+            {
+                types.Add(EPlanetType.Gas);
+            } else
+            {
+                types.Add(EPlanetType.Vocano);
+                types.Add(EPlanetType.Ocean);
+                types.Add(EPlanetType.Desert);
+                types.Add(EPlanetType.Ice);
+            }
+            if (distribute == EThemeDistribute.Default)
+            {
+                distributes.Add(EThemeDistribute.Default);
+                distributes.Add(EThemeDistribute.Birth);
+                distributes.Add(EThemeDistribute.Interstellar);
+                distributes.Add(EThemeDistribute.Rare);
+            }
+            else
+            {
+                distributes.Add(distribute);
+            }
             (float min, float max) temp = (3, 6);
-            //heat switch
-            //{
-            //    EThemeHeat.Warm => 
-            //}
+
             if (heat == EThemeHeat.Warm) {
                 temp = (1, 3);
             }
@@ -73,28 +92,95 @@ namespace GalacticScale {
             if (heat == EThemeHeat.Frozen) {
                 temp = (-6, -3);
             }
-            //float minHeat = -1;
-            float maxRadius = 5;
-            float minRadius = -1;
+
             var q = from theme in this
                     where types.Contains(theme.Value.PlanetType)
                     where theme.Value.Temperature < temp.max
                     where theme.Value.Temperature >= temp.min
-                    where theme.Value.MaxRadius > maxRadius
-                    where theme.Value.MinRadius < minRadius
+                    where theme.Value.MaxRadius > ((radius >0)?radius:0)
+                    where theme.Value.MinRadius < ((radius >0)?radius:510)
                     select theme.Value.Name;
-            return q.ToList();
-
+           var results = q.ToList();
+            if (results.Count == 0)
+            {
+                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} int {radius} EThemeDistribute {distribute}");
+                
+            }
+            return results;
         }
-        public List<string> Hot {
-            get {
+        //public List<string> Hot {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (
+        //                kv.Value.Temperature >= 3 &&
+        //                kv.Value.PlanetType != EPlanetType.Gas &&
+        //                !kv.Value.Private
+        //                ) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
+
+        //        return list;
+        //    }
+        //}
+        //public List<string> Warm {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.Temperature >= 0 && kv.Value.Temperature < 3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
+
+        //        return list;
+        //    }
+        //}
+        //public List<string> Temperate {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.Temperature == 0 && kv.Value.PlanetType != EPlanetType.Gas && !(kv.Value.ThemeType == EThemeType.Private)) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
+
+        //        return list;
+        //    }
+        //}
+        //public List<string> Cold {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.Temperature < 0 && kv.Value.Temperature > -3 && kv.Value.PlanetType != EPlanetType.Gas && kv.Value.ThemeType == EThemeType.Telluric) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
+
+        //        return list;
+        //    }
+        //}
+        //public List<string> Frozen {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.Temperature <= -3 && kv.Value.PlanetType != EPlanetType.Gas && kv.Value.ThemeType != EThemeType.Private) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
+
+        //        return list;
+        //    }
+        //}
+        public List<string> Habitable
+        {
+            get
+            {
                 List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (
-                        kv.Value.Temperature >= 3 &&
-                        kv.Value.PlanetType != EPlanetType.Gas &&
-                        !kv.Value.Private
-                        ) {
+                foreach (KeyValuePair<string, GSTheme> kv in this)
+                {
+                    if (kv.Value.Habitable && kv.Value.ThemeType != EThemeType.Private)
+                    {
                         list.Add(kv.Key);
                     }
                 }
@@ -102,146 +188,86 @@ namespace GalacticScale {
                 return list;
             }
         }
-        public List<string> Warm {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.Temperature >= 0 && kv.Value.Temperature < 3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
+        //public List<string> Desert {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.PlanetType == EPlanetType.Desert && kv.Value.ThemeType != EThemeType.Private) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
 
-                return list;
-            }
-        }
-        public List<string> Temperate {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.Temperature == 0 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
+        //        return list;
+        //    }
+        //}
+        //public List<string> Volcanic {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.PlanetType == EPlanetType.Vocano && kv.Value.ThemeType != EThemeType.Private) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
 
-                return list;
-            }
-        }
-        public List<string> Cold {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.Temperature < 0 && kv.Value.Temperature > -3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
+        //        return list;
+        //    }
+        //}
+        //public List<string> Ice {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.PlanetType == EPlanetType.Ice && kv.Value.ThemeType != EThemeType.Private) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
 
-                return list;
-            }
-        }
-        public List<string> Frozen {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.Temperature <= -3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
+        //        return list;
+        //    }
+        //}
+        //public List<string> GasGiant {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (kv.Value.PlanetType == EPlanetType.Gas && kv.Value.Temperature >= 0 && kv.Value.Temperature < 4 && kv.Value.ThemeType != EThemeType.Private) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
 
-                return list;
-            }
-        }
-        public List<string> Habitable {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.Habitable && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
+        //        return list;
+        //    }
+        //}
+        //public List<string> HotGasGiant {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (
+        //                kv.Value.PlanetType == EPlanetType.Gas
+        //                && kv.Value.Temperature >= 4
+        //                && kv.Value.ThemeType != EThemeType.Private
+        //            ) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
 
-                return list;
-            }
-        }
-        public List<string> Desert {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.PlanetType == EPlanetType.Desert && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
+        //        return list;
+        //    }
+        //}
+        //public List<string> IceGiant {
+        //    get {
+        //        List<string> list = new List<string>();
+        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
+        //            if (
+        //                kv.Value.PlanetType == EPlanetType.Gas
+        //                && kv.Value.Temperature < 0
+        //                && kv.Value.ThemeType != EThemeType.Private
+        //            ) {
+        //                list.Add(kv.Key);
+        //            }
+        //        }
 
-                return list;
-            }
-        }
-        public List<string> Volcanic {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.PlanetType == EPlanetType.Vocano && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
-
-                return list;
-            }
-        }
-        public List<string> Ice {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.PlanetType == EPlanetType.Ice && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
-
-                return list;
-            }
-        }
-        public List<string> GasGiant {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (kv.Value.PlanetType == EPlanetType.Gas && kv.Value.Temperature >= 0 && kv.Value.Temperature < 4 && !kv.Value.Private) {
-                        list.Add(kv.Key);
-                    }
-                }
-
-                return list;
-            }
-        }
-        public List<string> HotGasGiant {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (
-                        kv.Value.PlanetType == EPlanetType.Gas
-                        && kv.Value.Temperature >= 4
-                        && !kv.Value.Private
-                    ) {
-                        list.Add(kv.Key);
-                    }
-                }
-
-                return list;
-            }
-        }
-        public List<string> IceGiant {
-            get {
-                List<string> list = new List<string>();
-                foreach (KeyValuePair<string, GSTheme> kv in this) {
-                    if (
-                        kv.Value.PlanetType == EPlanetType.Gas
-                        && kv.Value.Temperature < 0
-                        && !kv.Value.Private
-                    ) {
-                        list.Add(kv.Key);
-                    }
-                }
-
-                return list;
-            }
-        }
+        //        return list;
+        //    }
+        //}
 
         public GSTheme Random() {
             int choice = random.Next(0, this.Count);

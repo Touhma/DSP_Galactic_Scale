@@ -8,6 +8,7 @@ namespace GalacticScale {
     public class GSTheme {
         public string Name;
         public EPlanetType PlanetType = EPlanetType.Ocean;
+        public EThemeType ThemeType = EThemeType.Telluric;
         [NonSerialized]
         public bool Base = false;
         [NonSerialized]
@@ -24,12 +25,12 @@ namespace GalacticScale {
             set => BaseName = value.Name;
         }
         public string BaseName;
-        [NonSerialized]
-        public bool Private = false;
-        [NonSerialized]
-        public bool MoonOnly = false;
-        [NonSerialized]
-        public bool PlanetOnly = false;
+        //[NonSerialized]
+        //public bool Private = false;
+        //[NonSerialized]
+        //public bool MoonOnly = false;
+        //[NonSerialized]
+        //public bool PlanetOnly = false;
         [NonSerialized]
         public bool Habitable = false;
         [NonSerialized]
@@ -329,6 +330,9 @@ namespace GalacticScale {
             MaterialPath = baseTheme.MaterialPath;
             Temperature = baseTheme.Temperature;
             Distribute = baseTheme.Distribute;
+            MinRadius = baseTheme.MinRadius;
+            MaxRadius = baseTheme.MaxRadius;
+            ThemeType = baseTheme.ThemeType;
             ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
             ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
             Vegetables0 = (int[])baseTheme.Vegetables0.Clone();

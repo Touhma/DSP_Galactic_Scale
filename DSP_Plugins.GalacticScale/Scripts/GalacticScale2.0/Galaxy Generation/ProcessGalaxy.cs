@@ -72,7 +72,7 @@ namespace GalacticScale {
                 Log("End of galaxy generation");
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
-                Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name}");
+                Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
                 Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
                 Log($"First System Radius = {galaxy.stars[0].systemRadius}");
                 return galaxy;

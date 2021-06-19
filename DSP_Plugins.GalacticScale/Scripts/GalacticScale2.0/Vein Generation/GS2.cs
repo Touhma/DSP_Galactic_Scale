@@ -45,6 +45,7 @@ namespace GalacticScale {
             InitializePlanetVeins(planet, veinData.Count);
             List<Vector2> node_vectors = new List<Vector2>();
             bool infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
+            GS2.Warn($"Adding Veins to Planet {gsPlanet.Name} infinite:{infiniteResources} resourceMulti:{DSPGame.GameDesc.resourceMultiplier}");
 
             for (int i = 0; i < veinData.Count; i++) // For each veingroup (patch of vein nodes)
             {
@@ -74,14 +75,13 @@ namespace GalacticScale {
                 if (veinAmount < 20) {
                     veinAmount = 20;
                 }
-
+                if (planet.veinGroups[i].type != EVeinType.Oil) veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
+               
                 for (int k = 0; k < node_vectors.Count; k++) {
                     //GS2.Log(node_vectors[k] + " is the node_vector[k]");
                     Vector3 vector5 = (node_vectors[k].x * vector_right + node_vectors[k].y * vector_forward) * (float)planetRadiusFactor;
                     //GS2.Log("and its vector5 is " + vector5);
-                    if (planet.veinGroups[i].type != EVeinType.Oil) {
-                        veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
-                    }
+
 
                     if (veinAmount < 1) {
                         veinAmount = 1;

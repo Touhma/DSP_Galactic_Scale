@@ -91,7 +91,7 @@ namespace GalacticScale {
             this.tip = tip;
         }
         private (bool succeeded, float value) GetFloat(object o) {
-            GS2.Warn(label);
+            //GS2.Warn(label);
             if (o is float) return (true, (float)o);
             //float result;
             bool success = float.TryParse(o.ToString(), out float result);

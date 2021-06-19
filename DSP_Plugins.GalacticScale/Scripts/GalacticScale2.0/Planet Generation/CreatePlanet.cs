@@ -108,7 +108,7 @@ namespace GalacticScale {
             if (star.galaxy.astroPoses.Length <= planet.id) {
                 Error($"Astroposes does not contain index {planet.id} when trying to set planet uRadius");
             }
-
+            GS2.Warn($"Setting astropose for {planet.name}");
             star.galaxy.astroPoses[planet.id].uRadius = planet.realRadius;
             if (star.planets.Length <= counter) {
                 Error($"star.planets length of {star.planets.Length} <= counter {counter}");

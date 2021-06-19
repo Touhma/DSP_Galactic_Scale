@@ -10,6 +10,8 @@ namespace GalacticScale {
             PlanetType = EPlanetType.Ocean,
             LDBThemeId = 15,
             Algo = 6,
+            MinRadius = 5,
+            MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Ocean 4/",
             Temperature = 0.0f,
             Habitable = true,

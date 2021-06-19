@@ -11,6 +11,8 @@ namespace GalacticScale {
             PlanetType = EPlanetType.Ocean,
             LDBThemeId = 16,
             Algo = 7,
+            MinRadius = 50,
+            MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Ocean 5/",
             Temperature = 0.0f,
             Distribute = EThemeDistribute.Interstellar,

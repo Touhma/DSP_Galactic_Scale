@@ -12,7 +12,6 @@ namespace GalacticScale {
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin {
         public new static ManualLogSource Logger;
-
         // Internal Variables
         public static bool DebugReworkPlanetGen = false;
         public static bool DebugReworkPlanetGenDeep = false;
