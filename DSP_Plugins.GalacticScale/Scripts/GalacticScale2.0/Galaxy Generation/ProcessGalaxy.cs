@@ -15,7 +15,7 @@ namespace GalacticScale
                 Log($"Generating Galaxy of {GSSettings.StarCount}|{gameDesc.starCount} stars");
                 Failed = false;
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
-                if (!GSSettings.Instance.imported)
+                if (!GSSettings.Instance.imported || sketchOnly)
                 {
                     //Warn("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
@@ -33,7 +33,7 @@ namespace GalacticScale
                     Log("Settings Loaded From Save File");
                 }
 
-                Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
+                //Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
                 //Log("Processing ThemeLibrary");
                 if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary())
@@ -78,9 +78,9 @@ namespace GalacticScale
                 GenerateVeins(!sketchOnly);
                 //if (GS2.CheatMode) return galaxy;
                 //}
-                Log("Creating Galaxy StarGraph");
+                //Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
-                Log("End of galaxy generation");
+                //Log("End of galaxy generation");
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
                 Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
@@ -98,59 +98,7 @@ namespace GalacticScale
                 return null;
             }
         }
-        //public static void SetupBirthPlanet() {
-        //    Log("Start");
-        //    if (galaxy.starCount <= 0) return;
-        //    if (GSSettings.Instance.BirthPlanetName != null && GSSettings.Instance.BirthPlanetName != "")
-        //    {
-        //        Warn("BirthPlanetName Found");
-        //        GSPlanet BirthPlanet = GetGSPlanet(GSSettings.Instance.BirthPlanetName);
-
-        //        if (BirthPlanet != null)
-        //        {
-        //            Log(BirthPlanet.ToString());
-        //            Log("Found BirthPlanet, Adding ID's");
-
-        //            GSSettings.BirthPlanetId = galaxy.birthPlanetId = BirthPlanet.planetData.id;
-        //            galaxy.birthStarId = BirthPlanet.planetData.star.id;
-        //            Warn("Birth Star Name = " + galaxy.stars[GSSettings.BirthStarId]);
-        //            return;
-        //        }
-        //        Warn("BirthPlanet Name Not Found In Planet List!");
-        //    }
-        //    if (GSSettings.BirthPlanetId >= 0)
-        //    {
-        //        Warn("Set BirthPlanet by it's ID being > 0: "+GSSettings.birthPlanetId + " of " + galaxy.stars.Length);
-        //        Warn($"Set BirthStar ID :{GSSettings.BirthStarId -1 } of { galaxy.stars.Length}");
-        //        //galaxy.birthPlanetId = galaxy.stars[GSSettings.birthStarId].planets[GSSettings.birthPlanetId].id;
-
-        //        //galaxy.birthStarId = galaxy.stars[GSSettings.birthStarId].id;
-        //        GSPlanet BirthPlanet = GetGSPlanet(GSSettings.birthPlanetId);
-        //        galaxy.birthPlanetId = BirthPlanet.planetData.id;
-        //        galaxy.birthStarId = BirthPlanet.planetData.star.id;
-        //    }
-        //    else
-        //    {
-        //        Warn("Trying to find a birth planet via iteration");
-        //        for (int i = 0; i < GSSettings.StarCount; i++)
-        //        {
-        //            GSStar star = GSSettings.Stars[i];
-        //            List<GSPlanet> bodies = star.Bodies;
-        //            for (int j = 0; j < star.bodyCount; j++)
-        //            {
-        //                GSPlanet planet = bodies[j];
-        //                if (ThemeLibrary[planet.Theme].PlanetType == EPlanetType.Ocean)
-        //                {
-        //                    GS2.Log("Found a birth planet: "+planet.Name);
-        //                    GSSettings.birthPlanetId =galaxy.birthPlanetId = planet.planetData.id;
-        //                    galaxy.birthStarId = planet.planetData.star.id;
-        //                    i = j = 9001;
-        //                }
-        //            }
-        //        }
-        //    }  
-        //    Assert.Positive(galaxy.birthPlanetId);
-        //}
+       
         public static void GenerateVeins(bool SketchOnly)
         {
             for (int i = 1; i < galaxy.starCount; ++i)
@@ -166,19 +114,19 @@ namespace GalacticScale
         {
             var gSize = galaxy.starCount * 4000;
             galaxy.astroPoses = new AstroPose[gSize];
-            Log("Creating Stars");
+            //Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++)
             {
                 galaxy.stars[i] = CreateStar(i, random);
             }
-            for (var i = 0; i < galaxy.stars.Length; i++) GS2.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
-            Log("Creating Planets");
+            //for (var i = 0; i < galaxy.stars.Length; i++) GS2.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
+            //Log("Creating Planets");
             for (var i = 0; i < GSSettings.StarCount; i++)
             {
                 CreateStarPlanets(ref galaxy.stars[i], gameDesc, random);
             }
 
-            Log("Planets have been created");
+            //Log("Planets have been created");
             AstroPose[] astroPoses = galaxy.astroPoses;
             for (int index = 0; index < galaxy.astroPoses.Length; ++index)
             {
@@ -191,9 +139,9 @@ namespace GalacticScale
                 astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;
                 astroPoses[galaxy.stars[index].id * 100].uRadius = galaxy.stars[index].physicsRadius;
             }
-            Log("Updating Poses");
+            //Log("Updating Poses");
             galaxy.UpdatePoses(0.0);
-            Log("End");
+            //Log("End");
         }
     }
 }

@@ -6,14 +6,11 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static void Log(string s,
-            [CallerLineNumber] int lineNumber = 0,
-            [CallerMemberName] string caller = null)
+        public static void Log(string s, [CallerLineNumber] int lineNumber = 0)
         {
             if (debugOn)
             {
-                Bootstrap.Debug(lineNumber + ":" + caller + ":" + GetCaller() + s);
-
+                Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{s}");
             }
         }
         public static void LogSpace(int lineCount = 1)
@@ -27,13 +24,13 @@ namespace GalacticScale
             }
         }
         public static void Error(string message,
-            [CallerLineNumber] int lineNumber = 0,
-            [CallerMemberName] string caller = null)
+            [CallerLineNumber] int lineNumber = 0)
         {
-            Bootstrap.Debug($"{caller}:{lineNumber}::" + GetCaller() + message, LogLevel.Error, true);
-            GS2.DumpError(message);
+            Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Error, true);
+            DumpError(message);
         }
-        public static void Warn(string message) => Bootstrap.Debug(GetCaller() + message, LogLevel.Warning, true);
+        public static void Warn(string message , 
+            [CallerLineNumber] int lineNumber = 0) => Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Warning, true);
         public static void LogJson(object o, bool force = false)
         {
             if (!debugOn && !force)
@@ -62,7 +59,6 @@ namespace GalacticScale
             {
                 methodName = "<Constructor>";
             }
-
             return className + "|" + methodName + "|";
         }
     }

@@ -24,15 +24,15 @@ namespace GalacticScale.Generators
         {
             get
             {
-                GS2.Log("Start");
+                //GS2.Log("Start");
                 List<string> list = new List<string>();
                 foreach (var kvp in ThemeTestLibrary)
                 {
                     GSTheme theme = kvp.Value;
                     list.Add(theme.DisplayName);
                 }
-                GS2.LogJson(list);
-                GS2.Log("End");
+                //GS2.LogJson(list);
+                //GS2.Log("End");
                 return list;
             }
         }

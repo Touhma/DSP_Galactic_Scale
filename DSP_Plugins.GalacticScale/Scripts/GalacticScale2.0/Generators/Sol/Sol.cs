@@ -254,13 +254,13 @@ namespace GalacticScale.Generators
                     }
                 }
             }
-            GS2.Log("Star Parse Time: " + stopwatch.duration.ToString("0.000") + " s");
+            //GS2.Log("Star Parse Time: " + stopwatch.duration.ToString("0.000") + " s");
         }
         private int availMoons;
         public void Generate(int starCount)
         {
 
-            GS2.Log($"Start {GSSettings.Seed}");
+            //GS2.Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
             GSSettings.GalaxyParams.graphDistance = 48;
             GSSettings.GalaxyParams.graphMaxStars = 512;
@@ -341,8 +341,8 @@ namespace GalacticScale.Generators
                 int planetCount = 1 + random.Next(Mathf.RoundToInt(bodyCount / 3), bodyCount - 1);
                 int moonCount = bodyCount - planetCount;
                 availMoons = moonCount;
-                GS2.LogSpace(3);
-                GS2.Log($"Creating Planets for Star {star.Name}. Planet Count = {planetCount}. Moon Count = {moonCount}");
+                //GS2.LogSpace(3);
+                //GS2.Log($"Creating Planets for Star {star.Name}. Planet Count = {planetCount}. Moon Count = {moonCount}");
                 for (var j = 0; j < planetCount; j++)
                 {
                     int planetMoonCount = 0;
@@ -372,14 +372,14 @@ namespace GalacticScale.Generators
             {
                 pickNewBirthPlanet();
                 GSSettings.BirthPlanetName = birthPlanet.Name;
-                GS2.Log($"Set Birth Planet to {GSSettings.BirthPlanetName}");
-                GS2.LogJson(birthPlanet);
+                //GS2.Log($"Set Birth Planet to {GSSettings.BirthPlanetName}");
+                //GS2.LogJson(birthPlanet);
 
             }
             else
             {
                 GSSettings.BirthPlanetName = "Earth";
-                GS2.Log("Set to earth");
+                //GS2.Log("Set to earth");
             }
             if (preferences.GetBool("birthPlanetSiTi", false))
             {
@@ -400,45 +400,45 @@ namespace GalacticScale.Generators
         }
         private void pickNewBirthPlanet()
         {
-            GS2.Log("Habitable Planets:");
-            GS2.LogJson(GSSettings.Stars.HabitablePlanets);
+            //GS2.Log("Habitable Planets:");
+            //GS2.LogJson(GSSettings.Stars.HabitablePlanets);
             if (GSSettings.StarCount < 2)
             {
                 birthPlanet = GSSettings.Stars[0].Planets[3];
-                GS2.Log("There are no other stars to pick a birth planet from. Using Earth");
+                //GS2.Log("There are no other stars to pick a birth planet from. Using Earth");
                 return;
             }
             GSPlanets HabitablePlanets = GSSettings.Stars.HabitablePlanets;
             if (HabitablePlanets.Count == 1)
             {
-                GS2.Log("There are no habitable planets other than Earth generated");
-                GS2.Log("Generating new habitable planet by overwriting an existing one");
+                //GS2.Log("There are no habitable planets other than Earth generated");
+                //GS2.Log("Generating new habitable planet by overwriting an existing one");
                 GSStar star = GSSettings.Stars.RandomStar;
                 int index = 0;
-                GS2.Log("Getting index");
+                //GS2.Log("Getting index");
                 if (star.planetCount > 1)
                 {
                     index = Mathf.RoundToInt((star.planetCount - 1) / 2);
                 }
 
                 GSPlanet planet = star.Planets[index];
-                GS2.Log("Getting themeNames");
+                //GS2.Log("Getting themeNames");
                 List<string> themeNames = GSSettings.ThemeLibrary.Habitable;
-                GS2.Log($"Count = {themeNames.Count}");
+                //GS2.Log($"Count = {themeNames.Count}");
                 string themeName = themeNames[random.Next(themeNames.Count)];
-                GS2.Log($"Setting Planet Theme to {themeName}");
+                //GS2.Log($"Setting Planet Theme to {themeName}");
                 planet.Theme = themeName;
                 planet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
-                GS2.Log("Setting birthPlanet");
+                //GS2.Log("Setting birthPlanet");
                 birthPlanet = planet;
-                GS2.Log($"Selected {birthPlanet.Name}");
+                //GS2.Log($"Selected {birthPlanet.Name}");
                 return;
             }
             else if (HabitablePlanets.Count > 1)
             {
-                GS2.Log("Selecting random habitable planet");
+                //GS2.Log("Selecting random habitable planet");
                 birthPlanet = HabitablePlanets[random.Next(1, HabitablePlanets.Count - 1)];
-                GS2.Log($"Selected {birthPlanet.Name}");
+                //GS2.Log($"Selected {birthPlanet.Name}");
                 return;
             }
             //int attempts = 1;
@@ -512,11 +512,11 @@ namespace GalacticScale.Generators
 
         public GSPlanet RandomMoon(GSStar star, GSPlanet host, string name, int index, int orbitCount, string heat)
         {
-            GS2.Log($"Creating moon. Heat = {heat} name = {name} index = {index}/{orbitCount}");
+            //GS2.Log($"Creating moon. Heat = {heat} name = {name} index = {index}/{orbitCount}");
             string theme;
             List<string> themeNames;
 
-            int radius = random.Next(30, host.Radius - 10);
+            int radius = random.Next(30, Mathf.Clamp(host.Radius - 10,30,510));
             if (preferences.GetBool("moonsAreSmall", true) && radius > 200)
             {
                 radius = random.Next(30, 190);
@@ -539,6 +539,7 @@ namespace GalacticScale.Generators
                 default: break;
             }
             themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Moon, ThemeHeat, radius);
+            if (themeNames.Count == 0) GS2.Error("No Theme Names in List!");
             theme = themeNames[random.Next(0, themeNames.Count - 1)];
             float rotationPeriod = random.Next(60, 3600);
 
@@ -585,9 +586,9 @@ namespace GalacticScale.Generators
 
         public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount, int availMoons)
         {
-            GS2.Log($"Creating Random Planet for {star.Name}. Named: {name}. orbitIndex:{orbitIndex}/{orbitCount} moons:{moonCount}");
+            //GS2.Log($"Creating Random Planet for {star.Name}. Named: {name}. orbitIndex:{orbitIndex}/{orbitCount} moons:{moonCount}");
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            GS2.Warn($"Habitable Zone for Star with Luminosity {star.luminosity} is {hz.min} , {hz.max}");
+            //GS2.Warn($"Habitable Zone for Star with Luminosity {star.luminosity} is {hz.min} , {hz.max}");
             //float thisOrbitDistance;
             int radius;
             string themeName;
@@ -699,7 +700,7 @@ namespace GalacticScale.Generators
                     radius = random.Next(60, 200);
                 }
 
-                GS2.Log("Gas. Radius " + radius);
+                //GS2.Log("Gas. Radius " + radius);
                 //if (orbitIndex < hotOrbitMax) {
                 //    themeNames = GSSettings.ThemeLibrary.HotGasGiant;
                 //} else if (orbitIndex < warmOrbitMax) {
@@ -746,7 +747,7 @@ namespace GalacticScale.Generators
             }
             if (g.OrbitRadius < 1f && random.NextFloat() < 0.5f)
             {
-                GS2.Warn($"Tidal Locking {g.Name}");
+                //GS2.Warn($"Tidal Locking {g.Name}");
                 g.RotationPeriod = g.OrbitalPeriod; // Tidal Lock
             }
             else if (g.OrbitRadius < 1.5f && random.NextFloat() < 0.2f)
@@ -783,13 +784,13 @@ namespace GalacticScale.Generators
 
             g.Luminosity = -1;
             g.Scale = scale;
-            GS2.Log($"Created Planet {g.Name} radius:{g.Radius} scale:{g.Scale}");
+            //GS2.Log($"Created Planet {g.Name} radius:{g.Radius} scale:{g.Scale}");
             return g;
         }
 
         public void GenerateSol(GSStar sol)
         {
-            GS2.Log("Generating the Sol System");
+            //GS2.Log("Generating the Sol System");
 
             GS2Generator.InitThemes();
             GSPlanet luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f, 3278f, 0, 6.68f, 3278f, 0, 1.36f);

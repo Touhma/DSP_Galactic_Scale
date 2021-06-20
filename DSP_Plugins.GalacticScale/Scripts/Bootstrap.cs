@@ -93,8 +93,11 @@ namespace GalacticScale
         public static PlanetData TeleportPlanet = null;
         public static StarData TeleportStar = null;
         public static bool TeleportEnabled = false;
-        private void Update()
+        public static int timer = 0;
+        private void FixedUpdate()
         {
+            timer++;
+            if (timer >= 1000) timer = 0;
             if (!GS2.CheatMode)
             {
                 return;
