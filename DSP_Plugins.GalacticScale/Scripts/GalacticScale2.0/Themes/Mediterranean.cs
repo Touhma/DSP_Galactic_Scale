@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale {
-    public static partial class Themes {
+namespace GalacticScale
+{
+    public static partial class Themes
+    {
         public static GSTheme Mediterranean = new GSTheme()
         {
             Name = "Mediterranean",

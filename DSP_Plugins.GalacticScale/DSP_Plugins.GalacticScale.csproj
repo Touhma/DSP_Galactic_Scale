@@ -200,6 +200,8 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\PlanetDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetCoroutine.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Planet Generation\Modeler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\LUT Rework.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\Algorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\PlanetComputeMainThread.cs" />

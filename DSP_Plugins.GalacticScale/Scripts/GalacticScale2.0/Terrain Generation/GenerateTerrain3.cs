@@ -1,9 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale {
-    public static partial class TerrainAlgorithms {
-        public static void GenerateTerrain3(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0) {
+namespace GalacticScale
+{
+    public static partial class TerrainAlgorithms
+    {
+        public static void GenerateTerrain3(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
+        {
             random = new GS2.Random(gsPlanet.Seed);
             GS2.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
@@ -18,7 +21,8 @@ namespace GalacticScale {
             SimplexNoise simplexNoise1 = new SimplexNoise(seed1);
             SimplexNoise simplexNoise2 = new SimplexNoise(seed2);
             PlanetRawData data = planet.data;
-            for (int index = 0; index < data.dataLength; ++index) {
+            for (int index = 0; index < data.dataLength; ++index)
+            {
                 double num4 = data.vertices[index].x * (double)planet.radius;
                 double num5 = data.vertices[index].y * (double)planet.radius;
                 double num6 = data.vertices[index].z * (double)planet.radius;
@@ -31,21 +35,25 @@ namespace GalacticScale {
                 double num13 = simplexNoise2.Noise3DFBM(num7 * num1 * 0.8, num8 * num2 * 0.8, num9 * num3 * 0.8, 2) * 2.0;
                 double f = num10 * 2.0 + 0.92 + Mathf.Clamp01((float)(num11 * Mathf.Abs((float)num13 + 0.5f) - 0.35) * 1f);
                 //GS2.Log(f.ToString());
-                if (f < 0.0) {
+                if (f < 0.0)
+                {
                     f *= 2.0;
                 }
 
                 double num14 = Maths.Levelize2(f);
-                if (num14 > 0.0) {
+                if (num14 > 0.0)
+                {
                     num14 = Maths.Levelize4(Maths.Levelize2(f));
                 }
 
                 double num15 = num14 <= 0.0 ? Mathf.Lerp(-4f, 0.0f, (float)num14 + 1f) : (num14 <= 1.0 ? Mathf.Lerp(0.0f, 0.3f, (float)num14) + num12 * 0.1 : (num14 <= 2.0 ? Mathf.Lerp(0.3f, 1.4f, (float)num14 - 1f) + num12 * 0.12 : Mathf.Lerp(1.4f, 2.7f, (float)num14 - 2f) + num12 * 0.12));
-                if (f < 0.0) {
+                if (f < 0.0)
+                {
                     f *= 2.0;
                 }
 
-                if (f < 1.0) {
+                if (f < 1.0)
+                {
                     f = Maths.Levelize(f);
                 }
 

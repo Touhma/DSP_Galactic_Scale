@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GSSerializer {
+namespace GSSerializer
+{
     /// <summary>
     /// fsContext stores global metadata that can be used to customize how
     /// fsConverters operate during serialization.
     /// </summary>
-    public sealed class fsContext {
+    public sealed class fsContext
+    {
         /// <summary>
         /// All of the context objects.
         /// </summary>
@@ -30,9 +32,11 @@ namespace GSSerializer {
         /// <summary>
         /// Fetches the context object for the given type.
         /// </summary>
-        public T Get<T>() {
+        public T Get<T>()
+        {
             object val;
-            if (_contextObjects.TryGetValue(typeof(T), out val)) {
+            if (_contextObjects.TryGetValue(typeof(T), out val))
+            {
                 return (T)val;
             }
             throw new InvalidOperationException("There is no context object of type " + typeof(T));

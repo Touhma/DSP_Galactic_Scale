@@ -2,21 +2,27 @@
 using System;
 using UnityEngine;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
     [fsObject(Converter = typeof(GSFSSettingsConverter))]
-    public class GSSettings {
-        public static string ToString(bool pretty) {
+    public class GSSettings
+    {
+        public static string ToString(bool pretty)
+        {
             return Utils.Serialize(pretty);
         }
-        public new static string ToString() {
+        public new static string ToString()
+        {
             return ToString(false);
         }
-        public static bool FromString(string json) {
+        public static bool FromString(string json)
+        {
             fsSerializer serializer = new fsSerializer();
             GSSettings result = GSSettings.Instance;
             fsData data2 = fsJsonParser.Parse(json);
             bool success = serializer.TryDeserialize(data2, ref result).Succeeded;
-            if (result.version != GSSettings.Instance.version) {
+            if (result.version != GSSettings.Instance.version)
+            {
                 GS2.Warn("Version mismatch: " + GSSettings.Instance.version + " trying to load " + result.version + " savedata");
             }
             GSSettings.Instance = result;
@@ -32,31 +38,44 @@ namespace GalacticScale {
         public static int StarCount => Stars.Count;
         // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }
         private static GSPlanet birthPlanet = null;
-        public static GSPlanet BirthPlanet {
-            get {
-                if (birthPlanet != null) {
+        public static GSPlanet BirthPlanet
+        {
+            get
+            {
+                if (birthPlanet != null)
+                {
                     return birthPlanet;
                 }
                 //GS2.Warn($"BirthPlanet Requested by {GS2.GetCaller(1)} {GS2.GetCaller(2)} {GS2.GetCaller(3)}");
-                if (birthPlanetId > 100) {
+                if (birthPlanetId > 100)
+                {
                     //GS2.Warn($"Trying to find GSPlanet for id {birthPlanetId} on behalf of {GS2.GetCaller()}");
                     GSPlanet p = GS2.GetGSPlanet(birthPlanetId);
-                    if (p != null) {
+                    if (p != null)
+                    {
                         //GS2.Log($"Found birth planet by ID. {p.Name}");
                         birthPlanet = p;
                         return p;
-                    } else {
+                    }
+                    else
+                    {
                         //GS2.Warn($"Planet ID {birthPlanetId} returned null");
                     }
-                } else {
+                }
+                else
+                {
                     //GS2.Warn("BirthPlanetID < 100");
 
-                    if (BirthPlanetName != null && BirthPlanetName != string.Empty) {
+                    if (BirthPlanetName != null && BirthPlanetName != string.Empty)
+                    {
                         //GS2.Warn($"Trying to get birthPlanet by name of '{BirthPlanetName}'");
                         GSPlanet p = GS2.GetGSPlanet(BirthPlanetName);
-                        if (p == null) {
+                        if (p == null)
+                        {
                             GS2.Error($"BirthPlanet '{BirthPlanetName}' returned null");
-                        } else {
+                        }
+                        else
+                        {
                             //GS2.Log($"Found birth planet by name: {birthPlanet}");
                             birthPlanet = p;
                             return p;
@@ -65,7 +84,8 @@ namespace GalacticScale {
                 }
 
                 GS2.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
-                if (Stars.HabitablePlanets.Count > 0) {
+                if (Stars.HabitablePlanets.Count > 0)
+                {
                     GS2.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");
                     GSPlanet randomPlanet = Stars.HabitablePlanets[new GS2.Random(Seed).Next(Stars.HabitablePlanets.Count)];
                     birthPlanet = randomPlanet;
@@ -73,7 +93,8 @@ namespace GalacticScale {
                     return randomPlanet;
                 }
                 GS2.Log("Could not find any habitable planets. Trying to use first planet.");
-                if (StarCount > 0 && PlanetCount > 0) {
+                if (StarCount > 0 && PlanetCount > 0)
+                {
                     return Stars[0].Planets[0];
                 }
 
@@ -107,12 +128,14 @@ namespace GalacticScale {
         [NonSerialized]
         public bool imported = false;
 
-        public GSSettings(int seed) {
+        public GSSettings(int seed)
+        {
             //GS2.Log("Start");
             this.seed = seed;
             //GS2.Log("End");
         }
-        public static void Reset(int seed) {
+        public static void Reset(int seed)
+        {
             GS2.Log("Start");
             instance = new GSSettings(seed);
             GalaxyParams = new GSGalaxyParams();
@@ -125,16 +148,19 @@ namespace GalacticScale {
             GS2.gsStars.Clear();
             //GS2.Log("End");
         }
-        private int getPlanetCount() {
+        private int getPlanetCount()
+        {
             int count = 0;
-            foreach (GSStar star in stars) {
+            foreach (GSStar star in stars)
+            {
                 count += star.bodyCount;
             }
 
             return count;
         }
     }
-    public class GSGalaxyParams {
+    public class GSGalaxyParams
+    {
         public int iterations = 4;
         public double minDistance = 2;
         public double minStepLength = 2.3;

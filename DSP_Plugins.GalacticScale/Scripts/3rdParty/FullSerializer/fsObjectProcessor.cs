@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace GSSerializer {
+namespace GSSerializer
+{
     /// <summary>
     /// <para>
     /// Enables injecting code before/after an object has been serialized. This
@@ -15,7 +16,8 @@ namespace GSSerializer {
     /// p1#After.
     /// </para>
     /// </summary>
-    public abstract class fsObjectProcessor {
+    public abstract class fsObjectProcessor
+    {
         /// <summary>
         /// Is the processor interested in objects of the given type?
         /// </summary>

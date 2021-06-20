@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GSSerializer.Internal {
+namespace GSSerializer.Internal
+{
     /// <summary>
     /// Caches type name to type lookups. Type lookups occur in all loaded
     /// assemblies.
     /// </summary>
-    public static class fsTypeCache {
+    public static class fsTypeCache
+    {
         /// <summary>
         /// Cache from fully qualified type name to type instances.
         /// </summary>
@@ -24,8 +26,10 @@ namespace GSSerializer.Internal {
         /// </summary>
         private static readonly List<Assembly> _assembliesByIndex;
 
-        static fsTypeCache() {
-            lock (typeof(fsTypeCache)) {
+        static fsTypeCache()
+        {
+            lock (typeof(fsTypeCache))
+            {
                 // Setup assembly references so searching and the like resolves
                 // correctly.
                 _assembliesByName = new Dictionary<string, Assembly>();
@@ -36,7 +40,8 @@ namespace GSSerializer.Internal {
                 _assembliesByName[assembly.FullName] = assembly;
                 _assembliesByIndex.Add(assembly);
 #else
-                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
                     _assembliesByName[assembly.FullName] = assembly;
                     _assembliesByIndex.Add(assembly);
                 }
@@ -50,8 +55,10 @@ namespace GSSerializer.Internal {
         }
 
 #if !(UNITY_WP8 || UNITY_METRO) // AssemblyLoad events are not supported on these platforms
-        private static void OnAssemblyLoaded(object sender, AssemblyLoadEventArgs args) {
-            lock (typeof(fsTypeCache)) {
+        private static void OnAssemblyLoaded(object sender, AssemblyLoadEventArgs args)
+        {
+            lock (typeof(fsTypeCache))
+            {
                 _assembliesByName[args.LoadedAssembly.FullName] = args.LoadedAssembly;
                 _assembliesByIndex.Add(args.LoadedAssembly);
 
@@ -68,10 +75,13 @@ namespace GSSerializer.Internal {
         /// <param name="typeName">The name of the type.</param>
         /// <param name="type">The found type.</param>
         /// <returns>True if the type was found, false otherwise.</returns>
-        private static bool TryDirectTypeLookup(string assemblyName, string typeName, out Type type) {
-            if (assemblyName != null) {
+        private static bool TryDirectTypeLookup(string assemblyName, string typeName, out Type type)
+        {
+            if (assemblyName != null)
+            {
                 Assembly assembly;
-                if (_assembliesByName.TryGetValue(assemblyName, out assembly)) {
+                if (_assembliesByName.TryGetValue(assemblyName, out assembly))
+                {
                     type = assembly.GetType(typeName, /*throwOnError:*/ false);
                     return type != null;
                 }
@@ -88,19 +98,22 @@ namespace GSSerializer.Internal {
         /// <param name="typeName">The name of the type.</param>
         /// <param name="type">The found type.</param>
         /// <returns>True if the type was found, false otherwise.</returns>
-        private static bool TryIndirectTypeLookup(string typeName, out Type type) {
+        private static bool TryIndirectTypeLookup(string typeName, out Type type)
+        {
             // There used to be a foreach loop through the value keys of the
             // _assembliesByName dictionary. However, during that loop assembly
             // loads could occur, causing an OutOfSync exception. To resolve
             // that, we just iterate through the assemblies by index.
 
             int i = 0;
-            while (i < _assembliesByIndex.Count) {
+            while (i < _assembliesByIndex.Count)
+            {
                 Assembly assembly = _assembliesByIndex[i];
 
                 // try GetType; should be fast
                 type = assembly.GetType(typeName);
-                if (type != null) {
+                if (type != null)
+                {
                     return true;
                 }
                 ++i;
@@ -108,13 +121,16 @@ namespace GSSerializer.Internal {
 
             i = 0;
             // This code here is slow and is just here as a fallback
-            while (i < _assembliesByIndex.Count) {
+            while (i < _assembliesByIndex.Count)
+            {
                 Assembly assembly = _assembliesByIndex[i];
 
                 // private type or similar; go through the slow path and check
                 // every type's full name
-                foreach (var foundType in assembly.GetTypes()) {
-                    if (foundType.FullName == typeName) {
+                foreach (var foundType in assembly.GetTypes())
+                {
+                    if (foundType.FullName == typeName)
+                    {
                         type = foundType.GetType();
                         return true;
                     }
@@ -151,18 +167,23 @@ namespace GSSerializer.Internal {
         /// A hint for the assembly to start the search with. Use null if
         /// unknown.
         /// </param>
-        public static Type GetType(string name, string assemblyHint) {
-            if (string.IsNullOrEmpty(name)) {
+        public static Type GetType(string name, string assemblyHint)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
                 return null;
             }
 
-            lock (typeof(fsTypeCache)) {
+            lock (typeof(fsTypeCache))
+            {
                 Type type;
-                if (_cachedTypes.TryGetValue(name, out type) == false) {
+                if (_cachedTypes.TryGetValue(name, out type) == false)
+                {
                     // if both the direct and indirect type lookups fail, then
                     // throw an exception
                     if (TryDirectTypeLookup(assemblyHint, name, out type) == false &&
-                        TryIndirectTypeLookup(name, out type) == false) {
+                        TryIndirectTypeLookup(name, out type) == false)
+                    {
                     }
 
                     _cachedTypes[name] = type;

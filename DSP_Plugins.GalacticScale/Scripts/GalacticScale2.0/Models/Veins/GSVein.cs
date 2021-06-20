@@ -1,5 +1,7 @@
-﻿namespace GalacticScale {
-    public class GSVein {
+﻿namespace GalacticScale
+{
+    public class GSVein
+    {
         public float richness;
         public int count;
         //public Vector3 position;
@@ -15,8 +17,10 @@
         //    this.richness = richness;
         //    //position = Vector3.zero;
         //}
-        public GSVein(GSPlanet gsPlanet, int seed = -1) {
-            if (seed < 0) {
+        public GSVein(GSPlanet gsPlanet, int seed = -1)
+        {
+            if (seed < 0)
+            {
                 seed = GSSettings.Seed;
             }
 
@@ -25,7 +29,8 @@
             count = random.Next(1, 30);
             //position = Vector3.zero;
         }
-        public GSVein() {
+        public GSVein()
+        {
             richness = -1;
             count = -1;
             //position = Vector3.zero;

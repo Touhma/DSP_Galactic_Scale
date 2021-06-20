@@ -1,8 +1,10 @@
 ﻿using GSSerializer;
 using System.IO;
 
-namespace GalacticScale {
-    public static partial class GS2 {
+namespace GalacticScale
+{
+    public static partial class GS2
+    {
         public static void Export(BinaryWriter w) // Export Settings to Save Game
         {
             Log("Exporting to Save");
@@ -27,7 +29,8 @@ namespace GalacticScale {
             GSSettings result = GSSettings.Instance;
             fsData data2 = fsJsonParser.Parse(json);
             serializer.TryDeserialize(data2, ref result);
-            if (version != GSSettings.Instance.version) {
+            if (version != GSSettings.Instance.version)
+            {
                 Warn("Version mismatch: " + GSSettings.Instance.version + " trying to load " + version + " savedata");
             }
             GSSettings.Instance = result;

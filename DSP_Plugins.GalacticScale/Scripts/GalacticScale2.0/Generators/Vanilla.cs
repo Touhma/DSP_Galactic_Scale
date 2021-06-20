@@ -1,5 +1,7 @@
-﻿namespace GalacticScale.Generators {
-    public class Vanilla : iGenerator {
+﻿namespace GalacticScale.Generators
+{
+    public class Vanilla : iGenerator
+    {
         public string Name => "Vanilla";
 
         public string Author => "innominata";
@@ -12,11 +14,13 @@
 
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
-        public void Init() {
+        public void Init()
+        {
 
         }
 
-        public void Generate(int starCount) {
+        public void Generate(int starCount)
+        {
 
         }
     }

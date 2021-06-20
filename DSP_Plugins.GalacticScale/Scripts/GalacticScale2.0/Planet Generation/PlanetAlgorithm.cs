@@ -1,5 +1,7 @@
-﻿namespace GalacticScale {
-    public class GS2PlanetAlgorithm : PlanetAlgorithm {
+﻿namespace GalacticScale
+{
+    public class GS2PlanetAlgorithm : PlanetAlgorithm
+    {
         public GSPlanet gsPlanet;
         public GSTerrainAlgorithm terrainAlgo;
         public GSVeinAlgorithm veinAlgo;
@@ -7,7 +9,8 @@
         public PlanetAlgorithm baseAlgorithm;
         public GSTheme gsTheme => GS2.ThemeLibrary[gsPlanet.Theme];
 
-        public GS2PlanetAlgorithm(GSPlanet gsPlanet) {
+        public GS2PlanetAlgorithm(GSPlanet gsPlanet)
+        {
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Begin");
             //GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Selecting Theme " + gsPlanet.Theme);
@@ -23,33 +26,45 @@
             baseAlgorithm.Reset(gsPlanet.Seed, gsPlanet.planetData);
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo: " + gsTheme.TerrainSettings.Algorithm + " Vein Algo: " + gsTheme.VeinSettings.Algorithm + " Vege Algo: " + gsTheme.VegeSettings.Algorithm);
 
-            if (gsTheme.TerrainSettings.Algorithm == "Vanilla") {
+            if (gsTheme.TerrainSettings.Algorithm == "Vanilla")
+            {
                 //GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to Vanilla");
-                this.terrainAlgo = (GSPlanet p, double modX, double modY) => {
+                this.terrainAlgo = (GSPlanet p, double modX, double modY) =>
+                {
                     //GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Terrain Algo Running");
                     baseAlgorithm.GenerateTerrain(modX, modY);
                 };
-            } else {
+            }
+            else
+            {
                 //GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to " + gsTheme.TerrainSettings.Algorithm);
                 this.terrainAlgo = GS2.TerrainAlgorithmLibrary.Find(gsTheme.TerrainSettings.Algorithm);
             }
             //this.terrainAlgo = (gsTheme.TerrainSettings.Algorithm == "Vanilla") ? (GSPlanet p, double modX, double modY) => { baseAlgorithm.GenerateTerrain(modX, modY); } : 
 
-            if (gsTheme.VeinSettings.Algorithm == "Vanilla") {
-                this.veinAlgo = (GSPlanet p, bool sketchOnly) => {
+            if (gsTheme.VeinSettings.Algorithm == "Vanilla")
+            {
+                this.veinAlgo = (GSPlanet p, bool sketchOnly) =>
+                {
                     //GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
                     baseAlgorithm.GenerateVeins(sketchOnly);
                 };
-            } else {
+            }
+            else
+            {
                 this.veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
             }
             //this.veinAlgo = (gsTheme.VeinSettings.Algorithm == "Vanilla") ? (GSPlanet p, bool sketchOnly) => { baseAlgorithm.GenerateVeins(sketchOnly); } : GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
-            if (gsTheme.VegeSettings.Algorithm == "Vanilla") {
-                this.vegeAlgo = (GSPlanet p) => {
+            if (gsTheme.VegeSettings.Algorithm == "Vanilla")
+            {
+                this.vegeAlgo = (GSPlanet p) =>
+                {
                     //GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vege Algo Running");
                     baseAlgorithm.GenerateVegetables();
                 };
-            } else {
+            }
+            else
+            {
                 this.vegeAlgo = GS2.VegeAlgorithmLibrary.Find(gsTheme.VegeSettings.Algorithm);
             }
 
@@ -72,8 +87,10 @@
         public override void GenerateVeins(bool sketchOnly) =>
             //GS2.Log("PlanetAlgorithm|GenerateVeins()");
             veinAlgo(gsPlanet, sketchOnly);
-        public static PlanetAlgorithm GetBaseAlgo(int algoId) {
-            switch (algoId) {
+        public static PlanetAlgorithm GetBaseAlgo(int algoId)
+        {
+            switch (algoId)
+            {
                 case 1: return new PlanetAlgorithm1();
                 case 2: return new PlanetAlgorithm2();
                 case 3: return new PlanetAlgorithm3();

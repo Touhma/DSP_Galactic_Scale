@@ -1,11 +1,15 @@
 ﻿using HarmonyLib;
 
-namespace GalacticScale {
-    public partial class PatchOnGameData {
+namespace GalacticScale
+{
+    public partial class PatchOnGameData
+    {
 
         [HarmonyPrefix, HarmonyPatch(typeof(GameData), "GetOrCreateFactory")]
-        public static bool GetOrCreateFactory(PlanetData planet, ref GameData __instance, ref PlanetFactory __result, ref int ___factoryCount, ref PlanetFactory[] ___factories, ref GameStatData ___statistics) {
-            if (planet.factory != null) {
+        public static bool GetOrCreateFactory(PlanetData planet, ref GameData __instance, ref PlanetFactory __result, ref int ___factoryCount, ref PlanetFactory[] ___factories, ref GameStatData ___statistics)
+        {
+            if (planet.factory != null)
+            {
                 __result = planet.factory;
                 return false;
             }

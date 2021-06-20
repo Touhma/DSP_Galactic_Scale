@@ -1,11 +1,15 @@
 ﻿using HarmonyLib;
 using System.IO;
 
-namespace GalacticScale {
-    public static partial class PatchOnGameDesc {
+namespace GalacticScale
+{
+    public static partial class PatchOnGameDesc
+    {
         [HarmonyPostfix, HarmonyPatch(typeof(GameDesc), "Import")]
-        public static void Import(BinaryReader r, ref GameDesc __instance) {
-            if (!GS2.IsMenuDemo) {
+        public static void Import(BinaryReader r, ref GameDesc __instance)
+        {
+            if (!GS2.IsMenuDemo)
+            {
                 GS2.Log("Not Menu Demo. Importing");
                 GS2.Import(r);
                 return;

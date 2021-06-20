@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace GSSerializer {
+namespace GSSerializer
+{
     /// <summary>
     /// The actual type that a JsonData instance can store.
     /// </summary>
-    public enum fsDataType {
+    public enum fsDataType
+    {
         Array,
         Object,
         Double,
@@ -21,7 +23,8 @@ namespace GSSerializer {
     /// of six different
     /// types: null, boolean, double, Int64, string, Dictionary, or List.
     /// </summary>
-    public sealed class fsData {
+    public sealed class fsData
+    {
         /// <summary>
         /// The raw value that this serialized data stores. It can be one of six
         /// different types; a boolean, a double, Int64, a string, a Dictionary,
@@ -33,56 +36,64 @@ namespace GSSerializer {
         /// <summary>
         /// Creates a fsData instance that holds null.
         /// </summary>
-        public fsData() {
+        public fsData()
+        {
             _value = null;
         }
 
         /// <summary>
         /// Creates a fsData instance that holds a boolean.
         /// </summary>
-        public fsData(bool boolean) {
+        public fsData(bool boolean)
+        {
             _value = boolean;
         }
 
         /// <summary>
         /// Creates a fsData instance that holds a double.
         /// </summary>
-        public fsData(double f) {
+        public fsData(double f)
+        {
             _value = f;
         }
 
         /// <summary>
         /// Creates a new fsData instance that holds an integer.
         /// </summary>
-        public fsData(Int64 i) {
+        public fsData(Int64 i)
+        {
             _value = i;
         }
 
         /// <summary>
         /// Creates a fsData instance that holds a string.
         /// </summary>
-        public fsData(string str) {
+        public fsData(string str)
+        {
             _value = str;
         }
 
         /// <summary>
         /// Creates a fsData instance that holds a dictionary of values.
         /// </summary>
-        public fsData(Dictionary<string, fsData> dict) {
+        public fsData(Dictionary<string, fsData> dict)
+        {
             _value = dict;
         }
 
         /// <summary>
         /// Creates a fsData instance that holds a list of values.
         /// </summary>
-        public fsData(List<fsData> list) {
+        public fsData(List<fsData> list)
+        {
             _value = list;
         }
 
         /// <summary>
         /// Helper method to create a fsData instance that holds a dictionary.
         /// </summary>
-        public static fsData CreateDictionary() {
+        public static fsData CreateDictionary()
+        {
             return new fsData(new Dictionary<string, fsData>(
                 fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase));
         }
@@ -112,7 +123,8 @@ namespace GSSerializer {
         /// <summary>
         /// Returns a shallow clone of this data instance.
         /// </summary>
-        internal fsData Clone() {
+        internal fsData Clone()
+        {
             var clone = new fsData();
             clone._value = _value;
             return clone;
@@ -120,33 +132,42 @@ namespace GSSerializer {
         #endregion Internal Helper Methods
 
         #region Casting Predicates
-        public fsDataType Type {
-            get {
-                if (_value == null) {
+        public fsDataType Type
+        {
+            get
+            {
+                if (_value == null)
+                {
                     return fsDataType.Null;
                 }
 
-                if (_value is double) {
+                if (_value is double)
+                {
                     return fsDataType.Double;
                 }
 
-                if (_value is Int64) {
+                if (_value is Int64)
+                {
                     return fsDataType.Int64;
                 }
 
-                if (_value is bool) {
+                if (_value is bool)
+                {
                     return fsDataType.Boolean;
                 }
 
-                if (_value is string) {
+                if (_value is string)
+                {
                     return fsDataType.String;
                 }
 
-                if (_value is Dictionary<string, fsData>) {
+                if (_value is Dictionary<string, fsData>)
+                {
                     return fsDataType.Object;
                 }
 
-                if (_value is List<fsData>) {
+                if (_value is List<fsData>)
+                {
                     return fsDataType.Array;
                 }
 
@@ -236,8 +257,10 @@ namespace GSSerializer {
         /// Internal helper method to cast the underlying storage to the given
         /// type or throw a pretty printed exception on failure.
         /// </summary>
-        private T Cast<T>() {
-            if (_value is T) {
+        private T Cast<T>()
+        {
+            if (_value is T)
+            {
                 return (T)_value;
             }
 
@@ -261,12 +284,15 @@ namespace GSSerializer {
         /// Determines whether the specified object is equal to the current
         /// object.
         /// </summary>
-        public bool Equals(fsData other) {
-            if (other == null || Type != other.Type) {
+        public bool Equals(fsData other)
+        {
+            if (other == null || Type != other.Type)
+            {
                 return false;
             }
 
-            switch (Type) {
+            switch (Type)
+            {
                 case fsDataType.Null:
                     return true;
 
@@ -286,12 +312,15 @@ namespace GSSerializer {
                     var thisList = AsList;
                     var otherList = other.AsList;
 
-                    if (thisList.Count != otherList.Count) {
+                    if (thisList.Count != otherList.Count)
+                    {
                         return false;
                     }
 
-                    for (int i = 0; i < thisList.Count; ++i) {
-                        if (thisList[i].Equals(otherList[i]) == false) {
+                    for (int i = 0; i < thisList.Count; ++i)
+                    {
+                        if (thisList[i].Equals(otherList[i]) == false)
+                        {
                             return false;
                         }
                     }
@@ -302,16 +331,20 @@ namespace GSSerializer {
                     var thisDict = AsDictionary;
                     var otherDict = other.AsDictionary;
 
-                    if (thisDict.Count != otherDict.Count) {
+                    if (thisDict.Count != otherDict.Count)
+                    {
                         return false;
                     }
 
-                    foreach (string key in thisDict.Keys) {
-                        if (otherDict.ContainsKey(key) == false) {
+                    foreach (string key in thisDict.Keys)
+                    {
+                        if (otherDict.ContainsKey(key) == false)
+                        {
                             return false;
                         }
 
-                        if (thisDict[key].Equals(otherDict[key]) == false) {
+                        if (thisDict[key].Equals(otherDict[key]) == false)
+                        {
                             return false;
                         }
                     }
@@ -325,18 +358,22 @@ namespace GSSerializer {
         /// <summary>
         /// Returns true iff a == b.
         /// </summary>
-        public static bool operator ==(fsData a, fsData b) {
+        public static bool operator ==(fsData a, fsData b)
+        {
             // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(a, b)) {
+            if (ReferenceEquals(a, b))
+            {
                 return true;
             }
 
             // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null)) {
+            if (((object)a == null) || ((object)b == null))
+            {
                 return false;
             }
 
-            if (a.IsDouble && b.IsDouble) {
+            if (a.IsDouble && b.IsDouble)
+            {
                 return Math.Abs(a.AsDouble - b.AsDouble) < double.Epsilon;
             }
 
@@ -346,7 +383,8 @@ namespace GSSerializer {
         /// <summary>
         /// Returns true iff a != b.
         /// </summary>
-        public static bool operator !=(fsData a, fsData b) {
+        public static bool operator !=(fsData a, fsData b)
+        {
             return !(a == b);
         }
 

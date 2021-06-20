@@ -1,22 +1,28 @@
 ﻿using HarmonyLib;
 
-namespace GalacticScale {
-    public partial class PatchOnPlanetModelingManager {
+namespace GalacticScale
+{
+    public partial class PatchOnPlanetModelingManager
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "Algorithm")]
-        public static bool Algorithm(PlanetData planet, ref PlanetAlgorithm __result) {
+        public static bool Algorithm(PlanetData planet, ref PlanetAlgorithm __result)
+        {
             //GS2.Log("Start");
-            if (DSPGame.IsMenuDemo) {
+            if (DSPGame.IsMenuDemo)
+            {
                 return true;
             }
 
-            if (GS2.Vanilla) {
+            if (GS2.Vanilla)
+            {
                 return true;
             }
             //GS2.Log("CHOOSING ALGORITHM FOR " + planet.displayName + " rawdata?"+(planet.data != null));
             GSPlanet gsPlanet = GS2.GetGSPlanet(planet);
             GSTheme gsTheme = GS2.ThemeLibrary.Find(gsPlanet.Theme);
             //GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
-            if (!GS2.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration) {
+            if (!GS2.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration)
+            {
                 //GS2.Log("CHOSE COMPLETELY VANILLA");
                 return true;
             }

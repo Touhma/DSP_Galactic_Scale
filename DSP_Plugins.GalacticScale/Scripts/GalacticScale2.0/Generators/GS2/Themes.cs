@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-namespace GalacticScale.Generators {
-    public partial class GS2Generator : iConfigurableGenerator {
-        public static void InitThemes() {
+namespace GalacticScale.Generators
+{
+    public partial class GS2Generator : iConfigurableGenerator
+    {
+        public static void InitThemes()
+        {
             GS2.Log("Creating Themes for Sol");
             GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
             oiler.terrainMaterial.Tint = new Color(0.3f, 0.3f, 0.3f, 1f);
@@ -46,7 +49,8 @@ namespace GalacticScale.Generators {
 
             GSTheme acidGreenhouse = new GSTheme("AcidGreenhouse", "Acid Greenhouse", "VolcanicAsh");
             acidGreenhouse.atmosphereMaterial.Tint = new Color(0.5f, 0.4f, 0.0f, 0.8f);
-            acidGreenhouse.atmosphereMaterial.Params = new Dictionary<string, float>() {
+            acidGreenhouse.atmosphereMaterial.Params = new Dictionary<string, float>()
+            {
                 ["_AtmoDensity"] = 1,
                 ["_Cutoff"] = 0.1f,
                 ["_FarFogDensity"] = 1f,
@@ -67,13 +71,15 @@ namespace GalacticScale.Generators {
             acidGreenhouse.thumbMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
             acidGreenhouse.minimapMaterial.Tint = new Color(0.901f, 0.686f, 0.098f, 1);
             acidGreenhouse.terrainMaterial.CopyFrom = "AshenGelisol.terrainMat";
-            acidGreenhouse.terrainMaterial.Colors = new Dictionary<string, Color>() {
+            acidGreenhouse.terrainMaterial.Colors = new Dictionary<string, Color>()
+            {
                 ["_AmbientColor0"] = new Color(0.9f, 0.9f, 0.1f, 1f),
                 ["_AmbientColor0"] = new Color(0.8f, 0.8f, 0.7f, 1f),
                 ["_AmbientColor0"] = new Color(0.5f, 0.5f, 0.0f, 1f),
                 ["_Color"] = new Color(0.65f, 0.5f, 0.15f, 1f),
             };
-            acidGreenhouse.terrainMaterial.Params = new Dictionary<string, float>() {
+            acidGreenhouse.terrainMaterial.Params = new Dictionary<string, float>()
+            {
                 ["_AmbientInc"] = 0.5f
             };
             acidGreenhouse.AmbientSettings.DustStrength1 = 10;
@@ -128,12 +134,14 @@ namespace GalacticScale.Generators {
             dwarf.CustomGeneration = true;
             dwarf.Temperature = 0;
             dwarf.Distribute = EThemeDistribute.Default;
-            dwarf.TerrainSettings = new GSTerrainSettings() {
+            dwarf.TerrainSettings = new GSTerrainSettings()
+            {
                 RandomFactor = 10,
                 LandModifier = .1f,
                 Algorithm = "GSTA3"
             };
-            dwarf.VeinSettings = new GSVeinSettings() {
+            dwarf.VeinSettings = new GSVeinSettings()
+            {
                 Algorithm = "GS2",
                 VeinPadding = 0.5f,
                 VeinTypes = new GSVeinTypes()

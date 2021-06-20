@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace GalacticScale {
-    public static partial class GS2 {
+namespace GalacticScale
+{
+    public static partial class GS2
+    {
         public static string Version = "2.0.0a50";
         public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "config");
         public static bool Failed = false;
         public static bool Initialized = false;
         public static bool CheatMode = false;
         public static bool ResearchUnlocked = false;
-        public static bool IsMenuDemo {
-            get {
-                if (DSPGame.IsMenuDemo) {
+        public static bool IsMenuDemo
+        {
+            get
+            {
+                if (DSPGame.IsMenuDemo)
+                {
                     return true;
                 }
 
-                if (!Initialized) {
+                if (!Initialized)
+                {
                     return true;
                 }
 
@@ -40,13 +46,17 @@ namespace GalacticScale {
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static Dictionary<int, GSStar> gsStars = new Dictionary<int, GSStar>();
         private static UnityEngine.AssetBundle _bundle;
-        public static UnityEngine.AssetBundle bundle {
-            get {
-                if (_bundle == null) {
+        public static UnityEngine.AssetBundle bundle
+        {
+            get
+            {
+                if (_bundle == null)
+                {
                     _bundle = UnityEngine.AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
                 }
 
-                if (_bundle == null) {
+                if (_bundle == null)
+                {
                     Error("Failed to load AssetBundle!");
                     UIMessageBox.Show("Error", "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory", "Return", 0);
 
@@ -59,10 +69,12 @@ namespace GalacticScale {
             }
         }
 
-        public static void Init() {
+        public static void Init()
+        {
 
             NebulaCompatibility.init();
-            if (!Directory.Exists(DataDir)) {
+            if (!Directory.Exists(DataDir))
+            {
                 Directory.CreateDirectory(DataDir);
             }
 
@@ -70,12 +82,14 @@ namespace GalacticScale {
             Log("Start" + debugOn.ToString());
             List<GSTheme> themes = new List<GSTheme>();
             Log("GalacticScale2|Creating List of Themes");
-            foreach (KeyValuePair<string, GSTheme> t in ThemeLibrary) {
+            foreach (KeyValuePair<string, GSTheme> t in ThemeLibrary)
+            {
                 themes.Add(t.Value);
             }
 
             Log("GalacticScale2|Init|Processing Themes");
-            for (var i = 0; i < themes.Count; i++) {
+            for (var i = 0; i < themes.Count; i++)
+            {
                 themes[i].Process();
             }
             LoadPlugins();

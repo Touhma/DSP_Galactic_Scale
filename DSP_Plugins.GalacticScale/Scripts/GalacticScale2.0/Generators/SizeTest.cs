@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale.Generators {
-    public class SizeTest : iGenerator {
+namespace GalacticScale.Generators
+{
+    public class SizeTest : iGenerator
+    {
         public string Name => "SizeTest";
 
         public string Author => "innominata";
@@ -17,7 +19,8 @@ namespace GalacticScale.Generators {
 
         public bool DisableStarCountSlider => false;
         private readonly GSGeneratorConfig config = new GSGeneratorConfig();
-        public void Init() {
+        public void Init()
+        {
             //GS2.Log("Spiral2:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
@@ -60,12 +63,14 @@ namespace GalacticScale.Generators {
         public void Generate(int starCount) => generate(starCount);
         ////////////////////////////////////////////////////////////////////
 
-        public double getZ(Vector2 xy) {
+        public double getZ(Vector2 xy)
+        {
             float dist = Vector2.SqrMagnitude(xy);
             return (1 + 5 * (float)Math.Exp(-1 * ((dist * dist) / 500f)));
         }
 
-        public void generate(int starCount) {
+        public void generate(int starCount)
+        {
             //GS2.Log("Spiral2:Creating New Settings");
 
             List<VectorLF3> positions = new List<VectorLF3>();
@@ -110,7 +115,8 @@ namespace GalacticScale.Generators {
             //    GS2.Log("Zheight for "  + " is " + getZ(new Vector2(x1, y1)) + " " + x1+" "+y1);
             List<Vector2> vectors = GenerateGalaxy(1020, 2, 3f, 0.6d, 2);
             //GS2.Log("heh" + vectors.Count);
-            foreach (Vector2 v in vectors) {
+            foreach (Vector2 v in vectors)
+            {
                 positions.Add(new VectorLF3(v.x * 20, 0, v.y * 20));
             }
             //GS2.Log(positions.Count.ToString());
@@ -159,18 +165,18 @@ namespace GalacticScale.Generators {
             //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             //};
             //for (var i = 0; i < 1; i++) {
-                planets.Add(new GSPlanet("50", "Mediterranean" , 50, 2f, -1, -1, 2f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("60", "Mediterranean" , 50, 2f, -1, -1, 1f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("70", "Mediterranean" , 50, 2f, -1, -1, 3f , -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("80", "Mediterranean" , 50, 2f, -1, -1, 4f , -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("90", "Mediterranean" , 50, 2f, -1, -1, 5f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("100", "Mediterranean" , 50, 2f, -1, -1, 6f , -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("130", "Mediterranean" , 50, 2f, -1, -1, 8f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("50", "Mediterranean", 50, 2f, -1, -1, 2f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("60", "Mediterranean", 50, 2f, -1, -1, 1f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("70", "Mediterranean", 50, 2f, -1, -1, 3f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("80", "Mediterranean", 50, 2f, -1, -1, 4f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("90", "Mediterranean", 50, 2f, -1, -1, 5f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("100", "Mediterranean", 50, 2f, -1, -1, 6f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("130", "Mediterranean", 50, 2f, -1, -1, 8f, -1, -1, -1, 1f, null));
 
-            planets.Add(new GSPlanet("150", "Mediterranean" , 50, 2f, -1, -1, 12f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("150", "Mediterranean", 50, 2f, -1, -1, 12f, -1, -1, -1, 1f, null));
 
-            planets.Add(new GSPlanet("200", "Mediterranean" , 50, 2f, -1, -1, 22f , -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("300", "Mediterranean" , 50, 2f, -1, -1, 32f , -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("200", "Mediterranean", 50, 2f, -1, -1, 22f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("300", "Mediterranean", 50, 2f, -1, -1, 32f, -1, -1, -1, 1f, null));
 
 
             //}
@@ -193,19 +199,23 @@ namespace GalacticScale.Generators {
 
         }
 
-        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread, double starsAtCenterRatio) {
+        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread, double starsAtCenterRatio)
+        {
             List<Vector2> result = new List<Vector2>();
-            for (int i = 0; i < numOfArms; i++) {
+            for (int i = 0; i < numOfArms; i++)
+            {
                 result.AddRange(GenerateArm(numOfStars / numOfArms, i / (float)numOfArms, spin, armSpread, starsAtCenterRatio));
             }
             return result;
         }
 
-        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio) {
+        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio)
+        {
             List<Vector2> result = new List<Vector2>();
             GS2.Random random = new GS2.Random(GSSettings.Seed);
 
-            for (int i = 0; i < numOfStars; i++) {
+            for (int i = 0; i < numOfStars; i++)
+            {
                 //GS2.Log(i + " / " + numOfStars);
                 double part = i / (double)numOfStars;
                 part = Math.Pow(part, starsAtCenterRatio);
@@ -225,29 +235,36 @@ namespace GalacticScale.Generators {
             return result;
         }
 
-        public static double Pow3Constrained(double x) {
+        public static double Pow3Constrained(double x)
+        {
             double value = Math.Pow(x - 0.5, 3) * 4 + 0.5d;
             return Math.Max(Math.Min(1, value), 0);
         }
 
-        public static int VLF3Sort(VectorLF3 a, VectorLF3 b) {
-            if (a == null && b == null) {
+        public static int VLF3Sort(VectorLF3 a, VectorLF3 b)
+        {
+            if (a == null && b == null)
+            {
                 return 0;
             }
 
-            if (a == null) {
+            if (a == null)
+            {
                 return -1;
             }
 
-            if (b == null) {
+            if (b == null)
+            {
                 return 1;
             }
 
-            if (a.magnitude == b.magnitude) {
+            if (a.magnitude == b.magnitude)
+            {
                 return 0;
             }
 
-            if (a.magnitude > b.magnitude) {
+            if (a.magnitude > b.magnitude)
+            {
                 return 1;
             }
 

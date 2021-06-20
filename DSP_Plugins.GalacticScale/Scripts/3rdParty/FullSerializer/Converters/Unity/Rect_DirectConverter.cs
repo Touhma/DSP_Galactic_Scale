@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSSerializer {
-    public partial class fsConverterRegistrar {
+namespace GSSerializer
+{
+    public partial class fsConverterRegistrar
+    {
         public static Internal.DirectConverters.Rect_DirectConverter Register_Rect_DirectConverter;
     }
 }
 
-namespace GSSerializer.Internal.DirectConverters {
-    public class Rect_DirectConverter : fsDirectConverter<Rect> {
-        protected override fsResult DoSerialize(Rect model, Dictionary<string, fsData> serialized) {
+namespace GSSerializer.Internal.DirectConverters
+{
+    public class Rect_DirectConverter : fsDirectConverter<Rect>
+    {
+        protected override fsResult DoSerialize(Rect model, Dictionary<string, fsData> serialized)
+        {
             var result = fsResult.Success;
 
             result += SerializeMember(serialized, null, "xMin", model.xMin);
@@ -22,7 +27,8 @@ namespace GSSerializer.Internal.DirectConverters {
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Rect model) {
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Rect model)
+        {
             var result = fsResult.Success;
 
             var t0 = model.xMin;

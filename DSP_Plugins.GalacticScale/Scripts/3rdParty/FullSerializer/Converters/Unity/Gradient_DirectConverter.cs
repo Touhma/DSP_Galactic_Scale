@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSSerializer {
-    public partial class fsConverterRegistrar {
+namespace GSSerializer
+{
+    public partial class fsConverterRegistrar
+    {
         public static Internal.DirectConverters.Gradient_DirectConverter Register_Gradient_DirectConverter;
     }
 }
 
-namespace GSSerializer.Internal.DirectConverters {
-    public class Gradient_DirectConverter : fsDirectConverter<Gradient> {
-        protected override fsResult DoSerialize(Gradient model, Dictionary<string, fsData> serialized) {
+namespace GSSerializer.Internal.DirectConverters
+{
+    public class Gradient_DirectConverter : fsDirectConverter<Gradient>
+    {
+        protected override fsResult DoSerialize(Gradient model, Dictionary<string, fsData> serialized)
+        {
             var result = fsResult.Success;
 
             result += SerializeMember(serialized, null, "alphaKeys", model.alphaKeys);
@@ -20,7 +25,8 @@ namespace GSSerializer.Internal.DirectConverters {
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Gradient model) {
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Gradient model)
+        {
             var result = fsResult.Success;
 
             var t0 = model.alphaKeys;

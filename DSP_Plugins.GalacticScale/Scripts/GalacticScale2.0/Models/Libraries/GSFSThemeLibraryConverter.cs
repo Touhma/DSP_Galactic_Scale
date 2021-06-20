@@ -2,19 +2,25 @@
 using System;
 using System.Collections.Generic;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
 
-    public class GSFSThemeLibraryConverter : fsDirectConverter<ThemeLibrary> {
-        public override object CreateInstance(fsData data, Type storageType) {
+    public class GSFSThemeLibraryConverter : fsDirectConverter<ThemeLibrary>
+    {
+        public override object CreateInstance(fsData data, Type storageType)
+        {
             //GS2.Log("Start");
             ThemeLibrary t = new ThemeLibrary();
             return t;
         }
 
-        protected override fsResult DoSerialize(ThemeLibrary model, Dictionary<string, fsData> serialized) {
+        protected override fsResult DoSerialize(ThemeLibrary model, Dictionary<string, fsData> serialized)
+        {
             //GS2.Log("Start");
-            foreach (KeyValuePair<string, GSTheme> kvp in model) {
-                if (!kvp.Value.Base || !GS2.minifyJSON) {
+            foreach (KeyValuePair<string, GSTheme> kvp in model)
+            {
+                if (!kvp.Value.Base || !GS2.minifyJSON)
+                {
                     SerializeMember(serialized, null, kvp.Key, kvp.Value);
                 }
             }
@@ -22,16 +28,21 @@ namespace GalacticScale {
             return fsResult.Success;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref ThemeLibrary model) {
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref ThemeLibrary model)
+        {
             //GS2.Log("Start");
             model = ThemeLibrary.Vanilla();
             var result = fsResult.Success;
-            foreach (var kvp in data) {
+            foreach (var kvp in data)
+            {
                 GSTheme theme;
                 DeserializeMember(data, null, kvp.Key, out theme);
-                if (model.ContainsKey(kvp.Key)) {
+                if (model.ContainsKey(kvp.Key))
+                {
                     model[kvp.Key] = theme;
-                } else {
+                }
+                else
+                {
                     model.Add(kvp.Key, theme);
                 }
             }

@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace GalacticScale {
-    public partial class PatchOnUIGalaxySelect {
-        public static GameObject CreateStarCountText(Slider slider) {
+namespace GalacticScale
+{
+    public partial class PatchOnUIGalaxySelect
+    {
+        public static GameObject CreateStarCountText(Slider slider)
+        {
             RectTransform starCountSlider = slider.GetComponent<RectTransform>();
             slider.gameObject.SetActive(false);
             Text template = slider.GetComponentInParent<Text>();

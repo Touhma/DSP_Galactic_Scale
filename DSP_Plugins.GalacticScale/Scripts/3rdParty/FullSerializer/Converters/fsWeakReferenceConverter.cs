@@ -1,25 +1,30 @@
 ﻿using System;
 
-namespace GSSerializer.Internal {
+namespace GSSerializer.Internal
+{
     /// <summary>
     /// Serializes and deserializes WeakReferences.
     /// </summary>
-    public class fsWeakReferenceConverter : fsConverter {
+    public class fsWeakReferenceConverter : fsConverter
+    {
         public override bool CanProcess(Type type) => type == typeof(WeakReference);
 
         public override bool RequestCycleSupport(Type storageType) => false;
 
         public override bool RequestInheritanceSupport(Type storageType) => false;
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
+        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        {
             var weakRef = (WeakReference)instance;
 
             var result = fsResult.Success;
             serialized = fsData.CreateDictionary();
 
-            if (weakRef.IsAlive) {
+            if (weakRef.IsAlive)
+            {
                 fsData data;
-                if ((result += Serializer.TrySerialize(weakRef.Target, out data)).Failed) {
+                if ((result += Serializer.TrySerialize(weakRef.Target, out data)).Failed)
+                {
                     return result;
                 }
 
@@ -30,23 +35,28 @@ namespace GSSerializer.Internal {
             return result;
         }
 
-        public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType) {
+        public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType)
+        {
             var result = fsResult.Success;
 
-            if ((result += CheckType(data, fsDataType.Object)).Failed) {
+            if ((result += CheckType(data, fsDataType.Object)).Failed)
+            {
                 return result;
             }
 
-            if (data.AsDictionary.ContainsKey("Target")) {
+            if (data.AsDictionary.ContainsKey("Target"))
+            {
                 var targetData = data.AsDictionary["Target"];
                 object targetInstance = null;
 
-                if ((result += Serializer.TryDeserialize(targetData, typeof(object), ref targetInstance)).Failed) {
+                if ((result += Serializer.TryDeserialize(targetData, typeof(object), ref targetInstance)).Failed)
+                {
                     return result;
                 }
 
                 bool trackResurrection = false;
-                if (data.AsDictionary.ContainsKey("TrackResurrection") && data.AsDictionary["TrackResurrection"].IsBool) {
+                if (data.AsDictionary.ContainsKey("TrackResurrection") && data.AsDictionary["TrackResurrection"].IsBool)
+                {
                     trackResurrection = data.AsDictionary["TrackResurrection"].AsBool;
                 }
 

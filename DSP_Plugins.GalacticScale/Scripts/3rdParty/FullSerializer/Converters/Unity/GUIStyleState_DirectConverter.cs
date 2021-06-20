@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSSerializer {
-    public partial class fsConverterRegistrar {
+namespace GSSerializer
+{
+    public partial class fsConverterRegistrar
+    {
         public static Internal.DirectConverters.GUIStyleState_DirectConverter Register_GUIStyleState_DirectConverter;
     }
 }
 
-namespace GSSerializer.Internal.DirectConverters {
-    public class GUIStyleState_DirectConverter : fsDirectConverter<GUIStyleState> {
-        protected override fsResult DoSerialize(GUIStyleState model, Dictionary<string, fsData> serialized) {
+namespace GSSerializer.Internal.DirectConverters
+{
+    public class GUIStyleState_DirectConverter : fsDirectConverter<GUIStyleState>
+    {
+        protected override fsResult DoSerialize(GUIStyleState model, Dictionary<string, fsData> serialized)
+        {
             var result = fsResult.Success;
 
             result += SerializeMember(serialized, null, "background", model.background);
@@ -20,7 +25,8 @@ namespace GSSerializer.Internal.DirectConverters {
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GUIStyleState model) {
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GUIStyleState model)
+        {
             var result = fsResult.Success;
 
             var t0 = model.background;

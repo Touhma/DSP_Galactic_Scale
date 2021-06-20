@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Reflection;
 
-namespace GSSerializer {
+namespace GSSerializer
+{
     // Global configuration options.
-    public static class fsGlobalConfig {
+    public static class fsGlobalConfig
+    {
         /// <summary>
         /// Should deserialization be case sensitive? If this is false and the
         /// JSON has multiple members with the same keys only separated by case,
@@ -29,7 +31,8 @@ namespace GSSerializer {
     /// <summary>
     /// Enables some top-level customization of Full Serializer.
     /// </summary>
-    public class fsConfig {
+    public class fsConfig
+    {
         /// <summary>
         /// The attributes that will force a field or property to be serialized.
         /// </summary>

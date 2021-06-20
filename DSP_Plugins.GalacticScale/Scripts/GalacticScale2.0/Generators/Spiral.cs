@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GalacticScale.Generators {
-    public class Spiral : iGenerator {
+namespace GalacticScale.Generators
+{
+    public class Spiral : iGenerator
+    {
         public string Name => "Spiral";
 
         public string Author => "innominata";
@@ -16,7 +18,8 @@ namespace GalacticScale.Generators {
 
         public bool DisableStarCountSlider => false;
         private readonly GSGeneratorConfig config = new GSGeneratorConfig();
-        public void Init() {
+        public void Init()
+        {
             //GS2.Log("Spiral:Initializing");
             config.DisableSeedInput = true;
             config.DisableStarCountSlider = false;
@@ -45,7 +48,8 @@ namespace GalacticScale.Generators {
             //test4.terrainTint = Color.yellow;
             //test4.Process();
 
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 8; i++)
+            {
                 //GS2.Log("Creating Theme for Algo" + i);
                 GSTheme temp = new GSTheme("Algo" + i, "Algo" + i, "Mediterranean");
                 temp.Algo = i;
@@ -60,11 +64,13 @@ namespace GalacticScale.Generators {
 
 
 
-        public void generate(int starCount) {
+        public void generate(int starCount)
+        {
             //GS2.Log("Spiral:Creating New Settings");
             //foreach (KeyValuePair<string, GSTheme> g in GS2.ThemeLibrary) GS2.Log("Theme " + g.Key + " is in library with name " + g.Value.Name);
             List<VectorLF3> positions = new List<VectorLF3>();
-            for (var i = 0; i < starCount; i++) {
+            for (var i = 0; i < starCount; i++)
+            {
                 double x = i * Math.Cos(6 * i) / 3;
                 double y = i * Math.Sin(6 * i) / 3;
                 double z = i / 4;
@@ -95,11 +101,13 @@ namespace GalacticScale.Generators {
             //new GSPlanet("Prarie", "Prarie", 80, 3f, -1, -1, -1, 225, -1, -1, -1, -1, null),
             //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             //};
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 8; i++)
+            {
                 p.Add(new GSPlanet("Algo" + i, "Algo" + i, 100, 2f, -1, -1, 2f * i, -1, -1, -1, 1f, null));
             }
             GSSettings.Stars.Add(new GSStar(1, "BeatleJooce", ESpectrType.G, EStarType.MainSeqStar, p));
-            for (var i = 1; i < starCount; i++) {
+            for (var i = 1; i < starCount; i++)
+            {
                 //int t = i % 7;
                 //ESpectrType e = (ESpectrType)t;
                 //GSSettings.Stars.Add(new GSStar(1, "Star" + i.ToString(), ESpectrType.F, EStarType.GiantStar, new GSPlanets()));

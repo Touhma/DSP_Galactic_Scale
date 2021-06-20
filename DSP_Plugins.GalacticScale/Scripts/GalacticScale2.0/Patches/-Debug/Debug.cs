@@ -1,12 +1,9 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿namespace GalacticScale
+{
+    public class PatchOnWhatever
+    {
 
-namespace GalacticScale {
-    public class PatchOnWhatever {
 
-       
 
 
 

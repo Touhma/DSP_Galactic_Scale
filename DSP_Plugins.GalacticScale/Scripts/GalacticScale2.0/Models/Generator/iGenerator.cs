@@ -1,5 +1,7 @@
-﻿namespace GalacticScale {
-    public interface iGenerator {
+﻿namespace GalacticScale
+{
+    public interface iGenerator
+    {
         string Name { get; }
         string Author { get; }
         string Description { get; }

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GSSerializer.Internal {
+namespace GSSerializer.Internal
+{
     /// <summary>
     /// Serializes and deserializes enums by their current name.
     /// </summary>
-    public class fsEnumConverter : fsConverter {
+    public class fsEnumConverter : fsConverter
+    {
         public override bool CanProcess(Type type) => type.Resolve().IsEnum;
 
         public override bool RequestCycleSupport(Type storageType) => false;
@@ -19,20 +21,27 @@ namespace GSSerializer.Internal {
             // around this by boxing the value.
             Enum.ToObject(storageType, (object)0);
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
-            if (Serializer.Config.SerializeEnumsAsInteger) {
+        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        {
+            if (Serializer.Config.SerializeEnumsAsInteger)
+            {
                 serialized = new fsData(Convert.ToInt64(instance));
-            } else if (fsPortableReflection.GetAttribute<FlagsAttribute>(storageType) != null) {
+            }
+            else if (fsPortableReflection.GetAttribute<FlagsAttribute>(storageType) != null)
+            {
                 long instanceValue = Convert.ToInt64(instance);
                 var result = new StringBuilder();
 
                 bool first = true;
-                foreach (var value in Enum.GetValues(storageType)) {
+                foreach (var value in Enum.GetValues(storageType))
+                {
                     long integralValue = Convert.ToInt64(value);
                     bool isSet = (instanceValue & integralValue) != 0;
 
-                    if (isSet) {
-                        if (first == false) {
+                    if (isSet)
+                    {
+                        if (first == false)
+                        {
                             result.Append(",");
                         }
 
@@ -42,23 +51,29 @@ namespace GSSerializer.Internal {
                 }
 
                 serialized = new fsData(result.ToString());
-            } else {
+            }
+            else
+            {
                 serialized = new fsData(Enum.GetName(storageType, instance));
             }
             return fsResult.Success;
         }
 
-        public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType) {
-            if (data.IsString) {
+        public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType)
+        {
+            if (data.IsString)
+            {
                 string[] enumValues = data.AsString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 long instanceValue = 0;
-                for (int i = 0; i < enumValues.Length; ++i) {
+                for (int i = 0; i < enumValues.Length; ++i)
+                {
                     string enumValue = enumValues[i];
 
                     // Verify that the enum name exists; Enum.TryParse is only
                     // available in .NET 4.0 and above :(.
-                    if (ArrayContains(Enum.GetNames(storageType), enumValue) == false) {
+                    if (ArrayContains(Enum.GetNames(storageType), enumValue) == false)
+                    {
                         return fsResult.Fail("Cannot find enum name " + enumValue + " on type " + storageType);
                     }
 
@@ -68,7 +83,9 @@ namespace GSSerializer.Internal {
 
                 instance = Enum.ToObject(storageType, (object)instanceValue);
                 return fsResult.Success;
-            } else if (data.IsInt64) {
+            }
+            else if (data.IsInt64)
+            {
                 int enumValue = (int)data.AsInt64;
 
                 // In .NET compact, Enum.ToObject(Type, Object) is defined but
@@ -86,10 +103,13 @@ namespace GSSerializer.Internal {
         /// Returns true if the given value is contained within the specified
         /// array.
         /// </summary>
-        private static bool ArrayContains<T>(T[] values, T value) {
+        private static bool ArrayContains<T>(T[] values, T value)
+        {
             // note: We don't use LINQ because this function will *not* allocate
-            for (int i = 0; i < values.Length; ++i) {
-                if (EqualityComparer<T>.Default.Equals(values[i], value)) {
+            for (int i = 0; i < values.Length; ++i)
+            {
+                if (EqualityComparer<T>.Default.Equals(values[i], value))
+                {
                     return true;
                 }
             }

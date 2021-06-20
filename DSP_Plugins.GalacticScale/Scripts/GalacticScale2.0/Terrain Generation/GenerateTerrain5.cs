@@ -1,10 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale {
-    public static partial class TerrainAlgorithms {
+namespace GalacticScale
+{
+    public static partial class TerrainAlgorithms
+    {
         private static GS2.Random random;
-        public static void GenerateTerrain5(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0) {
+        public static void GenerateTerrain5(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
+        {
             random = new GS2.Random(gsPlanet.Seed);
             GS2.Log($"USING GSTA5 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
@@ -14,7 +17,8 @@ namespace GalacticScale {
             SimplexNoise simplexNoise = new SimplexNoise(seed);
             SimplexNoise simplexNoise2 = new SimplexNoise(seed2);
             PlanetRawData data = gsPlanet.planetData.data;
-            for (int i = 0; i < data.dataLength; i++) {
+            for (int i = 0; i < data.dataLength; i++)
+            {
                 double num = (double)(data.vertices[i].x * gsPlanet.planetData.radius + t.xFactor);
                 double num2 = (double)(data.vertices[i].y * gsPlanet.planetData.radius + t.yFactor);
                 double num3 = (double)(data.vertices[i].z * gsPlanet.planetData.radius + t.zFactor);
@@ -35,19 +39,22 @@ namespace GalacticScale {
                 double num12 = Math.Abs(simplexNoise2.Noise3DFBM(num5 * 1.5, num6 * 1.5, num7 * 1.5, 2, 0.5, 2.0)) * t.RandomFactor;
                 double num13 = simplexNoise.Noise3DFBM(num3 * 0.06, num2 * 0.06, num * 0.06, 2, 0.5, 2.0);
                 hdEnd -= num9 * 1.2 * num11;
-                if (hdEnd >= 0.0) {
+                if (hdEnd >= 0.0)
+                {
                     hdEnd += num8 * 0.25 + num12 * 0.6;
                 }
                 hdEnd -= 0.1;
                 double bdEnd = num8 * 2.1;
-                if (bdEnd < 0.0) {
+                if (bdEnd < 0.0)
+                {
                     bdEnd *= 5.0;
                 }
                 bdEnd = ((bdEnd <= -1.0) ? -1.0 : ((bdEnd <= 2.0) ? bdEnd : 2.0));
                 bdEnd += num13 * 0.6 * bdEnd;
                 double num15 = -0.3 - hdEnd;
                 num15 = num15 * (1 + t.LandModifier);
-                if (num15 > 0.0) {
+                if (num15 > 0.0)
+                {
                     num15 = ((num15 <= 1.0) ? num15 : 1.0);
                     num15 = (3.0 - num15 - num15) * num15 * num15;
                     hdEnd = -0.3 - num15 * 3.700000047683716;

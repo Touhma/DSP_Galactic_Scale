@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale {
-    public partial class PatchOnUISpaceGuide {
+namespace GalacticScale
+{
+    public partial class PatchOnUISpaceGuide
+    {
 
         ////Strategy: Replace ldc.i4.s 10 instructions with a dynamic addition equal to the current system's planet count
         //// Get the local system:

@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
 
-    public static class StarDefaults {
+    public static class StarDefaults
+    {
         private static GS2.Random random;
-        public static float Age(GSStar star) {
+        public static float Age(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole:
                 case EStarType.NeutronStar:
                 case EStarType.WhiteDwarf: return random.NextFloat(1.0f, 1.4f);
                 case EStarType.GiantStar:
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(0.2f, 0.9f);
                         case ESpectrType.B: return random.NextFloat(0.2f, 0.99f);
                         case ESpectrType.F: return random.NextFloat(0.2f, 0.9f);
@@ -29,18 +34,21 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float Mass(GSStar star) {
+        public static float Mass(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(48f, 75f);
                 case EStarType.NeutronStar: return random.NextFloat(1.7f, 3.4f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.24f, 1.15f);
                 case EStarType.GiantStar:
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(1.74f, 4.25f);
                         case ESpectrType.B: return random.NextFloat(4.29f, 20.0f);
                         case ESpectrType.F: return random.NextFloat(1.2f, 1.7f);
@@ -55,18 +63,21 @@ namespace GalacticScale {
             return 0f;
         }
 
-        public static float Color(GSStar star) {
+        public static float Color(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(0.9f, 0.97f);
                 case EStarType.NeutronStar: return random.NextFloat(0.83f, 0.89f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.02f, 0.75f);
                 case EStarType.GiantStar:
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(0.60f, 0.799f);
                         case ESpectrType.B: return random.NextFloat(0.8f, 0.999f);
                         case ESpectrType.F: return random.NextFloat(0.4f, 0.599f);
@@ -80,18 +91,21 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float Luminosity(GSStar star) {
+        public static float Luminosity(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(0.005f, 0.0075f);
                 case EStarType.NeutronStar: return random.NextFloat(0.27f, 0.44f);
 
                 case EStarType.WhiteDwarf: return random.NextFloat(0.03f, 0.095f);
                 case EStarType.GiantStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G:
@@ -104,7 +118,8 @@ namespace GalacticScale {
                     }
                     break;
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(1.475f, 2.76f);
                         case ESpectrType.B: return random.NextFloat(2.77f, 8.3f);
                         case ESpectrType.F: return random.NextFloat(1.14f, 1.44f);
@@ -118,18 +133,21 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float Lifetime(GSStar star) {
+        public static float Lifetime(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             //r = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(17f, 36f);
                 case EStarType.NeutronStar: return random.NextFloat(1043f, 1111f);
 
                 case EStarType.WhiteDwarf: return random.NextFloat(6800f, 8100f);
                 case EStarType.GiantStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.K:
                         case ESpectrType.A:
                         case ESpectrType.F:
@@ -140,7 +158,8 @@ namespace GalacticScale {
                     }
                     break;
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(309.0f, 1920.0f);
                         case ESpectrType.B: return random.NextFloat(33f, 354f);
                         case ESpectrType.F: return random.NextFloat(1800f, 6200f);
@@ -154,18 +173,21 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float Radius(GSStar star) {
+        public static float Radius(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(3.45f, 4.6f);
                 case EStarType.NeutronStar: return random.NextFloat(0.37f, 0.52f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.19f, 0.45f);
                 case EStarType.GiantStar: return random.NextFloat(12f, 31f);
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(1.1f, 2.0f);
                         case ESpectrType.B: return random.NextFloat(1.575f, 3.75f);
                         case ESpectrType.F: return random.NextFloat(0.950f, 1.4f);
@@ -179,17 +201,20 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float DysonRadius(GSStar star) {
+        public static float DysonRadius(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(0.69f, 0.76f);
                 case EStarType.NeutronStar: return random.NextFloat(0.85f, 1.03f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.24f, 0.55f);
                 case EStarType.GiantStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G:
@@ -200,7 +225,8 @@ namespace GalacticScale {
                     }
                     break;
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(0.44f, 0.60f);
                         case ESpectrType.B: return random.NextFloat(0.59f, 0.8f);
                         case ESpectrType.F: return random.NextFloat(0.325f, 0.545f);
@@ -214,17 +240,20 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float Temperature(GSStar star) {
+        public static float Temperature(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return 0f;
                 case EStarType.NeutronStar: return random.NextFloat(10000000f, 99000000f);
                 case EStarType.WhiteDwarf: return random.NextFloat(120000f, 178000f); ;
                 case EStarType.GiantStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G:
@@ -235,7 +264,8 @@ namespace GalacticScale {
                     }
                     break;
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(7820.0f, 13000.0f);
                         case ESpectrType.B: return random.NextFloat(13000f, 31000.0f);
                         case ESpectrType.F: return random.NextFloat(6350f, 7700f);
@@ -249,18 +279,21 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float OrbitScaler(GSStar star) {
+        public static float OrbitScaler(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(2.48f, 2.73f);
 
                 case EStarType.NeutronStar: return random.NextFloat(3f, 3.7f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.86f, 1.95f);
                 case EStarType.GiantStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G:
@@ -272,7 +305,8 @@ namespace GalacticScale {
                     }
                     break;
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(1.59f, 2.120f);
                         case ESpectrType.B: return random.NextFloat(2.1f, 2.8f);
                         case ESpectrType.F: return random.NextFloat(1.16f, 1.55f);
@@ -286,17 +320,20 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float LightBalanceRadius(GSStar star) {
+        public static float LightBalanceRadius(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             //  r = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(2.0f, 2.5f);
                 case EStarType.NeutronStar: return random.NextFloat(11f, 15f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.09f, 0.66f);
                 case EStarType.GiantStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G:
@@ -307,7 +344,8 @@ namespace GalacticScale {
                     }
                     break;
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.A: return random.NextFloat(2.28f, 3.8f);
                         case ESpectrType.B: return random.NextFloat(3.75f, 6.3f);
                         case ESpectrType.F: return random.NextFloat(1.3f, 2.2f);
@@ -322,18 +360,21 @@ namespace GalacticScale {
             return 0f;
         }
 
-        public static float ClassFactor(GSStar star) {
+        public static float ClassFactor(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
 
             //  r = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return random.NextFloat(1.0f, 1.35f);
                 case EStarType.NeutronStar: return random.NextFloat(0.54f, 0.95f);
                 case EStarType.WhiteDwarf: return random.NextFloat(-3.4f, 0.22f);
                 case EStarType.GiantStar:
                 case EStarType.MainSeqStar:
-                    switch (s) {
+                    switch (s)
+                    {
                         case ESpectrType.O: return random.NextFloat(1.5f, 2.0f);
                         case ESpectrType.B: return random.NextFloat(0.5f, 1.5f);
                         case ESpectrType.A: return random.NextFloat(-0.5f, 0.50f);
@@ -347,12 +388,14 @@ namespace GalacticScale {
             }
             return 0f;
         }
-        public static float HabitableRadius(GSStar star) {
+        public static float HabitableRadius(GSStar star)
+        {
             EStarType t = star.Type;
             ESpectrType s = star.Spectr;
             var habitableRadius = Mathf.Pow(1.7f, 2f + ClassFactor(star)) + 0.25f * Mathf.Min(1f, OrbitScaler(star));
             //  r = new GS2.Random(star.Seed);
-            switch (t) {
+            switch (t)
+            {
                 case EStarType.BlackHole: return 0f;
                 case EStarType.NeutronStar: return 0f;
                 case EStarType.WhiteDwarf: return 0.15f * (float)(random.NextFloat(0f, 1f) * 0.4 + 0.8);
@@ -361,13 +404,16 @@ namespace GalacticScale {
             }
             return habitableRadius;
         }
-        public static GSStar Random( GS2.Random random, int seed = -1, string name = null, bool special = false) {
+        public static GSStar Random(GS2.Random random, int seed = -1, string name = null, bool special = false)
+        {
             //if (seed == -1) seed = GS2.random.Next();
-            if (seed == -1) {
+            if (seed == -1)
+            {
                 seed = GSSettings.Seed;
             }
 
-            if (name == null) {
+            if (name == null)
+            {
                 name = "Star-" + seed;
             }
 

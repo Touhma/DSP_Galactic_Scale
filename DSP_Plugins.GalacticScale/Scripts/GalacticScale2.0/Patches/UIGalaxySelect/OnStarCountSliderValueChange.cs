@@ -2,13 +2,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GalacticScale {
-    public partial class PatchOnUIGalaxySelect {
+namespace GalacticScale
+{
+    public partial class PatchOnUIGalaxySelect
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "OnStarCountSliderValueChange")]
         public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider,
-            ref GameDesc ___gameDesc, float val) {
+            ref GameDesc ___gameDesc, float val)
+        {
             var num = (int)(___starCountSlider.value + 0.100000001490116);
-            if (num == ___gameDesc.starCount) {
+            if (num == ___gameDesc.starCount)
+            {
                 return false;
             }
 

@@ -1,13 +1,17 @@
-﻿namespace GalacticScale {
-    public static partial class GS2 {
+﻿namespace GalacticScale
+{
+    public static partial class GS2
+    {
         public static StarData CreateStar(int index, Random random) => CreateStar(galaxy, index + 1, random);
 
-        public static StarData CreateStar(GalaxyData galaxy, int id, Random random) {
+        public static StarData CreateStar(GalaxyData galaxy, int id, Random random)
+        {
             StarData starData = new StarData();
             int index = id - 1;
             GSStar star = GSSettings.Stars[index];
             star.assignedIndex = index;
-            if (star.Seed < 0) {
+            if (star.Seed < 0)
+            {
                 star.Seed = random.Next();
             }
 

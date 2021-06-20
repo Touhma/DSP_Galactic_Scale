@@ -1,13 +1,17 @@
 ﻿using GSSerializer;
 using System.Collections.Generic;
 using System.Linq;
-namespace GalacticScale {
+namespace GalacticScale
+{
     [fsObject(Converter = typeof(GSFSThemeLibraryConverter))]
-    public class ThemeLibrary : Dictionary<string, GSTheme> {
+    public class ThemeLibrary : Dictionary<string, GSTheme>
+    {
         private readonly GS2.Random random = new GS2.Random(GSSettings.Seed);
-        public ThemeLibrary() {
+        public ThemeLibrary()
+        {
         }
-        public static ThemeLibrary Vanilla() {
+        public static ThemeLibrary Vanilla()
+        {
             ThemeLibrary t = new ThemeLibrary()
             {
                 ["Mediterranean"] = Themes.Mediterranean,
@@ -33,15 +37,19 @@ namespace GalacticScale {
             };
             return t;
         }
-        public ThemeLibrary Clone() {
+        public ThemeLibrary Clone()
+        {
             ThemeLibrary clone = new ThemeLibrary();
-            foreach (var kvp in this) {
+            foreach (var kvp in this)
+            {
                 clone.Add(kvp.Key, kvp.Value);
             }
             return clone;
         }
-        public GSTheme Find(string name) {
-            if (!ContainsKey(name)) {
+        public GSTheme Find(string name)
+        {
+            if (!ContainsKey(name))
+            {
                 string s = GS2.GetCaller();
                 GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > " + s);
                 return Themes.Mediterranean;
@@ -50,14 +58,16 @@ namespace GalacticScale {
         }
         public GSTheme QueryRandom() => this["Mediterranean"];
 
-        public List<string> Query(EThemeType type, EThemeHeat heat, int radius = -1, EThemeDistribute distribute = EThemeDistribute.Default) {
+        public List<string> Query(EThemeType type, EThemeHeat heat, int radius = -1, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
             //List<GSTheme> list = new List<GSTheme>();
             List<EPlanetType> types = new List<EPlanetType>();
             List<EThemeDistribute> distributes = new List<EThemeDistribute>();
             if (type == EThemeType.Gas)
             {
                 types.Add(EPlanetType.Gas);
-            } else
+            }
+            else
             {
                 types.Add(EPlanetType.Vocano);
                 types.Add(EPlanetType.Ocean);
@@ -77,19 +87,23 @@ namespace GalacticScale {
             }
             (float min, float max) temp = (3, 6);
 
-            if (heat == EThemeHeat.Warm) {
+            if (heat == EThemeHeat.Warm)
+            {
                 temp = (1, 3);
             }
 
-            if (heat == EThemeHeat.Temperate) {
+            if (heat == EThemeHeat.Temperate)
+            {
                 temp = (0, 1);
             }
 
-            if (heat == EThemeHeat.Cold) {
+            if (heat == EThemeHeat.Cold)
+            {
                 temp = (-3, 0);
             }
 
-            if (heat == EThemeHeat.Frozen) {
+            if (heat == EThemeHeat.Frozen)
+            {
                 temp = (-6, -3);
             }
 
@@ -97,14 +111,14 @@ namespace GalacticScale {
                     where types.Contains(theme.Value.PlanetType)
                     where theme.Value.Temperature < temp.max
                     where theme.Value.Temperature >= temp.min
-                    where theme.Value.MaxRadius > ((radius >0)?radius:0)
-                    where theme.Value.MinRadius < ((radius >0)?radius:510)
+                    where theme.Value.MaxRadius > ((radius > 0) ? radius : 0)
+                    where theme.Value.MinRadius < ((radius > 0) ? radius : 510)
                     select theme.Value.Name;
-           var results = q.ToList();
+            var results = q.ToList();
             if (results.Count == 0)
             {
                 GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} int {radius} EThemeDistribute {distribute}");
-                
+
             }
             return results;
         }
@@ -269,11 +283,13 @@ namespace GalacticScale {
         //    }
         //}
 
-        public GSTheme Random() {
+        public GSTheme Random()
+        {
             int choice = random.Next(0, this.Count);
             return this.ElementAt(choice).Value;
         }
-        public GSTheme Random(List<string> themes) {
+        public GSTheme Random(List<string> themes)
+        {
             int choice = random.Next(0, themes.Count);
             return this[themes[choice]];
         }

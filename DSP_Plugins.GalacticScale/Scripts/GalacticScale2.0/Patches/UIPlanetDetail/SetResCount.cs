@@ -1,9 +1,11 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
 
-    public partial class PatchOnUIPlanetDetail {
+    public partial class PatchOnUIPlanetDetail
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(UIPlanetDetail), "SetResCount")]
         public static bool SetResCount(int count, ref RectTransform ___rectTrans, ref RectTransform ___paramGroup) // Adjust the height of the PlanetDetail UI to allow for Radius Text
         {

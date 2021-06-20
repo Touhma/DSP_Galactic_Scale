@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale {
-    public class GSGeneratorConfig {
+namespace GalacticScale
+{
+    public class GSGeneratorConfig
+    {
         public bool DisableStarCountSlider = false;
         public bool DisableSeedInput = false;
         private int _minStarCount = 1;
@@ -14,7 +16,8 @@ namespace GalacticScale {
         [SerializeField]
         public int MaxStarCount { get => _maxStarCount; set => _maxStarCount = (int)Maths.Clamp(value, _minStarCount, 1024); }
 
-        public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false, int minStarCount = 1, int maxStarCount = 1024, int defaultStarCount = 1) {
+        public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false, int minStarCount = 1, int maxStarCount = 1024, int defaultStarCount = 1)
+        {
             DisableStarCountSlider = disableStarCountSlider;
             DisableSeedInput = disableSeedInput;
             MinStarCount = minStarCount;

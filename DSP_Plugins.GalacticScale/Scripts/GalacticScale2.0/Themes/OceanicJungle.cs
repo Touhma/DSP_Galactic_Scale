@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace GalacticScale {
-    public static partial class Themes {
+namespace GalacticScale
+{
+    public static partial class Themes
+    {
         public static GSTheme OceanicJungle = new GSTheme()
         {
             Name = "OceanicJungle",

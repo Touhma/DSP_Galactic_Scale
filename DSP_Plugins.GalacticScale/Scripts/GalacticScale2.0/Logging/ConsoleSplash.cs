@@ -1,9 +1,13 @@
 ﻿using System;
 
-namespace GalacticScale {
-    public static partial class GS2 {
-        public static void ConsoleSplash() {
-            if (!BCE.disabled) {
+namespace GalacticScale
+{
+    public static partial class GS2
+    {
+        public static void ConsoleSplash()
+        {
+            if (!BCE.disabled)
+            {
                 BCE.console.WriteLine("┌─────────────────────────────────────────────────────────────────────────┐", ConsoleColor.Red);
                 BCE.console.Write("│", ConsoleColor.Red);
                 BCE.console.Write("  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                ", ConsoleColor.White);
@@ -16,7 +20,9 @@ namespace GalacticScale {
                 BCE.console.Write("Version " + Version + " Initializing  ", ConsoleColor.White);
                 BCE.console.Write("│\n", ConsoleColor.Red);
                 BCE.console.WriteLine("└─────────────────────────────────────────────────────────────────────────┘", ConsoleColor.Red);
-            } else {
+            }
+            else
+            {
                 //Bootstrap.Debug("Galactic Scale Version " + Version + " loading...", BepInEx.Logging.LogLevel.Message, true); // Failsafe if BCE not present
                 Bootstrap.Debug("┌─────────────────────────────────────────────────────────────────────────┐"); // Failsafe if BCE not present
                 Bootstrap.Debug("│  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                │");

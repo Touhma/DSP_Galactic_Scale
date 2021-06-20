@@ -1,18 +1,24 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace GalacticScale {
-    public partial class PatchOnUIVirtualStarmap {
+namespace GalacticScale
+{
+    public partial class PatchOnUIVirtualStarmap
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(UIVirtualStarmap), "_OnLateUpdate")]
-        public static bool _OnLateUpdate(ref UIVirtualStarmap __instance) {
-            if (GS2.Vanilla) {
+        public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)
+        {
+            if (GS2.Vanilla)
+            {
                 return true;
             }
 
             int index1 = -1;
             float num1 = 1.7f;
-            for (int index2 = 0; index2 < __instance.starPool.Count; ++index2) {
-                if (__instance.starPool[index2].active) {
+            for (int index2 = 0; index2 < __instance.starPool.Count; ++index2)
+            {
+                if (__instance.starPool[index2].active)
+                {
                     StarData starData = __instance.starPool[index2].starData;
                     Vector2 rectPoint = Vector2.zero;
                     UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), __instance.textGroup, out rectPoint);
@@ -22,12 +28,14 @@ namespace GalacticScale {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     float num2 = NGPT.Kit.ClosestPoint2Straight(ray.origin, ray.GetPoint(300f), starData.position);
                     float num3 = Vector3.Distance(ray.GetPoint(300f * num2), starData.position);
-                    if (num3 < (double)num1) {
+                    if (num3 < (double)num1)
+                    {
                         num1 = num3 >= __instance.starPool[index2].pointRenderer.transform.localScale.x * 0.25 ? num3 : 0.0f;
                         index1 = index2;
                     }
                     //GS2.Warn($"index2 = {index2} GSSettings.birthStarId:{GSSettings.birthStarId}");
-                    if (index2 == GSSettings.BirthPlanet.planetData.star.index) {
+                    if (index2 == GSSettings.BirthPlanet.planetData.star.index)
+                    {
                         Color color = __instance.starColors.Evaluate(starData.color);
                         __instance.starPointBirth.gameObject.SetActive(true);
                         __instance.starPointBirth.material.SetColor("_TintColor", color);
@@ -37,17 +45,22 @@ namespace GalacticScale {
             }
             bool pressing = VFInput.rtsConfirm.pressing;
             bool flag1 = !string.IsNullOrEmpty(__instance.clickText);
-            for (int index2 = 1; index2 < __instance.starPool.Count; ++index2) {
+            for (int index2 = 1; index2 < __instance.starPool.Count; ++index2)
+            {
                 bool flag2 = __instance.starPool[index2].active && index2 == index1;
                 __instance.starPool[index2].nameText.gameObject.SetActive(flag2);
 
-                if (flag2 & flag1) {
-                    if (pressing) {
+                if (flag2 & flag1)
+                {
+                    if (pressing)
+                    {
                         __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" + __instance.clickText.Translate();
                     }
 
                     __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(__instance.starPool[index2].nameText.preferredWidth, __instance.starPool[index2].nameText.preferredHeight);
-                } else if (!flag2 & flag1) {
+                }
+                else if (!flag2 & flag1)
+                {
                     __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent;
                     __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(__instance.starPool[index2].nameText.preferredWidth, __instance.starPool[index2].nameText.preferredHeight);
                 }
@@ -55,28 +68,41 @@ namespace GalacticScale {
             bool flag3 = index1 >= 0 && __instance.starPool[index1].active;
             __instance.starPointSelection.gameObject.SetActive(flag3);
             __instance.starPool[GSSettings.BirthPlanet.planetData.star.index].nameText.gameObject.SetActive(true);
-            if (!flag3) {
+            if (!flag3)
+            {
                 return false;
             }
 
             StarData starData1 = __instance.starPool[index1].starData;
             Color color1 = __instance.starColors.Evaluate(starData1.color);
-            if (starData1.type == EStarType.NeutronStar) {
+            if (starData1.type == EStarType.NeutronStar)
+            {
                 color1 = __instance.neutronStarColor;
-            } else if (starData1.type == EStarType.WhiteDwarf) {
+            }
+            else if (starData1.type == EStarType.WhiteDwarf)
+            {
                 color1 = __instance.whiteDwarfColor;
-            } else if (starData1.type == EStarType.BlackHole) {
+            }
+            else if (starData1.type == EStarType.BlackHole)
+            {
                 color1 = __instance.blackholeColor;
             }
 
             float num4 = 1.2f;
-            if (starData1.type == EStarType.GiantStar) {
+            if (starData1.type == EStarType.GiantStar)
+            {
                 num4 = 3f;
-            } else if (starData1.type == EStarType.WhiteDwarf) {
+            }
+            else if (starData1.type == EStarType.WhiteDwarf)
+            {
                 num4 = 0.6f;
-            } else if (starData1.type == EStarType.NeutronStar) {
+            }
+            else if (starData1.type == EStarType.NeutronStar)
+            {
                 num4 = 0.6f;
-            } else if (starData1.type == EStarType.BlackHole) {
+            }
+            else if (starData1.type == EStarType.BlackHole)
+            {
                 num4 = 0.8f;
             }
 

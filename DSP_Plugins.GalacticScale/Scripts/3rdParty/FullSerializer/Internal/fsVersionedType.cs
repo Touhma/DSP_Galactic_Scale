@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace GSSerializer.Internal {
-    public struct fsVersionedType {
+namespace GSSerializer.Internal
+{
+    public struct fsVersionedType
+    {
         /// <summary>
         /// The direct ancestors that this type can import.
         /// </summary>
@@ -24,15 +26,18 @@ namespace GSSerializer.Internal {
 
         public override string ToString() => "fsVersionedType [ModelType=" + ModelType + ", VersionString=" + VersionString + ", Ancestors.Length=" + Ancestors.Length + "]";
 
-        public static bool operator ==(fsVersionedType a, fsVersionedType b) {
+        public static bool operator ==(fsVersionedType a, fsVersionedType b)
+        {
             return a.ModelType == b.ModelType;
         }
 
-        public static bool operator !=(fsVersionedType a, fsVersionedType b) {
+        public static bool operator !=(fsVersionedType a, fsVersionedType b)
+        {
             return a.ModelType != b.ModelType;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             return
                 obj is fsVersionedType &&
                 ModelType == ((fsVersionedType)obj).ModelType;

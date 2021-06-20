@@ -1,13 +1,17 @@
-﻿namespace GalacticScale {
-    public static partial class GS2 {
-        public static bool AbortGameStart(string message) {
+﻿namespace GalacticScale
+{
+    public static partial class GS2
+    {
+        public static bool AbortGameStart(string message)
+        {
             Error("Aborting Game Start|" + message);
             Failed = true;
             UIRoot.instance.CloseLoadingUI();
             UIRoot.instance.CloseGameUI();
             UIRoot.instance.launchSplash.Restart();
             DSPGame.StartDemoGame(0);
-            UIMessageBox.Show("Somewhat Fatal Error", "Cannot Start Game. Possibly reason: " + message, "Rats!", 3, new UIMessageBox.Response(() => {
+            UIMessageBox.Show("Somewhat Fatal Error", "Cannot Start Game. Possibly reason: " + message, "Rats!", 3, new UIMessageBox.Response(() =>
+            {
                 UIRoot.instance.OpenMainMenuUI();
                 UIRoot.ClearFatalError();
             }));
@@ -16,6 +20,6 @@
         }
 
         public static void EndGame() => GameMain.End();
-        
+
     }
 }

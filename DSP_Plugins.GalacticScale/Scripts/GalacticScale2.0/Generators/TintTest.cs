@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace GalacticScale.Generators {
-    public class TintTest : iConfigurableGenerator {
+namespace GalacticScale.Generators
+{
+    public class TintTest : iConfigurableGenerator
+    {
         public string Name => "CrashTest";
 
         public string Author => "innominata";
@@ -62,7 +64,8 @@ namespace GalacticScale.Generators {
         //{
         //    GSSettings.ThemeLibrary["TintCustom"].oceanMaterial.Tint = new Color(r, g, b, a);
         //}
-        public void Init() {
+        public void Init()
+        {
             //options.Add(new GSUI("R", "Input", "1", changeValueR, () => { }));
             //options.Add(new GSUI("G", "Input", "0", changeValueG, () => { }));
             //options.Add(new GSUI("B", "Input", "0", changeValueB, () => { }));
@@ -154,7 +157,8 @@ namespace GalacticScale.Generators {
         public GSOptions options = new GSOptions();
 
 
-        public void generate(int starCount) {
+        public void generate(int starCount)
+        {
             //GS2.Log("TT:Creating New Settings");
 
 
@@ -194,7 +198,8 @@ namespace GalacticScale.Generators {
             //GS2.DumpObjectToJson(path, GSSettings.Instance);
         }
 
-        public void Import(GSGenPreferences preferences) {
+        public void Import(GSGenPreferences preferences)
+        {
 
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
 
     public class SingletonExample //left here for future use
     {
@@ -10,9 +11,11 @@ namespace GalacticScale {
     }
 
 
-    public class VegeTypesDictionary {
+    public class VegeTypesDictionary
+    {
         public static Dictionary<string, int> Instance => Internal.instance;
-        private class Internal {
+        private class Internal
+        {
             static Internal() { }
             internal static readonly Dictionary<string, int> instance = new Dictionary<string, int>()
             {
@@ -297,19 +300,26 @@ namespace GalacticScale {
         //    ["JungleGrass9"] = 1023
         //}
         //}
-        public static int Find(string s) {
-            if (s == null) {
+        public static int Find(string s)
+        {
+            if (s == null)
+            {
                 GS2.Warn("Vege code null");
             }
-            if (Instance.ContainsKey(s)) {
+            if (Instance.ContainsKey(s))
+            {
                 return Instance[s];
-            } else {
+            }
+            else
+            {
                 GS2.Warn("Vege ID for " + s + " not found");
                 return 9999;
             }
         }
-        public static string Find(int i) {
-            if (Instance.ContainsValue(i)) {
+        public static string Find(int i)
+        {
+            if (Instance.ContainsValue(i))
+            {
                 return Utils.ReverseLookup(Instance, i);
             }
 

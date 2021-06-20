@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GSSerializer {
-    public partial class fsConverterRegistrar {
+namespace GSSerializer
+{
+    public partial class fsConverterRegistrar
+    {
         public static Internal.DirectConverters.Bounds_DirectConverter Register_Bounds_DirectConverter;
     }
 }
 
-namespace GSSerializer.Internal.DirectConverters {
-    public class Bounds_DirectConverter : fsDirectConverter<Bounds> {
-        protected override fsResult DoSerialize(Bounds model, Dictionary<string, fsData> serialized) {
+namespace GSSerializer.Internal.DirectConverters
+{
+    public class Bounds_DirectConverter : fsDirectConverter<Bounds>
+    {
+        protected override fsResult DoSerialize(Bounds model, Dictionary<string, fsData> serialized)
+        {
             var result = fsResult.Success;
 
             result += SerializeMember(serialized, null, "center", model.center);
@@ -20,7 +25,8 @@ namespace GSSerializer.Internal.DirectConverters {
             return result;
         }
 
-        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Bounds model) {
+        protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref Bounds model)
+        {
             var result = fsResult.Success;
 
             var t0 = model.center;

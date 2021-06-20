@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
-namespace GalacticScale {
-    public static partial class GS2 {
+namespace GalacticScale
+{
+    public static partial class GS2
+    {
         public static void SetPlanetTheme(
          PlanetData planet,
-         GSPlanet gsPlanet) {
+         GSPlanet gsPlanet)
+        {
             //Log("Start|" + gsPlanet.Name);
             int seed = 0;
             GSTheme gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             int ThemeID = gsTheme.UpdateThemeProtoSet();
-            if (gsPlanet.Seed > -1) {
+            if (gsPlanet.Seed > -1)
+            {
                 seed = gsPlanet.Seed;
             }
 
@@ -26,7 +30,8 @@ namespace GalacticScale {
             planet.waterHeight = gsTheme.WaterHeight;
             planet.waterItemId = gsTheme.WaterItemId;
             planet.levelized = gsTheme.UseHeightForBuild;
-            if (planet.type != EPlanetType.Gas) {
+            if (planet.type != EPlanetType.Gas)
+            {
                 return;
             }
 
@@ -35,12 +40,14 @@ namespace GalacticScale {
             int[] numArray1 = new int[length1];
             float[] numArray2 = new float[length2];
             float[] numArray3 = new float[length1];
-            for (int index = 0; index < length1; ++index) {
+            for (int index = 0; index < length1; ++index)
+            {
                 numArray1[index] = gsTheme.GasItems[index];
             }
 
             double num1 = 0.0;
-            for (int index = 0; index < length2; ++index) {
+            for (int index = 0; index < length2; ++index)
+            {
                 float num2 = gsTheme.GasSpeeds[index] * (float)(rand2 * 0.190909147262573 + 0.909090876579285);
                 numArray2[index] = num2 * Mathf.Pow(planet.star.resourceCoef, 0.3f);
                 ItemProto itemProto = LDB.items.Select(numArray1[index]);

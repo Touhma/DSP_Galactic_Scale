@@ -1,5 +1,7 @@
-﻿namespace GalacticScale {
-    public static class RomanNumbers {
+﻿namespace GalacticScale
+{
+    public static class RomanNumbers
+    {
         public static string[] roman = new string[101] {
             string.Empty,
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI",

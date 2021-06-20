@@ -1,19 +1,24 @@
 ﻿using HarmonyLib;
 using UnityEngine.UI;
 
-namespace GalacticScale {
-    public partial class PatchOnUIGalaxySelect {
+namespace GalacticScale
+{
+    public partial class PatchOnUIGalaxySelect
+    {
         [HarmonyPostfix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
         public static void UIPostfix(UIGalaxySelect __instance, ref Slider ___starCountSlider) => ___starCountSlider.onValueChanged.AddListener(__instance.OnStarCountSliderValueChange);
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
-        public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy) {
+        public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
+        {
             __instance.starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
-            if (galaxy == null) {
+            if (galaxy == null)
+            {
                 return false;
             }
 
-            if (galaxy.stars == null) {
+            if (galaxy.stars == null)
+            {
                 return false;
             }
 
@@ -30,32 +35,54 @@ namespace GalacticScale {
             int N = 0;
             int W = 0;
             int H = 0;
-            if (galaxy.stars == null) {
+            if (galaxy.stars == null)
+            {
                 return false;
             }
 
-            foreach (StarData star in galaxy.stars) {
-                if (star.type == EStarType.MainSeqStar || star.type == EStarType.GiantStar) {
-                    if (star.spectr == ESpectrType.M) {
+            foreach (StarData star in galaxy.stars)
+            {
+                if (star.type == EStarType.MainSeqStar || star.type == EStarType.GiantStar)
+                {
+                    if (star.spectr == ESpectrType.M)
+                    {
                         ++M;
-                    } else if (star.spectr == ESpectrType.K) {
+                    }
+                    else if (star.spectr == ESpectrType.K)
+                    {
                         ++K;
-                    } else if (star.spectr == ESpectrType.G) {
+                    }
+                    else if (star.spectr == ESpectrType.G)
+                    {
                         ++G;
-                    } else if (star.spectr == ESpectrType.F) {
+                    }
+                    else if (star.spectr == ESpectrType.F)
+                    {
                         ++F;
-                    } else if (star.spectr == ESpectrType.A) {
+                    }
+                    else if (star.spectr == ESpectrType.A)
+                    {
                         ++A;
-                    } else if (star.spectr == ESpectrType.B) {
+                    }
+                    else if (star.spectr == ESpectrType.B)
+                    {
                         ++B;
-                    } else if (star.spectr == ESpectrType.O) {
+                    }
+                    else if (star.spectr == ESpectrType.O)
+                    {
                         ++O;
                     }
-                } else if (star.type == EStarType.NeutronStar) {
+                }
+                else if (star.type == EStarType.NeutronStar)
+                {
                     ++N;
-                } else if (star.type == EStarType.WhiteDwarf) {
+                }
+                else if (star.type == EStarType.WhiteDwarf)
+                {
                     ++W;
-                } else if (star.type == EStarType.BlackHole) {
+                }
+                else if (star.type == EStarType.BlackHole)
+                {
                     ++H;
                 }
             }

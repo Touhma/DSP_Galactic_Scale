@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
-namespace GalacticScale {
-    public class PatchOnStationComponent {
+namespace GalacticScale
+{
+    public class PatchOnStationComponent
+    {
 
         // Strategy: find where  replace all ldc.i4.s 10 instructions with dynamic references to the relevant star's planetCount
         //
@@ -53,10 +55,13 @@ namespace GalacticScale {
                                      // Unfortunately we can't guarantee that V_64 and V_65 are consistently going to be the variables we need, especially between patches and with other mods.
                                      // But, thankfully, we know that the line immediately before ldc.i4.s 10 is the variable we want to refer to.
         [HarmonyTranspiler, HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
             var codes = new List<CodeInstruction>(instructions);
-            for (var i = 0; i < codes.Count; i++) {
-                if (codes[i].opcode == OpCodes.Ldc_I4_S && codes[i].OperandIs(10)) {
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldc_I4_S && codes[i].OperandIs(10))
+                {
                     List<CodeInstruction> newInstructions = new List<CodeInstruction>();
                     newInstructions.Add(new CodeInstruction(codes[i - 1])); //The line before adding 10 is the line which loads in the planet ID we care about, so copy it
                     newInstructions.Add(Transpilers.EmitDelegate<Del>(bodyID =>

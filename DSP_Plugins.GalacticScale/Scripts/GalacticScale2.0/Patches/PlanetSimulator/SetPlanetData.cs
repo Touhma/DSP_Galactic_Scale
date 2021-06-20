@@ -3,21 +3,29 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
-namespace GalacticScale {
-    public partial class PatchOnPlanetSimulator {
+namespace GalacticScale
+{
+    public partial class PatchOnPlanetSimulator
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetSimulator), "SetPlanetData")]
         public static bool SetPlanetData(ref PlanetSimulator __instance, ref Transform ___lookCamera,
-            ref UniverseSimulator ___universe, ref StarSimulator ___star, PlanetData planet) {
+            ref UniverseSimulator ___universe, ref StarSimulator ___star, PlanetData planet)
+        {
             __instance.planetData = planet;
-            if (__instance.planetData.atmosMaterial != null) {
-                __instance.atmoTrans0 = new GameObject("Atmosphere") {
+            if (__instance.planetData.atmosMaterial != null)
+            {
+                __instance.atmoTrans0 = new GameObject("Atmosphere")
+                {
                     layer = 31
                 }.transform;
                 __instance.atmoTrans0.parent = __instance.transform;
                 __instance.atmoTrans0.localPosition = Vector3.zero;
-                if (planet.GetScaleFactored() >= 1) {
+                if (planet.GetScaleFactored() >= 1)
+                {
                     __instance.atmoTrans0.localScale *= planet.GetScaleFactored();
-                } else {
+                }
+                else
+                {
                     __instance.atmoTrans0.localScale /= planet.GetScaleFactored();
                 }
 

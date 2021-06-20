@@ -1,11 +1,15 @@
 ﻿using HarmonyLib;
 using System.IO;
 
-namespace GalacticScale {
-    public static partial class PatchOnGameDesc {
+namespace GalacticScale
+{
+    public static partial class PatchOnGameDesc
+    {
         [HarmonyPostfix, HarmonyPatch(typeof(GameDesc), "Export")]
-        public static void Export(BinaryWriter w) {
-            if (GS2.IsMenuDemo) {
+        public static void Export(BinaryWriter w)
+        {
+            if (GS2.IsMenuDemo)
+            {
                 return;
             }
 

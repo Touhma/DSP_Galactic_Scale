@@ -1,23 +1,31 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace GalacticScale {
-    public partial class PatchOnPlanetGrid {
+namespace GalacticScale
+{
+    public partial class PatchOnPlanetGrid
+    {
 
 
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetGrid), "DetermineLongitudeSegmentCount")]
-        public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result) {
-            if (!DSPGame.IsMenuDemo) {
-                if (!GS2.Vanilla) {
-                    if (GS2.keyedLUTs.ContainsKey(segment)) {
+        public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result)
+        {
+            if (!DSPGame.IsMenuDemo)
+            {
+                if (!GS2.Vanilla)
+                {
+                    if (GS2.keyedLUTs.ContainsKey(segment))
+                    {
                         //GS2.Warn("Using DSLC");
                         int index = Mathf.Abs(latitudeIndex) % (segment / 2);
-                        if (index >= segment / 4) {
+                        if (index >= segment / 4)
+                        {
                             index = segment / 4 - index;
                         }
                         __result = GS2.keyedLUTs[segment][index];
-                    } else {
+                    }
+                    else
+                    {
                         //Original algorithm. Really shouldn't be used anymore... but just in case it's still here.
                         //GS2.Warn("Using original algo");
                         var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)(latitudeIndex / (double)(segment / 4f) * 3.14159274101257 * 0.5))) * segment);

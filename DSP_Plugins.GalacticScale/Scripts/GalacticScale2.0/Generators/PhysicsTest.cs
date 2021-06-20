@@ -1,5 +1,7 @@
-﻿namespace GalacticScale.Generators {
-    public class PhysicsTest : iConfigurableGenerator {
+﻿namespace GalacticScale.Generators
+{
+    public class PhysicsTest : iConfigurableGenerator
+    {
         public string Name => "PhysicsTest";
 
         public string Author => "innominata";
@@ -16,7 +18,8 @@
 
         private readonly GSOptions options = new GSOptions();
         private readonly GSStars stars = new GSStars();
-        public void Init() {
+        public void Init()
+        {
             //List<string> genList = new List<string>();
             //foreach (iGenerator g in GS2.generators) genList.Add(g.Name);
             //options.Add(new GSOption("Dryrun Generator", "ComboBox", genList, OnDryRunChange, () => { }));
@@ -28,13 +31,16 @@
             //OnImportPositionsClick(null);
         }
 
-        public void Generate(int starCount) {
+        public void Generate(int starCount)
+        {
             GSPlanets p = new GSPlanets();
-            for (var i = 1f; i < 50f; i++) {
+            for (var i = 1f; i < 50f; i++)
+            {
                 p.Add(new GSPlanet("Test", "OceanWorld", 100, (float)i, -1, -1, 0, -1, -1, -1, 1f, null));
             }
 
-            for (var i = 0; i < 100; i++) {
+            for (var i = 0; i < 100; i++)
+            {
 
                 GSStar s = new GSStar(1, "PhysRadius" + i, ESpectrType.B, EStarType.MainSeqStar, p);
                 s.position = new VectorLF3(i * (1 + (i % 2)), i, i * (-1 + (1 % 2)));
@@ -46,7 +52,8 @@
             }
         }
 
-        public void Import(GSGenPreferences preferences) {
+        public void Import(GSGenPreferences preferences)
+        {
 
         }
 

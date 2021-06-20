@@ -1,6 +1,9 @@
-﻿namespace GalacticScale {
-    public static partial class TerrainAlgorithms {
-        public static void GenerateTerrain1(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0) {
+﻿namespace GalacticScale
+{
+    public static partial class TerrainAlgorithms
+    {
+        public static void GenerateTerrain1(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
+        {
             random = new GS2.Random(gsPlanet.Seed);
             GS2.Log($"USING GSTA1 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             GSTerrainSettings t = GS2.ThemeLibrary[gsPlanet.Theme].TerrainSettings;
@@ -15,7 +18,8 @@
             int minHD = 999999;
             int maxBH = -999;
             int minBH = 999999;
-            for (int i = 0; i < data.dataLength; ++i) {
+            for (int i = 0; i < data.dataLength; ++i)
+            {
                 double x = data.vertices[i].x * (double)gsPlanet.planetData.radius;
                 double y = data.vertices[i].y * (double)gsPlanet.planetData.radius;
                 double z = data.vertices[i].z * (double)gsPlanet.planetData.radius;
@@ -32,19 +36,23 @@
                 data.heightData[i] = (ushort)UnityEngine.Mathf.Clamp(hd, ushort.MinValue, ushort.MaxValue);
                 var bh = (byte)UnityEngine.Mathf.Clamp((float)(num20 * 100.0), 0.0f, 200f);
                 data.biomoData[i] = bh;
-                if (hd > maxHD) {
+                if (hd > maxHD)
+                {
                     maxHD = hd;
                 }
 
-                if (hd < minHD) {
+                if (hd < minHD)
+                {
                     minHD = hd;
                 }
 
-                if (bh > maxBH) {
+                if (bh > maxBH)
+                {
                     maxBH = bh;
                 }
 
-                if (bh < minBH) {
+                if (bh < minBH)
+                {
                     minBH = bh;
                 }
             }

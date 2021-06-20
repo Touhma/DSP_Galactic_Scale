@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace GSSerializer.Internal {
-    public class fsKeyValuePairConverter : fsConverter {
-        public override bool CanProcess(Type type) {
+namespace GSSerializer.Internal
+{
+    public class fsKeyValuePairConverter : fsConverter
+    {
+        public override bool CanProcess(Type type)
+        {
             return
                 type.Resolve().IsGenericType &&
                 type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>);
@@ -14,15 +17,18 @@ namespace GSSerializer.Internal {
 
         public override bool RequestInheritanceSupport(Type storageType) => false;
 
-        public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType) {
+        public override fsResult TryDeserialize(fsData data, ref object instance, Type storageType)
+        {
             var result = fsResult.Success;
 
             fsData keyData, valueData;
-            if ((result += CheckKey(data, "Key", out keyData)).Failed) {
+            if ((result += CheckKey(data, "Key", out keyData)).Failed)
+            {
                 return result;
             }
 
-            if ((result += CheckKey(data, "Value", out valueData)).Failed) {
+            if ((result += CheckKey(data, "Value", out valueData)).Failed)
+            {
                 return result;
             }
 
@@ -37,7 +43,8 @@ namespace GSSerializer.Internal {
             return result;
         }
 
-        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType) {
+        public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
+        {
             PropertyInfo keyProperty = storageType.GetDeclaredProperty("Key");
             PropertyInfo valueProperty = storageType.GetDeclaredProperty("Value");
 
@@ -54,11 +61,13 @@ namespace GSSerializer.Internal {
             result.AddMessages(Serializer.TrySerialize(valueType, valueObject, out valueData));
 
             serialized = fsData.CreateDictionary();
-            if (keyData != null) {
+            if (keyData != null)
+            {
                 serialized.AsDictionary["Key"] = keyData;
             }
 
-            if (valueData != null) {
+            if (valueData != null)
+            {
                 serialized.AsDictionary["Value"] = valueData;
             }
 

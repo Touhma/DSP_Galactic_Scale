@@ -2,10 +2,13 @@
 using System;
 using UnityEngine;
 
-namespace GalacticScale {
-    public partial class PatchOnPlanetGrid {
+namespace GalacticScale
+{
+    public partial class PatchOnPlanetGrid
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetGrid), "CalcSegmentsAcross")]
-        public static bool CalcSegmentsAcross(PlanetGrid __instance, Vector3 posR, Vector3 posA, Vector3 posB, ref float __result) {
+        public static bool CalcSegmentsAcross(PlanetGrid __instance, Vector3 posR, Vector3 posA, Vector3 posB, ref float __result)
+        {
             //No config check for Planet size change since this replicates vanilla in case of size 200
             posR.Normalize();
             posA.Normalize();
@@ -27,7 +30,8 @@ namespace GalacticScale {
             float num11 = num10 + num9;
             float num12 = 0f;
             float num13 = 1f;
-            if (num11 > 0f) {
+            if (num11 > 0f)
+            {
                 num12 = num9 / num11;
                 num13 = num10 / num11;
             }

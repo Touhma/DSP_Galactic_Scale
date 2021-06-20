@@ -1,11 +1,15 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace GalacticScale {
-    public partial class PatchOnGameMain {
+namespace GalacticScale
+{
+    public partial class PatchOnGameMain
+    {
         [HarmonyPrefix, HarmonyPatch(typeof(GameMain), "OnMainCameraPostRender")]
-        private static bool PatchOnMainCameraPostRender(Camera cam) {
-            if (GameMain.data != null) {
+        private static bool PatchOnMainCameraPostRender(Camera cam)
+        {
+            if (GameMain.data != null)
+            {
                 GameMain.data.OnPostDraw();
             }
 

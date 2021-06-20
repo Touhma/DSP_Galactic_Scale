@@ -1,8 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale {
-    public class GSAmbientSettings {
+namespace GalacticScale
+{
+    public class GSAmbientSettings
+    {
         public string ResourcePath;
         public Color Color1 = Color.black;
         public Color Color2 = Color.black;
@@ -32,7 +34,8 @@ namespace GalacticScale {
 
         public GSAmbientSettings() { }
 
-        public void FromTheme(GSTheme theme) {
+        public void FromTheme(GSTheme theme)
+        {
             //GS2.Log("Start " + (theme.ambientDesc == null));
             if (theme.ambientDesc == null) { GS2.Warn(theme.Name + " has no AmbientDesc"); return; }
             Color1 = theme.ambientDesc.ambientColor0; //Trees Day Tint
@@ -57,34 +60,44 @@ namespace GalacticScale {
             ReflectionMap = theme.ambientDesc.reflectionMap;
             LutTexture = theme.ambientDesc.lutTexture;
             GS2.Log(".....");
-            if (ReflectionMap?.name?.Split('_')[0] == "def") {
+            if (ReflectionMap?.name?.Split('_')[0] == "def")
+            {
                 CubeMap = "Vanilla";
                 GS2.Log("___");
-            } else {
+            }
+            else
+            {
                 CubeMap = ReflectionMap?.name;
             }
 
             GS2.Log("_");
         }
-        public void ToTheme(GSTheme theme) {
+        public void ToTheme(GSTheme theme)
+        {
             //GS2.Log("Start");
             // This should already been defaulted by the base theme if that exists
-            if (CubeMap == "Vanilla" || CubeMap == null) {
+            if (CubeMap == "Vanilla" || CubeMap == null)
+            {
                 //GS2.Log("Vanilla");
                 //do nothing
             }//////////// FIX RARE SPAWNING IN THEME
-            else {
+            else
+            {
                 //GS2.Log(CubeMap);
                 //GS2.Log(Reflections.ToString());
                 //Should move this out of here
                 AssetBundle bundle = GS2.bundle;
                 //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
-                if (CubeMap == "GS2") {
+                if (CubeMap == "GS2")
+                {
                     Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
-                    if (Reflections.a != 0) {
+                    if (Reflections.a != 0)
+                    {
                         ReflectionMap = Utils.TintCubeMap(x, Reflections);
                         //GS2.Log("Set Reflection Map to Tinted One");
-                    } else {
+                    }
+                    else
+                    {
                         ReflectionMap = x;
                     }
                 }
@@ -110,32 +123,39 @@ namespace GalacticScale {
             theme.ambientDesc.biomoSound1 = BiomeSound2;
             theme.ambientDesc.biomoSound2 = BiomeSound3;
             theme.ambientDesc.lutContribution = LutContribution;
-            if (ReflectionMap != null) {
+            if (ReflectionMap != null)
+            {
                 //GS2.Log("Processing ReflectionMap");
                 theme.ambientDesc.reflectionMap = ReflectionMap;
             }
-            if (LutTexture != null) {
+            if (LutTexture != null)
+            {
                 theme.ambientDesc.lutTexture = LutTexture;
             }
         }
-        public GSAmbientSettings Clone() {
+        public GSAmbientSettings Clone()
+        {
             GSAmbientSettings a = (GSAmbientSettings)MemberwiseClone();
-            if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] != "def") {
+            if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] != "def")
+            {
                 a.ReflectionMap = UnityEngine.Object.Instantiate(ReflectionMap);
             }
 
-            if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] == "def") {
+            if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] == "def")
+            {
                 a.ReflectionMap = ReflectionMap;
             }
 
             GS2.Log("*");
-            if (LutTexture != null) {
+            if (LutTexture != null)
+            {
                 a.LutTexture = LutTexture;
             }
 
             return a;
         }
-        public override string ToString() {
+        public override string ToString()
+        {
             return "->" + Color1 + Color2 + Color3 + WaterColor1 + WaterColor2 + WaterColor3 + BiomeColor1 + BiomeColor2 + BiomeColor3 + DustColor1 + DustColor2 + DustColor3 + DustStrength1 + DustStrength2 + DustStrength3 +
                 BiomeSound1.ToString() + BiomeSound2.ToString() + BiomeSound3.ToString() + LutContribution.ToString() + ReflectionMap?.name + LutTexture?.name;
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace GalacticScale {
-    public class GSTerrainSettings {
+namespace GalacticScale
+{
+    public class GSTerrainSettings
+    {
         [NonSerialized]
         public double xFactor = 0;
         [NonSerialized]

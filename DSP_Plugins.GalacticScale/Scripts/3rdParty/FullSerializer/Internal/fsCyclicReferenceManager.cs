@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace GSSerializer.Internal {
-    public class fsCyclicReferenceManager {
+namespace GSSerializer.Internal
+{
+    public class fsCyclicReferenceManager
+    {
         // We use the default ReferenceEquals when comparing two objects because
         // custom objects may override equals methods. These overriden equals may
         // treat equals differently; we want to serialize/deserialize the object
         // graph *identically* to how it currently exists.
-        private class ObjectReferenceEqualityComparator : IEqualityComparer<object> {
+        private class ObjectReferenceEqualityComparator : IEqualityComparer<object>
+        {
             bool IEqualityComparer<object>.Equals(object x, object y) => ReferenceEquals(x, y);
 
             int IEqualityComparer<object>.GetHashCode(object obj) => RuntimeHelpers.GetHashCode(obj);
@@ -24,16 +27,19 @@ namespace GSSerializer.Internal {
 
         public void Enter() => _depth++;
 
-        public bool Exit() {
+        public bool Exit()
+        {
             _depth--;
 
-            if (_depth == 0) {
+            if (_depth == 0)
+            {
                 _objectIds = new Dictionary<object, int>(ObjectReferenceEqualityComparator.Instance);
                 _nextId = 0;
                 _marked = new Dictionary<int, object>();
             }
 
-            if (_depth < 0) {
+            if (_depth < 0)
+            {
                 _depth = 0;
                 throw new InvalidOperationException("Internal Error - Mismatched Enter/Exit. Please report a bug at https://github.com/jacobdufault/fullserializer/issues with the serialization data.");
             }
@@ -41,8 +47,10 @@ namespace GSSerializer.Internal {
             return _depth == 0;
         }
 
-        public object GetReferenceObject(int id) {
-            if (_marked.ContainsKey(id) == false) {
+        public object GetReferenceObject(int id)
+        {
+            if (_marked.ContainsKey(id) == false)
+            {
                 throw new InvalidOperationException("Internal Deserialization Error - Object " +
                     "definition has not been encountered for object with id=" + id +
                     "; have you reordered or modified the serialized data? If this is an issue " +
@@ -55,9 +63,11 @@ namespace GSSerializer.Internal {
 
         public void AddReferenceWithId(int id, object reference) => _marked[id] = reference;
 
-        public int GetReferenceId(object item) {
+        public int GetReferenceId(object item)
+        {
             int id;
-            if (_objectIds.TryGetValue(item, out id) == false) {
+            if (_objectIds.TryGetValue(item, out id) == false)
+            {
                 id = _nextId++;
                 _objectIds[item] = id;
             }
@@ -66,10 +76,12 @@ namespace GSSerializer.Internal {
 
         public bool IsReference(object item) => _marked.ContainsKey(GetReferenceId(item));
 
-        public void MarkSerialized(object item) {
+        public void MarkSerialized(object item)
+        {
             int referenceId = GetReferenceId(item);
 
-            if (_marked.ContainsKey(referenceId)) {
+            if (_marked.ContainsKey(referenceId))
+            {
                 throw new InvalidOperationException("Internal Error - " + item +
                     " has already been marked as serialized");
             }

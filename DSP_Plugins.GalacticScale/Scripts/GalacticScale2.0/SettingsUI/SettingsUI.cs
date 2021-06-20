@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace GalacticScale {
-    public struct GSSliderConfig {
+namespace GalacticScale
+{
+    public struct GSSliderConfig
+    {
         public float minValue;
         public float maxValue;
         public float defaultValue;
-        public GSSliderConfig(float minValue, float value, float maxValue) {
+        public GSSliderConfig(float minValue, float value, float maxValue)
+        {
             this.minValue = minValue;
             this.maxValue = maxValue;
             this.defaultValue = value;
         }
     }
-    public static class SettingsUI {
+    public static class SettingsUI
+    {
         public static int MainTabIndex = 5;
         private static RectTransform tabLine;
         private static RectTransform galacticButton;
@@ -42,7 +46,8 @@ namespace GalacticScale {
 
         public static UnityEvent OptionsUIPostfix = new UnityEvent();
 
-        public static void CreateGalacticScaleSettingsPage(UIButton[] _tabButtons, Text[] _tabTexts) {
+        public static void CreateGalacticScaleSettingsPage(UIButton[] _tabButtons, Text[] _tabTexts)
+        {
             tabLine = GameObject.Find("Top Windows/Option Window/tab-line").GetComponent<RectTransform>();
             tabButtons = _tabButtons;
             tabTexts = _tabTexts;
@@ -69,7 +74,8 @@ namespace GalacticScale {
             scrollview.offsetMin = new Vector2(0, 0);
             scrollview.name = "GalacticScaleSettings";
             var svContent = scrollview.GetComponentInChildren<UITools.EnsureIntPosition>();
-            while (svContent.transform.childCount > 0) {
+            while (svContent.transform.childCount > 0)
+            {
                 Object.DestroyImmediate(svContent.transform.GetChild(0).gameObject);
             }
             //   UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/sep-line-bottom-1
@@ -84,12 +90,14 @@ namespace GalacticScale {
             details.gameObject.SetActive(true);
             details.gameObject.name = "content-gs";
             Transform advisorTips = details.Find("advisor-tips");
-            if (advisorTips != null) {
+            if (advisorTips != null)
+            {
                 Object.Destroy(advisorTips.gameObject);
             }
             //Destroy surplus ui elements
             Transform tipLevel = details.Find("tiplevel");
-            if (tipLevel != null) {
+            if (tipLevel != null)
+            {
                 Object.Destroy(tipLevel.gameObject);
             }
 
@@ -108,7 +116,8 @@ namespace GalacticScale {
 
             //Create a template of a button
             Transform revertButton = details.Find("revert-button");
-            if (revertButton == null) {
+            if (revertButton == null)
+            {
                 GS2.Log("Couldn't find revert button");
             }
             //GS2.Log("CreateGalacticScaleSettingsPage Test6");
@@ -127,7 +136,8 @@ namespace GalacticScale {
             //GS2.Log("CreateGalacticScaleSettingsPage Test6.6"); 
             templateButton.anchoredPosition = new Vector2(anchorX, anchorY);
             //GS2.Log("CreateGalacticScaleSettingsPage Test6.7"); 
-            if (revertButton != null) {
+            if (revertButton != null)
+            {
                 Object.Destroy(revertButton.gameObject);
             }
 
@@ -136,7 +146,8 @@ namespace GalacticScale {
             templateOptionsCanvas.anchoredPosition = details.anchoredPosition + new Vector2(750f, 0);
             templateOptionsCanvas.gameObject.name = "templateCanvasPanel";
             //GS2.Log("CreateGalacticScaleSettingsPage TEST2");
-            while (templateOptionsCanvas.transform.childCount > 0) {
+            while (templateOptionsCanvas.transform.childCount > 0)
+            {
                 Object.DestroyImmediate(templateOptionsCanvas.transform.GetChild(0).gameObject);
             }
             //GS2.Log("CreateGalacticScaleSettingsPage TEST3");
@@ -153,13 +164,15 @@ namespace GalacticScale {
             //GS2.Log("Hmm");
             //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
             //inputFieldProto.GetComponent<InputField>().interactable = true;
-            if (inputFieldProto.transform.parent.GetComponent<Text>() != null) {
+            if (inputFieldProto.transform.parent.GetComponent<Text>() != null)
+            {
                 inputFieldProto.transform.parent.GetComponent<Text>().enabled = true;
             }
             //GS2.Log("Hmm2");
             inputFieldProto.GetComponentInChildren<Text>().enabled = true;
             //GS2.Log("Hmm3");
-            if (inputFieldProto.GetComponent<Image>() != null) {
+            if (inputFieldProto.GetComponent<Image>() != null)
+            {
                 inputFieldProto.GetComponent<Image>().enabled = true;
             }
             //GS2.Log("CreateGalacticScaleSettingsPage TEST6 - " + (seedInput != null));
@@ -203,7 +216,8 @@ namespace GalacticScale {
             UpdateContentRect();
             //viewportRect.sizeDelta = this.keyScrollVbarRect.gameObject.activeSelf ? new Vector2(-10f, 0.0f) : Vector2.zero;
         }
-        private static void UpdateContentRect() {
+        private static void UpdateContentRect()
+        {
             var optionlist = generatorPluginOptions[generatorIndex];
             int entries = optionlist.Count;
             //GS2.LogJson(optionlist, true);
@@ -212,15 +226,20 @@ namespace GalacticScale {
             contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 42 * entries + 8);
             contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x), Mathf.Round(contentRect.anchoredPosition.y));
         }
-        private static void ImportCustomGeneratorOptions() {
-            for (var i = 0; i < GS2.generators.Count; i++) {
+        private static void ImportCustomGeneratorOptions()
+        {
+            for (var i = 0; i < GS2.generators.Count; i++)
+            {
                 List<GSUI> pluginOptions = new List<GSUI>();
                 //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
-                if (GS2.generators[i] is iConfigurableGenerator gen) {
+                if (GS2.generators[i] is iConfigurableGenerator gen)
+                {
                     //GS2.Log(gen.Name + " is configurable"); 
-                    for (var j = 0; j < gen.Options.Count; j++) {// (GSUI o in gen.Options) {
+                    for (var j = 0; j < gen.Options.Count; j++)
+                    {// (GSUI o in gen.Options) {
                         if (!(gen.Options[j] is GSUI)) GS2.Error($"Non UI Element Found in UI Element List for generator {gen.Name}");
-                        else {
+                        else
+                        {
                             GSUI o = (GSUI)gen.Options[j];
                             //GS2.Warn(o.Label);
                             pluginOptions.Add(o);
@@ -230,7 +249,8 @@ namespace GalacticScale {
                 generatorPluginOptions.Add(pluginOptions);
             }
         }
-        private static void CreateOwnOptions() {
+        private static void CreateOwnOptions()
+        {
             //GS2.Log("CreateOwnOptions()");
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
             options.Add(GSUI.Combobox("Generator", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
@@ -240,28 +260,34 @@ namespace GalacticScale {
             GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials", false, GS2.NoTutorialsOptionCallback, GS2.NoTutorialsOptionPostfix));
             GS2.CheatModeOption = options.Add(GSUI.Checkbox("Cheat Mode", false, GS2.CheatModeOptionCallback, GS2.CheatModeOptionPostfix));
         }
-        private static void CreateOwnOptionsPostFix() {
+        private static void CreateOwnOptionsPostFix()
+        {
             //GS2.Log("CreateGeneratorOptionsPostFix");
 
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
-            for (var i = 0; i < generatorNames.Count; i++) {
-                if (generatorNames[i] == GS2.generator.Name) {
+            for (var i = 0; i < generatorNames.Count; i++)
+            {
+                if (generatorNames[i] == GS2.generator.Name)
+                {
                     /*GS2.Log("index found!" + i);*/
                     generatorIndex = i;
                 }
             }
 
-            if (optionRects[0] != null) {
+            if (optionRects[0] != null)
+            {
                 //GS2.Log("Setting combobox for generator index to " + generatorIndex);
                 optionRects[0].GetComponentInChildren<UIComboBox>().itemIndex = generatorIndex;
             }
             //else GS2.Log("optionRects[0] == null!@#");
         }
-        private static RectTransform CreateTemplate(RectTransform original) {
+        private static RectTransform CreateTemplate(RectTransform original)
+        {
             RectTransform template = Object.Instantiate(original, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
             template.gameObject.SetActive(false);
             Localizer l = template.GetComponentInChildren<Localizer>();
-            if (l != null) {
+            if (l != null)
+            {
                 Object.Destroy(l);
             }
 
@@ -269,11 +295,14 @@ namespace GalacticScale {
         }
 
         // Method that handles creation of the settings tab
-        private static void CreateOptionsUI() {
+        private static void CreateOptionsUI()
+        {
             //GS2.Log("CreateOptionsUI");
-            for (var i = 0; i < options.Count; i++) {
+            for (var i = 0; i < options.Count; i++)
+            {
 
-                switch (options[i].Type) {
+                switch (options[i].Type)
+                {
                     case "Combobox": CreateComboBox(options[i], details, i); break;
                     case "Input": CreateInputField(options[i], details, i); break;
                     case "Button": CreateButton((GSUI)options[i], details, i); break;
@@ -284,18 +313,22 @@ namespace GalacticScale {
             }
             int currentGenIndex = GS2.GetCurrentGeneratorIndex();
             //GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.generators[currentGenIndex].Name);
-            for (var i = 0; i < generatorPluginOptions.Count; i++) { //for each canvas
+            for (var i = 0; i < generatorPluginOptions.Count; i++)
+            { //for each canvas
                 //GS2.Log("Creating Canvas " + i);
                 RectTransform canvas = Object.Instantiate(templateOptionsCanvas, details, false);
                 canvas.name = "testCanvas" + i;
                 generatorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.generators[i].Name;
-                if (currentGenIndex == i) {
+                if (currentGenIndex == i)
+                {
                     //GS2.Log("Setting canvas active");
                     canvas.gameObject.SetActive(true);
                     Canvas.ForceUpdateCanvases();
 
-                } else {
+                }
+                else
+                {
                     canvas.gameObject.SetActive(false);
                 }
 
@@ -308,12 +341,15 @@ namespace GalacticScale {
 
 
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
-        private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex) {
+        private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
+        {
             //GS2.Log("AddGeneratorPluginUIElements: " + GS2.generators[genIndex].Name);
             List<GSUI> options = generatorPluginOptions[genIndex];
             //GS2.Log(GS2.generators[genIndex].Name + " option count = " + options.Count);
-            for (int i = 0; i < options.Count; i++) {
-                switch (options[i].Type) {
+            for (int i = 0; i < options.Count; i++)
+            {
+                switch (options[i].Type)
+                {
                     case "Combobox": CreateComboBox(options[i], canvas, i); break;
                     case "Button": CreateButton((GSUI)options[i], canvas, i); break;
                     case "Input": CreateInputField(options[i], canvas, i); break;
@@ -321,14 +357,16 @@ namespace GalacticScale {
                     case "Slider": CreateSlider(options[i], canvas, i); break;
                     default: GS2.Warn($"Couldn't create option {options[i].Label}"); break;
                 }
-                if (options[i].Postfix != null) {
+                if (options[i].Postfix != null)
+                {
                     OptionsUIPostfix.AddListener(new UnityAction(options[i].Postfix));
                 }
             }
         }
 
         // Create a combobox from a GSOption definition
-        private static void CreateComboBox(GSUI o, RectTransform canvas, int index) {
+        private static void CreateComboBox(GSUI o, RectTransform canvas, int index)
+        {
             //GS2.Log("CreateComboBox");
             RectTransform comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
             comboBoxRect.name = o.Label;
@@ -343,7 +381,8 @@ namespace GalacticScale {
             comboBoxUI.UpdateItems();
             comboBoxUI.itemIndex = 0;
             comboBoxUI.onItemIndexChange.RemoveAllListeners();
-            if (o.callback != null) {
+            if (o.callback != null)
+            {
                 comboBoxUI.onSubmit.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
             }
             //if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
@@ -352,12 +391,14 @@ namespace GalacticScale {
             tipTransform.gameObject.name = "optionTip-" + (index);
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             tipTransform.GetComponent<Text>().text = o.Tip;
-            if (o.Postfix != null) {
+            if (o.Postfix != null)
+            {
                 OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
             }
             //GS2.Log("Finished Creating ComboBox");
         }
-        private static void CreateSlider(GSUI o, RectTransform canvas, int index) {
+        private static void CreateSlider(GSUI o, RectTransform canvas, int index)
+        {
             RectTransform sliderRect = Object.Instantiate(templateSlider, canvas);
             sliderRect.name = o.Label;
             sliderRect.gameObject.SetActive(true);
@@ -376,7 +417,8 @@ namespace GalacticScale {
             slider.value = gssc.defaultValue;
             label.text = slider.value.ToString();
             slider.onValueChanged.AddListener((v) => label.text = v.ToString());
-            if (o.callback != null) {
+            if (o.callback != null)
+            {
                 slider.onValueChanged.AddListener(delegate { o.callback(slider.value); });
             }
 
@@ -385,11 +427,13 @@ namespace GalacticScale {
             tipTransform.gameObject.name = "optionTip-" + (index);
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             //tipTransform.GetComponent<Text>().text = o.tip; GS2.Log("CreateSlider17");
-            if (o.Postfix != null) {
+            if (o.Postfix != null)
+            {
                 OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
             }
         }
-        private static void CreateCheckBox(GSUI o, RectTransform canvas, int index) {
+        private static void CreateCheckBox(GSUI o, RectTransform canvas, int index)
+        {
             //GS2.Log("CreateComboBox");
             RectTransform checkBoxRect = Object.Instantiate(templateCheckBox, canvas);
             checkBoxRect.name = o.Label;
@@ -402,7 +446,8 @@ namespace GalacticScale {
             toggle.name = o.Label + "_checkBox";
             toggle.isOn = (bool)o.Data;
             toggle.onValueChanged.RemoveAllListeners();
-            if (o.callback != null) {
+            if (o.callback != null)
+            {
                 toggle.onValueChanged.AddListener(delegate { o.callback(toggle.isOn); });
             }
 
@@ -411,14 +456,16 @@ namespace GalacticScale {
             //tipTransform.gameObject.name = "optionTip-" + (index);
             //Object.Destroy(tipTransform.GetComponent<Localizer>());
             //tipTransform.GetComponent<Text>().text = o.tip;
-            if (o.Postfix != null) {
+            if (o.Postfix != null)
+            {
                 OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
             }
             //GS2.Log("Finished Creating ComboBox");
         }
 
         // Create an input field from a GSOption definition
-        private static void CreateInputField(GSUI o, RectTransform canvas, int index) {
+        private static void CreateInputField(GSUI o, RectTransform canvas, int index)
+        {
             //GS2.Log("CreateInputField");
             RectTransform inputRect = Object.Instantiate(templateInputField, canvas);
             //GS2.Log("-1");
@@ -442,7 +489,8 @@ namespace GalacticScale {
             //GS2.Log("-10");
             inputUI.onValueChanged.RemoveAllListeners();
             //GS2.Log("-11");
-            if (o.callback != null) {
+            if (o.callback != null)
+            {
                 inputUI.onValueChanged.AddListener(delegate { o.callback(inputUI.text); }); //GS2.Log("-12");
             }
 
@@ -452,12 +500,14 @@ namespace GalacticScale {
             tipTransform.gameObject.name = "optionTip-" + (index); //GS2.Log("-16");
             Object.Destroy(tipTransform.GetComponent<Localizer>()); //GS2.Log("-17");
             tipTransform.GetComponent<Text>().text = o.Tip;// GS2.Log("-18");
-            if (o.Postfix != null) {
+            if (o.Postfix != null)
+            {
                 OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));// GS2.Log("-19");
             }
             //GS2.Log("Finished Creating InputField");
         }           // Create a button from a GSOption definition
-        private static void CreateButton(GSUI o, RectTransform canvas, int index) {
+        private static void CreateButton(GSUI o, RectTransform canvas, int index)
+        {
             //GS2.Log("CreateButton "+o.Label);
             RectTransform buttonRect = Object.Instantiate(templateButton, canvas);
             buttonRect.name = o.Label;
@@ -472,7 +522,8 @@ namespace GalacticScale {
             uiButton.GetComponentInChildren<Text>().text = o.Data.ToString();
             var l = uiButton.GetComponentInChildren<Localizer>();
             Object.Destroy(l);
-            if (o.callback != null) {
+            if (o.callback != null)
+            {
                 uiButton.button.onClick.AddListener(delegate { o.callback(null); });
             }
 
@@ -481,17 +532,20 @@ namespace GalacticScale {
             tipTransform.gameObject.name = "optionTip-" + (index);
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             tipTransform.GetComponent<Text>().text = o.Tip;
-            if (o.Postfix != null) {
+            if (o.Postfix != null)
+            {
                 OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
             }
         }
 
         // Callback for own Generator ComboBox Selection Event
-        private static void GeneratorSelected(object result) {
+        private static void GeneratorSelected(object result)
+        {
             //GS2.Log("Result = " + result + GS2.generators[(int)result].Name);
             GS2.generator = GS2.generators[(int)result];
             //GS2.Log("Set the generator, trying to disable every canvas");
-            for (var i = 0; i < generatorCanvases.Count; i++) {
+            for (var i = 0; i < generatorCanvases.Count; i++)
+            {
                 generatorCanvases[i].gameObject.SetActive(false);
             }
             //GS2.Log("trying to setactive");
@@ -501,12 +555,15 @@ namespace GalacticScale {
             //GS2.Log("trying to save prefs");
             GS2.SavePreferences();
         }
-        private static void GalacticScaleTabClick() {
+        private static void GalacticScaleTabClick()
+        {
             UIRoot.instance.optionWindow.SetTabIndex(MainTabIndex, false);
             scrollview.gameObject.SetActive(true);
         }
-        public static void DisableDetails() {
-            if (scrollview != null && scrollview.gameObject != null) {
+        public static void DisableDetails()
+        {
+            if (scrollview != null && scrollview.gameObject != null)
+            {
                 scrollview.gameObject.SetActive(false);
             }
         }

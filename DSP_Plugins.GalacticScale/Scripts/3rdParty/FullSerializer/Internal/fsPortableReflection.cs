@@ -39,12 +39,14 @@ namespace System {
 }
 #endif
 
-namespace GSSerializer.Internal {
+namespace GSSerializer.Internal
+{
     /// <summary>
     /// This wraps reflection types so that it is portable across different Unity
     /// runtimes.
     /// </summary>
-    public static class fsPortableReflection {
+    public static class fsPortableReflection
+    {
         public static Type[] EmptyTypes = { };
 
         #region Attribute Queries
@@ -93,7 +95,8 @@ namespace GSSerializer.Internal {
         /// </param>
         /// <param name="attributeType">The type of attribute to fetch.</param>
         /// <returns>The attribute or null.</returns>
-        public static Attribute GetAttribute(MemberInfo element, Type attributeType, bool shouldCache) {
+        public static Attribute GetAttribute(MemberInfo element, Type attributeType, bool shouldCache)
+        {
             var query = new AttributeQuery
             {
                 MemberInfo = element,
@@ -101,13 +104,16 @@ namespace GSSerializer.Internal {
             };
 
             Attribute attribute;
-            if (_cachedAttributeQueries.TryGetValue(query, out attribute) == false) {
+            if (_cachedAttributeQueries.TryGetValue(query, out attribute) == false)
+            {
                 var attributes = element.GetCustomAttributes(attributeType, /*inherit:*/ true);
-                if (attributes.Any()) {
+                if (attributes.Any())
+                {
                     attribute = (Attribute)attributes.First();
                 }
 
-                if (shouldCache) {
+                if (shouldCache)
+                {
                     _cachedAttributeQueries[query] = attribute;
                 }
             }
@@ -133,20 +139,24 @@ namespace GSSerializer.Internal {
             where TAttribute : Attribute => (TAttribute)GetAttribute(element, typeof(TAttribute), shouldCache);
         public static TAttribute GetAttribute<TAttribute>(MemberInfo element)
             where TAttribute : Attribute => GetAttribute<TAttribute>(element, /*shouldCache:*/true);
-        private struct AttributeQuery {
+        private struct AttributeQuery
+        {
             public MemberInfo MemberInfo;
             public Type AttributeType;
         }
         private static readonly IDictionary<AttributeQuery, Attribute> _cachedAttributeQueries =
             new Dictionary<AttributeQuery, Attribute>(new AttributeQueryComparator());
-        private class AttributeQueryComparator : IEqualityComparer<AttributeQuery> {
-            public bool Equals(AttributeQuery x, AttributeQuery y) {
+        private class AttributeQueryComparator : IEqualityComparer<AttributeQuery>
+        {
+            public bool Equals(AttributeQuery x, AttributeQuery y)
+            {
                 return
                     x.MemberInfo == y.MemberInfo &&
                     x.AttributeType == y.AttributeType;
             }
 
-            public int GetHashCode(AttributeQuery obj) {
+            public int GetHashCode(AttributeQuery obj)
+            {
                 return
                     obj.MemberInfo.GetHashCode() +
                     (17 * obj.AttributeType.GetHashCode());
@@ -163,11 +173,14 @@ namespace GSSerializer.Internal {
             BindingFlags.DeclaredOnly;
 #endif
 
-        public static PropertyInfo GetDeclaredProperty(this Type type, string propertyName) {
+        public static PropertyInfo GetDeclaredProperty(this Type type, string propertyName)
+        {
             var props = GetDeclaredProperties(type);
 
-            for (int i = 0; i < props.Length; ++i) {
-                if (props[i].Name == propertyName) {
+            for (int i = 0; i < props.Length; ++i)
+            {
+                if (props[i].Name == propertyName)
+                {
                     return props[i];
                 }
             }
@@ -175,11 +188,14 @@ namespace GSSerializer.Internal {
             return null;
         }
 
-        public static MethodInfo GetDeclaredMethod(this Type type, string methodName) {
+        public static MethodInfo GetDeclaredMethod(this Type type, string methodName)
+        {
             var methods = GetDeclaredMethods(type);
 
-            for (int i = 0; i < methods.Length; ++i) {
-                if (methods[i].Name == methodName) {
+            for (int i = 0; i < methods.Length; ++i)
+            {
+                if (methods[i].Name == methodName)
+                {
                     return methods[i];
                 }
             }
@@ -187,25 +203,31 @@ namespace GSSerializer.Internal {
             return null;
         }
 
-        public static ConstructorInfo GetDeclaredConstructor(this Type type, Type[] parameters) {
+        public static ConstructorInfo GetDeclaredConstructor(this Type type, Type[] parameters)
+        {
             var ctors = GetDeclaredConstructors(type);
 
-            for (int i = 0; i < ctors.Length; ++i) {
+            for (int i = 0; i < ctors.Length; ++i)
+            {
                 var ctor = ctors[i];
 
-                if (ctor.IsStatic) {
+                if (ctor.IsStatic)
+                {
                     continue; // Ignore static constructors.
                 }
 
                 var ctorParams = ctor.GetParameters();
 
-                if (parameters.Length != ctorParams.Length) {
+                if (parameters.Length != ctorParams.Length)
+                {
                     continue;
                 }
 
-                for (int j = 0; j < ctorParams.Length; ++j) {
+                for (int j = 0; j < ctorParams.Length; ++j)
+                {
                     // require an exact match
-                    if (ctorParams[j].ParameterType != parameters[j]) {
+                    if (ctorParams[j].ParameterType != parameters[j])
+                    {
                         continue;
                     }
                 }
@@ -224,14 +246,18 @@ namespace GSSerializer.Internal {
 #endif
 
 
-        public static MemberInfo[] GetFlattenedMember(this Type type, string memberName) {
+        public static MemberInfo[] GetFlattenedMember(this Type type, string memberName)
+        {
             var result = new List<MemberInfo>();
 
-            while (type != null) {
+            while (type != null)
+            {
                 var members = GetDeclaredMembers(type);
 
-                for (int i = 0; i < members.Length; ++i) {
-                    if (members[i].Name == memberName) {
+                for (int i = 0; i < members.Length; ++i)
+                {
+                    if (members[i].Name == memberName)
+                    {
                         result.Add(members[i]);
                     }
                 }
@@ -242,12 +268,16 @@ namespace GSSerializer.Internal {
             return result.ToArray();
         }
 
-        public static MethodInfo GetFlattenedMethod(this Type type, string methodName) {
-            while (type != null) {
+        public static MethodInfo GetFlattenedMethod(this Type type, string methodName)
+        {
+            while (type != null)
+            {
                 var methods = GetDeclaredMethods(type);
 
-                for (int i = 0; i < methods.Length; ++i) {
-                    if (methods[i].Name == methodName) {
+                for (int i = 0; i < methods.Length; ++i)
+                {
+                    if (methods[i].Name == methodName)
+                    {
                         return methods[i];
                     }
                 }
@@ -258,12 +288,16 @@ namespace GSSerializer.Internal {
             return null;
         }
 
-        public static IEnumerable<MethodInfo> GetFlattenedMethods(this Type type, string methodName) {
-            while (type != null) {
+        public static IEnumerable<MethodInfo> GetFlattenedMethods(this Type type, string methodName)
+        {
+            while (type != null)
+            {
                 var methods = GetDeclaredMethods(type);
 
-                for (int i = 0; i < methods.Length; ++i) {
-                    if (methods[i].Name == methodName) {
+                for (int i = 0; i < methods.Length; ++i)
+                {
+                    if (methods[i].Name == methodName)
+                    {
                         yield return methods[i];
                     }
                 }
@@ -272,12 +306,16 @@ namespace GSSerializer.Internal {
             }
         }
 
-        public static PropertyInfo GetFlattenedProperty(this Type type, string propertyName) {
-            while (type != null) {
+        public static PropertyInfo GetFlattenedProperty(this Type type, string propertyName)
+        {
+            while (type != null)
+            {
                 var properties = GetDeclaredProperties(type);
 
-                for (int i = 0; i < properties.Length; ++i) {
-                    if (properties[i].Name == propertyName) {
+                for (int i = 0; i < properties.Length; ++i)
+                {
+                    if (properties[i].Name == propertyName)
+                    {
                         return properties[i];
                     }
                 }
@@ -288,11 +326,14 @@ namespace GSSerializer.Internal {
             return null;
         }
 
-        public static MemberInfo GetDeclaredMember(this Type type, string memberName) {
+        public static MemberInfo GetDeclaredMember(this Type type, string memberName)
+        {
             var members = GetDeclaredMembers(type);
 
-            for (int i = 0; i < members.Length; ++i) {
-                if (members[i].Name == memberName) {
+            for (int i = 0; i < members.Length; ++i)
+            {
+                if (members[i].Name == memberName)
+                {
                     return members[i];
                 }
             }

@@ -3,11 +3,15 @@ using GSSerializer;
 using System;
 using System.IO;
 
-namespace GalacticScale {
-    public static partial class GS2 {
-        public static bool LoadSettingsFromJson(string path) {
+namespace GalacticScale
+{
+    public static partial class GS2
+    {
+        public static bool LoadSettingsFromJson(string path)
+        {
             Log("Start");
-            if (!CheckJsonFileExists(path)) {
+            if (!CheckJsonFileExists(path))
+            {
                 return false;
             }
 
@@ -26,7 +30,8 @@ namespace GalacticScale {
             Log("End");
             return true;
         }
-        public static void SaveSettingsToJson(string path) {
+        public static void SaveSettingsToJson(string path)
+        {
             Log("Saving Settings to " + path);
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize<GSSettings>(GSSettings.Instance, out fsData data).AssertSuccessWithoutWarnings();
@@ -35,7 +40,8 @@ namespace GalacticScale {
             Log("End");
 
         }
-        public static void DumpObjectToJson(string path, object obj) {
+        public static void DumpObjectToJson(string path, object obj)
+        {
             Log("Dumping Object to " + path);
             fsSerializer serializer = new fsSerializer();
             serializer.TrySerialize(obj, out fsData data).AssertSuccessWithoutWarnings();
@@ -43,28 +49,33 @@ namespace GalacticScale {
             File.WriteAllText(path, json);
             Log("End");
         }
-        private class exceptionOutput {
+        private class exceptionOutput
+        {
             public string version;
             public string generator;
             public string exception;
             //public GSSettings settings;
-            public exceptionOutput(string e) {
+            public exceptionOutput(string e)
+            {
                 version = GS2.Version;
                 exception = e;
                 //settings = GSSettings.Instance;
                 generator = GS2.generator?.Name;
             }
         }
-        public static void DumpException(Exception e) {
+        public static void DumpException(Exception e)
+        {
             Error($"{e.Message} {GetCaller(1)} {GetCaller(2)} {GetCaller(3)} {GetCaller(4)} {GetCaller(5)}");
             string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
-            if (!Directory.Exists(path)) {
+            if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
             }
 
             path = Path.Combine(path, DateTime.Now.ToString("yyMMddHHmmss"));
             path += ".exceptionlog.json";
-            if (File.Exists(path)) {
+            if (File.Exists(path))
+            {
                 return;
             }
 
@@ -77,14 +88,17 @@ namespace GalacticScale {
             File.WriteAllText(path, json);
             Log("End");
         }
-        private class ErrorObject {
+        private class ErrorObject
+        {
             public string message;
             public string version = GS2.Version;
             public System.Collections.Generic.List<string> stack = new System.Collections.Generic.List<string>();
         }
-        public static void DumpError(string message) {
+        public static void DumpError(string message)
+        {
             string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
-            if (!Directory.Exists(path)) {
+            if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
             }
 
@@ -94,9 +108,11 @@ namespace GalacticScale {
             Log("Logging Error to " + path);
             ErrorObject errorObject = new ErrorObject();
             errorObject.message = message;
-            for (var i = 0; i < 100; i++) {
+            for (var i = 0; i < 100; i++)
+            {
                 string caller = GetCaller(i);
-                if (caller != "") {
+                if (caller != "")
+                {
                     errorObject.stack.Add(caller);
                 }
             }
@@ -106,9 +122,11 @@ namespace GalacticScale {
             File.AppendAllText(path, json);
             Log("End");
         }
-        private static bool CheckJsonFileExists(string path) {
+        private static bool CheckJsonFileExists(string path)
+        {
             Log("Checking if Json File Exists");
-            if (File.Exists(path)) {
+            if (File.Exists(path))
+            {
                 return true;
             }
 

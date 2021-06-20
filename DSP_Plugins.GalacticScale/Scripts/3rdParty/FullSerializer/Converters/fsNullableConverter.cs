@@ -1,12 +1,15 @@
 ﻿using System;
 
-namespace GSSerializer.Internal {
+namespace GSSerializer.Internal
+{
     /// <summary>
     /// The reflected converter will properly serialize nullable types. However,
     /// we do it here instead as we can emit less serialization data.
     /// </summary>
-    public class fsNullableConverter : fsConverter {
-        public override bool CanProcess(Type type) {
+    public class fsNullableConverter : fsConverter
+    {
+        public override bool CanProcess(Type type)
+        {
             return
                 type.Resolve().IsGenericType &&
                 type.GetGenericTypeDefinition() == typeof(Nullable<>);

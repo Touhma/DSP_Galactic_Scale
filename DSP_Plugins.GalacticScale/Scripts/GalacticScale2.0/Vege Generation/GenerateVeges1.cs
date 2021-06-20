@@ -1,15 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale {
-    public static partial class VegeAlgorithms {
+namespace GalacticScale
+{
+    public static partial class VegeAlgorithms
+    {
         private static GS2.Random random = new GS2.Random(GSSettings.Seed);
-        public static void GenerateVeges1(GSPlanet gsPlanet) {
+        public static void GenerateVeges1(GSPlanet gsPlanet)
+        {
             //GS2.Log("GenerateVeges1|" + gsPlanet.Name);
             GS2.Warn($"USING GS2 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             PlanetData planet = gsPlanet.planetData;
             ThemeProto themeProto = LDB.themes.Select(planet.theme);
-            if (themeProto == null) {
+            if (themeProto == null)
+            {
                 return;
             }
             random = new GS2.Random(GSSettings.Seed);
@@ -49,16 +53,20 @@ namespace GalacticScale {
             Vector4[] vegeScaleRanges = PlanetModelingManager.vegeScaleRanges;
             short[] vegeHps = PlanetModelingManager.vegeHps;
             //GS2.Log("GenerateVeges1|" + gsPlanet.Name + "4");
-            for (int i = 0; i < data.dataLength; i++) {
+            for (int i = 0; i < data.dataLength; i++)
+            {
                 int num13 = i % stride;
                 int num14 = i / stride;
-                if (num13 > num11) {
+                if (num13 > num11)
+                {
                     num13--;
                 }
-                if (num14 > num11) {
+                if (num14 > num11)
+                {
                     num14--;
                 }
-                if (num13 % 2 != 1 || num14 % 2 != 1) {
+                if (num13 % 2 != 1 || num14 % 2 != 1)
+                {
                     continue;
                 }
                 Vector3 vector = data.vertices[i];
@@ -77,39 +85,61 @@ namespace GalacticScale {
                 float num27 = data.biomoData[i] * 0.01f;
                 float num28 = planet.radius + 0.15f;
                 bool flag = false;
-                if (num18 < num28) {
-                    flag = true;
-                } else if (num19 < num28) {
-                    flag = true;
-                } else if (num20 < num28) {
-                    flag = true;
-                } else if (num21 < num28) {
-                    flag = true;
-                } else if (num22 < num28) {
-                    flag = true;
-                } else if (num23 < num28) {
-                    flag = true;
-                } else if (num24 < num28) {
-                    flag = true;
-                } else if (num25 < num28) {
-                    flag = true;
-                } else if (num26 < num28) {
+                if (num18 < num28)
+                {
                     flag = true;
                 }
-                if (flag && (vegetables6 == null || vegetables6.Length == 0)) {
+                else if (num19 < num28)
+                {
+                    flag = true;
+                }
+                else if (num20 < num28)
+                {
+                    flag = true;
+                }
+                else if (num21 < num28)
+                {
+                    flag = true;
+                }
+                else if (num22 < num28)
+                {
+                    flag = true;
+                }
+                else if (num23 < num28)
+                {
+                    flag = true;
+                }
+                else if (num24 < num28)
+                {
+                    flag = true;
+                }
+                else if (num25 < num28)
+                {
+                    flag = true;
+                }
+                else if (num26 < num28)
+                {
+                    flag = true;
+                }
+                if (flag && (vegetables6 == null || vegetables6.Length == 0))
+                {
                     continue;
                 }
                 bool flag2 = true;
-                if (Utils.diff(num18, num19) > 0.2f) {
+                if (Utils.diff(num18, num19) > 0.2f)
+                {
                     flag2 = false;
                 }
-                if (Utils.diff(num18, num20) > 0.2f) {
+                if (Utils.diff(num18, num20) > 0.2f)
+                {
                     flag2 = false;
                 }
-                if (Utils.diff(num18, num21) > 0.2f) {
+                if (Utils.diff(num18, num21) > 0.2f)
+                {
                     flag2 = false;
                 }
-                if (Utils.diff(num18, num22) > 0.2f) {
+                if (Utils.diff(num18, num22) > 0.2f)
+                {
                     flag2 = false;
                 }
                 double num29 = random.NextDouble();
@@ -125,19 +155,25 @@ namespace GalacticScale {
                 float num37 = 0.5f;
                 float num38 = 1f;
                 int[] array;
-                if (!flag) {
-                    if (num27 < 0.8f) {
+                if (!flag)
+                {
+                    if (num27 < 0.8f)
+                    {
                         array = vegetables;
                         num36 = num;
                         num37 = num2;
                         num38 = num3;
-                    } else {
+                    }
+                    else
+                    {
                         array = vegetables2;
                         num36 = num4;
                         num37 = num5;
                         num38 = num6;
                     }
-                } else {
+                }
+                else
+                {
                     array = null;
                 }
                 double num39 = simplexNoise.Noise(num15 * 0.07, num16 * 0.07, num17 * 0.07) * num36 + num37 + 0.5;
@@ -147,33 +183,45 @@ namespace GalacticScale {
                 int[] array2;
                 double num43;
                 int num44;
-                if (!flag) {
-                    if (num27 > 1f) {
+                if (!flag)
+                {
+                    if (num27 > 1f)
+                    {
                         array2 = vegetables3;
                         num43 = num40;
                         num44 = ((vegetables6 != null && vegetables6.Length != 0) ? 2 : 4);
-                    } else if (num27 > 0.5f) {
+                    }
+                    else if (num27 > 0.5f)
+                    {
                         array2 = vegetables4;
                         num43 = num41;
                         num44 = 1;
-                    } else if (num27 > 0f) {
+                    }
+                    else if (num27 > 0f)
+                    {
                         array2 = vegetables5;
                         num43 = num41;
                         num44 = 1;
-                    } else {
+                    }
+                    else
+                    {
                         array2 = null;
                         num43 = num40;
                         num44 = 1;
                     }
-                } else {
-                    if (!(num18 < num28 - 1f) || !(num18 > num28 - 2.2f)) {
+                }
+                else
+                {
+                    if (!(num18 < num28 - 1f) || !(num18 > num28 - 2.2f))
+                    {
                         continue;
                     }
                     array2 = vegetables6;
                     num43 = num42;
                     num44 = 1;
                 }
-                if (flag2 && num30 < num39 && array != null && array.Length > 0) {
+                if (flag2 && num30 < num39 && array != null && array.Length > 0)
+                {
                     vege.protoId = (short)array[(int)(num29 * array.Length)];
                     Quaternion quaternion = Quaternion.FromToRotation(Vector3.up, vector);
                     Vector3 vector2 = quaternion * Vector3.forward;
@@ -195,13 +243,15 @@ namespace GalacticScale {
                     int num48 = data.AddVegeData(vege);
                     data.vegeIds[i] = (ushort)num48;
                 }
-                if (num30 < num43 && array2 != null && array2.Length > 0) {
+                if (num30 < num43 && array2 != null && array2.Length > 0)
+                {
                     vege.protoId = (short)array2[(int)(num29 * array2.Length)];
                     Quaternion quaternion2 = Quaternion.FromToRotation(Vector3.up, vector);
                     Vector3 vector7 = quaternion2 * Vector3.forward;
                     Vector3 vector8 = quaternion2 * Vector3.right;
                     Vector4 vector9 = vegeScaleRanges[vege.protoId];
-                    for (int j = 0; j < num44; j++) {
+                    for (int j = 0; j < num44; j++)
+                    {
                         float num49 = (float)random.NextDouble() - 0.5f;
                         float num50 = (float)random.NextDouble() - 0.5f;
                         float num51 = (float)Math.Sqrt(random.NextDouble());

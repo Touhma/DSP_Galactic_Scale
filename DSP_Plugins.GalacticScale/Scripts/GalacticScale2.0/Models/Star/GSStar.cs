@@ -1,8 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GalacticScale {
-    public class GSStar {
+namespace GalacticScale
+{
+    public class GSStar
+    {
         public string Name;
         public ESpectrType Spectr;
         public EStarType Type;
@@ -34,20 +36,26 @@ namespace GalacticScale {
         public float level = 1;
 
         public int planetCount => Planets.Count;
-        public int bodyCount {
-            get {
+        public int bodyCount
+        {
+            get
+            {
                 int bodyCount = 0;
-                foreach (GSPlanet p in Planets) {
+                foreach (GSPlanet p in Planets)
+                {
                     bodyCount++;
                     bodyCount += p.MoonCount;
                 }
                 return bodyCount;
             }
         }
-        public GSPlanets Bodies {
-            get {
+        public GSPlanets Bodies
+        {
+            get
+            {
                 GSPlanets b = new GSPlanets();
-                foreach (GSPlanet p in Planets) {
+                foreach (GSPlanet p in Planets)
+                {
                     b.AddRange(p.Bodies);
                 }
                 return b;
@@ -90,7 +98,8 @@ namespace GalacticScale {
         [NonSerialized]
         public int assignedIndex = 0;
 
-        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets) {
+        public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets)
+        {
             Name = name;
             Spectr = spectr;
             Type = type;
@@ -99,15 +108,18 @@ namespace GalacticScale {
         }
         public override string ToString() => Name;
 
-        private float InitClassFactor() {
+        private float InitClassFactor()
+        {
             _classfactor = StarDefaults.ClassFactor(this);
             return _classfactor;
         }
 
         private float InitPhysicsRadius() => radius * 1200f;
 
-        private float InitAcDiscRadius() {
-            switch (Type) {
+        private float InitAcDiscRadius()
+        {
+            switch (Type)
+            {
                 case EStarType.BlackHole:
                     _acdiscRadius = radius * 5f;
                     break;
@@ -121,61 +133,73 @@ namespace GalacticScale {
             return _acdiscRadius;
         }
 
-        private float InitDysonRadius() {
+        private float InitDysonRadius()
+        {
             _dysonRadius = StarDefaults.DysonRadius(this);
             return _dysonRadius;
         }
 
-        private float InitHabitableRadius() {
+        private float InitHabitableRadius()
+        {
             _habitableRadius = StarDefaults.HabitableRadius(this);
             return _habitableRadius;
         }
 
-        private float InitLightBalanceRadius() {
+        private float InitLightBalanceRadius()
+        {
             _lightBalanceRadius = StarDefaults.LightBalanceRadius(this);
             return _lightBalanceRadius;
         }
 
-        private float InitRadius() {
+        private float InitRadius()
+        {
             _radius = StarDefaults.Radius(this);
             return _radius;
         }
 
-        private float InitAge() {
+        private float InitAge()
+        {
             _age = StarDefaults.Age(this);
             return _age;
 
         }
 
-        private float InitMass() {
+        private float InitMass()
+        {
             _mass = StarDefaults.Mass(this);
             return _mass;
         }
 
-        private float InitLuminosity() {
+        private float InitLuminosity()
+        {
             _luminosity = StarDefaults.Luminosity(this);
             return _luminosity;
         }
 
-        private float InitTemperature() {
+        private float InitTemperature()
+        {
             _temperature = StarDefaults.Temperature(this);
             return _temperature;
         }
 
-        private float InitLifetime() {
+        private float InitLifetime()
+        {
             _lifetime = StarDefaults.Lifetime(this);
             return _lifetime;
         }
 
-        private float InitColor() {
+        private float InitColor()
+        {
 
             _color = StarDefaults.Color(this);
             return _color;
         }
 
-        private float InitResourceCoef() {
+        private float InitResourceCoef()
+        {
             float num1 = (float)position.magnitude / 32f;
-            if (num1 > 1.0) {
+            if (num1 > 1.0)
+            {
                 num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
             }
 
@@ -183,11 +207,13 @@ namespace GalacticScale {
             return resourceCoef;
         }
 
-        private VectorLF3 InitPos() {
+        private VectorLF3 InitPos()
+        {
             _pos = StarPositions.tmp_poses[assignedIndex];
             return _pos;
         }
-        public GSStar Clone() {
+        public GSStar Clone()
+        {
             GSStar clone;
             clone = (GSStar)MemberwiseClone();
             clone.Planets = new GSPlanets(Planets);
