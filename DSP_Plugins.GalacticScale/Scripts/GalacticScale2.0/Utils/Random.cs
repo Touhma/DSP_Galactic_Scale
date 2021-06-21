@@ -43,16 +43,27 @@ namespace GalacticScale
                 //GS2.Warn(result.ToString());
                 return result;
             }
-            public new int Next(int min, int max)
+            public new int Next(int minInclusive, int maxExclusive)
             {
                 //Log($"{Id} Next {min} {max} {GetCaller()}");
-                if (min == max) return min;
-                if (min > max)
+                if (minInclusive == maxExclusive) return minInclusive;
+                if (minInclusive > maxExclusive)
                 {
-                    Error($"Next: Min > Max. {min} {max}");
-                    return max;
+                    Error($"Next: Min > Max. {minInclusive} {maxExclusive}");
+                    return maxExclusive-1;
                 }
-                return base.Next(min, max);
+                return base.Next(minInclusive, maxExclusive);
+            }
+            public int NextInclusive(int minInclusive, int maxInclusive)
+            {
+                //Log($"{Id} Next {min} {max} {GetCaller()}");
+                if (minInclusive == maxInclusive) return minInclusive;
+                if (minInclusive > maxInclusive)
+                {
+                    Error($"Next: Min > Max. {minInclusive} {maxInclusive}");
+                    return maxInclusive;
+                }
+                return base.Next(minInclusive, maxInclusive+1);
             }
             public VectorLF3 PointOnSphere(double radius)
             {

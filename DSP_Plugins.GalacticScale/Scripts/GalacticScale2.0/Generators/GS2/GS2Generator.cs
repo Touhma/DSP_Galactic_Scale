@@ -55,9 +55,16 @@ namespace GalacticScale.Generators
         {
 
         }
+        private int GetStarPlanetCount(GSStar star)
+        {
+            int min = GetMinPlanetCountForStar(star);
+            int max = GetMaxPlanetCountForStar(star);
+            return random.NextInclusive(min, max);
+        }
         private void GeneratePlanetsForStar(GSStar star)
         {
-            for (var i = 0; i < 20; i++)
+            int starPlanetCount = GetStarPlanetCount(star);
+            for (var i = 0; i < starPlanetCount; i++)
             {
                 star.Planets.Add(RandomPlanet(star, star.Name + "-Planet-" + i, 0, 1, 1, 0));
             }
@@ -307,7 +314,8 @@ namespace GalacticScale.Generators
                     radius = random.Next(60, 200);
                 }
                 themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Gas, ThemeHeat, radius);
-                themeName = themeNames[random.Next(0, themeNames.Count - 1)];
+                if (themeNames.Count > 0) themeName = themeNames[random.Next(0, themeNames.Count)];
+                else themeName = "Mediterranean";
                 ////GS2.Log("Gas. Radius " + radius);
                 //if (orbitIndex < hotOrbitMax) {
                 //    themeNames = GSSettings.ThemeLibrary.HotGasGiant;

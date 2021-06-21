@@ -20,6 +20,50 @@ namespace GalacticScale.Generators
                 "Blue Giant", "Neutron Star", "Black Hole" };
         string[] typeLetter = { "K", "M", "F", "G", "A", "B", "O", "WD", "RG", "YG", "WG", "BG", "NS", "BH" };
         Dictionary<string, GSOptionCallback> typeCallbacks = new Dictionary<string, GSOptionCallback>();
+        private string GetTypeLetterFromStar(GSStar star)
+        {
+            switch (star.Type)
+            {
+                case EStarType.BlackHole: return "BH";
+                case EStarType.NeutronStar: return "NS";
+                case EStarType.WhiteDwarf: return "WD";
+                case EStarType.GiantStar: return GetGiantStarTypeLetter(star.Spectr);
+                case EStarType.MainSeqStar: return GetMainSeqStarTypeLetter(star.Spectr);
+            }
+            GS2.Error($"Failed to get star type letter from star of type {star.Type} spectr {star.Spectr}");
+            return "WD";
+        }
+        private string GetMainSeqStarTypeLetter(ESpectrType spectr)
+        {
+            switch (spectr)
+            {
+                case ESpectrType.A: return "A";
+                case ESpectrType.O: return "O";
+                case ESpectrType.B: return "B";
+                case ESpectrType.G: return "G";
+                case ESpectrType.F: return "F";
+                case ESpectrType.M: return "M";
+                case ESpectrType.K: return "K";
+            }
+            GS2.Error($"Failed to get star type letter from main sequence star of spectr {spectr}");
+            return "WD";
+        }
+        private string GetGiantStarTypeLetter(ESpectrType spectr)
+        {
+            switch (spectr)
+            {
+                case ESpectrType.A: return "WG";
+                case ESpectrType.O:
+                case ESpectrType.B: return "BG";
+                case ESpectrType.G:
+                case ESpectrType.F: return "YG";
+                case ESpectrType.M:
+                case ESpectrType.K: return "RG";
+
+            }
+            GS2.Error($"Failed to get star type letter from giant star of spectr {spectr}");
+            return "WD";
+        }
         public void EnableLudicrousMode()
         {
 
@@ -121,6 +165,46 @@ namespace GalacticScale.Generators
         {
             config.DefaultStarCount = 10;
             AddUIElements();
+            InitPreferences();
+        }
+        private void InitPreferences()
+        {
+            preferences.Set("safeMode", false);
+            preferences.Set("ludicrousMode", false);
+            preferences.Set("galaxyDensity", 5);
+            preferences.Set("defaultStarCount", 64);
+            preferences.Set("birthPlanetSize", 200);
+            preferences.Set("birthPlanetUnlock", false);
+            preferences.Set("birthPlanetSiTi", false);
+            preferences.Set("moonsAreSmall", true);
+            preferences.Set("hugeGasGiants", true);
+            preferences.Set("tidalLockInnerPlanets", false);
+            preferences.Set("secondarySatellites", false);
+            preferences.Set("freqK", 40);
+            preferences.Set("freqM", 50);
+            preferences.Set("freqG", 30);
+            preferences.Set("freqF", 25);
+            preferences.Set("freqA", 10);
+            preferences.Set("freqB", 4);
+            preferences.Set("freqO", 2);
+            preferences.Set("freqBH", 1);
+            preferences.Set("freqN", 1);
+            preferences.Set("freqW", 2);
+            preferences.Set("freqRG", 1);
+            preferences.Set("freqYG", 1);
+            preferences.Set("freqWG", 1);
+            preferences.Set("freqBG", 1);
+            for (var i = 0; i < 14; i++)
+            {
+                preferences.Set($"{typeLetter[i]}minPlanetCount", 1);
+                preferences.Set($"{typeLetter[i]}maxPlanetCount", 10);
+                preferences.Set($"{typeLetter[i]}maxPlanetSize", 500);
+                preferences.Set($"{typeLetter[i]}minPlanetSize", 50);
+                preferences.Set($"{typeLetter[i]}sizeBias", 50);
+                preferences.Set($"{typeLetter[i]}chanceGas", 20);
+                preferences.Set($"{typeLetter[i]}chanceMoon", 20);
+                preferences.Set($"{typeLetter[i]}systemDensity", 3);
+            }
         }
         private void AddUIElements()
         {
@@ -128,7 +212,7 @@ namespace GalacticScale.Generators
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => { if ((bool)o) EnableLudicrousMode(); else DisableLudicrousMode(); })));
             UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));
             UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount")));
-            UI.Add("birthPlanetSize", options.Add(GSUI.PlanetSizeSlider("Starting Planet Size", 20, 50, 510, "birthPlanetSize")));
+            UI.Add("birthPlanetSize", options.Add(GSUI.PlanetSizeSlider("Starting Planet Size", 20, 200, 510, "birthPlanetSize")));
             UI.Add("birthPlanetUnlock", options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
             UI.Add("moonsAreSmall", options.Add(GSUI.Checkbox("Moons are small", true, "moonsAreSmall")));
@@ -353,9 +437,54 @@ namespace GalacticScale.Generators
                 default: return (EStarType.GiantStar, ESpectrType.B);
             }
         }
-
-        public void Import(GSGenPreferences preferences) => this.preferences = preferences;
-
+        private int GetMaxPlanetCountForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}maxPlanetCount", preferences.GetInt($"maxPlanetCount"));
+        }
+        private int GetMinPlanetCountForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}minPlanetCount", preferences.GetInt($"minPlanetCount"));
+        }
+        private int GetMaxPlanetSizeForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}maxPlanetSize", preferences.GetInt($"maxPlanetSize"));
+        }
+        private int GetMinPlanetSizeForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}minPlanetSize", preferences.GetInt($"minPlanetSize"));
+        }
+        private int GetSizeBiasForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}sizeBias", 50);
+        }
+        private int GetSystemDensityForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}systemDensity", 3);
+        }
+        private int GetMoonChanceForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}chanceMoon", 20);
+        }
+        private int GetGasChanceForStar(GSStar star)
+        {
+            string sl = GetTypeLetterFromStar(star);
+            return preferences.GetInt($"{sl}chanceGas", 20);
+        }
+        public void Import(GSGenPreferences preferences)
+        {
+            for (var i = 0; i < preferences.Count; i++)
+            {
+                string key = preferences.Keys.ElementAt(i);
+                this.preferences.Set(key, preferences[key]);
+            }
+        }
         public GSGenPreferences Export() => preferences;
     }
 }

@@ -111,14 +111,15 @@ namespace GalacticScale
                     where types.Contains(theme.Value.PlanetType)
                     where theme.Value.Temperature < temp.max
                     where theme.Value.Temperature >= temp.min
-                    where theme.Value.MaxRadius > ((radius > 0) ? radius : 0)
-                    where theme.Value.MinRadius < ((radius > 0) ? radius : 510)
+                    where theme.Value.MaxRadius >= ((radius > 0) ? radius : 0)
+                    where theme.Value.MinRadius <= ((radius > 0) ? radius : 510)
                     select theme.Value.Name;
             var results = q.ToList();
             if (results.Count == 0)
             {
-                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} int {radius} EThemeDistribute {distribute}");
-
+                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:>={temp.min} temp.max:<{temp.max}");
+               
+                results.Add("Mediterranean");
             }
             return results;
         }
