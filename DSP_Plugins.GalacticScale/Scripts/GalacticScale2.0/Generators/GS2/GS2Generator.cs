@@ -61,6 +61,15 @@ namespace GalacticScale.Generators
             int max = GetMaxPlanetCountForStar(star);
             return random.NextInclusive(min, max);
         }
+        private int GetStarPlanetSize(GSStar star)
+        {
+            int min = GetMinPlanetSizeForStar(star);
+            int max = GetMaxPlanetSizeForStar(star);
+            float average = (((float)max - (float)min) / 2) + (float)min;
+            int range = max - min;
+            float sd = (float)range / 4;
+            return Utils.ParsePlanetSize(random.Normal(average, sd));
+        }
         private void GeneratePlanetsForStar(GSStar star)
         {
             int starPlanetCount = GetStarPlanetCount(star);
