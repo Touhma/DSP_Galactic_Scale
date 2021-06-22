@@ -163,10 +163,11 @@ namespace GalacticScale.Generators
         }
         public void Init()
         {
-            config.DefaultStarCount = 10;
             AddUIElements();
             InitPreferences();
         }
+        private void DefaultStarCountCallback(object o) => config.DefaultStarCount = preferences.GetInt("defaultStarCount", 64);
+
         private void InitPreferences()
         {
             preferences.Set("safeMode", false);
@@ -211,7 +212,7 @@ namespace GalacticScale.Generators
             UI.Add("safeMode", options.Add(GSUI.Checkbox("Safe Mode", false, "safeMode", o => { if ((bool)o) EnableSafeMode(); else DisableSafeMode(); })));
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => { if ((bool)o) EnableLudicrousMode(); else DisableLudicrousMode(); })));
             UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));
-            UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount")));
+            UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback)));
             UI.Add("birthPlanetSize", options.Add(GSUI.PlanetSizeSlider("Starting Planet Size", 20, 200, 510, "birthPlanetSize")));
             UI.Add("birthPlanetUnlock", options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
@@ -484,6 +485,7 @@ namespace GalacticScale.Generators
                 string key = preferences.Keys.ElementAt(i);
                 this.preferences.Set(key, preferences[key]);
             }
+            config.DefaultStarCount = preferences.GetInt("defaultStarCount");
         }
         public GSGenPreferences Export() => preferences;
     }

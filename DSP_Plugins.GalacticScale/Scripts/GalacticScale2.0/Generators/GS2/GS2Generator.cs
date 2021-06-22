@@ -25,7 +25,7 @@ namespace GalacticScale.Generators
             GSSettings.Reset(GSSettings.Seed);
             GSSettings.GalaxyParams.graphDistance = 32;
             GSSettings.GalaxyParams.graphMaxStars = 512;
-            starCount = preferences.GetInt("defaultStarCount", 64);
+            //starCount = preferences.GetInt("defaultStarCount", 64);
             SetGalaxyDensity(preferences.GetInt("galaxyDensity", 5));
             random = new GS2.Random(GSSettings.Seed);
             CalculateFrequencies();
