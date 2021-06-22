@@ -1,5 +1,6 @@
 ﻿using PCGSharp;
 using System;
+using System.Collections.Generic;
 
 namespace GalacticScale
 {
@@ -78,6 +79,21 @@ namespace GalacticScale
                 //Warn($"Creating new Random based on seed:{seed}");
                 //Warn($"Generating=>{Id}=> {GetCaller(1)}=>{GetCaller()}");
                 this.Seed = seed;
+            }
+            public T Item<T>(List<T> items)
+            {
+                return items[Next(items.Count)];
+            }
+            public T Item<T>(T[] items)
+            {
+                return items[Next(items.Length)];
+            }
+            public KeyValuePair<W, X> Item<W, X>(Dictionary<W, X> items)
+            {
+                W[] keys = new W[] { };
+                items.Keys.CopyTo(keys, 0);
+                W key = keys[Next(keys.Length)];
+                return new KeyValuePair<W,X>(key, items[key]);
             }
         }
     }

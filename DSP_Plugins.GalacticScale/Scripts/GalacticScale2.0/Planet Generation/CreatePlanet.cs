@@ -143,7 +143,7 @@ namespace GalacticScale
             }
 
             GSSettings.Stars[star.index].counter++;
-            if (gsPlanet.MoonCount > 0)
+            if (gsPlanet.MoonsCount > 0)
             {
                 CreateMoons(ref planet, gsPlanet, random);
             }

@@ -14,6 +14,7 @@ namespace GalacticScale
             serializer.TrySerialize(value, out GSSerializer.fsData data);
             if (!pretty)
             {
+                GS2.Warn(GSSerializer.fsJsonPrinter.CompressedJson(data));
                 return GSSerializer.fsJsonPrinter.CompressedJson(data);
             }
             return GSSerializer.fsJsonPrinter.PrettyJson(data);

@@ -23,10 +23,11 @@ namespace GalacticScale
             GS2.Log(StartButton?.name);
             __instance.random = new DotNet35Random(GSSettings.Seed);//new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
-            __instance.gameDesc.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.generator.Config.DefaultStarCount, 1, 1f);
+            __instance.gameDesc.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.generator.Config.DefaultStarCount , 1, 1f);
             GS2.gameDesc = __instance.gameDesc;
             __instance.starmapGroup.gameObject.SetActive(true);
             __instance.starmap._Open();
+            if (__instance.gameDesc.starCount <= 0) __instance.gameDesc.starCount = 1;
             __instance.SetStarmapGalaxy();
             return false;
         }

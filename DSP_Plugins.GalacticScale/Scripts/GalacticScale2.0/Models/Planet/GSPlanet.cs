@@ -19,6 +19,8 @@ namespace GalacticScale
         private float rotationPeriod = -1;
         private float rotationPhase = -1;
         private float luminosity = -1;
+        [NonSerialized]
+        public Dictionary<string, string> fields = new Dictionary<string, string>(); // Temporary string store for generator use, not saved
         private List<GSPlanet> moons = new List<GSPlanet>();
         private int seed = -1;
 
@@ -151,12 +153,11 @@ namespace GalacticScale
         {
             if (GsTheme == null)
             {
-                GS2.Warn("Trying to read theme before setting it: " + Name);
                 return -1;
             }
             return (GsTheme.PlanetType == EPlanetType.Gas) ? 10f : 1f;
         }
-        public int MoonCount
+        public int MoonsCount
         {
             get
             {
@@ -169,9 +170,17 @@ namespace GalacticScale
                 foreach (GSPlanet moon in Moons)
                 {
                     count++;
-                    count += moon.MoonCount;
+                    count += moon.MoonsCount;
                 }
                 return count;
+            }
+        }
+        public int MoonCount
+        {
+            get
+            {
+                if (Moons == null) return 0;
+                return Moons.Count;
             }
         }
         public List<GSPlanet> Bodies

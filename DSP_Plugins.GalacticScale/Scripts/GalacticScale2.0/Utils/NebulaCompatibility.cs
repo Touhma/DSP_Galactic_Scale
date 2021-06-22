@@ -5,6 +5,25 @@ namespace GalacticScale
 {
     public static class NebulaCompatibility
     {
+        //public struct Double3 
+        //{
+        //    public Double3(double x, double y, double z)
+        //    {
+        //        this.x = x;
+        //        this.y = y;
+        //        this.z = z;
+        //    }
+        //    public override string ToString()
+        //    {
+        //        return string.Format("x: {0}, y: {1}, z: {2}", this.x, this.y, this.z);
+        //    }
+
+        //    public double x;
+
+        //    public double y;
+
+        //    public double z;
+        //}
         public static bool Initialized
         {
             get
@@ -29,8 +48,26 @@ namespace GalacticScale
                 return (bool)N_LocalPlayer.GetProperty("IsMasterClient").GetValue(null);
             }
         }
+        //public static Double3 LocalPlayerDataUPosition
+        //{
+        //    get
+        //    {
+        //        if (N_LocalPlayer == null)
+        //        {
+        //            GS2.Error("N_LocalPlayer null");
+        //            return new Double3();
+        //        }
+
+        //        var x = N_LocalPlayer.GetProperty("Data").GetValue(null);
+        //        var uPos = (Double3)N_PlayerData.GetProperty("UPosition").GetValue(x);
+        //        GS2.Warn(uPos.ToString());
+        //        return uPos;
+        //    }
+        //}
         public static Type N_LocalPlayer = null;
         public static Type N_SimulatedWorld = null;
+        //public static Type N_Double3 = null;
+        //public static Type N_PlayerData = null;
         public static bool Nebula = false;
 
         public static void init()
@@ -52,9 +89,18 @@ namespace GalacticScale
                         if (t.Name == "SimulatedWorld")
                         {
                             N_SimulatedWorld = t;
+                            
                         }
                     }
                 }
+                //if (asm.GetName().Name == "NebulaModel")
+                //{
+                //    foreach(Type t in asm.GetTypes())
+                //    {
+                //        if (t.Name == "Double3") N_Double3 = t;
+                //        if (t.Name == "PlayerData") N_PlayerData = t;
+                //    }
+                //}
             }
         }
     }

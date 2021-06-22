@@ -7,8 +7,8 @@ namespace GalacticScale
     {
         public static GalaxyData ProcessGalaxy(GameDesc desc, bool sketchOnly = false)
         {
-            Log($"Start CreatePlanets:{sketchOnly}");
-            GS2.Random random = new Random(GSSettings.Seed);
+            Log($"Start ProcessGalacy:{sketchOnly} StarCount:{gameDesc.starCount} Seed:{gameDesc.galaxySeed}");
+            Random random = new Random(GSSettings.Seed);
             try
             {
                 gameDesc = desc;
@@ -23,9 +23,9 @@ namespace GalacticScale
                     gsPlanets.Clear();
                     gsStars.Clear();
                     //Warn("Cleared");
-                    //Warn("Loading Data from Generator : " + generator.Name);
+                    Warn("Loading Data from Generator : " + generator.Name);
                     generator.Generate(gameDesc.starCount);
-                    //Warn("Final Seed = " + GSSettings.Seed);
+                    Warn("Final Seed = " + GSSettings.Seed);
                     //Log("End");
                 }
                 else
@@ -33,7 +33,7 @@ namespace GalacticScale
                     Log("Settings Loaded From Save File");
                 }
 
-                //Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
+                Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
                 //Log("Processing ThemeLibrary");
                 if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary())
@@ -45,7 +45,7 @@ namespace GalacticScale
                     ThemeLibrary = GSSettings.ThemeLibrary;
                 }
 
-                //Log("Generating TempPoses");
+                Log("Generating TempPoses");
                 int tempPoses = StarPositions.GenerateTempPoses(
                     random.Next(),
                     GSSettings.StarCount,
@@ -55,7 +55,7 @@ namespace GalacticScale
                     GSSettings.GalaxyParams.maxStepLength,
                     GSSettings.GalaxyParams.flatten
                     );
-                //Log("Creating new GalaxyData");
+                Log("Creating new GalaxyData");
                 galaxy = new GalaxyData();
                 galaxy.seed = GSSettings.Seed;
                 galaxy.starCount = GSSettings.StarCount;
@@ -67,18 +67,18 @@ namespace GalacticScale
                 }
                 Log("Initializing AstroPoses");
                 InitializeAstroPoses(random);
-                //Log("AstroPoses Initialized");
+                Log("AstroPoses Initialized");
                 //SetupBirthPlanet();
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
                 //if (createPlanets) {
-                //Log("Setting up Birth Planet");
+                Log("Setting up Birth Planet");
                 //SetupBirthPlanet();
                 Log("Generating Veins");
                 GenerateVeins(!sketchOnly);
                 //if (GS2.CheatMode) return galaxy;
                 //}
-                //Log("Creating Galaxy StarGraph");
+                Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 //Log("End of galaxy generation");
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");

@@ -225,9 +225,9 @@ namespace GalacticScale
             {
                 GS2.Warn("Getting GsPlanet");
                 gsPlanet = GS2.GetGSPlanet(planet);
-                GS2.Warn($"Got GSPlanet, Moon Count = {gsPlanet.MoonCount}");
+                GS2.Warn($"Got GSPlanet, Moon Count = {gsPlanet.MoonsCount}");
             }
-            if (gsPlanet.MoonCount > 0)
+            if (gsPlanet.MoonsCount > 0)
             {
                 PlanetData moon = gsPlanet.Moons[0].planetData;
                 double distance = (moon.uPosition - planet.uPosition).magnitude - planet.realRadius - TransisionDistance(moon) - 100;

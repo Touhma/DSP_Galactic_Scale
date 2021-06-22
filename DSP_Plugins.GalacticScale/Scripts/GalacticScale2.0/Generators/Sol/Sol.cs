@@ -356,7 +356,7 @@ namespace GalacticScale.Generators
                     }
                     string planetName = star.Name + " - " + RomanNumbers.roman[j + 1];
                     GSPlanet p = RandomPlanet(star, planetName, j, planetCount, planetMoonCount, moonCount);
-                    availMoons -= p.MoonCount;
+                    availMoons -= p.MoonsCount;
                     //GS2.Log($"Adding Planet with {p.MoonCount} moons. Remaining moons for other planets = {availMoons}. Planet BodyCount = {p.Bodies.Count}");
                     if (p.OrbitRadius < star.MaxOrbit)
                     {
@@ -416,9 +416,9 @@ namespace GalacticScale.Generators
                 GSStar star = GSSettings.Stars.RandomStar;
                 int index = 0;
                 //GS2.Log("Getting index");
-                if (star.planetCount > 1)
+                if (star.PlanetCount > 1)
                 {
-                    index = Mathf.RoundToInt((star.planetCount - 1) / 2);
+                    index = Mathf.RoundToInt((star.PlanetCount - 1) / 2);
                 }
 
                 GSPlanet planet = star.Planets[index];

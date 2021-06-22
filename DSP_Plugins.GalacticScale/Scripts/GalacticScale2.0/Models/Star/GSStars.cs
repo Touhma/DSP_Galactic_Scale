@@ -37,7 +37,10 @@ namespace GalacticScale
                 {
                     return this[0];
                 }
-
+                if (Count == 0)
+                {
+                    GS2.Error("No Stars To Pick From!");
+                }
                 return this[random.Next(this.Count)];
             }
         }

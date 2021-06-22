@@ -35,7 +35,14 @@ namespace GalacticScale
         [SerializeField]
         public float level = 1;
 
-        public int planetCount => Planets.Count;
+        public int PlanetCount
+        {
+            get
+            {
+                if (Planets == null) return 0;
+                return Planets.Count;
+            }
+        }
         public int bodyCount
         {
             get
@@ -44,7 +51,7 @@ namespace GalacticScale
                 foreach (GSPlanet p in Planets)
                 {
                     bodyCount++;
-                    bodyCount += p.MoonCount;
+                    bodyCount += p.MoonsCount;
                 }
                 return bodyCount;
             }

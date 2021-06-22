@@ -14,5 +14,16 @@ namespace GalacticScale
 
             ___factories = new PlanetFactory[GSSettings.PlanetCount];
         }
+        [HarmonyPatch(typeof(GameData), "SetForNewGame"), HarmonyPostfix]
+        public static void SetForNewGame_Postfix(GameData __instance)
+        {
+            if (NebulaCompatibility.Initialized && !NebulaCompatibility.IsMasterClient)
+            {
+                __instance.mainPlayer.uPosition = GSSettings.BirthPlanet.planetData.uPosition;
+                __instance.ArriveStar(GSSettings.BirthPlanet.planetData.star);
+                __instance.ArrivePlanet(GSSettings.BirthPlanet.planetData);
+            }
+        }
+
     }
 }

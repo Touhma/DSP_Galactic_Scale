@@ -7,26 +7,31 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSSettingsConverter))]
     public class GSSettings
     {
-        public static string ToString(bool pretty)
+        public  static string Serialize()
         {
-            return Utils.Serialize(pretty);
+            string data = Utils.Serialize(instance, false);
+            //GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, "data.json"), data);
+            return data;
         }
         public new static string ToString()
         {
-            return ToString(false);
+            return Utils.Serialize(instance, true);
         }
+        public static bool DeSerialize(string json) => FromString(json);
         public static bool FromString(string json)
         {
+            GS2.Warn("Loading Data From External String");
             fsSerializer serializer = new fsSerializer();
-            GSSettings result = GSSettings.Instance;
+            GSSettings result = Instance;
             fsData data2 = fsJsonParser.Parse(json);
             bool success = serializer.TryDeserialize(data2, ref result).Succeeded;
-            if (result.version != GSSettings.Instance.version)
+            if (result.version != Instance.version)
             {
-                GS2.Warn("Version mismatch: " + GSSettings.Instance.version + " trying to load " + result.version + " savedata");
+                GS2.Warn("Version mismatch: " + Instance.version + " trying to load " + result.version + " savedata");
             }
-            GSSettings.Instance = result;
-            GSSettings.Instance.imported = true;
+            Instance = result;
+            Instance.imported = true;
+            GS2.Warn("Loaded Data From External String");
             return success;
         }
         public static GSSettings Instance { get => instance; set => instance = value; }
@@ -99,6 +104,7 @@ namespace GalacticScale
                 }
 
                 GS2.Error("Could not find birthplanet as there are no stars or planets.");
+                GS2.AbortGameStart("Could not find birthplanet as there are no stars or planets.");
                 return null;
             }
         }

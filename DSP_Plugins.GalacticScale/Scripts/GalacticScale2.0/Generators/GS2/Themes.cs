@@ -167,6 +167,9 @@ namespace GalacticScale.Generators
             GSTheme hotGas = new GSTheme("Inferno", "Infernal Gas Giant", "GasGiant");
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
+            hotGas.MinRadius = 5;
+            hotGas.MaxRadius = 510;
+            hotGas.ThemeType = EThemeType.Gas;
             hotGas.Process();
         }
     }

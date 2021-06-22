@@ -11,6 +11,7 @@ namespace GalacticScale
         {
             GS2.Log("Start");
             GalaxyData galaxy;
+            if ((__instance.gameDesc.starCount <= 0)) __instance.gameDesc.starCount = 1;
             if (GS2.Vanilla)
             {
                 galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);

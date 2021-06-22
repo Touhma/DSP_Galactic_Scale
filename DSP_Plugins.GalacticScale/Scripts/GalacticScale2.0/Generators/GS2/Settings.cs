@@ -468,15 +468,15 @@ namespace GalacticScale.Generators
             string sl = GetTypeLetterFromStar(star);
             return preferences.GetInt($"{sl}systemDensity", 3);
         }
-        private int GetMoonChanceForStar(GSStar star)
+        private double GetMoonChanceForStar(GSStar star)
         {
             string sl = GetTypeLetterFromStar(star);
-            return preferences.GetInt($"{sl}chanceMoon", 20);
+            return preferences.GetInt($"{sl}chanceMoon", 20)/100.0;
         }
-        private int GetGasChanceForStar(GSStar star)
+        private double GetGasChanceForStar(GSStar star)
         {
             string sl = GetTypeLetterFromStar(star);
-            return preferences.GetInt($"{sl}chanceGas", 20);
+            return preferences.GetInt($"{sl}chanceGas", 20)/100.0;
         }
         public void Import(GSGenPreferences preferences)
         {

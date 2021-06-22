@@ -117,8 +117,8 @@ namespace GalacticScale
             var results = q.ToList();
             if (results.Count == 0)
             {
-                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:>={temp.min} temp.max:<{temp.max}");
-               
+                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+                GS2.LogJson(this);
                 results.Add("Mediterranean");
             }
             return results;
