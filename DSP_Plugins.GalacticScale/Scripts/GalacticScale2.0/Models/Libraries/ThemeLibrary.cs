@@ -58,7 +58,13 @@ namespace GalacticScale
         }
         public GSTheme QueryRandom() => this["Mediterranean"];
 
-        public List<string> Query(EThemeType type, EThemeHeat heat, int radius = -1, EThemeDistribute distribute = EThemeDistribute.Default)
+        public string Query(GS2.Random random, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            List<string> themes = Query(type, heat, radius, distribute);
+            return random.Item(themes);
+        }
+
+        public List<string> Query(EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             //List<GSTheme> list = new List<GSTheme>();
             List<EPlanetType> types = new List<EPlanetType>();
@@ -121,6 +127,8 @@ namespace GalacticScale
                 GS2.LogJson(this);
                 results.Add("Mediterranean");
             }
+            GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+            GS2.LogJson(results);
             return results;
         }
         //public List<string> Hot {

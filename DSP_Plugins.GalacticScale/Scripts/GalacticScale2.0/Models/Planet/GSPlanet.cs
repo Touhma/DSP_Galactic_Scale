@@ -237,7 +237,7 @@ namespace GalacticScale
                 random = new GS2.Random(GSSettings.Seed);
             }
 
-            orbitRadius = random.Next(10);
+            orbitRadius = 0;// random.Next(10);
             return orbitRadius;
         }
         private float InitOrbitInclination()

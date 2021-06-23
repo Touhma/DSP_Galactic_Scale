@@ -37,6 +37,7 @@ namespace GalacticScale.Generators
             {
                 var starType = ChooseStarType();
                 GSStar star = new GSStar(random.Next(), SystemNames.GetName(i), starType.spectr, starType.type, new GSPlanets());
+                star.radius *= 10f;
                 GSSettings.Stars.Add(star);
                 GeneratePlanetsForStar(star);
 
@@ -150,14 +151,17 @@ namespace GalacticScale.Generators
                 GSPlanet planet = new GSPlanet(star.Name + "-Planet", null, proto.radius, -1, -1, -1, -1, -1, -1, -1, -1);
                 //planet.fields.Add("gas", proto.gas.ToString());
                 if (proto.gas) planet.Scale = 10f;
+                else planet.Scale = 1f;
                 if (proto.moons.Count > 0) planet.Moons = new GSPlanets();
                 foreach (ProtoPlanet moon in proto.moons)
                 {
                     GSPlanet planetMoon = new GSPlanet(star.Name + "-Moon", null, moon.radius, -1, -1, -1, -1, -1, -1, -1, -1);
+                    planetMoon.Scale = 1f;
                     if (moon.moons.Count > 0) planetMoon.Moons = new GSPlanets();
                     foreach (ProtoPlanet moonmoon in moon.moons)
                     {
                         GSPlanet moonMoon = new GSPlanet(star.Name + "-MoonMoon", null, moonmoon.radius, -1, -1, -1, -1, -1, -1, -1, -1);
+                        moonMoon.Scale = 1f;
                         planetMoon.Moons.Add(moonMoon);
                     }
                     planet.Moons.Add(planetMoon);
@@ -211,10 +215,14 @@ namespace GalacticScale.Generators
             foreach (GSPlanet planet in star.Planets)
             {
                 EThemeHeat heat = CalculateThemeHeat(star, planet.OrbitRadius);
-                planet.Theme = random.Item(GSSettings.ThemeLibrary.Query((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet, heat, planet.Radius, EThemeDistribute.Default));
+                EThemeType type = EThemeType.Planet;
+                if (planet.Scale == 10f) type = EThemeType.Gas;
+                planet.Theme = GSSettings.ThemeLibrary.Query(random,type, heat, planet.Radius, EThemeDistribute.Default);
+                Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
                 foreach (GSPlanet body in planet.Bodies)
                 {
-                    body.Theme = random.Item(GSSettings.ThemeLibrary.Query(EThemeType.Moon, heat, body.Radius, EThemeDistribute.Default));
+                    if (body != planet) body.Theme = GSSettings.ThemeLibrary.Query(random,EThemeType.Moon, heat, body.Radius, EThemeDistribute.Default);
+                    //Warn($"Set Theme for {body.Name} to {body.Theme}");
                 }
             }
         }
@@ -236,9 +244,10 @@ namespace GalacticScale.Generators
                     {
                         //for each subsatellite
                         float m2orbit;
+                        
+                        GSPlanet moon2 = moon.Moons[moon2Index];
                         if (moon2Index == 0) m2orbit = moon.RadiusAU + minOrbit;
                         else m2orbit = moon.SystemRadius + minOrbit;
-                        GSPlanet moon2 = moon.Moons[moon2Index];
                         moon2.Name += $"-{planetIndex}-{moonIndex}-{moon2Index}"; 
                         moon2.OrbitRadius = m2orbit + moon2.RadiusAU;
                         Warn($"{moon2.Name} OrbitRadius:{moon2.OrbitRadius} Moon.SystemRadius:{moon.SystemRadius} Moon2.RadiusAU:{moon2.RadiusAU}  ");
@@ -248,7 +257,7 @@ namespace GalacticScale.Generators
                     if (moonIndex == 0) m1orbit = planet.RadiusAU + minOrbit;
                     else m1orbit = planet.SystemRadius + minOrbit;
                     moon.OrbitRadius = m1orbit + moon.RadiusAU;
-                    Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} ");
+                    Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} Theme:{planet.Theme} ");
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }
                 float pOrbit;
@@ -633,6 +642,8 @@ namespace GalacticScale.Generators
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
+            hz.min *= 10f; //Huge Stars need some tweaking :)
+            hz.max *= 10f;
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;
             if (OrbitRadius < hz.max) return EThemeHeat.Temperate;
