@@ -287,7 +287,7 @@ namespace GalacticScale
                 return Moons[Moons.Count - 1].MostDistantSatellite;
             }
         }
-        public float RadiusAU => Radius * 0.00005f * Scale;
+        public float RadiusAU => Radius * 0.000025f * Scale;
         public float SystemRadius
         {
             get

@@ -32,6 +32,7 @@ namespace GalacticScale.Generators
             SetGalaxyDensity(preferences.GetInt("galaxyDensity", 5));
             random = new GS2.Random(GSSettings.Seed);
             CalculateFrequencies();
+            Log("Generating Stars");
             for (var i = 0; i < starCount; i++)
             {
                 var starType = ChooseStarType();
@@ -40,6 +41,7 @@ namespace GalacticScale.Generators
                 GeneratePlanetsForStar(star);
 
             }
+            Log("Picking BirthPlanet");
             PickNewBirthPlanet();
             GSSettings.BirthPlanet.Name = birthPlanet.Name;
             if (preferences.GetBool("birthPlanetSiTi", false))
@@ -52,16 +54,17 @@ namespace GalacticScale.Generators
                 birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
             }
             GS2.LogJson(birthPlanet, true);
-            GSSettings.Stars[0].radius = 5;
-            GSSettings.Stars[0].Planets[0].OrbitRadius = 0.075f;
-            GSSettings.Stars[0].Planets[0].Radius = 100;
-            GSSettings.Stars[0].Planets[0].Scale = 1f;
-            GSSettings.Stars[0].Planets[1].OrbitRadius = 0.1f;
-            GSSettings.Stars[0].Planets[1].Radius = 100;
-            GSSettings.Stars[0].Planets[1].Scale = 1f;
-            GSSettings.Stars[0].Planets[2].OrbitRadius = 0.11f;
-            GSSettings.Stars[0].Planets[2].Radius = 100;
-            GSSettings.Stars[0].Planets[2].Scale = 1f;
+            //GSSettings.Stars[0].radius = 5; 5 Radius on star = 0.1AU
+            //GSSettings.Stars[0].Planets[0].OrbitRadius = 0.075f;
+            //GSSettings.Stars[0].Planets[0].Radius = 100;
+            //GSSettings.Stars[0].Planets[0].Scale = 1f;
+            //GSSettings.Stars[0].Planets[1].OrbitRadius = 0.1f;
+            //GSSettings.Stars[0].Planets[1].Radius = 100;
+            //GSSettings.Stars[0].Planets[1].Scale = 1f;
+            //GSSettings.Stars[0].Planets[2].OrbitRadius = 0.11f;
+            //GSSettings.Stars[0].Planets[2].Radius = 100;
+            //GSSettings.Stars[0].Planets[2].Scale = 1f;
+            Log("End");
         }
         public void SetGalaxyDensity(int density)
         {
@@ -245,14 +248,14 @@ namespace GalacticScale.Generators
                     if (moonIndex == 0) m1orbit = planet.RadiusAU + minOrbit;
                     else m1orbit = planet.SystemRadius + minOrbit;
                     moon.OrbitRadius = m1orbit + moon.RadiusAU;
-                    Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU}  ");
+                    Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} ");
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }
                 float pOrbit;
-                if (planetIndex == 0) pOrbit = (star.radius * 0.1f) + minOrbit + planet.SystemRadius;
+                if (planetIndex == 0) pOrbit = (star.RadiusAU * 1.5f) + planet.SystemRadius;
                 else pOrbit = star.Planets[planetIndex - 1].SystemRadius + minOrbit + star.Planets[planetIndex - 1].OrbitRadius + planet.SystemRadius;
                 planet.OrbitRadius = pOrbit;
-                Warn($"{planet.Name} orbitRadius:{planet.OrbitRadius} systemRadius:{planet.SystemRadius} radiusAU:{planet.RadiusAU}");
+                Warn($"{planet.Name} orbitRadius:{planet.OrbitRadius} systemRadius:{planet.SystemRadius} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale}");
                 planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
             }
             //Orbits should be set.

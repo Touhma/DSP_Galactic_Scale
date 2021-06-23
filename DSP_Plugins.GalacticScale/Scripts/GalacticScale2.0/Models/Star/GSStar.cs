@@ -226,6 +226,7 @@ namespace GalacticScale
             clone.Planets = new GSPlanets(Planets);
             return clone;
         }
+        public float RadiusAU { get => radius / 50; }
         //public float SystemRadius => Planets[Planets.Count -1].SystemRadius;
     }
 }

@@ -14,7 +14,7 @@ namespace GalacticScale
                 return true;
             }
             //GS2.Warn(NebulaCompatibility.IsMasterClient.ToString());
-            //if (NebulaCompatibility.Initialized || !NebulaCompatibility.LocalPlayer.IsMasterClient) return false;
+            if (NebulaCompatibility.Initialized || !NebulaCompatibility.IsMasterClient) return false;
             if (GS2.Failed)
             {
                 return false;

@@ -8,7 +8,7 @@ namespace GalacticScale
         [HarmonyPostfix, HarmonyPatch(typeof(GameData), "OnActivePlanetLoaded")]
         public static void OnActivePlanetLoaded(PlanetData planet)
         {
-            //GS2.Warn($"{planet.name}");
+            GS2.Warn($"{planet.name}");
             if (!GS2.Vanilla)
             {
                 int segments = (int)(planet.radius / 4f + 0.1f) * 4;
