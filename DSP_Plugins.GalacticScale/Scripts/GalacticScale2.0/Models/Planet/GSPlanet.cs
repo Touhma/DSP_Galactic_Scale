@@ -21,7 +21,7 @@ namespace GalacticScale
         private float luminosity = -1;
         [NonSerialized]
         public Dictionary<string, string> fields = new Dictionary<string, string>(); // Temporary string store for generator use, not saved
-        private List<GSPlanet> moons = new List<GSPlanet>();
+        private GSPlanets moons = new GSPlanets();
         private int seed = -1;
 
         public Dictionary<string, GSVein> veins = new Dictionary<string, GSVein>();
@@ -35,7 +35,7 @@ namespace GalacticScale
             set => seed = value;
         }
         [SerializeField]
-        public List<GSPlanet> Moons { get => moons; set => moons = value; }
+        public GSPlanets Moons { get => moons; set => moons = value; }
         [SerializeField]
         public string Name { get => name; set => name = value; }
         [SerializeField]
@@ -183,11 +183,11 @@ namespace GalacticScale
                 return Moons.Count;
             }
         }
-        public List<GSPlanet> Bodies
+        public GSPlanets Bodies
         {
             get
             {
-                List<GSPlanet> b = new List<GSPlanet>() { this };
+                GSPlanets b = new GSPlanets() { this };
                 if (Moons == null)
                 {
                     return b;
@@ -283,7 +283,6 @@ namespace GalacticScale
                 {
                     return this;
                 }
-
                 return Moons[Moons.Count - 1].MostDistantSatellite;
             }
         }

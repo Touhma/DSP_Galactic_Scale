@@ -31,8 +31,10 @@ namespace GalacticScale
             {
                 obj = planetComputeThread;
             }
+            int cycles = 0;
             while (true)
             {
+                cycles++;
                 HighStopwatch pqsw = new HighStopwatch();
                 pqsw.Begin();
                 int num = 0;
@@ -137,8 +139,12 @@ namespace GalacticScale
                         modPlanetReqList.Enqueue(planetData);
                     }
                 }
-
-                if (planetData == null)
+                if (cycles > 600)
+                {
+                    cycles = 0;   
+                    Log("Modeler 10sec Tick");
+                }
+                    if (planetData == null)
                 {
                     Thread.Sleep(50);
                 }

@@ -73,5 +73,18 @@
             }
             return gsPlanets[vanillaID];
         }
+        public static GSStar GetGSStar(GSPlanet planet)
+        {
+            if (planet.planetData != null) return GetGSStar(planet.planetData.star);
+            for (var i = 0; i < GSSettings.StarCount; i++)
+            {
+                for (var j=0;j<GSSettings.Stars[i].Bodies.Count;j++)
+                {
+                    if (GSSettings.Stars[i].Bodies[j] == planet) return GSSettings.Stars[i];
+                }
+            }
+            GS2.Error("Failed to get GSStar. Could not find planet in GSSettings.Stars");
+            return null;
+        }
     }
 }

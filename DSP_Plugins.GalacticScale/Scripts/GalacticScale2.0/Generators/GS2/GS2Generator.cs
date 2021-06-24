@@ -18,7 +18,10 @@ namespace GalacticScale.Generators
 
         private GS2.Random random;
         private GSPlanet birthPlanet;
-
+        private GSStar birthStar;
+        private int birthPlanetIndex = -1;
+        private bool birthPlanetIsMoon = false;
+        private GSPlanet birthPlanetHost = null;
 
         public void Generate(int starCount)
         {
@@ -52,21 +55,110 @@ namespace GalacticScale.Generators
 
             if (preferences.GetInt("birthPlanetSize", 400) != 400)
             {
-                birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
+                int oldRadius = birthPlanet.Radius;
+                int newRadius = preferences.GetInt("birthPlanetSize", 400);
+                
+                if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
+                {
+                    FixOrbitsForBirthPlanet(newRadius);
+                   
+                }
+                birthPlanet.Radius = newRadius;
+                birthPlanet.Scale = 1f;
             }
             GS2.LogJson(birthPlanet, true);
-            //GSSettings.Stars[0].radius = 5; 5 Radius on star = 0.1AU
-            //GSSettings.Stars[0].Planets[0].OrbitRadius = 0.075f;
-            //GSSettings.Stars[0].Planets[0].Radius = 100;
-            //GSSettings.Stars[0].Planets[0].Scale = 1f;
-            //GSSettings.Stars[0].Planets[1].OrbitRadius = 0.1f;
-            //GSSettings.Stars[0].Planets[1].Radius = 100;
-            //GSSettings.Stars[0].Planets[1].Scale = 1f;
-            //GSSettings.Stars[0].Planets[2].OrbitRadius = 0.11f;
-            //GSSettings.Stars[0].Planets[2].Radius = 100;
-            //GSSettings.Stars[0].Planets[2].Scale = 1f;
             Log("End");
         }
+        private void FixOrbitsForBirthPlanet(int newRadius)
+        {
+            int radiusDifference = (newRadius - birthPlanet.Radius);
+            float newRadiusAU = newRadius * 0.000025f;
+            float auRadiusDifference = radiusDifference * 0.000025f;
+            float minOrbitRadius = birthPlanet.OrbitRadius - birthPlanet.SystemRadius;
+            float maxOrbitRadius = birthPlanet.OrbitRadius + birthPlanet.SystemRadius;
+            float distanceBetweenNeighboringOrbits = birthPlanet.SystemRadius;
+            //Can we solve this by removing moons?
+            if (birthPlanet.MoonCount > 0)
+                for (var i=0;i<birthPlanet.MoonCount;i++)
+                    if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
+                    {
+                        birthPlanet.Moons.RemoveRange(0, i + 1);
+                        Warn($"Fixed birthplanet orbits by removing {i+1} moons");
+                        return;
+                    }
+            //Is the birthPlanet a moon?
+            if (birthPlanetIsMoon)
+            {
+                //Can we solve this by removing sub moons?
+                if (birthPlanet.MoonCount > 0)
+                    for (var i = 0; i < birthPlanet.MoonCount; i++)
+                        if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
+                        {
+                            birthPlanet.Moons.RemoveRange(0, i + 1);
+                            Warn($"Fixed birthplanet orbits by removing {i + 1} sub moons");
+                            return;
+                        }
+                //Can we solve this by removing host moons?
+                if (birthPlanetHost.MoonCount > 1)
+                {
+                    double cumulativeSystemRadii = 0.0;
+                    for (var i = birthPlanetIndex -1; i > 0; i--)
+                    {
+                        // check in towards the host
+                        cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
+                        if (cumulativeSystemRadii > auRadiusDifference)
+                        {
+                            birthPlanetHost.Moons.RemoveRange(i, (birthPlanetIndex - i));
+                            birthPlanet.OrbitRadius -= auRadiusDifference;
+                            Warn($"Fixed birthplanet orbits by removing {(birthPlanetIndex - i)} host moons on inside");
+                        }
+                    }
+                    cumulativeSystemRadii = 0.0;
+                    for (var i = birthPlanetIndex + 1 ; i < birthPlanetHost.MoonCount; i++)
+                    {
+                        // check out away from the host
+                        cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
+                        if (cumulativeSystemRadii > auRadiusDifference)
+                        {
+                            birthPlanetHost.Moons.RemoveRange(birthPlanetIndex + 1, i - birthPlanetIndex);
+                            birthPlanet.OrbitRadius -= auRadiusDifference;
+                            Warn($"Fixed birthplanet orbits by removing {i - birthPlanetIndex} host moons on outside");
+                        }
+                    }
+                }
+                //Can we solve this by making the host smaller?
+                if (birthPlanetHost.Scale == 1f && birthPlanetHost.RadiusAU > auRadiusDifference)
+                {
+                    birthPlanetHost.Radius -= radiusDifference;
+                    Warn($"Fixed birthplanet orbits by making host planet smaller");
+                    return;
+                }
+                if (birthPlanetHost.Scale == 10f && birthPlanetHost.RadiusAU > auRadiusDifference)
+                {
+                    int reduction = Mathf.Max(Utils.ParsePlanetSize(radiusDifference / 10), 10);
+                    birthPlanetHost.Radius -= reduction;
+                    Warn($"Fixed birthplanet orbits by making host planet smaller");
+                    return;
+                }
+            }
+            //Is the birthPlanet a planet?
+            if (!birthPlanetIsMoon)
+            {
+                //Fix by moving all orbits out
+                for (var i=birthPlanetIndex;i < birthStar.PlanetCount; i++)
+                {
+                    birthStar.Planets[i].OrbitRadius += auRadiusDifference;
+                }
+                Warn($"Fixed birthplanet orbits by adding size difference to orbit radius for all planets at or above index {birthPlanetIndex}");
+                return;
+            }
+            Error("Failed to adjust orbits for birthPlanet Increased Size");
+            
+        }
+
+
+
+
         public void SetGalaxyDensity(int density)
         {
 
@@ -83,8 +175,8 @@ namespace GalacticScale.Generators
             int max = GetMaxPlanetSizeForStar(star);
             float average = (((float)max - (float)min) / 2) + (float)min;
             int range = max - min;
-            float sd = (float)range / 4;
-            return Utils.ParsePlanetSize(random.Normal(average, sd));
+            float sd = (float)range / 6;
+            return Mathf.Clamp(Utils.ParsePlanetSize(random.Normal(average, sd)), min, max);
         }
         private int GetStarMoonSize(GSStar star, int hostRadius, bool hostGas)
         {
@@ -208,6 +300,11 @@ namespace GalacticScale.Generators
                 {
                     body.OrbitInclination = random.NextFloat(20f, 85f);
                 }
+
+                // Force inclinations for testing
+                body.OrbitInclination = 0f;
+                body.OrbitPhase = 0f;
+                body.OrbitalPeriod = 10000000f;
             }
         }
         private void SelectPlanetThemes(GSStar star)
@@ -225,6 +322,12 @@ namespace GalacticScale.Generators
                     //Warn($"Set Theme for {body.Name} to {body.Theme}");
                 }
             }
+        }
+        private float GetNextAvailableOrbit(GSPlanet planet, int MoonIndex)
+        {
+            GSPlanets moons = planet.Moons;
+            if (MoonIndex == 0) return planet.RadiusAU + moons[MoonIndex].SystemRadius;
+            return moons[MoonIndex - 1].SystemRadius + moons[MoonIndex -1].OrbitRadius + moons[MoonIndex].SystemRadius;
         }
         private void CreatePlanetOrbits(GSStar star)
         {
@@ -246,17 +349,18 @@ namespace GalacticScale.Generators
                         float m2orbit;
                         
                         GSPlanet moon2 = moon.Moons[moon2Index];
-                        if (moon2Index == 0) m2orbit = moon.RadiusAU + minOrbit;
-                        else m2orbit = moon.SystemRadius + minOrbit;
-                        moon2.Name += $"-{planetIndex}-{moonIndex}-{moon2Index}"; 
-                        moon2.OrbitRadius = m2orbit + moon2.RadiusAU;
+                        //if (moon2Index == 0) m2orbit = moon.RadiusAU + minOrbit;
+                        m2orbit = moon.SystemRadius + minOrbit;
+                        moon2.Name += $"-{planetIndex}-{moonIndex}-{moon2Index}";
+                        moon2.OrbitRadius = GetNextAvailableOrbit(moon, moon2Index);
                         Warn($"{moon2.Name} OrbitRadius:{moon2.OrbitRadius} Moon.SystemRadius:{moon.SystemRadius} Moon2.RadiusAU:{moon2.RadiusAU}  ");
                         moon2.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon2.OrbitRadius);
                     }
-                    float m1orbit;
-                    if (moonIndex == 0) m1orbit = planet.RadiusAU + minOrbit;
-                    else m1orbit = planet.SystemRadius + minOrbit;
-                    moon.OrbitRadius = m1orbit + moon.RadiusAU;
+                    //float m1orbit;
+                    //if (moonIndex == 0) m1orbit = planet.RadiusAU + minOrbit;
+                    //else m1orbit = planet.SystemRadius + minOrbit;
+
+                    moon.OrbitRadius = GetNextAvailableOrbit(planet, moonIndex);
                     Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} Theme:{planet.Theme} ");
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }
@@ -312,7 +416,8 @@ namespace GalacticScale.Generators
                 planet.Theme = themeName;
                 GS2.Warn("Setting birthPlanet");
                 birthPlanet = planet;
-                birthPlanet.Scale = 1;
+                birthPlanetIndex = index;
+                birthStar = star;
                 GS2.Warn($"Selected {birthPlanet.Name}");
                 GS2.LogJson(planet, true);
                 return;
@@ -321,7 +426,41 @@ namespace GalacticScale.Generators
             {
                 GS2.Warn("Selecting random habitable planet");
                 birthPlanet = HabitablePlanets[random.Next(1, HabitablePlanets.Count - 1)];
-                GS2.Warn($"Selected {birthPlanet.Name}");
+                birthStar = GetGSStar(birthPlanet);
+                for (var i = 0; i< birthStar.PlanetCount; i++)
+                {
+                    if (birthStar.Planets[i] == birthPlanet)
+                    {
+                        birthPlanetIsMoon = false;
+                        birthPlanetIndex = i;
+                        GS2.Warn($"Selected {birthPlanet.Name} as birthPlanet (planet) index {i} of star {birthStar.Name}");
+                    }
+                    for (var j=0;j < birthStar.Planets[i].Moons.Count; j++)
+                    {
+                        if (birthStar.Planets[i].Moons[j] == birthPlanet)
+                        {
+                            birthPlanetIsMoon = true;
+                            birthPlanetHost = birthStar.Planets[i];
+                            birthPlanetIndex = j;
+                            GS2.Warn($"Selected {birthPlanet.Name} as birthPlanet (moon) index {j} of planet {birthPlanetHost.Name} ");
+                            return;
+                        }
+                        for (var k=0;k<birthStar.Planets[i].Moons[j].Moons.Count;k++)
+                        {
+                            if (birthStar.Planets[i].Moons[j].Moons[k] == birthPlanet)
+                            {
+                                birthPlanetIsMoon = true;
+                                birthPlanetHost = birthStar.Planets[i].Moons[j];
+                                birthPlanetIndex = k;
+                                Warn($"Selected {birthPlanet.Name} as birthPlanet (sub moon) index {k} of moon {birthPlanetHost.Name} ");
+                                return;
+                            }
+                        }
+                    }
+                }
+
+
+                GS2.Error($"Selected {birthPlanet.Name} but failed to find a birthStar or host!");
                 return;
             }
         }
