@@ -50,7 +50,7 @@ namespace GalacticScale
                         return false;
                     }
                 }
-                PlanetData planetData = null;
+                PlanetData planetData = null; 
                 lock (genPlanetReqList)
                 {
                     if (genPlanetReqList.Count > 0)

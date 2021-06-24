@@ -66,7 +66,7 @@ namespace GalacticScale.Generators
                 birthPlanet.Radius = newRadius;
                 birthPlanet.Scale = 1f;
             }
-            GS2.LogJson(birthPlanet, true);
+            LogJson(birthPlanet, true);
             Log("End");
         }
         private void FixOrbitsForBirthPlanet(int newRadius)
@@ -74,9 +74,9 @@ namespace GalacticScale.Generators
             int radiusDifference = (newRadius - birthPlanet.Radius);
             float newRadiusAU = newRadius * 0.000025f;
             float auRadiusDifference = radiusDifference * 0.000025f;
-            float minOrbitRadius = birthPlanet.OrbitRadius - birthPlanet.SystemRadius;
-            float maxOrbitRadius = birthPlanet.OrbitRadius + birthPlanet.SystemRadius;
-            float distanceBetweenNeighboringOrbits = birthPlanet.SystemRadius;
+            //float minOrbitRadius = birthPlanet.OrbitRadius - birthPlanet.SystemRadius;
+            //float maxOrbitRadius = birthPlanet.OrbitRadius + birthPlanet.SystemRadius;
+            //float distanceBetweenNeighboringOrbits = birthPlanet.SystemRadius;
             //Can we solve this by removing moons?
             if (birthPlanet.MoonCount > 0)
                 for (var i=0;i<birthPlanet.MoonCount;i++)
@@ -173,7 +173,7 @@ namespace GalacticScale.Generators
         {
             int min = GetMinPlanetSizeForStar(star);
             int max = GetMaxPlanetSizeForStar(star);
-            float average = (((float)max - (float)min) / 2) + (float)min;
+            float average = ((max - (float)min) / 2) + min;
             int range = max - min;
             float sd = (float)range / 6;
             return Mathf.Clamp(Utils.ParsePlanetSize(random.Normal(average, sd)), min, max);
@@ -187,14 +187,14 @@ namespace GalacticScale.Generators
             {
                 float divider = 2;
                 if (hostGas) divider = 4;
-                max = Utils.ParsePlanetSize(Mathf.RoundToInt((float)hostRadius / divider));
+                max = Utils.ParsePlanetSize(Mathf.RoundToInt(hostRadius / divider));
             }
             else
             {
                 max = Utils.ParsePlanetSize(hostRadius - 10);
             }
             if (max <= min) return min;
-            float average = (((float)max - (float)min) / 2) + (float)min;
+            float average = ((max - min) / 2) + min;
             int range = max - min;
             float sd = (float)range / 4;
             return Utils.ParsePlanetSize(random.Normal(average, sd));
@@ -332,7 +332,7 @@ namespace GalacticScale.Generators
         private void CreatePlanetOrbits(GSStar star)
         {
             // Now Work Backwards from secondary Satellites to Planets, creating orbits.
-            float minOrbit = 0.0f; //This will need tweaking.
+            float minOrbit = 0.1f; //This will need tweaking.
             for (var planetIndex = 0; planetIndex < star.PlanetCount; planetIndex++)
             {
                 GSPlanet planet = star.Planets[planetIndex];
@@ -360,7 +360,7 @@ namespace GalacticScale.Generators
                     //if (moonIndex == 0) m1orbit = planet.RadiusAU + minOrbit;
                     //else m1orbit = planet.SystemRadius + minOrbit;
 
-                    moon.OrbitRadius = GetNextAvailableOrbit(planet, moonIndex);
+                    moon.OrbitRadius = minOrbit + (random.NextFloat() * 2) + GetNextAvailableOrbit(planet, moonIndex);
                     Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} Theme:{planet.Theme} ");
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }

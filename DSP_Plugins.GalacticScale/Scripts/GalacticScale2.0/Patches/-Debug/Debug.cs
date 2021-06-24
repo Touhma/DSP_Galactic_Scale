@@ -1,12 +1,79 @@
-﻿namespace GalacticScale
+﻿using HarmonyLib;
+using UnityEngine;
+
+namespace GalacticScale
+    
 {
     public class PatchOnWhatever
     {
+       
+        //[HarmonyPrefix, HarmonyPatch(typeof(PlayerController), "GameTick")]
+        //public static bool GameTick(ref PlayerController __instance, long time)
+        //{
+        //    if (NebulaCompatibility.IsMasterClient) return true;
+        //    GS2.Warn("Start GameTick");
+        //    __instance.UpdateEnvironment();
+        //    GS2.Warn("Updated Environment");
+        //    __instance.SetCommandStateHeader();
+        //    GS2.Warn("SetCommandStateHeader");
+        //    __instance.UpdateCommandState();
+        //    GS2.Warn("UpdatedCommandState");
 
+        //    __instance.GetInput();
+        //    GS2.Warn("GotInput");
 
+        //    __instance.HandleBaseInput();
+        //    GS2.Warn("HandledBaseInput");
 
+        //    __instance.ClearForce();
+        //    GS2.Warn("Cleared Force");
 
+        //    __instance.ApplyGravity();
+        //    GS2.Warn("AppliedGravity");
 
+        //    __instance.rigidbodySleep = false;
+        //    __instance.movementStateInFrame = __instance.player.movementState;
+        //    __instance.velocityOnLanding = Vector3.zero;
+        //    GS2.Warn("Running PlayerAction GameTicks");
+
+        //    foreach (PlayerAction playerAction in __instance.actions)
+        //    {
+        //        playerAction.GameTick(time);
+        //    }
+        //    GS2.Warn("Applying Local Force");
+
+        //    __instance.ApplyLocalForce();
+        //    GS2.Warn("Updating Rotation");
+
+        //    __instance.UpdateRotation();
+        //    GS2.Warn("RigidbodySafer");
+
+        //    __instance.RigidbodySafer();
+        //    GS2.Warn("Updating PhysicsDirect");
+
+        //    __instance.UpdatePhysicsDirect();
+        //    GS2.Warn("Updating Tracker");
+
+        //    __instance.UpdateTracker();
+        //    GS2.Warn("Setting MovementState");
+
+        //    __instance.player.movementState = __instance.movementStateInFrame;
+        //    if (__instance.velocityOnLanding.sqrMagnitude > 0f)
+        //    {
+        //        __instance.velocity = __instance.velocityOnLanding;
+        //    }
+        //    GS2.Warn("Done");
+
+        //    if (DSPGame.IsMenuDemo) return true;
+
+        //return false;
+        //}
+
+        //    [HarmonyPostfix, HarmonyPatch(typeof(PlayerController), "RigidbodySafer")]
+        //    public static void Postfix()
+        //    {
+        //        GS2.Warn("RigidbodySafer Postfix");
+        //    }
 
 
 

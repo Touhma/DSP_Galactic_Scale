@@ -72,7 +72,7 @@ namespace GalacticScale
         public static void Init()
         {
 
-            NebulaCompatibility.init();
+            NebulaCompatibility.Init();
             if (!Directory.Exists(DataDir))
             {
                 Directory.CreateDirectory(DataDir);

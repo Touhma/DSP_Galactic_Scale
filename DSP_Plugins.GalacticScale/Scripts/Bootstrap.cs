@@ -97,7 +97,11 @@ namespace GalacticScale
         private void FixedUpdate()
         {
             timer++;
-            if (timer >= 1000) timer = 0;
+            if (timer >= 1000)
+            {
+                timer = 0;
+                GS2.Warn("FixedUpdate");
+            }
             if (!GS2.CheatMode)
             {
                 return;

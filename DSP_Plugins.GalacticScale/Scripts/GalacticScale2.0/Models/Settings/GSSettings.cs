@@ -20,6 +20,7 @@ namespace GalacticScale
         public static bool DeSerialize(string json) => FromString(json);
         public static bool FromString(string json)
         {
+            GSSettings.Reset(0);
             GS2.Warn("Loading Data From External String");
             fsSerializer serializer = new fsSerializer();
             GSSettings result = Instance;

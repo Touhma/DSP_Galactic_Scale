@@ -53,7 +53,7 @@ namespace GalacticScale
 
             if (magnitudeOnPrecisionDummy == 0f)
             {
-                GS2.Warn("Bad Query");
+                GS2.Warn($"Bad Query. LocalPlanet:{GameMain.localPlanet.name}");
                 __result = __instance.heightData[0] * 0.01f;
                 return false;
             }

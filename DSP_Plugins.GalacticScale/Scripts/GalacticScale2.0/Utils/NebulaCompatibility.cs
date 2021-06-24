@@ -40,12 +40,15 @@ namespace GalacticScale
         {
             get
             {
+                //GS2.Log("Trying to get masterClient " + (N_LocalPlayer == null));
                 if (N_LocalPlayer == null)
                 {
                     return true;
                 }
 
-                return (bool)N_LocalPlayer.GetProperty("IsMasterClient").GetValue(null);
+               bool val = (bool)N_LocalPlayer.GetProperty("IsMasterClient").GetValue(null);
+                //GS2.Warn(val.ToString());
+                return val;
             }
         }
         //public static Double3 LocalPlayerDataUPosition
@@ -70,19 +73,21 @@ namespace GalacticScale
         //public static Type N_PlayerData = null;
         public static bool Nebula = false;
 
-        public static void init()
+        public static void Init()
         {
             Assembly[] asms = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly asm in asms)
             {
-                //GS2.Warn(asm.GetName().Name);
+                //GS2.Warn(" "+asm.GetName().Name);
                 if (asm.GetName().Name == "NebulaWorld")
                 {
                     Nebula = true;
                     foreach (Type t in asm.GetTypes())
                     {
+                        //GS2.Log(t.Name);
                         if (t.Name == "LocalPlayer")
                         {
+                            //GS2.Warn("FOUND LOCALPLAYER");
                             N_LocalPlayer = t;
                         }
 
