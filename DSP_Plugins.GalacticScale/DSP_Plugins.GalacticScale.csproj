@@ -191,8 +191,8 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\-Debug\Debug.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Path\CheckBuildConditions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\ArrivePlanet.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\CodeFile1.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\DetermineLocalPlanet.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GameTick.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\Init.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\OnActivePlanetLoaded.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetOrCreateFactory.cs" />
@@ -390,7 +390,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
