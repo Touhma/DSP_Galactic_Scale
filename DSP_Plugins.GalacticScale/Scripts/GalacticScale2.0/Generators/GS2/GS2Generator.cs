@@ -147,7 +147,8 @@ namespace GalacticScale.Generators
                 //Fix by moving all orbits out
                 for (var i=birthPlanetIndex;i < birthStar.PlanetCount; i++)
                 {
-                    birthStar.Planets[i].OrbitRadius += auRadiusDifference;
+                    birthStar.Planets[i].OrbitRadius += 2*auRadiusDifference;
+                    birthPlanet.OrbitRadius -= auRadiusDifference;
                 }
                 Warn($"Fixed birthplanet orbits by adding size difference to orbit radius for all planets at or above index {birthPlanetIndex}");
                 return;
@@ -332,7 +333,8 @@ namespace GalacticScale.Generators
         private void CreatePlanetOrbits(GSStar star)
         {
             // Now Work Backwards from secondary Satellites to Planets, creating orbits.
-            float minOrbit = 0.1f; //This will need tweaking.
+            //float minOrbit = 0.0f; //This will need tweaking.
+            //float minOrbitMoon = 0.01f;
             for (var planetIndex = 0; planetIndex < star.PlanetCount; planetIndex++)
             {
                 GSPlanet planet = star.Planets[planetIndex];
@@ -350,7 +352,7 @@ namespace GalacticScale.Generators
                         
                         GSPlanet moon2 = moon.Moons[moon2Index];
                         //if (moon2Index == 0) m2orbit = moon.RadiusAU + minOrbit;
-                        m2orbit = moon.SystemRadius + minOrbit;
+                        m2orbit = moon.SystemRadius + GetMoonOrbit();
                         moon2.Name += $"-{planetIndex}-{moonIndex}-{moon2Index}";
                         moon2.OrbitRadius = GetNextAvailableOrbit(moon, moon2Index);
                         Warn($"{moon2.Name} OrbitRadius:{moon2.OrbitRadius} Moon.SystemRadius:{moon.SystemRadius} Moon2.RadiusAU:{moon2.RadiusAU}  ");
@@ -360,18 +362,33 @@ namespace GalacticScale.Generators
                     //if (moonIndex == 0) m1orbit = planet.RadiusAU + minOrbit;
                     //else m1orbit = planet.SystemRadius + minOrbit;
 
-                    moon.OrbitRadius = minOrbit + (random.NextFloat() * 2) + GetNextAvailableOrbit(planet, moonIndex);
+                    moon.OrbitRadius = GetMoonOrbit() + (random.NextFloat() * 0.02f) + GetNextAvailableOrbit(planet, moonIndex);
                     Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} Theme:{planet.Theme} ");
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }
                 float pOrbit;
                 if (planetIndex == 0) pOrbit = (star.RadiusAU * 1.5f) + planet.SystemRadius;
-                else pOrbit = star.Planets[planetIndex - 1].SystemRadius + minOrbit + star.Planets[planetIndex - 1].OrbitRadius + planet.SystemRadius;
+                else pOrbit = star.Planets[planetIndex - 1].SystemRadius + GetOrbitGap(star) + star.Planets[planetIndex - 1].OrbitRadius + planet.SystemRadius;
                 planet.OrbitRadius = pOrbit;
                 Warn($"{planet.Name} orbitRadius:{planet.OrbitRadius} systemRadius:{planet.SystemRadius} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale}");
                 planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
             }
             //Orbits should be set.
+        }
+        private float GetMoonOrbit()
+        {
+            return random.NextFloat(0.01f, 0.1f);
+        }
+        private float GetOrbitGap(GSStar star)
+        {
+            int pCount = star.Planets.Count;
+            float maxOrbitByRadius = Mathf.Sqrt(star.radius);
+            float maxOrbitByPlanetCount = 100f *(float)pCount / 99f;
+            float maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius);
+            float averageOrbit = maxOrbit / pCount;
+            return random.Normal(averageOrbit, averageOrbit);
+
+
         }
         //private float RadiusToAU(float radius)
         //{
