@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Ashen Gelisol",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 1,
             Algo = 2,
             MinRadius = 5,

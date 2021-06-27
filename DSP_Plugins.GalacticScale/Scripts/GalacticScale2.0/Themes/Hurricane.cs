@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Hurricane Stone Forest",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 19,
             Algo = 8,
             MinRadius = 5,

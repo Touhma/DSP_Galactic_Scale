@@ -396,6 +396,7 @@ namespace GalacticScale.Generators
             //string[] keys = StarFreq.Keys.ToArray();
             //GS2.LogJson(StarFreqTupleArray, true);
             starFreq = new Dictionary<string, double>();
+            starFreq.Add("K", fK / total);
             for (var i = 1; i < StarFreqTupleArray.Length; i++)
             {
                 var element = StarFreqTupleArray[i];

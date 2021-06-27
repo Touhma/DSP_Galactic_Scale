@@ -294,10 +294,23 @@ namespace GalacticScale
                 GSPlanet mds = MostDistantSatellite;
                 if (mds == this)
                 {
+                    //GS2.Log($"{Name} Most Distant is itself");
                     return RadiusAU;
                 }
-
-                return MostDistantSatellite.OrbitRadius + MostDistantSatellite.RadiusAU;
+                GSPlanet p = this;
+                int c = 0;
+                float rad = 0;
+                while (p != mds || c < 99)
+                {
+                    //GS2.Log($"p:{p.Name} while. MDS:{mds.Name} MoonCount : {p.MoonCount} {p.MoonsCount} {p.Moons.Count}");
+                    c++;
+                    GSPlanet moon = p.Moons[p.MoonCount - 1];
+                    rad += moon.OrbitRadius;
+                    p = moon;
+                    if (p == mds) break;
+                }
+                //GS2.Log($"{Name} most distant:{mds.Name} its RadiusAU:{mds.RadiusAU} its OrbitRadius:{mds.OrbitRadius}");
+                return rad + mds.RadiusAU;
             }
         }
     }

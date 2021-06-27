@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Oceanic Jungle",
             PlanetType = EPlanetType.Ocean,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 8,
             Algo = 1,
             MinRadius = 30,

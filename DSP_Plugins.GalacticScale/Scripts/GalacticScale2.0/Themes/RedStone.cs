@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Red Stone",
             PlanetType = EPlanetType.Ocean,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 14,
             Algo = 1,
             MinRadius = 5,

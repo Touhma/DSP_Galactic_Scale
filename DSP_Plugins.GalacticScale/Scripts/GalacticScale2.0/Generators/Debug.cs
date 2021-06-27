@@ -31,6 +31,7 @@ namespace GalacticScale.Generators
 
             options.Add(GSUI.Combobox("Dryrun Generator", genList, OnDryRunChange, () => { }));
             options.Add(GSUI.Button("Output Settings", "Output", OnOutputSettingsClick, () => { }));
+            options.Add(GSUI.Button("Output Shubi CSV", "Output", OnOutputCSVClick, () => { }));
             options.Add(GSUI.Button("Output StarData", "Output", OnOutputStarDataClick, () => { }));
             options.Add(GSUI.Button("Output LDB Data", "Output", OnDumpLDBDataClick, () => { }));
             options.Add(GSUI.Button("Output Theme Library", "Output", OnDumpThemesDataClick, () => { }));
@@ -38,6 +39,10 @@ namespace GalacticScale.Generators
             options.Add(GSUI.Button("Export LocalPlanet Veinsettings", "Export", OnExportLocalPlanetClick, () => { }));
             //options.Add(GSUI.Button("Unlock All Tech", "Go", UnlockAll, null));
             //OnImportPositionsClick(null);
+        }
+        public void OnOutputCSVClick(object o)
+        {
+
         }
         public class starStuff
         {

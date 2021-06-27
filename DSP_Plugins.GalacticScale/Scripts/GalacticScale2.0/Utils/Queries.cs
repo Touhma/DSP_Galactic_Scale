@@ -2,6 +2,22 @@
 {
     public static partial class GS2
     {
+        public static bool IsPlanetOfStar(GSStar star, GSPlanet planet)
+        {
+            foreach (var p in star.Planets)
+            {
+                if (planet == p) return true;
+            }
+            return false;
+        }
+        public static bool IsMoonOfPlanet(GSPlanet planet, GSPlanet moon)
+        {
+            foreach (var m in planet.Moons)
+            {
+                if (moon == m) return true;
+            }
+            return false;
+        }
         public static GSStar GetGSStar(StarData star) => GetGSStar(star.id);
 
         public static GSStar GetGSStar(int id)

@@ -23,7 +23,7 @@ namespace GalacticScale
 
             GS2.Warn("Create Galaxy");
             GS2.ResearchUnlocked = false;
-            __result = GS2.ProcessGalaxy(gameDesc);
+            __result = GS2.ProcessGalaxy(gameDesc, true);
             return false;
         }
     }

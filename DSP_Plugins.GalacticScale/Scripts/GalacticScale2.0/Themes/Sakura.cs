@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Sakura Ocean",
             PlanetType = EPlanetType.Ocean,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 18,
             Algo = 1,
             MinRadius = 25,

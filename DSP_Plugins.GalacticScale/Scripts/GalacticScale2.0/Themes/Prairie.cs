@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Prairie",
             PlanetType = EPlanetType.Ocean,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 15,
             Algo = 6,
             MinRadius = 5,

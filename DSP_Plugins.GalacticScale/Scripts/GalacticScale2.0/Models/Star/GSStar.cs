@@ -15,7 +15,7 @@ namespace GalacticScale
         [SerializeField]
         public bool Decorative = false;
         [SerializeField]
-        public float MaxOrbit = 60f;
+        public float MaxOrbit = 100f;
         private float _habitableRadius = -1;
         private float _dysonRadius = -1;
         private float _temperature = -1;

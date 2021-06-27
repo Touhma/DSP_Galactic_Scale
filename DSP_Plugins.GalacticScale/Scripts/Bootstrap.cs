@@ -100,7 +100,7 @@ namespace GalacticScale
             if (timer >= 1000)
             {
                 timer = 0;
-                GS2.Warn("FixedUpdate");
+                //GS2.Warn("FixedUpdate");
             }
             if (!GS2.CheatMode)
             {
@@ -116,7 +116,7 @@ namespace GalacticScale
             }
             if (TeleportPlanet != null)
             {
-                GS2.Warn($"TP to Planet {TeleportPlanet.name} of star {TeleportPlanet.star?.name}");
+                GS2.Warn($"TP to Planet {TeleportPlanet?.name} of star {TeleportPlanet?.star?.name}");
                 GameMain.data.ArriveStar(TeleportPlanet.star);
                 StartCoroutine(Teleport(TeleportPlanet));
             }

@@ -50,12 +50,12 @@ namespace GalacticScale
                         return false;
                     }
                 }
-                PlanetData planetData = null; 
+                PlanetData planetData = null;
                 lock (genPlanetReqList)
                 {
                     if (genPlanetReqList.Count > 0)
                     {
-                        Log("Processing List");
+                        //Log("Processing List");
                         planetQueueSorted = false;
                         while (genPlanetReqList.Count > 0) planetQueue.Add(genPlanetReqList.Dequeue());
                     }
@@ -63,21 +63,21 @@ namespace GalacticScale
                 if (!planetQueueSorted && planetQueue.Count > 1)
                     lock (planetQueue)
                     {
-                        Log($"Sorting Queue with {planetQueue.Count} entries");
+                        //Log($"Sorting Queue with {planetQueue.Count} entries");
                         planetQueue.Sort(DistanceComparison);
                         planetQueueSorted = true;
-                        Log("Sorted");
+                        //Log("Sorted");
                     }
                 if (planetQueue.Count > 0)
                 {
 
                     planetData = planetQueue[0];
                     planetQueue.RemoveAt(0);
-                    Log($"Retrieved sorted planet from list: {planetData.name}");
+                    //Log($"Retrieved sorted planet from list: {planetData.name}");
                 }
                 if (planetData != null)
                 {
-                    Log($"Preamble time taken:{pqsw.duration:F5}");
+                    //Log($"Preamble time taken:{pqsw.duration:F5}");
                     try
                     {
                         PlanetAlgorithm planetAlgorithm = Algorithm(planetData);
@@ -135,16 +135,16 @@ namespace GalacticScale
                     }
                     lock (modPlanetReqList)
                     {
-                        Log($"Queuing {planetData.name} in modPlanetReqList after {pqsw.duration:F5}");
+                        //Log($"Queuing {planetData.name} in modPlanetReqList after {pqsw.duration:F5}");
                         modPlanetReqList.Enqueue(planetData);
                     }
                 }
                 if (cycles > 600)
                 {
-                    cycles = 0;   
-                    Log("Modeler 10sec Tick");
+                    cycles = 0;
+                    //Log("Modeler 10sec Tick");
                 }
-                    if (planetData == null)
+                if (planetData == null)
                 {
                     Thread.Sleep(50);
                 }
@@ -163,7 +163,7 @@ namespace GalacticScale
                 {
                     if (modPlanetReqList.Count > 0)
                     {
-                        Log("Processing List");
+                        //Log("Processing List");
                         planetModQueueSorted = false;
                         while (modPlanetReqList.Count > 0) planetModQueue.Add(modPlanetReqList.Dequeue());
                     }
@@ -173,17 +173,17 @@ namespace GalacticScale
                     {
                         HighStopwatch hsw = new HighStopwatch();
                         hsw.Begin();
-                        Log($"Sorting ModQueue with {planetModQueue.Count} entries");
+                        //Log($"Sorting ModQueue with {planetModQueue.Count} entries");
                         planetModQueue.Sort(DistanceComparison);
                         planetModQueueSorted = true;
-                        Log($"Sorted ModQueue in {hsw.duration:F5}");
+                        //Log($"Sorted ModQueue in {hsw.duration:F5}");
                     }
                 if (planetModQueue.Count > 0)
                 {
 
                     planetData = planetModQueue[0];
                     planetModQueue.RemoveAt(0);
-                    Log($"Retrieved sorted planet from mod list: {planetData.name}");
+                    Log($"Modelling {planetData.name}");
                 }
 
                 if (planetData != null)

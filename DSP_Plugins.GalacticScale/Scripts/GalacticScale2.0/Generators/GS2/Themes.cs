@@ -1,12 +1,73 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 namespace GalacticScale.Generators
 {
     public partial class GS2Generator : iConfigurableGenerator
     {
+        public static string[] baseKeys;
+        public void SetupBaseThemes()
+        {
+            ThemeLibrary newLibrary = new ThemeLibrary();
+            foreach(var v in ThemeLibrary.Vanilla())
+            {
+                GSTheme clone = v.Value.Clone();
+                //GS2.Log("Adding Theme " + clone.Name + " themeCount:" + newLibrary.Count);
+                newLibrary.Add(v.Key, clone);
+            }
+            baseKeys = new string[newLibrary.Keys.Count];
+            //GS2.Warn(newLibrary.Count.ToString());
+            newLibrary.Keys.CopyTo(baseKeys, 0);
+            //foreach (var k in baseKeys) GS2.Log("BaseKey:" +k);
+            //foreach (var old in GS2.ThemeLibrary)
+            //{
+            //    GSTheme newTheme = old.Value.Clone();
+            //    newTheme.Name += "_";
+            //    GS2.Log($"Cloned {old.Key} to {newTheme.Name}");
+            //    newTheme.DisplayName = old.Value.DisplayName;
+            //    newLibrary.Add(newTheme.Name, newTheme );
+            //}
+            ThemeLibrary smolLibrary = new ThemeLibrary();
+            string[] keys = new string[newLibrary.Count + 1];
+            newLibrary.Keys.CopyTo(keys, 0);
+            for (var i = 0; i < newLibrary.Count; i++)
+            {
+                string key = keys[i];
+                GSTheme theme = newLibrary[key];
+                if (theme.PlanetType == EPlanetType.Ocean) theme.MinRadius = 50;
+                if (theme.PlanetType != EPlanetType.Gas && theme.PlanetType != EPlanetType.Ocean)
+                {
+                    //For rocky worlds
+                    GSTheme smolTheme = theme.Clone();
+                    smolTheme.DisplayName = "Smol"+theme.DisplayName;
+                    smolTheme.Name += "smol";
+                    smolLibrary.Add(smolTheme.Name, smolTheme);
+                    smolTheme.MaxRadius = 40;
+                    theme.MinRadius = 50;
+                    if (theme.PlanetType == EPlanetType.Vocano)
+                    {
+                        theme.TerrainSettings.BrightnessFix = true;
+                        smolTheme.TerrainSettings.BrightnessFix = true;
+                        theme.Init(); smolTheme.Init();
+                    }
+                    string[] cKeys = new string[100];
+                    smolTheme.atmosphereMaterial.Colors.Keys.CopyTo(cKeys, 0);
+                    for (var j = 0; j < smolTheme.atmosphereMaterial.Colors.Count; j++) smolTheme.atmosphereMaterial.Colors[cKeys[j]] = Color.clear;
+                }
+
+
+            }
+            foreach (var s in smolLibrary)
+            {
+                if (!newLibrary.ContainsKey(s.Key)) newLibrary.Add(s.Key, s.Value);
+                else newLibrary[s.Key] = s.Value;
+            }
+            GS2.ThemeLibrary = GSSettings.ThemeLibrary = newLibrary;
+            
+        }
         public static void InitThemes()
         {
-            GS2.Log("Creating Themes for Sol");
+            GS2.Log("Creating Themes");
             GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
             oiler.terrainMaterial.Tint = new Color(0.3f, 0.3f, 0.3f, 1f);
             oiler.atmosphereMaterial.Tint = new Color(0f, 0f, 0f, 1);
@@ -37,6 +98,14 @@ namespace GalacticScale.Generators
             obsidian.terrainMat.SetFloat("_Distance", 0f);
             obsidian.Temperature = 2f;
             obsidian.Process();
+
+            GSTheme hotObsidian = new GSTheme("HotObsidian", "Hot Obsidian", "Obsidian");
+            hotObsidian.MaxRadius = 40;
+            hotObsidian.MinRadius = 5;
+            hotObsidian.terrainMaterial.Tint = new Color(0.2f, 0.05f, 0.05f, 1);
+            hotObsidian.Temperature = 5f;
+            hotObsidian.atmosphereMaterial.Tint = Color.clear;
+            hotObsidian.Process();
 
             //GS2.Log("About to Process redIce");
             GSTheme iceMalusol = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
@@ -105,6 +174,9 @@ namespace GalacticScale.Generators
                 };
             acidGreenhouse.VeinSettings.Algorithm = "GS2";
             acidGreenhouse.CustomGeneration = true;
+            acidGreenhouse.MinRadius = 150;
+            acidGreenhouse.Temperature = 3f;
+            acidGreenhouse.ThemeType = EThemeType.Planet;
             acidGreenhouse.Process();
 
             GSTheme barrenSatellite = new GSTheme("BarrenSatellite", "Barren Satellite", "Barren");
@@ -171,6 +243,14 @@ namespace GalacticScale.Generators
             hotGas.MaxRadius = 510;
             hotGas.ThemeType = EThemeType.Gas;
             hotGas.Process();
+
+            //GS2.LogJson(GS2.ThemeLibrary);
+            //foreach (string key in baseKeys)
+            //{
+            //    GS2.Warn("Private setting for " + key);
+            //    GS2.ThemeLibrary[key].ThemeType = EThemeType.Private;
+            //}
+            //foreach (var kvp in GS2.ThemeLibrary) GS2.Log("Final:" + kvp.Key);
         }
     }
 }

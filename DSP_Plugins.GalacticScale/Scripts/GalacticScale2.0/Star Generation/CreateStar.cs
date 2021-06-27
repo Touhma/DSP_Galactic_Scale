@@ -20,7 +20,7 @@
             starData.index = index;
             starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
             starData.id = id;
-            GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
+            //GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
             starData.seed = star.Seed;
             starData.position = star.position;
             starData.uPosition = starData.position * 2400000.0;

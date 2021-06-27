@@ -153,6 +153,8 @@ namespace GalacticScale
             //birthStarId = -1;
             GS2.gsPlanets.Clear();
             GS2.gsStars.Clear();
+            GS2.ThemeLibrary = ThemeLibrary.Vanilla();
+            ThemeLibrary = GS2.ThemeLibrary;
             //GS2.Log("End");
         }
         private int getPlanetCount()

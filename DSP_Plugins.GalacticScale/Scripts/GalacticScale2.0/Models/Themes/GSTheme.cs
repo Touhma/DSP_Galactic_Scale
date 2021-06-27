@@ -379,6 +379,8 @@ namespace GalacticScale
             MinRadius = baseTheme.MinRadius;
             MaxRadius = baseTheme.MaxRadius;
             ThemeType = baseTheme.ThemeType;
+            //GS2.Log(Name+" ThemeType:" + ThemeType.ToString());
+            Habitable = baseTheme.Habitable;
             ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
             ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
             Vegetables0 = (int[])baseTheme.Vegetables0.Clone();
@@ -423,7 +425,16 @@ namespace GalacticScale
                 }
             }
         }
-
+        public GSTheme Clone()
+        {
+            GSTheme clone = new GSTheme();
+            //GS2.Log($"Clone Address:{ Utils.AddressHelper.GetAddress(clone)} OriginalAddress: { Utils.AddressHelper.GetAddress(this)}");
+            clone.Name = Name;
+            clone.DisplayName = DisplayName;
+            clone.CopyFrom(this);
+            //GS2.Log($"Clone Address:{ Utils.AddressHelper.GetAddress(clone)} OriginalAddress: { Utils.AddressHelper.GetAddress(this)}");
+            return clone;
+        }
         /// <summary>
         /// Convert to a ThemeProto so that the game can use the materials etc
         /// </summary>

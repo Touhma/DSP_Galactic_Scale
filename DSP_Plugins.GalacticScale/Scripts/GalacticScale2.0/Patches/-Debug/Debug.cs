@@ -1,12 +1,30 @@
 ﻿using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
-
+using static GalacticScale.GS2;
 namespace GalacticScale
     
 {
     public class PatchOnWhatever
     {
-       
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "RequestLoadPlanet")]
+        public static bool RequestLoadPlanet(ref PlanetData planet)
+        {
+
+            Queue<PlanetData> obj = PlanetModelingManager.genPlanetReqList;
+            lock (obj)
+            {
+                Warn("Requested Load of " + planet.name);
+                planet.wanted = true;
+                if (!planet.loaded && !planet.loading)
+                {
+                    planet.loading = true;
+                    Warn("Queueing " + planet.name);
+                    PlanetModelingManager.genPlanetReqList.Enqueue(planet);
+                }
+            }
+            return false;
+        }
         //[HarmonyPrefix, HarmonyPatch(typeof(PlayerController), "GameTick")]
         //public static bool GameTick(ref PlayerController __instance, long time)
         //{

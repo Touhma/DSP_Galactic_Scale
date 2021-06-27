@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using static GalacticScale.GS2;
 namespace GalacticScale
 {
     public static partial class GS2
@@ -70,19 +71,7 @@ namespace GalacticScale
             //planetData.singularity |= gsPlanet.singularity.Layside;
             planet.rotationPeriod = gsPlanet.RotationPeriod;
             planet.rotationPhase = gsPlanet.RotationPhase;
-            if (isMoon)
-            {
-                if (star.planets.Length <= host.index)
-                {
-                    Error($"star.planets does not contain index {host.index}");
-                }
-
-                planet.sunDistance = star.planets[host.index].orbitRadius;
-            }
-            else
-            {
-                planet.sunDistance = planet.orbitRadius;
-            }
+            planet.sunDistance = GetSunDistance(GSSettings.Stars[star.index], gsPlanet, host);
 
             planet.radius = gsPlanet.Radius;
             planet.segment = 5;
@@ -166,7 +155,27 @@ namespace GalacticScale
             //GS2.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id}");
             return planet;
         }
-
+        public static float GetSunDistance(GSStar star, GSPlanet planet, PlanetData host)
+        {
+            if (host == null) return planet.OrbitRadius;
+            else
+            {
+                if (IsPlanetOfStar(star, GetGSPlanet(host))) {
+                    return host.orbitRadius;
+                }
+                else { 
+                    foreach (var p in star.Planets)
+                    {
+                        foreach (var b in p.Bodies)
+                        {
+                            if (planet == b) return p.OrbitRadius;
+                        }
+                    }
+                }
+            }
+            Error($"Cannot Get Sun Distance for planet {planet.Name}");
+            return 100f;
+        }
         public static void CreateMoons(ref PlanetData planetData, GSPlanet planet, GS2.Random random)
         {
             for (var i = 0; i < planet.Moons.Count; i++)

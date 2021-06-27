@@ -18,7 +18,7 @@ namespace GalacticScale
             }
             else
             {
-                galaxy = GS2.ProcessGalaxy(__instance.gameDesc, false);
+                galaxy = GS2.ProcessGalaxy(__instance.gameDesc, true);
             }
 
             if (__instance.starmap.galaxyData != null)

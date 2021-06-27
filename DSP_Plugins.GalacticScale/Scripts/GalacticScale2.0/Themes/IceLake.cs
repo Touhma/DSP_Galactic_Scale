@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Scarlet Ice Lake",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 20,
             Algo = 9,
             MinRadius = 5,

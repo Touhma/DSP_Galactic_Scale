@@ -10,6 +10,7 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Gobi Desert",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
             LDBThemeId = 12,
             Algo = 3,
             MinRadius = 5,

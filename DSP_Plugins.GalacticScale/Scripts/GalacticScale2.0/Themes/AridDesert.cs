@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Arid Desert",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 6,
             Algo = 2,
             MinRadius = 100,

@@ -26,7 +26,7 @@ namespace GalacticScale
                 //GS2.Log("CHOSE COMPLETELY VANILLA");
                 return true;
             }
-            GS2.Log("USING CUSTOM GENERATION FOR PLANET " + planet.displayName);
+            //GS2.Log("USING CUSTOM GENERATION FOR PLANET " + planet.displayName);
             __result = new GS2PlanetAlgorithm(gsPlanet);//new GS2PlanetAlgorithm(gsPlanet);
             __result.Reset(5, planet);
             //GS2.Log("PatchOnPlanetModellingManager|Algorithm|" + __result.planet.name+"|End|"+__result.seed);

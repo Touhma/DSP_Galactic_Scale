@@ -7,7 +7,7 @@ namespace GalacticScale
     {
         public static GalaxyData ProcessGalaxy(GameDesc desc, bool sketchOnly = false)
         {
-            Log($"Start ProcessGalacy:{sketchOnly} StarCount:{gameDesc.starCount} Seed:{gameDesc.galaxySeed}");
+            Log($"Start ProcessGalaxy:{sketchOnly} StarCount:{gameDesc.starCount} Seed:{gameDesc.galaxySeed} Called By{GetCaller()}");
             Random random = new Random(GSSettings.Seed);
             try
             {
@@ -15,10 +15,11 @@ namespace GalacticScale
                 Log($"Generating Galaxy of {GSSettings.StarCount}|{gameDesc.starCount} stars");
                 Failed = false;
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
-                if (!GSSettings.Instance.imported || sketchOnly)
+                if (!GSSettings.Instance.imported && sketchOnly)
                 {
                     //Warn("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
+
                     Log("Seed From gameDesc = " + GSSettings.Seed);
                     gsPlanets.Clear();
                     gsStars.Clear();
@@ -75,7 +76,7 @@ namespace GalacticScale
                 Log("Setting up Birth Planet");
                 //SetupBirthPlanet();
                 Log("Generating Veins");
-                GenerateVeins(!sketchOnly);
+                GenerateVeins(sketchOnly);
                 //if (GS2.CheatMode) return galaxy;
                 //}
                 Log("Creating Galaxy StarGraph");

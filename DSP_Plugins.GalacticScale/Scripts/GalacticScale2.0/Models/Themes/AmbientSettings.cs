@@ -59,18 +59,18 @@ namespace GalacticScale
             LutContribution = theme.ambientDesc.lutContribution;
             ReflectionMap = theme.ambientDesc.reflectionMap;
             LutTexture = theme.ambientDesc.lutTexture;
-            GS2.Log(".....");
+            //GS2.Log(".....");
             if (ReflectionMap?.name?.Split('_')[0] == "def")
             {
                 CubeMap = "Vanilla";
-                GS2.Log("___");
+                //GS2.Log("___");
             }
             else
             {
                 CubeMap = ReflectionMap?.name;
             }
 
-            GS2.Log("_");
+            //GS2.Log("_");
         }
         public void ToTheme(GSTheme theme)
         {
@@ -146,7 +146,7 @@ namespace GalacticScale
                 a.ReflectionMap = ReflectionMap;
             }
 
-            GS2.Log("*");
+            //GS2.Log("*");
             if (LutTexture != null)
             {
                 a.LutTexture = LutTexture;

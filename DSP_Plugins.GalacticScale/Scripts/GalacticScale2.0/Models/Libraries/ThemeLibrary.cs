@@ -10,6 +10,11 @@ namespace GalacticScale
         public ThemeLibrary()
         {
         }
+        public new GSTheme Add(string name, GSTheme theme)
+        {
+            base.Add(name, theme);
+            return theme;
+        }
         public static ThemeLibrary Vanilla()
         {
             ThemeLibrary t = new ThemeLibrary()
@@ -35,6 +40,7 @@ namespace GalacticScale
                 ["SaltLake"] = Themes.SaltLake,
                 ["Sakura"] = Themes.Sakura
             };
+
             return t;
         }
         public ThemeLibrary Clone()
@@ -67,18 +73,25 @@ namespace GalacticScale
         public List<string> Query(EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             //List<GSTheme> list = new List<GSTheme>();
-            List<EPlanetType> types = new List<EPlanetType>();
+            List<EThemeType> types = new List<EThemeType>();
             List<EThemeDistribute> distributes = new List<EThemeDistribute>();
             if (type == EThemeType.Gas)
             {
-                types.Add(EPlanetType.Gas);
+                types.Add(EThemeType.Gas);
             }
-            else
+            else if (type == EThemeType.Telluric)
             {
-                types.Add(EPlanetType.Vocano);
-                types.Add(EPlanetType.Ocean);
-                types.Add(EPlanetType.Desert);
-                types.Add(EPlanetType.Ice);
+                types.Add(EThemeType.Telluric);
+            } 
+            else if (type == EThemeType.Planet)
+            {
+                types.Add(EThemeType.Telluric);
+                types.Add(EThemeType.Planet);
+            }
+            else if (type == EThemeType.Moon)
+            {
+                types.Add(EThemeType.Moon);
+                types.Add(EThemeType.Telluric);
             }
             if (distribute == EThemeDistribute.Default)
             {
@@ -114,7 +127,7 @@ namespace GalacticScale
             }
 
             var q = from theme in this
-                    where types.Contains(theme.Value.PlanetType)
+                    where types.Contains(theme.Value.ThemeType)
                     where theme.Value.Temperature < temp.max
                     where theme.Value.Temperature >= temp.min
                     where theme.Value.MaxRadius >= ((radius > 0) ? radius : 0)
@@ -124,11 +137,14 @@ namespace GalacticScale
             if (results.Count == 0)
             {
                 GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
-                GS2.LogJson(this);
+                foreach (var k in this)
+                {
+                    GS2.Warn($"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
+                }
                 results.Add("Mediterranean");
             }
-            GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
-            GS2.LogJson(results);
+            //GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+            //GS2.LogJson(results);
             return results;
         }
         //public List<string> Hot {

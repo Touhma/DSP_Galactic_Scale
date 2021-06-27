@@ -11,6 +11,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Mediterranean",
             PlanetType = EPlanetType.Ocean,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 1,
             Algo = 1,
             MinRadius = 30,

@@ -10,9 +10,11 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Lava",
             PlanetType = EPlanetType.Vocano,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 9,
             Algo = 5,
-            MinRadius = 25,
+            MinRadius = 30,
             MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Lava 1/",
             Temperature = 5.0f,

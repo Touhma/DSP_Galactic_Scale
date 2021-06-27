@@ -11,6 +11,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Ocean World",
             PlanetType = EPlanetType.Ocean,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 16,
             Algo = 7,
             MinRadius = 50,

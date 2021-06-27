@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Barren Desert",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 11,
             Algo = 4,
             MinRadius = 5,

@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Volcanic Ash",
             PlanetType = EPlanetType.Vocano,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 13,
             Algo = 3,
             MinRadius = 5,

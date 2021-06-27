@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Rocky Salt Lake",
             PlanetType = EPlanetType.Desert,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 17,
             Algo = 2,
             MinRadius = 5,

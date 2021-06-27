@@ -10,6 +10,7 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Ice Giant",
             PlanetType = EPlanetType.Gas,
+
             LDBThemeId = 5,
             Algo = 0,
             MinRadius = 5,

@@ -10,6 +10,8 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Ice Field Gelisol",
             PlanetType = EPlanetType.Ice,
+            ThemeType = EThemeType.Telluric,
+
             LDBThemeId = 10,
             Algo = 3,
             MinRadius = 5,
