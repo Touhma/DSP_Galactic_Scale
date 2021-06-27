@@ -209,8 +209,12 @@ namespace GalacticScale.Generators
             float average = ((max - min) / 2) + min;
             int range = max - min;
             float sd = (float)range / 4;
-            int size = Utils.ParsePlanetSize(random.Normal(average, sd));
-            //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
+            int size = Utils.ParsePlanetSize(random.Next(min, max));
+            //if (size > hostRadius)
+            //{
+                Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
+            //    size = Utils.ParsePlanetSize(hostRadius - 10);
+            //}
             return size;
         }
         private class ProtoPlanet

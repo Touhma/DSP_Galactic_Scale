@@ -181,6 +181,8 @@ namespace GalacticScale.Generators
             preferences.Set("hugeGasGiants", true);
             preferences.Set("tidalLockInnerPlanets", false);
             preferences.Set("secondarySatellites", false);
+            preferences.Set("minPlanetCount", 1);
+            preferences.Set("maxPlanetCount", 10);
             preferences.Set("freqK", 40);
             preferences.Set("freqM", 50);
             preferences.Set("freqG", 30);
