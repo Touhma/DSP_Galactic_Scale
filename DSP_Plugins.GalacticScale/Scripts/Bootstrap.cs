@@ -110,18 +110,20 @@ namespace GalacticScale
             {
                 return;
             }
-            if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false || !GameMain.localStar.loaded)
+            if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false || !(GameMain.localStar != null && GameMain.localStar.loaded))
             {
                 return;
             }
             if (TeleportPlanet != null)
             {
                 GS2.Warn($"TP to Planet {TeleportPlanet?.name} of star {TeleportPlanet?.star?.name}");
-                GameMain.data.ArriveStar(TeleportPlanet.star);
+                
+                GameMain.data.ArriveStar(TeleportPlanet?.star);
                 StartCoroutine(Teleport(TeleportPlanet));
             }
             else if (TeleportStar != null)
             {
+                GS2.Warn($"TP to Star {TeleportStar?.name}");
                 GameMain.data.ArriveStar(TeleportStar);
                 StartCoroutine(Teleport(TeleportStar));
             }
@@ -146,6 +148,7 @@ namespace GalacticScale
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
+            GameCamera.instance.FrameLogic();
         }
     }
 }

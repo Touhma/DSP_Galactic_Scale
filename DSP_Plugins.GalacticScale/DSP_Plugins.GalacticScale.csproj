@@ -197,6 +197,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\OnActivePlanetLoaded.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetOrCreateFactory.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameLoader\FixedUpdate.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\LeaveStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\End.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\PlanetDataExtension.cs" />
@@ -390,7 +391,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

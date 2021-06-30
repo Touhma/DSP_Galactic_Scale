@@ -62,9 +62,6 @@ namespace GalacticScale
 
                     return null;
                 }
-                //Warn("---Asset Bundle Contents---");
-                //LogJson(_bundle.GetAllAssetNames());
-                //Warn("---------------------------");
                 return _bundle;
             }
         }

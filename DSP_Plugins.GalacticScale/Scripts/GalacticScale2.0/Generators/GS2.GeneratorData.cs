@@ -6,17 +6,17 @@ namespace GalacticScale
     {
         public static iGenerator generator = new Generators.Vanilla();
         public static List<iGenerator> generators = new List<iGenerator>() {
-            new Generators.BallTest(),
+            //new Generators.BallTest(),
             new Generators.Vanilla(),
             new Generators.GS2Generator(),
-            new Generators.SizeTest(),
-            new Generators.TintTest(),
+            //new Generators.SizeTest(),
+            //new Generators.TintTest(),
             new Generators.Sol(),
             new Generators.JsonImport(),
-            new Generators.ThemeViewer(),
+            //new Generators.ThemeViewer(),
             //new Generators.Spiral(),
-            new Generators.Debug(),
-            new Generators.StarTest()
+            //new Generators.Debug(),
+            //new Generators.StarTest()
         };
         public static iGenerator GetGeneratorByID(string guid)
         {
