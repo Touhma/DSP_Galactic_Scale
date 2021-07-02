@@ -82,10 +82,15 @@ namespace GalacticScale
         {
             Log("Start");
             debugOn = p.debug;
+            if (DebugLogOption != null) DebugLogOption.Set(debugOn);
             Force1RareChance = p.forceRare;
+            if (Force1RareChanceOption != null) Force1RareChanceOption.Set(Force1RareChance);
             SkipPrologue = p.skipPrologue;
+            if (SkipPrologueOption != null) SkipPrologueOption.Set(SkipPrologue);
             tutorialsOff = p.noTutorials;
+            if (NoTutorialsOption != null) NoTutorialsOption.Set(tutorialsOff);
             CheatMode = p.cheatMode;
+            if (CheatModeOption != null) CheatModeOption.Set(CheatMode);
             generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
             {

@@ -12,6 +12,8 @@ namespace GalacticScale
             {
                 GS2.Log("Not Menu Demo. Importing");
                 GS2.Import(r);
+                GS2.CheatMode = false; //Turn off cheatmode for loaded games
+                GS2.CheatModeOption.Set(false);
                 return;
             }
             GS2.Log("Menu Demo: " + GS2.IsMenuDemo.ToString());

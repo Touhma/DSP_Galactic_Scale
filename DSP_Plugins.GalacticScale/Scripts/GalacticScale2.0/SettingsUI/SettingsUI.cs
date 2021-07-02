@@ -254,7 +254,7 @@ namespace GalacticScale
             //GS2.Log("CreateOwnOptions()");
             List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
             options.Add(GSUI.Combobox("Generator", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
-            GS2.GS2RareChanceCheckbox = options.Add(GSUI.Checkbox("Force Rare Spawn", false, GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
+            GS2.Force1RareChanceOption = options.Add(GSUI.Checkbox("Force Rare Spawn", false, GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
             GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log", false, GS2.DebugLogOptionCallback, GS2.DebugLogOptionPostfix));
             GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue", false, GS2.SkipPrologueOptionCallback, GS2.SkipPrologueOptionPostfix));
             GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials", false, GS2.NoTutorialsOptionCallback, GS2.NoTutorialsOptionPostfix));

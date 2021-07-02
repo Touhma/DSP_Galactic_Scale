@@ -7,9 +7,14 @@ namespace GalacticScale
         public static void CheatModeOptionCallback(object o)
         {
             CheatMode = (bool)o;
+            if (GSSettings.Instance.imported && CheatMode) UnlockTech(true); //Unlock tech if you enable and a save has been loaded
             Warn($"Cheatmode set to {CheatMode}");
         }
-        public static void CheatModeOptionPostfix() => CheatModeOption.Set(CheatMode);
+        public static void CheatModeOptionPostfix()
+        {
+            CheatModeOption.Set(CheatMode);
+            
+        }
         public static GSUI CheatModeOption;
         // All credit to Windows10CE
         public static void UnlockTech(object o)
