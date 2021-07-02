@@ -157,6 +157,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\Val.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />

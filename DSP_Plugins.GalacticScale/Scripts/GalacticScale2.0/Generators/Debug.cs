@@ -40,7 +40,7 @@ namespace GalacticScale.Generators
             //options.Add(GSUI.Button("Unlock All Tech", "Go", UnlockAll, null));
             //OnImportPositionsClick(null);
         }
-        public void OnOutputCSVClick(object o)
+        public void OnOutputCSVClick(Val o)
         {
 
         }
@@ -112,7 +112,7 @@ namespace GalacticScale.Generators
         //    }
 
         //}
-        private void OnDumpLDBDataClick(object o)
+        private void OnDumpLDBDataClick(Val o)
         {
             //string outputDir = Path.Combine(GS2.DataDir, "output");
             //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
@@ -136,12 +136,12 @@ namespace GalacticScale.Generators
             GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_players.json"), LDB._players);
             GS2.DumpObjectToJson(Path.Combine(DataDir, "LDB_prompts.json"), LDB._prompts);
         }
-        private void OnExportLocalPlanetClick(object o) =>
+        private void OnExportLocalPlanetClick(Val o) =>
             //string outputDir = Path.Combine(GS2.DataDir, "output");
             //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             //string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
             GS2.LogJson(GS2.GetGSPlanet(GameMain.localPlanet).veinSettings);//path = Path.Combine(outputDir, "LDBThemes.json");//GS2.DumpObjectToJson(path, LDB.themes);
-        private void OnDumpThemesDataClick(object o)
+        private void OnDumpThemesDataClick(Val o)
         {
             string outputDir = Path.Combine(GS2.DataDir, "output");
             if (!Directory.Exists(outputDir))
@@ -158,14 +158,14 @@ namespace GalacticScale.Generators
             //path = Path.Combine(outputDir, "LDBThemes.json");
             //GS2.DumpObjectToJson(path, LDB.themes);
         }
-        private void OnDryRunChange(object o)
+        private void OnDryRunChange(Val o)
         {
             BCE.console.WriteLine("DryRun Change" + o, System.ConsoleColor.Yellow);
-            int i = (int)o;
+            int i = o;
             GS2.generator = GS2.generators[i];
             GS2.generator.Generate(64);
         }
-        private void OnOutputSettingsClick(object o)
+        private void OnOutputSettingsClick(Val o)
         {
             string outputDir = Path.Combine(GS2.DataDir, "output");
             string path = Path.Combine(outputDir, "settings.json");
@@ -180,7 +180,7 @@ namespace GalacticScale.Generators
             //}
             GS2.DumpObjectToJson(path, GSSettings.Instance);
         }
-        private void OnOutputStarDataClick(object o)
+        private void OnOutputStarDataClick(Val o)
         {
             string outputDir = Path.Combine(GS2.DataDir, "output");
             string path = Path.Combine(outputDir, "starData.json");
@@ -236,41 +236,5 @@ namespace GalacticScale.Generators
         }
 
         public GSGenPreferences Export() => new GSGenPreferences();
-        //public void UnlockAll(object o)
-        //{
-        //    foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
-        //    {
-        //        if (!GameMain.history.TechUnlocked(tech.ID))
-        //            UnlockTechRecursive(tech.ID, GameMain.history);
-        //    }
-        //}
-        //private static void UnlockTechRecursive(int techId, GameHistoryData history)
-        //{
-        //    TechState state = history.TechState(techId);
-        //    TechProto proto = LDB.techs.Select(techId);
-
-        //    foreach (var techReq in proto.PreTechs)
-        //    {
-        //        if (!history.TechState(techReq).unlocked)
-        //            UnlockTechRecursive(techReq, history);
-        //    }
-        //    foreach (var techReq in proto.PreTechsImplicit)
-        //    {
-        //        if (!history.TechState(techReq).unlocked)
-        //            UnlockTechRecursive(techReq, history);
-        //    }
-        //    foreach (var itemReq in proto.itemArray)
-        //    {
-        //        if (itemReq.preTech != null && !history.TechState(itemReq.preTech.ID).unlocked)
-        //            UnlockTechRecursive(itemReq.preTech.ID, history);
-        //    }
-
-        //    int current = state.curLevel;
-        //    for (; current < state.maxLevel; current++)
-        //        for (int j = 0; j < proto.UnlockFunctions.Length; j++)
-        //            history.UnlockTechFunction(proto.UnlockFunctions[j], proto.UnlockValues[j], current);
-
-        //    history.UnlockTech(techId);
-        //}
     }
 }

@@ -41,7 +41,7 @@ namespace GalacticScale.Generators
             options.Add(GSUI.Button("Capture Themes", "Go", CaptureThemes));
             uiList = options.Add(GSUI.Combobox("Themes Captured", themeNames, null, null));
         }
-        public void CaptureThemes(object o)
+        public void CaptureThemes(Val o)
         {
             GS2.Log("Start");
             if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary.Count == 0)

@@ -43,7 +43,7 @@ namespace GalacticScale.Generators
             {
                 var starType = ChooseStarType();
                 GSStar star = new GSStar(random.Next(), SystemNames.GetName(i), starType.spectr, starType.type, new GSPlanets());
-                star.radius *= 10f;
+                if (star.Type != EStarType.BlackHole) star.radius *= 10f;
                 //Warn($"Habitable zone for {star.Name} {Utils.CalculateHabitableZone(star.luminosity)}");
                 GSSettings.Stars.Add(star);
                 GeneratePlanetsForStar(star);

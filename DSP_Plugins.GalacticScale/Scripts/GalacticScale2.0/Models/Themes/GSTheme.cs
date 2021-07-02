@@ -414,15 +414,20 @@ namespace GalacticScale
             thumbMat = (baseTheme.thumbMat != null) ? UnityEngine.Object.Instantiate(baseTheme.thumbMat) : null;
             minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
             ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
+            GS2.Warn($"Ambient Desc for {Name} {Utils.AddressHelper.GetAddress(ambientDesc)} {Utils.AddressHelper.GetAddress(baseTheme.ambientDesc)}");
             ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
             //GS2.Log("Copying ambientSettings for " + Name);
             if (PlanetType != EPlanetType.Gas)
             {
-                if (baseTheme.AmbientSettings == null) { baseTheme.AmbientSettings = new GSAmbientSettings(); baseTheme.AmbientSettings.FromTheme(baseTheme); }
+                if (baseTheme.AmbientSettings == null) { 
+                    baseTheme.AmbientSettings = new GSAmbientSettings(); 
+                    baseTheme.AmbientSettings.FromTheme(baseTheme); 
+                }
                 if (baseTheme.AmbientSettings != null)
                 {
                     AmbientSettings = baseTheme.AmbientSettings.Clone();
                 }
+                GS2.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
             }
         }
         public GSTheme Clone()

@@ -76,16 +76,16 @@ namespace GalacticScale.Generators
                 { "minify", GS2.minifyJSON.ToString() }
             };
         }
-        public void CustomFileSelectorCallback(object result)
+        public void CustomFileSelectorCallback(Val result)
         {
-            int index = (int)result;
+            int index = result;
             if (index > filenames.Count - 1) index = 0;
             filename = filenames[index];
             if (filename == "No Files Found") filename = "";
             RefreshFileNames();
 
         }
-        public void MinifyCallback(object result) => GS2.minifyJSON = (bool)result;
+        public void MinifyCallback(Val result) => GS2.minifyJSON = result;
         public void MinifyPostfix() => minifyCheckbox.Set(GS2.minifyJSON);
         private void CustomFileSelectorPostfix()
         {
@@ -103,7 +103,7 @@ namespace GalacticScale.Generators
         private void FilenameInputPostfix() =>
             //GS2.Log("Json:Postfix Filename");
             options[1].RectTransform.GetComponentInChildren<InputField>().text = dumpFilename;
-        private void DumpJSONCallback(object result)
+        private void DumpJSONCallback(Val result)
         {
             string outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
             string path = Path.Combine(outputDir, dumpFilename + ".json");

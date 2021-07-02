@@ -16,28 +16,28 @@ namespace GalacticScale
 
             static AddressHelper()
             {
-                AddressHelper.mutualObject = new object();
-                AddressHelper.reinterpreter = new ObjectReinterpreter();
-                AddressHelper.reinterpreter.AsObject = new ObjectWrapper();
+                mutualObject = new object();
+                reinterpreter = new ObjectReinterpreter();
+                reinterpreter.AsObject = new ObjectWrapper();
             }
 
             public static IntPtr GetAddress(object obj)
             {
-                lock (AddressHelper.mutualObject)
+                lock (mutualObject)
                 {
-                    AddressHelper.reinterpreter.AsObject.Object = obj;
-                    IntPtr address = AddressHelper.reinterpreter.AsIntPtr.Value;
-                    AddressHelper.reinterpreter.AsObject.Object = null;
+                    reinterpreter.AsObject.Object = obj;
+                    IntPtr address = reinterpreter.AsIntPtr.Value;
+                    reinterpreter.AsObject.Object = null;
                     return address;
                 }
             }
 
             public static T GetInstance<T>(IntPtr address)
             {
-                lock (AddressHelper.mutualObject)
+                lock (mutualObject)
                 {
-                    AddressHelper.reinterpreter.AsIntPtr.Value = address;
-                    return (T)AddressHelper.reinterpreter.AsObject.Object;
+                    reinterpreter.AsIntPtr.Value = address;
+                    return (T)reinterpreter.AsObject.Object;
                 }
             }
 

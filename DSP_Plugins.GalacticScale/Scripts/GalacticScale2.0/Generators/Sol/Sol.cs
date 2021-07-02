@@ -62,7 +62,7 @@ namespace GalacticScale.Generators
                     maxSize = 500;
                 }
 
-                if (maxSize < (float)o)
+                if (maxSize < o.Int())
                 {
                     o = maxSize;
                 }

@@ -4,7 +4,7 @@
     {
         public static GSUI Force1RareChanceOption;
         public static bool Force1RareChance = false;
-        public static void Force1RareOptionCallback(object o) => Force1RareChance = (bool)o;
+        public static void Force1RareOptionCallback(Val o) => Force1RareChance = o;
         public static void Force1RareOptionPostfix() => Force1RareChanceOption.Set(Force1RareChance);
     }
 }

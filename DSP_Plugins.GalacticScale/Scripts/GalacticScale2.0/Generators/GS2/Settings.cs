@@ -127,7 +127,7 @@ namespace GalacticScale.Generators
             }
 
         }
-        private void LockUI(string key, object value)
+        private void LockUI(string key, Val value)
         {
             //GS2.Warn("LockUI " + key +" " + value.ToString());
             UI[key].Set(value);
@@ -166,7 +166,7 @@ namespace GalacticScale.Generators
             AddUIElements();
             InitPreferences();
         }
-        private void DefaultStarCountCallback(object o) => config.DefaultStarCount = preferences.GetInt("defaultStarCount", 64);
+        private void DefaultStarCountCallback(Val o) => config.DefaultStarCount = preferences.GetInt("defaultStarCount", 64);
 
         private void InitPreferences()
         {
@@ -183,6 +183,7 @@ namespace GalacticScale.Generators
             preferences.Set("secondarySatellites", false);
             preferences.Set("minPlanetCount", 1);
             preferences.Set("maxPlanetCount", 10);
+            preferences.Set("sizeBias", 50); 
             preferences.Set("freqK", 40);
             preferences.Set("freqM", 50);
             preferences.Set("freqG", 30);
@@ -241,8 +242,8 @@ namespace GalacticScale.Generators
             //options.Add(GSUI.Header("Default Settings", "Changing These Will Reset All Star Specific Options Below"));
             UI.Add("minPlanetCount", options.Add(GSUI.Slider("Min Planets/System", 1, 4, 50, "minPlanetCount", MinPlanetCountCallback)));
             UI.Add("maxPlanetCount", options.Add(GSUI.Slider("Max Planets/System", 1, 10, 50, "maxPlanetCount", MaxPlanetCountCallback)));
-            UI.Add("maxPlanetSize", options.Add(GSUI.PlanetSizeSlider("Max planet size", 200, 500, 500, MaxPlanetSizeCallback)));
             UI.Add("minPlanetSize", options.Add(GSUI.PlanetSizeSlider("Min planet size", 30, 50, 200, MinPlanetSizeCallback)));
+            UI.Add("maxPlanetSize", options.Add(GSUI.PlanetSizeSlider("Max planet size", 200, 500, 500, MaxPlanetSizeCallback)));
             UI.Add("sizeBias", options.Add(GSUI.Slider("Planet Size Bias", 0, 50, 100, "sizeBias", SizeBiasCallback)));
             UI.Add("chanceGas", options.Add(GSUI.Slider("Chance Gas", 10, 20, 50, "chanceGas", GasChanceCallback)));
             UI.Add("chanceMoon", options.Add(GSUI.Slider("Chance Moon", 10, 20, 80, "chanceMoon", MoonChanceCallback)));
@@ -255,8 +256,8 @@ namespace GalacticScale.Generators
                 typeCallbacks.Add($"{typeLetter[i]}maxPlanetSize", CreateTypeMaxPlanetSizeCallback(typeLetter[i]));
                 UI.Add($"{typeLetter[i]}minPlanetCount", options.Add(GSUI.Slider($"{typeDesc[i]} Min Planets", 1, 1, 25, $"{typeLetter[i]}minPlanetCount")));
                 UI.Add($"{typeLetter[i]}maxPlanetCount", options.Add(GSUI.Slider($"{typeDesc[i]} Max Planets", 1, 10, 25, $"{typeLetter[i]}maxPlanetCount")));
-                UI.Add($"{typeLetter[i]}maxPlanetSize", options.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Max Size", 200, 500, 500, $"{typeLetter[i]}maxPlanetSize", typeCallbacks[$"{typeLetter[i]}maxPlanetSize"])));
                 UI.Add($"{typeLetter[i]}minPlanetSize", options.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Min Size", 30, 50, 200, $"{typeLetter[i]}minPlanetSize", typeCallbacks[$"{typeLetter[i]}minPlanetSize"])));
+                UI.Add($"{typeLetter[i]}maxPlanetSize", options.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Max Size", 200, 500, 500, $"{typeLetter[i]}maxPlanetSize", typeCallbacks[$"{typeLetter[i]}maxPlanetSize"])));  
                 UI.Add($"{typeLetter[i]}sizeBias", options.Add(GSUI.Slider($"{typeDesc[i]} Size Bias", 0, 50, 100, $"{typeLetter[i]}sizeBias")));
                 UI.Add($"{typeLetter[i]}chanceGas", options.Add(GSUI.Slider($"{typeDesc[i]} %Gas", 10, 20, 50, $"{typeLetter[i]}chanceGas")));
                 UI.Add($"{typeLetter[i]}chanceMoon", options.Add(GSUI.Slider($"{typeDesc[i]} %Moon", 10, 20, 80, $"{typeLetter[i]}chanceMoon")));
@@ -288,69 +289,87 @@ namespace GalacticScale.Generators
                 UI[$"{type}maxPlanetSize"].Set(preferences.GetFloat($"{type}maxPlanetSize"));
             };
         }
-        private void SizeBiasCallback(object o)
+        private void SizeBiasCallback(Val o)
         {
             SetAllStarTypeOptions("sizeBias", o);
         }
-        private void MoonChanceCallback(object o)
+        private void MoonChanceCallback(Val o)
         {
             SetAllStarTypeOptions("chanceMoon", o);
         }
-        private void GasChanceCallback(object o)
+        private void GasChanceCallback(Val o)
         {
             SetAllStarTypeOptions("chanceGas", o);
         }
-        private void SystemDensityCallback(object o)
+        private void SystemDensityCallback(Val o)
         {
             SetAllStarTypeOptions("systemDensity", o);
         }
-        private void MinPlanetCountCallback(object o)
+        private void MinPlanetCountCallback(Val o)
         {
+            int maxCount = preferences.GetInt($"maxPlanetCount");
+            if (maxCount == -1f) maxCount = 25;
+            if (maxCount < o)
+            {
+                GS2.Warn("<");
+                o = maxCount;
+                preferences.Set("minPlanetCount", maxCount);
+                UI["minPlanetCount"].Set(o);
+            }
             SetAllStarTypeOptions("minPlanetCount", o);
         }
-        private void MaxPlanetCountCallback(object o)
+        private void MaxPlanetCountCallback(Val o)
         {
+            int minCount = preferences.GetInt($"minPlanetCount");
+            if (minCount == -1f) minCount = 1;
+            if (minCount > o) {
+                GS2.Warn(">");
+                o = minCount;
+                preferences.Set("maxPlanetCount", minCount);
+                UI["maxPlanetCount"].Set(o);
+            }
             SetAllStarTypeOptions("maxPlanetCount", o);
         }
-        private void SetAllStarTypeOptions(string key, object value)
+        private void SetAllStarTypeOptions(string key, Val value)
         {
             for (var i = 0; i < 14; i++)
             {
                 UI[$"{typeLetter[i]}{key}"].Set(value);
             }
         }
-        private void SetAllStarTypeMinSize(object value)
+        private void SetAllStarTypeMinSize(Val value)
         {
             for (var i = 0; i < 14; i++)
             {
                 typeCallbacks[$"{typeLetter[i]}minPlanetSize"](value);
             }
         }
-        private void SetAllStarTypeMaxSize(object value)
+        private void SetAllStarTypeMaxSize(Val value)
         {
             for (var i = 0; i < 14; i++)
             {
                 typeCallbacks[$"{typeLetter[i]}maxPlanetSize"](value);
             }
         }
-        private void MinPlanetSizeCallback(object o)
+        private void MinPlanetSizeCallback(Val o)
         {
             float maxSize = preferences.GetFloat("maxPlanetSize");
             if (maxSize == -1f) maxSize = 510;
-            if (maxSize < (float)o) o = maxSize;
-            if (preferences.GetBool("safeMode", false)) preferences.Set("minPlanetSize", SafePlanetSize((float)o));
-            else preferences.Set("minPlanetSize", Utils.ParsePlanetSize((float)o));
+            if (maxSize < o) o = maxSize;
+            if (preferences.GetBool("safeMode", false)) preferences.Set("minPlanetSize", SafePlanetSize(o));
+            else preferences.Set("minPlanetSize", Utils.ParsePlanetSize(o));
             UI["minPlanetSize"].Set(preferences.GetFloat("minPlanetSize"));
             SetAllStarTypeMinSize(o);
 
         }
-        private void MaxPlanetSizeCallback(object o)
+        private void MaxPlanetSizeCallback(Val o)
         {
+            var t = o;
             float minSize = preferences.GetFloat("minPlanetSize");
             if (minSize == -1f) minSize = 5;
-            if (minSize > (float)o) o = minSize;
-            if (preferences.GetBool("safeMode", false)) preferences.Set("maxPlanetSize", SafePlanetSize((float)o));
-            else preferences.Set("maxPlanetSize", Utils.ParsePlanetSize((float)o));
+            if (minSize > o) o = minSize;
+            if (preferences.GetBool("safeMode", false)) preferences.Set("maxPlanetSize", SafePlanetSize(o));
+            else preferences.Set("maxPlanetSize", Utils.ParsePlanetSize(o));
             UI["maxPlanetSize"].Set(preferences.GetFloat("maxPlanetSize"));
             SetAllStarTypeMaxSize(o);
         }

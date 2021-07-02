@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public delegate void GSOptionCallback(object o);
+    public delegate void GSOptionCallback(Val o);
     public delegate void GSOptionPostfix();
 
     public class GSUI
@@ -28,7 +28,7 @@ namespace GalacticScale
         public string Type { get => type; }
         private object data;
         public object Data { get => data; }
-        public object DefaultValue
+        public Val DefaultValue
         {
             get
             {
@@ -194,8 +194,9 @@ namespace GalacticScale
             //GS2.Warn("Slider Set.");
             return true;
         }
-        public bool Set(object o)
+        public bool Set(Val o)
         {
+            GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {label}");
 
             if (RectTransform == null)
             {
@@ -206,17 +207,17 @@ namespace GalacticScale
                 case "Slider":
                     //GS2.Warn("Setting Slider " + label);
                     //GS2.Warn(o.ToString());
-                    var sliderResult = GetFloat(o);
-                    if (sliderResult.succeeded)
-                    {
-                        //GS2.Warn($"Parsed as float:{sliderResult.value}");
-                    }
-                    else
-                    {
-                        GS2.Error($"Failed to parse slider Set method input of {o} for slider '{label}'");
-                        return false;
-                    }
-                    RectTransform.GetComponentInChildren<Slider>().value = sliderResult.value;
+                    //var sliderResult = GetFloat(o);
+                    //if (sliderResult.succeeded)
+                    //{
+                    //    //GS2.Warn($"Parsed as float:{sliderResult.value}");
+                    //}
+                    //else
+                    //{
+                    //    GS2.Error($"Failed to parse slider Set method input of {o} for slider '{label}'");
+                    //    return false;
+                    //}
+                    RectTransform.GetComponentInChildren<Slider>().value = o;//sliderResult.value;
                     return true;
                 case "Input":
                     if (o == null)
@@ -224,47 +225,47 @@ namespace GalacticScale
                         GS2.Error($"Failed to set input {label} as value was null");
                         return false;
                     }
-                    RectTransform.GetComponentInChildren<InputField>().text = (string)o;
+                    RectTransform.GetComponentInChildren<InputField>().text = o;
                     return true;
                 case "Checkbox":
-                    var checkboxResult = GetBool(o);
-                    if (!checkboxResult.succeeded)
-                    {
-                        GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
-                        return false;
-                    }
+                    //var checkboxResult = GetBool(o);
+                    //if (!checkboxResult.succeeded)
+                    //{
+                    //    GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
+                    //    return false;
+                    //}
                     Toggle toggle = RectTransform.GetComponentInChildren<Toggle>();
                     if (toggle is null)
                     {
                         GS2.Error($"Failed to find Toggle for {label}");
                         return false;
                     }
-                    toggle.isOn = checkboxResult.value;
+                    toggle.isOn = o;// checkboxResult.value;
                     return true;
                 case "Combobox":
-                    var comboResult = GetInt(o);
-                    if (!comboResult.succeeded)
-                    {
-                        GS2.Error($"Failed to parse combobox Set method input of {o} for combobox '{label}'");
-                        return false;
-                    } //else GS2.Log($"Parsed as int {comboboxValue}");
-                    if (comboResult.value < 0)
-                    {
-                        GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value < 0");
-                        return false;
-                    }
+                    //var comboResult = GetInt(o);
+                    //if (!comboResult.succeeded)
+                    //{
+                    //    GS2.Error($"Failed to parse combobox Set method input of {o} for combobox '{label}'");
+                    //    return false;
+                    //} //else GS2.Log($"Parsed as int {comboboxValue}");
+                    //if (comboResult.value < 0)
+                    //{
+                    //    GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value < 0");
+                    //    return false;
+                    //}
                     UIComboBox cb = RectTransform.GetComponentInChildren<UIComboBox>();
                     if (cb is null)
                     {
                         GS2.Error($"Failed to find UICombobox for {label}");
                         return false;
                     }
-                    if (comboResult.value > cb.Items.Count - 1)
+                    if (o > cb.Items.Count - 1)
                     {
-                        GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value > Item Count");
+                        GS2.Error($"Failed to set {o} for combobox '{label}': Value > Item Count");
                         return false;
                     }
-                    cb.itemIndex = comboResult.value;
+                    cb.itemIndex = o;
                     return true;
             }
             return false;
@@ -454,17 +455,24 @@ namespace GalacticScale
         {
             return () =>
             {
+                //GS2.Log($"Creating DefaultPostfix for {label}");
+
                 if (Generator is null)
                 {
                     GS2.Error($"{label} Trying to create Default Postfix when Generator = null");
                     return;
                 }
-                object value = Generator.Export().Get(key);
+                //GS2.Log($"About to get for {label}");
+                Val value = Generator.Export().Get(key);
+                //GS2.Log($"Value:{value} is null?:{value == null} isNull:{value.IsNull()} {value.empty}");
+                //GS2.Log($"Got");
                 if (value == null)
                 {
+                    //GS2.Warn($"Setting value which was null for {label} to {DefaultValue}");
                     value = DefaultValue;
                 }
-                Set(value);
+                if (value != null) Set(value);
+                else GS2.Log($"Caution: Preference value for {label} not found.");
             };
         }
         private void SetPreference(object value)

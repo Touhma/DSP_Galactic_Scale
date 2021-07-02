@@ -4,9 +4,9 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static void CheatModeOptionCallback(object o)
+        public static void CheatModeOptionCallback(Val o)
         {
-            CheatMode = (bool)o;
+            CheatMode = o;
             if (GSSettings.Instance.imported && CheatMode) UnlockTech(true); //Unlock tech if you enable and a save has been loaded
             Warn($"Cheatmode set to {CheatMode}");
         }
@@ -17,7 +17,7 @@ namespace GalacticScale
         }
         public static GSUI CheatModeOption;
         // All credit to Windows10CE
-        public static void UnlockTech(object o)
+        public static void UnlockTech(Val o)
         {
             //GS2.Warn("Unlocking Tech");
             foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
@@ -27,7 +27,7 @@ namespace GalacticScale
                     UnlockTechRecursive(tech.ID, GameMain.history);
                 }
             }
-            GS2.ResearchUnlocked = true;
+            ResearchUnlocked = true;
         }
 
         private static void UnlockTechRecursive(int techId, GameHistoryData history)
