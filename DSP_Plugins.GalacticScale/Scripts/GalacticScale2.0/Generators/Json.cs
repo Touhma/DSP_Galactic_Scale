@@ -119,12 +119,11 @@ namespace GalacticScale.Generators
             GS2.DumpObjectToJson(path, GSSettings.Instance);
             RefreshFileNames();
         }
-        private void FilenameInputCallback(object result)
+        private void FilenameInputCallback(Val result)
         {
-            string fn = result as string;
-            if (fn != "")
+            if (!string.IsNullOrEmpty(result))
             {
-                dumpFilename = fn;
+                dumpFilename = result;
             }
             //GS2.Log("Changed Dump Filename to : " + fn);
         }

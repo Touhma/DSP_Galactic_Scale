@@ -381,7 +381,7 @@ namespace GalacticScale
             }
 
             model.Process();
-            GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
+            //GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;
         }
     }

@@ -7,24 +7,30 @@ namespace GalacticScale
 {
     public class PatchOnWhatever
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "RequestLoadPlanet")]
-        public static bool RequestLoadPlanet(ref PlanetData planet)
-        {
+        //[HarmonyPrefix, HarmonyPatch(typeof(PlayerFootsteps), "PlayFootstepEffect")]
+        //public static bool PlayFoorstepEffect(PlayerFootsteps __instance)
+        //{
+        //    GS2.Log($"{__instance.player.planetData.ambientDesc.biomoDustColor0} {Utils.AddressHelper.GetAddress(__instance.player.planetData.ambientDesc)} ");
+        //    return true;
+        //}
+        //[HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "RequestLoadPlanet")]
+        //public static bool RequestLoadPlanet(ref PlanetData planet)
+        //{
 
-            Queue<PlanetData> obj = PlanetModelingManager.genPlanetReqList;
-            lock (obj)
-            {
-                Warn("Requested Load of " + planet.name);
-                planet.wanted = true;
-                if (!planet.loaded && !planet.loading)
-                {
-                    planet.loading = true;
-                    Warn("Queueing " + planet.name);
-                    PlanetModelingManager.genPlanetReqList.Enqueue(planet);
-                }
-            }
-            return false;
-        }
+        //    Queue<PlanetData> obj = PlanetModelingManager.genPlanetReqList;
+        //    lock (obj)
+        //    {
+        //        Warn("Requested Load of " + planet.name);
+        //        planet.wanted = true;
+        //        if (!planet.loaded && !planet.loading)
+        //        {
+        //            planet.loading = true;
+        //            Warn("Queueing " + planet.name);
+        //            PlanetModelingManager.genPlanetReqList.Enqueue(planet);
+        //        }
+        //    }
+        //    return false;
+        //}
         //[HarmonyPrefix, HarmonyPatch(typeof(PlayerController), "GameTick")]
         //public static bool GameTick(ref PlayerController __instance, long time)
         //{

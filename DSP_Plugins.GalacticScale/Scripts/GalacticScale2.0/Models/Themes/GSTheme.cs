@@ -414,7 +414,7 @@ namespace GalacticScale
             thumbMat = (baseTheme.thumbMat != null) ? UnityEngine.Object.Instantiate(baseTheme.thumbMat) : null;
             minimapMat = (baseTheme.minimapMat != null) ? UnityEngine.Object.Instantiate(baseTheme.minimapMat) : null;
             ambientDesc = (baseTheme.ambientDesc != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientDesc) : null;
-            GS2.Warn($"Ambient Desc for {Name} {Utils.AddressHelper.GetAddress(ambientDesc)} {Utils.AddressHelper.GetAddress(baseTheme.ambientDesc)}");
+            //GS2.Warn($"Ambient Desc for {Name} {Utils.AddressHelper.GetAddress(ambientDesc)} {Utils.AddressHelper.GetAddress(baseTheme.ambientDesc)}");
             ambientSfx = (baseTheme.ambientSfx != null) ? UnityEngine.Object.Instantiate(baseTheme.ambientSfx) : null;
             //GS2.Log("Copying ambientSettings for " + Name);
             if (PlanetType != EPlanetType.Gas)
@@ -425,9 +425,10 @@ namespace GalacticScale
                 }
                 if (baseTheme.AmbientSettings != null)
                 {
+                    //GS2.Log($"Cloning {DisplayName}");
                     AmbientSettings = baseTheme.AmbientSettings.Clone();
                 }
-                GS2.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
+                //GS2.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
             }
         }
         public GSTheme Clone()
@@ -446,6 +447,7 @@ namespace GalacticScale
         /// <returns></returns>
         public ThemeProto ToProto()
         {
+            if (PlanetType != EPlanetType.Gas) AmbientSettings.ToTheme(this);
             return new ThemeProto()
             {
                 name = Name,

@@ -40,7 +40,7 @@ namespace GalacticScale
         public static string GetStarLoadingStatus(StarData star)
         {
             int planetsLoaded = GetLoadedPlanetCount(star);
-
+            if (star.loaded) return "done";
             return $"{planetsLoaded}/{star.planetCount}";
         }
         public static bool Update()

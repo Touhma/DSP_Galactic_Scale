@@ -103,7 +103,8 @@ namespace GalacticScale
                 }
             }
             //GS2.Log("Processing AmbientDesc for ");
-            GS2.Log(theme.Name);
+            //GS2.Log(theme.Name);
+            //theme.ambientDesc = new AmbientDesc();
             theme.ambientDesc.ambientColor0 = Color1; //GS2.Log("Processing AmbientDesc1");
             theme.ambientDesc.ambientColor1 = Color2; //GS2.Log("Processing AmbientDesc2");
             theme.ambientDesc.ambientColor2 = Color3; //GS2.Log("Processing AmbientDesc3");

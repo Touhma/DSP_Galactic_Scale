@@ -539,18 +539,18 @@ namespace GalacticScale
         }
 
         // Callback for own Generator ComboBox Selection Event
-        private static void GeneratorSelected(object result)
+        private static void GeneratorSelected(Val result)
         {
             //GS2.Log("Result = " + result + GS2.generators[(int)result].Name);
-            GS2.generator = GS2.generators[(int)result];
+            GS2.generator = GS2.generators[result];
             //GS2.Log("Set the generator, trying to disable every canvas");
             for (var i = 0; i < generatorCanvases.Count; i++)
             {
                 generatorCanvases[i].gameObject.SetActive(false);
             }
             //GS2.Log("trying to setactive");
-            generatorCanvases[(int)result].gameObject.SetActive(true);
-            generatorIndex = (int)result;
+            generatorCanvases[result].gameObject.SetActive(true);
+            generatorIndex = result;
             UpdateContentRect();
             //GS2.Log("trying to save prefs");
             GS2.SavePreferences();

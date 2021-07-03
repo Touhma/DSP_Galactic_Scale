@@ -154,7 +154,7 @@ namespace GalacticScale.Generators
             acidGreenhouse.AmbientSettings.DustStrength1 = 10;
             acidGreenhouse.AmbientSettings.DustStrength2 = 10;
             acidGreenhouse.AmbientSettings.DustStrength3 = 10;
-            acidGreenhouse.AmbientSettings.DustColor1 = new Color(0.38f, 0.38f, 0f, 1f);
+            acidGreenhouse.AmbientSettings.DustColor1 = new Color(0.95f, 0.75f, 0.25f, 1f); //new Color(0.38f, 0.38f, 0f, 1f);
             acidGreenhouse.AmbientSettings.DustColor2 = new Color(0.95f, 0.75f, 0.25f, 1f);
             acidGreenhouse.AmbientSettings.DustColor3 = new Color(0.9f, 0.7f, 0.2f, 1f);
             acidGreenhouse.AmbientSettings.LutContribution = 0.8f;

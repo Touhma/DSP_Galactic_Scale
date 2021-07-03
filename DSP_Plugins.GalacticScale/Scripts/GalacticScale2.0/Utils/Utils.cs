@@ -166,7 +166,7 @@ namespace GalacticScale
         public static Sprite GetSpriteAsset(string name) => GS2.bundle.LoadAsset<Sprite>(name);
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
-            GS2.Log("Tinting Cubemap");
+            //GS2.Log("Tinting Cubemap");
             Cubemap output = UnityEngine.Object.Instantiate(input);
 
             var colors = output.GetPixels(CubemapFace.PositiveX);
@@ -223,7 +223,7 @@ namespace GalacticScale
 
             output.SetPixels(tinted, CubemapFace.NegativeZ);
 
-            GS2.Log("End");
+            //GS2.Log("End");
             return output;
         }
         public static Texture GetTextureFromBundle(string name)

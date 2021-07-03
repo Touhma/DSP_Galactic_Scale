@@ -53,11 +53,13 @@ namespace GalacticScale
         public static void RefreshPostfix(ref Text ___textComp, bool ___firstFrame)
         {
             if (GS2.IsMenuDemo || string.IsNullOrEmpty(baseText)) return;
-            if (___textComp != null && GameMain.localStar != null && !GameMain.localStar.loaded)
+            if (___textComp != null && GameMain.localStar != null)
             {
                 oldLoadingText = loadingText;
                 if (GameMain.localStar != null && !GameMain.localStar.loaded) loadingText = "\r\nLoading Planets:" + HandleLocalStarPlanets.GetStarLoadingStatus(GameMain.localStar);
                 else loadingText = "";
+                if (GameMain.localStar != null && GameMain.localStar.loaded) loadingText = "";
+                if (GameMain.localStar == null) loadingText = "";
                 if (loadingText != oldLoadingText) ___textComp.text = baseText + loadingText;
             }
         }
