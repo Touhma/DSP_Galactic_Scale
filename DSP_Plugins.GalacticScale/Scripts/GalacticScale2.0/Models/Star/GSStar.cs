@@ -68,6 +68,19 @@ namespace GalacticScale
                 return b;
             }
         }
+        public GSPlanets TelluricBodies
+        {
+            get
+            {
+                GSPlanets b = new GSPlanets();
+                foreach (GSPlanet p in Bodies)
+                {
+                    if (p.GsTheme.PlanetType != EPlanetType.Gas) b.Add(p);
+                }
+                return b;
+            }
+        }
+        public int TelluricBodyCount => TelluricBodies.Count;
         [NonSerialized]
         public int counter = 0;
         [SerializeField]

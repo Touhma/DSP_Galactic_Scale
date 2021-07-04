@@ -51,6 +51,10 @@ namespace GalacticScale.Generators
             Log("Picking BirthPlanet");
             PickNewBirthPlanet();
             Log("Birthplanet Picked");
+            if (!preferences.GetBool("birthPlanetUnlock", true))
+            {
+                birthPlanet.Theme = "Mediterranean";
+            }
             Log((birthPlanet != null).ToString());
             GSSettings.BirthPlanetName = birthPlanet.Name;
             Log("BirthPlanet Set");
@@ -90,6 +94,30 @@ namespace GalacticScale.Generators
                     }
                 }
             }
+            EnsureBirthSystemHasTi();
+        }
+        private void EnsureBirthSystemHasTi()
+        {
+            if (!BirthSystemHasTi())
+            {
+                if (birthStar.TelluricBodyCount < 2)
+                {
+                    GSPlanet tiPlanet = birthStar.Planets.Add(new GSPlanet("Black Swan", "AshenGelisol", GetStarPlanetSize(birthStar), GetOrbitGap(birthStar) * birthStar.PlanetCount, 0f, 100000f, 0f, 0f, 360f, 0f, -1f, null));
+                    tiPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriodFromStarMass(tiPlanet.OrbitRadius, birthStar.mass);
+                    return;
+                }
+                GSPlanet p = birthPlanet;
+                while (p == birthPlanet)
+                {
+                    p = random.Item(birthStar.TelluricBodies);
+                }
+                p.Theme = "AshenGellisol";
+            }
+        }
+        private bool BirthSystemHasTi()
+        {
+            foreach (var p in birthStar.Bodies) if (p.GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Titanium)) return true;
+            return false;
         }
         private void FixOrbitsForBirthPlanet(int newRadius)
         {
@@ -209,10 +237,24 @@ namespace GalacticScale.Generators
         {
             int min = GetMinPlanetSizeForStar(star);
             int max = GetMaxPlanetSizeForStar(star);
-            float average = ((max - (float)min) / 2) + min;
+            int bias = GetSizeBiasForStar(star);
+            //float average = ((max - (float)min) / 2) + min;
+            //int range = max - min;
+            //float sd = (float)range / 6;
+            //return Mathf.Clamp(Utils.ParsePlanetSize(random.Normal(average, sd)), min, max);
+            return ClampedNormalSize(min, max, bias);
+        }
+        private int ClampedNormalSize(int min, int max, int bias)
+        {
             int range = max - min;
-            float sd = (float)range / 6;
-            return Mathf.Clamp(Utils.ParsePlanetSize(random.Normal(average, sd)), min, max);
+            float average = (((float)bias / 100f) * range) + min;
+            float sdHigh = (max - average) / 3;
+            float sdLow = (average - min) / 3;
+            float sd = Math.Max(sdLow, sdHigh);
+            float fResult = random.Normal(average, sd);
+            int result = Mathf.Clamp(Utils.ParsePlanetSize(fResult), min, max);
+            Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            return result;
         }
         private int GetStarMoonSize(GSStar star, int hostRadius, bool hostGas)
         {
@@ -233,7 +275,8 @@ namespace GalacticScale.Generators
             float average = ((max - min) / 2) + min;
             int range = max - min;
             float sd = (float)range / 4;
-            int size = Utils.ParsePlanetSize(random.Next(min, max));
+            //int size = Utils.ParsePlanetSize(random.Next(min, max));
+            int size = ClampedNormalSize(min, max, GetSizeBiasForStar(star));
             //if (size > hostRadius)
             //{
                 //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
@@ -285,11 +328,11 @@ namespace GalacticScale.Generators
                     //GS2.Warn("RADIUS 80"); 
                     protos[i].radius = 80; 
                 }
-                if (protos[i].radius > 300)
-                {
-                    protos[i].radius = Mathf.Clamp(300, GetMinPlanetSizeForStar(star), GetMaxPlanetSizeForStar(star)); 
-                    //GS2.Warn("Clamping Radius");
-                }
+                //if (protos[i].radius > 300)
+                //{
+                //    protos[i].radius = Mathf.Clamp(300, GetMinPlanetSizeForStar(star), GetMaxPlanetSizeForStar(star)); 
+                //    //GS2.Warn("Clamping Radius");
+                //}
             }
             for (var i = 0;i<moonCount;i++)
             {

@@ -41,7 +41,7 @@ namespace GalacticScale
                 return __result;
             }
 
-            if (itemProto.prefabDesc.oilMiner) // Check that we are connected to an oil miner
+            if (itemProto.prefabDesc.oilMiner || itemProto.prefabDesc.veinMiner) // Check that we are connected to an oil miner
             {
                 if (preview.condition == EBuildCondition.JointCannotLift) // Make sure the error is that the endpoint must be horizontal
                 {
