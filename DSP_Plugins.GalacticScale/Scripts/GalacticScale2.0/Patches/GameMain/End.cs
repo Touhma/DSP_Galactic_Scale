@@ -7,6 +7,7 @@ namespace GalacticScale
         [HarmonyPrefix, HarmonyPatch(typeof(GameMain), "End")]
         public static bool End()
         {
+            GS2.ResearchUnlocked = false;
             if (GameMain.instance == null)
             {
                 return false;

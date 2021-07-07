@@ -231,7 +231,10 @@ namespace GalacticScale.Generators
         {
             int min = GetMinPlanetCountForStar(star);
             int max = GetMaxPlanetCountForStar(star);
-            return random.NextInclusive(min, max);
+            //int result = random.NextInclusive(min, max);
+            int result = ClampedNormal(min, max, GetCountBiasForStar(star));
+            Log($"{star.Name} count :{result} min:{min} max:{max}");
+            return result;
         }
         private int GetStarPlanetSize(GSStar star)
         {
@@ -244,6 +247,30 @@ namespace GalacticScale.Generators
             //return Mathf.Clamp(Utils.ParsePlanetSize(random.Normal(average, sd)), min, max);
             return ClampedNormalSize(min, max, bias);
         }
+        private int ClampedNormal(int min, int max, int bias)
+        {
+            int range = max - min;
+            float average = (((float)bias / 100f) * range) + min;
+            float sdHigh = (max - average) / 3;
+            float sdLow = (average - min) / 3;
+            float sd = Math.Max(sdLow, sdHigh);
+            int rResult = Mathf.RoundToInt(random.Normal(average, sd));
+            int result = Mathf.Clamp(rResult, min, max);
+            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            return result;
+        }
+        private float ClampedNormal(float min, float max, int bias)
+        {
+            float range = max - min;
+            float average = (((float)bias / 100f) * range) + min;
+            float sdHigh = (max - average) / 3;
+            float sdLow = (average - min) / 3;
+            float sd = Math.Max(sdLow, sdHigh);
+            float rResult = random.Normal(average, sd);
+            float result = Mathf.Clamp(rResult, min, max);
+            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            return result;
+        }
         private int ClampedNormalSize(int min, int max, int bias)
         {
             int range = max - min;
@@ -253,7 +280,7 @@ namespace GalacticScale.Generators
             float sd = Math.Max(sdLow, sdHigh);
             float fResult = random.Normal(average, sd);
             int result = Mathf.Clamp(Utils.ParsePlanetSize(fResult), min, max);
-            Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
             return result;
         }
         private int GetStarMoonSize(GSStar star, int hostRadius, bool hostGas)
@@ -492,13 +519,16 @@ namespace GalacticScale.Generators
         }
         private float GetOrbitGap(GSStar star)
         {
+            (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
             int pCount = star.Planets.Count;
             float maxOrbitByRadius = Mathf.Sqrt(star.radius);
+            float maxOrbitByHabitableZone = 20f * hz.max;
             float maxOrbitByPlanetCount = 50f *(float)pCount / 99f;
-            float maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius);
+            float maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius, maxOrbitByHabitableZone);
             float averageOrbit = maxOrbit / pCount;
-            //Warn($"Getting Orbit Gap for Star {star.Name} with {pCount} planets. Avg:{averageOrbit} MaxbyRadius:{maxOrbitByRadius} MaxbyPCount:{maxOrbitByPlanetCount} Max:{maxOrbit}");
-            return random.NextFloat(0.1f, 2f * averageOrbit);
+            float result = ClampedNormal(0.1f, (float)maxOrbit/(float)pCount, GetSystemDensityBiasForStar(star));
+            Warn($"Getting Orbit Gap for Star {star.Name} with {pCount} planets. Avg:{averageOrbit} MaxbyRadius:{maxOrbitByRadius} MaxbyPCount:{maxOrbitByPlanetCount} MaxByHZ:{maxOrbitByHabitableZone} Max:{maxOrbit} HabitableZone:{hz.Item1*10f}:{hz.Item2*10f} = {result}");
+            return result;// random.NextFloat(0.1f, 2f * averageOrbit);
         }
 
         private void AddSiTiToBirthPlanet()

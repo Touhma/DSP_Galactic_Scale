@@ -19,7 +19,7 @@ namespace GalacticScale
         // All credit to Windows10CE
         public static void UnlockTech(Val o)
         {
-            //GS2.Warn("Unlocking Tech");
+            Log("Unlocking Tech");
             foreach (TechProto tech in LDB.techs.dataArray.Where(x => x.Published))
             {
                 if (!GameMain.history.TechUnlocked(tech.ID))
@@ -32,41 +32,47 @@ namespace GalacticScale
 
         private static void UnlockTechRecursive(int techId, GameHistoryData history)
         {
+            //GS2.Warn($"UnlockTechRecursive {techId} {history != null}");
             TechState state = history.TechState(techId);
             TechProto proto = LDB.techs.Select(techId);
+            try
+            {
+                foreach (var techReq in proto.PreTechs)
+                {
+                    if (!history.TechState(techReq).unlocked)
+                    {
+                        UnlockTechRecursive(techReq, history);
+                    }
+                }
+                foreach (var techReq in proto.PreTechsImplicit)
+                {
+                    if (!history.TechState(techReq).unlocked)
+                    {
+                        UnlockTechRecursive(techReq, history);
+                    }
+                }
+                foreach (var itemReq in proto.itemArray)
+                {
+                    if (itemReq.preTech != null && !history.TechState(itemReq.preTech.ID).unlocked)
+                    {
+                        UnlockTechRecursive(itemReq.preTech.ID, history);
+                    }
+                }
 
-            foreach (var techReq in proto.PreTechs)
-            {
-                if (!history.TechState(techReq).unlocked)
+                int current = state.curLevel;
+                for (; current < state.maxLevel; current++)
                 {
-                    UnlockTechRecursive(techReq, history);
+                    for (int j = 0; j < proto.UnlockFunctions.Length; j++)
+                    {
+                        history.UnlockTechFunction(proto.UnlockFunctions[j], proto.UnlockValues[j], current);
+                    }
                 }
-            }
-            foreach (var techReq in proto.PreTechsImplicit)
-            {
-                if (!history.TechState(techReq).unlocked)
-                {
-                    UnlockTechRecursive(techReq, history);
-                }
-            }
-            foreach (var itemReq in proto.itemArray)
-            {
-                if (itemReq.preTech != null && !history.TechState(itemReq.preTech.ID).unlocked)
-                {
-                    UnlockTechRecursive(itemReq.preTech.ID, history);
-                }
-            }
 
-            int current = state.curLevel;
-            for (; current < state.maxLevel; current++)
+                history.UnlockTech(techId);
+            } catch (System.Exception e)
             {
-                for (int j = 0; j < proto.UnlockFunctions.Length; j++)
-                {
-                    history.UnlockTechFunction(proto.UnlockFunctions[j], proto.UnlockValues[j], current);
-                }
+                Log("Techunlock exception caught: " + e.Message);
             }
-
-            history.UnlockTech(techId);
         }
     }
 }

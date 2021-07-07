@@ -12,6 +12,7 @@ namespace GalacticScale
             InitializeFromVeinSettings(gsPlanet);
             if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly)
             {
+                GS2.Log("Generating birth points");
                 gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next());// GenBirthPoints(gsPlanet);
             }
 

@@ -242,6 +242,7 @@ namespace GalacticScale
         }
         private static void InitBirthVeinVectors(GSPlanet gsPlanet)
         {
+            GS2.Warn("Initializing Birth Veins");
             PlanetData planet = gsPlanet.planetData;
             gsPlanet.veinData.types[0] = EVeinType.Iron;
             gsPlanet.veinData.vectors[0] = planet.birthResourcePoint0;

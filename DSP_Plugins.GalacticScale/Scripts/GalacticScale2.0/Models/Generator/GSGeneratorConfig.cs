@@ -14,7 +14,7 @@ namespace GalacticScale
         [SerializeField]
         public int DefaultStarCount { get => _defaultStarCount; set => _defaultStarCount = (int)Maths.Clamp(value, _minStarCount, _maxStarCount); }
         [SerializeField]
-        public int MaxStarCount { get => _maxStarCount; set => _maxStarCount = (int)Maths.Clamp(value, _minStarCount, 1024); }
+        public int MaxStarCount { get => _maxStarCount; set => _maxStarCount = (int)Maths.Clamp(value, _minStarCount, 8092); }
 
         public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false, int minStarCount = 1, int maxStarCount = 1024, int defaultStarCount = 1)
         {

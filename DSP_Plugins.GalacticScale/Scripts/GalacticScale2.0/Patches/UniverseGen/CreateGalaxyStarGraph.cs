@@ -10,7 +10,7 @@ namespace GalacticScale
             int starCount = galaxy.starCount;
             //if (starCount > 64 ) starCount = 64;
             galaxy.graphNodes = new StarGraphNode[starCount];
-            UniverseGen.tmp_state = new int[1024]; // increased from 128 to allow denser galaxies
+            UniverseGen.tmp_state = new int[2048]; // increased from 128 to allow denser galaxies
             for (int index1 = 0; index1 < starCount; ++index1)
             {
                 galaxy.graphNodes[index1] = new StarGraphNode(galaxy.stars[index1]);

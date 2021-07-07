@@ -52,7 +52,11 @@ namespace GalacticScale
             {
                 if (_bundle == null)
                 {
-                    _bundle = UnityEngine.AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
+                    string path = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle");
+                    string path2 = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galactic.bundle");
+                    if (File.Exists(path)) _bundle = UnityEngine.AssetBundle.LoadFromFile(path);
+                    else _bundle = UnityEngine.AssetBundle.LoadFromFile(path2);
+
                 }
 
                 if (_bundle == null)

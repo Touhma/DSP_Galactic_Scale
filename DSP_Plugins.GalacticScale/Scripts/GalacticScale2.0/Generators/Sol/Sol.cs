@@ -82,7 +82,7 @@ namespace GalacticScale.Generators
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }, () => UI_maxPlanetSize.Set(preferences.GetInt("maxPlanetSize", 300))));
             //UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
-            options.Add(GSUI.PlanetSizeSlider("Starting planet size", 20, 50, 510, "birthPlanetSize"));
+            options.Add(GSUI.PlanetSizeSlider("Starting planet size", 20, 400, 510, "birthPlanetSize"));
             //{
             //    preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o));
             //    UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize"));

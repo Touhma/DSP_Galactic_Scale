@@ -48,8 +48,15 @@ namespace GalacticScale
         {
             get
             {
+
                 if (birthPlanet != null)
                 {
+                    return birthPlanet;
+                }
+                if (GS2.Vanilla)
+                {
+                    GS2.Log("Getting BirthPlanet For Vanilla");
+                    birthPlanet = GS2.GetGSPlanet(GameMain.galaxy.birthPlanetId);
                     return birthPlanet;
                 }
                 //GS2.Warn($"BirthPlanet Requested by {GS2.GetCaller(1)} {GS2.GetCaller(2)} {GS2.GetCaller(3)}");

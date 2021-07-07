@@ -113,7 +113,7 @@ namespace GalacticScale
         }
         public static void InitializeAstroPoses(GS2.Random random)
         {
-            var gSize = galaxy.starCount * 4000;
+            var gSize = galaxy.starCount * 10000;
             galaxy.astroPoses = new AstroPose[gSize];
             //Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++)
