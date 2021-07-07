@@ -196,7 +196,7 @@ namespace GalacticScale
         }
         public bool Set(Val o)
         {
-            GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {label}");
+            //GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {label}");
 
             if (RectTransform == null)
             {

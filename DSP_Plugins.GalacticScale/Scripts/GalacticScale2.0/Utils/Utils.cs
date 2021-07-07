@@ -144,7 +144,7 @@ namespace GalacticScale
                 }
             }
 
-            if (t.GetType() != typeof(SettingsUI)) GS2.Warn($"Could not find generator of type '{t}'");
+            //if (t.GetType() != typeof(SettingsUI)) GS2.Warn($"Could not find generator of type '{t}'");
             //GS2.Warn("returning null");
             return null;
         }

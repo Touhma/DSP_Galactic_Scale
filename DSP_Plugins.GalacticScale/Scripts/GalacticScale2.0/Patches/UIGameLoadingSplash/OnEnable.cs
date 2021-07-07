@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public class PatchOnUIGameLoadingSplash
+    public partial class PatchOnUIGameLoadingSplash
     {
         [HarmonyPostfix, HarmonyPatch(typeof(UIGameLoadingSplash), "OnEnable")]
         public static void OnEnable(ref Text ___promptText)

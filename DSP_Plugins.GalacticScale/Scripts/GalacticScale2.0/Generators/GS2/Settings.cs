@@ -321,7 +321,7 @@ namespace GalacticScale.Generators
             if (maxCount == -1f) maxCount = 25;
             if (maxCount < o)
             {
-                GS2.Warn("<");
+                //GS2.Warn("<");
                 o = maxCount;
                 preferences.Set("minPlanetCount", maxCount);
                 UI["minPlanetCount"].Set(o);
@@ -333,7 +333,7 @@ namespace GalacticScale.Generators
             int minCount = preferences.GetInt($"minPlanetCount");
             if (minCount == -1f) minCount = 1;
             if (minCount > o) {
-                GS2.Warn(">");
+                //GS2.Warn(">");
                 o = minCount;
                 preferences.Set("maxPlanetCount", minCount);
                 UI["maxPlanetCount"].Set(o);

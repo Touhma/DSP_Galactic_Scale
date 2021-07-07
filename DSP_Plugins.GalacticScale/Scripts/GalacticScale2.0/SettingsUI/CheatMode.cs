@@ -8,7 +8,7 @@ namespace GalacticScale
         {
             CheatMode = o;
             if (GSSettings.Instance.imported && CheatMode) UnlockTech(true); //Unlock tech if you enable and a save has been loaded
-            Warn($"Cheatmode set to {CheatMode}");
+            //Warn($"Cheatmode set to {CheatMode}");
         }
         public static void CheatModeOptionPostfix()
         {

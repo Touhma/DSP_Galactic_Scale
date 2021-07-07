@@ -32,7 +32,7 @@ namespace GalacticScale
         {
             get
             {
-                GS2.Warn($"Star Count:{this.Count} random:{random.Id}");
+                //GS2.Warn($"Star Count:{this.Count} random:{random.Id}");
                 if (this.Count == 1)
                 {
                     return this[0];

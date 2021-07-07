@@ -906,7 +906,7 @@ namespace GalacticScale
             SetColor(oceanMat, "_SpeclColor", c);
             SetColor(oceanMat, "_SpeclColor1", c);
             SetColor(oceanMat, "_ReflectionColor", c);
-            GS2.Log("End");
+            //GS2.Log("End");
             //oceanMat.SetColor("_DepthFactor", new Color(.4f, .5f, .4f, 0.1f));
             //Used as Vector4 in the shader
             //X 0.1alpha seems best, really just determines height of ripples. 0.9 looks terrible.

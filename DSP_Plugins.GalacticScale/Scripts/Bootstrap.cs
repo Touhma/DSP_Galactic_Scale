@@ -23,7 +23,7 @@ namespace GalacticScale
         internal void Awake()
         {
             System.Version v = Assembly.GetExecutingAssembly().GetName().Version;
-            GS2.Version = $"2.0a{v.Build}.{v.Revision}";
+            GS2.Version = $"2.0b{v.Build}.{v.Revision}";
             BCE.console.init();
             var _ = new Harmony("dsp.galactic-scale.2");
             Logger = new ManualLogSource("GS2");
