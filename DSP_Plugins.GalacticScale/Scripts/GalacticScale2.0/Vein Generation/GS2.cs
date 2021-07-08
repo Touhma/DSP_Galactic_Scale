@@ -266,7 +266,26 @@ namespace GalacticScale
             }
             //GS2.Log(gsPlanet.Name + " VeinTotals:");
             //GS2.LogJson(veinTotals);
-            return veinGroups;
+            if (!birth) return veinGroups;
+            List<GSVeinDescriptor> gsVeinDescriptorList = new List<GSVeinDescriptor>();
+            gsVeinDescriptorList.Add(new GSVeinDescriptor()
+            {
+                count = 5,
+                position = gsPlanet.planetData.birthResourcePoint0,
+                rare = false,
+                type = EVeinType.Iron,
+                richness = 0.5f
+            });
+            gsVeinDescriptorList.Add(new GSVeinDescriptor()
+            {
+                count = 5,
+                position = gsPlanet.planetData.birthResourcePoint1,
+                rare = false,
+                type = EVeinType.Copper,
+                richness = 0.5f
+            });
+            gsVeinDescriptorList.AddRange((IEnumerable<GSVeinDescriptor>)veinGroups);
+            return gsVeinDescriptorList;
         }
         public static bool SurfaceVectorCollisionGS2(Vector3 vector, List<GSVeinDescriptor> vectors, int processedVectorCount, float padding)
         {

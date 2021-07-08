@@ -43,7 +43,8 @@ namespace GalacticScale.Generators
             {
                 var starType = ChooseStarType();
                 GSStar star = new GSStar(random.Next(), SystemNames.GetName(i), starType.spectr, starType.type, new GSPlanets());
-                if (star.Type != EStarType.BlackHole) star.radius *= 10f;
+                if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
+                if (star.Type == EStarType.BlackHole && preferences.GetFloat("starSizeMulti", 10f) < 2.1f) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
                 //Warn($"Habitable zone for {star.Name} {Utils.CalculateHabitableZone(star.luminosity)}");
                 GSSettings.Stars.Add(star);
                 GeneratePlanetsForStar(star);
@@ -63,7 +64,7 @@ namespace GalacticScale.Generators
                 AddSiTiToBirthPlanet();
             }
 
-            if (preferences.GetInt("birthPlanetSize", 400) != 400)
+            if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
             {
                 GS2.Log("Forcing BirthPlanet Size");
                 int oldRadius = birthPlanet.Radius;
@@ -83,6 +84,8 @@ namespace GalacticScale.Generators
             Log("End");
             foreach (var star in GSSettings.Stars)
             {
+                //GS2.Warn($"DysonRadius for star {star.Name} is {star.dysonRadius}");
+                star.dysonRadius = star.dysonRadius * Mathf.Clamp(preferences.GetFloat("starSizeMulti", 10f), 0.5f, 100f);
                 foreach (var body in star.Bodies)
                 {
                     foreach (var m in body.Moons)

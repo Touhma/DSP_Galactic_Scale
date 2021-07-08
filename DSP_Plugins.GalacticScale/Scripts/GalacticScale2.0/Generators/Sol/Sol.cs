@@ -393,7 +393,7 @@ namespace GalacticScale.Generators
                     EVeinType.Titanium,
                     1, 10, 0.6f, 0.6f, 5, 10, false));
             }
-            if (preferences.GetInt("birthPlanetSize", 400) != 400)
+            if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
             {
                 birthPlanet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
             }

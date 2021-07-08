@@ -69,6 +69,7 @@ namespace GalacticScale.Generators
             config.MaxStarCount = 4096;
             UI["safeMode"].Set(false);
             preferences.Set("safeMode", false);
+            UI["starSizeMulti"].Set(new GSSliderConfig(0.1f, 10f, 100f));
             UI["minPlanetSize"].Set(new GSSliderConfig(5, 30, 500));
             UI["maxPlanetSize"].Set(new GSSliderConfig(50, 500, 510));
             UI["defaultStarCount"].Set(new GSSliderConfig(1, 64, 4096));
@@ -85,6 +86,7 @@ namespace GalacticScale.Generators
         public void DisableLudicrousMode()
         {
             config.MaxStarCount = 1024;
+            UI["starSizeMulti"].Set(new GSSliderConfig(1f, 10f, 20f));
             UI["minPlanetSize"].Set(new GSSliderConfig(30, 50, 200));
             UI["maxPlanetSize"].Set(new GSSliderConfig(200, 500, 500));
             UI["defaultStarCount"].Set(new GSSliderConfig(1, 64, 1024));
@@ -175,6 +177,7 @@ namespace GalacticScale.Generators
             preferences.Set("ludicrousMode", false);
             preferences.Set("galaxyDensity", 5);
             preferences.Set("defaultStarCount", 64);
+            preferences.Set("starSizeMulti", 10);
             preferences.Set("birthPlanetSize", 200);
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
@@ -219,6 +222,7 @@ namespace GalacticScale.Generators
             UI.Add("ludicrousMode", options.Add(GSUI.Checkbox("Ludicrous Mode", false, "ludicrousMode", o => { if ((bool)o) EnableLudicrousMode(); else DisableLudicrousMode(); })));
             UI.Add("galaxyDensity", options.Add(GSUI.Slider("Galaxy Density", 1, 5, 9, "galaxyDensity")));
             UI.Add("defaultStarCount", options.Add(GSUI.Slider("Default StarCount", 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback)));
+            UI.Add("starSizeMulti", options.Add(GSUI.Slider("Star Size Multiplier", 1f, 10f, 20f, 0.1f, "starSizeMulti")));
             UI.Add("birthPlanetSize", options.Add(GSUI.PlanetSizeSlider("Starting Planet Size", 20, 200, 510, "birthPlanetSize")));
             UI.Add("birthPlanetUnlock", options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
