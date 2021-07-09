@@ -379,6 +379,7 @@ namespace GalacticScale
             MinRadius = baseTheme.MinRadius;
             MaxRadius = baseTheme.MaxRadius;
             ThemeType = baseTheme.ThemeType;
+            CustomGeneration = baseTheme.CustomGeneration;
             //GS2.Log(Name+" ThemeType:" + ThemeType.ToString());
             Habitable = baseTheme.Habitable;
             ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
@@ -392,6 +393,11 @@ namespace GalacticScale
             VeinSettings = baseTheme.VeinSettings.Clone();
             TerrainSettings = baseTheme.TerrainSettings.Clone();
             VegeSettings = baseTheme.VegeSettings.Clone();
+            terrainMaterial = baseTheme.terrainMaterial.Clone();
+            atmosphereMaterial = baseTheme.atmosphereMaterial.Clone();
+            minimapMaterial = baseTheme.minimapMaterial.Clone();
+            thumbMaterial = baseTheme.thumbMaterial.Clone();
+            oceanMaterial = baseTheme.oceanMaterial.Clone();
             VeinSpot = (int[])baseTheme.VeinSpot.Clone();
             VeinCount = (float[])baseTheme.VeinCount.Clone();
             VeinOpacity = (float[])baseTheme.VeinOpacity.Clone();

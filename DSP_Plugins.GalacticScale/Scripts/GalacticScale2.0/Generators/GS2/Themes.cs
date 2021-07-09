@@ -50,9 +50,10 @@ namespace GalacticScale.Generators
                         smolTheme.TerrainSettings.BrightnessFix = true;
                         theme.Init(); smolTheme.Init();
                     }
-                    string[] cKeys = new string[100];
-                    smolTheme.atmosphereMaterial.Colors.Keys.CopyTo(cKeys, 0);
-                    for (var j = 0; j < smolTheme.atmosphereMaterial.Colors.Count; j++) smolTheme.atmosphereMaterial.Colors[cKeys[j]] = Color.clear;
+                    smolTheme.atmosphereMaterial.Params["_Intensity"] = 0f;
+                    //string[] pKeys = new string[100];
+                    //smolTheme.atmosphereMaterial.Params.Keys.CopyTo(pKeys, 0);
+                    //for (var j = 0; j < smolTheme.atmosphereMaterial.Colors.Count; j++) smolTheme.atmosphereMaterial.Params[pKeys[j]] = Color.clear;
                 }
 
 

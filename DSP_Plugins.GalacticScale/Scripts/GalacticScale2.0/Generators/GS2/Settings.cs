@@ -228,8 +228,8 @@ namespace GalacticScale.Generators
             UI.Add("birthPlanetSize", options.Add(GSUI.PlanetSizeSlider("Starting Planet Size", 20, 200, 510, "birthPlanetSize")));
             UI.Add("birthPlanetUnlock", options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
-            UI.Add("moonsAreSmall", options.Add(GSUI.Checkbox("Moons are small", true, "moonsAreSmall")));
-            UI.Add("hugeGasGiants", options.Add(GSUI.Checkbox("Huge gas giants", true, "hugeGasGiants")));
+            UI.Add("moonsAreSmall", options.Add(GSUI.Checkbox("Moons Are Small", true, "moonsAreSmall")));
+            UI.Add("hugeGasGiants", options.Add(GSUI.Checkbox("Huge Gas Giants", true, "hugeGasGiants")));
             UI.Add("tidalLockInnerPlanets", options.Add(GSUI.Checkbox("Tidal Lock Inner Planets", false, "tidalLockInnerPlanets")));
             UI.Add("secondarySatellites", options.Add(GSUI.Checkbox("Secondary satellites", false, "secondarySatellites")));
 

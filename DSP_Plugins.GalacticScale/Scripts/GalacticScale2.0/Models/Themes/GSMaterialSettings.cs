@@ -5,11 +5,17 @@ namespace GalacticScale
 {
     public class GSMaterialSettings
     {
+        [SerializeField]
         public string Path;
+        [SerializeField]
         public string CopyFrom;
+        [SerializeField]
         public Dictionary<string, Color> Colors = new Dictionary<string, Color>();
+        [SerializeField]
         public Dictionary<string, float> Params = new Dictionary<string, float>();
+        [SerializeField]
         public Dictionary<string, string> Textures = new Dictionary<string, string>();
+        [SerializeField]
         public Color Tint;
         public GSMaterialSettings Clone()
         {
