@@ -8,7 +8,8 @@ namespace GalacticScale
     public static partial class GS2
     {
         public static string Version = "2.0.0a50";
-        public static string DataDir = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "config");
+        public static string AssemblyPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location);
+        public static string DataDir = Path.Combine(AssemblyPath, "config");
         public static bool Failed = false;
         public static bool Initialized = false;
         public static bool CheatMode = false;
@@ -52,8 +53,8 @@ namespace GalacticScale
             {
                 if (_bundle == null)
                 {
-                    string path = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle");
-                    string path2 = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galactic.bundle");
+                    string path = Path.Combine(AssemblyPath, "galacticbundle");
+                    string path2 = Path.Combine(AssemblyPath, "galactic.bundle");
                     if (File.Exists(path)) _bundle = UnityEngine.AssetBundle.LoadFromFile(path);
                     else _bundle = UnityEngine.AssetBundle.LoadFromFile(path2);
 

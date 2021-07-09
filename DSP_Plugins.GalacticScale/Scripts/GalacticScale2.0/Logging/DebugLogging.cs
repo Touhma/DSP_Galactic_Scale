@@ -26,7 +26,7 @@ namespace GalacticScale
         public static void Error(string message,
             [CallerLineNumber] int lineNumber = 0)
         {
-            Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Error, true);
+            Bootstrap.Debug($"{lineNumber,4}:{GetCaller()}{message}", LogLevel.Error, true);
             DumpError(lineNumber+"|"+message);
         }
         public static void Warn(string message , 

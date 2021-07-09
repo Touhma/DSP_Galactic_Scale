@@ -56,7 +56,7 @@ namespace GalacticScale
             InitializePlanetVeins(planet, veinData.Count);
             List<Vector2> node_vectors = new List<Vector2>();
             bool infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
-            GS2.Warn($"Adding Veins to Planet {gsPlanet.Name} infinite:{infiniteResources} resourceMulti:{DSPGame.GameDesc.resourceMultiplier}");
+            //GS2.Warn($"Adding Veins to Planet {gsPlanet.Name} infinite:{infiniteResources} resourceMulti:{DSPGame.GameDesc.resourceMultiplier}");
 
             for (int i = 0; i < veinData.Count; i++) // For each veingroup (patch of vein nodes)
             {

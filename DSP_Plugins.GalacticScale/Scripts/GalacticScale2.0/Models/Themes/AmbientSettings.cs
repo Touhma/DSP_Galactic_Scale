@@ -86,11 +86,11 @@ namespace GalacticScale
                 //GS2.Log(CubeMap);
                 //GS2.Log(Reflections.ToString());
                 //Should move this out of here
-                AssetBundle bundle = GS2.bundle;
+                //AssetBundle bundle = GS2.bundle;
                 //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
                 if (CubeMap == "GS2")
                 {
-                    Cubemap x = bundle.LoadAsset<Cubemap>("cube2");
+                    Cubemap x = GS2.bundle.LoadAsset<Cubemap>("cube2");
                     if (Reflections.a != 0)
                     {
                         ReflectionMap = Utils.TintCubeMap(x, Reflections);

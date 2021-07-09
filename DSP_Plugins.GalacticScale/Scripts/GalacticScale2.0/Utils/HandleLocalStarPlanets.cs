@@ -241,17 +241,17 @@ namespace GalacticScale
             {
                 PlanetData moon = gsPlanet.Moons[0].planetData;
                 double distance = (moon.uPosition - planet.uPosition).magnitude - planet.realRadius - TransisionDistance(moon) - 100;
-                GS2.Log($"Distance of {planet.name} is {distance}, transitionDistance is {transitionDistance}");
+                //GS2.Log($"Distance of {planet.name} is {distance}, transitionDistance is {transitionDistance}");
                 if (distance < transitionDistance)
                 {
                     LogStatus($"Transition Distance of {planet.name} reduced to {distance}");
                     transitionRadii.Add(planet, distance);
                     return distance;
                 }
-                else
-                {
-                    GS2.Log($"Not setting anything, as td:{transitionDistance} < d:{distance}");
-                }
+                //else
+                //{
+                //    //GS2.Log($"Not setting anything, as td:{transitionDistance} < d:{distance}");
+                //}
             }
             transitionRadii.Add(planet, transitionDistance);
             return transitionDistance;

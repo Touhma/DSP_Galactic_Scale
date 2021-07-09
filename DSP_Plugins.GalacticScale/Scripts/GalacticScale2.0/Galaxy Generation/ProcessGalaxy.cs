@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Compressions;
+using System;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 namespace GalacticScale
@@ -73,6 +75,19 @@ namespace GalacticScale
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
                 //if (createPlanets) {
+                StarData birthStar = galaxy.StarById(galaxy.birthStarId);
+                for (var i = 0; i < galaxy.starCount && galaxy.starCount > 1; i++)
+                {
+                    StarData star = galaxy.stars[i];
+                    var l = star.level;
+                    star.level = Mathf.Abs(star.index - birthStar.index) / (float)(galaxy.starCount - 1) * 2f;
+                    float num1 = (float)(star.position - birthStar.position).magnitude / 32f;
+                    if (num1 > 1.0) num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
+                    var rc = Mathf.Pow(7f, num1) * 0.6f;
+                    //Warn($"Beta 68 Test:  Changed level of {star.name, 12} from {l, 12} to {star.level, 12} resource coef:{star.resourceCoef, 12} to {rc, 12} magnitude/32:{num1, 12}");
+                    star.resourceCoef = rc;
+
+                }
                 Log("Setting up Birth Planet");
                 //SetupBirthPlanet();
                 Log("Generating Veins");

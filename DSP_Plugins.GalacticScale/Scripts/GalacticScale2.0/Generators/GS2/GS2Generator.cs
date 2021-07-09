@@ -81,6 +81,7 @@ namespace GalacticScale.Generators
             }
             //Log("Logging BirthPlanet Json");
             //LogJson(birthPlanet, true);
+
             Log("End");
             foreach (var star in GSSettings.Stars)
             {
@@ -99,6 +100,8 @@ namespace GalacticScale.Generators
             }
             EnsureBirthSystemHasTi();
         }
+
+
         private void EnsureBirthSystemHasTi()
         {
             if (!BirthSystemHasTi())

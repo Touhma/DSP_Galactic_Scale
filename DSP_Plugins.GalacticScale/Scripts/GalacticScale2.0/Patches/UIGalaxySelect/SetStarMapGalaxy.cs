@@ -19,9 +19,9 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Warn("Processing Galaxy");
+                //GS2.Warn("Processing Galaxy");
                 galaxy = GS2.ProcessGalaxy(__instance.gameDesc, true);
-                GS2.Warn("Done");
+                //GS2.Warn("Done");
             }
             if (__instance.starmap == null) GS2.Warn("Starmap Null");
             if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
@@ -30,7 +30,7 @@ namespace GalacticScale
                 __instance.starmap.galaxyData.Free();
             }
             if (galaxy == null) GS2.Warn("galaxy Null");
-            else GS2.Warn("Galaxy not null");
+            //else GS2.Warn("Galaxy not null");
             __instance.starmap.galaxyData = galaxy;
             __instance.UpdateUIDisplay(galaxy);
             __instance.UpdateParametersUIDisplay();

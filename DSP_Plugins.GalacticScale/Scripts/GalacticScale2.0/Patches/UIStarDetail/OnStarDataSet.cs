@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public class PatchOnUIStarDetail
+    public partial class PatchOnUIStarDetail
     {
         [HarmonyPrefix, HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         private static bool OnStarDataSet(
@@ -101,7 +101,7 @@ namespace GalacticScale
             }
 
             //*
-            Dictionary<int, float> ressources = new Dictionary<int, float>();
+            Dictionary<int, float> resources = new Dictionary<int, float>();
 
             for (int index1 = 0; index1 < __instance.star.planetCount; ++index1)
             {
@@ -110,20 +110,20 @@ namespace GalacticScale
                 {
                     for (var i = 0; i < planet.gasItems.Length; i++)
                     {
-                        if (ressources.ContainsKey(planet.gasItems[i]))
+                        if (resources.ContainsKey(planet.gasItems[i]))
                         {
-                            ressources[planet.gasItems[i]] += planet.gasSpeeds[i];
+                            resources[planet.gasItems[i]] += planet.gasSpeeds[i];
                         }
                         else
                         {
-                            ressources[planet.gasItems[i]] = planet.gasSpeeds[i];
+                            resources[planet.gasItems[i]] = planet.gasSpeeds[i];
                         }
                     }
                 }
             }
 
 
-            foreach (var keyValuePair in ressources)
+            foreach (var keyValuePair in resources)
             {
                 ItemProto itemProto = LDB.items.Select(keyValuePair.Key);
 

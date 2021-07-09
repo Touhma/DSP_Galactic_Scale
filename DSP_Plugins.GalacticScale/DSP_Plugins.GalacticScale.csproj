@@ -205,6 +205,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetCoroutine.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\Update.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\RefreshDynamicProperties.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\Modeler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\LUT Rework.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\Algorithm.cs" />

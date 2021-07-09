@@ -187,6 +187,8 @@ namespace GalacticScale.Generators
             preferences.Set("secondarySatellites", false);
             preferences.Set("minPlanetCount", 1);
             preferences.Set("maxPlanetCount", 10);
+            preferences.Set("minPlanetSize", 30);
+            preferences.Set("maxPlanetSize", 500);
             preferences.Set("sizeBias", 50);
             preferences.Set("countBias", 50);
             preferences.Set("freqK", 40);
@@ -250,8 +252,8 @@ namespace GalacticScale.Generators
             UI.Add("minPlanetCount", options.Add(GSUI.Slider("Min Planets/System", 1, 4, 25, "minPlanetCount", MinPlanetCountCallback)));
             UI.Add("maxPlanetCount", options.Add(GSUI.Slider("Max Planets/System", 1, 10, 25, "maxPlanetCount", MaxPlanetCountCallback)));
             UI.Add("countBias", options.Add(GSUI.Slider("Planet Count Bias", 0, 50, 100, "sizeBias", CountBiasCallback)));
-            UI.Add("minPlanetSize", options.Add(GSUI.PlanetSizeSlider("Min planet size", 30, 50, 200, MinPlanetSizeCallback)));
-            UI.Add("maxPlanetSize", options.Add(GSUI.PlanetSizeSlider("Max planet size", 200, 500, 500, MaxPlanetSizeCallback)));
+            UI.Add("minPlanetSize", options.Add(GSUI.PlanetSizeSlider("Min planet size", 30, 50, 200,"minPlanetSize", MinPlanetSizeCallback)));
+            UI.Add("maxPlanetSize", options.Add(GSUI.PlanetSizeSlider("Max planet size", 200, 500, 500, "maxPlanetSize", MaxPlanetSizeCallback)));
             UI.Add("sizeBias", options.Add(GSUI.Slider("Planet Size Bias", 0, 50, 100, "sizeBias", SizeBiasCallback)));
 
             UI.Add("chanceGas", options.Add(GSUI.Slider("Chance Gas", 10, 20, 50, "chanceGas", GasChanceCallback)));

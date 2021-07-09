@@ -39,7 +39,7 @@ namespace GalacticScale.Generators
                 {
                     //For rocky worlds
                     GSTheme smolTheme = theme.Clone();
-                    smolTheme.DisplayName = "Smol"+theme.DisplayName;
+                    smolTheme.DisplayName = theme.DisplayName;
                     smolTheme.Name += "smol";
                     smolLibrary.Add(smolTheme.Name, smolTheme);
                     smolTheme.MaxRadius = 40;

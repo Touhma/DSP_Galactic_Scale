@@ -66,7 +66,7 @@ namespace GalacticScale
         public static void DumpException(Exception e)
         {
             Error($"{e.Message} {GetCaller(1)} {GetCaller(2)} {GetCaller(3)} {GetCaller(4)} {GetCaller(5)}");
-            string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
+            string path = Path.Combine(AssemblyPath, "ErrorLog");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -79,7 +79,7 @@ namespace GalacticScale
                 return;
             }
 
-            GS2.Log(path);
+            Log(path);
             Log("Logging Error to " + path);
             exceptionOutput eo = new exceptionOutput(e.ToString());
             fsSerializer serializer = new fsSerializer();
@@ -96,7 +96,7 @@ namespace GalacticScale
         }
         public static void DumpError(string message)
         {
-            string path = Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "ErrorLog");
+            string path = Path.Combine(GS2.AssemblyPath, "ErrorLog");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
