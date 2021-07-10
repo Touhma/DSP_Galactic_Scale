@@ -67,7 +67,7 @@ namespace GalacticScale.Generators
             if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
             {
                 GS2.Log("Forcing BirthPlanet Size");
-                int oldRadius = birthPlanet.Radius;
+                //int oldRadius = birthPlanet.Radius;
                 int newRadius = preferences.GetInt("birthPlanetSize", 400);
                 
                 if (birthPlanet.Radius < newRadius) //We have a problem with orbits!

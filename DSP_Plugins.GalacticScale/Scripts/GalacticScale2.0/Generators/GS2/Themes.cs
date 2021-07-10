@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Steamworks;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 namespace GalacticScale.Generators
@@ -9,7 +10,7 @@ namespace GalacticScale.Generators
         public void SetupBaseThemes()
         {
             ThemeLibrary newLibrary = new ThemeLibrary();
-            foreach(var v in ThemeLibrary.Vanilla())
+            foreach (var v in ThemeLibrary.Vanilla())
             {
                 GSTheme clone = v.Value.Clone();
                 //GS2.Log("Adding Theme " + clone.Name + " themeCount:" + newLibrary.Count);
@@ -64,7 +65,7 @@ namespace GalacticScale.Generators
                 else newLibrary[s.Key] = s.Value;
             }
             GS2.ThemeLibrary = GSSettings.ThemeLibrary = newLibrary;
-            
+
         }
         public static void InitThemes()
         {
@@ -243,7 +244,50 @@ namespace GalacticScale.Generators
             hotGas.MinRadius = 5;
             hotGas.MaxRadius = 510;
             hotGas.ThemeType = EThemeType.Gas;
+
             hotGas.Process();
+            var x = Resources.FindObjectsOfTypeAll<Material>();
+            foreach (var y in x)
+            {
+                if (y.name == "star-mass-m")
+                {
+                    //hotGas.atmosMat = y;
+                    hotGas.oceanMat = hotGas.terrainMat;
+                    //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
+                    //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
+                    hotGas.oceanMat.SetColor("_Color", new Color() {r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
+                    //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.917f, g = 0.776f, b = 0.6f, a = 1 });
+                    hotGas.CustomGeneration = true;
+                    hotGas.TerrainSettings = new GSTerrainSettings()
+                    {
+                        Algorithm = "GSTA00",
+                    };
+                    hotGas.terrainMat = Object.Instantiate(y);
+                    hotGas.terrainMat.SetColor("_Color4", new Color() { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 });//Highlights?
+                    hotGas.terrainMat.SetColor("_Color1", new Color() { r = 0f, g = 0, b = 0f, a = 1 });//Base?
+                    hotGas.terrainMat.SetColor("_Color2", new Color() { r = 0, g = 0f, b = 0, a = 1 });//SunSpots
+                    hotGas.terrainMat.SetColor("_Color3", new Color() { r = 0, g = 0, b = 0f, a = 1 });//Fringe
+                    hotGas.terrainMat.SetFloat("_SkyAtmosPower", 10);
+                    hotGas.terrainMat.SetFloat("_Intensity", 0.5f);
+                    hotGas.terrainMat.SetFloat("_Multiplier", 0.5f);
+                    hotGas.terrainMat.SetFloat("_AtmoThickness", 3);
+                    //hotGas.terrainMat.SetColor("_Color4", new Color() { r = 0.5f, g = 0.0f, b = 0.0f, a = 1 });//{ r = 0.607f, g = 0.411f, b = 0.172f, a = 1 });
+                    //hotGas.terrainMat.SetColor("_Color1", new Color() { r = 0f, g = 0, b = 0f, a = 1 });//{ r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); //Hot Base?
+                    //hotGas.terrainMat.SetColor("_Color2", new Color() { r = 0, g = 0f, b = 0, a = 1 });//{ r = 0.717f, g = 0.349f, b = 0.164f, a = 1 }); //SunSpots
+                    //hotGas.terrainMat.SetColor("_Color3", new Color() { r = 0, g = 0, b = 0f, a = 1 });//{ r = 0.388f, g = 0.18f, b = 0.07f, a = 1 });
+                    //hotGas.terrainMat.SetColor("_Color", new Color() { r = 1f, g = 0, b = 0, a = 1 });// { r = 0.917f, g = 0.776f, b = 0.6f, a = 1 });
+                    //hotGas.terrainMat.SetColor("_Color1", new Color() { r = 1f, g = 1f, b = 0, a = 1 });//{ r = 0.607f, g = 0.411f, b = 0.172f, a = 1 });
+                    //hotGas.terrainMat.SetColor("_Color0", new Color() { r = 1f, g = 0, b = 1f, a = 1 });//{ r = 0.866f, g = 0.407f, b = 0.172f, a = 1 });
+                    //hotGas.terrainMat.SetColor("_Color2", new Color() { r = 0, g = 1f, b = 0, a = 1 });//{ r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
+                    //hotGas.terrainMat.SetColor("_Color3", new Color() { r = 0, g = 0, b = 1f, a = 1 });//{ r = 0.388f, g = 0.18f, b = 0.07f, a = 1 });
+                }
+                if (y.name == "black-mask")
+                {
+                    //hotGas.oceanMat = y;
+                    hotGas.WaterItemId = 1000;
+                    //hotGas.oceanMaterial.Tint = Color.black;
+                }
+            }
 
             //GS2.LogJson(GS2.ThemeLibrary);
             //foreach (string key in baseKeys)

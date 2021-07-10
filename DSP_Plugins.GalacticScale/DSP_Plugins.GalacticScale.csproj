@@ -255,6 +255,7 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain00.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain5.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain6.cs" />

@@ -268,21 +268,27 @@ namespace GalacticScale
             //GS2.LogJson(veinTotals);
             if (!birth) return veinGroups;
             List<GSVeinDescriptor> gsVeinDescriptorList = new List<GSVeinDescriptor>();
+            int IronCount = 6;
+            float IronRichness = 0.5f;
+            int CopperCount = 6;
+            float CopperRichness = 0.5f;
+            if (GSSettings.BirthIron != null) {IronCount = GSSettings.BirthIron.count; IronRichness = GSSettings.BirthIron.richness; }
+            if (GSSettings.BirthCopper != null) { CopperCount = GSSettings.BirthCopper.count; CopperRichness = GSSettings.BirthCopper.richness; }
             gsVeinDescriptorList.Add(new GSVeinDescriptor()
             {
-                count = 5,
+                count = IronCount,
                 position = gsPlanet.planetData.birthResourcePoint0,
                 rare = false,
                 type = EVeinType.Iron,
-                richness = 0.5f
+                richness = IronRichness
             });
             gsVeinDescriptorList.Add(new GSVeinDescriptor()
             {
-                count = 5,
+                count = CopperCount,
                 position = gsPlanet.planetData.birthResourcePoint1,
                 rare = false,
                 type = EVeinType.Copper,
-                richness = 0.5f
+                richness = CopperRichness
             });
             gsVeinDescriptorList.AddRange((IEnumerable<GSVeinDescriptor>)veinGroups);
             return gsVeinDescriptorList;
