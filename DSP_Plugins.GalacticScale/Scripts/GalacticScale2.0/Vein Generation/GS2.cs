@@ -47,10 +47,10 @@ namespace GalacticScale
             PlanetData planet = gsPlanet.planetData;
             float resourceCoef = planet.star.resourceCoef;
             bool birth = GSSettings.BirthPlanet == gsPlanet;
-            if (birth)
-            {
-                resourceCoef *= 2f / 3f;
-            }
+            //if (birth)
+            //{
+            //    resourceCoef *= 2f / 3f;
+            //}
 
             double planetRadiusFactor = 2.1 / gsPlanet.planetData.radius;
             InitializePlanetVeins(planet, veinData.Count);
@@ -85,7 +85,10 @@ namespace GalacticScale
                 {
                     veinAmount = (int)(veinAmount * (random.NextDouble() + 0.5));
                 }
-
+                if (veinType == EVeinType.Oil)
+                {
+                    veinAmount *= 2;
+                }
                 if (veinAmount < 20)
                 {
                     veinAmount = 20;
