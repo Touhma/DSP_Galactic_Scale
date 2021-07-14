@@ -622,6 +622,7 @@ namespace GalacticScale.Generators
                         birthPlanetIsMoon = false;
                         birthPlanetIndex = i;
                         Log($"Selected {birthPlanet.Name} as birthPlanet (planet) index {i} of star {birthStar.Name}");
+                        return;
                     }
                     for (var j=0;j < birthStar.Planets[i].Moons.Count; j++)
                     {

@@ -136,8 +136,9 @@ namespace GalacticScale
         {
             //GS2.Log("-Start "+Name + " " + GS2.GetCaller());
             Init();
-            //GS2.Log("Adding to Library "+ Name + " " + DisplayName);
+            GS2.Log("Adding to Library " + Name + " " + DisplayName);
             AddToLibrary();
+            //GS2.LogJson(GS2.ThemeLibrary);
             //GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap?.GetInstanceID());
             //GS2.Log("End");
         }
@@ -537,7 +538,7 @@ namespace GalacticScale
         }
         private bool CreateMaterial(GSMaterialSettings settings, out Material material)
         {
-            //GS2.Log("Start|"+Name);
+            //GS2.Log("Start|" + Name);
             string materialType = "terrain";
             if (settings == oceanMaterial)
             {
@@ -580,28 +581,29 @@ namespace GalacticScale
                 }
                 else
                 {
-                    //GS2.Log("Failed to Create Material|" + Name);
+                    GS2.Log("Failed to Create Material|" + Name);
                     material = Resources.Load<Material>(MaterialPath + materialType);
                 }
 
             }
             else
             {
-                //GS2.Log("Copying from Theme: " + settings.CopyFrom);
+                //GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
                 string[] copyFrom = settings.CopyFrom.Split('.');
                 if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null || copyFrom[1] == "")
                 {
-                    //GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
+                    GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
                     material = Resources.Load<Material>(MaterialPath + materialType);
                 }
                 else
                 {
+                    //GS2.Warn($"Copying {Name} {materialType} material from Theme {settings.CopyFrom}");
                     GSTheme materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
                     string materialName = copyFrom[1];
                     material = UnityEngine.Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
                 }
             }
-            //GS2.Log("Setting Textures for " + Name + " with " + settings.Textures.Count + " texture items in list");
+            //if (settings.Textures.Count>0) GS2.Log("Setting Textures for " + Name + " with " + settings.Textures.Count + " texture items in list");
             foreach (var kvp in settings.Textures)
             {
 
