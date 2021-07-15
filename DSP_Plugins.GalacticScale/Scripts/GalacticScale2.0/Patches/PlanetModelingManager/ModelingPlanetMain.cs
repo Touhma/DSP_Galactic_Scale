@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 namespace GalacticScale
@@ -14,6 +15,20 @@ namespace GalacticScale
             planet.data.AddFactoredRadius(planet);
             return true;
         }
+        //[HarmonyPostfix, HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
+        //public static void Postfix(PlanetData planet,ref GameObject ___tmpPlanetGameObject)
+        //{
+        //    if (PlanetModelingManager.currentModelingStage == 4)
+        //    {
+        //        var objectGroup = new GameObject("Blackhole");
+        //        objectGroup.transform.parent = ___tmpPlanetGameObject.transform;
+        //        objectGroup.transform.localPosition = Vector3.zero;
+        //        objectGroup.transform.localRotation = Quaternion.identity;
+        //        objectGroup.transform.localScale = Vector3.one;
+        //        var blackHole = UnityEngine.Object.Instantiate(Configs.builtin.blackHolePrefab, objectGroup.transform);
+        //        blackHole.radius = planet.realRadius/2.5f;
+        //    }
+        //}
         //[HarmonyPostfix, HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
         //public static void ModelingPlanetMain2(PlanetData planet)
         //{
