@@ -175,8 +175,8 @@ namespace GalacticScale
                 ;
                 __instance.entries.Add(entry3);
                 entry3.SetInfo(index2, "风能利用率".Translate(), ___sprite8, string.Empty, false,
-                    __instance.planet.windStrength > 1.49899995326996, "    %");
-                StringBuilderUtility.WriteUInt(entry3.sb, 0, 3,
+                    __instance.planet.windStrength > 1.49899995326996, "      %");
+                StringBuilderUtility.WriteUInt(entry3.sb, 0, 5,
                     (uint)(__instance.planet.windStrength * 100.0 + 0.499900013208389));
                 entry3.DisplayStringBuilder();
                 var index3 = index2 + 1;
@@ -184,8 +184,8 @@ namespace GalacticScale
                 ;
                 __instance.entries.Add(entry4);
                 entry4.SetInfo(index3, "光能利用率".Translate(), ___sprite9, string.Empty, false,
-                    __instance.planet.luminosity > 1.49899995326996, "    %");
-                StringBuilderUtility.WriteUInt(entry4.sb, 0, 3,
+                    __instance.planet.luminosity > 1.49899995326996, "      %");
+                StringBuilderUtility.WriteUInt(entry4.sb, 0, 5,
                     (uint)(__instance.planet.luminosity * 100.0 + 0.499900013208389));
                 entry4.DisplayStringBuilder();
                 num7 = index3 + 1;

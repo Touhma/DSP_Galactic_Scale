@@ -22,6 +22,8 @@ namespace GalacticScale
             if (GSSettings.BirthPlanet != null)
             {
                 SerializeMember(serialized, null, "BirthPlanet", GSSettings.BirthPlanet.Name);
+                SerializeMember(serialized, null, "BirthIron", GSSettings.BirthIron);
+                SerializeMember(serialized, null, "BirthCopper", GSSettings.BirthCopper);
             }
             //GS2.Log("End");
             return fsResult.Success;
@@ -88,6 +90,8 @@ namespace GalacticScale
             if (data.ContainsKey("BirthPlanet"))
             {
                 DeserializeMember(data, null, "BirthPlanet", out birthPlanetName);
+                DeserializeMember(data, null, "BirthCopper", out GSSettings.BirthCopper);
+                DeserializeMember(data, null, "BirthIron", out GSSettings.BirthIron);
             }
 
             if (!string.IsNullOrEmpty(birthPlanetName))

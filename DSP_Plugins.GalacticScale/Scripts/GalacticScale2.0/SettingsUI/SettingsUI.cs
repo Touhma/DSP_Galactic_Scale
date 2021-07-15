@@ -198,7 +198,7 @@ namespace GalacticScale
 
 
             //GS2.Log("CreateGalacticScaleSettingsPage 4");
-
+            //CreateCollapseBox();
 
             //Get a list of all loaded generators, and add a combobox to select between them.
             //List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
@@ -216,6 +216,19 @@ namespace GalacticScale
             UpdateContentRect();
             //viewportRect.sizeDelta = this.keyScrollVbarRect.gameObject.activeSelf ? new Vector2(-10f, 0.0f) : Vector2.zero;
         }
+        //private static RectTransform CreateCollapseBox()
+        //{
+        //    GameObject collapseBox = new GameObject("collapseBoxTemplate");
+        //    collapseBox.transform.SetParent(details);
+        //    collapseBox.transform.position = new Vector3(0, 0, 0);
+        //    var rt = collapseBox.AddComponent<RectTransform>();
+        //    rt.anchorMin = new Vector2(30, 30);
+        //    rt.anchoredPosition = new Vector2(10, 10);
+        //    rt.sizeDelta = new Vector2(100, 100);
+        //    Image img = collapseBox.AddComponent<Image>();
+        //    img.color = Color.red;
+        //    return collapseBox.GetComponent<RectTransform>();
+        //}
         private static void UpdateContentRect()
         {
             var optionlist = generatorPluginOptions[generatorIndex];

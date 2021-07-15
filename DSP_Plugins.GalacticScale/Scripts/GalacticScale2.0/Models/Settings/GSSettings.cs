@@ -35,6 +35,8 @@ namespace GalacticScale
             GS2.Warn("Loaded Data From External String");
             return success;
         }
+        public static GSVein BirthIron = new GSVein(6, 0.1f);
+        public static GSVein BirthCopper = new GSVein(6, 0.1f);
         public static GSSettings Instance { get => instance; set => instance = value; }
         public static ThemeLibrary ThemeLibrary { get => instance.themeLibrary; set => instance.themeLibrary = value; }
         public static GSGalaxyParams GalaxyParams { get => instance.galaxyParams; set => instance.galaxyParams = value; }

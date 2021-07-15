@@ -12,7 +12,8 @@ namespace GalacticScale
                 ["GSTA1"] = TerrainAlgorithms.GenerateTerrain1,
                 ["GSTA3"] = TerrainAlgorithms.GenerateTerrain3,
                 ["GSTA5"] = TerrainAlgorithms.GenerateTerrain5,
-                ["GSTA6"] = TerrainAlgorithms.GenerateTerrain6
+                ["GSTA6"] = TerrainAlgorithms.GenerateTerrain6,
+                ["GSTA00"] = TerrainAlgorithms.GenerateTerrain00
             };
         }
         public GSTerrainAlgorithm Find(string name)

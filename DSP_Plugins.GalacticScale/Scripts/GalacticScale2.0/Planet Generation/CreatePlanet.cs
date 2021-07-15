@@ -153,6 +153,7 @@ namespace GalacticScale
                 planet.singularity |= EPlanetSingularity.ClockwiseRotate;
             }
             //GS2.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id}");
+            
             return planet;
         }
         public static float GetSunDistance(GSStar star, GSPlanet planet, PlanetData host)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Steamworks;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 namespace GalacticScale.Generators
@@ -9,7 +10,7 @@ namespace GalacticScale.Generators
         public void SetupBaseThemes()
         {
             ThemeLibrary newLibrary = new ThemeLibrary();
-            foreach(var v in ThemeLibrary.Vanilla())
+            foreach (var v in ThemeLibrary.Vanilla())
             {
                 GSTheme clone = v.Value.Clone();
                 //GS2.Log("Adding Theme " + clone.Name + " themeCount:" + newLibrary.Count);
@@ -64,11 +65,158 @@ namespace GalacticScale.Generators
                 else newLibrary[s.Key] = s.Value;
             }
             GS2.ThemeLibrary = GSSettings.ThemeLibrary = newLibrary;
-            
+
         }
         public static void InitThemes()
         {
-            GS2.Log("Creating Themes");
+
+            GSTheme sulfursea = new GSTheme("SulfurSea", "Sulfurous Sea", "OceanWorld");
+            GSTheme giganticforest = new GSTheme("GiganticForest", "Gigantic Forest", "OceanicJungle");
+            GSTheme moltenworld = new GSTheme("MoltenWorld", "Molten World", "Lava");
+            GSTheme redforest = new GSTheme("RedForest", "Red Forest", "OceanicJungle");
+            GSTheme beach = new GSTheme("Beach", "Beach", "OceanWorld");
+            beach.VeinSettings = new GSVeinSettings()
+            {
+                Algorithm = "GS2",
+                VeinPadding = 1f,
+                VeinTypes = new GSVeinTypes()
+               {
+                   GSVeinType.Generate(EVeinType.Silicium, 10, 30, 1f, 10f, 5, 25, false),
+                   GSVeinType.Generate(EVeinType.Bamboo, 2, 6, 1, 10f, 5, 25, true),
+                   GSVeinType.Generate(EVeinType.Fractal, 2, 6, 1, 10f, 5, 25, false),
+                   GSVeinType.Generate(EVeinType.Grat, 2, 6, 1, 10f, 5, 25, false)
+               }
+            };
+            beach.VegeSettings = Themes.Mediterranean.VegeSettings.Clone();
+            beach.VegeSettings.Group1.Clear();
+            beach.VegeSettings.Group2.Clear();
+            beach.VegeSettings.Group4 = beach.VegeSettings.Group3;
+            beach.TerrainSettings.Algorithm = "GSTA1";
+            beach.CustomGeneration = true;
+            //GS2.LogJson(beach, true);
+            giganticforest.VegeSettings.Group1.Clear();
+            giganticforest.VegeSettings.Group2.Clear();
+            giganticforest.VegeSettings.Group3.Clear();
+            giganticforest.VegeSettings.Group4.Clear();
+            giganticforest.VegeSettings.Group5.Clear();
+            giganticforest.VegeSettings.Group6.Clear();
+            giganticforest.Vegetables1 = new int[] { 42, 42, 42, 46, 101, 101, 101, 101, 101, 101, 102, 102, 102, 102, 102, 102, 103, 103, 103, 103, 103, 103, 104, 104, 104, 104, 104, 104, 125, 125, 125, 125, 125, 125, 601, 601, 601, 601, 601, 601, 602, 602, 602, 602, 602, 602, 603, 603, 603, 603, 603, 603, 604, 604, 604, 604, 604, 604, 605, 605, 605, 605, 605, 605 }; // Medium density, Biome border only
+            giganticforest.Vegetables2 = new int[] { 1001, 1002, 1003, 1005, 1006, 1007 }; // Dense clumped ground scatter, everywhere
+            giganticforest.Vegetables3 = new int[] { 43, 46, 47, 47, 101, 102, 103, 104, 106, 601, 602, 604 }; // Sparse, lowland only
+            giganticforest.Vegetables4 = new int[] { }; // Unused
+            giganticforest.Vegetables5 = new int[] { 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 43, 43, 43, 43, 43, 43, 46, 46, 47, 47, 47, 47, 47, 47, 47, 102, 103, 103, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 104, 125, 125, 125, 125, 125, 125, 125, 604, 604, 604, 604, 604, 604, 604, 605, 605, 605, 605, 605, 605, 605, 1001, 1001, 1001, 1001, 1001, 1001, 1001, 1002, 1002, 1002, 1002, 1002, 1002, 1002, 1002, 1002 }; // Dense, Highland only
+            giganticforest.PopulateVegeData();
+            giganticforest.Distribute = EThemeDistribute.Default;
+            giganticforest.Habitable = true;
+            giganticforest.CustomGeneration = true;
+            giganticforest.TerrainSettings.Algorithm = "GSTA6";
+            Themes.Mediterranean.InitMaterials();
+            Themes.OceanicJungle.InitMaterials();
+            giganticforest.oceanMat = Themes.Mediterranean.oceanMat;
+
+            //moltenworld.IonHeight = Themes.OceanicJungle.IonHeight;
+            moltenworld.CustomGeneration = true;
+            moltenworld.TerrainSettings = new GSTerrainSettings()
+            {
+                Algorithm = "GSTA1",
+                BaseHeight = -1.5, //negative numbers lower the ocean
+                xFactor = 0.01,
+                yFactor = 0.012,
+                zFactor = 0.01,
+                HeightMulti = 0.4, //how exagerated the ups and downs are
+                LandModifier = -0.9, //how clumpy the land is
+                RandomFactor = -1,
+                BiomeHeightMulti = 2.0,
+                BiomeHeightModifier = 1.2
+            };
+            moltenworld.MinRadius = 20;
+            moltenworld.MaxRadius = 510;
+            moltenworld.ThemeType = EThemeType.Telluric;
+            redforest.VegeSettings.Group1.Clear();
+            redforest.VegeSettings.Group2.Clear();
+            redforest.VegeSettings.Group3.Clear();
+            redforest.VegeSettings.Group4.Clear();
+            redforest.VegeSettings.Group5.Clear();
+            redforest.VegeSettings.Group6.Clear();
+            redforest.Vegetables0 = new int[] { 26, 26, 45, 603, 604 };  // lowlands
+            redforest.Vegetables1 = new int[] { 1001, 1001, 1001, 1001, 1001, 1001, 45, 26, 26 };  // Ground scatter, highlands
+            redforest.Vegetables2 = new int[] { 1001 };  // Grass ground scatter, highlands
+            redforest.Vegetables3 = new int[] { 26, 26, 26, 26, 45, 602, 603, 604 };  // Ground
+            redforest.Vegetables4 = new int[] { 1001, 26, 602, 603, 604 };  // Semi clumped shoreline
+            redforest.Vegetables5 = new int[] { 25, 32, 36, 37, 39, 41 };  // Water
+            redforest.PopulateVegeData();
+            redforest.VeinCount = Themes.RedStone.VeinCount;
+            redforest.VeinSpot = Themes.RedStone.VeinSpot;
+            redforest.VeinOpacity = Themes.RedStone.VeinOpacity;
+            redforest.RareSettings = Themes.RedStone.RareSettings;
+            redforest.RareVeins = Themes.RedStone.RareVeins;
+            redforest.CustomGeneration = true;
+            redforest.TerrainSettings = new GSTerrainSettings()
+            {
+                Algorithm = "GSTA1",
+                BaseHeight = -0.7,
+                xFactor = 0.01,
+                yFactor = 0.012,
+                zFactor = 0.01,
+                HeightMulti = 1.2,
+                LandModifier = 1.3,
+                RandomFactor = 0.3,
+                BiomeHeightMulti = 2.0,
+                BiomeHeightModifier = 0.2
+            };
+
+            redforest.terrainMaterial.Tint = new UnityEngine.Color(.1f, 0.6f, 0.05f, 1f);
+
+            sulfursea.CustomGeneration = true;
+            sulfursea.Habitable = false;
+            sulfursea.MinRadius = 20;
+            sulfursea.MaxRadius = 510;
+            sulfursea.Temperature = 1;
+            sulfursea.TerrainSettings = new GSTerrainSettings()
+            {
+                Algorithm = "GSTA1",
+                HeightMulti = 1,
+                BaseHeight = -1.3,
+                LandModifier = -0.7,
+                RandomFactor = 0.1,
+                BiomeHeightMulti = 2.9,
+                BiomeHeightModifier = 1
+            };
+            sulfursea.ThemeType = EThemeType.Telluric;
+            sulfursea.AmbientSettings = Themes.VolcanicAsh.AmbientSettings.Clone();
+            sulfursea.VegeSettings.Group1.Clear();
+            sulfursea.VegeSettings.Group2.Clear();
+            sulfursea.VegeSettings.Group3.Clear();
+            sulfursea.VegeSettings.Group4.Clear();
+            sulfursea.VegeSettings.Group5.Clear();
+            sulfursea.VegeSettings.Group6.Clear();
+            sulfursea.Vegetables0 = new int[] { };  // lowlands
+            sulfursea.Vegetables1 = new int[] { };  // Ground scatter, highlands
+            sulfursea.Vegetables2 = new int[] { };  // Grass ground scatter, highlands
+            sulfursea.Vegetables3 = new int[] { 601, 602, 603, 604, 605 };  // Ground
+            sulfursea.Vegetables4 = new int[] { 601, 602, 603, 604, 605 };  // Semi clumped shoreline
+            sulfursea.Vegetables5 = new int[] { };  // Water
+            sulfursea.terrainMaterial.CopyFrom = "Gobi.terrainMat";
+            sulfursea.atmosphereMaterial.CopyFrom = "VolcanicAsh.atmosMat";
+            //sulfursea.oceanMat = Themes.Mediterranean.oceanMat;
+            sulfursea.oceanMaterial.Colors.Clear();
+            foreach (var c in Themes.VolcanicAsh.oceanMaterial.Colors)
+                sulfursea.oceanMaterial.Colors.Add(c.Key, c.Value);
+            sulfursea.atmosphereMaterial.Tint = new UnityEngine.Color(0.3f, 0.3f, 0f, 1f);
+            sulfursea.oceanMaterial.Params["_GIGloss"] = 1;
+            sulfursea.oceanMaterial.Params["_GISaturate"] = 0.8f;
+            sulfursea.oceanMaterial.Params["_GIStrengthDay"] = 1;
+            sulfursea.oceanMaterial.Params["_GIStrengthNight"] = 0.0f;
+            sulfursea.terrainMaterial.Tint = new UnityEngine.Color(.8f, .7f, .6f, 1f);
+            sulfursea.thumbMaterial.CopyFrom = "Gobi.thumbMat";
+            sulfursea.minimapMaterial.CopyFrom = "Gobi.minimapMat";
+            sulfursea.Process();
+            giganticforest.Process();
+            moltenworld.Process();
+            redforest.Process();
+            beach.Process();
+
+            //GS2.Log("Creating Themes");
             GSTheme oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
             oiler.terrainMaterial.Tint = new Color(0.3f, 0.3f, 0.3f, 1f);
             oiler.atmosphereMaterial.Tint = new Color(0f, 0f, 0f, 1);
@@ -244,15 +392,68 @@ namespace GalacticScale.Generators
             hotGas.MinRadius = 5;
             hotGas.MaxRadius = 510;
             hotGas.ThemeType = EThemeType.Gas;
+
+
+
+            //hotGas.atmosMat = y;
+            //GS2.Log("Creating oceanmat");
+            hotGas.oceanMaterial.CopyFrom = "GasGiant.terrainMat";
+            //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
+            //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
+            //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
+            hotGas.oceanMaterial.Colors["_Color"] = new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 };
+            //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.917f, g = 0.776f, b = 0.6f, a = 1 });
+            hotGas.CustomGeneration = true;
+            hotGas.TerrainSettings = new GSTerrainSettings()
+            {
+                Algorithm = "GSTA00",
+            };
+            hotGas.terrainMaterial.Path = "Universe/Materials/Stars/star-mass-m";
+
+            hotGas.terrainMaterial.Colors = new Dictionary<string, Color>() {
+                ["_Color4"] = new Color() { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 },//Highlights?
+                ["_Color1"]= new Color() { r = 0f, g = 0, b = 0f, a = 1 },//Base?
+                ["_Color2"]= new Color() { r = 0, g = 0f, b = 0, a = 1 },//SunSpots
+                ["_Color3"]= new Color() { r = 0, g = 0, b = 0f, a = 1 }};//Fringe
+            hotGas.terrainMaterial.Params = new Dictionary<string, float>()
+            {
+                ["_SkyAtmosPower"] = 10,
+                ["_Intensity"] = 0.5f,
+                ["_Multiplier"] = 0.5f,
+                ["_AtmoThickness"] = 3
+            };
+            hotGas.WaterItemId = 1000;
             hotGas.Process();
 
-            //GS2.LogJson(GS2.ThemeLibrary);
-            //foreach (string key in baseKeys)
+            //hotGas.Process();
+            //var x = Resources.FindObjectsOfTypeAll<Material>();
+            //foreach (var y in x)
             //{
-            //    GS2.Warn("Private setting for " + key);
-            //    GS2.ThemeLibrary[key].ThemeType = EThemeType.Private;
+            //    if (y.name == "star-mass-m")
+            //    {
+            //        //hotGas.atmosMat = y;
+            //        hotGas.oceanMat = hotGas.terrainMat;
+            //        //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
+            //        //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
+            //        hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
+            //        //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.917f, g = 0.776f, b = 0.6f, a = 1 });
+            //        hotGas.CustomGeneration = true;
+            //        hotGas.TerrainSettings = new GSTerrainSettings()
+            //        {
+            //            Algorithm = "GSTA00",
+            //        };
+            //        hotGas.terrainMat = Object.Instantiate(y);
+            //        hotGas.terrainMat.SetColor("_Color4", new Color() { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 });//Highlights?
+            //        hotGas.terrainMat.SetColor("_Color1", new Color() { r = 0f, g = 0, b = 0f, a = 1 });//Base?
+            //        hotGas.terrainMat.SetColor("_Color2", new Color() { r = 0, g = 0f, b = 0, a = 1 });//SunSpots
+            //        hotGas.terrainMat.SetColor("_Color3", new Color() { r = 0, g = 0, b = 0f, a = 1 });//Fringe
+            //        hotGas.terrainMat.SetFloat("_SkyAtmosPower", 10);
+            //        hotGas.terrainMat.SetFloat("_Intensity", 0.5f);
+            //        hotGas.terrainMat.SetFloat("_Multiplier", 0.5f);
+            //        hotGas.terrainMat.SetFloat("_AtmoThickness", 3);
+            //        hotGas.WaterItemId = 1000;
+            //    }
             //}
-            //foreach (var kvp in GS2.ThemeLibrary) GS2.Log("Final:" + kvp.Key);
         }
     }
 }

@@ -198,6 +198,7 @@ namespace GalacticScale
                 },
                 Params = new System.Collections.Generic.Dictionary<string, float>()
                 {
+
                     ["_CausticsTiling"] = 0.06f,
                     ["_DistortionStrength"] = 1f,
                     ["_FoamInvThickness"] = 3f,
