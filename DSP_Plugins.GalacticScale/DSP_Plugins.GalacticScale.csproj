@@ -41,8 +41,8 @@
     <Reference Include="0Harmony">
       <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-0.7.18.7103_publicized">
-      <HintPath>lib\Assembly-CSharp-0.7.18.7103_publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp_Publicized_7_18_7275">
+      <HintPath>..\..\Assembly-CSharp_Publicized_7_18_7275.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx, Version=5.4.5.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
@@ -396,7 +396,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
