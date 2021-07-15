@@ -59,7 +59,9 @@ namespace GalacticScale
         public float RotationPhase { get => rotationPhase < 0 ? InitRotationPhase() : rotationPhase; set => rotationPhase = value; }
         [SerializeField]
         public float Luminosity { get => luminosity < 0 ? InitLuminosity() : luminosity; set => luminosity = value; }
+        [SerializeField] 
         private float scale = -1;
+
         public float Scale { get => scale < 0 ? InitScale() : scale; set => scale = value; }
         [NonSerialized]
         public PlanetData planetData;

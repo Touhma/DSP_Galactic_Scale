@@ -200,6 +200,7 @@ namespace GalacticScale.Generators
             barrenSatellite.VeinSettings.Algorithm = "GS2";
             barrenSatellite.CustomGeneration = true;
             barrenSatellite.ThemeType = EThemeType.Moon;
+            barrenSatellite.atmosphereMaterial.Params["_Intensity"] = 0f;
             barrenSatellite.Process();
 
             GSTheme dwarf = new GSTheme("DwarfPlanet", "Dwarf Planet", "Barren");
