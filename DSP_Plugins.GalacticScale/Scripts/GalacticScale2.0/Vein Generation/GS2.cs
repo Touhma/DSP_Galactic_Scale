@@ -12,23 +12,27 @@ namespace GalacticScale
             InitializeFromVeinSettings(gsPlanet);
             if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly)
             {
-                GS2.Log("Generating birth points");
-                gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next());// GenBirthPoints(gsPlanet);
+                GS2.Log("Generating birth points for Planet " + gsPlanet.Name);
+                //gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next());
+                GenBirthPoints(gsPlanet);
             }
-
+            GS2.Log("Adding Special Veins to Planet " + gsPlanet.Name);
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
             if (sketchOnly)
             {
+                GS2.Log("Returning (SketchOnly) Planet " + gsPlanet.Name);
                 return;
             }
-
+            
             if (GSSettings.BirthPlanet == gsPlanet)
             {
+                GS2.Log("Initializing Vein Vectors for Planet " + gsPlanet.Name);
                 InitBirthVeinVectors(gsPlanet);
             }
-
+            GS2.Log("Adding Veins to Planet " + gsPlanet.Name);
             AddVeinsToPlanetGS2(gsPlanet, CalculateVectorsGS2(gsPlanet));
+            GS2.Log($"{gsPlanet.Name} Vein Gen Complete");
         }
         public static void InitializeFromVeinSettings(GSPlanet gsPlanet)
         {
