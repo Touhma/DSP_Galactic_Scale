@@ -210,6 +210,7 @@ namespace GalacticScale.Generators
             sulfursea.terrainMaterial.Tint = new UnityEngine.Color(.8f, .7f, .6f, 1f);
             sulfursea.thumbMaterial.CopyFrom = "Gobi.thumbMat";
             sulfursea.minimapMaterial.CopyFrom = "Gobi.minimapMat";
+            sulfursea.WaterItemId = 1116;
             sulfursea.Process();
             giganticforest.Process();
             moltenworld.Process();
