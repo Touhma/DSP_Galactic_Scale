@@ -1,15 +1,7 @@
-﻿*
-!Directory.Build.props.example
-!galacticbundle
-!/**/
-!*.cs
-!*.csproj
-!GalacticScale.sln
 
-!.gitignore
-!README.md
-.NETFramework,Version=v4.8.AssemblyAttributes.cs
-
-!*/**/Release/**
-bin/
-obj/
+.idea*
+.vs*
+**/Debug/**
+GalacticScale.sln.DotSettings.user
+DSP_Plugins.GalacticScale/Directory.Build.props
+DSP_Plugins.GalacticScale/lib/**
