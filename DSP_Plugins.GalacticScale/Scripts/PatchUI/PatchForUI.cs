@@ -8,12 +8,12 @@ using System;
 
 namespace GalacticScale.Scripts.PatchUI
 {
-    [BepInPlugin("dsp.galactic-scale.ui", "Galactic Scale Plug-In - UI", "1.4.0")]
+    [BepInPlugin("dsp.galactic-scale.ui", "Galactic Scale Plug-In - UI", "1.4.2")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     public class PatchForUI : BaseUnityPlugin
     {
         public new static ManualLogSource Logger;
-        public static string Version = "1.4.0";
+        public static string Version = "1.4.2";
         public static AssetBundle bundle;
         public static class BCE
         {

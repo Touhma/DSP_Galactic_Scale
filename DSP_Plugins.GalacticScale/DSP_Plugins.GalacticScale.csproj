@@ -46,6 +46,9 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard">
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -102,6 +105,7 @@
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlatformSystem.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnPlayerAction_Build.cs" />
     <Compile Include="Scripts\PatchPlanetSize\PatchOnGameData.cs" />
+    <Compile Include="Scripts\PatchStarSystemGeneration\PatchOnUISpaceGuideCheckVisible.cs" />
     <Compile Include="Scripts\PatchUI\PatchOnUIPlanetDetail.cs" />
     <Compile Include="Scripts\PatchUI\PatchOnUIVersionText.cs" />
     <Compile Include="Scripts\PatchUI\PatchOnUIGameLoadingSplash.cs" />

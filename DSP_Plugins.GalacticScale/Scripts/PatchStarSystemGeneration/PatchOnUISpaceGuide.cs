@@ -23,12 +23,12 @@ namespace GalacticScale.Scripts.PatchStarSystemGeneration {
             return ReplaceLd10(instructions);
         }
 
-        [HarmonyTranspiler]
-        [HarmonyPatch("CheckVisible")]
-        public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            return ReplaceLd10(instructions);
-        }
+        //[HarmonyTranspiler]
+        //[HarmonyPatch("CheckVisible")]
+        //public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
+        //{
+        //    return ReplaceLd10(instructions);
+        //}
 
         public static IEnumerable<CodeInstruction> ReplaceLd10(IEnumerable<CodeInstruction> instructions)
         {
