@@ -554,7 +554,7 @@ namespace GalacticScale
             GS2.SavePreferences();
         }
 
-        private static void GalacticScaleTabClick()
+        public static void GalacticScaleTabClick()
         {
             UIRoot.instance.optionWindow.SetTabIndex(MainTabIndex, false);
             scrollview.gameObject.SetActive(true);

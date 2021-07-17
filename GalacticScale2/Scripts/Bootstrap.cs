@@ -58,6 +58,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnUIEscMenu));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGameLoadingSplash));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIMainMenu));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIOptionWindow));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIPlanetDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIResearchResultsWindow));
