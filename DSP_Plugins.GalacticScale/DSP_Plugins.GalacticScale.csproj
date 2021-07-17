@@ -205,6 +205,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\PlanetDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetCoroutine.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\PowerSystem\PatchOnPowerSystem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\RefreshDynamicProperties.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\Modeler.cs" />
@@ -367,7 +368,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />

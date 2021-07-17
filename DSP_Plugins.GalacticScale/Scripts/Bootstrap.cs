@@ -56,6 +56,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerFootsteps));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Fly));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Sail));
+            Harmony.CreateAndPatchAll(typeof(PatchOnPowerSystem));
             Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIAdvisorTip));
