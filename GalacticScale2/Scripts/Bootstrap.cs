@@ -14,11 +14,6 @@ namespace GalacticScale
         public new static ManualLogSource Logger;
 
         // Internal Variables
-        public static bool DebugReworkPlanetGen = false;
-        public static bool DebugReworkPlanetGenDeep = false;
-        public static bool DebugStarGen = false;
-        public static bool DebugStarGenDeep = false;
-        public static bool DebugStarNamingGen = false;
         public static Queue buffer = new Queue();
         public static PlanetData TeleportPlanet;
         public static StarData TeleportStar;
@@ -120,7 +115,7 @@ namespace GalacticScale
                 }
                 else
                 {
-                    buffer.Enqueue((data, logLevel, isActive));
+                    buffer.Enqueue((data, logLevel, true));
                 }
             }
         }

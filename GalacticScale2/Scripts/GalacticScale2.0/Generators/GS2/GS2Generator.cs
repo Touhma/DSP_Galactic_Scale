@@ -106,6 +106,7 @@ namespace GalacticScale.Generators
             {
                 if (birthStar.TelluricBodyCount < 2)
                 {
+                    if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")) Themes.AshenGelisol.Process();
                     var tiPlanet = birthStar.Planets.Add(new GSPlanet("Black Swan", "AshenGelisol",
                         GetStarPlanetSize(birthStar), GetOrbitGap(birthStar) * birthStar.PlanetCount, 0f, 100000f, 0f,
                         0f, 360f, 0f, -1f));

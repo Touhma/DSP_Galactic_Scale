@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSP_Plugins.GalacticScale", "DSP_Plugins.GalacticScale\DSP_Plugins.GalacticScale.csproj", "{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalacticScale2", "GalacticScale2\DSP_Plugins.GalacticScale.csproj", "{BD2A2BB8-F34B-4E0B-8E6C-F561D367E76D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,7 +20,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_AssemblyInfoFilename = DSP_Plugins.GalacticScale\Properties\AssemblyInfo.cs
+		BuildVersion_AssemblyInfoFilename = GalacticScale2\Properties\AssemblyInfo.cs
 		BuildVersion_StartDate = 2000/1/1
 		BuildVersion_UpdateFileVersion = True
 		BuildVersion_UpdateAssemblyVersion = True
