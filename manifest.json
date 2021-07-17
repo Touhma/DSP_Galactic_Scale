@@ -1,0 +1,9 @@
+﻿{
+  "name": "GalacticScale",
+  "version_number": "2.0.0",
+  "website_url": "https://github.com/Touhma/DSP_Plugins",
+  "description": "Custom Galaxy Generation, Planet Sizes, New Planet Themes & More!",
+  "dependencies": [
+    "xiaoye97-BepInEx-5.4.5"
+  ]
+}
