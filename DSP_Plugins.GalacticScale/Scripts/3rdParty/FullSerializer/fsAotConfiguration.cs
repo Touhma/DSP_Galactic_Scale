@@ -10,7 +10,38 @@ namespace GSSerializer
     {
         public enum AotState
         {
-            Default, Enabled, Disabled
+            Default,
+            Enabled,
+            Disabled
+        }
+
+        public List<Entry> aotTypes = new List<Entry>();
+        public string outputDirectory = "Assets/AotModels";
+
+        public bool TryFindEntry(Type type, out Entry result)
+        {
+            var searchFor = type.FullName;
+            foreach (var entry in aotTypes)
+                if (entry.FullTypeName == searchFor)
+                {
+                    result = entry;
+                    return true;
+                }
+
+            result = default;
+            return false;
+        }
+
+        public void UpdateOrAddEntry(Entry entry)
+        {
+            for (var i = 0; i < aotTypes.Count; ++i)
+                if (aotTypes[i].FullTypeName == entry.FullTypeName)
+                {
+                    aotTypes[i] = entry;
+                    return;
+                }
+
+            aotTypes.Add(entry);
         }
 
         [Serializable]
@@ -30,38 +61,6 @@ namespace GSSerializer
                 FullTypeName = type.FullName;
                 State = state;
             }
-        }
-        public List<Entry> aotTypes = new List<Entry>();
-        public string outputDirectory = "Assets/AotModels";
-
-        public bool TryFindEntry(Type type, out Entry result)
-        {
-            string searchFor = type.FullName;
-            foreach (Entry entry in aotTypes)
-            {
-                if (entry.FullTypeName == searchFor)
-                {
-                    result = entry;
-                    return true;
-                }
-            }
-
-            result = default(Entry);
-            return false;
-        }
-
-        public void UpdateOrAddEntry(Entry entry)
-        {
-            for (int i = 0; i < aotTypes.Count; ++i)
-            {
-                if (aotTypes[i].FullTypeName == entry.FullTypeName)
-                {
-                    aotTypes[i] = entry;
-                    return;
-                }
-            }
-
-            aotTypes.Add(entry);
         }
     }
 }

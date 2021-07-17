@@ -1,13 +1,14 @@
 ﻿#if !NO_UNITY
 using System;
 using System.Collections.Generic;
+using GSSerializer.Internal.DirectConverters;
 using UnityEngine;
 
 namespace GSSerializer
 {
     public partial class fsConverterRegistrar
     {
-        public static Internal.DirectConverters.RectOffset_DirectConverter Register_RectOffset_DirectConverter;
+        public static RectOffset_DirectConverter Register_RectOffset_DirectConverter;
     }
 }
 
@@ -50,7 +51,10 @@ namespace GSSerializer.Internal.DirectConverters
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new RectOffset();
+        public override object CreateInstance(fsData data, Type storageType)
+        {
+            return new RectOffset();
+        }
     }
 }
 #endif

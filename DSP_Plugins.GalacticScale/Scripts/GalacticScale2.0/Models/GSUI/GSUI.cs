@@ -1,33 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
 {
     public delegate void GSOptionCallback(Val o);
+
     public delegate void GSOptionPostfix();
 
     public class GSUI
     {
-        private string label;
-        private string key;
-        private iConfigurableGenerator generator;
+        private static readonly Dictionary<int, Color> colors = new Dictionary<int, Color>();
+        public GSOptionCallback callback;
+        private readonly iConfigurableGenerator generator;
+        public float increment = 1f;
+        private readonly string key;
+        public RectTransform RectTransform;
+
+        private GSUI()
+        {
+        }
+
+        public GSUI(string label, string key, string type, object data, GSOptionCallback callback,
+            GSOptionPostfix postfix = null, string tip = "")
+        {
+            var t = Utils.GetCallingType();
+            generator = Utils.GetConfigurableGeneratorInstance(t);
+            Label = label;
+            Type = type;
+            Data = data;
+            this.callback = callback;
+            if (postfix == null)
+                Postfix = delegate { };
+            else
+                Postfix = postfix;
+            Tip = tip;
+            //GS2.Warn("Created GSUI " + label);
+        }
+
+        public GSUI(iConfigurableGenerator generator, string key, string label, string type, object data,
+            GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+        {
+            this.generator = generator;
+            this.key = key;
+            Label = label;
+            Type = type;
+            Data = data;
+            this.callback = callback;
+            if (postfix == null)
+                Postfix = delegate { };
+            else
+                Postfix = postfix;
+            Tip = tip;
+        }
+
         private iConfigurableGenerator Generator
         {
             get
             {
                 if (generator != null) return generator;
-                GS2.Error($"GSUI ${label}Tried accessing Generator instance when Generator = null.");
+                GS2.Error($"GSUI ${Label}Tried accessing Generator instance when Generator = null.");
                 return null;
             }
         }
-        private Slider slider { get => RectTransform.GetComponentInChildren<Slider>(); }
-        public string Label { get => label; }
-        private string type;
-        public string Type { get => type; }
-        private object data;
-        public object Data { get => data; }
+
+        private Slider slider => RectTransform.GetComponentInChildren<Slider>();
+        public string Label { get; }
+
+        public string Type { get; }
+
+        public object Data { get; }
+
         public Val DefaultValue
         {
             get
@@ -35,157 +78,158 @@ namespace GalacticScale
                 switch (Type)
                 {
                     case "Slider":
-                        GSSliderConfig cfg = (Data is GSSliderConfig) ? (GSSliderConfig)data : new GSSliderConfig(-1, -1, -1);
+                        var cfg = Data is GSSliderConfig ? (GSSliderConfig) Data : new GSSliderConfig(-1, -1, -1);
                         return cfg.defaultValue;
                     case "Checkbox":
                         var bresult = GetBool(Data);
                         if (bresult.succeeded) return bresult.value;
-                        GS2.Warn($"No default value found for Checkbox {label}");
+                        GS2.Warn($"No default value found for Checkbox {Label}");
                         return false;
                     case "Button":
                         GS2.Error("Trying to get default value for button {label}");
                         return null;
                     case "Input":
-                        return data.ToString();
+                        return Data.ToString();
                     case "Combobox":
                         var cbresult = GetInt(Data);
                         if (cbresult.succeeded) return cbresult.value;
-                        GS2.Warn($"No default value found for Combobox {label}");
+                        GS2.Warn($"No default value found for Combobox {Label}");
                         return false;
                 }
-                GS2.Error($"Failed to return default value for {Type} {label}");
+
+                GS2.Error($"Failed to return default value for {Type} {Label}");
                 return null;
             }
         }
-        private bool disabled = false;
-        public bool Disabled { get => disabled; }
-        private string tip; // Not fully implemented in all ui items yet
-        public string Tip { get => tip; }
-        public RectTransform RectTransform;
-        public GSOptionCallback callback;
-        private GSOptionPostfix postfix;
-        public float increment = 1f;
-        public GSOptionPostfix Postfix { get => postfix; }
-        private static Dictionary<int, Color> colors = new Dictionary<int, Color>();
-        private GSUI() { }
-        public GSUI(string label, string key, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
-        {
-            Type t = Utils.GetCallingType();
-            this.generator = Utils.GetConfigurableGeneratorInstance(t);
-            this.label = label;
-            this.type = type;
-            this.data = data;
-            this.callback = callback;
-            if (postfix == null)
-            {
-                this.postfix = delegate { };
-            }
-            else
-            {
-                this.postfix = postfix;
-            }
-            this.tip = tip;
-            //GS2.Warn("Created GSUI " + label);
-        }
-        public GSUI(iConfigurableGenerator generator, string key, string label, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
-        {
-            this.generator = generator;
-            this.key = key;
-            this.label = label;
-            this.type = type;
-            this.data = data;
-            this.callback = callback;
-            if (postfix == null)
-            {
-                this.postfix = delegate { };
-            }
-            else
-            {
-                this.postfix = postfix;
-            }
-            this.tip = tip;
-        }
+
+        public bool Disabled { get; private set; }
+
+        public string Tip { get; }
+
+        public GSOptionPostfix Postfix { get; private set; }
+
         private (bool succeeded, float value) GetFloat(object o)
         {
             //GS2.Warn(label);
-            if (o is float) return (true, (float)o);
+            if (o is float) return (true, (float) o);
             //float result;
-            bool success = float.TryParse(o.ToString(), out float result);
+            var success = float.TryParse(o.ToString(), out var result);
             return (success, result);
         }
+
         private (bool succeeded, int value) GetInt(object o)
         {
-            GS2.Warn(label);
-            if (o is int) return (true, (int)o);
-            bool success = int.TryParse(o.ToString(), out int result);
+            GS2.Warn(Label);
+            if (o is int) return (true, (int) o);
+            var success = int.TryParse(o.ToString(), out var result);
             return (success, result);
         }
+
         private (bool succeeded, bool value) GetBool(object o)
         {
-            if (o is bool) return (true, (bool)o);
-            bool success = bool.TryParse(o.ToString(), out bool result);
+            if (o is bool) return (true, (bool) o);
+            var success = bool.TryParse(o.ToString(), out var result);
             return (success, result);
         }
-        public void Reset() => Set(DefaultValue);
+
+        public void Reset()
+        {
+            Set(DefaultValue);
+        }
+
         public bool Disable()
         {
             //GS2.Warn("Disabling element" + label);
-            if (disabled)
+            if (Disabled)
             {
                 GS2.Warn("Trying to disable UI Element that is already disabled");
                 return false;
             }
 
             var c = RectTransform.GetComponentsInChildren<Image>();
-            foreach (Image i in c)
+            foreach (var i in c)
             {
-                int id = i.GetInstanceID();
+                var id = i.GetInstanceID();
                 if (colors.ContainsKey(id)) colors[id] = i.color;
                 else colors.Add(id, i.color);
                 i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a / 2);
             }
-            switch (type)
+
+            switch (Type)
             {
-                case "Checkbox": RectTransform.GetComponentInChildren<Toggle>().interactable = false; disabled = true; return true;
-                case "Combobox": RectTransform.GetComponentInChildren<Button>().interactable = false; disabled = true; return true;
-                case "Button": RectTransform.GetComponentInChildren<Button>().interactable = false; disabled = true; return true;
-                case "Input": RectTransform.GetComponentInChildren<InputField>().interactable = false; disabled = true; return true;
-                case "Slider": RectTransform.GetComponentInChildren<Slider>().interactable = false; disabled = true; return true;
+                case "Checkbox":
+                    RectTransform.GetComponentInChildren<Toggle>().interactable = false;
+                    Disabled = true;
+                    return true;
+                case "Combobox":
+                    RectTransform.GetComponentInChildren<Button>().interactable = false;
+                    Disabled = true;
+                    return true;
+                case "Button":
+                    RectTransform.GetComponentInChildren<Button>().interactable = false;
+                    Disabled = true;
+                    return true;
+                case "Input":
+                    RectTransform.GetComponentInChildren<InputField>().interactable = false;
+                    Disabled = true;
+                    return true;
+                case "Slider":
+                    RectTransform.GetComponentInChildren<Slider>().interactable = false;
+                    Disabled = true;
+                    return true;
             }
+
             return false;
         }
+
         public bool Enable()
         {
             //GS2.Warn("Enabling element" + label);
-            if (!disabled)
+            if (!Disabled)
             {
                 GS2.Warn("Trying to disable UI Element that is already enabled");
                 return false;
             }
+
             var c = RectTransform.GetComponentsInChildren<Image>();
-            foreach (Image i in c)
+            foreach (var i in c)
             {
-                int id = i.GetInstanceID();
+                var id = i.GetInstanceID();
                 i.color = colors[id];
             }
-            switch (type)
+
+            switch (Type)
             {
-                case "Checkbox": RectTransform.GetComponentInChildren<Toggle>().interactable = true; disabled = false; return true;
-                case "Combobox": RectTransform.GetComponentInChildren<Button>().interactable = true; disabled = false; return true;
-                case "Button": RectTransform.GetComponentInChildren<Button>().interactable = true; disabled = false; return true;
-                case "Input": RectTransform.GetComponentInChildren<InputField>().interactable = true; disabled = false; return true;
-                case "Slider": RectTransform.GetComponentInChildren<Slider>().interactable = true; disabled = false; return true;
+                case "Checkbox":
+                    RectTransform.GetComponentInChildren<Toggle>().interactable = true;
+                    Disabled = false;
+                    return true;
+                case "Combobox":
+                    RectTransform.GetComponentInChildren<Button>().interactable = true;
+                    Disabled = false;
+                    return true;
+                case "Button":
+                    RectTransform.GetComponentInChildren<Button>().interactable = true;
+                    Disabled = false;
+                    return true;
+                case "Input":
+                    RectTransform.GetComponentInChildren<InputField>().interactable = true;
+                    Disabled = false;
+                    return true;
+                case "Slider":
+                    RectTransform.GetComponentInChildren<Slider>().interactable = true;
+                    Disabled = false;
+                    return true;
             }
+
             return false;
         }
+
         public bool Set(GSSliderConfig cfg)
         {
             //GS2.Warn("Setting Slider? : " + label);
-            if (RectTransform == null)
-            {
-                return false;
-            }
-            Slider slider = RectTransform.GetComponentInChildren<Slider>();
+            if (RectTransform == null) return false;
+            var slider = RectTransform.GetComponentInChildren<Slider>();
             if (slider == null) return false;
             //GS2.Warn("Slider Setting...");
             slider.minValue = cfg.minValue >= 0 ? cfg.minValue : slider.minValue;
@@ -194,15 +238,13 @@ namespace GalacticScale
             //GS2.Warn("Slider Set.");
             return true;
         }
+
         public bool Set(Val o)
         {
             //GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {label}");
 
-            if (RectTransform == null)
-            {
-                return false;
-            }
-            switch (type)
+            if (RectTransform == null) return false;
+            switch (Type)
             {
                 case "Slider":
                     //GS2.Warn("Setting Slider " + label);
@@ -217,14 +259,15 @@ namespace GalacticScale
                     //    GS2.Error($"Failed to parse slider Set method input of {o} for slider '{label}'");
                     //    return false;
                     //}
-                    RectTransform.GetComponentInChildren<Slider>().value = o;//sliderResult.value;
+                    RectTransform.GetComponentInChildren<Slider>().value = o; //sliderResult.value;
                     return true;
                 case "Input":
                     if (o == null)
                     {
-                        GS2.Error($"Failed to set input {label} as value was null");
+                        GS2.Error($"Failed to set input {Label} as value was null");
                         return false;
                     }
+
                     RectTransform.GetComponentInChildren<InputField>().text = o;
                     return true;
                 case "Checkbox":
@@ -234,13 +277,14 @@ namespace GalacticScale
                     //    GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
                     //    return false;
                     //}
-                    Toggle toggle = RectTransform.GetComponentInChildren<Toggle>();
+                    var toggle = RectTransform.GetComponentInChildren<Toggle>();
                     if (toggle is null)
                     {
-                        GS2.Error($"Failed to find Toggle for {label}");
+                        GS2.Error($"Failed to find Toggle for {Label}");
                         return false;
                     }
-                    toggle.isOn = o;// checkboxResult.value;
+
+                    toggle.isOn = o; // checkboxResult.value;
                     return true;
                 case "Combobox":
                     //var comboResult = GetInt(o);
@@ -254,176 +298,227 @@ namespace GalacticScale
                     //    GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value < 0");
                     //    return false;
                     //}
-                    UIComboBox cb = RectTransform.GetComponentInChildren<UIComboBox>();
+                    var cb = RectTransform.GetComponentInChildren<UIComboBox>();
                     if (cb is null)
                     {
-                        GS2.Error($"Failed to find UICombobox for {label}");
+                        GS2.Error($"Failed to find UICombobox for {Label}");
                         return false;
                     }
+
                     if (o > cb.Items.Count - 1)
                     {
-                        GS2.Error($"Failed to set {o} for combobox '{label}': Value > Item Count");
+                        GS2.Error($"Failed to set {o} for combobox '{Label}': Value > Item Count");
                         return false;
                     }
+
                     cb.itemIndex = o;
                     return true;
             }
+
             return false;
         }
+
         public bool SetItems(List<string> items)
         {
-            if (type != "Combobox")
+            if (Type != "Combobox")
             {
                 GS2.Warn("Trying to Set Items on non Combobox UI Element");
                 return false;
             }
+
             RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
             return true;
         }
 
         // Slider (Integer, no key)
-        public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+        public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback,
+            GSOptionPostfix postfix = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, postfix, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, tip);
             instance.callback = callback;
-            instance.postfix = postfix;
+            instance.Postfix = postfix;
             return instance;
         }
+
         // Slider for Planet Sizes with key
-        public static GSUI PlanetSizeSlider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, string tip = "")
+        public static GSUI PlanetSizeSlider(string label, float min, float val, float max, string key,
+            GSOptionCallback callback = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, null, tip);
-            GSOptionCallback defaultCallback = instance.CreateDefaultCallback(callback);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
+            var defaultCallback = instance.CreateDefaultCallback(callback);
             instance.callback = CreatePlanetSizeCallback(instance, defaultCallback);
-            instance.postfix = instance.CreateDefaultPostfix();
+            instance.Postfix = instance.CreateDefaultPostfix();
             return instance;
         }
+
         // Slider for Planet Sizes without key
-        public static GSUI PlanetSizeSlider(string label, float min, float val, float max, GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "")
+        public static GSUI PlanetSizeSlider(string label, float min, float val, float max,
+            GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, callback, postfix, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, callback, postfix, tip);
             instance.callback = CreatePlanetSizeCallback(instance, callback);
-            instance.postfix = postfix;
+            instance.Postfix = postfix;
             return instance;
         }
+
         //Slider with preferences Key
-        public static GSUI Slider(string label, float min, float val, float max, string key, GSOptionCallback callback = null, string tip = "")
+        public static GSUI Slider(string label, float min, float val, float max, string key,
+            GSOptionCallback callback = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, null, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix = instance.CreateDefaultPostfix();
+            instance.Postfix = instance.CreateDefaultPostfix();
             return instance;
         }
+
         //Slider with increment and preferences Key
-        public static GSUI Slider(string label, float min, float val, float max, float increment, string key, GSOptionCallback callback = null, string tip = "")
+        public static GSUI Slider(string label, float min, float val, float max, float increment, string key,
+            GSOptionCallback callback = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, null, tip);
-            GSOptionCallback defaultCallback = instance.CreateDefaultCallback(callback);
-            GSOptionCallback CB = defaultCallback;
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
+            var defaultCallback = instance.CreateDefaultCallback(callback);
+            var CB = defaultCallback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
             //if (planetSizes) CB = CreatePlanetSizeCallback(instance, defaultCallback);
             instance.callback = CB;
-            instance.postfix = instance.CreateDefaultPostfix();
+            instance.Postfix = instance.CreateDefaultPostfix();
             instance.increment = increment;
             return instance;
         }
+
         //Slider with increment and no Key
-        public static GSUI Slider(string label, float min, float val, float max, float increment, GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "")
+        public static GSUI Slider(string label, float min, float val, float max, float increment,
+            GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider", new GSSliderConfig() { minValue = min, maxValue = max, defaultValue = val }, null, postfix, tip);
-            GSOptionCallback CB = callback;
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, tip);
+            var CB = callback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, callback);
             instance.callback = CB;
             instance.increment = increment;
             return instance;
         }
-        public static GSUI Checkbox(string label, bool value, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+
+        public static GSUI Checkbox(string label, bool value, GSOptionCallback callback, GSOptionPostfix postfix = null,
+            string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Checkbox", value, callback, postfix, tip);
-            return instance;
-        }
-        public static GSUI Checkbox(string label, bool defaultValue, string key, GSOptionCallback callback = null, string tip = "")
-        {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Checkbox", defaultValue, null, null, tip);
-            instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix = instance.CreateDefaultPostfix();
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Checkbox", value, callback,
+                postfix, tip);
             return instance;
         }
 
-        public static GSUI Combobox(string label, List<string> items, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+        public static GSUI Checkbox(string label, bool defaultValue, string key, GSOptionCallback callback = null,
+            string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Combobox", items, callback, postfix, tip);
-            return instance;
-        }
-        public static GSUI Combobox(string label, List<string> items, int defaultValue, string key, GSOptionCallback callback = null, string tip = "")
-        {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Combobox", items, null, null, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Checkbox", defaultValue,
+                null, null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix = instance.CreateDefaultPostfix();
+            instance.Postfix = instance.CreateDefaultPostfix();
             return instance;
         }
-        public static GSUI Input(string label, string value, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+
+        public static GSUI Combobox(string label, List<string> items, GSOptionCallback callback,
+            GSOptionPostfix postfix = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Input", value, callback, postfix, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Combobox", items, callback,
+                postfix, tip);
             return instance;
         }
-        public static GSUI Input(string label, string defaultValue, string key, GSOptionCallback callback = null, string tip = "")
+
+        public static GSUI Combobox(string label, List<string> items, int defaultValue, string key,
+            GSOptionCallback callback = null, string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Input", defaultValue, null, null, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Combobox", items, null,
+                null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix = instance.CreateDefaultPostfix();
+            instance.Postfix = instance.CreateDefaultPostfix();
             return instance;
         }
-        public static GSUI Button(string label, string caption, GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+
+        public static GSUI Input(string label, string value, GSOptionCallback callback, GSOptionPostfix postfix = null,
+            string tip = "")
         {
-            Type t = Utils.GetCallingType();
-            GSUI instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Button", caption, callback, null, tip);
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Input", value, callback,
+                postfix, tip);
             return instance;
         }
-        private static GSOptionCallback CreateIncrementCallback(float increment, GSUI instance, GSOptionCallback existingCallback)
+
+        public static GSUI Input(string label, string defaultValue, string key, GSOptionCallback callback = null,
+            string tip = "")
         {
-            return (o) =>
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Input", defaultValue, null,
+                null, tip);
+            instance.callback = instance.CreateDefaultCallback(callback);
+            instance.Postfix = instance.CreateDefaultPostfix();
+            return instance;
+        }
+
+        public static GSUI Button(string label, string caption, GSOptionCallback callback,
+            GSOptionPostfix postfix = null, string tip = "")
+        {
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Button", caption, callback,
+                null, tip);
+            return instance;
+        }
+
+        private static GSOptionCallback CreateIncrementCallback(float increment, GSUI instance,
+            GSOptionCallback existingCallback)
+        {
+            return o =>
             {
-                float value = 0.1f;
-                if (!float.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse increment {o} for slider {instance.label}");
+                var value = 0.1f;
+                if (!float.TryParse(o.ToString(), out value))
+                {
+                    GS2.Error($"Failed to parse increment {o} for slider {instance.Label}");
+                }
                 else
                 {
-                    GSSliderConfig cfg = (GSSliderConfig)instance.data;
-                    if (value >= cfg.maxValue - (increment / 2))
+                    var cfg = (GSSliderConfig) instance.Data;
+                    if (value >= cfg.maxValue - increment / 2)
                     {
                         //GS2.Warn($"Max hit on {label}");
 
-                        float iMax = cfg.maxValue;
+                        var iMax = cfg.maxValue;
                         instance.Set(iMax);
                         existingCallback(iMax);
                     }
                     else
                     {
                         //GS2.Warn($"Executing increment test of {increment} on {label}");
-                        existingCallback(value - (value % increment));
-                        if (value - (value % increment) != instance.slider.value) instance.Set(value - (value % increment));
+                        existingCallback(value - value % increment);
+                        if (value - value % increment != instance.slider.value) instance.Set(value - value % increment);
                     }
                 }
             };
         }
+
         private static GSOptionCallback CreatePlanetSizeCallback(GSUI instance, GSOptionCallback existingCallback)
         {
-            return (o) =>
+            return o =>
             {
-                int value = 200;
-                if (!int.TryParse(o.ToString(), out value)) GS2.Error($"Failed to parse planet size {o} for slider {instance.label}");
+                var value = 200;
+                if (!int.TryParse(o.ToString(), out value))
+                {
+                    GS2.Error($"Failed to parse planet size {o} for slider {instance.Label}");
+                }
                 else
                 {
                     float parsedSize = Utils.ParsePlanetSize(value);
@@ -432,25 +527,25 @@ namespace GalacticScale
                 }
             };
         }
+
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null)
         {
-            return (o) =>
+            return o =>
             {
                 if (Generator is null)
                 {
-                    GS2.Error($"{label} Trying to create Default Callback when Generator = null");
+                    GS2.Error($"{Label} Trying to create Default Callback when Generator = null");
                     return;
                 }
-                GSGenPreferences p = Generator.Export();
+
+                var p = Generator.Export();
                 p.Set(key, o);
                 Generator.Import(p);
                 //GS2.Warn($"Executing default callback on {label}");
-                if (callback is GSOptionCallback)
-                {
-                    callback(o);
-                }
+                if (callback is GSOptionCallback) callback(o);
             };
         }
+
         private GSOptionPostfix CreateDefaultPostfix()
         {
             return () =>
@@ -459,34 +554,33 @@ namespace GalacticScale
 
                 if (Generator is null)
                 {
-                    GS2.Error($"{label} Trying to create Default Postfix when Generator = null");
+                    GS2.Error($"{Label} Trying to create Default Postfix when Generator = null");
                     return;
                 }
+
                 //GS2.Log($"About to get for {label}");
-                Val value = Generator.Export().Get(key);
+                var value = Generator.Export().Get(key);
                 //GS2.Log($"Value:{value} is null?:{value == null} isNull:{value.IsNull()} {value.empty}");
                 //GS2.Log($"Got");
                 if (value == null)
-                {
                     //GS2.Warn($"Setting value which was null for {label} to {DefaultValue}");
                     value = DefaultValue;
-                }
                 if (value != null) Set(value);
-                else GS2.Log($"Caution: Preference value for {label} not found.");
+                else GS2.Log($"Caution: Preference value for {Label} not found.");
             };
         }
+
         private void SetPreference(object value)
         {
             if (Generator is null)
             {
-                GS2.Error($"{label} Trying to set preference '{key}' when Generator = null");
+                GS2.Error($"{Label} Trying to set preference '{key}' when Generator = null");
                 return;
             }
-            GSGenPreferences p = Generator.Export();
+
+            var p = Generator.Export();
             p.Set(key, value);
             Generator.Import(p);
         }
-
     }
-
 }

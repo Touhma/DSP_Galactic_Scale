@@ -1,13 +1,14 @@
 ﻿#if !NO_UNITY
 using System;
 using System.Collections.Generic;
+using GSSerializer.Internal.DirectConverters;
 using UnityEngine;
 
 namespace GSSerializer
 {
     public partial class fsConverterRegistrar
     {
-        public static Internal.DirectConverters.GUIStyle_DirectConverter Register_GUIStyle_DirectConverter;
+        public static GUIStyle_DirectConverter Register_GUIStyle_DirectConverter;
     }
 }
 
@@ -160,7 +161,10 @@ namespace GSSerializer.Internal.DirectConverters
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new GUIStyle();
+        public override object CreateInstance(fsData data, Type storageType)
+        {
+            return new GUIStyle();
+        }
     }
 }
 #endif

@@ -6,6 +6,7 @@ namespace GalacticScale.Generators
 {
     public class SizeTest : iGenerator
     {
+        public bool DisableStarCountSlider => false;
         public string Name => "SizeTest";
 
         public string Author => "innominata";
@@ -15,18 +16,16 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.SizeTest";
-        public GSGeneratorConfig Config => config;
+        public GSGeneratorConfig Config { get; } = new GSGeneratorConfig();
 
-        public bool DisableStarCountSlider => false;
-        private readonly GSGeneratorConfig config = new GSGeneratorConfig();
         public void Init()
         {
             //GS2.Log("Spiral2:Initializing");
-            config.DisableSeedInput = true;
-            config.DisableStarCountSlider = false;
-            config.MaxStarCount = 1;
-            config.MinStarCount = 1;
-            config.DefaultStarCount = 1;
+            Config.DisableSeedInput = true;
+            Config.DisableStarCountSlider = false;
+            Config.MaxStarCount = 1;
+            Config.MinStarCount = 1;
+            Config.DefaultStarCount = 1;
             //GSTheme beach = new GSTheme("OceanWorld");
             //beach.name = "Beach";
             ////beach.oceanTint = UnityEngine.Color.green;
@@ -56,28 +55,30 @@ namespace GalacticScale.Generators
             //    temp.Algo = i;
             //    temp.Process();
             //}
-
         }
 
 
-        public void Generate(int starCount) => generate(starCount);
+        public void Generate(int starCount)
+        {
+            generate(starCount);
+        }
         ////////////////////////////////////////////////////////////////////
 
         public double getZ(Vector2 xy)
         {
-            float dist = Vector2.SqrMagnitude(xy);
-            return (1 + 5 * (float)Math.Exp(-1 * ((dist * dist) / 500f)));
+            var dist = Vector2.SqrMagnitude(xy);
+            return 1 + 5 * (float) Math.Exp(-1 * (dist * dist / 500f));
         }
 
         public void generate(int starCount)
         {
             //GS2.Log("Spiral2:Creating New Settings");
 
-            List<VectorLF3> positions = new List<VectorLF3>();
+            var positions = new List<VectorLF3>();
 
 
-            GS2.Random random = new GS2.Random(GSSettings.Seed);
-            List<VectorLF3> points = new List<VectorLF3>();
+            var random = new GS2.Random(GSSettings.Seed);
+            var points = new List<VectorLF3>();
 
             //float p = 0.05f;
             //float a = 10f; //higher = less twist
@@ -113,12 +114,9 @@ namespace GalacticScale.Generators
             //    points.Add(new VectorLF3(x3 + rand5, getZ(new Vector2(x3, y3)), y3 + rand6));
             //    points.Add(new VectorLF3(x4 + rand7, getZ(new Vector2(x4, y4)), y4 + rand8));
             //    GS2.Log("Zheight for "  + " is " + getZ(new Vector2(x1, y1)) + " " + x1+" "+y1);
-            List<Vector2> vectors = GenerateGalaxy(1020, 2, 3f, 0.6d, 2);
+            var vectors = GenerateGalaxy(1020, 2, 3f, 0.6d, 2);
             //GS2.Log("heh" + vectors.Count);
-            foreach (Vector2 v in vectors)
-            {
-                positions.Add(new VectorLF3(v.x * 20, 0, v.y * 20));
-            }
+            foreach (var v in vectors) positions.Add(new VectorLF3(v.x * 20, 0, v.y * 20));
             //GS2.Log(positions.Count.ToString());
 
             //int remaining = starCount;
@@ -137,11 +135,8 @@ namespace GalacticScale.Generators
             //positions.Sort(VLF3Sort);
 
 
-
-
-
             //beach.InitTheme(Themes.OceanWorld);
-            GSPlanets planets = new GSPlanets();
+            var planets = new GSPlanets();
             //{
             //new GSPlanet("Beach", "Beach", 180, 3f, -1, -1, -1, 5f, -1, -1, -1, 1f, null),
             //new GSPlanet("Mediterranian", "Mediterranian", 80, 3f, -1, -1, -1, 1, -1, -1, -1, -1, null),
@@ -165,18 +160,18 @@ namespace GalacticScale.Generators
             //new GSPlanet("Ocean", "Ocean", 80, 3f, -1, -1, -1, 240, -1, -1, -1, -1, null),
             //};
             //for (var i = 0; i < 1; i++) {
-            planets.Add(new GSPlanet("50", "Mediterranean", 50, 2f, -1, -1, 2f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("60", "Mediterranean", 50, 2f, -1, -1, 1f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("70", "Mediterranean", 50, 2f, -1, -1, 3f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("80", "Mediterranean", 50, 2f, -1, -1, 4f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("90", "Mediterranean", 50, 2f, -1, -1, 5f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("100", "Mediterranean", 50, 2f, -1, -1, 6f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("130", "Mediterranean", 50, 2f, -1, -1, 8f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("50", "Mediterranean", 50, 2f, -1, -1, 2f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("60", "Mediterranean", 50, 2f, -1, -1, 1f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("70", "Mediterranean", 50, 2f, -1, -1, 3f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("80", "Mediterranean", 50, 2f, -1, -1, 4f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("90", "Mediterranean", 50, 2f, -1, -1, 5f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("100", "Mediterranean", 50, 2f, -1, -1, 6f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("130", "Mediterranean", 50, 2f, -1, -1, 8f, -1, -1, -1, 1f));
 
-            planets.Add(new GSPlanet("150", "Mediterranean", 50, 2f, -1, -1, 12f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("150", "Mediterranean", 50, 2f, -1, -1, 12f, -1, -1, -1, 1f));
 
-            planets.Add(new GSPlanet("200", "Mediterranean", 50, 2f, -1, -1, 22f, -1, -1, -1, 1f, null));
-            planets.Add(new GSPlanet("300", "Mediterranean", 50, 2f, -1, -1, 32f, -1, -1, -1, 1f, null));
+            planets.Add(new GSPlanet("200", "Mediterranean", 50, 2f, -1, -1, 22f, -1, -1, -1, 1f));
+            planets.Add(new GSPlanet("300", "Mediterranean", 50, 2f, -1, -1, 32f, -1, -1, -1, 1f));
 
 
             //}
@@ -196,38 +191,40 @@ namespace GalacticScale.Generators
             //    //GSSettings.Stars[i].Name = "CF" + GSSettings.Stars[i].classFactor + "-" + e.ToString();
             //    //GS2.Log("Done" );
             //}
-
         }
 
-        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread, double starsAtCenterRatio)
+        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread,
+            double starsAtCenterRatio)
         {
-            List<Vector2> result = new List<Vector2>();
-            for (int i = 0; i < numOfArms; i++)
-            {
-                result.AddRange(GenerateArm(numOfStars / numOfArms, i / (float)numOfArms, spin, armSpread, starsAtCenterRatio));
-            }
+            var result = new List<Vector2>();
+            for (var i = 0; i < numOfArms; i++)
+                result.AddRange(GenerateArm(numOfStars / numOfArms, i / (float) numOfArms, spin, armSpread,
+                    starsAtCenterRatio));
             return result;
         }
 
-        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio)
+        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread,
+            double starsAtCenterRatio)
         {
-            List<Vector2> result = new List<Vector2>();
-            GS2.Random random = new GS2.Random(GSSettings.Seed);
+            var result = new List<Vector2>();
+            var random = new GS2.Random(GSSettings.Seed);
 
-            for (int i = 0; i < numOfStars; i++)
+            for (var i = 0; i < numOfStars; i++)
             {
                 //GS2.Log(i + " / " + numOfStars);
-                double part = i / (double)numOfStars;
+                var part = i / (double) numOfStars;
                 part = Math.Pow(part, starsAtCenterRatio);
 
-                float distanceFromCenter = (float)part;
-                double position = (part * spin + rotation) * Math.PI * 2;
+                var distanceFromCenter = (float) part;
+                var position = (part * spin + rotation) * Math.PI * 2;
 
-                double xFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) * armSpread;
-                double yFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) * armSpread;
+                var xFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) *
+                                   armSpread;
+                var yFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) *
+                                   armSpread;
 
-                float resultX = (float)Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float)xFluctuation;
-                float resultY = (float)Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float)yFluctuation;
+                var resultX = (float) Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float) xFluctuation;
+                var resultY = (float) Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float) yFluctuation;
 
                 result.Add(new Vector2(resultX, resultY));
             }
@@ -237,39 +234,23 @@ namespace GalacticScale.Generators
 
         public static double Pow3Constrained(double x)
         {
-            double value = Math.Pow(x - 0.5, 3) * 4 + 0.5d;
+            var value = Math.Pow(x - 0.5, 3) * 4 + 0.5d;
             return Math.Max(Math.Min(1, value), 0);
         }
 
         public static int VLF3Sort(VectorLF3 a, VectorLF3 b)
         {
-            if (a == null && b == null)
-            {
-                return 0;
-            }
+            if (a == null && b == null) return 0;
 
-            if (a == null)
-            {
-                return -1;
-            }
+            if (a == null) return -1;
 
-            if (b == null)
-            {
-                return 1;
-            }
+            if (b == null) return 1;
 
-            if (a.magnitude == b.magnitude)
-            {
-                return 0;
-            }
+            if (a.magnitude == b.magnitude) return 0;
 
-            if (a.magnitude > b.magnitude)
-            {
-                return 1;
-            }
+            if (a.magnitude > b.magnitude) return 1;
 
             return -1;
         }
-
     }
 }

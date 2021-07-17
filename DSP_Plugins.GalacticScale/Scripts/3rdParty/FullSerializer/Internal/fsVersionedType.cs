@@ -5,26 +5,33 @@ namespace GSSerializer.Internal
     public struct fsVersionedType
     {
         /// <summary>
-        /// The direct ancestors that this type can import.
+        ///     The direct ancestors that this type can import.
         /// </summary>
         public fsVersionedType[] Ancestors;
 
         /// <summary>
-        /// The identifying string that is unique among all ancestors.
+        ///     The identifying string that is unique among all ancestors.
         /// </summary>
         public string VersionString;
 
         /// <summary>
-        /// The modeling type that this versioned type maps back to.
+        ///     The modeling type that this versioned type maps back to.
         /// </summary>
         public Type ModelType;
 
         /// <summary>
-        /// Migrate from an instance of an ancestor.
+        ///     Migrate from an instance of an ancestor.
         /// </summary>
-        public object Migrate(object ancestorInstance) => Activator.CreateInstance(ModelType, ancestorInstance);
+        public object Migrate(object ancestorInstance)
+        {
+            return Activator.CreateInstance(ModelType, ancestorInstance);
+        }
 
-        public override string ToString() => "fsVersionedType [ModelType=" + ModelType + ", VersionString=" + VersionString + ", Ancestors.Length=" + Ancestors.Length + "]";
+        public override string ToString()
+        {
+            return "fsVersionedType [ModelType=" + ModelType + ", VersionString=" + VersionString +
+                   ", Ancestors.Length=" + Ancestors.Length + "]";
+        }
 
         public static bool operator ==(fsVersionedType a, fsVersionedType b)
         {
@@ -40,9 +47,12 @@ namespace GSSerializer.Internal
         {
             return
                 obj is fsVersionedType &&
-                ModelType == ((fsVersionedType)obj).ModelType;
+                ModelType == ((fsVersionedType) obj).ModelType;
         }
 
-        public override int GetHashCode() => ModelType.GetHashCode();
+        public override int GetHashCode()
+        {
+            return ModelType.GetHashCode();
+        }
     }
 }

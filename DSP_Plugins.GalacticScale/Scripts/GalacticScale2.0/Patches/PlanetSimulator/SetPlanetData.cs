@@ -1,13 +1,13 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
 namespace GalacticScale
 {
     public partial class PatchOnPlanetSimulator
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetSimulator), "SetPlanetData")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetSimulator), "SetPlanetData")]
         public static bool SetPlanetData(ref PlanetSimulator __instance, ref Transform ___lookCamera,
             ref UniverseSimulator ___universe, ref StarSimulator ___star, PlanetData planet)
         {
@@ -21,13 +21,9 @@ namespace GalacticScale
                 __instance.atmoTrans0.parent = __instance.transform;
                 __instance.atmoTrans0.localPosition = Vector3.zero;
                 if (planet.GetScaleFactored() >= 1)
-                {
                     __instance.atmoTrans0.localScale *= planet.GetScaleFactored();
-                }
                 else
-                {
                     __instance.atmoTrans0.localScale /= planet.GetScaleFactored();
-                }
 
                 var primitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 primitive.layer = 31;

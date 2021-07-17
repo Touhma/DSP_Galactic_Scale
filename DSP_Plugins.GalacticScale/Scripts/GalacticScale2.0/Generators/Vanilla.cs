@@ -16,12 +16,10 @@
 
         public void Init()
         {
-
         }
 
         public void Generate(int starCount)
         {
-
         }
     }
 }

@@ -2,23 +2,23 @@
 {
     public static partial class GS2
     {
-        public static StarData CreateStar(int index, Random random) => CreateStar(galaxy, index + 1, random);
+        public static StarData CreateStar(int index, Random random)
+        {
+            return CreateStar(galaxy, index + 1, random);
+        }
 
         public static StarData CreateStar(GalaxyData galaxy, int id, Random random)
         {
-            StarData starData = new StarData();
-            int index = id - 1;
-            GSStar star = GSSettings.Stars[index];
+            var starData = new StarData();
+            var index = id - 1;
+            var star = GSSettings.Stars[index];
             star.assignedIndex = index;
-            if (star.Seed < 0)
-            {
-                star.Seed = random.Next();
-            }
+            if (star.Seed < 0) star.Seed = random.Next();
 
             gsStars.Add(id, star);
             starData.galaxy = galaxy;
             starData.index = index;
-            starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
+            starData.level = galaxy.starCount > 1 ? starData.index / (float) (galaxy.starCount - 1) : 0.0f;
             starData.id = id;
             //GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
             starData.seed = star.Seed;

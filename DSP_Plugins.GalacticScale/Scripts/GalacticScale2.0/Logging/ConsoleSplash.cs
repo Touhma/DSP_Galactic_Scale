@@ -8,28 +8,32 @@ namespace GalacticScale
         {
             if (!BCE.disabled)
             {
-                BCE.console.WriteLine("┌─────────────────────────────────────────────────────────────────────────┐", ConsoleColor.Red);
-                BCE.console.Write("│", ConsoleColor.Red);
-                BCE.console.Write("  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                ", ConsoleColor.White);
-                BCE.console.Write("│\n", ConsoleColor.Red);
-                BCE.console.Write("│", ConsoleColor.Red);
-                BCE.console.Write("  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤                                 ", ConsoleColor.Gray);
-                BCE.console.Write("│\n", ConsoleColor.Red);
-                BCE.console.Write("│", ConsoleColor.Red);
-                BCE.console.Write("  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ ", ConsoleColor.DarkGray);
-                BCE.console.Write("Version " + Version + " Initializing  ", ConsoleColor.White);
-                BCE.console.Write("│\n", ConsoleColor.Red);
-                BCE.console.WriteLine("└─────────────────────────────────────────────────────────────────────────┘", ConsoleColor.Red);
+                BCE.Console.WriteLine("┌─────────────────────────────────────────────────────────────────────────┐",
+                    ConsoleColor.Red);
+                BCE.Console.Write("│", ConsoleColor.Red);
+                BCE.Console.Write("  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                ",
+                    ConsoleColor.White);
+                BCE.Console.Write("│\n", ConsoleColor.Red);
+                BCE.Console.Write("│", ConsoleColor.Red);
+                BCE.Console.Write("  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤                                 ",
+                    ConsoleColor.Gray);
+                BCE.Console.Write("│\n", ConsoleColor.Red);
+                BCE.Console.Write("│", ConsoleColor.Red);
+                BCE.Console.Write("  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ ", ConsoleColor.DarkGray);
+                BCE.Console.Write("Version " + Version + " Initializing  ", ConsoleColor.White);
+                BCE.Console.Write("│\n", ConsoleColor.Red);
+                BCE.Console.WriteLine("└─────────────────────────────────────────────────────────────────────────┘",
+                    ConsoleColor.Red);
             }
             else
             {
                 //Bootstrap.Debug("Galactic Scale Version " + Version + " loading...", BepInEx.Logging.LogLevel.Message, true); // Failsafe if BCE not present
-                Bootstrap.Debug("┌─────────────────────────────────────────────────────────────────────────┐"); // Failsafe if BCE not present
+                Bootstrap.Debug(
+                    "┌─────────────────────────────────────────────────────────────────────────┐"); // Failsafe if BCE not present
                 Bootstrap.Debug("│  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                │");
                 Bootstrap.Debug("│  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤                                 │");
                 Bootstrap.Debug("│  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ Version " + Version + " Initializing  │");
                 Bootstrap.Debug("└─────────────────────────────────────────────────────────────────────────┘");
-
             }
         }
     }

@@ -4,6 +4,8 @@ namespace GalacticScale.Generators
 {
     public class TintTest : iConfigurableGenerator
     {
+        ////////////////////////////////////////////////////////////////////
+        public GSOptions options = new GSOptions();
         public string Name => "CrashTest";
 
         public string Author => "innominata";
@@ -13,13 +15,12 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.tinttest";
-        public GSGeneratorConfig Config => config;
+        public GSGeneratorConfig Config { get; } = new GSGeneratorConfig();
 
         //public bool DisableStarCountSlider => false;
 
         public GSOptions Options => options;
 
-        private readonly GSGeneratorConfig config = new GSGeneratorConfig();
         //public GSPlanets planets = new GSPlanets();
         //public Material oceanMat;
         //private float r = 1f;
@@ -148,13 +149,22 @@ namespace GalacticScale.Generators
             //planets[planets.Count - 1].Moons.Add(new GSPlanet("TintIceGiant" + c.Key, "TintIceGiant" + c.Key, 100, .1f, -1, -1, 10000f, 180, -1, -1, -1, -1, null));
             //i += 1;
             //}
-
         }
 
 
-        public void Generate(int starCount) => throw new Exception("Doh");//generate(starCount);
-        ////////////////////////////////////////////////////////////////////
-        public GSOptions options = new GSOptions();
+        public void Generate(int starCount)
+        {
+            throw new Exception("Doh"); //generate(starCount);
+        }
+
+        public void Import(GSGenPreferences preferences)
+        {
+        }
+
+        public GSGenPreferences Export()
+        {
+            return new GSGenPreferences();
+        }
 
 
         public void generate(int starCount)
@@ -197,12 +207,5 @@ namespace GalacticScale.Generators
             ////}
             //GS2.DumpObjectToJson(path, GSSettings.Instance);
         }
-
-        public void Import(GSGenPreferences preferences)
-        {
-
-        }
-
-        public GSGenPreferences Export() => new GSGenPreferences();
     }
 }

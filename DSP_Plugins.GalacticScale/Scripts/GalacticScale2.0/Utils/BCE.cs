@@ -3,62 +3,45 @@ using System.Reflection;
 
 namespace GalacticScale
 {
+    // ReSharper disable once InconsistentNaming
     public static class BCE
     {
         public static bool disabled = true;
-        private static bool initialized = false;
-        public static Type t = null;
-        public static class console
+        private static bool initialized;
+        private static Type t;
+
+        public static class Console
         {
-            public static void init()
+            public static void Init()
             {
-                Assembly[] asms = AppDomain.CurrentDomain.GetAssemblies();
-                foreach (Assembly asm in asms)
+                var asms = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (var asm in asms)
                 {
-                    if (asm.GetName().Name == "BCE")
-                    {
-                        //GS2.Warn("FOUND BCE");
-                        t = asm.GetType("BCE.console");
-                        disabled = false;
-                    }
+                    if (asm.GetName().Name != "BCE") continue;
+                    t = asm.GetType("BCE.console");
+                    disabled = false;
                 }
+
                 initialized = true;
             }
+
             public static void Write(string s, ConsoleColor c)
             {
-                if (!initialized)
-                {
-                    init();
-                }
+                if (!initialized) Init();
 
                 if (!disabled)
-                {
-                    t.GetMethod("Write", BindingFlags.Public | BindingFlags.Static).Invoke(null, new object[] { s, c });
-                }
+                    t.GetMethod("Write", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] {s, c});
                 else
-                {
                     GS2.Log(s);
-                }
             }
+
             public static void WriteLine(string s, ConsoleColor c)
             {
-                if (!initialized)
-                {
-                    init();
-                }
+                if (!initialized) Init();
 
-                if (!disabled)
-                {
-                    MethodInfo m = t.GetMethod("WriteLine", BindingFlags.Public | BindingFlags.Static);
-                    if (m.Name != null)
-                    {
-                        m.Invoke(null, new object[] { s, c });
-                    }
-                    else
-                    {
-                        GS2.Log(s);
-                    }
-                }
+                if (disabled) return;
+                var m = t.GetMethod("WriteLine", BindingFlags.Public | BindingFlags.Static);
+                m?.Invoke(null, new object[] {s, c});
             }
         }
     }

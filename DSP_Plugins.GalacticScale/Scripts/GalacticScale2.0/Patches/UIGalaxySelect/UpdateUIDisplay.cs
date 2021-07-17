@@ -5,73 +5,53 @@ namespace GalacticScale
 {
     public partial class PatchOnUIGalaxySelect
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
-        public static void UIPostfix(UIGalaxySelect __instance, ref Slider ___starCountSlider) => ___starCountSlider.onValueChanged.AddListener(__instance.OnStarCountSliderValueChange);
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
+        public static void UIPostfix(UIGalaxySelect __instance, ref Slider ___starCountSlider)
+        {
+            ___starCountSlider.onValueChanged.AddListener(__instance.OnStarCountSliderValueChange);
+        }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
         public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
         {
             __instance.starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
-            if (galaxy == null)
-            {
-                return false;
-            }
+            if (galaxy == null) return false;
 
-            if (galaxy.stars == null)
-            {
-                return false;
-            }
+            if (galaxy.stars == null) return false;
 
             __instance.seedInput.text = galaxy.seed.ToString("0000 0000");
             __instance.starCountSlider.value = galaxy.starCount;
             __instance.starCountText.text = galaxy.starCount.ToString();
-            int M = 0;
-            int K = 0;
-            int G = 0;
-            int F = 0;
-            int A = 0;
-            int B = 0;
-            int O = 0;
-            int N = 0;
-            int W = 0;
-            int H = 0;
-            if (galaxy.stars == null)
-            {
-                return false;
-            }
+            var M = 0;
+            var K = 0;
+            var G = 0;
+            var F = 0;
+            var A = 0;
+            var B = 0;
+            var O = 0;
+            var N = 0;
+            var W = 0;
+            var H = 0;
+            if (galaxy.stars == null) return false;
 
-            foreach (StarData star in galaxy.stars)
-            {
+            foreach (var star in galaxy.stars)
                 if (star.type == EStarType.MainSeqStar || star.type == EStarType.GiantStar)
                 {
                     if (star.spectr == ESpectrType.M)
-                    {
                         ++M;
-                    }
                     else if (star.spectr == ESpectrType.K)
-                    {
                         ++K;
-                    }
                     else if (star.spectr == ESpectrType.G)
-                    {
                         ++G;
-                    }
                     else if (star.spectr == ESpectrType.F)
-                    {
                         ++F;
-                    }
                     else if (star.spectr == ESpectrType.A)
-                    {
                         ++A;
-                    }
                     else if (star.spectr == ESpectrType.B)
-                    {
                         ++B;
-                    }
-                    else if (star.spectr == ESpectrType.O)
-                    {
-                        ++O;
-                    }
+                    else if (star.spectr == ESpectrType.O) ++O;
                 }
                 else if (star.type == EStarType.NeutronStar)
                 {
@@ -85,7 +65,7 @@ namespace GalacticScale
                 {
                     ++H;
                 }
-            }
+
             __instance.mCountText.text = M.ToString();
             __instance.kCountText.text = K.ToString();
             __instance.gCountText.text = G.ToString();

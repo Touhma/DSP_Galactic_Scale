@@ -1,30 +1,35 @@
-﻿using BepInEx;
+﻿using System.Collections;
+using System.Reflection;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using System.Collections;
-using System.Reflection;
 using UnityEngine;
 
 namespace GalacticScale
 {
-
     [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.0.0.0")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
         public new static ManualLogSource Logger;
+
         // Internal Variables
         public static bool DebugReworkPlanetGen = false;
         public static bool DebugReworkPlanetGenDeep = false;
         public static bool DebugStarGen = false;
         public static bool DebugStarGenDeep = false;
         public static bool DebugStarNamingGen = false;
+        public static Queue buffer = new Queue();
+        public static PlanetData TeleportPlanet;
+        public static StarData TeleportStar;
+        public static bool TeleportEnabled;
+        public static int timer;
 
         internal void Awake()
         {
-            System.Version v = Assembly.GetExecutingAssembly().GetName().Version;
+            var v = Assembly.GetExecutingAssembly().GetName().Version;
             GS2.Version = $"2.0b{v.Build}.{v.Revision}";
-            BCE.console.init();
+            BCE.Console.Init();
             var _ = new Harmony("dsp.galactic-scale.2");
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
@@ -71,53 +76,21 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
         }
-        public static Queue buffer = new System.Collections.Queue();
-        public static void Debug(object data, LogLevel logLevel, bool isActive)
-        {
-            if (isActive)
-            {
-                if (Logger != null)
-                {
-                    while (buffer.Count > 0)
-                    {
-                        var o = buffer.Dequeue();
-                        var l = ((object data, LogLevel loglevel, bool isActive))o;
-                        if (l.isActive) Logger.Log(l.loglevel, "Q:" + l.data);
-                    }
-                    Logger.Log(logLevel, data);
-                }
-                else buffer.Enqueue((data, logLevel, isActive));
-            }
-        }
-        public static void Debug(object data) => Debug(data, LogLevel.Message, true);
-        public static PlanetData TeleportPlanet = null;
-        public static StarData TeleportStar = null;
-        public static bool TeleportEnabled = false;
-        public static int timer = 0;
+
         private void FixedUpdate()
         {
             timer++;
             if (timer >= 1000)
-            {
                 timer = 0;
-                //GS2.Warn("FixedUpdate");
-            }
-            if (!GS2.CheatMode)
-            {
-                return;
-            }
-            if (DSPGame.IsMenuDemo)
-            {
-                return;
-            }
-            if ((TeleportStar == null && TeleportPlanet == null) || TeleportEnabled == false || !(GameMain.localStar != null && GameMain.localStar.loaded))
-            {
-                return;
-            }
+            //GS2.Warn("FixedUpdate");
+            if (!GS2.CheatMode) return;
+            if (DSPGame.IsMenuDemo) return;
+            if (TeleportStar == null && TeleportPlanet == null || TeleportEnabled == false ||
+                !(GameMain.localStar != null && GameMain.localStar.loaded)) return;
             if (TeleportPlanet != null)
             {
                 GS2.Warn($"TP to Planet {TeleportPlanet?.name} of star {TeleportPlanet?.star?.name}");
-                
+
                 GameMain.data.ArriveStar(TeleportPlanet?.star);
                 StartCoroutine(Teleport(TeleportPlanet));
             }
@@ -128,17 +101,45 @@ namespace GalacticScale
                 StartCoroutine(Teleport(TeleportStar));
             }
         }
+
+        public static void Debug(object data, LogLevel logLevel, bool isActive)
+        {
+            if (isActive)
+            {
+                if (Logger != null)
+                {
+                    while (buffer.Count > 0)
+                    {
+                        var o = buffer.Dequeue();
+                        var l = ((object data, LogLevel loglevel, bool isActive)) o;
+                        if (l.isActive) Logger.Log(l.loglevel, "Q:" + l.data);
+                    }
+
+                    Logger.Log(logLevel, data);
+                }
+                else
+                {
+                    buffer.Enqueue((data, logLevel, isActive));
+                }
+            }
+        }
+
+        public static void Debug(object data)
+        {
+            Debug(data, LogLevel.Message, true);
+        }
+
         private IEnumerator Teleport(PlanetData planet)
         {
-
             yield return new WaitForEndOfFrame();
             TeleportPlanet = null;
             TeleportStar = null;
-            GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * (planet.realRadius);
+            GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * planet.realRadius;
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
         }
+
         private IEnumerator Teleport(StarData star)
         {
             yield return new WaitForEndOfFrame();

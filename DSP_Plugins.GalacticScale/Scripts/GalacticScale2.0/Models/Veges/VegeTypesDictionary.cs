@@ -2,22 +2,188 @@
 
 namespace GalacticScale
 {
-
     public class SingletonExample //left here for future use
     {
-        private SingletonExample() { }
+        private SingletonExample()
+        {
+        }
+
         public static SingletonExample Instance => Internal.instance;
-        private class Internal { static Internal() { } internal static readonly SingletonExample instance = new SingletonExample(); }
+
+        private class Internal
+        {
+            internal static readonly SingletonExample instance = new SingletonExample();
+
+            static Internal()
+            {
+            }
+        }
     }
 
 
     public class VegeTypesDictionary
     {
+        private VegeTypesDictionary()
+        {
+        }
+
         public static Dictionary<string, int> Instance => Internal.instance;
+
+        //private static void init()
+        //{
+        //instance = new VegeTypesDictionary()
+        ////{
+        //    ["LandingPod"] = 9999,
+        //    ["AlienStone1"] = 66,
+        //    ["AlienStone2"] = 67,
+        //    ["AlienStone3"] = 68,
+        //    ["AlienStone4"] = 69,
+        //    ["AlienStone5"] = 70,
+        //    ["AlienStone6"] = 71,
+        //    ["AlienStone7"] = 72,
+        //    ["AlienStone8"] = 73,
+        //    ["AlienStone9"] = 74,
+        //    ["AlienStone10"] = 75,
+        //    ["AlienStone11"] = 76,
+        //    ["AlienStone12"] = 77,
+        //    ["AlienStone13"] = 78,
+        //    ["AlienStone14"] = 79,
+        //    ["AlienStone15"] = 80,
+        //    ["AlienStone16"] = 81,
+        //    ["AlienStone17"] = 82,
+        //    ["AlienStone18"] = 83,
+        //    ["AlienStone19"] = 84,
+        //    ["AlienStone20"] = 85,
+        //    ["AlienStone21"] = 86,
+        //    ["AlienStone22"] = 87,
+        //    ["AlienStone23"] = 88,
+        //    ["AlienStone24"] = 89,
+        //    ["AlienStone25"] = 90,
+        //    ["Grass0"] = 61,
+        //    ["Grass1"] = 62,
+        //    ["Grass2"] = 63,
+        //    ["Iceberg1"] = 19,
+        //    ["Iceberg2"] = 20,
+        //    ["Iceberg3"] = 21,
+        //    ["MedFragment6"] = 1005,
+        //    ["MedGrass7"] = 1001,
+        //    ["MedGrass8"] = 1002,
+        //    ["MedGrass9"] = 1003,
+        //    ["MedGrass10"] = 1004,
+        //    ["MedStone1"] = 601,
+        //    ["MedStone2"] = 602,
+        //    ["MedStone3"] = 603,
+        //    ["MedStone4"] = 604,
+        //    ["MedStone5"] = 605,
+        //    ["MedTree1"] = 101,
+        //    ["MedTree2"] = 102,
+        //    ["MedTree3"] = 103,
+        //    ["MedTree4"] = 104,
+        //    ["MedTree5"] = 105,
+        //    ["MedTree6"] = 106,
+        //    ["MedBroken7"] = 1006,
+        //    ["MedBroken8"] = 1007,
+        //    ["RedStoneGrass3"] = 1011,
+        //    ["RedStoneGrass8"] = 1012,
+        //    ["RedStoneGrass9"] = 1013,
+        //    ["RedStoneTree1"] = 111,
+        //    ["RedStoneTree2"] = 112,
+        //    ["RedStoneTree4"] = 113,
+        //    ["RedStoneTree5"] = 114,
+        //    ["RedStoneTree6"] = 115,
+        //    ["RedStoneTree7"] = 116,
+        //    ["Stone1"] = 1,
+        //    ["Stone2"] = 2,
+        //    ["Stone3"] = 3,
+        //    ["Stone4"] = 4,
+        //    ["Stone5"] = 5,
+        //    ["Stone6"] = 6,
+        //    ["Stone7"] = 7,
+        //    ["Stone8"] = 8,
+        //    ["Stone9"] = 9,
+        //    ["Stone10"] = 10,
+        //    ["Stone11"] = 11,
+        //    ["Stone12"] = 12,
+        //    ["Stone13"] = 48,
+        //    ["Stone14"] = 49,
+        //    ["Stone15"] = 50,
+        //    ["Stone16"] = 51,
+        //    ["Stone17"] = 52,
+        //    ["Stone18"] = 53,
+        //    ["Stone19"] = 54,
+        //    ["Stone20"] = 55,
+        //    ["Stone21"] = 56,
+        //    ["Stone22"] = 57,
+        //    ["Stone23"] = 58,
+        //    ["Stone24"] = 59,
+        //    ["Tree1"] = 13,
+        //    ["Tree2"] = 14,
+        //    ["Tree3"] = 15,
+        //    ["Tree4"] = 16,
+        //    ["Tree5"] = 17,
+        //    ["Tree6"] = 18,
+        //    ["Tree7"] = 19,
+        //    ["Tree8"] = 20,
+        //    ["Tree9"] = 21,
+        //    ["Tree10"] = 22,
+        //    ["Tree11"] = 23,
+        //    ["Tree12"] = 24,
+        //    ["Tree13"] = 25,
+        //    ["Tree14"] = 26,
+        //    ["Tree15"] = 27,
+        //    ["Tree16"] = 28,
+        //    ["Tree17"] = 29,
+        //    ["Tree18"] = 30,
+        //    ["Tree19"] = 31,
+        //    ["Tree20"] = 32,
+        //    ["Tree21"] = 33,
+        //    ["Tree22"] = 34,
+        //    ["Tree23"] = 35,
+        //    ["Tree24"] = 36,
+        //    ["Tree25"] = 37,
+        //    ["Tree26"] = 38,
+        //    ["Tree27"] = 39,
+        //    ["Tree28"] = 40,
+        //    ["Tree29"] = 41,
+        //    ["Tree30"] = 42,
+        //    ["Tree31"] = 43,
+        //    ["Tree32"] = 44,
+        //    ["Tree33"] = 45,
+        //    ["Tree34"] = 46,
+        //    ["Tree35"] = 60,
+        //    ["JungleTree1"] = 121,
+        //    ["JungleTree2"] = 122,
+        //    ["JungleTree3"] = 123,
+        //    ["JungleTree4"] = 124,
+        //    ["JungleTree5"] = 125,
+        //    ["JungleTree6"] = 126,
+        //    ["JungleGrass7"] = 1021,
+        //    ["JungleGrass8"] = 1022,
+        //    ["JungleGrass9"] = 1023
+        //}
+        //}
+        public static int Find(string s)
+        {
+            if (s == null) GS2.Warn("Vege code null");
+            if (Instance.ContainsKey(s))
+            {
+                return Instance[s];
+            }
+
+            GS2.Warn("Vege ID for " + s + " not found");
+            return 9999;
+        }
+
+        public static string Find(int i)
+        {
+            if (Instance.ContainsValue(i)) return Utils.ReverseLookup(Instance, i);
+
+            return "LandingPod";
+        }
+
         private class Internal
         {
-            static Internal() { }
-            internal static readonly Dictionary<string, int> instance = new Dictionary<string, int>()
+            internal static readonly Dictionary<string, int> instance = new Dictionary<string, int>
             {
                 ["Stone1"] = 1,
                 ["Stone2"] = 2,
@@ -166,166 +332,10 @@ namespace GalacticScale
 
                 ["LandingPod"] = 9999
             };
-        }
-        //private static void init()
-        //{
-        //instance = new VegeTypesDictionary()
-        ////{
-        //    ["LandingPod"] = 9999,
-        //    ["AlienStone1"] = 66,
-        //    ["AlienStone2"] = 67,
-        //    ["AlienStone3"] = 68,
-        //    ["AlienStone4"] = 69,
-        //    ["AlienStone5"] = 70,
-        //    ["AlienStone6"] = 71,
-        //    ["AlienStone7"] = 72,
-        //    ["AlienStone8"] = 73,
-        //    ["AlienStone9"] = 74,
-        //    ["AlienStone10"] = 75,
-        //    ["AlienStone11"] = 76,
-        //    ["AlienStone12"] = 77,
-        //    ["AlienStone13"] = 78,
-        //    ["AlienStone14"] = 79,
-        //    ["AlienStone15"] = 80,
-        //    ["AlienStone16"] = 81,
-        //    ["AlienStone17"] = 82,
-        //    ["AlienStone18"] = 83,
-        //    ["AlienStone19"] = 84,
-        //    ["AlienStone20"] = 85,
-        //    ["AlienStone21"] = 86,
-        //    ["AlienStone22"] = 87,
-        //    ["AlienStone23"] = 88,
-        //    ["AlienStone24"] = 89,
-        //    ["AlienStone25"] = 90,
-        //    ["Grass0"] = 61,
-        //    ["Grass1"] = 62,
-        //    ["Grass2"] = 63,
-        //    ["Iceberg1"] = 19,
-        //    ["Iceberg2"] = 20,
-        //    ["Iceberg3"] = 21,
-        //    ["MedFragment6"] = 1005,
-        //    ["MedGrass7"] = 1001,
-        //    ["MedGrass8"] = 1002,
-        //    ["MedGrass9"] = 1003,
-        //    ["MedGrass10"] = 1004,
-        //    ["MedStone1"] = 601,
-        //    ["MedStone2"] = 602,
-        //    ["MedStone3"] = 603,
-        //    ["MedStone4"] = 604,
-        //    ["MedStone5"] = 605,
-        //    ["MedTree1"] = 101,
-        //    ["MedTree2"] = 102,
-        //    ["MedTree3"] = 103,
-        //    ["MedTree4"] = 104,
-        //    ["MedTree5"] = 105,
-        //    ["MedTree6"] = 106,
-        //    ["MedBroken7"] = 1006,
-        //    ["MedBroken8"] = 1007,
-        //    ["RedStoneGrass3"] = 1011,
-        //    ["RedStoneGrass8"] = 1012,
-        //    ["RedStoneGrass9"] = 1013,
-        //    ["RedStoneTree1"] = 111,
-        //    ["RedStoneTree2"] = 112,
-        //    ["RedStoneTree4"] = 113,
-        //    ["RedStoneTree5"] = 114,
-        //    ["RedStoneTree6"] = 115,
-        //    ["RedStoneTree7"] = 116,
-        //    ["Stone1"] = 1,
-        //    ["Stone2"] = 2,
-        //    ["Stone3"] = 3,
-        //    ["Stone4"] = 4,
-        //    ["Stone5"] = 5,
-        //    ["Stone6"] = 6,
-        //    ["Stone7"] = 7,
-        //    ["Stone8"] = 8,
-        //    ["Stone9"] = 9,
-        //    ["Stone10"] = 10,
-        //    ["Stone11"] = 11,
-        //    ["Stone12"] = 12,
-        //    ["Stone13"] = 48,
-        //    ["Stone14"] = 49,
-        //    ["Stone15"] = 50,
-        //    ["Stone16"] = 51,
-        //    ["Stone17"] = 52,
-        //    ["Stone18"] = 53,
-        //    ["Stone19"] = 54,
-        //    ["Stone20"] = 55,
-        //    ["Stone21"] = 56,
-        //    ["Stone22"] = 57,
-        //    ["Stone23"] = 58,
-        //    ["Stone24"] = 59,
-        //    ["Tree1"] = 13,
-        //    ["Tree2"] = 14,
-        //    ["Tree3"] = 15,
-        //    ["Tree4"] = 16,
-        //    ["Tree5"] = 17,
-        //    ["Tree6"] = 18,
-        //    ["Tree7"] = 19,
-        //    ["Tree8"] = 20,
-        //    ["Tree9"] = 21,
-        //    ["Tree10"] = 22,
-        //    ["Tree11"] = 23,
-        //    ["Tree12"] = 24,
-        //    ["Tree13"] = 25,
-        //    ["Tree14"] = 26,
-        //    ["Tree15"] = 27,
-        //    ["Tree16"] = 28,
-        //    ["Tree17"] = 29,
-        //    ["Tree18"] = 30,
-        //    ["Tree19"] = 31,
-        //    ["Tree20"] = 32,
-        //    ["Tree21"] = 33,
-        //    ["Tree22"] = 34,
-        //    ["Tree23"] = 35,
-        //    ["Tree24"] = 36,
-        //    ["Tree25"] = 37,
-        //    ["Tree26"] = 38,
-        //    ["Tree27"] = 39,
-        //    ["Tree28"] = 40,
-        //    ["Tree29"] = 41,
-        //    ["Tree30"] = 42,
-        //    ["Tree31"] = 43,
-        //    ["Tree32"] = 44,
-        //    ["Tree33"] = 45,
-        //    ["Tree34"] = 46,
-        //    ["Tree35"] = 60,
-        //    ["JungleTree1"] = 121,
-        //    ["JungleTree2"] = 122,
-        //    ["JungleTree3"] = 123,
-        //    ["JungleTree4"] = 124,
-        //    ["JungleTree5"] = 125,
-        //    ["JungleTree6"] = 126,
-        //    ["JungleGrass7"] = 1021,
-        //    ["JungleGrass8"] = 1022,
-        //    ["JungleGrass9"] = 1023
-        //}
-        //}
-        public static int Find(string s)
-        {
-            if (s == null)
-            {
-                GS2.Warn("Vege code null");
-            }
-            if (Instance.ContainsKey(s))
-            {
-                return Instance[s];
-            }
-            else
-            {
-                GS2.Warn("Vege ID for " + s + " not found");
-                return 9999;
-            }
-        }
-        public static string Find(int i)
-        {
-            if (Instance.ContainsValue(i))
-            {
-                return Utils.ReverseLookup(Instance, i);
-            }
 
-            return "LandingPod";
+            static Internal()
+            {
+            }
         }
-        private VegeTypesDictionary() { }
-
-    };
+    }
 }

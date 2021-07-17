@@ -7,8 +7,8 @@
         string Description { get; }
         string Version { get; }
         string GUID { get; }
-        void Generate(int starCount);
         GSGeneratorConfig Config { get; }
+        void Generate(int starCount);
         void Init();
     }
 }

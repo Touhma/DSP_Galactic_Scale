@@ -2,10 +2,10 @@
 
 namespace GalacticScale
 {
-
-    public partial class PatchOnUIStarmap
+    public class PatchOnUIStarmap
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(UIStarmap), "OnCursorFunction3Click")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIStarmap), "OnCursorFunction3Click")]
         public static bool OnCursorFunction3Click(
             //StarData ___viewStar, 
             UIStarmapStar ___focusStar,
@@ -28,23 +28,21 @@ namespace GalacticScale
             //    " ViewPlanet:" + vp +
             //    " mouseHoverPlanet:" + mhp +
             //    " focusPlanet:" + fp);
-            if (___focusStar != null && (VFInput.control) && GS2.CheatMode)
+            if (___focusStar != null && VFInput.control && GS2.CheatMode)
             {
                 Bootstrap.TeleportStar = ___focusStar.star;
                 Bootstrap.TeleportEnabled = true;
                 return false;
             }
-            if (___focusPlanet != null && (VFInput.control) && GS2.CheatMode)
+
+            if (___focusPlanet != null && VFInput.control && GS2.CheatMode)
             {
                 Bootstrap.TeleportPlanet = ___focusPlanet.planet;
                 Bootstrap.TeleportEnabled = true;
                 return false;
             }
-            else
-            {
-                return true;
-            }
-        }
 
+            return true;
+        }
     }
 }

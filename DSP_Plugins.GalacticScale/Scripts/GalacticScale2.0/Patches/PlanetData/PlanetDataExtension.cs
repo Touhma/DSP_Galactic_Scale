@@ -9,10 +9,8 @@
                 GS2.Error("Trying to get factored scale while planet is null");
                 return 1f;
             }
-            if (planet.type == EPlanetType.Gas)
-            {
-                return planet.radius / 80;
-            }
+
+            if (planet.type == EPlanetType.Gas) return planet.radius / 80;
 
             return planet.radius / 200;
         }

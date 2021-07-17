@@ -53,42 +53,50 @@ using System;
 
 namespace PCGSharp
 {
-
     /// <summary>
-    /// PCG (Permuted Congruential Generator) is a C# port from C the base PCG generator
-    /// presented in "PCG: A Family of Simple Fast Space-Efficient Statistically Good
-    /// Algorithms for Random Number Generation" by Melissa E. O'Neill. The code follows closely the one 
-    /// made available by O'Neill at her site: http://www.pcg-random.org/download.html
-    /// To understand how exactly this generator works read this:
-    /// http://www.pcg-random.org/pdf/toms-oneill-pcg-family-v1.02.pdf 
+    ///     PCG (Permuted Congruential Generator) is a C# port from C the base PCG generator
+    ///     presented in "PCG: A Family of Simple Fast Space-Efficient Statistically Good
+    ///     Algorithms for Random Number Generation" by Melissa E. O'Neill. The code follows closely the one
+    ///     made available by O'Neill at her site: http://www.pcg-random.org/download.html
+    ///     To understand how exactly this generator works read this:
+    ///     http://www.pcg-random.org/pdf/toms-oneill-pcg-family-v1.02.pdf
     /// </summary>
     public class Pcg
     {
-
-        ulong _state;
         // This shifted to the left and or'ed with 1ul results in the default increment.
-        const ulong ShiftedIncrement = 721347520444481703ul;
-        ulong _increment = 1442695040888963407ul;
-        const ulong Multiplier = 6364136223846793005ul;
-        const double ToDouble01 = 1.0 / 4294967296.0;
+        private const ulong ShiftedIncrement = 721347520444481703ul;
+        private const ulong Multiplier = 6364136223846793005ul;
+        private const double ToDouble01 = 1.0 / 4294967296.0;
+        private ulong _increment = 1442695040888963407ul;
+
+        private ulong _state;
+
+        public Pcg(int seed) : this((ulong) seed)
+        {
+        }
+
+        public Pcg(ulong seed, ulong sequence = ShiftedIncrement)
+        {
+            Initialize(seed, sequence);
+        }
 
         public int Next()
         {
-            uint result = NextUInt();
-            return (int)(result >> 1);
+            var result = NextUInt();
+            return (int) (result >> 1);
         }
 
         public int Next(int maxExclusive)
         {
             if (maxExclusive <= 0)
                 throw new ArgumentException("Max Exclusive must be positive");
-            uint uMaxExclusive = (uint)(maxExclusive);
-            uint threshold = (uint)(-uMaxExclusive) % uMaxExclusive;
+            var uMaxExclusive = (uint) maxExclusive;
+            var threshold = (uint) -uMaxExclusive % uMaxExclusive;
             while (true)
             {
-                uint result = NextUInt();
+                var result = NextUInt();
                 if (result >= threshold)
-                    return (int)(result % uMaxExclusive);
+                    return (int) (result % uMaxExclusive);
             }
         }
 
@@ -96,34 +104,34 @@ namespace PCGSharp
         {
             if (maxExclusive <= minInclusive)
                 throw new ArgumentException("MaxExclusive must be larger than MinInclusive");
-            uint uMaxExclusive = unchecked((uint)(maxExclusive - minInclusive));
-            uint threshold = (uint)(-uMaxExclusive) % uMaxExclusive;
+            var uMaxExclusive = unchecked((uint) (maxExclusive - minInclusive));
+            var threshold = (uint) -uMaxExclusive % uMaxExclusive;
 
             while (true)
             {
-                uint result = NextUInt();
+                var result = NextUInt();
                 if (result >= threshold)
-                    return (int)(unchecked((result % uMaxExclusive) + minInclusive));
+                    return (int) unchecked(result % uMaxExclusive + minInclusive);
             }
         }
 
         public virtual uint NextUInt()
         {
-            ulong oldState = _state;
+            var oldState = _state;
             _state = unchecked(oldState * Multiplier + _increment);
-            uint xorShifted = (uint)(((oldState >> 18) ^ oldState) >> 27);
-            int rot = (int)(oldState >> 59);
-            uint result = (xorShifted >> rot) | (xorShifted << ((-rot) & 31));
+            var xorShifted = (uint) (((oldState >> 18) ^ oldState) >> 27);
+            var rot = (int) (oldState >> 59);
+            var result = (xorShifted >> rot) | (xorShifted << (-rot & 31));
             return result;
         }
 
         public uint NextUInt(uint maxExclusive)
         {
-            uint threshold = (uint)(-maxExclusive) % maxExclusive;
+            var threshold = (uint) -maxExclusive % maxExclusive;
 
             while (true)
             {
-                uint result = NextUInt();
+                var result = NextUInt();
                 if (result >= threshold)
                     return result % maxExclusive;
             }
@@ -134,20 +142,20 @@ namespace PCGSharp
             if (maxExclusive <= minInclusive)
                 throw new ArgumentException();
 
-            uint diff = (maxExclusive - minInclusive);
-            uint threshold = (uint)(-diff) % diff;
+            var diff = maxExclusive - minInclusive;
+            var threshold = (uint) -diff % diff;
 
             while (true)
             {
-                uint result = NextUInt();
+                var result = NextUInt();
                 if (result >= threshold)
-                    return (result % diff) + minInclusive;
+                    return result % diff + minInclusive;
             }
         }
 
         public float NextFloat()
         {
-            return (float)(NextUInt() * ToDouble01);
+            return (float) (NextUInt() * ToDouble01);
         }
 
         public float NextFloat(float maxInclusive)
@@ -155,7 +163,7 @@ namespace PCGSharp
             if (maxInclusive <= 0)
                 throw new ArgumentException("MaxInclusive must be larger than 0");
 
-            return (float)(NextUInt() * ToDouble01) * maxInclusive;
+            return (float) (NextUInt() * ToDouble01) * maxInclusive;
         }
 
         public float NextFloat(float minInclusive, float maxInclusive)
@@ -163,7 +171,7 @@ namespace PCGSharp
             if (maxInclusive < minInclusive)
                 throw new ArgumentException("Max must be larger than min");
 
-            return (float)(NextUInt() * ToDouble01) * (maxInclusive - minInclusive) + minInclusive;
+            return (float) (NextUInt() * ToDouble01) * (maxInclusive - minInclusive) + minInclusive;
         }
 
         public double NextDouble()
@@ -186,6 +194,7 @@ namespace PCGSharp
 
             return NextUInt() * ToDouble01 * (maxInclusive - minInclusive) + minInclusive;
         }
+
         public bool NextBool()
         {
             var result = NextUInt();
@@ -197,18 +206,11 @@ namespace PCGSharp
             _increment = (sequence << 1) | 1;
         }
 
-        public Pcg(int seed) : this((ulong)seed)
-        {
-        }
-
-        public Pcg(ulong seed, ulong sequence = ShiftedIncrement)
-        {
-            Initialize(seed, sequence);
-        }
         protected void reseed(int seed)
         {
-            Initialize((ulong)seed, ShiftedIncrement);
+            Initialize((ulong) seed, ShiftedIncrement);
         }
+
         protected void Initialize(ulong seed, ulong initseq)
         {
             _state = 0ul;
@@ -217,7 +219,5 @@ namespace PCGSharp
             _state += seed;
             NextUInt();
         }
-
     }
 }
-

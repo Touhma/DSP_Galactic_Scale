@@ -14,9 +14,7 @@ namespace GSSerializer.Internal
         {
             if (type.Resolve().IsArray ||
                 typeof(ICollection).IsAssignableFrom(type))
-            {
                 return false;
-            }
 
             return true;
         }
@@ -26,26 +24,20 @@ namespace GSSerializer.Internal
             serialized = fsData.CreateDictionary();
             var result = fsResult.Success;
 
-            fsMetaType metaType = fsMetaType.Get(Serializer.Config, instance.GetType());
-            metaType.EmitAotData(/*throwException:*/ false);
+            var metaType = fsMetaType.Get(Serializer.Config, instance.GetType());
+            metaType.EmitAotData( /*throwException:*/ false);
 
-            for (int i = 0; i < metaType.Properties.Length; ++i)
+            for (var i = 0; i < metaType.Properties.Length; ++i)
             {
-                fsMetaProperty property = metaType.Properties[i];
-                if (property.CanRead == false)
-                {
-                    continue;
-                }
+                var property = metaType.Properties[i];
+                if (property.CanRead == false) continue;
 
                 fsData serializedData;
 
                 var itemResult = Serializer.TrySerialize(property.StorageType, property.OverrideConverterType,
-                                                         property.Read(instance), out serializedData);
+                    property.Read(instance), out serializedData);
                 result.AddMessages(itemResult);
-                if (itemResult.Failed)
-                {
-                    continue;
-                }
+                if (itemResult.Failed) continue;
 
                 serialized.AsDictionary[property.JsonName] = serializedData;
             }
@@ -58,21 +50,15 @@ namespace GSSerializer.Internal
             var result = fsResult.Success;
 
             // Verify that we actually have an Object
-            if ((result += CheckType(data, fsDataType.Object)).Failed)
-            {
-                return result;
-            }
+            if ((result += CheckType(data, fsDataType.Object)).Failed) return result;
 
-            fsMetaType metaType = fsMetaType.Get(Serializer.Config, storageType);
-            metaType.EmitAotData(/*throwException:*/ false);
+            var metaType = fsMetaType.Get(Serializer.Config, storageType);
+            metaType.EmitAotData( /*throwException:*/ false);
 
-            for (int i = 0; i < metaType.Properties.Length; ++i)
+            for (var i = 0; i < metaType.Properties.Length; ++i)
             {
-                fsMetaProperty property = metaType.Properties[i];
-                if (property.CanWrite == false)
-                {
-                    continue;
-                }
+                var property = metaType.Properties[i];
+                if (property.CanWrite == false) continue;
 
                 fsData propertyData;
                 if (data.AsDictionary.TryGetValue(property.JsonName, out propertyData))
@@ -88,18 +74,12 @@ namespace GSSerializer.Internal
                     //       which just gets set when starting a new
                     //       serialization? We cannot pipe the information
                     //       through CreateInstance unfortunately.
-                    if (property.CanRead)
-                    {
-                        deserializedValue = property.Read(instance);
-                    }
+                    if (property.CanRead) deserializedValue = property.Read(instance);
 
                     var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType,
-                                                               property.OverrideConverterType, ref deserializedValue);
+                        property.OverrideConverterType, ref deserializedValue);
                     result.AddMessages(itemResult);
-                    if (itemResult.Failed)
-                    {
-                        continue;
-                    }
+                    if (itemResult.Failed) continue;
 
                     property.Write(instance, deserializedValue);
                 }
@@ -110,7 +90,7 @@ namespace GSSerializer.Internal
 
         public override object CreateInstance(fsData data, Type storageType)
         {
-            fsMetaType metaType = fsMetaType.Get(Serializer.Config, storageType);
+            var metaType = fsMetaType.Get(Serializer.Config, storageType);
             return metaType.CreateInstance();
         }
     }

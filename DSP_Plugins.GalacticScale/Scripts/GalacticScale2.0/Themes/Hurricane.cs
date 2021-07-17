@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace GalacticScale
 {
     public static partial class Themes
     {
-        public static GSTheme Hurricane = new GSTheme()
+        public static GSTheme Hurricane = new GSTheme
         {
             Name = "Hurricane",
             Base = true,
@@ -21,8 +22,8 @@ namespace GalacticScale
             Distribute = EThemeDistribute.Interstellar,
             ModX = new Vector2(1.5f, 1.5f),
             ModY = new Vector2(-5f, -5f),
-            VeinSettings = new GSVeinSettings() { Algorithm = "Vanilla" },
-            AmbientSettings = new GSAmbientSettings() //NEED CHANGING on sakura, and other themes imported
+            VeinSettings = new GSVeinSettings {Algorithm = "Vanilla"},
+            AmbientSettings = new GSAmbientSettings //NEED CHANGING on sakura, and other themes imported
             {
                 Color1 = new Color(0.1783553f, 0.1903702f, 0.2264151f, 1.0f),
                 Color2 = new Color(0.01960784f, 0.0720694f, 0.07843135f, 1.0f),
@@ -46,8 +47,9 @@ namespace GalacticScale
                 Reflections = new Color(),
                 LutContribution = 0.3f
             },
-            Vegetables0 = new int[] {
-                 6,
+            Vegetables0 = new[]
+            {
+                6,
                 7,
                 8,
                 9,
@@ -55,22 +57,28 @@ namespace GalacticScale
                 11,
                 12
             },
-            Vegetables1 = new int[] {
+            Vegetables1 = new[]
+            {
                 1,
                 2,
                 3,
                 4,
                 5
             },
-            Vegetables2 = new int[] {
+            Vegetables2 = new int[]
+            {
             },
-            Vegetables3 = new int[] {
+            Vegetables3 = new int[]
+            {
             },
-            Vegetables4 = new int[] {
+            Vegetables4 = new int[]
+            {
             },
-            Vegetables5 = new int[] {
+            Vegetables5 = new int[]
+            {
             },
-            VeinSpot = new int[] {
+            VeinSpot = new[]
+            {
                 2,
                 8,
                 2,
@@ -79,7 +87,8 @@ namespace GalacticScale
                 1,
                 0
             },
-            VeinCount = new float[] {
+            VeinCount = new[]
+            {
                 1.0f,
                 1.0f,
                 1.0f,
@@ -88,7 +97,8 @@ namespace GalacticScale
                 0.5f,
                 0.0f
             },
-            VeinOpacity = new float[] {
+            VeinOpacity = new[]
+            {
                 0.6f,
                 0.8f,
                 1.0f,
@@ -97,12 +107,14 @@ namespace GalacticScale
                 0.3f,
                 0.0f
             },
-            RareVeins = new int[] {
+            RareVeins = new[]
+            {
                 9,
                 10,
                 12
             },
-            RareSettings = new float[] {
+            RareSettings = new[]
+            {
                 0.0f,
                 0.25f,
                 0.6f,
@@ -116,28 +128,29 @@ namespace GalacticScale
                 0.3f,
                 0.5f
             },
-            GasItems = new int[] {
+            GasItems = new int[]
+            {
             },
-            GasSpeeds = new float[] {
+            GasSpeeds = new float[]
+            {
             },
             UseHeightForBuild = false,
             Wind = 1.6f,
             IonHeight = 70f,
             WaterHeight = 0f,
             WaterItemId = 0,
-            Musics = new int[] {
-               11,
+            Musics = new[]
+            {
+                11,
                 4
             },
             SFXPath = "SFX/sfx-amb-desert-3",
             SFXVolume = 0.4f,
             CullingRadius = 0f,
             IceFlag = 0,
-            terrainMaterial = new GSMaterialSettings()
+            terrainMaterial = new GSMaterialSettings
             {
-
-
-                Colors = new System.Collections.Generic.Dictionary<string, Color>()
+                Colors = new Dictionary<string, Color>
                 {
                     ["_AmbientColor0"] = new Color(0.1783552f, 0.1903702f, 0.226415f, 1f),
                     ["_AmbientColor1"] = new Color(0.01960784f, 0.07206935f, 0.07843129f, 1f),
@@ -147,10 +160,9 @@ namespace GalacticScale
                     ["_HeightEmissionColor"] = new Color(0f, 0f, 0f, 0f),
                     ["_LightColorScreen"] = new Color(0.336107f, 0.7975054f, 0.8584906f, 1f),
                     ["_Rotation"] = new Color(0f, 0f, 0f, 1f),
-                    ["_SunDir"] = new Color(0.1599953f, -0.02663486f, 0.9867584f, 0f),
-
+                    ["_SunDir"] = new Color(0.1599953f, -0.02663486f, 0.9867584f, 0f)
                 },
-                Params = new System.Collections.Generic.Dictionary<string, float>()
+                Params = new Dictionary<string, float>
                 {
                     ["_AmbientInc"] = 0.5f,
                     ["_BioFuzzMask"] = 1f,
@@ -177,28 +189,17 @@ namespace GalacticScale
                     ["_SrcBlend"] = 1f,
                     ["_StepBlend"] = 1f,
                     ["_UVSec"] = 0f,
-                    ["_ZWrite"] = 1f,
-
+                    ["_ZWrite"] = 1f
                 }
             },
-            oceanMaterial = new GSMaterialSettings()
+            oceanMaterial = new GSMaterialSettings
             {
-                Colors = new System.Collections.Generic.Dictionary<string, Color>()
-                {
-
-
-                },
-                Params = new System.Collections.Generic.Dictionary<string, float>()
-                {
-
-
-                }
+                Colors = new Dictionary<string, Color>(),
+                Params = new Dictionary<string, float>()
             },
-            atmosphereMaterial = new GSMaterialSettings()
+            atmosphereMaterial = new GSMaterialSettings
             {
-
-
-                Colors = new System.Collections.Generic.Dictionary<string, Color>()
+                Colors = new Dictionary<string, Color>
                 {
                     ["_Color"] = new Color(0.3443396f, 0.734796f, 1f, 1f),
                     ["_Color0"] = new Color(0f, 0.7931722f, 0.839f, 1f),
@@ -219,10 +220,9 @@ namespace GalacticScale
                     ["_Sky1"] = new Color(0.07845306f, 0.4056602f, 0.3857085f, 0.2588235f),
                     ["_Sky2"] = new Color(0.9169731f, 0.9622641f, 0.7307761f, 0.7490196f),
                     ["_Sky3"] = new Color(0.5252487f, 0.7026507f, 0.727f, 0.5254902f),
-                    ["_Sky4"] = new Color(1f, 0.750986f, 0.3353673f, 1f),
-
+                    ["_Sky4"] = new Color(1f, 0.750986f, 0.3353673f, 1f)
                 },
-                Params = new System.Collections.Generic.Dictionary<string, float>()
+                Params = new Dictionary<string, float>
                 {
                     ["_AtmoDensity"] = 1f,
                     ["_AtmoThickness"] = 70f,
@@ -255,15 +255,12 @@ namespace GalacticScale
                     ["_SunColorUse"] = 0.5f,
                     ["_SunRiseScatterPower"] = 60f,
                     ["_UVSec"] = 0f,
-                    ["_ZWrite"] = 1f,
-
+                    ["_ZWrite"] = 1f
                 }
             },
-            minimapMaterial = new GSMaterialSettings()
+            minimapMaterial = new GSMaterialSettings
             {
-
-
-                Colors = new System.Collections.Generic.Dictionary<string, Color>()
+                Colors = new Dictionary<string, Color>
                 {
                     ["_Color"] = new Color(0.8617778f, 0.9150943f, 0.8158152f, 1f),
                     ["_ColorBio0"] = new Color(0.8962264f, 0.8545086f, 0.8243592f, 1f),
@@ -272,10 +269,9 @@ namespace GalacticScale
                     ["_EmissionColor"] = new Color(0f, 0f, 0f, 1f),
                     ["_HeightSettings"] = new Color(-0.1f, 0.3f, 0.1f, 0.1f),
                     ["_RimColor"] = new Color(0.03137255f, 1f, 0.4975654f, 1f),
-                    ["_ShoreLineColor"] = new Color(0f, 0f, 0f, 0f),
-
+                    ["_ShoreLineColor"] = new Color(0f, 0f, 0f, 0f)
                 },
-                Params = new System.Collections.Generic.Dictionary<string, float>()
+                Params = new Dictionary<string, float>
                 {
                     ["_BioStrength"] = 0.38f,
                     ["_BumpScale"] = 1f,
@@ -296,15 +292,12 @@ namespace GalacticScale
                     ["_SrcBlend"] = 1f,
                     ["_UVSec"] = 0f,
                     ["_WireIntens"] = 0.6f,
-                    ["_ZWrite"] = 1f,
-
+                    ["_ZWrite"] = 1f
                 }
             },
-            thumbMaterial = new GSMaterialSettings()
+            thumbMaterial = new GSMaterialSettings
             {
-
-
-                Colors = new System.Collections.Generic.Dictionary<string, Color>()
+                Colors = new Dictionary<string, Color>
                 {
                     ["_AmbientColor"] = new Color(0.2274797f, 0.001245998f, 0.2641509f, 1f),
                     ["_Color"] = new Color(0.5f, 0.5f, 0.4316038f, 1f),
@@ -321,10 +314,9 @@ namespace GalacticScale
                     ["_ShoreLineColor"] = new Color(0f, 0f, 0f, 0f),
                     ["_SpecularColor"] = new Color(0.5188679f, 0.3004048f, 0.1737718f, 1f),
                     ["_Spot0"] = new Color(0.6f, -0.3f, -0.5f, 1f),
-                    ["_SunDir"] = new Color(0f, 0f, 1f, 0f),
-
+                    ["_SunDir"] = new Color(0f, 0f, 1f, 0f)
                 },
-                Params = new System.Collections.Generic.Dictionary<string, float>()
+                Params = new Dictionary<string, float>
                 {
                     ["_BioStrength"] = 0.6f,
                     ["_BodyIntensity"] = 0.27f,
@@ -361,8 +353,7 @@ namespace GalacticScale
                     ["_ToggleVerta"] = 0f,
                     ["_UVSec"] = 0f,
                     ["_WireIntens"] = 2f,
-                    ["_ZWrite"] = 1f,
-
+                    ["_ZWrite"] = 1f
                 }
             }
         };

@@ -3,22 +3,9 @@
     public static class SystemNames
     {
         public static int startIndex = -1;
-        public static void Reset()
-        {
-            GS2.Random random = new GS2.Random(GSSettings.Seed);
-            startIndex = random.Next(names.Length - 1);
-        }
-        public static string GetName(int index)
-        {
-            if (startIndex < 0)
-            {
-                Reset();
-            }
 
-            int calcIndex = (index + startIndex) % names.Length;
-            return names[calcIndex];
-        }
-        public static string[] names = new string[1660] {
+        public static string[] names = new string[1660]
+        {
             "Vouskiaho",
             "Otsela",
             "Tasti",
@@ -1680,5 +1667,19 @@
             "Todeko",
             "Usteli"
         };
+
+        public static void Reset()
+        {
+            var random = new GS2.Random(GSSettings.Seed);
+            startIndex = random.Next(names.Length - 1);
+        }
+
+        public static string GetName(int index)
+        {
+            if (startIndex < 0) Reset();
+
+            var calcIndex = (index + startIndex) % names.Length;
+            return names[calcIndex];
+        }
     }
 }

@@ -2,15 +2,13 @@
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIResearchResultsWindow
+    public class PatchOnUIResearchResultsWindow
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(UIResearchResultWindow), "SetTechId")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIResearchResultWindow), "SetTechId")]
         public static bool SetTechId()
         {
-            if (GS2.tutorialsOff)
-            {
-                return false;
-            }
+            if (GS2.tutorialsOff) return false;
 
             return true;
         }

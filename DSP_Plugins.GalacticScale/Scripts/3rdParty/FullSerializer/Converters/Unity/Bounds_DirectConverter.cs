@@ -1,13 +1,14 @@
 #if !NO_UNITY
 using System;
 using System.Collections.Generic;
+using GSSerializer.Internal.DirectConverters;
 using UnityEngine;
 
 namespace GSSerializer
 {
     public partial class fsConverterRegistrar
     {
-        public static Internal.DirectConverters.Bounds_DirectConverter Register_Bounds_DirectConverter;
+        public static Bounds_DirectConverter Register_Bounds_DirectConverter;
     }
 }
 
@@ -40,7 +41,10 @@ namespace GSSerializer.Internal.DirectConverters
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new Bounds();
+        public override object CreateInstance(fsData data, Type storageType)
+        {
+            return new Bounds();
+        }
     }
 }
 #endif

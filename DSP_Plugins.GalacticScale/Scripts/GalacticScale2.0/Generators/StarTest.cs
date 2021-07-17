@@ -12,10 +12,10 @@
 
         public string GUID => "space.customizing.generators.startest";
 
-        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 4096, 1);
+        public GSGeneratorConfig Config => new GSGeneratorConfig(false, false, 1, 4096);
 
-        public GSOptions Options => options;
-        private readonly GSOptions options = new GSOptions();
+        public GSOptions Options { get; } = new GSOptions();
+
         //private GSStars stars = new GSStars();
         public void Init()
         {
@@ -33,7 +33,7 @@
         public void Generate(int starCount)
         {
             starCount = 4096;
-            GS2.Random random = new GS2.Random(GSSettings.Seed);
+            var random = new GS2.Random(GSSettings.Seed);
             //List<GSPlanet> p = new List<GSPlanet>();
             //for (var j = 0; j < 20; j++)
             //{
@@ -57,13 +57,12 @@
             //GS2.Warn("CUBEMAP: " + lmodified.ambientDesc.reflectionMap.name);
             for (var i = 0; i < starCount; i++)
             {
-
-                GSStar s = StarDefaults.Random(random);
+                var s = StarDefaults.Random(random);
                 s.Name = "Star-" + i;
                 if (i < 10)
                 {
-                    s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, 1, -1, -1, -1, 1f, null));
-                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, 10, -1, -1, -1, 1f, null));
+                    s.Planets.Add(new GSPlanet("redstone", "RedStone", 50, 0.5f, -1, -1, 1, -1, -1, -1, 1f));
+                    s.Planets.Add(new GSPlanet("redstone2", "RedStone", 50, 0.5f, -1, -1, 10, -1, -1, -1, 1f));
                     //s.Planets.Add(new GSPlanet("redstone3", "modifiedl", 50, 0.5f, -1, -1, -1, 20, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("redstone4", "modifiedl", 50, 0.5f, -1, -1, -1, 30, -1, -1, -1, 1f, null));
                     //s.Planets.Add(new GSPlanet("redstone5", "modifiedl", 50, 0.5f, -1, -1, -1, 40, -1, -1, -1, 1f, null));
@@ -76,6 +75,7 @@
                     //{
                     //    s.Planets.Add(new GSPlanet("gs2["+ (10 + (j * 10)) + "-" + ( (j * modifier) - (5*modifier)    ) + "]", "modified" + j, 10+(j*10), 1, -1, -1, -1, 4 + j * (360 / 50), -1, -1, -1, 1f, null));             
                 }
+
                 //}
                 //s.position = random.PointOnSphere(30);
                 GSSettings.Stars.Add(s);
@@ -83,11 +83,14 @@
                 //GS2.LogJson(GSSettings.Stars);
             }
         }
+
         public void Import(GSGenPreferences preferences)
         {
-
         }
 
-        public GSGenPreferences Export() => new GSGenPreferences();
+        public GSGenPreferences Export()
+        {
+            return new GSGenPreferences();
+        }
     }
 }

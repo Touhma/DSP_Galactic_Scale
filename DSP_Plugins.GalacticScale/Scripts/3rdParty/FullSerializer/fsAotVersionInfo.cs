@@ -3,8 +3,8 @@ using GSSerializer.Internal;
 namespace GSSerializer
 {
     /// <summary>
-    /// Version information stored on an AOT model. This is used to determine
-    /// if the AOT model is up to date.
+    ///     Version information stored on an AOT model. This is used to determine
+    ///     if the AOT model is up to date.
     /// </summary>
     public struct fsAotVersionInfo
     {
@@ -22,28 +22,25 @@ namespace GSSerializer
                 StorageType = property.StorageType.CSharpName(true);
                 OverrideConverterType = null;
                 if (property.OverrideConverterType != null)
-                {
                     OverrideConverterType = property.OverrideConverterType.CSharpName();
-                }
             }
 
             public override bool Equals(object obj)
             {
-                if (obj is Member == false)
-                {
-                    return false;
-                }
+                if (obj is Member == false) return false;
 
-                return this == ((Member)obj);
+                return this == (Member) obj;
             }
+
             public override int GetHashCode()
             {
                 return
                     MemberName.GetHashCode() +
-                    (17 * JsonName.GetHashCode()) +
-                    (17 * StorageType.GetHashCode()) +
+                    17 * JsonName.GetHashCode() +
+                    17 * StorageType.GetHashCode() +
                     (string.IsNullOrEmpty(OverrideConverterType) ? 0 : 17 * OverrideConverterType.GetHashCode());
             }
+
             public static bool operator ==(Member a, Member b)
             {
                 return a.MemberName == b.MemberName &&
@@ -51,6 +48,7 @@ namespace GSSerializer
                        a.StorageType == b.StorageType &&
                        a.OverrideConverterType == b.OverrideConverterType;
             }
+
             public static bool operator !=(Member a, Member b)
             {
                 return !(a == b);
@@ -60,6 +58,4 @@ namespace GSSerializer
         public bool IsConstructorPublic;
         public Member[] Members;
     }
-
-
 }

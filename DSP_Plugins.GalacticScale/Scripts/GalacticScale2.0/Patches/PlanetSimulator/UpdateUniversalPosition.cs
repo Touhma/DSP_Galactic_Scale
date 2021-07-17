@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
+using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -7,13 +7,14 @@ namespace GalacticScale
 {
     public partial class PatchOnPlanetSimulator
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetSimulator), "UpdateUniversalPosition")]
-        public static bool UpdateUniversalPosition(ref PlanetSimulator __instance, ref StarSimulator ___star, ref bool ___isLocal, ref Transform ___lookCamera, Vector3 playerLPos, VectorLF3 playerUPos, Vector3 cameraPos)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetSimulator), "UpdateUniversalPosition")]
+        public static bool UpdateUniversalPosition(ref PlanetSimulator __instance, ref StarSimulator ___star,
+            ref bool ___isLocal, ref Transform ___lookCamera, Vector3 playerLPos, VectorLF3 playerUPos,
+            Vector3 cameraPos)
         {
-            if (__instance.planetData == null || __instance.planetData.loading || __instance.planetData.factoryLoading)
-            {
-                return false;
-            }
+            if (__instance.planetData == null || __instance.planetData.loading ||
+                __instance.planetData.factoryLoading) return false;
 
             __instance.SetLayers();
             var localPlanet = GameMain.localPlanet;
@@ -37,15 +38,9 @@ namespace GalacticScale
             var flag3 = ___isLocal && __instance.planetData.type != EPlanetType.Gas;
             if (__instance.sphereCollider.enabled == flag3)
             {
-                foreach (var collider in __instance.surfaceCollider)
-                {
-                    collider.enabled = flag3;
-                }
+                foreach (var collider in __instance.surfaceCollider) collider.enabled = flag3;
 
-                if (__instance.oceanCollider != null)
-                {
-                    __instance.oceanCollider.enabled = flag3;
-                }
+                if (__instance.oceanCollider != null) __instance.oceanCollider.enabled = flag3;
 
                 __instance.sphereCollider.enabled = !flag3;
             }
@@ -75,22 +70,15 @@ namespace GalacticScale
             Vector3 vpos;
             UniverseSimulator.VirtualMapping(vectorLf3.x, vectorLf3.y, vectorLf3.z, cameraPos, out vpos, out vscale);
             var vector3_1 = Vector3.one * vscale;
-            if (__instance.transform.localPosition != vpos)
-            {
-                __instance.transform.localPosition = vpos;
-            }
+            if (__instance.transform.localPosition != vpos) __instance.transform.localPosition = vpos;
 
             if (__instance.planetData == localPlanet)
             {
                 if (__instance.transform.localPosition.sqrMagnitude > 0.0)
-                {
                     __instance.transform.localPosition = Vector3.zero;
-                }
 
                 if (__instance.transform.localRotation != Quaternion.identity)
-                {
                     __instance.transform.localRotation = Quaternion.identity;
-                }
             }
             else
             {
@@ -98,10 +86,7 @@ namespace GalacticScale
                     Quaternion.Inverse(quaternion) * __instance.planetData.runtimeRotation;
             }
 
-            if (__instance.transform.localScale != vector3_1)
-            {
-                __instance.transform.localScale = vector3_1;
-            }
+            if (__instance.transform.localScale != vector3_1) __instance.transform.localScale = vector3_1;
 
             var vector3_2 = Quaternion.Inverse(quaternion) *
                             (__instance.planetData.star.uPosition - __instance.planetData.uPosition).normalized;
@@ -145,10 +130,7 @@ namespace GalacticScale
                 }
             }
 
-            if (!(__instance.atmoTrans0 != null))
-            {
-                return false;
-            }
+            if (!(__instance.atmoTrans0 != null)) return false;
 
             __instance.atmoTrans0.rotation = ___lookCamera.localRotation;
             Vector4 vector4_2 = !(GameCamera.generalTarget == null)
@@ -158,20 +140,18 @@ namespace GalacticScale
             // ********************************* Fix Here for release :) 
             var positionOffset = 0;
             if (localPlanet != null)
-            {
                 if (localPlanet.type != EPlanetType.Gas)
-                {
                     positionOffset = Mathf.RoundToInt(Mathf.Abs(localPlanet.radius - 200) / 2);
-                }
-            }
 
             __instance.atmoTrans1.localPosition = new Vector3(0, 0,
-                Mathf.Clamp(Vector3.Dot(lhs, ___lookCamera.forward) + 10f / __instance.planetData.GetScaleFactored(), 0.0f, Math.Max(320f, 320f * __instance.planetData.GetScaleFactored())));
+                Mathf.Clamp(Vector3.Dot(lhs, ___lookCamera.forward) + 10f / __instance.planetData.GetScaleFactored(),
+                    0.0f, Math.Max(320f, 320f * __instance.planetData.GetScaleFactored())));
             var num1 = Mathf.Clamp01(8000f * __instance.planetData.GetScaleFactored() / magnitude);
             var num2 = Mathf.Clamp01(4000f * __instance.planetData.GetScaleFactored() / magnitude);
             var atmoMatRadiusParam = __instance.atmoMatRadiusParam;
             atmoMatRadiusParam.z = atmoMatRadiusParam.x +
-                                   (float)((__instance.atmoMatRadiusParam.z - (double)__instance.atmoMatRadiusParam.x) *
+                                   (float) ((__instance.atmoMatRadiusParam.z -
+                                             (double) __instance.atmoMatRadiusParam.x) *
                                             (2.70000004768372 - num2 * 1.70000004768372));
             var vector4_3 = atmoMatRadiusParam * vscale * __instance.planetData.GetScaleFactored();
             __instance.atmoMat.SetVector("_PlanetPos", __instance.transform.localPosition);
@@ -182,7 +162,7 @@ namespace GalacticScale
             __instance.atmoMat.SetVector("_LocalPos", vector4_2);
             __instance.atmoMat.SetFloat("_SunRiseScatterPower",
                 Mathf.Max(60f * __instance.planetData.GetScaleFactored(),
-                    (float)((magnitude - __instance.planetData.realRadius * 2.0) * 0.180000007152557)));
+                    (float) ((magnitude - __instance.planetData.realRadius * 2.0) * 0.180000007152557)));
             __instance.atmoMat.SetFloat("_IntensityControl", num1);
             __instance.atmoMat.renderQueue = __instance.planetData != localPlanet ? 2989 : 2991;
 

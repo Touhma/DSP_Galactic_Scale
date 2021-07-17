@@ -3,11 +3,12 @@
 namespace GalacticScale
 {
     public delegate void GSTerrainAlgorithm(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0);
+
     public class TerrainAlgorithmLibrary : Dictionary<string, GSTerrainAlgorithm>
     {
         public static TerrainAlgorithmLibrary Init()
         {
-            return new TerrainAlgorithmLibrary()
+            return new TerrainAlgorithmLibrary
             {
                 ["GSTA1"] = TerrainAlgorithms.GenerateTerrain1,
                 ["GSTA3"] = TerrainAlgorithms.GenerateTerrain3,
@@ -16,6 +17,7 @@ namespace GalacticScale
                 ["GSTA00"] = TerrainAlgorithms.GenerateTerrain00
             };
         }
+
         public GSTerrainAlgorithm Find(string name)
         {
             if (!ContainsKey(name))
@@ -23,6 +25,7 @@ namespace GalacticScale
                 GS2.Warn("TerrainAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
                 return TerrainAlgorithms.GenerateTerrain1;
             }
+
             return this[name];
         }
     }

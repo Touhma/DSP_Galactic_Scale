@@ -4,53 +4,50 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-
     public partial class PatchOnUIPlanetDetail
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
-        public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText, ref PlanetData ____planet)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
+        public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText,
+            ref PlanetData ____planet)
         {
             // Add the planets radius to the Planet Detail UI
             if (___obliquityValueText.transform.parent.transform.parent.childCount == 6)
             {
-
                 GameObject radiusLabel;
-                GameObject obliquityLabel = ___obliquityValueText.transform.parent.gameObject;
-                radiusLabel = GameObject.Instantiate(obliquityLabel, obliquityLabel.transform.parent.transform);
+                var obliquityLabel = ___obliquityValueText.transform.parent.gameObject;
+                radiusLabel = Object.Instantiate(obliquityLabel, obliquityLabel.transform.parent.transform);
 
-                radiusLabel.transform.localPosition += (Vector3.down * 20);
-                Text radiusLabelText = radiusLabel.GetComponent<Text>();
+                radiusLabel.transform.localPosition += Vector3.down * 20;
+                var radiusLabelText = radiusLabel.GetComponent<Text>();
                 radiusLabelText.GetComponent<Localizer>().enabled = false;
-                Image radiusIcon = radiusLabel.transform.GetChild(1).GetComponent<Image>();
-                UIButton uiButton = radiusLabel.transform.GetChild(1).GetComponent<UIButton>();
+                var radiusIcon = radiusLabel.transform.GetChild(1).GetComponent<Image>();
+                var uiButton = radiusLabel.transform.GetChild(1).GetComponent<UIButton>();
                 uiButton.tips.tipText = "How large the planet is. Standard is 200";
                 uiButton.tips.tipTitle = "Planet Radius";
 
                 //GS2.LogJson(uiButton.button);
-                if (uiButton.button == null)
-                {
-                    uiButton.button = uiButton.gameObject.AddComponent<Button>();
-                }
+                if (uiButton.button == null) uiButton.button = uiButton.gameObject.AddComponent<Button>();
 
                 uiButton.button.transform.SetParent(uiButton.transform);
 
                 radiusIcon.sprite = Utils.GetSpriteAsset("ruler");
-                Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
+                var radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
                 radiusLabelText.text = "Planetary Radius";
                 radiusValueText.text = __instance.planet.realRadius.ToString();
             }
+
             if (___obliquityValueText.transform.parent.transform.parent.childCount == 7)
             {
-                Transform p = ___obliquityValueText.transform.parent.parent;
-                GameObject radiusLabel = p.GetChild(p.childCount - 1).gameObject;
-                Text radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
-                if (__instance.planet != null)
-                {
-                    radiusValueText.text = __instance.planet.realRadius.ToString();
-                }
+                var p = ___obliquityValueText.transform.parent.parent;
+                var radiusLabel = p.GetChild(p.childCount - 1).gameObject;
+                var radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
+                if (__instance.planet != null) radiusValueText.text = __instance.planet.realRadius.ToString();
             }
         }
-        [HarmonyPrefix, HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
         public static bool OnPlanetDataSet(ref UIPlanetDetail __instance,
             ref UIResAmountEntry ___tipEntry,
             // ref Text ___nameText,
@@ -79,10 +76,7 @@ namespace GalacticScale
 
             __instance.entries.Clear();
             ___tipEntry = null;
-            if (__instance.planet == null)
-            {
-                return false;
-            }
+            if (__instance.planet == null) return false;
 
             var _observed = GameMain.history.universeObserveLevel >=
                             (__instance.planet != GameMain.localPlanet ? 2 : 1);
@@ -97,20 +91,14 @@ namespace GalacticScale
             ___rotationPeriodValueText.text =
                 __instance.planet.rotationPeriod.ToString("#,##0") + "空格秒".Translate();
             var num1 = Mathf.Abs(__instance.planet.orbitInclination);
-            var num2 = (int)num1;
-            var num3 = (int)((num1 - (double)num2) * 60.0);
-            if (__instance.planet.orbitInclination < 0.0)
-            {
-                num2 = -num2;
-            }
+            var num2 = (int) num1;
+            var num3 = (int) ((num1 - (double) num2) * 60.0);
+            if (__instance.planet.orbitInclination < 0.0) num2 = -num2;
 
             var num4 = Mathf.Abs(__instance.planet.obliquity);
-            var num5 = (int)num4;
-            var num6 = (int)((num4 - (double)num5) * 60.0);
-            if (__instance.planet.obliquity < 0.0)
-            {
-                num5 = -num5;
-            }
+            var num5 = (int) num4;
+            var num6 = (int) ((num4 - (double) num5) * 60.0);
+            if (__instance.planet.obliquity < 0.0) num5 = -num5;
 
             ___inclinationValueText.text = string.Format("{0}° {1}′", num2, num3);
             ___obliquityValueText.text = string.Format("{0}° {1}′", num5, num6);
@@ -138,10 +126,7 @@ namespace GalacticScale
                 var waterItemId = __instance.planet.waterItemId;
                 Sprite icon = null;
                 var str = "无".Translate();
-                if (waterItemId < 0)
-                {
-                    str = waterItemId != -1 ? "未知".Translate() : "熔岩".Translate();
-                }
+                if (waterItemId < 0) str = waterItemId != -1 ? "未知".Translate() : "熔岩".Translate();
 
                 var itemProto1 = LDB.items.Select(waterItemId);
                 if (itemProto1 != null)
@@ -177,7 +162,7 @@ namespace GalacticScale
                 entry3.SetInfo(index2, "风能利用率".Translate(), ___sprite8, string.Empty, false,
                     __instance.planet.windStrength > 1.49899995326996, "      %");
                 StringBuilderUtility.WriteUInt(entry3.sb, 0, 5,
-                    (uint)(__instance.planet.windStrength * 100.0 + 0.499900013208389));
+                    (uint) (__instance.planet.windStrength * 100.0 + 0.499900013208389));
                 entry3.DisplayStringBuilder();
                 var index3 = index2 + 1;
                 var entry4 = getEntry.GetValue<UIResAmountEntry>();
@@ -186,7 +171,7 @@ namespace GalacticScale
                 entry4.SetInfo(index3, "光能利用率".Translate(), ___sprite9, string.Empty, false,
                     __instance.planet.luminosity > 1.49899995326996, "      %");
                 StringBuilderUtility.WriteUInt(entry4.sb, 0, 5,
-                    (uint)(__instance.planet.luminosity * 100.0 + 0.499900013208389));
+                    (uint) (__instance.planet.luminosity * 100.0 + 0.499900013208389));
                 entry4.DisplayStringBuilder();
                 num7 = index3 + 1;
                 for (var index4 = 7; index4 < 15; ++index4)

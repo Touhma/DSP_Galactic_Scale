@@ -2,9 +2,17 @@
 {
     public static partial class GS2
     {
-        public static bool tutorialsOff = false;
+        public static bool tutorialsOff;
         public static GSUI NoTutorialsOption;
-        public static void NoTutorialsOptionCallback(Val o) => tutorialsOff = o;
-        public static void NoTutorialsOptionPostfix() => NoTutorialsOption.Set(tutorialsOff);
+
+        public static void NoTutorialsOptionCallback(Val o)
+        {
+            tutorialsOff = o;
+        }
+
+        public static void NoTutorialsOptionPostfix()
+        {
+            NoTutorialsOption.Set(tutorialsOff);
+        }
     }
 }

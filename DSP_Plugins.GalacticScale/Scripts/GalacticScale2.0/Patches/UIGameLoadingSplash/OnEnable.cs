@@ -6,21 +6,19 @@ namespace GalacticScale
 {
     public partial class PatchOnUIGameLoadingSplash
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(UIGameLoadingSplash), "OnEnable")]
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIGameLoadingSplash), "OnEnable")]
         public static void OnEnable(ref Text ___promptText)
         {
-            ___promptText.text = "WARNING - Galactic Scale savegames can be broken by updates. Read the FAQ @ http://customizing.space";
-            Image[] images = UIRoot.instance.overlayCanvas.GetComponentsInChildren<Image>();
-            RawImage[] rimages = UIRoot.instance.overlayCanvas.GetComponentsInChildren<RawImage>();
-            foreach (Image image in images)
-            {
+            ___promptText.text =
+                "WARNING - Galactic Scale savegames can be broken by updates. Read the FAQ @ http://customizing.space";
+            var images = UIRoot.instance.overlayCanvas.GetComponentsInChildren<Image>();
+            var rimages = UIRoot.instance.overlayCanvas.GetComponentsInChildren<RawImage>();
+            foreach (var image in images)
                 if (image.name == "black-bg")
                 {
-                    Sprite splash = Utils.GetSpriteAsset("splash");
-                    if (splash != null)
-                    {
-                        image.sprite = splash;
-                    }
+                    var splash = Utils.GetSpriteAsset("splash");
+                    if (splash != null) image.sprite = splash;
 
                     image.color = Color.white;
                 }
@@ -28,14 +26,10 @@ namespace GalacticScale
                 {
                     image.enabled = false;
                 }
-            }
-            foreach (RawImage rimage in rimages)
-            {
+
+            foreach (var rimage in rimages)
                 if (rimage.name == "vignette")
-                {
                     rimage.enabled = false;
-                }
-            }
         }
     }
 }

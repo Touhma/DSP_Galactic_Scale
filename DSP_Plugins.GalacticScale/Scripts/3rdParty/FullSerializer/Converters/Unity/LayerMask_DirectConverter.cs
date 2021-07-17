@@ -1,13 +1,14 @@
 #if !NO_UNITY
 using System;
 using System.Collections.Generic;
+using GSSerializer.Internal.DirectConverters;
 using UnityEngine;
 
 namespace GSSerializer
 {
     public partial class fsConverterRegistrar
     {
-        public static Internal.DirectConverters.LayerMask_DirectConverter Register_LayerMask_DirectConverter;
+        public static LayerMask_DirectConverter Register_LayerMask_DirectConverter;
     }
 }
 
@@ -35,7 +36,10 @@ namespace GSSerializer.Internal.DirectConverters
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new LayerMask();
+        public override object CreateInstance(fsData data, Type storageType)
+        {
+            return new LayerMask();
+        }
     }
 }
 #endif

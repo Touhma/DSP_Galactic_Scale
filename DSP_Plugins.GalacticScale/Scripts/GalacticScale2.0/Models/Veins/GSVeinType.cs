@@ -1,6 +1,6 @@
-﻿using GSSerializer;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GSSerializer;
 using UnityEngine;
 
 namespace GalacticScale
@@ -8,7 +8,7 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSVeinTypeConverter))]
     public class GSVeinType
     {
-        public static Dictionary<string, EVeinType> saneVeinTypes = new Dictionary<string, EVeinType>()
+        public static Dictionary<string, EVeinType> saneVeinTypes = new Dictionary<string, EVeinType>
         {
             ["Iron"] = EVeinType.Iron,
             ["Copper"] = EVeinType.Copper,
@@ -31,7 +31,8 @@ namespace GalacticScale
             ["Grat"] = EVeinType.Grat,
             ["Diamond"] = EVeinType.Diamond
         };
-        public static Dictionary<EVeinType, string> insaneVeinTypes = new Dictionary<EVeinType, string>()
+
+        public static Dictionary<EVeinType, string> insaneVeinTypes = new Dictionary<EVeinType, string>
         {
             [EVeinType.Iron] = "Iron",
             [EVeinType.Copper] = "Copper",
@@ -46,46 +47,50 @@ namespace GalacticScale
             [EVeinType.Fireice] = "Fireice",
             [EVeinType.Grat] = "Optical",
             [EVeinType.Mag] = "Unipolar",
-            [EVeinType.Stone] = "Stone",
+            [EVeinType.Stone] = "Stone"
         };
 
-        public List<GSVein> veins = new List<GSVein>();
-        public EVeinType type = EVeinType.None;
-        public bool rare = false;
+        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
         public int generate;
-        public int Count => veins.Count;
 
-        [NonSerialized]
-        public PlanetData planet;
-        public GSVeinType Clone()
-        {
-            GSVeinType clone = (GSVeinType)MemberwiseClone();
-            clone.veins = new List<GSVein>();
-            for (var i = 0; i < veins.Count; i++)
-            {
-                clone.veins.Add(veins[i].Clone());
-            }
+        [NonSerialized] public PlanetData planet;
 
-            return clone;
-        }
+        public bool rare;
+        public EVeinType type = EVeinType.None;
+
+        public List<GSVein> veins = new List<GSVein>();
+
         public GSVeinType(EVeinType type)
         {
             this.type = type;
         }
-        public GSVeinType() { }
-        public static GS2.Random random = new GS2.Random(GSSettings.Seed);
-        public static GSVeinType Generate(EVeinType type, int min, int max, float min_richness, float max_richness, int min_patchSize, int max_patchSize, bool rare)
+
+        public GSVeinType()
         {
-            GSVeinType vt = new GSVeinType(type);
+        }
+
+        public int Count => veins.Count;
+
+        public GSVeinType Clone()
+        {
+            var clone = (GSVeinType) MemberwiseClone();
+            clone.veins = new List<GSVein>();
+            for (var i = 0; i < veins.Count; i++) clone.veins.Add(veins[i].Clone());
+
+            return clone;
+        }
+
+        public static GSVeinType Generate(EVeinType type, int min, int max, float min_richness, float max_richness,
+            int min_patchSize, int max_patchSize, bool rare)
+        {
+            var vt = new GSVeinType(type);
             vt.rare = rare;
-            int amount = Mathf.RoundToInt(Mathf.Clamp(random.Next(min, max + 1), 0, 99));
+            var amount = Mathf.RoundToInt(Mathf.Clamp(random.Next(min, max + 1), 0, 99));
             for (var i = 0; i < amount; i++)
-            {
-                vt.veins.Add(new GSVein(random.Next(min_patchSize, max_patchSize + 1), random.NextFloat(min_richness, max_richness)));
-            }
+                vt.veins.Add(new GSVein(random.Next(min_patchSize, max_patchSize + 1),
+                    random.NextFloat(min_richness, max_richness)));
 
             return vt;
         }
     }
-
 }

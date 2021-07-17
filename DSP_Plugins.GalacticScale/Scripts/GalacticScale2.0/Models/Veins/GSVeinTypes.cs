@@ -13,12 +13,8 @@ namespace GalacticScale
         public bool ContainsVein(EVeinType type, bool allowRare = false)
         {
             foreach (var vt in this)
-            {
                 if (vt.type == type && (vt.rare == false || allowRare))
-                {
                     return true;
-                }
-            }
             return false;
         }
     }

@@ -1,13 +1,14 @@
 #if !NO_UNITY
 using System;
 using System.Collections.Generic;
+using GSSerializer.Internal.DirectConverters;
 using UnityEngine;
 
 namespace GSSerializer
 {
     public partial class fsConverterRegistrar
     {
-        public static Internal.DirectConverters.Gradient_DirectConverter Register_Gradient_DirectConverter;
+        public static Gradient_DirectConverter Register_Gradient_DirectConverter;
     }
 }
 
@@ -40,7 +41,10 @@ namespace GSSerializer.Internal.DirectConverters
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new Gradient();
+        public override object CreateInstance(fsData data, Type storageType)
+        {
+            return new Gradient();
+        }
     }
 }
 #endif

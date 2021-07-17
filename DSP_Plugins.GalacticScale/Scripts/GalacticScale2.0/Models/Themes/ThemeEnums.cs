@@ -6,8 +6,9 @@
         Planet, //Not Moon
         Moon, //Not Planet
         Private, //Dont select with query
-        Telluric, //Either Planet or Moon
+        Telluric //Either Planet or Moon
     }
+
     public enum EThemeHeat
     {
         Hot,
@@ -16,5 +17,4 @@
         Cold,
         Frozen
     }
-
 }

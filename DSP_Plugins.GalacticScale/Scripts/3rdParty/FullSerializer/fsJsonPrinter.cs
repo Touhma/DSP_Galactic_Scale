@@ -8,31 +8,28 @@ namespace GSSerializer
     public static class fsJsonPrinter
     {
         /// <summary>
-        /// Inserts the given number of indents into the builder.
+        ///     Inserts the given number of indents into the builder.
         /// </summary>
         private static void InsertSpacing(TextWriter stream, int count)
         {
-            for (int i = 0; i < count; ++i)
-            {
-                stream.Write("    ");
-            }
+            for (var i = 0; i < count; ++i) stream.Write("    ");
         }
 
         /// <summary>
-        /// Escapes a string.
+        ///     Escapes a string.
         /// </summary>
         private static string EscapeString(string str)
         {
             // Escaping a string is pretty allocation heavy, so we try hard to
             // not do it.
 
-            bool needsEscape = false;
-            for (int i = 0; i < str.Length; ++i)
+            var needsEscape = false;
+            for (var i = 0; i < str.Length; ++i)
             {
-                char c = str[i];
+                var c = str[i];
 
                 // unicode code point
-                int intChar = Convert.ToInt32(c);
+                var intChar = Convert.ToInt32(c);
                 if (intChar < 0 || intChar > 127)
                 {
                     needsEscape = true;
@@ -55,25 +52,19 @@ namespace GSSerializer
                         break;
                 }
 
-                if (needsEscape)
-                {
-                    break;
-                }
+                if (needsEscape) break;
             }
 
-            if (needsEscape == false)
-            {
-                return str;
-            }
+            if (needsEscape == false) return str;
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            for (int i = 0; i < str.Length; ++i)
+            for (var i = 0; i < str.Length; ++i)
             {
-                char c = str[i];
+                var c = str[i];
 
                 // unicode code point
-                int intChar = Convert.ToInt32(c);
+                var intChar = Convert.ToInt32(c);
                 if (intChar < 0 || intChar > 127)
                 {
                     result.Append(string.Format("\\u{0:x4} ", intChar).Trim());
@@ -83,20 +74,39 @@ namespace GSSerializer
                 // standard escape character
                 switch (c)
                 {
-                    case '"': result.Append("\\\""); continue;
-                    case '\\': result.Append(@"\\"); continue;
-                    case '\a': result.Append(@"\a"); continue;
-                    case '\b': result.Append(@"\b"); continue;
-                    case '\f': result.Append(@"\f"); continue;
-                    case '\n': result.Append(@"\n"); continue;
-                    case '\r': result.Append(@"\r"); continue;
-                    case '\t': result.Append(@"\t"); continue;
-                    case '\0': result.Append(@"\0"); continue;
+                    case '"':
+                        result.Append("\\\"");
+                        continue;
+                    case '\\':
+                        result.Append(@"\\");
+                        continue;
+                    case '\a':
+                        result.Append(@"\a");
+                        continue;
+                    case '\b':
+                        result.Append(@"\b");
+                        continue;
+                    case '\f':
+                        result.Append(@"\f");
+                        continue;
+                    case '\n':
+                        result.Append(@"\n");
+                        continue;
+                    case '\r':
+                        result.Append(@"\r");
+                        continue;
+                    case '\t':
+                        result.Append(@"\t");
+                        continue;
+                    case '\0':
+                        result.Append(@"\0");
+                        continue;
                 }
 
                 // no escaping needed
                 result.Append(c);
             }
+
             return result.ToString();
         }
 
@@ -110,13 +120,9 @@ namespace GSSerializer
 
                 case fsDataType.Boolean:
                     if (data.AsBool)
-                    {
                         stream.Write("true");
-                    }
                     else
-                    {
                         stream.Write("false");
-                    }
 
                     break;
 
@@ -136,49 +142,45 @@ namespace GSSerializer
                     break;
 
                 case fsDataType.Object:
+                {
+                    stream.Write('{');
+                    var comma = false;
+                    foreach (var entry in data.AsDictionary)
                     {
-                        stream.Write('{');
-                        bool comma = false;
-                        foreach (var entry in data.AsDictionary)
-                        {
-                            if (comma)
-                            {
-                                stream.Write(',');
-                            }
+                        if (comma) stream.Write(',');
 
-                            comma = true;
-                            stream.Write('"');
-                            stream.Write(entry.Key);
-                            stream.Write('"');
-                            stream.Write(":");
-                            BuildCompressedString(entry.Value, stream);
-                        }
-                        stream.Write('}');
-                        break;
+                        comma = true;
+                        stream.Write('"');
+                        stream.Write(entry.Key);
+                        stream.Write('"');
+                        stream.Write(":");
+                        BuildCompressedString(entry.Value, stream);
                     }
+
+                    stream.Write('}');
+                    break;
+                }
 
                 case fsDataType.Array:
+                {
+                    stream.Write('[');
+                    var comma = false;
+                    foreach (var entry in data.AsList)
                     {
-                        stream.Write('[');
-                        bool comma = false;
-                        foreach (var entry in data.AsList)
-                        {
-                            if (comma)
-                            {
-                                stream.Write(',');
-                            }
+                        if (comma) stream.Write(',');
 
-                            comma = true;
-                            BuildCompressedString(entry, stream);
-                        }
-                        stream.Write(']');
-                        break;
+                        comma = true;
+                        BuildCompressedString(entry, stream);
                     }
+
+                    stream.Write(']');
+                    break;
+                }
             }
         }
 
         /// <summary>
-        /// Formats this data into the given builder.
+        ///     Formats this data into the given builder.
         /// </summary>
         private static void BuildPrettyString(fsData data, TextWriter stream, int depth)
         {
@@ -190,13 +192,9 @@ namespace GSSerializer
 
                 case fsDataType.Boolean:
                     if (data.AsBool)
-                    {
                         stream.Write("true");
-                    }
                     else
-                    {
                         stream.Write("false");
-                    }
 
                     break;
 
@@ -215,30 +213,32 @@ namespace GSSerializer
                     break;
 
                 case fsDataType.Object:
+                {
+                    stream.Write('{');
+                    stream.WriteLine();
+                    var comma = false;
+                    foreach (var entry in data.AsDictionary)
                     {
-                        stream.Write('{');
-                        stream.WriteLine();
-                        bool comma = false;
-                        foreach (var entry in data.AsDictionary)
+                        if (comma)
                         {
-                            if (comma)
-                            {
-                                stream.Write(',');
-                                stream.WriteLine();
-                            }
-                            comma = true;
-                            InsertSpacing(stream, depth + 1);
-                            stream.Write('"');
-                            stream.Write(entry.Key);
-                            stream.Write('"');
-                            stream.Write(": ");
-                            BuildPrettyString(entry.Value, stream, depth + 1);
+                            stream.Write(',');
+                            stream.WriteLine();
                         }
-                        stream.WriteLine();
-                        InsertSpacing(stream, depth);
-                        stream.Write('}');
-                        break;
+
+                        comma = true;
+                        InsertSpacing(stream, depth + 1);
+                        stream.Write('"');
+                        stream.Write(entry.Key);
+                        stream.Write('"');
+                        stream.Write(": ");
+                        BuildPrettyString(entry.Value, stream, depth + 1);
                     }
+
+                    stream.WriteLine();
+                    InsertSpacing(stream, depth);
+                    stream.Write('}');
+                    break;
+                }
 
                 case fsDataType.Array:
                     // special case for empty lists; we don't put an empty line
@@ -249,7 +249,7 @@ namespace GSSerializer
                     }
                     else
                     {
-                        bool comma = false;
+                        var comma = false;
 
                         stream.Write('[');
                         stream.WriteLine();
@@ -260,27 +260,33 @@ namespace GSSerializer
                                 stream.Write(',');
                                 stream.WriteLine();
                             }
+
                             comma = true;
                             InsertSpacing(stream, depth + 1);
                             BuildPrettyString(entry, stream, depth + 1);
                         }
+
                         stream.WriteLine();
                         InsertSpacing(stream, depth);
                         stream.Write(']');
                     }
+
                     break;
             }
         }
 
         /// <summary>
-        /// Writes the pretty JSON output data to the given stream.
+        ///     Writes the pretty JSON output data to the given stream.
         /// </summary>
         /// <param name="data">The data to print.</param>
         /// <param name="outputStream">Where to write the printed data.</param>
-        public static void PrettyJson(fsData data, TextWriter outputStream) => BuildPrettyString(data, outputStream, 0);
+        public static void PrettyJson(fsData data, TextWriter outputStream)
+        {
+            BuildPrettyString(data, outputStream, 0);
+        }
 
         /// <summary>
-        /// Returns the data in a pretty printed JSON format.
+        ///     Returns the data in a pretty printed JSON format.
         /// </summary>
         public static string PrettyJson(fsData data)
         {
@@ -293,14 +299,17 @@ namespace GSSerializer
         }
 
         /// <summary>
-        /// Writes the compressed JSON output data to the given stream.
+        ///     Writes the compressed JSON output data to the given stream.
         /// </summary>
         /// <param name="data">The data to print.</param>
         /// <param name="outputStream">Where to write the printed data.</param>
-        public static void CompressedJson(fsData data, StreamWriter outputStream) => BuildCompressedString(data, outputStream);
+        public static void CompressedJson(fsData data, StreamWriter outputStream)
+        {
+            BuildCompressedString(data, outputStream);
+        }
 
         /// <summary>
-        /// Returns the data in a relatively compressed JSON format.
+        ///     Returns the data in a relatively compressed JSON format.
         /// </summary>
         public static string CompressedJson(fsData data)
         {
@@ -313,25 +322,20 @@ namespace GSSerializer
         }
 
         /// <summary>
-        /// Utility method that converts a double to a string.
+        ///     Utility method that converts a double to a string.
         /// </summary>
         private static string ConvertDoubleToString(double d)
         {
-            if (Double.IsInfinity(d) || Double.IsNaN(d))
-            {
-                return d.ToString(CultureInfo.InvariantCulture);
-            }
+            if (double.IsInfinity(d) || double.IsNaN(d)) return d.ToString(CultureInfo.InvariantCulture);
 
-            string doubledString = d.ToString(CultureInfo.InvariantCulture);
+            var doubledString = d.ToString(CultureInfo.InvariantCulture);
 
             // NOTE/HACK: If we don't serialize with a period or an exponent,
             // then the number will be deserialized as an Int64, not a double.
             if (doubledString.Contains(".") == false &&
                 doubledString.Contains("e") == false &&
                 doubledString.Contains("E") == false)
-            {
                 doubledString += ".0";
-            }
 
             return doubledString;
         }

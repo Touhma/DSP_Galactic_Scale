@@ -3,19 +3,28 @@
 namespace GSSerializer.Internal
 {
     /// <summary>
-    /// Serializes and deserializes WeakReferences.
+    ///     Serializes and deserializes WeakReferences.
     /// </summary>
     public class fsWeakReferenceConverter : fsConverter
     {
-        public override bool CanProcess(Type type) => type == typeof(WeakReference);
+        public override bool CanProcess(Type type)
+        {
+            return type == typeof(WeakReference);
+        }
 
-        public override bool RequestCycleSupport(Type storageType) => false;
+        public override bool RequestCycleSupport(Type storageType)
+        {
+            return false;
+        }
 
-        public override bool RequestInheritanceSupport(Type storageType) => false;
+        public override bool RequestInheritanceSupport(Type storageType)
+        {
+            return false;
+        }
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
         {
-            var weakRef = (WeakReference)instance;
+            var weakRef = (WeakReference) instance;
 
             var result = fsResult.Success;
             serialized = fsData.CreateDictionary();
@@ -23,10 +32,7 @@ namespace GSSerializer.Internal
             if (weakRef.IsAlive)
             {
                 fsData data;
-                if ((result += Serializer.TrySerialize(weakRef.Target, out data)).Failed)
-                {
-                    return result;
-                }
+                if ((result += Serializer.TrySerialize(weakRef.Target, out data)).Failed) return result;
 
                 serialized.AsDictionary["Target"] = data;
                 serialized.AsDictionary["TrackResurrection"] = new fsData(weakRef.TrackResurrection);
@@ -39,10 +45,7 @@ namespace GSSerializer.Internal
         {
             var result = fsResult.Success;
 
-            if ((result += CheckType(data, fsDataType.Object)).Failed)
-            {
-                return result;
-            }
+            if ((result += CheckType(data, fsDataType.Object)).Failed) return result;
 
             if (data.AsDictionary.ContainsKey("Target"))
             {
@@ -50,15 +53,11 @@ namespace GSSerializer.Internal
                 object targetInstance = null;
 
                 if ((result += Serializer.TryDeserialize(targetData, typeof(object), ref targetInstance)).Failed)
-                {
                     return result;
-                }
 
-                bool trackResurrection = false;
+                var trackResurrection = false;
                 if (data.AsDictionary.ContainsKey("TrackResurrection") && data.AsDictionary["TrackResurrection"].IsBool)
-                {
                     trackResurrection = data.AsDictionary["TrackResurrection"].AsBool;
-                }
 
                 instance = new WeakReference(targetInstance, trackResurrection);
             }
@@ -66,6 +65,9 @@ namespace GSSerializer.Internal
             return result;
         }
 
-        public override object CreateInstance(fsData data, Type storageType) => new WeakReference(null);
+        public override object CreateInstance(fsData data, Type storageType)
+        {
+            return new WeakReference(null);
+        }
     }
 }
