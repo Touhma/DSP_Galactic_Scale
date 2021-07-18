@@ -104,12 +104,20 @@ namespace GalacticScale
             {
                 return items[Next(items.Count)];
             }
-
+            public (int, T) ItemWithIndex<T>(List<T> items)
+            {
+                int n = Next(items.Count);
+                return (n, items[n]);
+            }
             public T Item<T>(T[] items)
             {
                 return items[Next(items.Length)];
             }
-
+            public (int, T) ItemWithIndex<T>(T[] items)
+            {
+                int n = Next(items.Length);
+                return (n, items[n]);
+            }
             public KeyValuePair<W, X> Item<W, X>(Dictionary<W, X> items)
             {
                 W[] keys = { };
