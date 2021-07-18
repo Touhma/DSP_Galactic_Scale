@@ -23,7 +23,7 @@ namespace GalacticScale.Generators
 
         private GS2.Random random;
 
-        public string Name => "Dev Gen";
+        public string Name => "GalacticScaleDev";
 
         public string Author => "innominata";
 
@@ -46,17 +46,13 @@ namespace GalacticScale.Generators
             random = new GS2.Random(GSSettings.Seed);
             CalculateFrequencies();
             GenerateStars(starCount);
-            // GenerateOrbits();
+            GenerateOrbits();
             GeneratePlanets();
-            // AssignOrbits();
-            SetPlanetOrbitPhase();
-            SelectBirthPlanet();
+            AdjustPlanetOrbits();
+            CreateBirthPlanet();
+            SanityCheck();
             SanityCheck();
             EnsureBirthSystemHasTi();
-            for (var i = 0; i < 200; i++)
-            {
-                GS2.Warn("N:"+NameGen.New(birthPlanet));
-            }
             Log("End");
         }
 
@@ -73,11 +69,11 @@ namespace GalacticScale.Generators
                         $"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
         }
 
-        private void SelectBirthPlanet()
+        private void CreateBirthPlanet()
         {
             Log("Picking BirthPlanet");
             PickNewBirthPlanet();
-            Log($"Birthplanet Picked: {birthPlanet.Name} Orbiting at {birthPlanet.OrbitRadius} of star with hz: {birthStar.genData.Get("minHZ").String()}:{birthStar.genData.Get("maxHZ").String()}");
+            Log("Birthplanet Picked");
             if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
             Log((birthPlanet != null).ToString());
             GSSettings.BirthPlanetName = birthPlanet.Name;
@@ -90,11 +86,11 @@ namespace GalacticScale.Generators
                 //int oldRadius = birthPlanet.Radius;
                 var newRadius = preferences.GetInt("birthPlanetSize", 400);
 
-                // if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
-                // {
-                //     Log("Fixing Orbits...");
-                //     FixOrbitsForBirthPlanet(newRadius);
-                // }
+                if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
+                {
+                    Log("Fixing Orbits...");
+                    FixOrbitsForBirthPlanet(newRadius);
+                }
 
                 birthPlanet.Radius = newRadius;
                 birthPlanet.Scale = 1f;

@@ -11,17 +11,7 @@ namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
     {
-        //private void CreateBirthPlanet(GSPlanet planet)
-        //{
-        //    //Ensure there is a compatible birthplanet in the habitable zone, or as close as possible
-        //    Log("Creating BirthPlanet");
-        //    if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
-        //    birthPlanet = planet;
-        //    birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
-        //    birthPlanet.Scale = 1f;
-        //    //TODO: might need to check orbits of satellites?
-        //}
-
+        
         private void GeneratePlanets()
         {
             foreach (var star in GSSettings.Stars) GeneratePlanetsForStar(star);
@@ -37,11 +27,7 @@ namespace GalacticScale.Generators
             var secondaryMoonCount = 0;
             var protos = new List<ProtoPlanet>();
             var moons = new List<ProtoPlanet>();
-            if (star == birthStar)
-            {
-                protos.Add(new ProtoPlanet() { gas = false, radius = preferences.GetInt("birthPlanetSize", 200), birth = true });
-            }
-            else protos.Add(new ProtoPlanet {gas = CalculateIsGas(star), radius = GetStarPlanetSize(star)});
+            protos.Add(new ProtoPlanet {gas = CalculateIsGas(star), radius = GetStarPlanetSize(star)});
             if (protos[0].radius < 50) protos[0].radius = 50;
             for (var i = 1; i < starBodyCount; i++)
                 if (random.NextPick(moonChance))
@@ -78,23 +64,7 @@ namespace GalacticScale.Generators
                 }
                 else
                 {
-                    ProtoPlanet randomProto;
-                    List<ProtoPlanet> gasProtos = new List<ProtoPlanet>();
-                    List<ProtoPlanet> telProtos = new List<ProtoPlanet>();
-                    foreach (var pp in protos)
-                    {
-                        if (pp.gas) gasProtos.Add(pp);
-                        else telProtos.Add(pp);
-                    }
-                    if (gasProtos.Count > 0 && random.NextPick(preferences.GetInt("moonBias", 50)/100f))
-                    {
-                        //Gas
-                        randomProto = random.Item(gasProtos);
-
-                    } else if (telProtos.Count > 0)
-                    {
-                        randomProto = random.Item(telProtos);
-                    } else randomProto = random.Item(protos);
+                    var randomProto = random.Item(protos);
                     var moon = new ProtoPlanet
                         {gas = false, radius = GetStarMoonSize(star, randomProto.radius, randomProto.gas)};
                     randomProto.moons.Add(moon);
@@ -113,7 +83,6 @@ namespace GalacticScale.Generators
                     if (proto.radius < 50)
                         Warn("GAS AND NOT 50");
                 var planet = new GSPlanet(star.Name + "-Planet", null, proto.radius, -1, -1, -1, -1, -1, -1, -1, -1);
-                if (proto.birth) birthPlanet = planet;
                 //planet.fields.Add("gas", proto.gas.ToString());
                 if (proto.gas) planet.Scale = 10f;
                 else planet.Scale = 1f;
@@ -168,18 +137,18 @@ namespace GalacticScale.Generators
                 if (random.NextDouble() < 0.05) // Crazy Inclination
                     body.OrbitInclination = random.NextFloat(20f, 85f);
 
-                // Force inclinations for testing
-                // body.OrbitInclination = 0f;
-                // body.OrbitPhase = 0f;
-                // body.OrbitalPeriod = 10000000f;
+                //// Force inclinations for testing
+                //body.OrbitInclination = 0f;
+                //body.OrbitPhase = 0f;
+                //body.OrbitalPeriod = 10000000f;
             }
         }
 
-        private float GetNextAvailableOrbit(GSPlanet planet, int moonIndex)
+        private float GetNextAvailableOrbit(GSPlanet planet, int MoonIndex)
         {
             var moons = planet.Moons;
-            if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].SystemRadius;
-            return moons[moonIndex - 1].SystemRadius + moons[moonIndex - 1].OrbitRadius + moons[moonIndex].SystemRadius;
+            if (MoonIndex == 0) return planet.RadiusAU + moons[MoonIndex].SystemRadius;
+            return moons[MoonIndex - 1].SystemRadius + moons[MoonIndex - 1].OrbitRadius + moons[MoonIndex].SystemRadius;
         }
 
         private void CreateMoonOrbits(GSStar star)
@@ -231,7 +200,7 @@ namespace GalacticScale.Generators
 
         private float GetMoonOrbit()
         {
-            return 0.01f + random.NextFloat(0f, 0.05f);
+            return 0.02f + random.NextFloat(0f, 0.2f);
         }
 
 public float GetOrbitGap(GSStar star)
@@ -253,12 +222,6 @@ public float GetOrbitGap(GSStar star)
         {
             foreach (var planet in star.Planets)
             {
-                if (planet == birthPlanet)
-                {
-                    planet.Theme = "Prairie";
-                    planet.Scale = 1f;
-                    continue;
-                }
                 var heat = CalculateThemeHeat(star, planet.OrbitRadius);
                 var type = EThemeType.Planet;
                 if (planet.Scale == 10f) type = EThemeType.Gas;
@@ -280,8 +243,8 @@ public float GetOrbitGap(GSStar star)
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            //hz.min *= 5f;
-            //hz.max *= 10f;
+            hz.min *= 5f;
+            hz.max *= 10f;
             //Warn($"HZ for {star.Name} {hz.min}-{hz.max}");
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;
@@ -295,7 +258,6 @@ public class ProtoPlanet
             public readonly List<ProtoPlanet> moons = new List<ProtoPlanet>();
             public bool gas;
             public int radius;
-            public bool birth = false;
         }
     }
 }

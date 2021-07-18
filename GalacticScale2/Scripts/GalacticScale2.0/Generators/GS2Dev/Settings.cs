@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static GalacticScale.GS2;
+
 namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
@@ -36,11 +36,9 @@ namespace GalacticScale.Generators
 
         public void Import(GSGenPreferences preferences)
         {
-            // Warn("Importing");
             for (var i = 0; i < preferences.Count; i++)
             {
                 var key = preferences.Keys.ElementAt(i);
-                //GS2.Log($"pref set {key} {preferences[key]}");
                 this.preferences.Set(key, preferences[key]);
             }
 
@@ -51,7 +49,6 @@ namespace GalacticScale.Generators
 
         public GSGenPreferences Export()
         {
-            // Warn("Exporting");
             return preferences;
         }
 
@@ -106,47 +103,45 @@ namespace GalacticScale.Generators
 
         public void EnableLudicrousMode()
         {
-            Log("Enabling LudicrousMode");
             Config.MaxStarCount = 4096;
             UI["safeMode"].Set(false);
             preferences.Set("safeMode", false);
-            UI["starSizeMulti"].Set(new GSSliderConfig(0.1f, preferences.GetFloat("starSizeMulti"), 100f));
-            UI["minPlanetSize"].Set(new GSSliderConfig(5, preferences.GetInt("minPlanetSize"), 500));
-            UI["maxPlanetSize"].Set(new GSSliderConfig(50, preferences.GetInt("maxPlanetSize"), 510));
-            UI["defaultStarCount"].Set(new GSSliderConfig(1, preferences.GetInt("defaultStarCount"), 4096));
-            UI["minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt("minPlanetCount"), 99));
-            UI["maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt("maxPlanetCount"), 99));
+            UI["starSizeMulti"].Set(new GSSliderConfig(0.1f, 10f, 100f));
+            UI["minPlanetSize"].Set(new GSSliderConfig(5, 30, 500));
+            UI["maxPlanetSize"].Set(new GSSliderConfig(50, 500, 510));
+            UI["defaultStarCount"].Set(new GSSliderConfig(1, 64, 4096));
+            UI["minPlanetCount"].Set(new GSSliderConfig(0, 1, 99));
+            UI["maxPlanetCount"].Set(new GSSliderConfig(1, 10, 99));
             for (var i = 0; i < 14; i++)
             {
-                UI[$"{typeLetter[i]}minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt($"{typeLetter[i]}minPlanetCount"), 99));
-                UI[$"{typeLetter[i]}maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt($"{typeLetter[i]}maxPlanetCount"), 99));
-                UI[$"{typeLetter[i]}minPlanetSize"].Set(new GSSliderConfig(5, preferences.GetInt($"{typeLetter[i]}minPlanetSize"), 500));
-                UI[$"{typeLetter[i]}maxPlanetSize"].Set(new GSSliderConfig(50, preferences.GetInt($"{typeLetter[i]}maxPlanetSize"), 510));
+                UI[$"{typeLetter[i]}minPlanetCount"].Set(new GSSliderConfig(0, 1, 99));
+                UI[$"{typeLetter[i]}maxPlanetCount"].Set(new GSSliderConfig(1, 10, 99));
+                UI[$"{typeLetter[i]}minPlanetSize"].Set(new GSSliderConfig(5, 30, 500));
+                UI[$"{typeLetter[i]}maxPlanetSize"].Set(new GSSliderConfig(50, 500, 510));
             }
         }
 
         public void DisableLudicrousMode()
         {
-            Log("Disabling LudicrousMode");
             Config.MaxStarCount = 1024;
-            UI["starSizeMulti"].Set(new GSSliderConfig(1f, preferences.GetFloat("starSizeMulti"), 20f));
-            UI["minPlanetSize"].Set(new GSSliderConfig(30, preferences.GetInt("minPlanetSize"), 200));
-            UI["maxPlanetSize"].Set(new GSSliderConfig(200, preferences.GetInt("maxPlanetSize"), 500));
-            UI["defaultStarCount"].Set(new GSSliderConfig(1, preferences.GetInt("defaultStarCount"), 1024));
-            UI["minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt("minPlanetCount"), 25));
-            UI["maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt("maxPlanetCount"), 25));
+            UI["starSizeMulti"].Set(new GSSliderConfig(1f, 10f, 20f));
+            UI["minPlanetSize"].Set(new GSSliderConfig(30, 50, 200));
+            UI["maxPlanetSize"].Set(new GSSliderConfig(200, 500, 500));
+            UI["defaultStarCount"].Set(new GSSliderConfig(1, 64, 1024));
+            UI["minPlanetCount"].Set(new GSSliderConfig(0, 1, 25));
+            UI["maxPlanetCount"].Set(new GSSliderConfig(1, 10, 25));
             for (var i = 0; i < 14; i++)
             {
-                UI[$"{typeLetter[i]}minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt($"{typeLetter[i]}minPlanetCount"), 25));
-                UI[$"{typeLetter[i]}maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt($"{typeLetter[i]}maxPlanetCount"), 25));
-                UI[$"{typeLetter[i]}minPlanetSize"].Set(new GSSliderConfig(30, preferences.GetInt($"{typeLetter[i]}minPlanetSize"), 200));
-                UI[$"{typeLetter[i]}maxPlanetSize"].Set(new GSSliderConfig(200, preferences.GetInt($"{typeLetter[i]}maxPlanetSize"), 500));
+                UI[$"{typeLetter[i]}minPlanetCount"].Set(new GSSliderConfig(0, 1, 25));
+                UI[$"{typeLetter[i]}maxPlanetCount"].Set(new GSSliderConfig(1, 10, 25));
+                UI[$"{typeLetter[i]}minPlanetSize"].Set(new GSSliderConfig(30, 50, 200));
+                UI[$"{typeLetter[i]}maxPlanetSize"].Set(new GSSliderConfig(200, 500, 500));
             }
         }
 
         public void EnableSafeMode()
         {
-            GS2.Warn("Enabling SafeMode");
+            //GS2.Warn("Enabling SafeMode");
             LockUI("ludicrousMode", false);
             DisableLudicrousMode();
             UI["minPlanetSize"].Set(new GSSliderConfig(100, 100, 200));
@@ -176,7 +171,7 @@ namespace GalacticScale.Generators
 
         private void LockUI(string key, Val value)
         {
-            // GS2.Warn("LockUI " + key + " " + value.ToString());
+            //GS2.Warn("LockUI " + key +" " + value.ToString());
             UI[key].Set(value);
             UI[key].Disable();
         }
@@ -188,7 +183,6 @@ namespace GalacticScale.Generators
 
         public void DisableSafeMode()
         {
-            Log("Disabling SafeMode");
             UI["ludicrousMode"].Enable();
             UI["minPlanetSize"].Set(new GSSliderConfig(30, 50, 200));
             UI["maxPlanetSize"].Set(new GSSliderConfig(50, 500, 500));
@@ -222,7 +216,6 @@ namespace GalacticScale.Generators
 
         private void InitPreferences()
         {
-            GS2.Log("InitPreferences");
             preferences.Set("safeMode", false);
             preferences.Set("ludicrousMode", false);
             preferences.Set("galaxyDensity", 5);
@@ -232,7 +225,6 @@ namespace GalacticScale.Generators
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
             preferences.Set("moonsAreSmall", true);
-            preferences.Set("moonBias", 50);
             preferences.Set("hugeGasGiants", true);
             preferences.Set("tidalLockInnerPlanets", false);
             preferences.Set("secondarySatellites", false);
@@ -294,7 +286,6 @@ namespace GalacticScale.Generators
                 Options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", Options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
             UI.Add("moonsAreSmall", Options.Add(GSUI.Checkbox("Moons Are Small", true, "moonsAreSmall")));
-            UI.Add("moonBias", Options.Add(GSUI.Slider("Gas Giants Moon Bias", 0, 50, 100, "moonBias")));
             UI.Add("hugeGasGiants", Options.Add(GSUI.Checkbox("Huge Gas Giants", true, "hugeGasGiants")));
             UI.Add("tidalLockInnerPlanets",
                 Options.Add(GSUI.Checkbox("Tidal Lock Inner Planets", false, "tidalLockInnerPlanets")));
@@ -418,7 +409,6 @@ namespace GalacticScale.Generators
 
         private void MinPlanetCountCallback(Val o)
         {
-            // Log("MinPlanetCountCallback " + o.String());
             var maxCount = preferences.GetInt("maxPlanetCount");
             if (maxCount == -1f) maxCount = 25;
             if (maxCount < o)
