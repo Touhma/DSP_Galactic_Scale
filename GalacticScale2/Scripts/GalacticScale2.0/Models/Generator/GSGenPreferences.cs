@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public class GSGenPreferences : Dictionary<string, string>
     {
-        public Val Get(string key)
+        public string Get(string key)
         {
             return ContainsKey(key) ? this[key] : null;
         }

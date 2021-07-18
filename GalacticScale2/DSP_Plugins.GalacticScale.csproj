@@ -153,6 +153,12 @@
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Orbits.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Planets.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Settings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Stars.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Settings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\GS2Generator.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Themes.cs" />
@@ -160,6 +166,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\Val.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\ValStore.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
