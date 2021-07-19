@@ -46,8 +46,9 @@ namespace GalacticScale.Generators
             random = new GS2.Random(GSSettings.Seed);
             CalculateFrequencies();
             GenerateStars(starCount);
-            GenerateOrbits();
+            // GenerateOrbits();
             GeneratePlanets();
+            // AssignOrbits();
             AdjustPlanetOrbits();
             CreateBirthPlanet();
             SanityCheck();
@@ -86,11 +87,11 @@ namespace GalacticScale.Generators
                 //int oldRadius = birthPlanet.Radius;
                 var newRadius = preferences.GetInt("birthPlanetSize", 400);
 
-                if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
-                {
-                    Log("Fixing Orbits...");
-                    FixOrbitsForBirthPlanet(newRadius);
-                }
+                // if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
+                // {
+                //     Log("Fixing Orbits...");
+                //     FixOrbitsForBirthPlanet(newRadius);
+                // }
 
                 birthPlanet.Radius = newRadius;
                 birthPlanet.Scale = 1f;
