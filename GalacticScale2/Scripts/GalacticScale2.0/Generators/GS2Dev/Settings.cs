@@ -39,6 +39,7 @@ namespace GalacticScale.Generators
             for (var i = 0; i < preferences.Count; i++)
             {
                 var key = preferences.Keys.ElementAt(i);
+                GS2.Log($"pref set {key} {preferences[key]}");
                 this.preferences.Set(key, preferences[key]);
             }
 

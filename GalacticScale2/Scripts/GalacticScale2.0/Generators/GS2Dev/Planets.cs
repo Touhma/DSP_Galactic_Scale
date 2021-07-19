@@ -137,18 +137,18 @@ namespace GalacticScale.Generators
                 if (random.NextDouble() < 0.05) // Crazy Inclination
                     body.OrbitInclination = random.NextFloat(20f, 85f);
 
-                //// Force inclinations for testing
-                //body.OrbitInclination = 0f;
-                //body.OrbitPhase = 0f;
-                //body.OrbitalPeriod = 10000000f;
+                // Force inclinations for testing
+                // body.OrbitInclination = 0f;
+                // body.OrbitPhase = 0f;
+                // body.OrbitalPeriod = 10000000f;
             }
         }
 
-        private float GetNextAvailableOrbit(GSPlanet planet, int MoonIndex)
+        private float GetNextAvailableOrbit(GSPlanet planet, int moonIndex)
         {
             var moons = planet.Moons;
-            if (MoonIndex == 0) return planet.RadiusAU + moons[MoonIndex].SystemRadius;
-            return moons[MoonIndex - 1].SystemRadius + moons[MoonIndex - 1].OrbitRadius + moons[MoonIndex].SystemRadius;
+            if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].SystemRadius;
+            return moons[moonIndex - 1].SystemRadius + moons[moonIndex - 1].OrbitRadius + moons[moonIndex].SystemRadius;
         }
 
         private void CreateMoonOrbits(GSStar star)

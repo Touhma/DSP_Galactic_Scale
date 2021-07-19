@@ -104,9 +104,10 @@ namespace GalacticScale.Generators
             var maxOrbitByLuminosity = lum * 10f;
             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
             var maxOrbitByHabitableZone = 2f * hzMax;
+            var maxByPlanetCount = star.bodyCount * 0.3f;
             var density = (float)GetSystemDensityForStar(star)/3f;
-            var max = Mathf.Clamp(density * Mathf.Max(minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit"), star.MaxOrbit);
-            Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ{(hzMax)}:{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
+            var max = Mathf.Clamp(density * Mathf.Max(maxByPlanetCount, minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit"), star.MaxOrbit);
+            Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             star.genData.Set("maxOrbit", max);
             return max;
         }
