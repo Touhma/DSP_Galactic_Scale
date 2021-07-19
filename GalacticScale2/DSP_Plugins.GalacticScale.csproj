@@ -44,7 +44,7 @@
     <Reference Include="Assembly-CSharp_Publicized_7_18_7275">
       <HintPath>..\..\Assembly-CSharp_Publicized_7_18_7275.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx, Version=5.4.11.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx.Harmony">
