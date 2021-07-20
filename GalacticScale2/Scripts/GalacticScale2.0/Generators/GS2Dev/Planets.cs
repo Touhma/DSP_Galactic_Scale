@@ -253,6 +253,12 @@ public float GetOrbitGap(GSStar star)
         {
             foreach (var planet in star.Planets)
             {
+                if (planet == birthPlanet)
+                {
+                    planet.Theme = "Prairie";
+                    planet.Scale = 1f;
+                    continue;
+                }
                 var heat = CalculateThemeHeat(star, planet.OrbitRadius);
                 var type = EThemeType.Planet;
                 if (planet.Scale == 10f) type = EThemeType.Gas;
