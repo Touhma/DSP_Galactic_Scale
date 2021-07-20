@@ -23,8 +23,8 @@ namespace GalacticScale
                 radiusLabelText.GetComponent<Localizer>().enabled = false;
                 var radiusIcon = radiusLabel.transform.GetChild(1).GetComponent<Image>();
                 var uiButton = radiusLabel.transform.GetChild(1).GetComponent<UIButton>();
-                uiButton.tips.tipText = "How large the planet is. Standard is 200";
-                uiButton.tips.tipTitle = "Planet Radius";
+                uiButton.tips.tipText = "How large the planet is. Standard is 200".Translate();
+                uiButton.tips.tipTitle = "Planet Radius".Translate();
 
                 //GS2.LogJson(uiButton.button);
                 if (uiButton.button == null) uiButton.button = uiButton.gameObject.AddComponent<Button>();
@@ -33,7 +33,7 @@ namespace GalacticScale
 
                 radiusIcon.sprite = Utils.GetSpriteAsset("ruler");
                 var radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
-                radiusLabelText.text = "Planetary Radius";
+                radiusLabelText.text = "Planetary Radius".Translate();
                 radiusValueText.text = __instance.planet.realRadius.ToString();
             }
 

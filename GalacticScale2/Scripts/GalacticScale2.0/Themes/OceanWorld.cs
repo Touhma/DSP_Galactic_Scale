@@ -10,7 +10,7 @@ namespace GalacticScale
         {
             Name = "OceanWorld",
             Base = true,
-            DisplayName = "Ocean World",
+            DisplayName = "Ocean World".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
 

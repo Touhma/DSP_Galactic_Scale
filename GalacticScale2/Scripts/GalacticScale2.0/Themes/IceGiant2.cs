@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "IceGiant2",
             Base = true,
-            DisplayName = "Ice Giant",
+            DisplayName = "Ice Giant".Translate(),
             PlanetType = EPlanetType.Gas,
 
             LDBThemeId = 5,
