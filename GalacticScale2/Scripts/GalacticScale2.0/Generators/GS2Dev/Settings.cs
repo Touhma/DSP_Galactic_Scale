@@ -39,7 +39,7 @@ namespace GalacticScale.Generators
             for (var i = 0; i < preferences.Count; i++)
             {
                 var key = preferences.Keys.ElementAt(i);
-                GS2.Log($"pref set {key} {preferences[key]}");
+                //GS2.Log($"pref set {key} {preferences[key]}");
                 this.preferences.Set(key, preferences[key]);
             }
 
@@ -226,6 +226,7 @@ namespace GalacticScale.Generators
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
             preferences.Set("moonsAreSmall", true);
+            preferences.Set("moonBias", 50);
             preferences.Set("hugeGasGiants", true);
             preferences.Set("tidalLockInnerPlanets", false);
             preferences.Set("secondarySatellites", false);
@@ -287,6 +288,7 @@ namespace GalacticScale.Generators
                 Options.Add(GSUI.Checkbox("Starting Planet Unlock", false, "birthPlanetUnlock")));
             UI.Add("birthPlanetSiTi", Options.Add(GSUI.Checkbox("Starting planet Si/Ti", false, "birthPlanetSiTi")));
             UI.Add("moonsAreSmall", Options.Add(GSUI.Checkbox("Moons Are Small", true, "moonsAreSmall")));
+            UI.Add("moonBias", Options.Add(GSUI.Slider("Gas Giants Moon Bias", 0, 50, 100, "moonBias")));
             UI.Add("hugeGasGiants", Options.Add(GSUI.Checkbox("Huge Gas Giants", true, "hugeGasGiants")));
             UI.Add("tidalLockInnerPlanets",
                 Options.Add(GSUI.Checkbox("Tidal Lock Inner Planets", false, "tidalLockInnerPlanets")));

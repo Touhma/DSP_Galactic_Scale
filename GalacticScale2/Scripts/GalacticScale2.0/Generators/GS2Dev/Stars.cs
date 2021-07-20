@@ -28,6 +28,7 @@ namespace GalacticScale.Generators
                 star.Seed = random.Next();
                 GSSettings.Stars.Add(star);
             }
+            birthStar = random.Item(GSSettings.Stars);
         }
         private int GetStarPlanetCount(GSStar star)
         {
@@ -101,7 +102,7 @@ namespace GalacticScale.Generators
             var minMaxOrbit = 5f;
             var lum = star.luminosity;
             var hzMax = star.genData.Get("maxHZ");
-            var maxOrbitByLuminosity = lum * 10f;
+            var maxOrbitByLuminosity = lum * 4f;
             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
             var maxOrbitByHabitableZone = 2f * hzMax;
             var maxByPlanetCount = star.bodyCount * 0.3f;
