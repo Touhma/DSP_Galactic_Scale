@@ -49,8 +49,8 @@ namespace GalacticScale.Generators
             // GenerateOrbits();
             GeneratePlanets();
             // AssignOrbits();
-            AdjustPlanetOrbits();
-            CreateBirthPlanet();
+            SetPlanetOrbitPhase();
+            SelectBirthPlanet();
             SanityCheck();
             SanityCheck();
             EnsureBirthSystemHasTi();
@@ -70,7 +70,7 @@ namespace GalacticScale.Generators
                         $"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
         }
 
-        private void CreateBirthPlanet()
+        private void SelectBirthPlanet()
         {
             Log("Picking BirthPlanet");
             PickNewBirthPlanet();
