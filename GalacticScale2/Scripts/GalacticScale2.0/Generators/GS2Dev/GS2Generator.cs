@@ -52,8 +52,11 @@ namespace GalacticScale.Generators
             SetPlanetOrbitPhase();
             SelectBirthPlanet();
             SanityCheck();
-            SanityCheck();
             EnsureBirthSystemHasTi();
+            for (var i = 0; i < 200; i++)
+            {
+                GS2.Warn("N:"+NameGen.New(birthPlanet));
+            }
             Log("End");
         }
 
@@ -74,7 +77,7 @@ namespace GalacticScale.Generators
         {
             Log("Picking BirthPlanet");
             PickNewBirthPlanet();
-            Log("Birthplanet Picked");
+            Log($"Birthplanet Picked: {birthPlanet.Name} Orbiting at {birthPlanet.OrbitRadius} of star with hz: {birthStar.genData.Get("minHZ").String()}:{birthStar.genData.Get("maxHZ").String()}");
             if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
             Log((birthPlanet != null).ToString());
             GSSettings.BirthPlanetName = birthPlanet.Name;
