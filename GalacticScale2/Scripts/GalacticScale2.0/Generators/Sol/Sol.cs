@@ -56,10 +56,10 @@ namespace GalacticScale.Generators
             //UI_accurateStars = options.Add(GSUI.Checkbox("Accurate Stars", true , 
             //    (o) => { preferences.Set("accurateStars", o); ReadStarData(); },
             //    ( ) => { UI_accurateStars.Set(preferences.GetBool("accurateStars", true)); }));
-            Options.Add(GSUI.Checkbox("Accurate Stars", true, "accurateStars")); //, (o) => { ReadStarData(); }));
-            Options.Add(GSUI.Checkbox("Start in Sol", true, "startInSol"));
-            Options.Add(GSUI.Slider("Max planets per system", 1, 10, 99, "maxPlanetCount"));
-            UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size", 20, 30, 510, o =>
+            Options.Add(GSUI.Checkbox("Accurate Stars".Translate(), true, "accurateStars")); //, (o) => { ReadStarData(); }));
+            Options.Add(GSUI.Checkbox("Start in Sol".Translate(), true, "startInSol"));
+            Options.Add(GSUI.Slider("Max planets per system".Translate(), 1, 10, 99, "maxPlanetCount"));
+            UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 20, 30, 510, o =>
             {
                 var maxSize = preferences.GetFloat("maxPlanetSize", 300);
                 if (maxSize == -1f) maxSize = 500;
@@ -71,7 +71,7 @@ namespace GalacticScale.Generators
             }, () => UI_minPlanetSize.Set(preferences.GetInt("minPlanetSize", 30))));
 
 
-            UI_maxPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Max planet size", 50, 300, 510, o =>
+            UI_maxPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Max planet size".Translate(), 50, 300, 510, o =>
             {
                 var minSize = preferences.GetFloat("minPlanetSize", 30);
                 if (minSize == -1f) minSize = 5;
@@ -80,16 +80,16 @@ namespace GalacticScale.Generators
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }, () => UI_maxPlanetSize.Set(preferences.GetInt("maxPlanetSize", 300))));
             //UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
-            Options.Add(GSUI.PlanetSizeSlider("Starting planet size", 20, 400, 510, "birthPlanetSize"));
+            Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 20, 400, 510, "birthPlanetSize"));
             //{
             //    preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o));
             //    UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize"));
             //}));
             //UI_regularBirthTheme = options.Add(GSUI.Checkbox("Regular birth theme", true, o => preferences.Set("regularBirthTheme", o)));
-            Options.Add(GSUI.Checkbox("Birth planet Si/Ti", false, "birthPlanetSiTi"));
+            Options.Add(GSUI.Checkbox("Birth planet Si/Ti".Translate(), false, "birthPlanetSiTi"));
             //UI_tidalLockInnerPlanets = options.Add(GSUI.Checkbox("Tidal lock inner planets", false, o => preferences.Set("tidalLockInnerPlanets", o)));
-            Options.Add(GSUI.Checkbox("Moons are small", true, "moonsAreSmall"));
-            //UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants", true, o => preferences.Set("hugeGasGiants", o)));
+            Options.Add(GSUI.Checkbox("Moons are small".Translate(), true, "moonsAreSmall"));
+            //UI_hugeGasGiants = options.Add(GSUI.Checkbox("Huge gas giants".Translate(), true, o => preferences.Set("hugeGasGiants", o)));
             ReadStarData();
         }
 

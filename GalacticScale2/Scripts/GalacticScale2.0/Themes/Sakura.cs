@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Sakura",
             Base = true,
-            DisplayName = "Sakura Ocean",
+            DisplayName = "Sakura Ocean".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
 

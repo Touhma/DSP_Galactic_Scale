@@ -69,11 +69,11 @@ namespace GalacticScale.Generators
 
         public static void InitThemes()
         {
-            var sulfursea = new GSTheme("SulfurSea", "Sulfurous Sea", "OceanWorld");
-            var giganticforest = new GSTheme("GiganticForest", "Gigantic Forest", "OceanicJungle");
-            var moltenworld = new GSTheme("MoltenWorld", "Molten World", "Lava");
-            var redforest = new GSTheme("RedForest", "Red Forest", "OceanicJungle");
-            var beach = new GSTheme("Beach", "Beach", "OceanWorld");
+            var sulfursea = new GSTheme("SulfurSea", "Sulfurous Sea".Translate(), "OceanWorld");
+            var giganticforest = new GSTheme("GiganticForest", "Gigantic Forest".Translate(), "OceanicJungle");
+            var moltenworld = new GSTheme("MoltenWorld", "Molten World".Translate(), "Lava");
+            var redforest = new GSTheme("RedForest", "Red Forest".Translate(), "OceanicJungle");
+            var beach = new GSTheme("Beach", "Beach".Translate(), "OceanWorld");
             beach.VeinSettings = new GSVeinSettings
             {
                 Algorithm = "GS2",
@@ -231,7 +231,7 @@ namespace GalacticScale.Generators
             beach.Process();
 
             //GS2.Log("Creating Themes");
-            var oiler = new GSTheme("OilGiant", "SpaceWhale Excrement", "IceGiant");
+            var oiler = new GSTheme("OilGiant", "SpaceWhale Excrement".Translate(), "IceGiant");
             oiler.terrainMaterial.Tint = new Color(0.3f, 0.3f, 0.3f, 1f);
             oiler.atmosphereMaterial.Tint = new Color(0f, 0f, 0f, 1);
             oiler.thumbMaterial.Tint = new Color(0.01f, 0.005f, 0f, 0.001f);
@@ -247,7 +247,7 @@ namespace GalacticScale.Generators
             oiler.Process();
             //GS2.Log("Oiler Processed");
 
-            var obsidian = new GSTheme("Obsidian", "Obsidian", "IceGelisol");
+            var obsidian = new GSTheme("Obsidian", "Obsidian".Translate(), "IceGelisol");
             obsidian.terrainMaterial.Tint = new Color(0.05f, 0.05f, 0.05f, 1);
             obsidian.oceanMaterial.Tint = new Color(0.0f, 0.0f, 0.0f, 0.5f);
             obsidian.atmosphereMaterial.Tint = Color.black;
@@ -262,7 +262,7 @@ namespace GalacticScale.Generators
             obsidian.Temperature = 2f;
             obsidian.Process();
 
-            var hotObsidian = new GSTheme("HotObsidian", "Hot Obsidian", "Obsidian");
+            var hotObsidian = new GSTheme("HotObsidian", "Hot Obsidian".Translate(), "Obsidian");
             hotObsidian.MaxRadius = 40;
             hotObsidian.MinRadius = 5;
             hotObsidian.terrainMaterial.Tint = new Color(0.2f, 0.05f, 0.05f, 1);
@@ -271,7 +271,7 @@ namespace GalacticScale.Generators
             hotObsidian.Process();
 
             //GS2.Log("About to Process redIce");
-            var iceMalusol = new GSTheme("IceMalusol", "Ice Malusol", "IceGelisol");
+            var iceMalusol = new GSTheme("IceMalusol", "Ice Malusol".Translate(), "IceGelisol");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
@@ -279,7 +279,7 @@ namespace GalacticScale.Generators
             iceMalusol.AmbientSettings.CubeMap = "GS2";
             iceMalusol.Process();
 
-            var acidGreenhouse = new GSTheme("AcidGreenhouse", "Acid Greenhouse", "VolcanicAsh");
+            var acidGreenhouse = new GSTheme("AcidGreenhouse", "Acid Greenhouse".Translate(), "VolcanicAsh");
             acidGreenhouse.atmosphereMaterial.Tint = new Color(0.5f, 0.4f, 0.0f, 0.8f);
             acidGreenhouse.atmosphereMaterial.Params = new Dictionary<string, float>
             {
@@ -343,7 +343,7 @@ namespace GalacticScale.Generators
             acidGreenhouse.ThemeType = EThemeType.Planet;
             acidGreenhouse.Process();
 
-            var barrenSatellite = new GSTheme("BarrenSatellite", "Barren Satellite", "Barren");
+            var barrenSatellite = new GSTheme("BarrenSatellite", "Barren Satellite".Translate(), "Barren");
             barrenSatellite.VegeSettings.Group1 = new List<string>
             {
                 "Stone1", "Stone2", "Stone3", "Stone4", "Stone5", "Stone6", "Stone7", "Stone8", "Stone9", "Stone10",
@@ -370,7 +370,7 @@ namespace GalacticScale.Generators
             barrenSatellite.atmosphereMaterial.Params["_Intensity"] = 0f;
             barrenSatellite.Process();
 
-            var dwarf = new GSTheme("DwarfPlanet", "Dwarf Planet", "Barren");
+            var dwarf = new GSTheme("DwarfPlanet", "Dwarf Planet".Translate(), "Barren");
             dwarf.Algo = 3;
             dwarf.CustomGeneration = true;
             dwarf.Temperature = 0;
@@ -405,7 +405,7 @@ namespace GalacticScale.Generators
             center.ThemeType = EThemeType.Private;
             center.Process();
 
-            var hotGas = new GSTheme("Inferno", "Infernal Gas Giant", "GasGiant");
+            var hotGas = new GSTheme("Inferno", "Infernal Gas Giant".Translate(), "GasGiant");
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
             hotGas.MinRadius = 5;

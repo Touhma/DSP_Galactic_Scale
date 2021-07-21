@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Lava",
             Base = true,
-            DisplayName = "Lava",
+            DisplayName = "Lava".Translate(),
             PlanetType = EPlanetType.Vocano,
             ThemeType = EThemeType.Telluric,
 

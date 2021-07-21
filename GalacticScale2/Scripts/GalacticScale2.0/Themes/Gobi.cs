@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Gobi",
             Base = true,
-            DisplayName = "Gobi Desert",
+            DisplayName = "Gobi Desert".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
             LDBThemeId = 12,
