@@ -31,7 +31,7 @@ namespace GalacticScale
             GS2.ConsoleSplash();
             Harmony.CreateAndPatchAll(typeof(PatchOnWhatever));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
-            Harmony.CreateAndPatchAll(typeof(PatchOnUIBuildingGrid));
+            
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Path));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDesc));
@@ -54,7 +54,9 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnPowerSystem));
             Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
+            Harmony.CreateAndPatchAll(typeof(PatchOnTrashSystem));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIAdvisorTip));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIBuildingGrid));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIEscMenu));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGalaxySelect));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIGameLoadingSplash));

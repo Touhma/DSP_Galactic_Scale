@@ -143,10 +143,15 @@ namespace GalacticScale
 
         public static float Lifetime(GSStar star)
         {
+            GS2.Log("Lifetime");
+            GS2.Log(GS2.GetCaller());
+            GS2.Log(GS2.GetCaller(1));
+            GS2.Log((star == null).ToString());
+            GS2.Log(star?.Name);
             var t = star.Type;
             var s = star.Spectr;
 
-            //r = new GS2.Random(star.Seed);
+            random = new GS2.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(17f, 36f);
