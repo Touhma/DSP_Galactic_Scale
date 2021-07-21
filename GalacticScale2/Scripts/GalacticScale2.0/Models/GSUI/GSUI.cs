@@ -231,7 +231,7 @@ namespace GalacticScale
             if (RectTransform == null) return false;
             var slider = RectTransform.GetComponentInChildren<Slider>();
             if (slider == null) return false;
-            //GS2.Warn("Slider Setting...");
+            // GS2.Warn($"{Label} Slider Setting...({slider.value}) {DefaultValue} -> {cfg.defaultValue} {cfg.minValue}:{cfg.maxValue}");
             slider.minValue = cfg.minValue >= 0 ? cfg.minValue : slider.minValue;
             slider.maxValue = cfg.maxValue >= 0 ? cfg.maxValue : slider.maxValue;
             slider.value = cfg.defaultValue >= 0 ? cfg.defaultValue : slider.value;
@@ -372,6 +372,7 @@ namespace GalacticScale
             GSOptionCallback callback = null, string tip = "")
         {
             var t = Utils.GetCallingType();
+            // GS2.Warn($"{label} Slider Creation...({val})");
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
                 new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
@@ -530,7 +531,7 @@ namespace GalacticScale
 
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null)
         {
-            GS2.Log($"{Label} Trying to create Default Callback");
+            // GS2.Log($"{Label} Trying to create Default Callback");
             return o =>
             {
                 if (Generator is null)
@@ -542,7 +543,7 @@ namespace GalacticScale
                 var p = Generator.Export();
                 p.Set(key, o);
                 Generator.Import(p);
-                GS2.Warn($"Executing default callback on {Label}");
+                // GS2.Warn($"Executing default callback on {Label}");
                 if (Label == "Min Planets/System") GS2.Error(Label);
                 if (callback is GSOptionCallback) callback(o);
             };
@@ -560,9 +561,9 @@ namespace GalacticScale
                     return;
                 }
 
-                GS2.Log($"About to get for {key}");
+                // GS2.Log($"About to get for {key}");
                 var value = Generator.Export().Get(key);
-                GS2.Log($"Value:{value} is null?:{value == null}");
+                // GS2.Log($"{key} Value:{value} is null?:{value == null}");
                 //GS2.Log($"Got");
                 if (value == null)
                 {
