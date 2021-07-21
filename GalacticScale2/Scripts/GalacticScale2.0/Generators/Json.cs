@@ -91,7 +91,7 @@ namespace GalacticScale.Generators
 
         public void MinifyCallback(Val result)
         {
-            GS2.minifyJSON = result;
+            GS2.minifyJSON = result.Bool();
         }
 
         public void MinifyPostfix()

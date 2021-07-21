@@ -44,7 +44,7 @@
     <Reference Include="Assembly-CSharp_Publicized_7_18_7275">
       <HintPath>..\..\Assembly-CSharp_Publicized_7_18_7275.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx, Version=5.4.11.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx.Harmony">
@@ -153,6 +153,12 @@
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Orbits.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Planets.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Settings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Stars.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Settings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\GS2Generator.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Themes.cs" />
@@ -160,6 +166,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\Val.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\ValStore.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
@@ -206,6 +213,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetCoroutine.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PowerSystem\PatchOnPowerSystem.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\TrashSystem\Gravity.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIMainMenu\_OnOpen.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\RefreshDynamicProperties.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
@@ -39,7 +40,7 @@ namespace GalacticScale
         public int Seed;
         public ESpectrType Spectr;
         public EStarType Type;
-
+        public readonly ValStore genData = new ValStore();
         public GSStar(int seed, string name, ESpectrType spectr, EStarType type, GSPlanets planets)
         {
             Name = name;

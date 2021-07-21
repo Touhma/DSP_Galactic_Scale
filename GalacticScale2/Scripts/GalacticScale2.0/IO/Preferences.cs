@@ -80,7 +80,7 @@ namespace GalacticScale
                     var gen = GetGeneratorByID(pluginOptions.Key) as iConfigurableGenerator;
                     if (gen != null)
                     {
-                        Log(gen.Name + "'s plugin options exported");
+                        Log(gen.Name + "'s plugin options exported to generator");
                         gen.Import(pluginOptions.Value);
                     }
                 }

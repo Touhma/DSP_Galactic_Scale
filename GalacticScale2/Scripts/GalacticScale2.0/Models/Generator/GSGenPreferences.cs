@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public class GSGenPreferences : Dictionary<string, string>
     {
-        public Val Get(string key)
+        public string Get(string key)
         {
             return ContainsKey(key) ? this[key] : null;
         }
@@ -45,6 +45,8 @@ namespace GalacticScale
 
         public void Set(string key, object value)
         {
+            // if (key == "minPlanetCount") GS2.Warn($"Setting minPlanetCount in preferences to {value}");
+            // if (key == "maxPlanetCount") GS2.Warn($"Setting maxPlanetCount in preferences to {value}");
             this[key] = value.ToString();
         }
 

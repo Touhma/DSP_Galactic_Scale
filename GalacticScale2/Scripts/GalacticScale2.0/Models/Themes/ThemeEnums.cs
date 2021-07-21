@@ -2,6 +2,7 @@
 {
     public enum EThemeType
     {
+        Null,
         Gas,
         Planet, //Not Moon
         Moon, //Not Planet
