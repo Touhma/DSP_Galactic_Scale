@@ -94,8 +94,17 @@ namespace GalacticScale
         public GSMaterialSettings terrainMaterial = new GSMaterialSettings();
         public GSTerrainSettings TerrainSettings = new GSTerrainSettings();
 
-        public EThemeType ThemeType = EThemeType.Telluric;
-
+        public EThemeType ThemeType { get { return (themeType != EThemeType.Null) ? themeType : GetThemeType(); } set { themeType = value; } }
+        private EThemeType themeType = EThemeType.Null;
+        private EThemeType GetThemeType()
+        {
+            if (PlanetType == EPlanetType.Gas)
+            {
+                themeType = EThemeType.Gas;
+            }
+            else themeType = EThemeType.Telluric;
+            return themeType;
+        }
         //public string atmosphereMaterial;
         //public Color atmosphereTint;
         [NonSerialized] public Material thumbMat;

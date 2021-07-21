@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GSSerializer;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
@@ -16,7 +17,14 @@ namespace GalacticScale
         [SerializeField] public Dictionary<string, string> Textures = new Dictionary<string, string>();
 
         [SerializeField] public Color Tint;
-
+        public bool Equals(GSMaterialSettings other)
+        {
+            var serializer = new fsSerializer();
+            serializer.TrySerialize(this, out var thisData).AssertSuccessWithoutWarnings();
+            serializer.TrySerialize(this, out var otherData).AssertSuccessWithoutWarnings();
+            GS2.Warn($"MaterialSettings Equals: {thisData.Equals(otherData)}");
+            return thisData.Equals(otherData);
+        }
         public GSMaterialSettings Clone()
         {
             var clone = new GSMaterialSettings();

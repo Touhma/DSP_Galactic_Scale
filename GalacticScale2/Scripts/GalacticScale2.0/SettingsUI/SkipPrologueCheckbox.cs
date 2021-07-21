@@ -12,7 +12,7 @@
 
         public static void SkipPrologueOptionPostfix()
         {
-            SkipPrologueOption.Set(debugOn);
+            SkipPrologueOption.Set(SkipPrologue);
         }
     }
 }
