@@ -17,10 +17,10 @@ namespace GalacticScale
             var based = model.BaseName != null && model.BaseName != "";
             SerializeMember(serialized, null, "Name", model.Name);
             var baseTheme = based ? GS2.ThemeLibrary[model.BaseName] : GS2.ThemeLibrary["Mediterranean"];
-            // GS2.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
+            GS2.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
             if (GS2.minifyJSON)
             {
-                // GS2.Log("Minifying");
+                GS2.Log("Minifying");
                 if (!based || model.PlanetType != baseTheme.PlanetType)
                     SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 if (!based || model.ThemeType != baseTheme.ThemeType)
@@ -47,7 +47,7 @@ namespace GalacticScale
 
                 if (!based || !model.TerrainSettings.Equals(baseTheme.TerrainSettings))
                 {
-                    // GS2.Log("Not based or equals terrain settings. Serializing");
+                    GS2.Log("Not based or equals terrain settings. Serializing");
                     SerializeMember(serialized, null, "TerrainSettings", model.TerrainSettings);
                 }
                 if (!based || !model.VeinSettings.Equals(baseTheme.VeinSettings))
@@ -112,7 +112,7 @@ namespace GalacticScale
             }
             else
             {
-                // GS2.Log("Not Minifying");
+                GS2.Log("Not Minifying");
                 SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 SerializeMember(serialized, null, "Algo", model.Algo);
                 SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
