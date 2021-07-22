@@ -5,11 +5,9 @@ using System.Reflection.Emit;
 
 namespace GalacticScale
 {
-    [HarmonyPatch(typeof(TrashSystem))]
     class PatchOnTrashSystem
     {
-        [HarmonyTranspiler]
-        [HarmonyPatch("Gravity")]
+        [HarmonyTranspiler, HarmonyPatch(typeof(TrashSystem),"Gravity")]
         public static IEnumerable<CodeInstruction> TrashSystem_Gravity_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             instructions = new CodeMatcher(instructions)

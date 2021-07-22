@@ -9,7 +9,7 @@ namespace GalacticScale
 
         public static List<iGenerator> generators = new List<iGenerator>
         {
-            //new Generators.BallTest(),
+
             new Vanilla(),
             new GS2Generator(),
             new GS2Generator2(),

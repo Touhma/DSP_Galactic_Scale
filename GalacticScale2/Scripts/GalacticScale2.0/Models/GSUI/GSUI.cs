@@ -531,7 +531,7 @@ namespace GalacticScale
 
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null)
         {
-            // GS2.Log($"{Label} Trying to create Default Callback");
+
             return o =>
             {
                 if (Generator is null)
@@ -543,7 +543,6 @@ namespace GalacticScale
                 var p = Generator.Export();
                 p.Set(key, o);
                 Generator.Import(p);
-                // GS2.Warn($"Executing default callback on {Label}");
                 if (Label == "Min Planets/System") GS2.Error(Label);
                 if (callback is GSOptionCallback) callback(o);
             };
@@ -561,7 +560,7 @@ namespace GalacticScale
                     return;
                 }
 
-                // GS2.Log($"About to get for {key}");
+
                 var value = Generator.Export().Get(key);
                 // GS2.Log($"{key} Value:{value} is null?:{value == null}");
                 //GS2.Log($"Got");

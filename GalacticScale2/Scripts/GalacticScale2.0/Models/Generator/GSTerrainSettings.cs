@@ -24,7 +24,6 @@ namespace GalacticScale
             var serializer = new fsSerializer();
             serializer.TrySerialize(this, out var thisData).AssertSuccessWithoutWarnings();
             serializer.TrySerialize(this, out var otherData).AssertSuccessWithoutWarnings();
-            // GS2.Warn($"TerrainSettings Equals: {thisData.Equals(otherData)}");
             return thisData.Equals(otherData);
         }
         public GSTerrainSettings Clone()
