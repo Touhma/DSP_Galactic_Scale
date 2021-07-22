@@ -31,6 +31,7 @@ namespace GalacticScale.Generators
                 birthPlanet.OrbitRadius = birthRadius;
                 orbits.Add(orbit);
                 freeOrbitRanges.Clear();
+
                 freeOrbitRanges.Add((minimumOrbit, birthRadius - birthPlanet.SystemRadius*2));
                 freeOrbitRanges.Add((birthRadius + birthPlanet.SystemRadius*2, maximumOrbit));
             }
@@ -57,6 +58,7 @@ namespace GalacticScale.Generators
                 Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
+
                     if (range.outer - range.inner > 4 * planet.SystemRadius)
                         availableOrbits.Add(range);
 
@@ -84,6 +86,7 @@ namespace GalacticScale.Generators
                 }
 
                 var selectedRange = r.Item(availableOrbits);
+
                 var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius*2,
                     selectedRange.outer - planet.SystemRadius*2);
                 freeOrbitRanges.Remove(selectedRange);
@@ -94,6 +97,7 @@ namespace GalacticScale.Generators
                     $"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
                 orbits.Add(orbit);
                 var minGap = 0.1f;
+
                 if (radius - planet.SystemRadius*2 - selectedRange.inner > minGap)
                     freeOrbitRanges.Add((selectedRange.inner, radius - planet.SystemRadius*2));
                 if (selectedRange.outer - radius - planet.SystemRadius*2 > minGap)
@@ -243,12 +247,16 @@ namespace GalacticScale.Generators
 
         private static string[] cone = new[]
         {
+
             "rn", "st", "ll", "r", "rl", "gh", "l", "t", "d", "s"
+
         };
 
         private static string[] conb = new[]
         {
+
             "c", "pl", "s", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
+
         };
 
         private static string[] conm = new[]
@@ -257,12 +265,16 @@ namespace GalacticScale.Generators
         };
 
         private static string[] vowel = new[]
+
             {"o", "y", "u", "e", "ae", "i", "a"};
+
 
         public static string New(GSPlanet planet)
         {
             if (r is null) r = new GS2.Random(planet.Seed);
+
             int c = r.Next(1, 2);
+
             string output = (r.NextBool()) ? r.Item(conb) : "";
             for (var i = 0; i < c; i++)
             {

@@ -23,6 +23,7 @@ namespace GalacticScale.Generators
 
         private GS2.Random random;
 
+
         public string Name => "Dev Gen";
 
         public string Author => "innominata";
