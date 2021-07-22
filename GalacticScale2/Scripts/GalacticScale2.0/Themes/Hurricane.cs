@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Hurricane",
             Base = true,
-            DisplayName = "Hurricane Stone Forest",
+            DisplayName = "Hurricane Stone Forest".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

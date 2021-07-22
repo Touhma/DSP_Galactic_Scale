@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Prairie",
             Base = true,
-            DisplayName = "Prairie",
+            DisplayName = "Prairie".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
 

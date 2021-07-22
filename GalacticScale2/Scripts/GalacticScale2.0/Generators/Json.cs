@@ -35,10 +35,10 @@ namespace GalacticScale.Generators
             RefreshFileNames();
             GS2.Log("Generator:Json|Init|FileCount = " + filenames.Count);
             options.Add(
-                GSUI.Combobox("Custom Galaxy", filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
-            options.Add(GSUI.Input("Output File Name", "Output", FilenameInputCallback, FilenameInputPostfix));
-            minifyCheckbox = options.Add(GSUI.Checkbox("Minify Output JSON", false, MinifyCallback, MinifyPostfix));
-            options.Add(GSUI.Button("Export JSON", "Export", DumpJSONCallback, () => { }));
+                GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(GSUI.Input("Output File Name".Translate(), "Output", FilenameInputCallback, FilenameInputPostfix));
+            minifyCheckbox = options.Add(GSUI.Checkbox("Minify Output JSON".Translate(), false, MinifyCallback, MinifyPostfix));
+            options.Add(GSUI.Button("Export JSON".Translate(), "Export", DumpJSONCallback, () => { }));
             GS2.Log("Generator:Json|Init|End");
         }
 

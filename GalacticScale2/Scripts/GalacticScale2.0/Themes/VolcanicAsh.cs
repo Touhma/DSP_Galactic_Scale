@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "VolcanicAsh",
             Base = true,
-            DisplayName = "Volcanic Ash",
+            DisplayName = "Volcanic Ash".Translate(),
             PlanetType = EPlanetType.Vocano,
             ThemeType = EThemeType.Telluric,
 

@@ -264,16 +264,16 @@ namespace GalacticScale
         {
             //GS2.Log("CreateOwnOptions()");
             var generatorNames = GS2.generators.ConvertAll(iGen => { return iGen.Name; });
-            options.Add(GSUI.Combobox("Generator", generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
-            GS2.Force1RareChanceOption = options.Add(GSUI.Checkbox("Force Rare Spawn", false,
+            options.Add(GSUI.Combobox("Generator".Translate(), generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
+            GS2.Force1RareChanceOption = options.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false,
                 GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
-            GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log", false, GS2.DebugLogOptionCallback,
+            GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log".Translate(), false, GS2.DebugLogOptionCallback,
                 GS2.DebugLogOptionPostfix));
-            GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue", false, GS2.SkipPrologueOptionCallback,
+            GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, GS2.SkipPrologueOptionCallback,
                 GS2.SkipPrologueOptionPostfix));
-            GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials", false, GS2.NoTutorialsOptionCallback,
+            GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, GS2.NoTutorialsOptionCallback,
                 GS2.NoTutorialsOptionPostfix));
-            GS2.CheatModeOption = options.Add(GSUI.Checkbox("Cheat Mode", false, GS2.CheatModeOptionCallback,
+            GS2.CheatModeOption = options.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, GS2.CheatModeOptionCallback,
                 GS2.CheatModeOptionPostfix));
         }
 

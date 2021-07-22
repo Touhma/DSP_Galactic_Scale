@@ -33,7 +33,7 @@ namespace GalacticScale
         public static string GetStarLoadingStatus(StarData star)
         {
             var planetsLoaded = GetLoadedPlanetCount(star);
-            if (star.loaded) return "done";
+            if (star.loaded) return "done".Translate();
             return $"{planetsLoaded}/{star.planetCount}";
         }
 
