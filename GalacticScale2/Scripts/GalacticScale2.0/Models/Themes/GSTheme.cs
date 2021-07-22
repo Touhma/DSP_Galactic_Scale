@@ -90,6 +90,8 @@ namespace GalacticScale
         public float Temperature;
 
         [NonSerialized] public Material terrainMat;
+        [SerializeField]
+        public List<EStar> StarTypes = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
 
         public GSMaterialSettings terrainMaterial = new GSMaterialSettings();
         public GSTerrainSettings TerrainSettings = new GSTerrainSettings();

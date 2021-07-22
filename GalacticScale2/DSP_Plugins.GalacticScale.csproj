@@ -168,6 +168,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\ValStore.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\RomanNumbers.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Star\EStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Star\GSStars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\SystemsNames.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\ThemeViewer.cs" />
