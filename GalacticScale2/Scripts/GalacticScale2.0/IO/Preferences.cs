@@ -10,6 +10,7 @@ namespace GalacticScale
         {
             Log("Start");
             var preferences = new GSPreferences();
+            preferences.MainSettings = GS2.mainSettings.Export();
             preferences.GeneratorID = generator.GUID;
             preferences.debug = debugOn;
             preferences.forceRare = Force1RareChance;
@@ -27,7 +28,7 @@ namespace GalacticScale
                     preferences.PluginOptions[gen.GUID] = prefs;
                     Log("Finished adding preferences for " + gen.Name);
                 }
-
+            
             var serializer = new fsSerializer();
             Log("Trying to serialize preferences object");
             serializer.TrySerialize(preferences, out var data);
@@ -54,7 +55,10 @@ namespace GalacticScale
             if (!debug)
                 ParsePreferences(preferences);
             else
+            {
+                mainSettings.Import(preferences.MainSettings);
                 debugOn = preferences.debug;
+            }
             Log("Preferences loaded");
             Log("End");
         }
@@ -63,6 +67,7 @@ namespace GalacticScale
         {
             Log("Start");
             debugOn = p.debug;
+            mainSettings.Import(p.MainSettings);
             if (DebugLogOption != null) DebugLogOption.Set(debugOn);
             Force1RareChance = p.forceRare;
             if (Force1RareChanceOption != null) Force1RareChanceOption.Set(Force1RareChance);
@@ -95,7 +100,7 @@ namespace GalacticScale
             public bool forceRare;
             public string GeneratorID = "space.customizing.vanilla";
             public bool noTutorials;
-
+            public GSGenPreferences MainSettings = new GSGenPreferences();
             public readonly Dictionary<string, GSGenPreferences> PluginOptions =
                 new Dictionary<string, GSGenPreferences>();
 

@@ -307,8 +307,11 @@ namespace GalacticScale
         // Method that handles creation of the settings tab
         private static void CreateOptionsUI()
         {
-            //GS2.Log("CreateOptionsUI");
+
+            GSOptions o = GS2.mainSettings.Options;
+            options.AddRange(o);
             for (var i = 0; i < options.Count; i++)
+            {
                 switch (options[i].Type)
                 {
                     case "Combobox":
@@ -330,6 +333,8 @@ namespace GalacticScale
                         GS2.Warn($"Couldn't create option {options[i].Label}");
                         break;
                 }
+            }
+
 
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
             //GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.generators[currentGenIndex].Name);

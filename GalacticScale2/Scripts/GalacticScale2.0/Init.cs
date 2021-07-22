@@ -19,7 +19,7 @@ namespace GalacticScale
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
-
+        public static GS2MainSettings mainSettings = new GS2MainSettings();
 
         //public static int[] tmp_state;
         public static GalaxyData galaxy;
@@ -74,7 +74,7 @@ namespace GalacticScale
         {
             NebulaCompatibility.Init();
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
-
+            mainSettings.Init();
             LoadPreferences(true);
             Log("Start" + debugOn);
             var themes = new List<GSTheme>();

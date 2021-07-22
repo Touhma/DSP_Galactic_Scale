@@ -118,6 +118,7 @@ namespace GalacticScale
         public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t)
         {
             //GS2.Warn("Getting iconfig instance");
+            if (GS2.mainSettings.GetType() == t) return GS2.mainSettings;
             foreach (var g in GS2.generators)
                 if (g.GetType() == t)
                 {
