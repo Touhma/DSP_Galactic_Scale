@@ -10,7 +10,10 @@ namespace GalacticScale
         WhiteDwarf,
         NeutronStar,
         O,B,A,F,G,M,K,
-        BlueGiant,WhiteGiant,YellowGiant,RedGiant,All,Main,Special,Giant
+        BlueGiant,
+        WhiteGiant,
+        YellowGiant,
+        RedGiant
     }
 
 }

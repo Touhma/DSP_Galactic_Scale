@@ -87,6 +87,18 @@ namespace GalacticScale
             var themes = Query(type, heat, radius, distribute);
             return random.Item(themes);
         }
+        public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius,
+    EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var themes = Query(starType, type, heat, radius, distribute);
+            return random.Item(themes);
+        }
+        public string Query(GS2.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius,
+EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var themes = Query(starTypes, type, heat, radius, distribute);
+            return random.Item(themes);
+        }
         public List<string> Query(EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var allstars = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
@@ -98,6 +110,13 @@ namespace GalacticScale
         public List<string> Query(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = QueryThemes(starTypes, type, heat, radius, distribute);
+            var results = from theme in themes
+                          select theme.Name;
+            return results.ToList();
+        }
+        public List<string> Query(EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var themes = QueryThemes(new List<EStar>() { starType }, type, heat, radius, distribute);
             var results = from theme in themes
                           select theme.Name;
             return results.ToList();

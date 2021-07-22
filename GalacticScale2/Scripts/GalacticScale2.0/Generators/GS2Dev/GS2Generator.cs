@@ -54,10 +54,10 @@ namespace GalacticScale.Generators
             SelectBirthPlanet();
             SanityCheck();
             EnsureBirthSystemHasTi();
-            for (var i = 0; i < 200; i++)
-            {
-                GS2.Warn("N:"+NameGen.New(birthPlanet));
-            }
+            //for (var i = 0; i < 200; i++)
+            //{
+            //    GS2.Warn("N:"+NameGen.New(birthPlanet));
+            //}
             Log("End");
         }
 

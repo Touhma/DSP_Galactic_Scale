@@ -11,17 +11,6 @@ namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
     {
-        //private void CreateBirthPlanet(GSPlanet planet)
-        //{
-        //    //Ensure there is a compatible birthplanet in the habitable zone, or as close as possible
-        //    Log("Creating BirthPlanet");
-        //    if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
-        //    birthPlanet = planet;
-        //    birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
-        //    birthPlanet.Scale = 1f;
-        //    //TODO: might need to check orbits of satellites?
-        //}
-
         private void GeneratePlanets()
         {
             foreach (var star in GSSettings.Stars) GeneratePlanetsForStar(star);
