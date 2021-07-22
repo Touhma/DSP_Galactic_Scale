@@ -5,9 +5,9 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static iGenerator generator = new Vanilla();
+        public static iGenerator ActiveGenerator = new Vanilla();
 
-        public static List<iGenerator> generators = new List<iGenerator>
+        public static List<iGenerator> Generators = new List<iGenerator>
         {
 
             new Vanilla(),
@@ -25,7 +25,7 @@ namespace GalacticScale
 
         public static iGenerator GetGeneratorByID(string guid)
         {
-            foreach (var g in generators)
+            foreach (var g in Generators)
                 if (g.GUID == guid)
                     return g;
 
@@ -34,8 +34,8 @@ namespace GalacticScale
 
         public static int GetCurrentGeneratorIndex()
         {
-            for (var i = 0; i < generators.Count; i++)
-                if (generators[i] == generator)
+            for (var i = 0; i < Generators.Count; i++)
+                if (Generators[i] == ActiveGenerator)
                     return i;
 
             return -1;

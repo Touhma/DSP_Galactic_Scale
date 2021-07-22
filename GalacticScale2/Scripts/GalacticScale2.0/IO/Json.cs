@@ -114,7 +114,7 @@ namespace GalacticScale
                 version = Version;
                 exception = e;
                 //settings = GSSettings.Instance;
-                generator = GS2.generator?.Name;
+                generator = GS2.ActiveGenerator?.Name;
             }
         }
 

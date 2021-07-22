@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using BepInEx;
 using UnityEngine;
 
 namespace GalacticScale
@@ -8,18 +10,22 @@ namespace GalacticScale
     public static partial class GS2
     {
         public static string Version = "2.0.0a50";
-        public static string AssemblyPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location);
-        public static string DataDir = Path.Combine(AssemblyPath, "config");
+        private static readonly string AssemblyPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location);
+        private static readonly string OldDataDir = Path.Combine(AssemblyPath, "config");
+        public static readonly string DataDir = Path.Combine(Paths.ConfigPath, "GalacticScale2");
         public static bool Failed = false;
+
         public static bool Initialized = false;
-        public static bool CheatMode = false;
+
+        // public static bool CheatMode = false;
         public static bool ResearchUnlocked = false;
-        public static bool minifyJSON = false;
+
+        // public static bool MinifyJson = false;
         public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
-        public static GS2MainSettings mainSettings = new GS2MainSettings();
+        public static GS2MainSettings Config = new GS2MainSettings();
 
         //public static int[] tmp_state;
         public static GalaxyData galaxy;
@@ -42,7 +48,7 @@ namespace GalacticScale
             }
         }
 
-        public static bool Vanilla => generator.GUID == "space.customizing.generators.vanilla";
+        public static bool Vanilla => ActiveGenerator.GUID == "space.customizing.generators.vanilla";
 
         public static AssetBundle bundle
         {
@@ -73,16 +79,14 @@ namespace GalacticScale
         public static void Init()
         {
             NebulaCompatibility.Init();
+            if (Directory.Exists(OldDataDir)) Directory.Move(OldDataDir, DataDir);
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
-            mainSettings.Init();
+            Config.Init();
             LoadPreferences(true);
-            Log("Start" + debugOn);
-            var themes = new List<GSTheme>();
             Log("GalacticScale2|Creating List of Themes");
-            foreach (var t in ThemeLibrary) themes.Add(t.Value);
-
+            var themes = ThemeLibrary.Select(t => t.Value).ToList();
             Log("GalacticScale2|Init|Processing Themes");
-            for (var i = 0; i < themes.Count; i++) themes[i].Process();
+            foreach (var t in themes) t.Process();
             LoadPlugins();
             LoadPreferences();
             Log("End");

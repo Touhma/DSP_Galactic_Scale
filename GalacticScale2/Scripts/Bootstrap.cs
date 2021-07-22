@@ -82,7 +82,7 @@ namespace GalacticScale
             if (timer >= 1000)
                 timer = 0;
             //GS2.Warn("FixedUpdate");
-            if (!GS2.CheatMode) return;
+            if (!GS2.Config.CheatMode) return;
             if (DSPGame.IsMenuDemo) return;
             if (TeleportStar == null && TeleportPlanet == null || TeleportEnabled == false ||
                 !(GameMain.localStar != null && GameMain.localStar.loaded)) return;

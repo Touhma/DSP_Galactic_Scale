@@ -10,8 +10,8 @@ namespace GalacticScale
         public static void Patch_OnInit(UIGalaxySelect __instance, ref Slider ___starCountSlider,
             ref InputField ___seedInput)
         {
-            ___starCountSlider.maxValue = GS2.generator.Config.MaxStarCount;
-            ___starCountSlider.minValue = GS2.generator.Config.MinStarCount;
+            ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;
+            ___starCountSlider.minValue = GS2.ActiveGenerator.Config.MinStarCount;
             ___seedInput.onValueChanged.AddListener(seed =>
             {
                 int s;

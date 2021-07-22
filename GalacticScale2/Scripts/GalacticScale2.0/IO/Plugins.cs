@@ -18,10 +18,10 @@ namespace GalacticScale
                 foreach (var type in Assembly.LoadFrom(filePath).GetTypes())
                 foreach (var t in type.GetInterfaces())
                     if (t.Name == "iGenerator" && !type.IsAbstract && !type.IsInterface)
-                        generators.Add((iGenerator) Activator.CreateInstance(type));
+                        Generators.Add((iGenerator) Activator.CreateInstance(type));
             }
 
-            foreach (var g in generators)
+            foreach (var g in Generators)
             {
                 Log("GalacticScale2|LoadPlugins|Loading Generator:" + g.Name);
                 g.Init();

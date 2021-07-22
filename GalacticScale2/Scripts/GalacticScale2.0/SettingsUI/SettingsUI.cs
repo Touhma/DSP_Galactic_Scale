@@ -40,11 +40,11 @@ namespace GalacticScale
         private static RectTransform templateButton;
         private static RectTransform templateScrollView;
         private static readonly List<RectTransform> optionRects = new List<RectTransform>();
-        private static readonly List<RectTransform> generatorCanvases = new List<RectTransform>();
-        private static readonly List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
+        public static readonly List<RectTransform> GeneratorCanvases = new List<RectTransform>();
+        public static readonly List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
         private static float anchorX;
         private static float anchorY;
-        public static int generatorIndex;
+        public static int GeneratorIndex;
 
         private static readonly GSOptions options = new GSOptions();
 
@@ -193,10 +193,11 @@ namespace GalacticScale
             //Get a list of all loaded generators, and add a combobox to select between them.
             //List<string> generatorNames = GS2.generators.ConvertAll<string>((iGenerator iGen) => { return iGen.Name; });
             //options.Add(new GS2.GSOption("GS2", "Generator", "UIComboBox", generatorNames, new GS2.GSOptionCallback(GeneratorSelected)));
-            CreateOwnOptions();
+            // CreateOwnOptions();
             ImportCustomGeneratorOptions();
             //GS2.Log("CreateGalacticScaleSettingsPage Test9");
             CreateOptionsUI();
+            CreateGeneratorTabs();
             GS2.LoadPreferences();
             //GS2.Log("CreateGalacticScaleSettingsPage Test10");
             OptionsUIPostfix.Invoke();
@@ -220,9 +221,9 @@ namespace GalacticScale
         //    img.color = Color.red;
         //    return collapseBox.GetComponent<RectTransform>();
         //}
-        private static void UpdateContentRect()
+        public static void UpdateContentRect()
         {
-            var optionlist = generatorPluginOptions[generatorIndex];
+            var optionlist = generatorPluginOptions[GeneratorIndex];
             var entries = optionlist.Count;
             //GS2.LogJson(optionlist, true);
             //GS2.Warn("Option List Count = " + entries);
@@ -237,11 +238,11 @@ namespace GalacticScale
 
         private static void ImportCustomGeneratorOptions()
         {
-            for (var i = 0; i < GS2.generators.Count; i++)
+            for (var i = 0; i < GS2.Generators.Count; i++)
             {
                 var pluginOptions = new List<GSUI>();
                 //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
-                if (GS2.generators[i] is iConfigurableGenerator gen)
+                if (GS2.Generators[i] is iConfigurableGenerator gen)
                     //GS2.Log(gen.Name + " is configurable"); 
                     for (var j = 0; j < gen.Options.Count; j++)
                         // (GSUI o in gen.Options) {
@@ -263,33 +264,33 @@ namespace GalacticScale
         private static void CreateOwnOptions()
         {
             //GS2.Log("CreateOwnOptions()");
-            var generatorNames = GS2.generators.ConvertAll(iGen => { return iGen.Name; });
-            options.Add(GSUI.Combobox("Generator".Translate(), generatorNames, GeneratorSelected, CreateOwnOptionsPostFix));
-            GS2.Force1RareChanceOption = options.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false,
-                GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
-            GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log".Translate(), false, GS2.DebugLogOptionCallback,
-                GS2.DebugLogOptionPostfix));
-            GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, GS2.SkipPrologueOptionCallback,
-                GS2.SkipPrologueOptionPostfix));
-            GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, GS2.NoTutorialsOptionCallback,
-                GS2.NoTutorialsOptionPostfix));
-            GS2.CheatModeOption = options.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, GS2.CheatModeOptionCallback,
-                GS2.CheatModeOptionPostfix));
+            // var generatorNames = GS2.generators.ConvertAll(iGen => { return iGen.Name; });
+            // options.Add(GSUI.Combobox("Generator".Translate(), generatorNames, GeneratorSelected, CreateGeneratorTabs));
+            // GS2.Force1RareChanceOption = options.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false,
+            //     GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
+            // GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log".Translate(), false, GS2.DebugLogOptionCallback,
+            //     GS2.DebugLogOptionPostfix));
+            // GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, GS2.SkipPrologueOptionCallback,
+            //     GS2.SkipPrologueOptionPostfix));
+            // GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, GS2.NoTutorialsOptionCallback,
+            //     GS2.NoTutorialsOptionPostfix));
+            // GS2.CheatModeOption = options.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, GS2.CheatModeOptionCallback,
+            //     GS2.CheatModeOptionPostfix));
         }
 
-        private static void CreateOwnOptionsPostFix()
+        public static void CreateGeneratorTabs()
         {
             //GS2.Log("CreateGeneratorOptionsPostFix");
 
-            var generatorNames = GS2.generators.ConvertAll(iGen => { return iGen.Name; });
+            var generatorNames = GS2.Generators.ConvertAll(iGen => { return iGen.Name; });
             for (var i = 0; i < generatorNames.Count; i++)
-                if (generatorNames[i] == GS2.generator.Name)
+                if (generatorNames[i] == GS2.ActiveGenerator.Name)
                     /*GS2.Log("index found!" + i);*/
-                    generatorIndex = i;
+                    GeneratorIndex = i;
 
             if (optionRects[0] != null)
                 //GS2.Log("Setting combobox for generator index to " + generatorIndex);
-                optionRects[0].GetComponentInChildren<UIComboBox>().itemIndex = generatorIndex;
+                optionRects[0].GetComponentInChildren<UIComboBox>().itemIndex = GeneratorIndex;
             //else GS2.Log("optionRects[0] == null!@#");
         }
 
@@ -308,7 +309,7 @@ namespace GalacticScale
         private static void CreateOptionsUI()
         {
 
-            GSOptions o = GS2.mainSettings.Options;
+            GSOptions o = GS2.Config.Options;
             options.AddRange(o);
             for (var i = 0; i < options.Count; i++)
             {
@@ -344,8 +345,8 @@ namespace GalacticScale
                 //GS2.Log("Creating Canvas " + i);
                 var canvas = Object.Instantiate(templateOptionsCanvas, details, false);
                 canvas.name = "testCanvas" + i;
-                generatorCanvases.Add(canvas);
-                canvas.name = "generatorCanvas-" + GS2.generators[i].Name;
+                GeneratorCanvases.Add(canvas);
+                canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
                 if (currentGenIndex == i)
                 {
                     //GS2.Log("Setting canvas active");
@@ -548,12 +549,12 @@ namespace GalacticScale
         private static void GeneratorSelected(Val result)
         {
             //GS2.Log("Result = " + result + GS2.generators[(int)result].Name);
-            GS2.generator = GS2.generators[result];
+            GS2.ActiveGenerator = GS2.Generators[result];
             //GS2.Log("Set the generator, trying to disable every canvas");
-            for (var i = 0; i < generatorCanvases.Count; i++) generatorCanvases[i].gameObject.SetActive(false);
+            for (var i = 0; i < GeneratorCanvases.Count; i++) GeneratorCanvases[i].gameObject.SetActive(false);
             //GS2.Log("trying to setactive");
-            generatorCanvases[result].gameObject.SetActive(true);
-            generatorIndex = result;
+            GeneratorCanvases[result].gameObject.SetActive(true);
+            GeneratorIndex = result;
             UpdateContentRect();
             //GS2.Log("trying to save prefs");
             GS2.SavePreferences();

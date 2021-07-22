@@ -19,7 +19,7 @@ namespace GalacticScale
             var baseTheme = based ? GS2.ThemeLibrary[model.BaseName] : GS2.ThemeLibrary["Mediterranean"];
 
             // GS2.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
-            if (GS2.minifyJSON)
+            if (GS2.Config.MinifyJson)
             {
                 // GS2.Log("Minifying");
                 if (!based || model.PlanetType != baseTheme.PlanetType)

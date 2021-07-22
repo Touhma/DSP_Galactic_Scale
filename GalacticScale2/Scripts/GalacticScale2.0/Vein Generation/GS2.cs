@@ -114,7 +114,7 @@ namespace GalacticScale
                 else
                     disabled[i] = false;
 
-                if (GS2.Force1RareChance) disabled[i] = false;
+                if (GS2.Config.ForceRare) disabled[i] = false;
             }
 
             var maxVeinGroupSize = MaxCount(veinGroups);
@@ -162,7 +162,7 @@ namespace GalacticScale
                     //GS2.Log("Randomly Skipping Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to 'randomizeVeinCounts:true'");
                     continue;
 
-                if (!GS2.Force1RareChance && veinGroups[i].rare && gsPlanet.planetData.star.level + 0.1 <
+                if (!GS2.Config.ForceRare && veinGroups[i].rare && gsPlanet.planetData.star.level + 0.1 <
                         random.NextDouble() * random.NextDouble())
                     //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;

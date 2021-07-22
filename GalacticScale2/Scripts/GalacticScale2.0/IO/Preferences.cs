@@ -10,15 +10,15 @@ namespace GalacticScale
         {
             Log("Start");
             var preferences = new GSPreferences();
-            preferences.MainSettings = GS2.mainSettings.Export();
-            preferences.GeneratorID = generator.GUID;
-            preferences.debug = debugOn;
-            preferences.forceRare = Force1RareChance;
-            preferences.skipPrologue = SkipPrologue;
-            preferences.noTutorials = tutorialsOff;
-            preferences.cheatMode = CheatMode;
+            preferences.MainSettings = GS2.Config.Export();
+            // preferences.GeneratorID = generator.GUID;
+            // preferences.debug = debugOn;
+            // preferences.forceRare = GS2.mainSettings.ForceRare;
+            // preferences.skipPrologue = SkipPrologue;
+            // preferences.noTutorials = tutorialsOff;
+            // preferences.cheatMode = CheatMode;
             Log("Retrieving preferences for plugins");
-            foreach (var g in generators)
+            foreach (var g in Generators)
                 if (g is iConfigurableGenerator)
                 {
                     var gen = g as iConfigurableGenerator;
@@ -56,8 +56,8 @@ namespace GalacticScale
                 ParsePreferences(preferences);
             else
             {
-                mainSettings.Import(preferences.MainSettings);
-                debugOn = preferences.debug;
+                Config.Import(preferences.MainSettings);
+                // debugOn = preferences.debug;
             }
             Log("Preferences loaded");
             Log("End");
@@ -66,18 +66,18 @@ namespace GalacticScale
         private static void ParsePreferences(GSPreferences p)
         {
             Log("Start");
-            debugOn = p.debug;
-            mainSettings.Import(p.MainSettings);
-            if (DebugLogOption != null) DebugLogOption.Set(debugOn);
-            Force1RareChance = p.forceRare;
-            if (Force1RareChanceOption != null) Force1RareChanceOption.Set(Force1RareChance);
-            SkipPrologue = p.skipPrologue;
-            if (SkipPrologueOption != null) SkipPrologueOption.Set(SkipPrologue);
-            tutorialsOff = p.noTutorials;
-            if (NoTutorialsOption != null) NoTutorialsOption.Set(tutorialsOff);
-            CheatMode = p.cheatMode;
-            if (CheatModeOption != null) CheatModeOption.Set(CheatMode);
-            generator = GetGeneratorByID(p.GeneratorID);
+            // debugOn = p.debug;
+            Config.Import(p.MainSettings);
+            // if (DebugLogOption != null) DebugLogOption.Set(debugOn);
+            // Force1RareChance = p.forceRare;
+            // if (Force1RareChanceOption != null) Force1RareChanceOption.Set(Force1RareChance);
+            // SkipPrologue = p.skipPrologue;
+            // if (SkipPrologueOption != null) SkipPrologueOption.Set(SkipPrologue);
+            // tutorialsOff = p.noTutorials;
+            // if (NoTutorialsOption != null) NoTutorialsOption.Set(tutorialsOff);
+            // CheatMode = p.cheatMode;
+            // if (CheatModeOption != null) CheatModeOption.Set(CheatMode);
+            // generator = GetGeneratorByID(p.GeneratorID);
             if (p.PluginOptions != null)
                 foreach (var pluginOptions in p.PluginOptions)
                 {
@@ -95,16 +95,16 @@ namespace GalacticScale
 
         private class GSPreferences
         {
-            public bool cheatMode;
-            public bool debug;
-            public bool forceRare;
-            public string GeneratorID = "space.customizing.vanilla";
-            public bool noTutorials;
+            // public bool cheatMode;
+            // public bool debug;
+            // public bool forceRare;
+            // public string GeneratorID = "space.customizing.vanilla";
+            // public bool noTutorials;
             public GSGenPreferences MainSettings = new GSGenPreferences();
             public readonly Dictionary<string, GSGenPreferences> PluginOptions =
                 new Dictionary<string, GSGenPreferences>();
 
-            public bool skipPrologue;
+            // public bool skipPrologue;
         }
     }
 }

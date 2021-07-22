@@ -25,8 +25,8 @@ namespace GalacticScale
                     gsPlanets.Clear();
                     gsStars.Clear();
                     //Warn("Cleared");
-                    Warn("Loading Data from Generator : " + generator.Name);
-                    generator.Generate(gameDesc.starCount);
+                    Warn("Loading Data from Generator : " + ActiveGenerator.Name);
+                    ActiveGenerator.Generate(gameDesc.starCount);
                     Warn("Final Seed = " + GSSettings.Seed);
                     //Log("End");
                 }

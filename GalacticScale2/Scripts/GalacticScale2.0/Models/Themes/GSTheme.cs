@@ -286,7 +286,7 @@ namespace GalacticScale
                     //var specialIndex = RareVeins.Length;
                     //var specialSettingsIndex = specialIndex * 4;
                     _rareVeins.Add((int) type);
-                    if (GS2.Force1RareChance)
+                    if (GS2.Config.ForceRare)
                         _rareSettings.Add(1);
                     else
                         _rareSettings.Add(0); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
