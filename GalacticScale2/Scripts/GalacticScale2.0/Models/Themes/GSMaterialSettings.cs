@@ -22,7 +22,8 @@ namespace GalacticScale
             var serializer = new fsSerializer();
             serializer.TrySerialize(this, out var thisData).AssertSuccessWithoutWarnings();
             serializer.TrySerialize(this, out var otherData).AssertSuccessWithoutWarnings();
-            GS2.Warn($"MaterialSettings Equals: {thisData.Equals(otherData)}");
+
+            // GS2.Warn($"MaterialSettings Equals: {thisData.Equals(otherData)}");
             return thisData.Equals(otherData);
         }
         public GSMaterialSettings Clone()

@@ -45,7 +45,6 @@ namespace GalacticScale
 
         public void Set(string key, object value)
         {
-            if (key == "minPlanetCount") GS2.Warn($"Setting minPlanetCount in preferences to {value}");
             this[key] = value.ToString();
         }
 
