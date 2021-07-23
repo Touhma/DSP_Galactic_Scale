@@ -9,9 +9,9 @@ namespace GalacticScale
 {
     public class PatchOnUIVersionText
     {
-        public static string loadingText = "";
-        public static string oldLoadingText = "";
-        public static string baseText = "";
+        private static string loadingText = "";
+        private static string oldLoadingText = "";
+        private static string baseText = "";
 
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
@@ -34,7 +34,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
         public static void RefreshPostfix(ref Text ___textComp, bool ___firstFrame)
         {
-            if (GS2.IsMenuDemo || string.IsNullOrEmpty(baseText)) return;
+            if (GS2.IsMenuDemo || !GameMain.isRunning) return;
+            if (string.IsNullOrEmpty(baseText)) baseText = ___textComp.text;
             if (___textComp != null && GameMain.localStar != null)
             {
                 oldLoadingText = loadingText;
