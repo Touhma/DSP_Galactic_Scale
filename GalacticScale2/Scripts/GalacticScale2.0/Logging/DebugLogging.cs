@@ -35,6 +35,7 @@ namespace GalacticScale
 
         public static void LogJson(object o, bool force = false)
         {
+
             if (!DebugOn && !force) return;
 
             var serializer = new fsSerializer();

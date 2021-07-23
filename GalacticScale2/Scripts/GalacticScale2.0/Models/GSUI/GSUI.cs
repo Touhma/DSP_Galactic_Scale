@@ -69,7 +69,7 @@ namespace GalacticScale
 
         public string Type { get; }
 
-        public object Data { get; }
+        public object Data { get; private set; }
 
         public Val DefaultValue
         {
@@ -326,7 +326,8 @@ namespace GalacticScale
                 return false;
             }
 
-            RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
+            Data = items;
+            if (RectTransform != null) RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
             return true;
         }
 

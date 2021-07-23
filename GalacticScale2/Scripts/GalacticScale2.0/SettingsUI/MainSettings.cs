@@ -8,6 +8,7 @@ namespace GalacticScale
 
     {
         private GSUI _cheatModeCheckbox;
+        private GSUI _generatorsCombobox;
 
         private GSUI _exportButton;
 
@@ -15,7 +16,7 @@ namespace GalacticScale
         private List<string> _generatorNames;
         public GSGenPreferences Preferences = new GSGenPreferences();
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
-        public bool DebugMode => Preferences.GetBool("Debug Mode");
+        public bool DebugMode => Preferences.GetBool("Debug Log");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue");
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
@@ -37,18 +38,20 @@ namespace GalacticScale
 
         public GSGenPreferences Export()
         {
-            GS2.Warn("!");
+            // GS2.Warn("!");
             Preferences.Set("Generator ID", GS2.ActiveGenerator.GUID);
             return Preferences;
         }
 
         public void Generate(int starCount)
         {
+            _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
+            _generatorsCombobox.SetItems(_generatorNames);
         }
 
         public void Import(GSGenPreferences preferences)
         {
-            GS2.Warn("!");
+            // GS2.Warn("!");
             Preferences = preferences;
             var id = Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
             GS2.ActiveGenerator = GS2.GetGeneratorByID(id);
@@ -57,9 +60,10 @@ namespace GalacticScale
 
         public void Init()
         {
-            GS2.Warn("!");
+            // GS2.Warn("!");
             _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
-            Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback));
+            GS2.LogJson(_generatorNames, true);
+            _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback));
             Options.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn"));
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));

@@ -29,6 +29,7 @@ namespace GalacticScale.Generators
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(birthPlanet);
                 birthPlanet.OrbitRadius = birthRadius;
+                birthPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanet.OrbitRadius);
                 orbits.Add(orbit);
                 freeOrbitRanges.Clear();
 
@@ -74,6 +75,7 @@ namespace GalacticScale.Generators
                             Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
                             existingOrbit.planets.Add(planet);
                             planet.OrbitRadius = existingOrbit.radius;
+                            planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                             success = true;
                             break;
                         }
@@ -93,6 +95,7 @@ namespace GalacticScale.Generators
                 orbit = new Orbit(radius);
                 orbit.planets.Add(planet);
                 planet.OrbitRadius = radius;
+                planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                 //Log(
                     //$"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
                 orbits.Add(orbit);

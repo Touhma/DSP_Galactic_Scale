@@ -153,58 +153,63 @@ namespace GalacticScale
 
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
+            // return input; //Kills performance too much to use!
             //GS2.Log("Tinting Cubemap");
+            var highStopwatch = new HighStopwatch();highStopwatch.Begin();
+            
             var output = Object.Instantiate(input);
-
+            
             var colors = output.GetPixels(CubemapFace.PositiveX);
             var tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-
+            
             output.SetPixels(tinted, CubemapFace.PositiveX);
-
+            
             colors = output.GetPixels(CubemapFace.PositiveY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-
+            
             output.SetPixels(tinted, CubemapFace.PositiveY);
-
+            
             colors = output.GetPixels(CubemapFace.PositiveZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-
+            
             output.SetPixels(tinted, CubemapFace.PositiveZ);
-
+            
             colors = output.GetPixels(CubemapFace.NegativeX);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-
+            
             output.SetPixels(tinted, CubemapFace.NegativeX);
-
+            
             colors = output.GetPixels(CubemapFace.NegativeY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-
+            
             output.SetPixels(tinted, CubemapFace.NegativeY);
-
+            
             colors = output.GetPixels(CubemapFace.NegativeZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-
+            
             output.SetPixels(tinted, CubemapFace.NegativeZ);
-
+            
             //GS2.Log("End");
+            GS2.Log($"TintCubeMap Took {highStopwatch.duration:F5}s");
+            
             return output;
         }
 

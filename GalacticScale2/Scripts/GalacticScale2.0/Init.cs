@@ -14,7 +14,7 @@ namespace GalacticScale
         private static readonly string OldDataDir = Path.Combine(AssemblyPath, "config");
         public static readonly string DataDir = Path.Combine(Paths.ConfigPath, "GalacticScale2");
         public static bool Failed = false;
-
+        public static string updateMessage = "";
         public static bool Initialized = false;
 
         // public static bool CheatMode = false;
@@ -79,7 +79,12 @@ namespace GalacticScale
         public static void Init()
         {
             NebulaCompatibility.Init();
-            if (Directory.Exists(OldDataDir)) Directory.Move(OldDataDir, DataDir);
+            if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
+            {
+                Directory.Move(OldDataDir, DataDir);
+                updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n";
+
+            }
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             Config.Init();
             LoadPreferences(true);
@@ -90,6 +95,11 @@ namespace GalacticScale
             LoadPlugins();
             LoadPreferences();
             Log("End");
+        }
+
+        public static void OnMenuLoaded()
+        {
+            if (updateMessage != "") UIMessageBox.Show("Update Information",GS2.updateMessage,"Noted!", 0);
         }
     }
 }

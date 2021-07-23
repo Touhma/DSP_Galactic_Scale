@@ -471,6 +471,7 @@ namespace GalacticScale
         /// <returns></returns>
         public ThemeProto ToProto()
         {
+            
             if (PlanetType != EPlanetType.Gas) AmbientSettings.ToTheme(this);
             return new ThemeProto
             {
@@ -538,10 +539,13 @@ namespace GalacticScale
 
         public int UpdateThemeProtoSet()
         {
+            
             if (!added) return AddToThemeProtoSet();
-
-            terrainMat.SetFloat("_Radius", 100f);
+            var highStopwatch = new HighStopwatch();highStopwatch.Begin();
+            // GS2.Log($"Adding {Name}");
+            // terrainMat.SetFloat("_Radius", 100f); //TODO:see if this did anything
             LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
+            GS2.Log($"UpdateThemeProtoSet Took {highStopwatch.duration:F5}s");
             return LDBThemeId;
         }
 

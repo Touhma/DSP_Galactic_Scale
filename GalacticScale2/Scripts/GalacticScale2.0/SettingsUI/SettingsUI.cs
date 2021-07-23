@@ -103,16 +103,11 @@ namespace GalacticScale
 
 
             //Copy original combobox as a template, then get rid of it
-            var generatorPicker = details.Find("language").GetComponent<RectTransform>();
-            anchorX = generatorPicker.anchoredPosition.x;
-            anchorY = generatorPicker.anchoredPosition.y;
-            //templateUIComboBox = Object.Instantiate<RectTransform>(details.Find("language").GetComponent<RectTransform>());
-            //templateUIComboBox.gameObject.SetActive(false);
-            //GS2.Log("CreateGalacticScaleSettingsPage TEST3");
+            var languageCombo = details.Find("language").GetComponent<RectTransform>();
+            anchorX = languageCombo.anchoredPosition.x;
+            anchorY = languageCombo.anchoredPosition.y;
             templateUIComboBox = CreateTemplate(details.Find("language").GetComponent<RectTransform>());
-            //GS2.Log("CreateGalacticScaleSettingsPage TEST4");
-            Object.Destroy(generatorPicker.gameObject);
-            //GS2.Log("CreateGalacticScaleSettingsPage TEST5");
+            Object.Destroy(languageCombo.gameObject);
 
             //Create a template of a button
             var revertButton = details.Find("revert-button");
@@ -238,6 +233,7 @@ namespace GalacticScale
 
         private static void ImportCustomGeneratorOptions()
         {
+            GS2.Config.Generate(0);
             for (var i = 0; i < GS2.Generators.Count; i++)
             {
                 var pluginOptions = new List<GSUI>();
@@ -281,8 +277,9 @@ namespace GalacticScale
         public static void CreateGeneratorTabs()
         {
             //GS2.Log("CreateGeneratorOptionsPostFix");
-
+            
             var generatorNames = GS2.Generators.ConvertAll(iGen => { return iGen.Name; });
+            GS2.LogJson(generatorNames);
             for (var i = 0; i < generatorNames.Count; i++)
                 if (generatorNames[i] == GS2.ActiveGenerator.Name)
                     /*GS2.Log("index found!" + i);*/
@@ -366,34 +363,34 @@ namespace GalacticScale
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
         {
-            //GS2.Log("AddGeneratorPluginUIElements: " + GS2.generators[genIndex].Name);
-            var options = generatorPluginOptions[genIndex];
-            //GS2.Log(GS2.generators[genIndex].Name + " option count = " + options.Count);
-            for (var i = 0; i < options.Count; i++)
+            GS2.Log("AddGeneratorPluginUIElements: " + GS2.Generators[genIndex].Name);
+            var generatorPluginOption = generatorPluginOptions[genIndex];
+            GS2.Log(GS2.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
+            for (var i = 0; i < generatorPluginOption.Count; i++)
             {
-                switch (options[i].Type)
+                switch (generatorPluginOption[i].Type)
                 {
                     case "Combobox":
-                        CreateComboBox(options[i], canvas, i);
+                        CreateComboBox(generatorPluginOption[i], canvas, i);
                         break;
                     case "Button":
-                        CreateButton(options[i], canvas, i);
+                        CreateButton(generatorPluginOption[i], canvas, i);
                         break;
                     case "Input":
-                        CreateInputField(options[i], canvas, i);
+                        CreateInputField(generatorPluginOption[i], canvas, i);
                         break;
                     case "Checkbox":
-                        CreateCheckBox(options[i], canvas, i);
+                        CreateCheckBox(generatorPluginOption[i], canvas, i);
                         break;
                     case "Slider":
-                        CreateSlider(options[i], canvas, i);
+                        CreateSlider(generatorPluginOption[i], canvas, i);
                         break;
                     default:
-                        GS2.Warn($"Couldn't create option {options[i].Label}");
+                        GS2.Warn($"Couldn't create option {generatorPluginOption[i].Label}");
                         break;
                 }
 
-                if (options[i].Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(options[i].Postfix));
+                if (generatorPluginOption[i].Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(generatorPluginOption[i].Postfix));
             }
         }
 

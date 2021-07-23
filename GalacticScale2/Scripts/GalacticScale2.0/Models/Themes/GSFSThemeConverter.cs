@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GSSerializer;
 
 namespace GalacticScale
@@ -26,7 +27,10 @@ namespace GalacticScale
                     SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 if (!based || model.ThemeType != baseTheme.ThemeType)
                     SerializeMember(serialized, null, "ThemeType", model.ThemeType);
-                if (!based || model.Algo != baseTheme.Algo) SerializeMember(serialized, null, "Algo", model.Algo);
+                if (!based || model.StarTypes.Except(baseTheme.StarTypes).Count() != 0 ||
+                    baseTheme.StarTypes.Except(model.StarTypes).Count() != 0)
+                    SerializeMember(serialized, null, "StarTypes", model.StarTypes);
+                    if (!based || model.Algo != baseTheme.Algo) SerializeMember(serialized, null, "Algo", model.Algo);
 
                 if (!based || model.CustomGeneration != baseTheme.CustomGeneration)
                     SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
@@ -122,6 +126,7 @@ namespace GalacticScale
                 SerializeMember(serialized, null, "MaxRadius", model.MaxRadius);
                 SerializeMember(serialized, null, "MinRadius", model.MinRadius);
                 SerializeMember(serialized, null, "ThemeType", model.ThemeType);
+                SerializeMember(serialized, null, "StarTypes", model.StarTypes);
                 SerializeMember(serialized, null, "Temperature", model.Temperature);
                 SerializeMember(serialized, null, "Distribute", model.Distribute);
                 SerializeMember(serialized, null, "TerrainSettings", model.TerrainSettings);
@@ -171,7 +176,7 @@ namespace GalacticScale
                 model.Name = "Unnamed";
 
             if (data.ContainsKey("PlanetType")) DeserializeMember(data, null, "PlanetType", out model.PlanetType);
-
+            if (data.ContainsKey("StarTypes")) DeserializeMember(data, null, "StarTypes", out model.StarTypes);
             if (data.ContainsKey("Algo")) DeserializeMember(data, null, "Algo", out model.Algo);
 
             if (data.ContainsKey("CustomGeneration"))

@@ -222,6 +222,14 @@ namespace GalacticScale.Generators
             Config.DefaultStarCount = preferences.GetInt("defaultStarCount", 64);
         }
 
+        public void Reset(Val o)
+        {
+            InitPreferences();
+            foreach (var ui in UI)
+            {
+                ui.Value.Set(preferences.Get(ui.Key));
+            }
+        }
         private void InitPreferences()
         {
             GS2.Log("InitPreferences");
@@ -238,6 +246,7 @@ namespace GalacticScale.Generators
             preferences.Set("hugeGasGiants", true);
             preferences.Set("tidalLockInnerPlanets", false);
             preferences.Set("secondarySatellites", false);
+            preferences.Set("moonBias", 50);
             preferences.Set("minPlanetCount", 1);
             preferences.Set("maxPlanetCount", 10);
             preferences.Set("minPlanetSize", 30);
@@ -258,6 +267,9 @@ namespace GalacticScale.Generators
             preferences.Set("freqYG", 1);
             preferences.Set("freqWG", 1);
             preferences.Set("freqBG", 1);
+            preferences.Set("chanceGas", 20);
+            preferences.Set("chanceMoon", 20);
+            preferences.Set("systemDensity", 3);
             for (var i = 0; i < 14; i++)
             {
                 preferences.Set($"{typeLetter[i]}minPlanetCount", 1);
@@ -365,6 +377,7 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}systemDensity",
                     Options.Add(GSUI.Slider($"{typeDesc[i]} Density", 1, 3, 5, $"{typeLetter[i]}systemDensity")));
             }
+            Options.Add(GSUI.Button("Reset", "Now", Reset));
         }
 
         private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)

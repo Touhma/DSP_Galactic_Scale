@@ -8,19 +8,24 @@ namespace GalacticScale
         public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, Random random,
             PlanetData host = null)
         {
+            
+            
             if (GSSettings.Stars[star.index].counter > 99)
             {
                 Error($"Create Planet failed: Star '{star.name}' already has 99 bodies");
                 return null;
             }
+            // var highStopwatch = new HighStopwatch();
 
-            //Log("CreatePlanet|" + gsPlanet.Name);
+            // highStopwatch.Begin();
+
+            // Log("CreatePlanet|" + gsPlanet.Name);
             var isMoon = host != null;
             if (GSSettings.Stars[star.index] == null)
                 Error($"Star Index {star.index} does not exist in GSSettings.Stars");
 
             var index = GSSettings.Stars[star.index].counter;
-            //GS2.Log("Creating PlanetData");
+            // GS2.Log("Creating PlanetData");
             var planet = new PlanetData();
             var counter = GSSettings.Stars[star.index].counter;
             planet.index = index;
@@ -41,7 +46,7 @@ namespace GalacticScale
             planet.number = index + 1;
             planet.id = star.id * 100 + index + 1;
             gsPlanets.Add(planet.id, gsPlanet);
-            //Log("Setting Roman");
+            // Log("Setting Roman");
             var roman = "";
 
             if (isMoon)
@@ -51,12 +56,13 @@ namespace GalacticScale
 
                 roman = RomanNumbers.roman[host.number + 1] + " - ";
             }
-
+            // Log($"Start1 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
+            // highStopwatch.Begin();
             if (RomanNumbers.roman.Length <= index + 1) Error($"Roman Number Conversion Error for {index + 1}");
 
             roman += RomanNumbers.roman[index + 1];
             planet.name = gsPlanet.Name != "" ? gsPlanet.Name : star.name + " " + roman;
-            //GS2.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
+            // GS2.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
             planet.orbitRadius = gsPlanet.OrbitRadius;
             planet.orbitInclination = gsPlanet.OrbitInclination;
             //planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
@@ -73,7 +79,8 @@ namespace GalacticScale
             var segments = (int) (planet.radius / 4f + 0.1f) * 4;
             if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) SetLuts(segments, planet.radius);
             PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
-
+            // Log($"Start2 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
+            // highStopwatch.Begin();
             planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) *
                                           Quaternion.AngleAxis(planet.orbitInclination,
                                               Vector3
@@ -81,6 +88,9 @@ namespace GalacticScale
             planet.runtimeSystemRotation =
                 planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
             //GS2.Log("Trying to apply theme " + gsPlanet.Theme);
+            // Log($"OrbitRotation for {planet.name} took {highStopwatch.duration:F5} s\r\n");
+            // highStopwatch.Begin();
+
             planet.type = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).PlanetType;
             //GS2.Log("Applied");
             //Patch.Debug("Type set to " + planetData.type);
@@ -96,7 +106,11 @@ namespace GalacticScale
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
             //Log("Setting Theme|"+gsPlanet.Name);
+            // Log($"ThemeLibrary? for {planet.name} took {highStopwatch.duration:F5} s\r\n");
+            // highStopwatch.Begin();
             SetPlanetTheme(planet, gsPlanet);
+            // Log($"Theme Set for {planet.name} took {highStopwatch.duration:F5} s\r\n");
+            // highStopwatch.Begin();
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
             if (star.galaxy.astroPoses == null) Error("Astroposes array does not exist");
 
@@ -121,7 +135,7 @@ namespace GalacticScale
 
             if (planet.rotationPeriod < 0) planet.singularity |= EPlanetSingularity.ClockwiseRotate;
             //GS2.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id}");
-
+            // Log($"{planet.name} created in {highStopwatch.duration:F5} s\r\n");
             return planet;
         }
 

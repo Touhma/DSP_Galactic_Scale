@@ -76,6 +76,8 @@ namespace GalacticScale
 
         public void ToTheme(GSTheme theme)
         {
+            // var highStopwatch = new HighStopwatch();highStopwatch.Begin();
+
             //GS2.Log("Start");
             // This should already been defaulted by the base theme if that exists
             if (CubeMap == "Vanilla" || CubeMap == null)
@@ -127,6 +129,8 @@ namespace GalacticScale
                 //GS2.Log("Processing ReflectionMap");
                 theme.ambientDesc.reflectionMap = ReflectionMap;
             if (LutTexture != null) theme.ambientDesc.lutTexture = LutTexture;
+            // GS2.Log($"Ambient Took {highStopwatch.duration:F5}s");
+
         }
 
         public GSAmbientSettings Clone()

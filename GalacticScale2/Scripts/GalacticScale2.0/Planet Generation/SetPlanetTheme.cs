@@ -9,10 +9,16 @@ namespace GalacticScale
             GSPlanet gsPlanet)
         {
             //Log("Start|" + gsPlanet.Name);
+            // var highStopwatch = new HighStopwatch();                                highStopwatch.Begin();
+
+
             var seed = 0;
             var gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
-            var ThemeID = gsTheme.UpdateThemeProtoSet();
+            // Log($"Finding Theme {gsTheme.Name} took {highStopwatch.duration:F5} s\r\n");highStopwatch.Begin();
+            // var ThemeID = gsTheme.UpdateThemeProtoSet();
+            var ThemeID = gsTheme.AddToThemeProtoSet();
             if (gsPlanet.Seed > -1) seed = gsPlanet.Seed;
+            // Log($"UpdateProtoSet for {gsTheme.Name} took {highStopwatch.duration:F5} s\r\n");highStopwatch.Begin();
 
             var rand = new Random(seed);
             var rand2 = rand.NextDouble();
@@ -28,7 +34,12 @@ namespace GalacticScale
             planet.waterHeight = gsTheme.WaterHeight;
             planet.waterItemId = gsTheme.WaterItemId;
             planet.levelized = gsTheme.UseHeightForBuild;
-            if (planet.type != EPlanetType.Gas) return;
+            if (planet.type != EPlanetType.Gas)
+            {
+                //Log("End");
+                // Log($"Rest of setting planetTheme {gsTheme.Name} took {highStopwatch.duration:F5} s\r\n");
+                return;
+            }
 
             var length1 = gsTheme.GasItems.Length;
             var length2 = gsTheme.GasSpeeds.Length;
@@ -52,6 +63,7 @@ namespace GalacticScale
             planet.gasHeatValues = numArray3;
             planet.gasTotalHeat = num1;
             //Log("End");
+            // Log($"Rest of setting planetTheme {gsTheme.Name} took {highStopwatch.duration:F5} s\r\n");
         }
     }
 }
