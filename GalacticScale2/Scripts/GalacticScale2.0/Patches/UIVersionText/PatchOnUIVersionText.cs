@@ -1,64 +1,41 @@
 ﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine.UI;
 
 namespace GalacticScale
 {
     public class PatchOnUIVersionText
     {
-        public static string loadingText = "";
-        public static string oldLoadingText = "";
-        public static string baseText = "";
+        private static string loadingText = "";
+        private static string oldLoadingText = "";
+        private static string baseText = "";
 
-        [HarmonyPrefix]
+        [HarmonyTranspiler]
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
-        public static bool Refresh(ref Text ___textComp, string ___prefix, ref AccountData ___displayAccount,
-            ref bool ___firstFrame)
+        public static IEnumerable<CodeInstruction> Refresh_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            if (___textComp != null)
-            {
-                var flag = false;
-                if (GameMain.data != null && !GameMain.instance.isMenuDemo && GameMain.isRunning)
-                {
-                    if (___displayAccount != GameMain.data.account)
+            instructions = new CodeMatcher(instructions)
+                    .MatchForward(true,
+                        new CodeMatch(i => i.opcode == OpCodes.Ldfld && ((FieldInfo)i.operand).Name == "userName"))
+                    .Advance(1)
+                    .InsertAndAdvance(HarmonyLib.Transpilers.EmitDelegate<Func<string, string>>((text) =>
                     {
-                        ___displayAccount = GameMain.data.account;
-                        flag = true;
-                    }
-                }
-                else if (___displayAccount.userId != 0UL)
-                {
-                    ___displayAccount = AccountData.NULL;
-                    flag = true;
-                }
-
-                if (___firstFrame || flag)
-                {
-                    var userName = ___displayAccount.detail.userName;
-                    if (string.IsNullOrEmpty(userName))
-                    {
-                        ___textComp.fontSize = 18;
-                        ___textComp.text = ___prefix.Translate() + " " + GameConfig.gameVersion.ToFullString() +
-                                           "\nGalactic Scale v" + GS2.Version;
-                    }
-                    else
-                    {
-                        ___textComp.fontSize = 24;
-                        ___textComp.text =
-                            $"{___prefix.Translate()} {GameConfig.gameVersion.ToFullString()}\r\n{userName} - Galactic Scale v{GS2.Version}\r\nSeed:{GSSettings.Seed}{loadingText}";
-                        baseText = ___textComp.text;
-                    }
-                }
-            }
-
-            ___firstFrame = false;
-            return false;
+                        text = $"Galactic Scale v {GS2.Version}\r\n{text}";
+                        return text;
+                    }))
+                .InstructionEnumeration();
+            return instructions;
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
         public static void RefreshPostfix(ref Text ___textComp, bool ___firstFrame)
         {
-            if (GS2.IsMenuDemo || string.IsNullOrEmpty(baseText)) return;
+            if (GS2.IsMenuDemo || !GameMain.isRunning) return;
+            if (string.IsNullOrEmpty(baseText)) baseText = ___textComp.text;
             if (___textComp != null && GameMain.localStar != null)
             {
                 oldLoadingText = loadingText;
