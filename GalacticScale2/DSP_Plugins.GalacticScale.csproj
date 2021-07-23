@@ -201,7 +201,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Path\CheckBuildConditions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\ArrivePlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\DetermineLocalPlanet.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GameTick.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\Init.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\OnActivePlanetLoaded.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetOrCreateFactory.cs" />
