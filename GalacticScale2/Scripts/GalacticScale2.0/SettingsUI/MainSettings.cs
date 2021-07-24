@@ -72,7 +72,7 @@ namespace GalacticScale
             _cheatModeCheckbox = Options.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode"));
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
-            _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy", "Export", ExportJsonGalaxy));
+            _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy));
         }
 
         private static void GeneratorCallback(Val result)
