@@ -8,20 +8,21 @@ namespace GalacticScale
 
     {
         private GSUI _cheatModeCheckbox;
-        private GSUI _generatorsCombobox;
 
         private GSUI _exportButton;
 
         // private GSUI GeneratorCombobox;
         private List<string> _generatorNames;
+        private GSUI _generatorsCombobox;
         public GSGenPreferences Preferences = new GSGenPreferences();
-        public bool ForceRare => Preferences.GetBool("Force Rare Spawn",false);
-        public bool DebugMode => Preferences.GetBool("Debug Log",false);
-        public bool Dev => Preferences.GetBool("Dev",false);
-        public bool SkipPrologue => Preferences.GetBool("Skip Prologue",false);
-        public bool SkipTutorials => Preferences.GetBool("Skip Tutorials",false);
-        public bool CheatMode => Preferences.GetBool("Cheat Mode",false);
-        public bool MinifyJson => Preferences.GetBool("Minify JSON",false);
+        public bool ForceRare => Preferences.GetBool("Force Rare Spawn", false);
+        public bool DebugMode => Preferences.GetBool("Debug Log", false);
+        public bool Dev => Preferences.GetBool("Dev", false);
+        public bool SkipPrologue => Preferences.GetBool("Skip Prologue", false);
+        public bool SkipTutorials => Preferences.GetBool("Skip Tutorials", false);
+        public bool CheatMode => Preferences.GetBool("Cheat Mode", false);
+        public bool MinifyJson => Preferences.GetBool("Minify JSON", false);
+        public bool FixCopyPaste => Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public string Name => "Main Settings";
 
@@ -36,6 +37,7 @@ namespace GalacticScale
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
         public GSOptions Options { get; } = new GSOptions();
+ 
 
         public GSGenPreferences Export()
         {
@@ -64,7 +66,8 @@ namespace GalacticScale
             // GS2.Warn("!");
             _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
             GS2.LogJson(_generatorNames, true);
-            _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback));
+            _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator",
+                GeneratorCallback));
             Options.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn"));
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
@@ -73,7 +76,25 @@ namespace GalacticScale
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
             _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy", "Export", ExportJsonGalaxy));
+            Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
+            // Options.Add(GSUI.Button("Fix 1000s Planet Orbits", "Go", FixOrbits));
         }
+
+        // private static void FixOrbits(Val o)
+        // {
+        //     if (GS2.Vanilla || GS2.IsMenuDemo) return;
+        //     if (GameMain.localPlanet == null) return;
+        //     if (GS2.galaxy == null || GS2.galaxy.stars == null) return;
+        //     foreach (var star in GS2.galaxy.stars)
+        //     foreach (var planet in star.planets)
+        //         if (planet.orbitalPeriod >= 999f && planet.orbitalPeriod <= 1001f)
+        //         {
+        //             var gsPlanet = GS2.GetGSPlanet(planet);
+        //             planet.orbitalPeriod = 50000f;
+        //             gsPlanet.OrbitalPeriod = 50000f;
+        //             GS2.Warn($"Fixing {planet.name}: New Orbit Period:{planet.orbitalPeriod}");
+        //         }
+        // }
 
         private static void GeneratorCallback(Val result)
         {
@@ -90,21 +111,22 @@ namespace GalacticScale
         {
             var outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
             var path = Path.Combine(outputDir, Preferences.GetString("Export Filename", "My First Galaxy") + ".json");
-            
+
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             if (GameMain.isPaused)
             {
                 GS2.DumpObjectToJson(path, GSSettings.Instance);
                 UIMessageBox.Show("Success".Translate(),
-                    $"Galaxy Saved to ".Translate() + path,
+                    "Galaxy Saved to ".Translate() + path,
                     "Woohoo!".Translate(), 1);
-                JsonImport JsonGenerator = (JsonImport)GS2.GetGeneratorByID("space.customizing.generators.customjson");
+                var JsonGenerator = (JsonImport) GS2.GetGeneratorByID("space.customizing.generators.customjson");
                 JsonGenerator.RefreshFileNames();
                 return;
             }
 
             UIMessageBox.Show("Error".Translate(),
-                "Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings.".Translate(),
+                "Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings."
+                    .Translate(),
                 "D'oh!".Translate(), 2);
         }
 

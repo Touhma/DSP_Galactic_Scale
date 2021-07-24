@@ -38,6 +38,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnGameLoader));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameOption));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGraticulePoser));
             Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
             Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));
