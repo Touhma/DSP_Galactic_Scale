@@ -11,6 +11,7 @@ namespace GalacticScale
         public static void OnGameBegin()
         {
             GS2.Initialized = true;
+            GS2.OnMenuLoaded();
         }
     }
 }

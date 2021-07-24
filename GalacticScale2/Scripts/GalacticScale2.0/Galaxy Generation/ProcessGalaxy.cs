@@ -12,6 +12,8 @@ namespace GalacticScale
             var random = new Random(GSSettings.Seed);
             try
             {
+                var highStopwatch = new HighStopwatch();
+                highStopwatch.Begin();
                 gameDesc = desc;
                 Log($"Generating Galaxy of {GSSettings.StarCount}|{gameDesc.starCount} stars");
                 Failed = false;
@@ -25,8 +27,8 @@ namespace GalacticScale
                     gsPlanets.Clear();
                     gsStars.Clear();
                     //Warn("Cleared");
-                    Warn("Loading Data from Generator : " + generator.Name);
-                    generator.Generate(gameDesc.starCount);
+                    Warn("Loading Data from Generator : " + ActiveGenerator.Name);
+                    ActiveGenerator.Generate(gameDesc.starCount);
                     Warn("Final Seed = " + GSSettings.Seed);
                     //Log("End");
                 }
@@ -34,7 +36,7 @@ namespace GalacticScale
                 {
                     Log("Settings Loaded From Save File");
                 }
-
+                Log($"Galaxy Loaded: {highStopwatch.duration:F5}");highStopwatch.Begin();
                 Log(
                     $"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
@@ -54,6 +56,8 @@ namespace GalacticScale
                     GSSettings.GalaxyParams.maxStepLength,
                     GSSettings.GalaxyParams.flatten
                 );
+                Log($"TempPoses Generated: {highStopwatch.duration:F5}");highStopwatch.Begin();
+
                 Log("Creating new GalaxyData");
                 galaxy = new GalaxyData();
                 galaxy.seed = GSSettings.Seed;
@@ -66,8 +70,10 @@ namespace GalacticScale
                 }
 
                 Log("Initializing AstroPoses");
-                InitializeAstroPoses(random);
-                Log("AstroPoses Initialized");
+                CreateStarPlanetsAstroPoses(random);
+                Log($"Astroposes Initialized: {highStopwatch.duration:F5}");highStopwatch.Begin();
+
+                // Log("AstroPoses Initialized");
                 //SetupBirthPlanet();
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
@@ -85,15 +91,20 @@ namespace GalacticScale
                     //Warn($"Beta 68 Test:  Changed level of {star.name, 12} from {l, 12} to {star.level, 12} resource coef:{star.resourceCoef, 12} to {rc, 12} magnitude/32:{num1, 12}");
                     star.resourceCoef = rc;
                 }
+                Log($"Resource Coefficients Set: {highStopwatch.duration:F5}");highStopwatch.Begin();
 
                 Log("Setting up Birth Planet");
                 //SetupBirthPlanet();
                 Log("Generating Veins");
                 GenerateVeins(sketchOnly);
+                Log($"Veins Generated: {highStopwatch.duration:F5}");highStopwatch.Begin();
+
                 //if (GS2.CheatMode) return galaxy;
                 //}
                 Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
+                Log($"Stargraph Generated: {highStopwatch.duration:F5}");highStopwatch.Begin();
+
                 //Log("End of galaxy generation");
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");

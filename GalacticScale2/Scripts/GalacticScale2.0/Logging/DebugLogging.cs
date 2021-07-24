@@ -7,14 +7,15 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        private static bool DebugOn => Config?.DebugMode ?? false;
         public static void Log(string s, [CallerLineNumber] int lineNumber = 0)
         {
-            if (debugOn) Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{s}");
+            if (DebugOn) Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{s}");
         }
 
         public static void LogSpace(int lineCount = 1)
         {
-            if (debugOn)
+            if (DebugOn)
                 for (var i = 0; i < lineCount; i++)
                     Bootstrap.Debug(" ", LogLevel.Message, true);
         }
@@ -34,7 +35,8 @@ namespace GalacticScale
 
         public static void LogJson(object o, bool force = false)
         {
-            if (!debugOn && !force) return;
+
+            if (!DebugOn && !force) return;
 
             var serializer = new fsSerializer();
             serializer.TrySerialize(o, out var data).AssertSuccessWithoutWarnings();

@@ -9,70 +9,6 @@ namespace GalacticScale
     {
         private readonly GS2.Random random = new GS2.Random(GSSettings.Seed);
 
-        //public List<string> Hot {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (
-        //                kv.Value.Temperature >= 3 &&
-        //                kv.Value.PlanetType != EPlanetType.Gas &&
-        //                !kv.Value.Private
-        //                ) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> Warm {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.Temperature >= 0 && kv.Value.Temperature < 3 && kv.Value.PlanetType != EPlanetType.Gas && !kv.Value.Private) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> Temperate {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.Temperature == 0 && kv.Value.PlanetType != EPlanetType.Gas && !(kv.Value.ThemeType == EThemeType.Private)) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> Cold {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.Temperature < 0 && kv.Value.Temperature > -3 && kv.Value.PlanetType != EPlanetType.Gas && kv.Value.ThemeType == EThemeType.Telluric) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> Frozen {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.Temperature <= -3 && kv.Value.PlanetType != EPlanetType.Gas && kv.Value.ThemeType != EThemeType.Private) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
         public List<string> Habitable
         {
             get
@@ -151,10 +87,43 @@ namespace GalacticScale
             var themes = Query(type, heat, radius, distribute);
             return random.Item(themes);
         }
-
-        public List<string> Query(EThemeType type, EThemeHeat heat, int radius,
-            EThemeDistribute distribute = EThemeDistribute.Default)
+        public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius,
+    EThemeDistribute distribute = EThemeDistribute.Default)
         {
+            var themes = Query(starType, type, heat, radius, distribute);
+            return random.Item(themes);
+        }
+        public string Query(GS2.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius,
+EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var themes = Query(starTypes, type, heat, radius, distribute);
+            return random.Item(themes);
+        }
+        public List<string> Query(EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var allstars = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
+            var themes = QueryThemes(allstars, type, heat, radius, distribute);
+            var results = from theme in themes
+                          select theme.Name;
+            return results.ToList();
+        }
+        public List<string> Query(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var themes = QueryThemes(starTypes, type, heat, radius, distribute);
+            var results = from theme in themes
+                          select theme.Name;
+            return results.ToList();
+        }
+        public List<string> Query(EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+            var themes = QueryThemes(new List<EStar>() { starType }, type, heat, radius, distribute);
+            var results = from theme in themes
+                          select theme.Name;
+            return results.ToList();
+        }
+        public List<GSTheme> QueryThemes(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        {
+
             //List<GSTheme> list = new List<GSTheme>();
             var types = new List<EThemeType>();
             var distributes = new List<EThemeDistribute>();
@@ -200,13 +169,14 @@ namespace GalacticScale
             if (heat == EThemeHeat.Frozen) temp = (-6, -3);
 
             var q = from theme in this
-                where types.Contains(theme.Value.ThemeType)
-                where theme.Value.Temperature < temp.max
-                where theme.Value.Temperature >= temp.min
-                where theme.Value.MaxRadius >= (radius > 0 ? radius : 0)
-                where theme.Value.MinRadius <= (radius > 0 ? radius : 510)
-                select theme.Value.Name;
-            var results = q.ToList();
+                    where types.Contains(theme.Value.ThemeType)
+                    where theme.Value.StarTypes.Intersect<EStar>(starTypes).Count() > 1
+                    where theme.Value.Temperature < temp.max
+                    where theme.Value.Temperature >= temp.min
+                    where theme.Value.MaxRadius >= (radius > 0 ? radius : 0)
+                    where theme.Value.MinRadius <= (radius > 0 ? radius : 510)
+                    select theme.Value;
+            List<GalacticScale.GSTheme> results = q.ToList();
             if (results.Count == 0)
             {
                 GS2.Error(
@@ -214,7 +184,7 @@ namespace GalacticScale
                 foreach (var k in this)
                     GS2.Warn(
                         $"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
-                results.Add("Mediterranean");
+                results.Add(Themes.Mediterranean);
             }
 
             //GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");

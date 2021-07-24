@@ -17,7 +17,7 @@ namespace GalacticScale
         {
             //GS2.Log("Start");
             foreach (var kvp in model)
-                if (!kvp.Value.Base || !GS2.minifyJSON)
+                if (!kvp.Value.Base || !GS2.Config.MinifyJson)
                     SerializeMember(serialized, null, kvp.Key, kvp.Value);
             //GS2.Log("End");
             return fsResult.Success;

@@ -8,7 +8,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIAdvisorTip), "PlayAdvisorTip")]
         public static bool PlayAdvisorTip()
         {
-            if (GS2.tutorialsOff) return false;
+            if (GS2.Config.SkipTutorials) return false;
 
             return true;
         }

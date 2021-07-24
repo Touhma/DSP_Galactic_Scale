@@ -11,24 +11,17 @@ namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
     {
-        //private void CreateBirthPlanet(GSPlanet planet)
-        //{
-        //    //Ensure there is a compatible birthplanet in the habitable zone, or as close as possible
-        //    Log("Creating BirthPlanet");
-        //    if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
-        //    birthPlanet = planet;
-        //    birthPlanet.Radius = preferences.GetInt("birthPlanetSize", 400);
-        //    birthPlanet.Scale = 1f;
-        //    //TODO: might need to check orbits of satellites?
-        //}
-
         private void GeneratePlanets()
         {
+            // var highStopwatch = new HighStopwatch();
             foreach (var star in GSSettings.Stars) GeneratePlanetsForStar(star);
+            // GS2.Log($"Planet Creation Finished in {highStopwatch.duration}");
+
         }
 
         private void GeneratePlanetsForStar(GSStar star)
         {
+            // var highStopwatch = new HighStopwatch();
             star.Planets = new GSPlanets();
             var starBodyCount = GetStarPlanetCount(star);
             if (starBodyCount == 0) return;
@@ -143,6 +136,7 @@ namespace GalacticScale.Generators
             AssignPlanetOrbits(star);
             SelectPlanetThemes(star);
             FudgeNumbersForPlanets(star); // Probably want to revisit this :)
+            // GS2.Log($"Planet Creation for {star} Finished in {highStopwatch.duration}");
         }
 
         private void FudgeNumbersForPlanets(GSStar star)
@@ -157,7 +151,7 @@ namespace GalacticScale.Generators
                 body.Obliquity = random.NextFloat() * 20;
                 body.RotationPeriod = random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
-                if (body.OrbitRadius < 1f && random.NextFloat() < 0.5f)
+                if (IsPlanetOfStar(star, body) && body.OrbitRadius < 1f && (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets", false)) )
                     body.RotationPeriod = body.OrbitalPeriod; // Tidal Lock
                 else if (body.OrbitRadius < 1.5f && random.NextFloat() < 0.2f)
                     body.RotationPeriod = body.OrbitalPeriod / 2; // 1:2 Resonance

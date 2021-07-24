@@ -309,6 +309,16 @@ namespace GalacticScale
                 ["MedStone4"] = 604,
                 ["MedStone5"] = 605,
 
+                ["DesertFragment1"] = 611,
+                ["DesertFragment2"] = 612,
+                ["DesertFragment3"] = 613,
+                ["DesertFragment4"] = 614,
+                ["DesertFragment5"] = 615,
+                ["DesertFragment6"] = 616,
+                ["DesertFragment7"] = 617,
+                ["DesertFragment8"] = 618,
+                ["DesertFragment9"] = 619,
+
 
                 ["MedGrass7"] = 1001,
                 ["MedGrass8"] = 1002,
@@ -329,6 +339,10 @@ namespace GalacticScale
                 ["Seaweed7"] = 1031,
                 ["Seaweed8"] = 1032,
                 ["Seaweed9"] = 1033,
+                
+                ["DesertFragment10"] = 1041,
+                ["DesertFragment11"] = 1042,
+                ["DesertFragment12"] = 1043,
 
                 ["LandingPod"] = 9999
             };

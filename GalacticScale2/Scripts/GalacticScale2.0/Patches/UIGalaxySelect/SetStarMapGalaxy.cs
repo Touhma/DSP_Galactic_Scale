@@ -31,14 +31,14 @@ namespace GalacticScale
             __instance.autoCameraYaw = true;
             __instance.lastCameraYaw = __instance.cameraPoser.yawWanted;
             __instance.autoRotateSpeed = 0.0f;
-            if (GS2.generator.Config == null) GS2.Warn("GS2.generator.Config Null");
-            if (GS2.generator.Config.DisableStarCountSlider)
+            if (GS2.ActiveGenerator.Config == null) GS2.Warn("GS2.generator.Config Null");
+            if (GS2.ActiveGenerator.Config.DisableStarCountSlider)
             {
                 GS2.Log("Disabling StarCountSlider");
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText == null) GS2.Warn("starcounttext null");
                 if (starCountText == null) starCountText = CreateStarCountText(__instance.starCountSlider);
-                starCountText.GetComponent<Text>().text = galaxy.starCount + "   (" + GS2.generator.Name + ")";
+                starCountText.GetComponent<Text>().text = galaxy.starCount + "   (" + GS2.ActiveGenerator.Name + ")";
             }
             else
             {
@@ -49,7 +49,7 @@ namespace GalacticScale
                 __instance.starCountSlider.gameObject.SetActive(true);
             }
 
-            if (GS2.generator.Config.DisableSeedInput)
+            if (GS2.ActiveGenerator.Config.DisableSeedInput)
             {
                 GS2.Log("Disabling SeedInput");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");

@@ -69,7 +69,7 @@ namespace GalacticScale
 
         public string Type { get; }
 
-        public object Data { get; }
+        public object Data { get; private set; }
 
         public Val DefaultValue
         {
@@ -326,7 +326,8 @@ namespace GalacticScale
                 return false;
             }
 
-            RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
+            Data = items;
+            if (RectTransform != null) RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
             return true;
         }
 
@@ -543,7 +544,7 @@ namespace GalacticScale
                 var p = Generator.Export();
                 p.Set(key, o);
                 Generator.Import(p);
-                if (Label == "Min Planets/System") GS2.Error(Label);
+                //if (Label == "Min Planets/System") GS2.Error(Label);
                 if (callback is GSOptionCallback) callback(o);
             };
         }
@@ -566,7 +567,7 @@ namespace GalacticScale
                 //GS2.Log($"Got");
                 if (value == null)
                 {
-                    GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                    //GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
                     value = DefaultValue;
                 }
                 if (value != null)

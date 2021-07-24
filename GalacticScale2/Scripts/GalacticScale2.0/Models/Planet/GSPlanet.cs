@@ -161,8 +161,8 @@ namespace GalacticScale
         {
             get
             {
-                GS2.Warn($"Checking Habitable {Name} {GsTheme.Name} {GsTheme.PlanetType} {GsTheme.WaterItemId} {Radius}");
-                GS2.Warn($"{(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone))}");
+                //GS2.Warn($"Checking Habitable {Name} {GsTheme.Name} {GsTheme.PlanetType} {GsTheme.WaterItemId} {Radius}");
+                //GS2.Warn($"{(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone))}");
                 if (GsTheme.PlanetType != EPlanetType.Ocean) return false;
 
                 if (Radius < 50) return false;

@@ -36,29 +36,51 @@ namespace GalacticScale.Generators
 
         public void Generate(int starCount)
         {
+            var highStopwatch = new HighStopwatch();
+            highStopwatch.Begin();
+            
+
             Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
+            highStopwatch.Begin();
             SetupBaseThemes();
+            Log($"Base Themes Setup: {highStopwatch.duration:F5}");
+            highStopwatch.Begin();
             InitThemes();
+            Log($"Themes Setup: {highStopwatch.duration:F5}");
             GSSettings.GalaxyParams.graphDistance = 32;
             GSSettings.GalaxyParams.graphMaxStars = 512;
             //starCount = preferences.GetInt("defaultStarCount", 64);
             SetGalaxyDensity(preferences.GetInt("galaxyDensity", 5));
             random = new GS2.Random(GSSettings.Seed);
+            highStopwatch.Begin();
             CalculateFrequencies();
+            Log($"Frequencies Caltulated: {highStopwatch.duration:F5}");
+            highStopwatch.Begin();
             GenerateStars(starCount);
+            Log($"Stars Generated: {highStopwatch.duration:F5}");
             // GenerateOrbits();
+            highStopwatch.Begin();
             GeneratePlanets();
+            Log($"Planets Generated: {highStopwatch.duration:F5}");
             // AssignOrbits();
+            highStopwatch.Begin();
             SetPlanetOrbitPhase();
+            Log($"Orbits Phased: {highStopwatch.duration:F5}");
+            highStopwatch.Begin();
             SelectBirthPlanet();
+            Log($"BirthPlanet Selected: {highStopwatch.duration:F5}");
+            highStopwatch.Begin();
             SanityCheck();
+            Log($"Sanity Checked: {highStopwatch.duration:F5}");
+            highStopwatch.Begin();
             EnsureBirthSystemHasTi();
-            for (var i = 0; i < 200; i++)
-            {
-                GS2.Warn("N:"+NameGen.New(birthPlanet));
-            }
+            //for (var i = 0; i < 200; i++)
+            //{
+            //    GS2.Warn("N:"+NameGen.New(birthPlanet));
+            //}
             Log("End");
+            Log($"Finished in : {highStopwatch.duration:F5}");
         }
 
 

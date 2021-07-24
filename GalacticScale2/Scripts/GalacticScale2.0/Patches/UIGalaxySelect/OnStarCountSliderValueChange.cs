@@ -19,7 +19,7 @@ namespace GalacticScale
             var num = (int) (val + 0.1f);
             if (num == ___gameDesc.starCount) return false;
             __instance.starCountText.text = num.ToString();
-            num = Mathf.Clamp(num, GS2.generator.Config.MinStarCount, GS2.generator.Config.MaxStarCount);
+            num = Mathf.Clamp(num, GS2.ActiveGenerator.Config.MinStarCount, GS2.ActiveGenerator.Config.MaxStarCount);
             ___gameDesc.starCount = num;
             GS2.gameDesc = ___gameDesc;
 

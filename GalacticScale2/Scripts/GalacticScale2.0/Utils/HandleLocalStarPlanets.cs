@@ -24,14 +24,15 @@ namespace GalacticScale
         private static int GetLoadedPlanetCount(StarData star)
         {
             var planetsLoaded = 0;
-            for (var i = 0; i < star.planetCount; i++)
-                if (star.planets[i].loaded)
+            for (var i = 0; i < star?.planetCount; i++)
+                if (star.planets[i]?.loaded ?? false)
                     planetsLoaded++;
             return planetsLoaded;
         }
 
         public static string GetStarLoadingStatus(StarData star)
         {
+            if (star is null) return "Error :D";
             var planetsLoaded = GetLoadedPlanetCount(star);
             if (star.loaded) return "done".Translate();
             return $"{planetsLoaded}/{star.planetCount}";

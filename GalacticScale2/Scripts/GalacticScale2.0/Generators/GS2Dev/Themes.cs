@@ -93,6 +93,7 @@ namespace GalacticScale.Generators
             beach.TerrainSettings.Algorithm = "GSTA1";
             beach.CustomGeneration = true;
             //GS2.LogJson(beach, true);
+            giganticforest.StarTypes = new List<EStar>() { EStar.G, EStar.F, EStar.YellowGiant };
             giganticforest.VegeSettings.Group1.Clear();
             giganticforest.VegeSettings.Group2.Clear();
             giganticforest.VegeSettings.Group3.Clear();

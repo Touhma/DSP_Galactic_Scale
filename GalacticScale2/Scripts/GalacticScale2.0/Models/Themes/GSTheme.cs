@@ -90,6 +90,8 @@ namespace GalacticScale
         public float Temperature;
 
         [NonSerialized] public Material terrainMat;
+        [SerializeField]
+        public List<EStar> StarTypes = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
 
         public GSMaterialSettings terrainMaterial = new GSMaterialSettings();
         public GSTerrainSettings TerrainSettings = new GSTerrainSettings();
@@ -284,7 +286,7 @@ namespace GalacticScale
                     //var specialIndex = RareVeins.Length;
                     //var specialSettingsIndex = specialIndex * 4;
                     _rareVeins.Add((int) type);
-                    if (GS2.Force1RareChance)
+                    if (GS2.Config.ForceRare)
                         _rareSettings.Add(1);
                     else
                         _rareSettings.Add(0); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
@@ -469,6 +471,7 @@ namespace GalacticScale
         /// <returns></returns>
         public ThemeProto ToProto()
         {
+            
             if (PlanetType != EPlanetType.Gas) AmbientSettings.ToTheme(this);
             return new ThemeProto
             {
@@ -536,10 +539,13 @@ namespace GalacticScale
 
         public int UpdateThemeProtoSet()
         {
+            
             if (!added) return AddToThemeProtoSet();
-
-            terrainMat.SetFloat("_Radius", 100f);
+            var highStopwatch = new HighStopwatch();highStopwatch.Begin();
+            // GS2.Log($"Adding {Name}");
+            // terrainMat.SetFloat("_Radius", 100f); //TODO:see if this did anything
             LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
+            GS2.Log($"UpdateThemeProtoSet Took {highStopwatch.duration:F5}s");
             return LDBThemeId;
         }
 

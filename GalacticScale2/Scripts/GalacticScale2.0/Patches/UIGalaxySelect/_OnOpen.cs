@@ -11,7 +11,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
         public static bool _OnOpen(UIGalaxySelect __instance)
         {
-            if (GS2.generator == null) return true;
+            if (GS2.ActiveGenerator == null) return true;
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null");
             if (StartButton == null) StartButton = __instance.GetComponentInChildren<UIButton>()?.gameObject;
             if (StartButton == null) GS2.Warn("StartButton Null");
@@ -21,7 +21,7 @@ namespace GalacticScale
                 new DotNet35Random(GSSettings.Seed); //new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
             __instance.gameDesc?.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000),
-                GS2.generator.Config.DefaultStarCount, 1, 1f);
+                GS2.ActiveGenerator.Config.DefaultStarCount, 1, 1f);
             GS2.gameDesc = __instance.gameDesc;
             if (__instance.starmapGroup == null) GS2.Warn("smg Null");
             __instance.starmapGroup?.gameObject?.SetActive(true);

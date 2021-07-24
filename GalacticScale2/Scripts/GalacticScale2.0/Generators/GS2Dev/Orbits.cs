@@ -18,17 +18,18 @@ namespace GalacticScale.Generators
             var maximumOrbit = CalculateMaximumOrbit(star);
             var freeOrbitRanges = new List<(float inner, float outer)>();
 
-            Warn("Orbit Count 0");
+            //Warn("Orbit Count 0");
             if (star == birthStar)
             {
                 var birthRadius =
                     Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)),
                         star.RadiusAU * 1.5f, 100f);
-                Warn(
-                    $"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
+                //Warn(
+                    //$"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(birthPlanet);
                 birthPlanet.OrbitRadius = birthRadius;
+                birthPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanet.OrbitRadius);
                 orbits.Add(orbit);
                 freeOrbitRanges.Clear();
 
@@ -55,7 +56,7 @@ namespace GalacticScale.Generators
                 planet.OrbitInclination = 0f;
 
 
-                Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
+                //Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
 
@@ -64,9 +65,9 @@ namespace GalacticScale.Generators
 
                 if (availableOrbits.Count == 0)
                 {
-                    Warn("Free Orbit Ranges:");
+                    //Warn("Free Orbit Ranges:");
                     LogJson(freeOrbitRanges);
-                    Warn($"No Orbit Ranges found for planet {planet.Name} radius:{planet.SystemRadius}");
+                    //Warn($"No Orbit Ranges found for planet {planet.Name} radius:{planet.SystemRadius}");
                     var success = false;
                     foreach (var existingOrbit in orbits)
                         if (existingOrbit.hasRoom && existingOrbit.SystemRadius > planet.SystemRadius)
@@ -74,6 +75,7 @@ namespace GalacticScale.Generators
                             Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
                             existingOrbit.planets.Add(planet);
                             planet.OrbitRadius = existingOrbit.radius;
+                            planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                             success = true;
                             break;
                         }
@@ -93,8 +95,9 @@ namespace GalacticScale.Generators
                 orbit = new Orbit(radius);
                 orbit.planets.Add(planet);
                 planet.OrbitRadius = radius;
-                Log(
-                    $"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
+                planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
+                //Log(
+                    //$"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
                 orbits.Add(orbit);
                 var minGap = 0.1f;
 
@@ -146,7 +149,7 @@ namespace GalacticScale.Generators
 
         private void SetPlanetOrbitPhase()
         {
-            Warn("Adjusting Orbits");
+            Log("Adjusting Orbits");
             var r = new GS2.Random(GSSettings.Seed);
             foreach (var star in GSSettings.Stars)
             {

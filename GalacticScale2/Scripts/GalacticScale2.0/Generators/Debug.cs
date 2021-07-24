@@ -24,7 +24,7 @@ namespace GalacticScale.Generators
         public void Init()
         {
             var genList = new List<string>();
-            foreach (var g in GS2.generators) genList.Add(g.Name);
+            foreach (var g in GS2.Generators) genList.Add(g.Name);
 
             Options.Add(GSUI.Combobox("Dryrun Generator", genList, OnDryRunChange, () => { }));
             Options.Add(GSUI.Button("Output Settings", "Output", OnOutputSettingsClick, () => { }));
@@ -184,8 +184,8 @@ namespace GalacticScale.Generators
         {
             BCE.Console.WriteLine("DryRun Change" + o, ConsoleColor.Yellow);
             int i = o;
-            GS2.generator = GS2.generators[i];
-            GS2.generator.Generate(64);
+            GS2.ActiveGenerator = GS2.Generators[i];
+            GS2.ActiveGenerator.Generate(64);
         }
 
         private void OnOutputSettingsClick(Val o)
