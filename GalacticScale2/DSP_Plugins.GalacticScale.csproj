@@ -199,6 +199,8 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\-Debug\Debug.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Click\CheckBuildConditions.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Click\DeterminePreviews.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Path\CheckBuildConditions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\ArrivePlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\DetermineLocalPlanet.cs" />

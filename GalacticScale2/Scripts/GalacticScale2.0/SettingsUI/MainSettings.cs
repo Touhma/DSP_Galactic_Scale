@@ -15,12 +15,13 @@ namespace GalacticScale
         // private GSUI GeneratorCombobox;
         private List<string> _generatorNames;
         public GSGenPreferences Preferences = new GSGenPreferences();
-        public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
-        public bool DebugMode => Preferences.GetBool("Debug Log");
-        public bool SkipPrologue => Preferences.GetBool("Skip Prologue");
-        public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
-        public bool CheatMode => Preferences.GetBool("Cheat Mode");
-        public bool MinifyJson => Preferences.GetBool("Minify JSON");
+        public bool ForceRare => Preferences.GetBool("Force Rare Spawn",false);
+        public bool DebugMode => Preferences.GetBool("Debug Log",false);
+        public bool Dev => Preferences.GetBool("Dev",false);
+        public bool SkipPrologue => Preferences.GetBool("Skip Prologue",false);
+        public bool SkipTutorials => Preferences.GetBool("Skip Tutorials",false);
+        public bool CheatMode => Preferences.GetBool("Cheat Mode",false);
+        public bool MinifyJson => Preferences.GetBool("Minify JSON",false);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public string Name => "Main Settings";
 

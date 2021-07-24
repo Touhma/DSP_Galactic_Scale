@@ -77,7 +77,9 @@ namespace GalacticScale
         }
 
         public static void Init()
+        
         {
+            
             NebulaCompatibility.Init();
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
@@ -99,6 +101,21 @@ namespace GalacticScale
 
         public static void OnMenuLoaded()
         {
+           
+            if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
+            if (Config.Dev)
+            {
+                var da = LDB._veges.dataArray;
+                Dictionary<int, string> vegeDict = new Dictionary<int, string>();
+                foreach (var vegeProto in da)
+                {
+                    string name = vegeProto.Name;
+                    string name2 = vegeProto.name;
+                    int id = vegeProto.ID;
+                    vegeDict.Add(id, name.Translate() + " " + name2.Translate());
+                }
+                DumpObjectToJson(Path.Combine(DataDir, "ldbvege.json"), vegeDict);
+            }
             if (updateMessage != "") UIMessageBox.Show("Update Information",GS2.updateMessage,"Noted!", 0);
         }
     }
