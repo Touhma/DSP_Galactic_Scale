@@ -5,20 +5,22 @@ namespace GalacticScale
 {
     public partial class PatchOnPlayerFootsteps
     {
+        /*
+         * theese can get nulled for whatever reason when in a multiplayer session and beeing the client.
+         * resetting them solves the issue.
+         */
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerFootsteps), "PlayFootstepEffect")]
         public static bool PlayFootstepEffect(ref PlayerFootsteps __instance)
         {
             if (__instance.player == null)
             {
-                GS2.Error("Player null");
-                return false;
+                __instance.player = GameMain.mainPlayer;
             }
 
             if (__instance.player.planetData == null)
             {
-                GS2.Error("Player planetData null");
-                return false;
+                __instance.player.planetData = GameMain.localPlanet;
             }
 
             if (__instance.player.planetData.ambientDesc == null)

@@ -12,27 +12,23 @@ namespace GalacticScale
             var num = 0.0166666675f;
             if (__instance.player == null) //
             {
-                GS2.Error("Error: Player == null"); //
-                return false; //
+                __instance.player = GameMain.mainPlayer;
             }
 
             if (__instance.controller == null)
             {
-                GS2.Error("Error: Controller == null"); //
-                return false; //
+                __instance.controller = GameMain.mainPlayer.controller;
             }
 
             if (__instance.player.movementState != EMovementState.Fly) return false;
             if (__instance.navigation == null)
             {
-                GS2.Error("Error: Navigation == null");
-                return false;
+                __instance.navigation = GameMain.mainPlayer.navigation;
             }
 
             if (__instance.mecha == null)
             {
-                GS2.Error("Error: Mecha == null");
-                return false;
+                __instance.mecha = GameMain.mainPlayer.mecha;
             }
 
             var forward = __instance.controller.mainCamera.transform.forward;
