@@ -75,9 +75,10 @@ namespace GalacticScale
             _cheatModeCheckbox = Options.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode"));
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
-            _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy", "Export", ExportJsonGalaxy));
             Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
             // Options.Add(GSUI.Button("Fix 1000s Planet Orbits", "Go", FixOrbits));
+
+            _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy));
         }
 
         // private static void FixOrbits(Val o)
