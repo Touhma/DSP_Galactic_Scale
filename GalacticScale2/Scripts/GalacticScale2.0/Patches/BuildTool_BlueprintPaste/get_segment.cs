@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public class PatchOnBuildTool_BlueprintPaste
+    public partial class PatchOnBuildTool_BlueprintPaste
     {
          [HarmonyPrefix, HarmonyPatch(typeof(BuildTool_BlueprintPaste), "get_segment")]
         public static bool get_segment(ref BuildTool_BlueprintPaste __instance, ref int __result)
