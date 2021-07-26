@@ -30,6 +30,7 @@ namespace GalacticScale
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
             Harmony.CreateAndPatchAll(typeof(PatchOnWhatever));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBlueprintUtils));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_BlueprintCopy));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_BlueprintPaste));

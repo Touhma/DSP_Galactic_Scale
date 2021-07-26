@@ -199,6 +199,9 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Veins\GSVeinType.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\-Debug\Debug.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BlueprintUtils\GetExtendedGratBox.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BlueprintUtils\GetLongitudeSegmentCount.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BlueprintUtils\GetNormalizedDir.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_BlueprintCopy\get_segment.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_BlueprintPaste\get_segment.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BuildTool_Click\CheckBuildConditions.cs" />
@@ -371,6 +374,7 @@
     <Content Include="manifest.json" />
     <Content Include="README.md" />
     <Content Include="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\BlueprintUtils\GetNormalizedPos.cs" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="Scripts\Assets\galacticbundle">
