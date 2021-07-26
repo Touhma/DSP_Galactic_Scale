@@ -14,7 +14,7 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIBuildingGrid), "Update")]
-        public static bool Update(UIBuildingGrid __instance, Material ___material, Material ___altMaterial)
+        public static bool Update(UIBuildingGrid __instance, Material ___material,ref Material ___blueprintMaterial, Material ___altMaterial)
         {
             if (!GS2.Vanilla)
                 if (!DSPGame.IsMenuDemo)
@@ -26,7 +26,24 @@ namespace GalacticScale
 
                         segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
                         if (LUT512.ContainsKey(segments))
+                        {
                             UpdateTextureToLUT(___material, segments);
+                            if (___blueprintMaterial != null)
+                            {
+                                Material newMat = Object.Instantiate(__instance.blueprintMaterial);
+                                UpdateTextureToLUT(newMat, segments);
+                                newMat.SetColor("_TintColor", Color.red);
+                                __instance.blueprintMaterial = newMat;// ___material;
+                                ___altMaterial = ___material;
+                                GS2.Warn($"Updating blueprintMat {segments}");
+                                //UpdateTextureToLUT(___blueprintMaterial, segments);
+                            }
+                            else
+                            {
+                                GS2.Warn("Not Updating blueprintMat");
+                            }
+                        }
+
                         else
                             refreshGridRadius = -1;
                     }
@@ -39,6 +56,7 @@ namespace GalacticScale
 
         public static void UpdateTextureToLUT(Material material, int segment)
         {
+            GS2.Warn("UpdateTextureToLUT:" + material.name);
             var tex = material.GetTexture("_SegmentTable");
             if (tex.dimension == TextureDimension.Tex2D)
             {
@@ -55,6 +73,7 @@ namespace GalacticScale
 
                 tex2d.Apply();
             }
+            else { GS2.Log("Nope"); }
 
             refreshGridRadius = -1;
         }
