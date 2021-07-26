@@ -37,7 +37,8 @@ namespace GalacticScale
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
         public GSOptions Options { get; } = new GSOptions();
- 
+        public bool Test => Preferences.GetBool("Test", false);
+        public float TestNum => Preferences.GetFloat("TestNum", 0f);
 
         public GSGenPreferences Export()
         {
@@ -76,6 +77,8 @@ namespace GalacticScale
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
             Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
+            Options.Add(GSUI.Checkbox("(Test) ", false, "Test"));
+            Options.Add(GSUI.Input("Test", "0", "TestNum"));
             // Options.Add(GSUI.Button("Fix 1000s Planet Orbits", "Go", FixOrbits));
 
             _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy));
