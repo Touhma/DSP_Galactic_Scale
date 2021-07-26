@@ -7,7 +7,8 @@ namespace GalacticScale
 {
     public partial class PatchOnBuildTool_Click
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(BuildTool_Click), "CheckBuildConditions")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BuildTool_Click), "CheckBuildConditions")]
         public static bool CheckBuildConditions(ref bool __result, ref BuildTool_Click __instance,
             ref PlanetData ___planet, ref PlanetFactory ___factory)
         {
@@ -19,13 +20,13 @@ namespace GalacticScale
 
             var history = __instance.actionBuild.history;
             var flag = false;
-            var num = 1;
+            var SingleOrPasteItems = 1;
             var templatePreviews = __instance.actionBuild.templatePreviews;
-            if (templatePreviews.Count > 0) num = templatePreviews.Count;
+            if (templatePreviews.Count > 0) SingleOrPasteItems = templatePreviews.Count;
             for (var i = 0; i < __instance.buildPreviews.Count; i++)
             {
                 var buildPreview = __instance.buildPreviews[i];
-                var buildPreview2 = __instance.buildPreviews[i / num * num];
+                var buildPreview2 = __instance.buildPreviews[i / SingleOrPasteItems * SingleOrPasteItems];
                 if (buildPreview.condition != 0) continue;
                 var vector = buildPreview.lpos;
                 var quaternion = buildPreview.lrot;
@@ -40,11 +41,11 @@ namespace GalacticScale
                 var forward2 = lpos - vector;
                 if (forward2.sqrMagnitude < 0.0001f) forward2 = Maths.SphericalRotation(vector, 0f).Forward();
                 var quaternion2 = Quaternion.LookRotation(forward2, vector2.normalized);
-                var flag2 = ___planet != null && ___planet.type == EPlanetType.Gas;
+                var isGas = ___planet != null && ___planet.type == EPlanetType.Gas;
                 if (vector.sqrMagnitude < 1f)
                 {
                     buildPreview.condition = EBuildCondition.Failure;
-                    Warn($"VecSqr{vector.sqrMagnitude}");
+                    // Warn($"VecSqr{vector.sqrMagnitude}");
                     continue;
                 }
 
@@ -169,7 +170,7 @@ namespace GalacticScale
 
                 var vector9 = __instance.player.position;
                 var num10 = __instance.player.mecha.buildArea * __instance.player.mecha.buildArea;
-                if (flag2) // gas
+                if (isGas) // gas
                 {
                     vector9 = vector9.normalized;
                     vector9 *= ___planet.realRadius;
@@ -184,7 +185,7 @@ namespace GalacticScale
 
                 if (___planet != null)
                 {
-                    var num11 = history.buildMaxHeight + 0.5f + ___planet.realRadius * (flag2 ? 1.025f : 1f);
+                    var num11 = history.buildMaxHeight + 0.5f + ___planet.realRadius * (isGas ? 1.025f : 1f);
                     if (vector.sqrMagnitude > num11 * num11)
                     {
                         buildPreview.condition = EBuildCondition.OutOfReach;
@@ -194,7 +195,9 @@ namespace GalacticScale
 
                 if (buildPreview.desc.hasBuildCollider)
                 {
+                    // Log("HasBuildCollider");
                     var buildColliders = buildPreview.desc.buildColliders;
+                    // GS2.Log(buildColliders.Length.ToString());
                     for (var l = 0; l < buildColliders.Length; l++)
                     {
                         var colliderData = buildPreview.desc.buildColliders[l];
@@ -217,11 +220,13 @@ namespace GalacticScale
                             if (__instance.ObjectIsBelt(buildPreview.outputObjId) ||
                                 buildPreview.output != null && buildPreview.output.desc.isBelt)
                             {
+                                // Log("IsBelt");
                                 colliderData.pos.z += 0.35f;
                                 colliderData.ext.z += 0.35f;
                             }
                             else if (buildPreview.outputObjId == 0 && buildPreview.output == null)
                             {
+                                // Log("IsBeltNull");
                                 colliderData.pos.z += 0.35f;
                                 colliderData.ext.z += 0.35f;
                             }
@@ -237,6 +242,7 @@ namespace GalacticScale
                             colliderData.q = quaternion * colliderData.q;
                         }
 
+                        // Log("l" + l + " " + colliderData.pos + " " + colliderData.ext);
                         var mask = 428032;
                         if (buildPreview.desc.veinMiner || buildPreview.desc.oilMiner) mask = 425984;
                         Array.Clear(BuildTool._tmp_cols, 0, BuildTool._tmp_cols.Length);
@@ -322,6 +328,7 @@ namespace GalacticScale
 
                 if (buildPreview2.coverObjId != 0 && buildPreview.desc.isInserter)
                 {
+                    // Log("IsInserter");
                     if (buildPreview.output == buildPreview2)
                     {
                         buildPreview.outputObjId = buildPreview2.coverObjId;
@@ -337,6 +344,7 @@ namespace GalacticScale
 
                 if (buildPreview.coverObjId == 0 || buildPreview.willRemoveCover)
                 {
+                    // Log("WillRemoveCover");
                     var itemId = buildPreview.item.ID;
                     var count = 1;
                     if (__instance.tmpInhandId == itemId && __instance.tmpInhandCount > 0)
@@ -556,6 +564,7 @@ namespace GalacticScale
 
                 if ((!buildPreview.desc.multiLevel || buildPreview.inputObjId == 0) && !buildPreview.desc.isInserter)
                 {
+                    // Log("Multilevel");
                     RaycastHit hitInfo;
                     for (var num49 = 0; num49 < buildPreview.desc.landPoints.Length; num49++)
                     {
@@ -567,7 +576,7 @@ namespace GalacticScale
                         var direction = -normalized;
                         var num50 = 0f;
                         var num51 = 0f;
-                        if (flag2)
+                        if (isGas)
                         {
                             var vector11 = __instance.cursorTarget.normalized *
                                            Mathf.Min(__instance.planet.realRadius * 0.025f, 20f);
@@ -580,7 +589,7 @@ namespace GalacticScale
                             num50 = hitInfo.distance;
                             if (hitInfo.point.magnitude - __instance.factory.planet.realRadius < -0.3f)
                             {
-                                Warn("Failed 1");
+                                // Warn("Failed 1");
                                 buildPreview.condition = EBuildCondition.NeedGround;
                                 continue;
                             }
@@ -590,15 +599,13 @@ namespace GalacticScale
                                 ? 1000f
                                 : hitInfo.distance;
                             if (num50 - num51 > 0.27f)
-                            {
-                                Warn("Failed 2");
+                                // Warn("Failed 2");
 
                                 buildPreview.condition = EBuildCondition.NeedGround;
-                            }
                         }
                         else
                         {
-                            Warn("Failed 3");
+                            // Warn("Failed 3");
 
                             buildPreview.condition = EBuildCondition.NeedGround;
                         }
@@ -639,6 +646,7 @@ namespace GalacticScale
 
                 if (buildPreview.desc.isInserter && buildPreview.condition == EBuildCondition.Ok)
                 {
+                    // Log("ok");
                     var flag5 = __instance.ObjectIsBelt(buildPreview.inputObjId) ||
                                 buildPreview.input != null && buildPreview.input.desc.isBelt;
                     var flag6 = __instance.ObjectIsBelt(buildPreview.outputObjId) ||

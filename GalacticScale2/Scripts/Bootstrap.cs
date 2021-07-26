@@ -30,7 +30,10 @@ namespace GalacticScale
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
             Harmony.CreateAndPatchAll(typeof(PatchOnWhatever));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBlueprintUtils));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_BlueprintCopy));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_BlueprintPaste));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Click));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Path));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
@@ -38,6 +41,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnGameLoader));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameOption));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGraticulePoser));
             Harmony.CreateAndPatchAll(typeof(PatchOnGuideMissionStandardMode));
             Harmony.CreateAndPatchAll(typeof(PatchOnNearColliderLogic));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlanetAtmoBlur));

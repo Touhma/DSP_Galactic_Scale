@@ -14,19 +14,19 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIBuildingGrid), "Update")]
-        public static bool Update(UIBuildingGrid __instance, Material ___material, Material ___altMaterial)
+        public static bool Update(UIBuildingGrid __instance, Material ___material,ref Material ___blueprintMaterial, Material ___altMaterial)
         {
             if (!GS2.Vanilla)
                 if (!DSPGame.IsMenuDemo)
                 {
-                    int segments;
+                   int segments;
                     if (refreshGridRadius != -1)
                     {
                         if (___material == null) return true;
-
+                        
                         segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
-                        if (LUT512.ContainsKey(segments))
-                            UpdateTextureToLUT(___material, segments);
+                        __instance.blueprintMaterial.SetFloat("_Segment", segments);
+                        if (LUT512.ContainsKey(segments)) UpdateTextureToLUT(___material, segments);
                         else
                             refreshGridRadius = -1;
                     }
@@ -39,6 +39,7 @@ namespace GalacticScale
 
         public static void UpdateTextureToLUT(Material material, int segment)
         {
+            // GS2.Warn("UpdateTextureToLUT:" + material.name);
             var tex = material.GetTexture("_SegmentTable");
             if (tex.dimension == TextureDimension.Tex2D)
             {
@@ -55,6 +56,7 @@ namespace GalacticScale
 
                 tex2d.Apply();
             }
+            else { GS2.Log("Nope"); }
 
             refreshGridRadius = -1;
         }
