@@ -19,31 +19,14 @@ namespace GalacticScale
             if (!GS2.Vanilla)
                 if (!DSPGame.IsMenuDemo)
                 {
-                    int segments;
+                   int segments;
                     if (refreshGridRadius != -1)
                     {
                         if (___material == null) return true;
-
+                        
                         segments = (int) (refreshGridRadius / 4f + 0.1f) * 4;
-                        if (LUT512.ContainsKey(segments))
-                        {
-                            UpdateTextureToLUT(___material, segments);
-                            if (___blueprintMaterial != null)
-                            {
-                                Material newMat = Object.Instantiate(__instance.blueprintMaterial);
-                                UpdateTextureToLUT(newMat, segments);
-                                newMat.SetColor("_TintColor", Color.red);
-                                __instance.blueprintMaterial = newMat;// ___material;
-                                ___altMaterial = ___material;
-                                GS2.Warn($"Updating blueprintMat {segments}");
-                                //UpdateTextureToLUT(___blueprintMaterial, segments);
-                            }
-                            else
-                            {
-                                GS2.Warn("Not Updating blueprintMat");
-                            }
-                        }
-
+                        __instance.blueprintMaterial.SetFloat("_Segment", segments);
+                        if (LUT512.ContainsKey(segments)) UpdateTextureToLUT(___material, segments);
                         else
                             refreshGridRadius = -1;
                     }
@@ -56,7 +39,7 @@ namespace GalacticScale
 
         public static void UpdateTextureToLUT(Material material, int segment)
         {
-            GS2.Warn("UpdateTextureToLUT:" + material.name);
+            // GS2.Warn("UpdateTextureToLUT:" + material.name);
             var tex = material.GetTexture("_SegmentTable");
             if (tex.dimension == TextureDimension.Tex2D)
             {
