@@ -93,6 +93,7 @@ namespace GalacticScale
             NebulaCompatibility.Init();
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
+                GS2.Warn($"Moving Configs from {OldDataDir} to {DataDir}");
                 Directory.Move(OldDataDir, DataDir);
                 updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n";
 
@@ -126,7 +127,11 @@ namespace GalacticScale
                 }
                 DumpObjectToJson(Path.Combine(DataDir, "ldbvege.json"), vegeDict);
             }
-            if (updateMessage != "") UIMessageBox.Show("Update Information",GS2.updateMessage,"Noted!", 0);
+            if (updateMessage != "")
+            {
+                UIMessageBox.Show("Update Information", GS2.updateMessage, "Noted!", 0);
+                updateMessage = "";
+            }
         }
     }
 }
