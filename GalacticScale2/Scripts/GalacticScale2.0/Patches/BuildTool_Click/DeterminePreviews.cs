@@ -1,7 +1,6 @@
 ﻿using System;
 using HarmonyLib;
 using UnityEngine;
-using static GalacticScale.GS2;
 
 namespace GalacticScale
 {

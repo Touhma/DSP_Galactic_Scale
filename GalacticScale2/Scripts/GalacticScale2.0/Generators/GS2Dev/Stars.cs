@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using static GalacticScale.GS2;
-using static GalacticScale.RomanNumbers;
 
 namespace GalacticScale.Generators
 {

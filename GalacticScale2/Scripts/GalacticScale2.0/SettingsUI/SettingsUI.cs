@@ -201,6 +201,7 @@ namespace GalacticScale
             //UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport
             UpdateContentRect();
             //viewportRect.sizeDelta = this.keyScrollVbarRect.gameObject.activeSelf ? new Vector2(-10f, 0.0f) : Vector2.zero;
+            
         }
 
         //private static RectTransform CreateCollapseBox()
@@ -333,6 +334,11 @@ namespace GalacticScale
                 }
             }
 
+            var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
+            var ThemeSelector = Object.Instantiate(go, details, false);
+            var tsRect = ThemeSelector.GetComponent<RectTransform>();
+            var offset = options.Count * -40;
+            tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x,tsRect.anchoredPosition.x+ offset);
 
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
             //GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.generators[currentGenIndex].Name);

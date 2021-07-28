@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public enum EStar
     {

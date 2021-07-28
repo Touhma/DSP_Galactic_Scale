@@ -35,6 +35,7 @@ namespace GalacticScale
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static Dictionary<int, GSStar> gsStars = new Dictionary<int, GSStar>();
         private static AssetBundle _bundle;
+        // public static AssetBundle bundle2;
 
         public static bool IsMenuDemo
         {
@@ -77,9 +78,17 @@ namespace GalacticScale
         }
 
         public static void Init()
-        
+
         {
-            
+            GS2.Warn("Start");
+            // if (bundle2 == null)
+            // {
+            //     var path = Path.Combine(AssemblyPath, "themeselector");
+            //     if (File.Exists(path)) bundle2 = AssetBundle.LoadFromFile(path);
+            //     GS2.Warn(" ");
+            //     
+            //     GS2.Warn(" ");
+            // }
             NebulaCompatibility.Init();
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {

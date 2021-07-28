@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIGalaxySelect : MonoBehaviour
+    public partial class PatchOnUIGalaxySelect 
     {
         public static Delayer delayer;
 

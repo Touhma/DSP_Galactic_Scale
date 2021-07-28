@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using Steamworks;
 using UnityEngine;
 using static GalacticScale.GS2;
 using static GalacticScale.RomanNumbers;
-using Random = System.Random;
 
 namespace GalacticScale.Generators
 {
