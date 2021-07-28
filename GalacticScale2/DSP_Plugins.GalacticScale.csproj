@@ -151,7 +151,6 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
-    <Compile Include="Scripts\ExternalThemeSelector.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
@@ -266,11 +265,13 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\CheatMode.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ExternalThemeSelector.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MainSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\NoTutorials.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectItem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain00.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain5.cs" />
@@ -364,7 +365,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\OnEnable.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIPlanetDetail\SetResCount.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVersionText\PatchOnUIVersionText.cs" />
-    <Compile Include="Scripts\ThemeSelectItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.png" />

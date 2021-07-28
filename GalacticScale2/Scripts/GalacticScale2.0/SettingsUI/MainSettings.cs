@@ -77,13 +77,21 @@ namespace GalacticScale
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
             Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
-            Options.Add(GSUI.Checkbox("(Test) ", false, "Test"));
-            Options.Add(GSUI.Input("Test", "0", "TestNum"));
-            // Options.Add(GSUI.Button("Fix 1000s Planet Orbits", "Go", FixOrbits));
+            Options.Add(GSUI.Checkbox("Adjust Inserter Length ", false, "Test"));
+            Options.Add(GSUI.Input("Inserter Length Adjust", "0", "TestNum"));
+            Options.Add(GSUI.Button("Debug ThemeSelector", "Go", FixOrbits));
 
             _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy));
         }
 
+        private static void FixOrbits(Val o)
+        {
+            var v =GS2.themeSelector.Get();
+            foreach (var c in v)
+            {
+                GS2.Warn($"::{c.Value.Name}");
+            }
+        }
         // private static void FixOrbits(Val o)
         // {
         //     if (GS2.Vanilla || GS2.IsMenuDemo) return;
