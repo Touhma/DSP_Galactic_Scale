@@ -233,6 +233,7 @@ namespace GalacticScale.Generators
         private void InitPreferences()
         {
             GS2.Log("InitPreferences");
+            preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("safeMode", false);
             preferences.Set("ludicrousMode", false);
             preferences.Set("galaxyDensity", 5);
@@ -312,6 +313,7 @@ namespace GalacticScale.Generators
             UI.Add("hugeGasGiants", Options.Add(GSUI.Checkbox("Huge Gas Giants".Translate(), true, "hugeGasGiants")));
             UI.Add("tidalLockInnerPlanets",
                 Options.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets")));
+            UI.Add("innerPlanetDistance", Options.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance")));
             UI.Add("secondarySatellites",
                 Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites")));
 
