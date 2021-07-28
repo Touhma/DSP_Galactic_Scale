@@ -10,7 +10,7 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
-        public static bool _OnOpen(UIGalaxySelect __instance , ref Slider ___starCountSlider,)
+        public static bool _OnOpen(UIGalaxySelect __instance , ref Slider ___starCountSlider)
         {
             if (GS2.ActiveGenerator == null) return true;
             ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;
