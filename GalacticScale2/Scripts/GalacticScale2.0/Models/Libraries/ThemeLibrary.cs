@@ -27,7 +27,18 @@ namespace GalacticScale
             base.Add(name, theme);
             return theme;
         }
-
+        public ThemeLibrary AddRange(ThemeLibrary values)
+        {
+            foreach (var theme in values)
+            {
+                if (ContainsKey(theme.Key)) {
+                    GS2.Warn("Adding Duplicate Theme " + theme.Key);
+                    this[theme.Key] = theme.Value; 
+                }
+                else Add(theme.Key, theme.Value);
+            }
+            return this;
+        }
         public static ThemeLibrary Vanilla()
         {
             var t = new ThemeLibrary

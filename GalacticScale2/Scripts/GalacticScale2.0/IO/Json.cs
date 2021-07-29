@@ -3,10 +3,59 @@ using System.Collections.Generic;
 using System.IO;
 using GSSerializer;
 
+
 namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static ThemeLibrary LoadExternalThemes(string path)
+        {
+            ThemeLibrary tl = new ThemeLibrary();
+            if (!Directory.Exists(path))
+            {
+                GS2.Warn("External Theme Directory Not Found. Creating");
+                Directory.CreateDirectory(path);
+                return tl;
+            }
+            var files = Directory.GetFiles(path);
+            var directories = Directory.GetDirectories(path);
+
+            if (files.Length == 0 && directories.Length == 0) return tl;
+            foreach (var directory in directories) tl.AddRange(LoadDirectoryJsonThemes(directory));
+            foreach (var filename in files)
+            {
+                GSTheme theme = LoadJsonTheme(filename);
+                tl.Add(theme.Name, theme);
+            }
+            string[] names = new string[] { };
+            tl.Keys.CopyTo(names, 0);
+            LogJson(names);
+            return tl;
+        }
+        public static ThemeLibrary LoadDirectoryJsonThemes(string path)
+        {
+            var tl = new ThemeLibrary();
+            var directories = Directory.GetDirectories(path);
+            var files = Directory.GetFiles(path);
+            foreach (var directory in directories) tl.AddRange(LoadDirectoryJsonThemes(directory));
+            foreach (var file in files)
+            {
+                GSTheme theme = LoadJsonTheme(file);
+                tl.Add(theme.Name, theme);
+            }
+            return tl;
+        }
+        public static GSTheme LoadJsonTheme(string filename)
+        {
+            Log("Loading JSON Theme " + filename);
+            var json = File.ReadAllText(filename);
+            var result = new GSTheme();
+            var data = fsJsonParser.Parse(json);
+            Log("Trying To Deserialize JSON");
+            var serializer = new fsSerializer();
+            serializer.TryDeserialize(data, ref result);
+            return result;
+        }
         public static bool LoadSettingsFromJson(string path)
         {
             Log("Start");
