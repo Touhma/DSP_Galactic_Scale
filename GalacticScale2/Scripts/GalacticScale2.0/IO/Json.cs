@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GSSerializer;
 
 
@@ -10,6 +11,7 @@ namespace GalacticScale
     {
         public static ThemeLibrary LoadExternalThemes(string path)
         {
+            GS2.Log($"Loading External Themes from: {path}");
             ThemeLibrary tl = new ThemeLibrary();
             if (!Directory.Exists(path))
             {
@@ -18,18 +20,23 @@ namespace GalacticScale
                 return tl;
             }
             var files = Directory.GetFiles(path);
+            LogJson(files);
             var directories = Directory.GetDirectories(path);
-
+            LogJson(directories);
             if (files.Length == 0 && directories.Length == 0) return tl;
-            foreach (var directory in directories) tl.AddRange(LoadDirectoryJsonThemes(directory));
+            foreach (var directory in directories)
+            {
+                GS2.Log($"Searching directory:{directory}");
+                tl.AddRange(LoadDirectoryJsonThemes(directory));
+            }
             foreach (var filename in files)
             {
+                Log($"Found file:{filename}");
                 GSTheme theme = LoadJsonTheme(filename);
                 tl.Add(theme.Name, theme);
             }
-            string[] names = new string[] { };
-            tl.Keys.CopyTo(names, 0);
-            LogJson(names);
+            
+            LogJson(tl.Keys.ToList());
             return tl;
         }
         public static ThemeLibrary LoadDirectoryJsonThemes(string path)

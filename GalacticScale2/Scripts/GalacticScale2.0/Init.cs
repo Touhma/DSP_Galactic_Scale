@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
+using rail;
 using UnityEngine;
 
 namespace GalacticScale
@@ -16,6 +17,7 @@ namespace GalacticScale
         public static bool Failed = false;
         public static string updateMessage = "";
         public static bool Initialized = false;
+        public static ThemeLibrary externalThemes = new ThemeLibrary();
 
         public static ExternalThemeSelector themeSelector;
         // public static bool CheatMode = false;
@@ -100,7 +102,10 @@ namespace GalacticScale
             }
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             Config.Init();
+            
             LoadPreferences(true);
+            externalThemes = LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            LogJson(externalThemes);
             Log("GalacticScale2|Creating List of Themes");
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
             Log("GalacticScale2|Init|Processing Themes");

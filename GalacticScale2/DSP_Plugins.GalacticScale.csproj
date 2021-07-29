@@ -276,6 +276,7 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectGroup.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectItem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain00.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
@@ -395,7 +396,7 @@
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
     <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)GalacticScale.pdb" DestinationFolder="$(Plugins_Dir)" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)GalacticScale.dll" DestinationFolder="C:\Users\inno\GalacticScale\Assets" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)galacticbundle" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" DestinationFolder="$(Plugins_Dir)" />
   </Target>

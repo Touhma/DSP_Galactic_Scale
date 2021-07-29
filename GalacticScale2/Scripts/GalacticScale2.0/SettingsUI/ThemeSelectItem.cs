@@ -9,6 +9,7 @@ namespace GalacticScale
         public Toggle toggle;
         public string label = "Template";
 
+        public ExternalThemeSelector themeSelector;
         // [NonSerialized] 
         public GSTheme theme;
         // Start is called before the first frame update
@@ -24,5 +25,9 @@ namespace GalacticScale
 
         public bool ticked => toggle.isOn;
 
+        public void Click()
+        {
+            if (!themeSelector.masterToggle.isOn && toggle.isOn) themeSelector.masterToggle.isOn = true;
+        }
     }
 }

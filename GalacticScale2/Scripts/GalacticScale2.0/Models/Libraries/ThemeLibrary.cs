@@ -24,6 +24,9 @@ namespace GalacticScale
 
         public new GSTheme Add(string name, GSTheme theme)
         {
+            GS2.Warn($"Adding {name},{theme == null}");
+            if (theme == null) return null;
+            if (string.IsNullOrEmpty(name)) name = theme.Name??"Hmm";
             base.Add(name, theme);
             return theme;
         }

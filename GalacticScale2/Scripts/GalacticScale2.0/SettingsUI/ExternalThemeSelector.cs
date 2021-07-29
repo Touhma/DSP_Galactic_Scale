@@ -10,8 +10,9 @@ namespace GalacticScale
         // Start is called before the first frame update
         void Start()
         {
+            GS2.LogJson(GS2.externalThemes);
             GS2.themeSelector = this;
-            foreach (var t in  ThemeLibrary.Vanilla())
+            foreach (var t in  GS2.externalThemes)
             {
                 GS2.Warn($"Adding {t.Key}");
                 var item = Object.Instantiate(itemTemplate, itemList, false);
@@ -26,22 +27,17 @@ namespace GalacticScale
 
         // public ThemeLibrary ThemeLibrary = new ThemeLibrary();
         public RectTransform itemTemplate;
+        public RectTransform groupTemplate;
         public RectTransform itemList;
         public Toggle masterToggle;
         public List<ThemeSelectItem> items = new List<ThemeSelectItem>();
-
-        public void Init(List<string> themes)
+        public List<ThemeSelectGroup> groups = new List<ThemeSelectGroup>();
+        public void Init()
         {            
 
-            foreach (var theme in themes)
+            foreach (var theme in GS2.externalThemes)
             {
-               // var go = Object.Instantiate(itemTemplate, gameObject.transform);
-               // go.SetActive(true);
-               // var tsi = go.GetComponent<ThemeSelectItem>();
-              //  items.Add(tsi);
-              //  tsi.label = theme;
-              //  tsi.Set(false);
-              Debug.Log("Test"+theme);
+              Debug.Log("Test"+theme.Value);
             }
         }
 
@@ -96,7 +92,7 @@ namespace GalacticScale
         {
             Debug.Log("Click");
             Debug.Log(masterToggle.isOn.ToString());
-            Init(new List<string>() {"Test1", "test2", "gds", "fasdfda"});
+           
         }
     }
 }
