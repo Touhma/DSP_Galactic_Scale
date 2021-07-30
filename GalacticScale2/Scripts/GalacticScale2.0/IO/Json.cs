@@ -67,8 +67,12 @@ namespace GalacticScale
             }
             Log("Trying To Deserialize JSON");
             var serializer = new fsSerializer();
-            serializer.TryDeserialize(data, ref result);
-
+            var deserializeResult = serializer.TryDeserialize(data, ref result);
+            if (deserializeResult.Failed)
+            {
+                Error("Failed to deserialize "+filename + ": " +deserializeResult.FormattedMessages );
+                return null;
+            }
             return result;
         }
         public static bool LoadSettingsFromJson(string path)

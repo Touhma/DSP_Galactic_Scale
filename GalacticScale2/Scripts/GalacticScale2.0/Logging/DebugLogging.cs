@@ -43,6 +43,14 @@ namespace GalacticScale
             var json = fsJsonPrinter.PrettyJson(data);
             Bootstrap.Debug(GetCaller() + json);
         }
+        public static void WarnJson(object o)
+        {
+
+            var serializer = new fsSerializer();
+            serializer.TrySerialize(o, out var data).AssertSuccessWithoutWarnings();
+            var json = fsJsonPrinter.PrettyJson(data);
+            Bootstrap.Debug(GetCaller() + json, LogLevel.Warning, true);
+        }
 
         public static string GetCaller(int depth = 0)
         {

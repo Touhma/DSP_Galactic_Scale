@@ -119,7 +119,7 @@ namespace GalacticScale
 
         private (bool succeeded, int value) GetInt(object o)
         {
-            GS2.Warn(Label);
+            // GS2.Warn(Label);
             if (o is int) return (true, (int) o);
             var success = int.TryParse(o.ToString(), out var result);
             return (success, result);
@@ -241,7 +241,7 @@ namespace GalacticScale
 
         public bool Set(Val o)
         {
-            //GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {label}");
+            // GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
 
             if (RectTransform == null) return false;
             switch (Type)
@@ -553,7 +553,7 @@ namespace GalacticScale
         {
             return () =>
             {
-                //GS2.Log($"Creating DefaultPostfix for {label}");
+                // GS2.Warn($"Creating DefaultPostfix for {Label}");
 
                 if (Generator is null)
                 {
@@ -564,10 +564,9 @@ namespace GalacticScale
 
                 var value = Generator.Export().Get(key);
                 // GS2.Log($"{key} Value:{value} is null?:{value == null}");
-                //GS2.Log($"Got");
                 if (value == null)
                 {
-                    //GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                    // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
                     value = DefaultValue;
                 }
                 if (value != null)

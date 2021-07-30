@@ -65,13 +65,13 @@ namespace GalacticScale.Generators
                 if (availableOrbits.Count == 0)
                 {
                     //Warn("Free Orbit Ranges:");
-                    LogJson(freeOrbitRanges);
+                    // LogJson(freeOrbitRanges);
                     //Warn($"No Orbit Ranges found for planet {planet.Name} radius:{planet.SystemRadius}");
                     var success = false;
                     foreach (var existingOrbit in orbits)
                         if (existingOrbit.hasRoom && existingOrbit.SystemRadius > planet.SystemRadius)
                         {
-                            Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
+                            // Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
                             existingOrbit.planets.Add(planet);
                             planet.OrbitRadius = existingOrbit.radius;
                             planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
@@ -148,7 +148,7 @@ namespace GalacticScale.Generators
 
         private void SetPlanetOrbitPhase()
         {
-            Log("Adjusting Orbits");
+            // Log("Adjusting Orbits");
             var r = new GS2.Random(GSSettings.Seed);
             foreach (var star in GSSettings.Stars)
             {

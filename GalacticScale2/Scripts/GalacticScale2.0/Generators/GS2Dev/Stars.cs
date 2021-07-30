@@ -74,7 +74,7 @@ namespace GalacticScale.Generators
         private (float min, float max) CalculateHabitableZone(GSStar star)
         {
             var lum = star.luminosity;
-            var (max, min) = Utils.CalculateHabitableZone(lum);
+            var (min, max) = Utils.CalculateHabitableZone(lum);
             star.genData.Set("minHZ", min);
             star.genData.Set("maxHZ", max);
             // GS2.Warn($"HZ of {star.Name} {min}:{max}");

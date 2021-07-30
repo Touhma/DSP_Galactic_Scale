@@ -24,6 +24,7 @@ namespace GalacticScale
         public bool MinifyJson => Preferences.GetBool("Minify JSON", false);
         public bool FixCopyPaste => Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
+        public bool UseExternalThemes => Preferences.GetBool("Use External Themes", false);
         public List<string> ExternalThemeNames => (List<string>)Preferences.StringList("External Themes", new List<string>());
         public string Name => "Main Settings";
 
@@ -152,6 +153,11 @@ namespace GalacticScale
         {
             var themeNames = e.Get();
             Preferences.Set("External Themes", themeNames);
+        }
+
+        public void SetUseExternalThemes(bool val)
+        {
+            Preferences.Set("Use External Themes", val);
         }
     }
 }

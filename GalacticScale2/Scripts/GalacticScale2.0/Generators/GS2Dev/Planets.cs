@@ -230,7 +230,7 @@ public float GetOrbitGap(GSStar star)
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
             float pCount = star.Planets.Count;
             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
-            var maxOrbitByHabitableZone = 30f * hz.max;
+            var maxOrbitByHabitableZone = 30f * hz.min;
             var maxOrbitByPlanetCount = 50f * pCount / 99f;
             var maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius, maxOrbitByHabitableZone);
             var averageOrbit = maxOrbit / pCount;
@@ -271,8 +271,7 @@ public float GetOrbitGap(GSStar star)
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            //hz.min *= 5f;
-            //hz.max *= 10f;
+            GS2.Warn($"Habitable zone for {star.Name} is {hz.min} - {hz.max}");
             //Warn($"HZ for {star.Name} {hz.min}-{hz.max}");
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;

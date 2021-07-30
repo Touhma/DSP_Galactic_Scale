@@ -100,9 +100,9 @@ namespace GalacticScale
             return (float) (36000 * periodFactor);
         }
 
-        public static (float, float) CalculateHabitableZone(float luminosity)
+        public static (float min, float max) CalculateHabitableZone(float luminosity)
         {
-            return ((float) Math.Sqrt(luminosity / 0.53), (float) Math.Sqrt(luminosity / 1.1));
+            return ((float) Math.Sqrt(luminosity / 1.1), (float) Math.Sqrt(luminosity / 0.53));
         }
 
         public static Type GetCallingType()

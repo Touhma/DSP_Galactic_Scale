@@ -122,7 +122,7 @@ namespace GalacticScale
                 Error($"star.planets length of {star.planets.Length} <= counter {counter}");
 
             star.planets[counter] = planet;
-            //DebugPlanet(planetData);
+            // DebugPlanet(planet);
             if (GSSettings.Stars.Count <= star.index) Error($"GSSettings.Stars[{star.index}] does not exist");
 
             GSSettings.Stars[star.index].counter++;

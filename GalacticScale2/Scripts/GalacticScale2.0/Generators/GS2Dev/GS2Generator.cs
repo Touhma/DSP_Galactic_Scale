@@ -136,16 +136,17 @@ namespace GalacticScale.Generators
                     // if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
                     // {
                         Themes.AshenGelisol.Process();
-                        if (!GS2.ThemeLibrary.ContainsKey("AshenGelisol"))
+                        if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
                         {
                             Warn("Nope" + GS2.ThemeLibrary.Count);
-                            GS2.ThemeLibrary.Add("AshenGelisol", Themes.AshenGelisol);
+                            GSSettings.ThemeLibrary.Add("AshenGelisol", Themes.AshenGelisol);
+                            Themes.AshenGelisol.Process();
                         }
                         GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
                     // }
-                    var tiPlanet = birthStar.Planets.Add(new GSPlanet("Black Swan", "AshenGelisol",
-                        GetStarPlanetSize(birthStar), GetOrbitGap(birthStar) * birthStar.PlanetCount, 0f, 100000f, 0f,
-                        0f, 360f, 0f, -1f));
+                    var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol",
+                        GetStarPlanetSize(birthStar), 0.03f, 66f, 1000f, 0f,
+                        66f, 360f, 0f, -1f));
                     tiPlanet.OrbitalPeriod =
                         Utils.CalculateOrbitPeriodFromStarMass(tiPlanet.OrbitRadius, birthStar.mass);
                     return;
