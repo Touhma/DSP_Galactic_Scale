@@ -17,7 +17,7 @@ namespace GalacticScale
         public static bool Failed = false;
         public static string updateMessage = "";
         public static bool Initialized = false;
-        public static ThemeLibrary externalThemes = new ThemeLibrary();
+        public static Dictionary<string,ThemeLibrary> availableExternalThemes = new Dictionary<string, ThemeLibrary>();
 
         public static ExternalThemeSelector themeSelector;
         // public static bool CheatMode = false;
@@ -104,8 +104,9 @@ namespace GalacticScale
             Config.Init();
             
             LoadPreferences(true);
-            externalThemes = LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
-            LogJson(externalThemes);
+            LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            ExternalThemeProcessor.LoadEnabledThemes();
+            //LogJson(availableExternalThemes);
             Log("GalacticScale2|Creating List of Themes");
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
             Log("GalacticScale2|Init|Processing Themes");

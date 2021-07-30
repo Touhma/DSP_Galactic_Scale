@@ -24,6 +24,7 @@ namespace GalacticScale
         public bool MinifyJson => Preferences.GetBool("Minify JSON", false);
         public bool FixCopyPaste => Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
+        public List<string> ExternalThemeNames => (List<string>)Preferences.StringList("External Themes", new List<string>());
         public string Name => "Main Settings";
 
         public string Author => "innominata";
@@ -37,8 +38,8 @@ namespace GalacticScale
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
         public GSOptions Options { get; } = new GSOptions();
-        public bool Test => Preferences.GetBool("Test", false);
-        public float TestNum => Preferences.GetFloat("TestNum", 0f);
+        //public bool Test => Preferences.GetBool("Test", false);
+        //public float TestNum => Preferences.GetFloat("TestNum", 0f);
 
         public GSGenPreferences Export()
         {
@@ -77,21 +78,21 @@ namespace GalacticScale
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
             Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
-            Options.Add(GSUI.Checkbox("Adjust Inserter Length ", false, "Test"));
-            Options.Add(GSUI.Input("Inserter Length Adjust", "0", "TestNum"));
-            Options.Add(GSUI.Button("Debug ThemeSelector", "Go", FixOrbits));
+            //Options.Add(GSUI.Checkbox("Adjust Inserter Length ", false, "Test"));
+            //Options.Add(GSUI.Input("Inserter Length Adjust", "0", "TestNum"));
+            //Options.Add(GSUI.Button("Debug ThemeSelector", "Go", FixOrbits));
 
             _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy));
         }
 
-        private static void FixOrbits(Val o)
-        {
-            var v =GS2.themeSelector.Get();
-            foreach (var c in v)
-            {
-                GS2.Warn($"::{c.Value.Name}");
-            }
-        }
+        //private static void FixOrbits(Val o)
+        //{
+        //    var v =GS2.themeSelector.Get();
+        //    foreach (var c in v)
+        //    {
+        //        GS2.Warn($"::{c}");
+        //    }
+        //}
         // private static void FixOrbits(Val o)
         // {
         //     if (GS2.Vanilla || GS2.IsMenuDemo) return;
@@ -146,6 +147,11 @@ namespace GalacticScale
         public void DisableCheatMode()
         {
             _cheatModeCheckbox.Set(false);
+        }
+        public void SetExternalThemes(ExternalThemeSelector e)
+        {
+            var themeNames = e.Get();
+            Preferences.Set("External Themes", themeNames);
         }
     }
 }

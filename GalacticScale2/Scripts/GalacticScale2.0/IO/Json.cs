@@ -9,7 +9,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static ThemeLibrary LoadExternalThemes(string path)
+        public static void LoadExternalThemes(string path)
         {
             GS2.Log($"Loading External Themes from: {path}");
             ThemeLibrary tl = new ThemeLibrary();
@@ -17,27 +17,28 @@ namespace GalacticScale
             {
                 GS2.Warn("External Theme Directory Not Found. Creating");
                 Directory.CreateDirectory(path);
-                return tl;
+                return;
             }
             var files = Directory.GetFiles(path);
-            LogJson(files);
+            //LogJson(files);
             var directories = Directory.GetDirectories(path);
-            LogJson(directories);
-            if (files.Length == 0 && directories.Length == 0) return tl;
+            //LogJson(directories);
+            if (files.Length == 0 && directories.Length == 0) return;
             foreach (var directory in directories)
             {
+                var DirName = new DirectoryInfo(directory).Name;
                 GS2.Log($"Searching directory:{directory}");
-                tl.AddRange(LoadDirectoryJsonThemes(directory));
+                GS2.availableExternalThemes.Add(DirName , LoadDirectoryJsonThemes(directory));
             }
             foreach (var filename in files)
             {
                 Log($"Found file:{filename}");
                 GSTheme theme = LoadJsonTheme(filename);
-                tl.Add(theme.Name, theme);
+                if (theme != null) tl.Add(theme.Name, theme);
             }
             
-            LogJson(tl.Keys.ToList());
-            return tl;
+            //LogJson(tl.Keys.ToList());
+            GS2.availableExternalThemes.Add("Root", tl);
         }
         public static ThemeLibrary LoadDirectoryJsonThemes(string path)
         {
@@ -48,7 +49,7 @@ namespace GalacticScale
             foreach (var file in files)
             {
                 GSTheme theme = LoadJsonTheme(file);
-                tl.Add(theme.Name, theme);
+                if (theme != null) tl.Add(theme.Name, theme);
             }
             return tl;
         }
@@ -57,10 +58,17 @@ namespace GalacticScale
             Log("Loading JSON Theme " + filename);
             var json = File.ReadAllText(filename);
             var result = new GSTheme();
-            var data = fsJsonParser.Parse(json);
+            fsData data;
+            var fsresult = fsJsonParser.Parse(json, out data);
+            if (fsresult.Failed)
+            {
+                GS2.Error("Loading of Json Theme " + filename + " failed. "+fsresult.FormattedMessages);
+                return null;
+            }
             Log("Trying To Deserialize JSON");
             var serializer = new fsSerializer();
             serializer.TryDeserialize(data, ref result);
+
             return result;
         }
         public static bool LoadSettingsFromJson(string path)

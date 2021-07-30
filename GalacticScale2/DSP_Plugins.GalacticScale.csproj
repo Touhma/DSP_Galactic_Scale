@@ -188,6 +188,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSFSSettingsConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AmbientSettings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\ExternalThemes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\ThemeEnums.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSMaterialSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
@@ -396,7 +397,6 @@
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
     <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)GalacticScale.dll" DestinationFolder="C:\Users\inno\GalacticScale\Assets" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)galacticbundle" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" DestinationFolder="$(Plugins_Dir)" />
   </Target>
