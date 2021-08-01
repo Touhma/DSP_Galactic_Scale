@@ -13,7 +13,7 @@ namespace GalacticScale
             if (GS2.Config.FixCopyPaste && GameMain.localPlanet.radius == 490) __result -= 0.15f;
             if (GS2.Config.FixCopyPaste && GameMain.localPlanet.radius == 500) __result -= 0.15f;
             if (GS2.Config.FixCopyPaste && GameMain.localPlanet.radius == 510) __result -= 0.19f;
-            if (GS2.Config.Test) __result += GS2.Config.TestNum;
+            //if (GS2.Config.Test) __result += GS2.Config.TestNum;
         }
     }
 }

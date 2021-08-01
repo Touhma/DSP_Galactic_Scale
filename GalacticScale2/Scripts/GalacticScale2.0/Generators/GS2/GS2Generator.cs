@@ -117,7 +117,7 @@ namespace GalacticScale.Generators
 
                 var p = birthPlanet;
                 while (p == birthPlanet) p = random.Item(birthStar.TelluricBodies);
-                p.Theme = "AshenGellisol";
+                p.Theme = "AshenGelisol";
             }
         }
 
@@ -576,7 +576,7 @@ namespace GalacticScale.Generators
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
             float pCount = star.Planets.Count;
             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
-            var maxOrbitByHabitableZone = 30f * hz.max;
+            var maxOrbitByHabitableZone = 30f * hz.min;
             var maxOrbitByPlanetCount = 50f * pCount / 99f;
             var maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius, maxOrbitByHabitableZone);
             var averageOrbit = maxOrbit / pCount;
@@ -711,13 +711,13 @@ namespace GalacticScale.Generators
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            hz.min *= 5f;
-            hz.max *= 10f;
+            hz.max *= 5f;
+            hz.min *= 10f;
             //Warn($"HZ for {star.Name} {hz.min}-{hz.max}");
-            if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
-            if (OrbitRadius < hz.min) return EThemeHeat.Warm;
-            if (OrbitRadius < hz.max) return EThemeHeat.Temperate;
-            if (OrbitRadius < hz.max * 2) return EThemeHeat.Cold;
+            if (OrbitRadius < hz.max / 2) return EThemeHeat.Hot;
+            if (OrbitRadius < hz.max) return EThemeHeat.Warm;
+            if (OrbitRadius < hz.min) return EThemeHeat.Temperate;
+            if (OrbitRadius < hz.min * 2) return EThemeHeat.Cold;
             return EThemeHeat.Frozen;
         }
 

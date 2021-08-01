@@ -1,12 +1,99 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GSSerializer;
+
 
 namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static void LoadExternalThemes(string path)
+        {
+            GS2.Log($"Loading External Themes from: {path}");
+            ThemeLibrary tl = new ThemeLibrary();
+            if (!Directory.Exists(path))
+            {
+                GS2.Warn("External Theme Directory Not Found. Creating");
+                Directory.CreateDirectory(path);
+                return;
+            }
+            var files = Directory.GetFiles(path);
+            //LogJson(files);
+            var directories = Directory.GetDirectories(path);
+            //LogJson(directories);
+            if (files.Length == 0 && directories.Length == 0) return;
+            foreach (var directory in directories)
+            {
+                var DirName = new DirectoryInfo(directory).Name;
+                GS2.Log($"Searching directory:{directory}");
+                if (availableExternalThemes.ContainsKey(DirName))
+                    availableExternalThemes[DirName] = LoadDirectoryJsonThemes(directory);
+                else availableExternalThemes.Add(DirName, LoadDirectoryJsonThemes(directory));
+            }
+            foreach (var filename in files)
+            {
+                Log($"Found file:{filename}");
+                Warn(new FileInfo(filename).Extension);
+                if (new FileInfo(filename).Extension != ".json") continue;
+                GSTheme theme = LoadJsonTheme(filename);
+                if (theme != null)
+                {
+                    if (tl.ContainsKey(theme.Name)) tl[theme.Name] = theme;
+                    else tl.Add(theme.Name, theme);
+                }
+            }
+            
+            //LogJson(tl.Keys.ToList());
+            if (availableExternalThemes.ContainsKey("Root"))
+                availableExternalThemes["Root"] = tl;
+            else availableExternalThemes.Add("Root", tl);
+        }
+        public static ThemeLibrary LoadDirectoryJsonThemes(string path)
+        {
+            var tl = new ThemeLibrary();
+            var directories = Directory.GetDirectories(path);
+            var files = Directory.GetFiles(path);
+            foreach (var directory in directories)
+            {
+                var dtl = (LoadDirectoryJsonThemes(directory));
+                tl.AddRange(dtl);
+            }
+            foreach (var file in files)
+            {
+                GSTheme theme = LoadJsonTheme(file);
+                if (theme != null) tl.Add(theme.Name, theme);
+            }
+            return tl;
+        }
+        public static GSTheme LoadJsonTheme(string filename)
+        {
+            Log("Loading JSON Theme " + filename);
+            if (new FileInfo(filename).Extension != ".json")
+            {
+                GS2.Warn($"Non Json File Skipped: {filename}");
+                return null;
+            }
+            var json = File.ReadAllText(filename);
+            var result = new GSTheme();
+            fsData data;
+            var fsresult = fsJsonParser.Parse(json, out data);
+            if (fsresult.Failed)
+            {
+                GS2.Error("Loading of Json Theme " + filename + " failed. "+fsresult.FormattedMessages);
+                return null;
+            }
+            Log("Trying To Deserialize JSON");
+            var serializer = new fsSerializer();
+            var deserializeResult = serializer.TryDeserialize(data, ref result);
+            if (deserializeResult.Failed)
+            {
+                Error("Failed to deserialize "+filename + ": " +deserializeResult.FormattedMessages );
+                return null;
+            }
+            return result;
+        }
         public static bool LoadSettingsFromJson(string path)
         {
             Log("Start");

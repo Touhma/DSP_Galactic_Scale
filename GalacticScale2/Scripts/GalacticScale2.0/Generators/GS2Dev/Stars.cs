@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using static GalacticScale.GS2;
-using static GalacticScale.RomanNumbers;
 
 namespace GalacticScale.Generators
 {
@@ -60,7 +56,7 @@ namespace GalacticScale.Generators
             var range = max - min;
             var sd = (float) range / 4;
             //int size = Utils.ParsePlanetSize(random.Next(min, max));
-            var size = ClampedNormalSize(min, max, GetSizeBiasForStar(star));
+            var size =  Mathf.Clamp(ClampedNormalSize(min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
             //if (size > hostRadius)
             //{
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
@@ -78,7 +74,7 @@ namespace GalacticScale.Generators
         private (float min, float max) CalculateHabitableZone(GSStar star)
         {
             var lum = star.luminosity;
-            var (max, min) = Utils.CalculateHabitableZone(lum);
+            var (min, max) = Utils.CalculateHabitableZone(lum);
             star.genData.Set("minHZ", min);
             star.genData.Set("maxHZ", max);
             // GS2.Warn($"HZ of {star.Name} {min}:{max}");

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
+using rail;
 using UnityEngine;
 
 namespace GalacticScale
@@ -16,7 +17,9 @@ namespace GalacticScale
         public static bool Failed = false;
         public static string updateMessage = "";
         public static bool Initialized = false;
+        public static Dictionary<string,ThemeLibrary> availableExternalThemes = new Dictionary<string, ThemeLibrary>();
 
+        public static ExternalThemeSelector themeSelector;
         // public static bool CheatMode = false;
         public static bool ResearchUnlocked = false;
 
@@ -35,6 +38,7 @@ namespace GalacticScale
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static Dictionary<int, GSStar> gsStars = new Dictionary<int, GSStar>();
         private static AssetBundle _bundle;
+        // public static AssetBundle bundle2;
 
         public static bool IsMenuDemo
         {
@@ -77,9 +81,17 @@ namespace GalacticScale
         }
 
         public static void Init()
-        
+
         {
-            
+            GS2.Warn("Start");
+            // if (bundle2 == null)
+            // {
+            //     var path = Path.Combine(AssemblyPath, "themeselector");
+            //     if (File.Exists(path)) bundle2 = AssetBundle.LoadFromFile(path);
+            //     GS2.Warn(" ");
+            //     
+            //     GS2.Warn(" ");
+            // }
             NebulaCompatibility.Init();
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
@@ -90,7 +102,11 @@ namespace GalacticScale
             }
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             Config.Init();
+            
             LoadPreferences(true);
+            // LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            // ExternalThemeProcessor.LoadEnabledThemes();
+            //LogJson(availableExternalThemes);
             Log("GalacticScale2|Creating List of Themes");
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
             Log("GalacticScale2|Init|Processing Themes");
@@ -100,9 +116,14 @@ namespace GalacticScale
             Log("End");
         }
 
+        public static bool MenuHasLoaded = false;
         public static void OnMenuLoaded()
         {
-           
+            if (MenuHasLoaded) return;
+            MenuHasLoaded = true;
+            GS2.Log("Loading External Themes");
+            LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            ExternalThemeProcessor.LoadEnabledThemes();
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
             if (Config.Dev)
             {

@@ -64,7 +64,9 @@ namespace GalacticScale.Generators
             foreach (var s in smolLibrary)
                 if (!newLibrary.ContainsKey(s.Key)) newLibrary.Add(s.Key, s.Value);
                 else newLibrary[s.Key] = s.Value;
+            newLibrary.AddRange(GS2.externalThemes);
             GS2.ThemeLibrary = GSSettings.ThemeLibrary = newLibrary;
+            
         }
 
         public static void InitThemes()

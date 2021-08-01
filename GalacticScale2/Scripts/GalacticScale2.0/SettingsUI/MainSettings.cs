@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using GalacticScale.Generators;
+using GSSerializer;
 
 namespace GalacticScale
 {
@@ -15,15 +16,17 @@ namespace GalacticScale
         private List<string> _generatorNames;
         private GSUI _generatorsCombobox;
         public GSGenPreferences Preferences = new GSGenPreferences();
-        public bool ForceRare => Preferences.GetBool("Force Rare Spawn", false);
-        public bool DebugMode => Preferences.GetBool("Debug Log", false);
-        public bool Dev => Preferences.GetBool("Dev", false);
-        public bool SkipPrologue => Preferences.GetBool("Skip Prologue", false);
-        public bool SkipTutorials => Preferences.GetBool("Skip Tutorials", false);
-        public bool CheatMode => Preferences.GetBool("Cheat Mode", false);
-        public bool MinifyJson => Preferences.GetBool("Minify JSON", false);
+        public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
+        public bool DebugMode => Preferences.GetBool("Debug Log");
+        public bool Dev => Preferences.GetBool("Dev");
+        public bool SkipPrologue => Preferences.GetBool("Skip Prologue");
+        public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
+        public bool CheatMode => Preferences.GetBool("Cheat Mode");
+        public bool MinifyJson => Preferences.GetBool("Minify JSON");
         public bool FixCopyPaste => Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
+        public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
+        public List<string> ExternalThemeNames => Preferences.StringList("External Themes", new List<string>());
         public string Name => "Main Settings";
 
         public string Author => "innominata";
@@ -37,8 +40,8 @@ namespace GalacticScale
         public GSGeneratorConfig Config => new GSGeneratorConfig();
 
         public GSOptions Options { get; } = new GSOptions();
-        public bool Test => Preferences.GetBool("Test", false);
-        public float TestNum => Preferences.GetFloat("TestNum", 0f);
+        //public bool Test => Preferences.GetBool("Test", false);
+        //public float TestNum => Preferences.GetFloat("TestNum", 0f);
 
         public GSGenPreferences Export()
         {
@@ -77,13 +80,51 @@ namespace GalacticScale
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
             Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
-            Options.Add(GSUI.Checkbox("(Test) ", false, "Test"));
-            Options.Add(GSUI.Input("Test", "0", "TestNum"));
-            // Options.Add(GSUI.Button("Fix 1000s Planet Orbits", "Go", FixOrbits));
+            Options.Add(GSUI.Button("Export All Themes".Translate(), "Export", ExportAllThemes));
+            //Options.Add(GSUI.Checkbox("Adjust Inserter Length ", false, "Test"));
+            //Options.Add(GSUI.Input("Inserter Length Adjust", "0", "TestNum"));
+            //Options.Add(GSUI.Button("Debug ThemeSelector", "Go", FixOrbits));
 
-            _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy));
+            _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(),
+                ExportJsonGalaxy));
         }
 
+        private void ExportAllThemes(Val o)
+        {
+            if (GameMain.isPaused)
+            {
+                var path = Path.Combine(GS2.DataDir, "ExportedThemes");
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                foreach (var theme in GSSettings.ThemeLibrary)
+                {
+                    var filename = Path.Combine(path, theme.Value.Name + ".json");
+                    var fs = new fsSerializer();
+                    fs.TrySerialize(theme.Value, out var data);
+                    var json = fsJsonPrinter.PrettyJson(data);
+                    File.WriteAllText(filename, json);
+                    
+                }
+                UIMessageBox.Show("Success".Translate(),
+                                         "Themes have been exported to "
+                                             .Translate() + path + "/",
+                                         "D'oh!".Translate(), 2);
+                                     return;
+            }
+            UIMessageBox.Show("Error".Translate(),
+                "Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings."
+                    .Translate(),
+                "D'oh!".Translate(), 2);
+        }
+
+
+        //private static void FixOrbits(Val o)
+        //{
+        //    var v =GS2.themeSelector.Get();
+        //    foreach (var c in v)
+        //    {
+        //        GS2.Warn($"::{c}");
+        //    }
+        //}
         // private static void FixOrbits(Val o)
         // {
         //     if (GS2.Vanilla || GS2.IsMenuDemo) return;
@@ -138,6 +179,19 @@ namespace GalacticScale
         public void DisableCheatMode()
         {
             _cheatModeCheckbox.Set(false);
+        }
+
+        public void SetExternalThemes(ExternalThemeSelector e)
+        {
+            GS2.Warn("Setting External Themes");
+            GS2.WarnJson(e.Get());
+            var themeNames = e.Get();
+            Preferences.Set("External Themes", themeNames);
+        }
+
+        public void SetUseExternalThemes(bool val)
+        {
+            Preferences.Set("Use External Themes", val);
         }
     }
 }

@@ -135,7 +135,6 @@ namespace GalacticScale.Generators
             }
 
             GenerateSol(GSSettings.Stars[0]);
-            (float min, float max) hz = Utils.CalculateHabitableZone(GSSettings.Stars[0].luminosity);
             //GS2.Warn($"Habitable Zone for Star with Luminosity {GSSettings.Stars[0].luminosity} is {hz.min} , {hz.max}");
             for (var i = 1; i < starCount; i++)
             {

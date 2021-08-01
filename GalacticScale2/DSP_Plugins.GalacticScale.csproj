@@ -151,6 +151,7 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
+    <Compile Include="Scripts\3rdParty\RangeSlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Planet\GSPlanets.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Settings\GSFSSettingsConverter.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\AmbientSettings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Themes\ExternalThemes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\ThemeEnums.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSMaterialSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Themes\GSFSThemeConverter.cs" />
@@ -270,11 +272,25 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\CheatMode.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ExternalThemeSelector.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MainSettings.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIDropdown.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIRangeSlider.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUISlider.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIInput.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIBtn.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIList.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIPanel.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUITemplate.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUITemplates.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIToggle.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\NoTutorials.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectGroup.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectItem.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectorUI.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain00.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain3.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Terrain Generation\GenerateTerrain5.cs" />
@@ -393,7 +409,6 @@
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
     <Delete Files="$(Plugins_Dir)DSP_Plugin.dll" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetPath)" DestinationFolder="$(Plugins_Dir)" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)GalacticScale.pdb" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(TargetDir)galacticbundle" DestinationFolder="$(Plugins_Dir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" DestinationFolder="$(Plugins_Dir)" />
   </Target>
