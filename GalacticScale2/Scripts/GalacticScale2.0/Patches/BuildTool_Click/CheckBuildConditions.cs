@@ -1,7 +1,8 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
-using static GalacticScale.GS2;
 
 namespace GalacticScale
 {
