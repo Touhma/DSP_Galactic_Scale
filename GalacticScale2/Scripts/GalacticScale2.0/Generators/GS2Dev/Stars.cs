@@ -56,7 +56,7 @@ namespace GalacticScale.Generators
             var range = max - min;
             var sd = (float) range / 4;
             //int size = Utils.ParsePlanetSize(random.Next(min, max));
-            var size = ClampedNormalSize(min, max, GetSizeBiasForStar(star));
+            var size =  Mathf.Clamp(ClampedNormalSize(min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
             //if (size > hostRadius)
             //{
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");

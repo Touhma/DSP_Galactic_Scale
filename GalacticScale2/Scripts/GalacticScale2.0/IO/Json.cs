@@ -35,6 +35,8 @@ namespace GalacticScale
             foreach (var filename in files)
             {
                 Log($"Found file:{filename}");
+                Warn(new FileInfo(filename).Extension);
+                if (new FileInfo(filename).Extension != ".json") continue;
                 GSTheme theme = LoadJsonTheme(filename);
                 if (theme != null)
                 {
