@@ -30,7 +30,7 @@ namespace GalacticScale
         private static UIButton[] tabButtons;
         private static Text[] tabTexts;
         public static RectTransform seedInput;
-        private static RectTransform details;
+        public static RectTransform details;
         private static RectTransform scrollview;
         private static RectTransform templateOptionsCanvas;
         private static RectTransform templateUIComboBox;
@@ -42,6 +42,7 @@ namespace GalacticScale
         private static readonly List<RectTransform> optionRects = new List<RectTransform>();
         public static readonly List<RectTransform> GeneratorCanvases = new List<RectTransform>();
         public static readonly List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
+        public static GameObject themeselector;
         private static float anchorX;
         private static float anchorY;
         public static int GeneratorIndex;
@@ -335,8 +336,8 @@ namespace GalacticScale
             }
 
             var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
-            var ThemeSelector = Object.Instantiate(go, details, false);
-            var tsRect = ThemeSelector.GetComponent<RectTransform>();
+            themeselector = Object.Instantiate(go, details, false);
+            var tsRect = themeselector.GetComponent<RectTransform>();
             var offset = options.Count * -40;
             tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x,tsRect.anchoredPosition.x+ offset);
 

@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.IO;
+using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +16,17 @@ namespace GalacticScale
             if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;
 
             var contentGS = GameObject.Find("Option Window/details/GalacticScaleSettings");
+            GS2.LoadExternalThemes(Path.Combine(GS2.DataDir, "CustomThemes"));
+            
             if (contentGS == null)
             {
                 __instance.applyButton.button.onClick.AddListener(GS2.SavePreferences);
                 __instance.cancelButton.button.onClick.AddListener(() => { GS2.LoadPreferences(); });
                 SettingsUI.CreateGalacticScaleSettingsPage(___tabButtons, ___tabTexts);
+            }
+            else
+            {
+                GS2.RefreshThemeList();
             }
             UIRoot.instance.optionWindow.SetTabIndex(SettingsUI.MainTabIndex, false);
             SettingsUI.GalacticScaleTabClick();

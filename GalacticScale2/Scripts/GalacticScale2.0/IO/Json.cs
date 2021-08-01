@@ -28,24 +28,36 @@ namespace GalacticScale
             {
                 var DirName = new DirectoryInfo(directory).Name;
                 GS2.Log($"Searching directory:{directory}");
-                GS2.availableExternalThemes.Add(DirName , LoadDirectoryJsonThemes(directory));
+                if (availableExternalThemes.ContainsKey(DirName))
+                    availableExternalThemes[DirName] = LoadDirectoryJsonThemes(directory);
+                else availableExternalThemes.Add(DirName, LoadDirectoryJsonThemes(directory));
             }
             foreach (var filename in files)
             {
                 Log($"Found file:{filename}");
                 GSTheme theme = LoadJsonTheme(filename);
-                if (theme != null) tl.Add(theme.Name, theme);
+                if (theme != null)
+                {
+                    if (tl.ContainsKey(theme.Name)) tl[theme.Name] = theme;
+                    else tl.Add(theme.Name, theme);
+                }
             }
             
             //LogJson(tl.Keys.ToList());
-            GS2.availableExternalThemes.Add("Root", tl);
+            if (availableExternalThemes.ContainsKey("Root"))
+                availableExternalThemes["Root"] = tl;
+            else availableExternalThemes.Add("Root", tl);
         }
         public static ThemeLibrary LoadDirectoryJsonThemes(string path)
         {
             var tl = new ThemeLibrary();
             var directories = Directory.GetDirectories(path);
             var files = Directory.GetFiles(path);
-            foreach (var directory in directories) tl.AddRange(LoadDirectoryJsonThemes(directory));
+            foreach (var directory in directories)
+            {
+                var dtl = (LoadDirectoryJsonThemes(directory));
+                tl.AddRange(dtl);
+            }
             foreach (var file in files)
             {
                 GSTheme theme = LoadJsonTheme(file);
@@ -56,6 +68,11 @@ namespace GalacticScale
         public static GSTheme LoadJsonTheme(string filename)
         {
             Log("Loading JSON Theme " + filename);
+            if (new FileInfo(filename).Extension != ".json")
+            {
+                GS2.Warn($"Non Json File Skipped: {filename}");
+                return null;
+            }
             var json = File.ReadAllText(filename);
             var result = new GSTheme();
             fsData data;

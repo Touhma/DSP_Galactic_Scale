@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GSSerializer;
+using ScenarioRTL;
 
 namespace GalacticScale
 {
@@ -27,6 +28,12 @@ namespace GalacticScale
             GS2.Warn($"Adding {name},{theme == null}");
             if (theme == null) return null;
             if (string.IsNullOrEmpty(name)) name = theme.Name??"Hmm";
+            if (ContainsKey(name))
+            {
+                GS2.Warn("Theme already exists. Updating.");
+                this[name] = theme;
+                return theme;
+            }
             base.Add(name, theme);
             return theme;
         }
@@ -184,6 +191,7 @@ EThemeDistribute distribute = EThemeDistribute.Default)
 
             var q = from theme in this
                     where types.Contains(theme.Value.ThemeType)
+                    where distributes.Contains(theme.Value.Distribute)
                     where theme.Value.StarTypes.Intersect<EStar>(starTypes).Count() > 1
                     where theme.Value.Temperature < temp.max
                     where theme.Value.Temperature >= temp.min
@@ -201,9 +209,10 @@ EThemeDistribute distribute = EThemeDistribute.Default)
                 results.Add(Themes.Mediterranean);
             }
 
-            //GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
-            //GS2.LogJson(results);
+            // GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+            // GS2.WarnJson((from result in results select result.Name).ToList());
             return results;
+            
         }
         //public List<string> Desert {
         //    get {

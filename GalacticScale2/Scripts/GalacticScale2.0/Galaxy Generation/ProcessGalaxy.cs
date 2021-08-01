@@ -112,6 +112,13 @@ namespace GalacticScale
                     $"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
                 Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
                 Log($"First System Radius = {galaxy.stars[0].systemRadius}");
+                // foreach (var star in GSSettings.Stars)
+                // {
+                //     foreach (var planet in star.Planets)
+                //     {
+                //         GS2.Warn($"Theme used:{planet.GsTheme.Name}");
+                //     }
+                // }
                 return galaxy;
             }
             catch (Exception e)

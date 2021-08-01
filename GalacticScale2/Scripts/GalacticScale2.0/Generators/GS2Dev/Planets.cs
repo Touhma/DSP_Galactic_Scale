@@ -271,7 +271,7 @@ public float GetOrbitGap(GSStar star)
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            GS2.Warn($"Habitable zone for {star.Name} is {hz.min} - {hz.max}");
+            // GS2.Warn($"Habitable zone for {star.Name} is {hz.min} - {hz.max}");
             //Warn($"HZ for {star.Name} {hz.min}-{hz.max}");
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;

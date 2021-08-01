@@ -154,7 +154,7 @@ namespace GalacticScale.Generators
 
                 var p = birthPlanet;
                 while (p == birthPlanet) p = random.Item(birthStar.TelluricBodies);
-                p.Theme = "AshenGellisol";
+                p.Theme = "AshenGelisol";
             }
         }
 

@@ -104,8 +104,8 @@ namespace GalacticScale
             Config.Init();
             
             LoadPreferences(true);
-            LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
-            ExternalThemeProcessor.LoadEnabledThemes();
+            // LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            // ExternalThemeProcessor.LoadEnabledThemes();
             //LogJson(availableExternalThemes);
             Log("GalacticScale2|Creating List of Themes");
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
@@ -116,9 +116,14 @@ namespace GalacticScale
             Log("End");
         }
 
+        public static bool MenuHasLoaded = false;
         public static void OnMenuLoaded()
         {
-           
+            if (MenuHasLoaded) return;
+            MenuHasLoaded = true;
+            GS2.Log("Loading External Themes");
+            LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            ExternalThemeProcessor.LoadEnabledThemes();
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
             if (Config.Dev)
             {

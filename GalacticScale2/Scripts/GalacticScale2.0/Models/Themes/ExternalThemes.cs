@@ -15,6 +15,7 @@ namespace GalacticScale
         {
             public static void LoadEnabledThemes()
             {
+                GS2.LogJson(Config.ExternalThemeNames);
                 foreach (string name in GS2.Config.ExternalThemeNames)
                 {
                     var fragments = name.Split('|');
