@@ -318,7 +318,7 @@ namespace GalacticScale
 
         private float InitOrbitalPeriod()
         {
-            orbitalPeriod = 1000;
+            orbitalPeriod = Utils.CalculateOrbitPeriod(OrbitRadius);
             return orbitalPeriod;
         }
 

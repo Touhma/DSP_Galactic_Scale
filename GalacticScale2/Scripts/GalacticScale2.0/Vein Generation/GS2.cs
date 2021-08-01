@@ -33,7 +33,7 @@ namespace GalacticScale
 
         private static void InitializeFromVeinSettings(GSPlanet gsPlanet)
         {
-            gsPlanet.veinSettings = GS2.ThemeLibrary[gsPlanet.Theme].VeinSettings.Clone();
+            if (gsPlanet.veinSettings == new GSVeinSettings()) gsPlanet.veinSettings = GS2.ThemeLibrary[gsPlanet.Theme].VeinSettings.Clone();
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
             foreach (var veinGroup in ores) veinSpots[(int) veinGroup.type]++;

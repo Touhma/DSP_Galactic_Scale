@@ -86,6 +86,7 @@ namespace GalacticScale
 
         public static float CalculateOrbitPeriod(float orbitRadius, float speed = 0.0005f)
         {
+            if (orbitRadius <= 0) return 100000f;
             var d = Mathf.PI * orbitRadius * 2;
             return d / speed;
         }
