@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GalacticScale
 {
@@ -9,9 +10,12 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
-        public static bool _OnOpen(UIGalaxySelect __instance)
+        public static bool _OnOpen(UIGalaxySelect __instance , ref Slider ___starCountSlider)
         {
             if (GS2.ActiveGenerator == null) return true;
+            ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;
+            ___starCountSlider.minValue = GS2.ActiveGenerator.Config.MinStarCount;
+            
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null");
             if (StartButton == null) StartButton = __instance.GetComponentInChildren<UIButton>()?.gameObject;
             if (StartButton == null) GS2.Warn("StartButton Null");

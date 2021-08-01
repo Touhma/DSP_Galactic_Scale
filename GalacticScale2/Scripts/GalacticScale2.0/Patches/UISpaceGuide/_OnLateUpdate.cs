@@ -31,66 +31,69 @@ namespace GalacticScale
                 __instance.relRot = __instance.gameData.relativeRot;
                 var position = __instance.gameCamera.transform.position;
                 var camUPos = __instance.relPos + Maths.QRotateLF(__instance.relRot, position);
-                var vectorLf3_ = Maths.QRotateLF(__instance.relRot,
+                var directionOfView = Maths.QRotateLF(__instance.relRot,
                     __instance.gameCamera.ScreenPointToRay(Input.mousePosition).direction);
                 var flag2 = VFInput.onGUI || VFInput.onGUIOperate;
                 var num = 0;
-                for (var index = 1; index <= __instance.galaxy.starCount; index++)
+                for (var index = 1; index <= __instance.galaxy.starCount; index++) //For each star in the galaxy
                 {
                     var starData = __instance.galaxy.StarById(index);
-                    if (starData != null)
+                    if (starData != null) //If there is a star
                     {
                         var _rpos = Vector3.zero;
-                        var flag3 = false;
+                        var showStarLabel = false;
                         if (__instance.uiGame.dfSpaceGuideOn)
                         {
-                            if (__instance.gameData.localStar == starData) flag3 = true;
-                            if (!flag3 && (__instance.history.GetStarPin(index) == EPin.Show ||
+                            if (__instance.gameData.localStar == starData) showStarLabel = true;
+                            if (!showStarLabel && (__instance.history.GetStarPin(index) == EPin.Show ||
                                            (starData.uPosition - __instance.player.uPosition).sqrMagnitude <
-                                           92160000000000.0))
+                                           92160000000000.0)) //If the current star isnt local, and it's pinned, or its closer than 9216....
                             {
-                                var flag4 = false;
+                                var starContainsPinnedPlanet = false;
                                 var planetId = index * 100;
-                                while (planetId <= index * 100 + 99 &&
-                                       __instance.astroPoses[planetId].uRadius >= 0f) //Edited here
+                                while (planetId <= index * 100 + 99) //Edited here
                                 {
-                                    if (__instance.history.GetPlanetPin(planetId) == EPin.Show &&
-                                        __instance.astroPoses[planetId].uRadius > 1f) //Edited here
+                                    if (__instance.astroPoses[planetId].uRadius <= 1f)
                                     {
-                                        flag4 = true;
+                                        planetId++;
+                                        continue;
+                                    }
+                                    if (__instance.history.GetPlanetPin(planetId) == EPin.Show) //Edited here
+                                    {
+                                        starContainsPinnedPlanet = true;
                                         break;
                                     }
 
                                     planetId++;
                                 }
 
-                                flag3 = !flag4;
+                                showStarLabel = !starContainsPinnedPlanet;
                             }
 
-                            if (flag3 && __instance.history.GetStarPin(index) == EPin.Hide) flag3 = false;
+                            if (showStarLabel && __instance.history.GetStarPin(index) == EPin.Hide) showStarLabel = false; //If the star is hidden
                         }
 
-                        if (!flag3 && !flag2)
+                        if (!showStarLabel && !flag2) //if we dont want to show the star, and we are not ?in a star gui?
                         {
-                            var vectorLf3_2 = starData.uPosition - camUPos;
-                            var num2 = vectorLf3_.x * vectorLf3_2.x + vectorLf3_.y * vectorLf3_2.y +
-                                       vectorLf3_.z * vectorLf3_2.z;
+                            var starRelativePosition = starData.uPosition - camUPos;
+                            var num2 = directionOfView.x * starRelativePosition.x + directionOfView.y * starRelativePosition.y +
+                                       directionOfView.z * starRelativePosition.z;
                             if (num2 > 0.0)
                             {
-                                num2 /= vectorLf3_2.magnitude;
+                                num2 /= starRelativePosition.magnitude;
                                 if (num2 > 0.99994)
                                 {
-                                    flag3 = true;
+                                    showStarLabel = true;
                                     num = index;
                                 }
                             }
                         }
 
-                        if (__instance.mouseInStar == index) flag3 = true;
-                        if (flag3)
+                        if (__instance.mouseInStar == index) showStarLabel = true;
+                        if (showStarLabel)
                             _rpos = Maths.QInvRotateLF(__instance.relRot, starData.uPosition - __instance.relPos);
-                        if (flag3) flag3 = __instance.CheckVisible(pId0, index * 100, starData.uPosition, camUPos);
-                        if (flag3)
+                        if (showStarLabel) showStarLabel = __instance.CheckVisible(pId0, index * 100, starData.uPosition, camUPos);
+                        if (showStarLabel)
                             __instance.SetEntry(ref _guidecnt, ESpaceGuideType.Star, index, 0, _rpos,
                                 starData.viewRadius - 120f);
                     }
@@ -98,49 +101,51 @@ namespace GalacticScale
 
                 if (__instance.gameData.localStar != null)
                 {
-                    var index2 = pId0 + 1;
-                    while (index2 <= pId0 + 99 && __instance.astroPoses[index2].uRadius > 0f) //1f to 0f
+                    var planetID = pId0 + 1;
+                    while (planetID <= pId0 + 99 && __instance.astroPoses[planetID].uRadius > 0f) //1f to 0f
                     {
                         //GS2.Warn((index2).ToString() + " " + __instance.astroPoses[index2].uRadius.ToString() + " " + GameMain.galaxy.PlanetById(index2).name);
-                        if (__instance.astroPoses[index2].uRadius > 1f) //added conditional
+                        if (__instance.astroPoses[planetID].uRadius > 1f) //added conditional
                         {
                             var _rpos2 = Vector3.zero;
-                            var flag5 = __instance.uiGame.dfSpaceGuideOn;
-                            if (__instance.uiGame.dfSpaceGuideOn && !flag5 &&
-                                __instance.history.GetPlanetPin(index2) == EPin.Show) flag5 = true;
-                            if (flag5 && __instance.history.GetPlanetPin(index2) == EPin.Hide) flag5 = false;
-                            if (!flag5 && !flag2)
+                            var showPlanetLabel = __instance.uiGame.dfSpaceGuideOn;
+                            if (__instance.uiGame.dfSpaceGuideOn && !showPlanetLabel &&
+                                __instance.history.GetPlanetPin(planetID) == EPin.Show) showPlanetLabel = true;
+                            if (showPlanetLabel && __instance.history.GetPlanetPin(planetID) == EPin.Hide) showPlanetLabel = false;
+                            if (!showPlanetLabel && !flag2)
                             {
-                                var vectorLf3_3 = __instance.astroPoses[index2].uPos - camUPos;
-                                var num3 = vectorLf3_.x * vectorLf3_3.x + vectorLf3_.y * vectorLf3_3.y +
-                                           vectorLf3_.z * vectorLf3_3.z;
+                                var vectorLf3_3 = __instance.astroPoses[planetID].uPos - camUPos;
+                                var num3 = directionOfView.x * vectorLf3_3.x + directionOfView.y * vectorLf3_3.y +
+                                           directionOfView.z * vectorLf3_3.z;
                                 if (num3 > 0.0)
                                 {
                                     num3 /= vectorLf3_3.magnitude;
-                                    if (num3 > 0.9999) flag5 = true;
+                                    if (num3 > 0.9999) showPlanetLabel = true;
                                 }
                             }
 
-                            if (__instance.mouseInPlanet == index2) flag5 = true;
-                            if (flag5)
+                            if (__instance.mouseInPlanet == planetID) showPlanetLabel = true;
+                            if (showPlanetLabel)
                             {
                                 _rpos2 = Maths.QInvRotateLF(__instance.relRot,
-                                    __instance.astroPoses[index2].uPos - __instance.relPos);
+                                    __instance.astroPoses[planetID].uPos - __instance.relPos);
                                 if (_rpos2.magnitude > __instance.gameData.localStar.systemRadius * 6f * 40000.0)
-                                    flag5 = false;
+                                    showPlanetLabel = false;
                                 if (!sailing && __instance.gameData.localPlanet != null &&
-                                    __instance.gameData.localPlanet.id == index2) flag5 = false;
+                                    __instance.gameData.localPlanet.id == planetID) showPlanetLabel = false;
                             }
 
-                            if (flag5)
-                                flag5 = __instance.CheckVisible(pId0, index2, __instance.astroPoses[index2].uPos,
+                            if (showPlanetLabel)
+                            {
+                                showPlanetLabel = __instance.CheckVisible(pId0, planetID, __instance.astroPoses[planetID].uPos,
                                     camUPos);
-                            if (flag5)
-                                __instance.SetEntry(ref _guidecnt, ESpaceGuideType.Planet, index2, 0, _rpos2,
-                                    __instance.astroPoses[index2].uRadius);
+                            }
+                            if (showPlanetLabel)
+                                __instance.SetEntry(ref _guidecnt, ESpaceGuideType.Planet, planetID, 0, _rpos2,
+                                    __instance.astroPoses[planetID].uRadius);
                         }
 
-                        index2++;
+                        planetID++;
                     }
                 }
 

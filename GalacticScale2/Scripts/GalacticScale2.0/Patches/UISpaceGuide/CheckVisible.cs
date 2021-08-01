@@ -7,6 +7,47 @@ namespace GalacticScale
 {
     public partial class PatchOnUISpaceGuide
     {
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
+        public static bool CheckVisible(ref UISpaceGuide __instance, ref bool __result, int pId0, int astroId, VectorLF3 upos, VectorLF3 camUPos)
+        {
+            if (pId0 <= 99)
+            {
+                __result = true;
+                return false;
+            }
+            VectorLF3 vectorLF = upos - camUPos;
+            double magnitude = vectorLF.magnitude;
+            vectorLF /= magnitude;
+            int planets = 10;
+            if (GameMain.localStar != null) planets = GameMain.localStar.planetCount +1;
+            for (int i = pId0; i < pId0 + planets; i++)
+            {
+                if (i != astroId)
+                {
+                    float num = __instance.astroPoses[i].uRadius;
+                    if (num < 1f )
+                    {
+                        if( __instance.astroPoses[i + 1].uRadius < 1f || (i+1)%100 == 0) break;
+                        continue;
+                    }
+                    num += 2.5f;
+                    if (i == pId0)
+                    {
+                        num *= 1.05f;
+                    }
+                    VectorLF3 vectorLF2 = __instance.astroPoses[i].uPos - camUPos;
+                    double num2 = vectorLF2.x * vectorLF.x + vectorLF2.y * vectorLF.y + vectorLF2.z * vectorLF.z;
+                    if (num2 < magnitude && num2 >= 0.0 && vectorLF2.x * vectorLF2.x + vectorLF2.y * vectorLF2.y + vectorLF2.z * vectorLF2.z - num2 * num2 < (double)(num * num))
+                    {
+                        __result = false;
+                        return false;
+                    }
+                }
+            }
+            __result = true;
+            return false;
+        }
         //Strategy: Replace ldc.i4.s 10 instructions with a dynamic addition equal to the current system's planet count
         // Get the local system:
         /* 0x000E0746 02           */ // IL_034A: ldarg.0
@@ -16,15 +57,15 @@ namespace GalacticScale
         /* 0x000E0751 6F970A0006   */ // IL_0355: ldfld instance int StarData::planetCount
         //
         //
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
+        //[HarmonyTranspiler]
+        //[HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
         public static IEnumerable<CodeInstruction> VisibleTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             return ReplaceLd10(instructions);
         }
 
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
+        //[HarmonyTranspiler]
+        //[HarmonyPatch(typeof(UISpaceGuide), "CheckVisible")]
         public static IEnumerable<CodeInstruction> VisibleTranspiler2(IEnumerable<CodeInstruction> instructions)
         {
             return ReplaceLd25(instructions);
@@ -49,7 +90,7 @@ namespace GalacticScale
                         () =>
                         {
                             // If localStar is defined, use its planetCount
-                            if (GameMain.localStar != null) return GameMain.localStar.planetCount;
+                            if (GameMain.localStar != null) return GameMain.localStar.planetCount  +1;
                             // If localStar is not defined, stick with the default 10
                             return 10;
                         }));
