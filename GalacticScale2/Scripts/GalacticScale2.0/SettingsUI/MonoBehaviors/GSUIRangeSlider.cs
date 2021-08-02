@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
@@ -52,31 +49,22 @@ namespace GalacticScale
 
         public Text _lowValueText;
         public Text _highValueText;
-        public void OnSliderValueChange(object o)
+        public void OnSliderValueChange(RangeSlider slider)
         {
-            float lowValue = (int)(_slider.LowValue * 100) / 100f;
-            float highValue = (int)(_slider.LowValue * 100) / 100f;
+            float lowValue = (int)(slider.LowValue * 100) / 100f;
+            float highValue = (int)(slider.HighValue * 100) / 100f;
             _lowValueText.text = lowValue.ToString();
             _highValueText.text = highValue.ToString();
-            if (LowValue != lowValue)
-            {
-                LowValue = lowValue;
-                if (OnLowChange != null) OnLowChange.Invoke(lowValue);
-            }
-
-            if (HighValue != highValue)
-            {
-                HighValue = highValue;
-                if (OnHighChange != null) OnHighChange.Invoke(highValue);
-            }
-
+            if (OnLowChange != null) OnLowChange.Invoke(lowValue);
+            if (OnHighChange != null) OnHighChange.Invoke(highValue);
         }
-
-        public void Test(float a, float b)
+        public void Start()
         {
-            
+            float lowValue = (int)(_slider.LowValue * 100) / 100f;
+            float highValue = (int)(_slider.HighValue * 100) / 100f;
+            _lowValueText.text = lowValue.ToString();
+            _highValueText.text = highValue.ToString();
         }
-
 
     }
 
