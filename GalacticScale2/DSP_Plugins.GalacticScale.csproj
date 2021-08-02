@@ -50,6 +50,9 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="GSUI">
+      <HintPath>..\..\GSUI.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\netstandard.dll</HintPath>
     </Reference>
@@ -151,7 +154,6 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
-    <Compile Include="Scripts\3rdParty\RangeSlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
@@ -431,7 +433,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

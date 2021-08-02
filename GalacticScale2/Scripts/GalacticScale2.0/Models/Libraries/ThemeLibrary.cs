@@ -206,7 +206,8 @@ EThemeDistribute distribute = EThemeDistribute.Default)
                 foreach (var k in this)
                     GS2.Warn(
                         $"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
-                results.Add(Themes.Mediterranean);
+                if (type == EThemeType.Gas) results.Add(Themes.Gas);
+                else results.Add(Themes.Mediterranean);
             }
 
             // GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");

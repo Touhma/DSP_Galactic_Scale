@@ -151,7 +151,20 @@ namespace GalacticScale
         {
             return GS2.bundle.LoadAsset<Sprite>(name);
         }
-
+        public static Sprite GetSplashSprite()
+        {
+            var r = new System.Random();
+            var i = r.Next(5);
+            var spriteName = "splash";
+            switch (i)
+            {
+                case 0: spriteName = "s1"; break;
+                case 1: spriteName = "s2"; break;
+                case 2: spriteName = "s3"; break;
+                case 3: spriteName = "s4"; break;
+            }
+            return GS2.bundle.LoadAsset<Sprite>(spriteName);
+        }
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
             // return input; //Kills performance too much to use!
