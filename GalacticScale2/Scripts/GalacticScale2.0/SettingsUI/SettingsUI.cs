@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using UITools;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace GalacticScale
 {
@@ -337,6 +340,21 @@ namespace GalacticScale
 
             var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
             themeselector = Object.Instantiate(go, details, false);
+            var sp = GS2.bundle.LoadAsset<GameObject>("SettingsPanel");
+                
+            var settingsPanel = Object.Instantiate(sp, details, false);
+            var panel = settingsPanel.GetComponent<GSUIPanel>();
+            var pRect = panel.GetComponent<RectTransform>();
+            var aP = pRect.anchoredPosition;
+            pRect.anchoredPosition = new Vector2(aP.x + 30, aP.y + 30);
+            
+            var header = panel.contents.AddHeader();
+            var toggle = panel.contents.AddToggle();
+            var a = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var b in a) GS2.Warn(b.FullName);
+            var rangeSlider = panel.contents.AddRangeSlider();
+            header.Label = "TEST";
+            header.Hint = "YAY";
             var tsRect = themeselector.GetComponent<RectTransform>();
             var offset = options.Count * -40;
             tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x,tsRect.anchoredPosition.x+ offset);

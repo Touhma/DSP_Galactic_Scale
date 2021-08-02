@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 namespace GalacticScale
 {
@@ -36,6 +37,13 @@ namespace GalacticScale
             return newItem;
         }
 
+        public GSUIHeader AddHeader()
+        {
+            var go = AddItem(templates.header);
+            go.SetActive(true);
+            return go.GetComponent<GSUIHeader>();
+        }
+
         public void Start()
         {
             if (!ShowHeader)
@@ -51,6 +59,20 @@ namespace GalacticScale
             }
 
 
+        }
+
+        public GSUIRangeSlider AddRangeSlider()
+        {
+            var go = AddItem(templates.minmax);
+            go.SetActive(true);
+            return go.GetComponent<GSUIRangeSlider>();
+        }
+
+        public object AddToggle()
+        {
+            var go = AddItem(templates.toggle);
+            go.SetActive(true);
+            return go.GetComponent<GSUIToggle>();
         }
     }
 

@@ -50,7 +50,7 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="GSUI">
+    <Reference Include="GSUI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\GSUI.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
@@ -277,6 +277,7 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ExternalThemeSelector.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MainSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIDropdown.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIHeader.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIRangeSlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUISlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIInput.cs" />
