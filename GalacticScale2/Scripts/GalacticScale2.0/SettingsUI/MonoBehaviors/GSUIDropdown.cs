@@ -58,8 +58,12 @@ namespace GalacticScale
             GS2.Log("Initializing");
             Items = options.Data as List<string>;
             var ap = _dropdown.GetComponent<RectTransform>().anchoredPosition;
-            Object.DestroyImmediate(_dropdown.gameObject);
-            var ct = Instantiate(SettingsUI.comboTemplate, transform, false);
+            //Object.DestroyImmediate(_dropdown.gameObject);
+            //var axz = new GameObject();
+            //axz.transform.SetParent(transform);
+            //axz.GetComponent<RectTransform>().anchoredPosition = ap;
+
+            var ct = Instantiate(SettingsUI.comboTemplate, _dropdown.transform, false);
             //ct.anchoredPosition = ap;
             var uicb = ct.GetComponent<UIComboBox>();
             uicb.Items = options.Data as List<string>;
