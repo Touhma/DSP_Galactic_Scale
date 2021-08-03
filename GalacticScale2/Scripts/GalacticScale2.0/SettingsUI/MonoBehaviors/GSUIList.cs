@@ -32,6 +32,7 @@ namespace GalacticScale
         }
         public GameObject AddItem(GSUITemplate template)
         {
+            GS2.Log($"Adding Item Template Null?:{template == null} ListContents Null?{ListContents == null}");
             var newItem = Instantiate(template.gameObject, ListContents.transform, false);
             Contents.Add(newItem);
             return newItem;
@@ -63,16 +64,40 @@ namespace GalacticScale
 
         public GSUIRangeSlider AddRangeSlider()
         {
-            var go = AddItem(templates.minmax);
+            var go = AddItem(templates.rangeslider);
             go.SetActive(true);
             return go.GetComponent<GSUIRangeSlider>();
         }
+        public GSUISlider AddSlider()
+        {
+            var go = AddItem(templates.slider);
+            go.SetActive(true);
+            return go.GetComponent<GSUISlider>();
+        }
 
-        public object AddToggle()
+        public GSUIToggle AddToggle()
         {
             var go = AddItem(templates.toggle);
             go.SetActive(true);
             return go.GetComponent<GSUIToggle>();
+        }
+        public GSUIDropdown AddDropdown()
+        {
+            var go = AddItem(templates.dropdown);
+            go.SetActive(true);
+            return go.GetComponent<GSUIDropdown>();
+        }
+        public GSUIButton AddButton()
+        {
+            var go = AddItem(templates.button);
+            go.SetActive(true);
+            return go.GetComponent<GSUIButton>();
+        }
+        public GSUIInput AddInput()
+        {
+            var go = AddItem(templates.input);
+            go.SetActive(true);
+            return go.GetComponent<GSUIInput>();
         }
     }
 

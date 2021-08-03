@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -39,6 +40,15 @@ namespace GalacticScale
         {
             Value = value;
             OnEndEdit?.Invoke(value);
+        }
+        public void initialize(GSUI options)
+        {
+            GS2.Log("Initializing");
+
+            Value = (string)options.Data;
+            OnChange = options.callback;
+            options.Postfix?.Invoke();
+
         }
     }
 

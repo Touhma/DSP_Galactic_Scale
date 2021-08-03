@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using UITools;
@@ -42,6 +44,11 @@ namespace GalacticScale
         private static RectTransform templateSlider;
         private static RectTransform templateButton;
         private static RectTransform templateScrollView;
+
+        private static GSUIPanel SettingsPanel;
+        private static GSUIDropdown GeneratorDropdown;
+        public static RectTransform comboTemplate;
+
         private static readonly List<RectTransform> optionRects = new List<RectTransform>();
         public static readonly List<RectTransform> GeneratorCanvases = new List<RectTransform>();
         public static readonly List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
@@ -111,6 +118,7 @@ namespace GalacticScale
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;
             templateUIComboBox = CreateTemplate(details.Find("language").GetComponent<RectTransform>());
+            comboTemplate = templateUIComboBox.GetComponentInChildren<UIComboBox>().GetComponent<RectTransform>();
             Object.Destroy(languageCombo.gameObject);
 
             //Create a template of a button
@@ -208,19 +216,6 @@ namespace GalacticScale
             
         }
 
-        //private static RectTransform CreateCollapseBox()
-        //{
-        //    GameObject collapseBox = new GameObject("collapseBoxTemplate");
-        //    collapseBox.transform.SetParent(details);
-        //    collapseBox.transform.position = new Vector3(0, 0, 0);
-        //    var rt = collapseBox.AddComponent<RectTransform>();
-        //    rt.anchorMin = new Vector2(30, 30);
-        //    rt.anchoredPosition = new Vector2(10, 10);
-        //    rt.sizeDelta = new Vector2(100, 100);
-        //    Image img = collapseBox.AddComponent<Image>();
-        //    img.color = Color.red;
-        //    return collapseBox.GetComponent<RectTransform>();
-        //}
         public static void UpdateContentRect()
         {
             var optionlist = generatorPluginOptions[GeneratorIndex];
@@ -262,37 +257,20 @@ namespace GalacticScale
             }
         }
 
-        private static void CreateOwnOptions()
-        {
-            //GS2.Log("CreateOwnOptions()");
-            // var generatorNames = GS2.generators.ConvertAll(iGen => { return iGen.Name; });
-            // options.Add(GSUI.Combobox("Generator".Translate(), generatorNames, GeneratorSelected, CreateGeneratorTabs));
-            // GS2.Force1RareChanceOption = options.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false,
-            //     GS2.Force1RareOptionCallback, GS2.Force1RareOptionPostfix));
-            // GS2.DebugLogOption = options.Add(GSUI.Checkbox("Debug Log".Translate(), false, GS2.DebugLogOptionCallback,
-            //     GS2.DebugLogOptionPostfix));
-            // GS2.SkipPrologueOption = options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, GS2.SkipPrologueOptionCallback,
-            //     GS2.SkipPrologueOptionPostfix));
-            // GS2.NoTutorialsOption = options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, GS2.NoTutorialsOptionCallback,
-            //     GS2.NoTutorialsOptionPostfix));
-            // GS2.CheatModeOption = options.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, GS2.CheatModeOptionCallback,
-            //     GS2.CheatModeOptionPostfix));
-        }
-
         public static void CreateGeneratorTabs()
         {
-            //GS2.Log("CreateGeneratorOptionsPostFix");
-            
+            GS2.Log("CreateGeneratorOptionsPostFix");
+
             var generatorNames = GS2.Generators.ConvertAll(iGen => { return iGen.Name; });
             GS2.LogJson(generatorNames);
             for (var i = 0; i < generatorNames.Count; i++)
                 if (generatorNames[i] == GS2.ActiveGenerator.Name)
                     /*GS2.Log("index found!" + i);*/
                     GeneratorIndex = i;
-
+            GS2.Log("Got this far");
             if (optionRects[0] != null)
                 //GS2.Log("Setting combobox for generator index to " + generatorIndex);
-                optionRects[0].GetComponentInChildren<UIComboBox>().itemIndex = GeneratorIndex;
+            GeneratorDropdown._dropdown.value = GeneratorIndex;
             //else GS2.Log("optionRects[0] == null!@#");
         }
 
@@ -310,27 +288,47 @@ namespace GalacticScale
         // Method that handles creation of the settings tab
         private static void CreateOptionsUI()
         {
+            var a = AppDomain.CurrentDomain.GetAssemblies().Select((asm) => asm.GetName().Name.ToString());
+            if (!a.ToList().Contains("GSUI")) Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
+            //a = AppDomain.CurrentDomain.GetAssemblies().Select((asm) => asm.GetName().ToString()); 
+            //foreach (var b in a) GS2.Warn(b);
+            var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
+            themeselector = Object.Instantiate(go, details, false);
+            var sp = GS2.bundle.LoadAsset<GameObject>("SettingsPanel");
+            var settingsPanelGO = Object.Instantiate(sp, details, false);
+            SettingsPanel = settingsPanelGO.GetComponent<GSUIPanel>();
+            SettingsPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorX, anchorY);
 
-            GSOptions o = GS2.Config.Options;
-            options.AddRange(o);
+            options.AddRange(GS2.Config.Options);
             for (var i = 0; i < options.Count; i++)
             {
                 switch (options[i].Type)
                 {
                     case "Combobox":
-                        CreateComboBox(options[i], details, i);
+                        var dropdown = SettingsPanel.contents.AddDropdown();
+                        dropdown.initialize(options[i]);
+                        if (i == 0) GeneratorDropdown = dropdown;
+                        //CreateComboBox(options[i], details, i);
                         break;
                     case "Input":
-                        CreateInputField(options[i], details, i);
+                        var input = SettingsPanel.contents.AddInput();
+                        input.initialize(options[i]);
+                        //CreateInputField(options[i], details, i);
                         break;
                     case "Button":
-                        CreateButton(options[i], details, i);
+                        var button = SettingsPanel.contents.AddButton();
+                        button.initialize(options[i]);
+                        //CreateButton(options[i], details, i);
                         break;
                     case "Checkbox":
-                        CreateCheckBox(options[i], details, i);
+                        var toggle = SettingsPanel.contents.AddToggle();
+                        toggle.initialize(options[i]);
+                        //CreateCheckBox(options[i], details, i);
                         break;
                     case "Slider":
-                        CreateSlider(options[i], details, i);
+                        var slider = SettingsPanel.contents.AddSlider();
+                        slider.initialize(options[i]);
+                        //CreateSlider(options[i], details, i);
                         break;
                     default:
                         GS2.Warn($"Couldn't create option {options[i].Label}");
@@ -338,23 +336,9 @@ namespace GalacticScale
                 }
             }
 
-            var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
-            themeselector = Object.Instantiate(go, details, false);
-            var sp = GS2.bundle.LoadAsset<GameObject>("SettingsPanel");
-                
-            var settingsPanel = Object.Instantiate(sp, details, false);
-            var panel = settingsPanel.GetComponent<GSUIPanel>();
-            var pRect = panel.GetComponent<RectTransform>();
-            var aP = pRect.anchoredPosition;
-            pRect.anchoredPosition = new Vector2(aP.x + 30, aP.y + 30);
+
             
-            var header = panel.contents.AddHeader();
-            var toggle = panel.contents.AddToggle();
-            var a = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var b in a) GS2.Warn(b.FullName);
-            var rangeSlider = panel.contents.AddRangeSlider();
-            header.Label = "TEST";
-            header.Hint = "YAY";
+
             var tsRect = themeselector.GetComponent<RectTransform>();
             var offset = options.Count * -40;
             tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x,tsRect.anchoredPosition.x+ offset);
@@ -366,7 +350,6 @@ namespace GalacticScale
                 //for each canvas
                 //GS2.Log("Creating Canvas " + i);
                 var canvas = Object.Instantiate(templateOptionsCanvas, details, false);
-                canvas.name = "testCanvas" + i;
                 GeneratorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
                 if (currentGenIndex == i)

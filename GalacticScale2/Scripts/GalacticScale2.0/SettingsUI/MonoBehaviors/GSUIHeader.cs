@@ -17,6 +17,13 @@ namespace GalacticScale
             get => _labelText.text;
             set => _labelText.text = value;
         }
+        public void initialize(GSUI options)
+        {
+            GS2.Log("Initializing");
+            //_dropdown.AddOptions(options.Data as List<string>);
+            Label = (string)options.Label;
+
+        }
     }
 
 }

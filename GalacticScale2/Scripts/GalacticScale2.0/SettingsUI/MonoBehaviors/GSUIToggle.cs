@@ -36,6 +36,17 @@ namespace GalacticScale
             Value = value;
             OnChange?.Invoke(value);
         }
+        public void initialize(GSUI options)
+        {
+            GS2.Log("Initializing");
+
+            //_dropdown.AddOptions(options.Data as List<string>);
+            Value = (bool) options.Data;
+            Label = options.Label;
+            OnChange = options.callback;
+            options.Postfix?.Invoke();
+
+        }
     }
 
 }

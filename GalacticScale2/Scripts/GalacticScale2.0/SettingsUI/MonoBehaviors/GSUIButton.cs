@@ -6,11 +6,10 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public class GSUIBtn : MonoBehaviour
+    public class GSUIButton : MonoBehaviour
     {
         public Button _button;
         public GSOptionCallback OnClick;
-        public GSUITemplates templates;
         public Text _labelText;
         public Text _hintText;
         public Text _buttonText;
@@ -33,6 +32,17 @@ namespace GalacticScale
         public void OnButtonClick()
         {
             if (OnClick != null) OnClick.Invoke(null);
+        }
+        public void initialize(GSUI options)
+        {
+            GS2.Log("Initializing");
+            //_dropdown.AddOptions(options.Data as List<string>);
+            Caption = (string)options.Data;
+            Canvas.ForceUpdateCanvases();
+            Label = options.Label;
+            OnClick = options.callback;
+            options.Postfix?.Invoke();
+
         }
     }
 
