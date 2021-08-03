@@ -45,7 +45,7 @@ namespace GalacticScale
         private static RectTransform templateButton;
         private static RectTransform templateScrollView;
 
-        private static GSUIPanel SettingsPanel;
+        public static GSUIPanel SettingsPanel;
         private static GSUIDropdown GeneratorDropdown;
         public static RectTransform comboTemplate;
 
@@ -268,9 +268,9 @@ namespace GalacticScale
                     /*GS2.Log("index found!" + i);*/
                     GeneratorIndex = i;
             GS2.Log("Got this far");
-            if (optionRects[0] != null)
+            // if (optionRects[0] != null)
                 //GS2.Log("Setting combobox for generator index to " + generatorIndex);
-            GeneratorDropdown._dropdown.value = GeneratorIndex;
+            // (GeneratorDropdown._dropdown as UIComboBox).itemIndex = GeneratorIndex;
             //else GS2.Log("optionRects[0] == null!@#");
         }
 

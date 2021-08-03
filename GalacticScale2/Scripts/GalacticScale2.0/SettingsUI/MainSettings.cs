@@ -66,7 +66,8 @@ namespace GalacticScale
         }
 
         public void Init()
-        {
+        {Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
+            Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             // GS2.Warn("!");
             _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
             GS2.LogJson(_generatorNames, true);

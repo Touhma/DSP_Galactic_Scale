@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,8 +9,10 @@ namespace GalacticScale
 {
     public class GSUIDropdown : MonoBehaviour
     {
+        public static bool _fixed = false;
+        public RectTransform container;
+        [NonSerialized]
         public Dropdown _dropdown;
-        public UIComboBox _combobox;
         public GSOptionCallback OnChange;
         public Text _labelText;
         public Text _hintText;
@@ -34,12 +37,12 @@ namespace GalacticScale
             {
                 if (Items.Count < 1 || Items.Count >= _dropdown.value)
                 {
-                    GS2.Warn($"Index out of bounds: {Label} {_dropdown.value}");
+                    GS2.Warn($"Index out of bounds: {Label} {(_dropdown).value}");
                     return null;
                 }
-                return Items[_dropdown.value];
+                return Items[(_dropdown).value];
             }
-            set => _dropdown.value = Items.IndexOf(value);
+            set => (_dropdown ).value = Items.IndexOf(value);
         }
 
         public void OnValueChange(int value)
@@ -53,21 +56,31 @@ namespace GalacticScale
             Value = Items[value];
             OnChange?.Invoke(Items[value]);
         }
+
+        public void Start()
+        {
+            _dropdown = GetComponentInChildren<Dropdown>();
+            if (!_fixed)
+            {
+                var x = new GameObject() {name = "UIFix"};
+                x.transform.SetParent(SettingsUI.details);
+                x.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                _fixed = true;
+            }
+        }
         public void initialize(GSUI options)
         {
             GS2.Log("Initializing");
-            Items = options.Data as List<string>;
-            var ap = _dropdown.GetComponent<RectTransform>().anchoredPosition;
-            //Object.DestroyImmediate(_dropdown.gameObject);
-            //var axz = new GameObject();
-            //axz.transform.SetParent(transform);
-            //axz.GetComponent<RectTransform>().anchoredPosition = ap;
-
-            var ct = Instantiate(SettingsUI.comboTemplate, _dropdown.transform, false);
-            //ct.anchoredPosition = ap;
-            var uicb = ct.GetComponent<UIComboBox>();
-            uicb.Items = options.Data as List<string>;
-            uicb.itemIndex = options.DefaultValue;
+            
+            GS2.Log("Derp");
+            // var ap = container.anchoredPosition;
+            // var ct = Instantiate(SettingsUI.comboTemplate, container, false);
+            // ct.anchoredPosition = new Vector2(0, 0);
+            // _dropdown = ct.GetComponent<UIComboBox>();
+            // (_dropdown as UIComboBox).Items = options.Data as List<string>;
+            // Items = options.Data as List<string>;
+            // (_dropdown as UIComboBox).itemIndex = options.DefaultValue;
+            // container.SetAsLastSibling();
             //_dropdown.AddOptions(options.Data as List<string>);
             //GS2.LogJson(_dropdown.options);
             //GS2.LogJson(options.Data);
