@@ -229,6 +229,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\TrashSystem\Gravity.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIMainMenu\_OnOpen.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\_OnClose.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\RefreshDynamicProperties.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\Modeler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\LUT Rework.cs" />

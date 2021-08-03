@@ -18,7 +18,7 @@ namespace GalacticScale
         public static string updateMessage = "";
         public static bool Initialized = false;
         public static Dictionary<string,ThemeLibrary> availableExternalThemes = new Dictionary<string, ThemeLibrary>();
-
+        public static bool canvasOverlay = false;
         public static ExternalThemeSelector themeSelector;
         // public static bool CheatMode = false;
         public static bool ResearchUnlocked = false;

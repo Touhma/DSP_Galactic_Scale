@@ -12,7 +12,16 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
         public static bool _OnOpen(UIGalaxySelect __instance , ref Slider ___starCountSlider)
         {
-            if (GS2.ActiveGenerator == null) return true;
+            
+                GS2.Warn("Fix");
+                if (GS2.canvasOverlay)
+                {
+                    GS2.Warn("FIXING WITH GALAXYSELECT!");
+                    UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+                    GS2.canvasOverlay = false;
+                }
+
+                if (GS2.ActiveGenerator == null) return true;
             ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;
             ___starCountSlider.minValue = GS2.ActiveGenerator.Config.MinStarCount;
             
