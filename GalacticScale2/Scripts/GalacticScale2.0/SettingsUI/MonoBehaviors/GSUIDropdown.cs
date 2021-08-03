@@ -60,7 +60,7 @@ namespace GalacticScale
             var ap = _dropdown.GetComponent<RectTransform>().anchoredPosition;
             Object.DestroyImmediate(_dropdown.gameObject);
             var ct = Instantiate(SettingsUI.comboTemplate, transform, false);
-            ct.anchoredPosition = ap;
+            //ct.anchoredPosition = ap;
             var uicb = ct.GetComponent<UIComboBox>();
             uicb.Items = options.Data as List<string>;
             uicb.itemIndex = options.DefaultValue;
