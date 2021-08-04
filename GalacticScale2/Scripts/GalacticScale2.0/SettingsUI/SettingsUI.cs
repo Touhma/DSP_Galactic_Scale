@@ -218,17 +218,35 @@ namespace GalacticScale
 
         public static void UpdateContentRect()
         {
-            var optionlist = generatorPluginOptions[GeneratorIndex];
-            var entries = optionlist.Count;
+            var mainHeight = Math.Abs(SettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
+            var activeCanvas = GeneratorCanvases[GeneratorIndex];
+            var genHeight = 0f;
+            if (activeCanvas != null)
+            {
+                var genSettingsPanel = activeCanvas.GetComponentInChildren<GSUIPanel>();
+                if (genSettingsPanel != null)
+                    genHeight = Math.Abs(genSettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
+            }
+            else GS2.Warn("COULDNT GET ACTIVEGEN");
+            
+            var contentRect = GameObject
+    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+    .GetComponent<RectTransform>();
+            contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, Math.Max(genHeight, mainHeight));
+            contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),Mathf.Round(contentRect.anchoredPosition.y));
+            GS2.Warn($"Updated sizeDelta to {contentRect.sizeDelta.x}, {contentRect.sizeDelta.y}");
+            return;
+            //var optionlist = generatorPluginOptions[GeneratorIndex];
+            //var entries = optionlist.Count;
             //GS2.LogJson(optionlist, true);
             //GS2.Warn("Option List Count = " + entries);
-            var contentRect = GameObject
-                .Find(
-                    "UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
-                .GetComponent<RectTransform>();
-            contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 42 * entries + 8);
-            contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),
-                Mathf.Round(contentRect.anchoredPosition.y));
+            //var contentRect = GameObject
+            //    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+            //    .GetComponent<RectTransform>();
+            
+            //contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 42 * entries + 8);
+            //contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),
+            //    Mathf.Round(contentRect.anchoredPosition.y));
         }
 
         private static void ImportCustomGeneratorOptions()
@@ -298,9 +316,15 @@ namespace GalacticScale
 
             options.AddRange(GS2.Config.Options);
 
-
-
+            var contentRect = GameObject
+    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+    .GetComponent<RectTransform>();
+            var csf = contentRect.gameObject.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.MinSize; 
+            csf.SetLayoutVertical();
             
+
+
 
             var tsRect = themeselector.GetComponent<RectTransform>();
             var offset = options.Count * -40;
@@ -449,7 +473,7 @@ namespace GalacticScale
                 //        break;
                 //}
 
-                //if (generatorPluginOption[i].postfix != null) OptionsUIPostfix.AddListener(new UnityAction(generatorPluginOption[i].postfix));
+                if (generatorPluginOption[i].postfix != null) OptionsUIPostfix.AddListener(new UnityAction(generatorPluginOption[i].postfix));
             }
         }
 

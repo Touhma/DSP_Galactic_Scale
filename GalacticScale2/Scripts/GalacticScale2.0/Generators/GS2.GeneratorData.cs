@@ -12,7 +12,7 @@ namespace GalacticScale
 
             new Vanilla(),
             //new GS2Generator(),
-            //new GS2Generator2(),
+            new GS2Generator2(),
             //new Generators.SizeTest(),
             //new Generators.TintTest(),
             new Sol(),

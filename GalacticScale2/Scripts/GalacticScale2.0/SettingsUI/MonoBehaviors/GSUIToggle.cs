@@ -42,7 +42,7 @@ namespace GalacticScale
             //Value = (bool) options.Data;
             Label = options.Label;
             OnChange = options.callback;
-            options.postfix?.Invoke();
+            //options.postfix?.Invoke();
         }
     }
 

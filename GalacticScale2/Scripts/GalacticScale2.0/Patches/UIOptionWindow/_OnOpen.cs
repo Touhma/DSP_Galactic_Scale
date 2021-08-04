@@ -30,6 +30,11 @@ namespace GalacticScale
             }
             UIRoot.instance.optionWindow.SetTabIndex(SettingsUI.MainTabIndex, false);
             SettingsUI.GalacticScaleTabClick();
+            if (!GS2.canvasOverlay)
+            {
+                overlayCanvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+                GS2.canvasOverlay = true;
+            }
         }
     }
 }

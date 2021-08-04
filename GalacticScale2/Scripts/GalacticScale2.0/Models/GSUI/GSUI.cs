@@ -154,26 +154,32 @@ namespace GalacticScale
                 else colors.Add(id, i.color);
                 i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a / 2);
             }
-
+            GS2.Warn("Set Image Done");
             switch (Type)
             {
                 case "Checkbox":
-                    RectTransform.GetComponentInChildren<Toggle>().interactable = false;
+                    GS2.Warn("Disabling Checkbox");
+
+                    RectTransform.GetComponent<Toggle>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Combobox":
-                    RectTransform.GetComponentInChildren<Button>().interactable = false;
+                    GS2.Warn("Disabling Combobox");
+                    RectTransform.GetComponentInChildren<Dropdown>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Button":
+                    GS2.Warn("Disabling Button");
                     RectTransform.GetComponentInChildren<Button>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Input":
+                    GS2.Warn("Disabling Input");
                     RectTransform.GetComponentInChildren<InputField>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Slider":
+                    GS2.Warn("Disabling Slider");
                     RectTransform.GetComponentInChildren<Slider>().interactable = false;
                     Disabled = true;
                     return true;
@@ -201,11 +207,11 @@ namespace GalacticScale
             switch (Type)
             {
                 case "Checkbox":
-                    RectTransform.GetComponentInChildren<Toggle>().interactable = true;
+                    RectTransform.GetComponent<Toggle>().interactable = true;
                     Disabled = false;
                     return true;
                 case "Combobox":
-                    RectTransform.GetComponentInChildren<Button>().interactable = true;
+                    RectTransform.GetComponentInChildren<Dropdown>().interactable = true;
                     Disabled = false;
                     return true;
                 case "Button":

@@ -84,21 +84,21 @@ namespace GalacticScale
             //GS2.LogJson(options.Data);
             //Value = options.DefaultValue;
             Label = options.Label;
-            options.postfix?.Invoke();
+            //options.postfix?.Invoke();
 
         }
         public void Fix(BaseEventData e)
         {
-            GS2.Warn("Fix");
-            {
-                // var x = new GameObject() {name = "UIFix"};
-                var x = UIRoot.instance.overlayCanvas;
-                // x.transform.SetParent(SettingsUI.details);
-                // x.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-                x.renderMode = RenderMode.ScreenSpaceOverlay;
-                GS2.canvasOverlay = true;
-                // Object.Destroy(x);
-            }
+            //GS2.Warn("Fix");
+            //{
+            //    // var x = new GameObject() {name = "UIFix"};
+            //    var x = UIRoot.instance.overlayCanvas;
+            //    // x.transform.SetParent(SettingsUI.details);
+            //    // x.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            //    x.renderMode = RenderMode.ScreenSpaceOverlay;
+            //    GS2.canvasOverlay = true;
+            //    // Object.Destroy(x);
+            //}
             //var c = _dropdown.transform.Find("Dropdown List").GetComponent<Canvas>();
             //c.overrideSorting = false;
             //c.renderMode = RenderMode.ScreenSpaceOverlay; 

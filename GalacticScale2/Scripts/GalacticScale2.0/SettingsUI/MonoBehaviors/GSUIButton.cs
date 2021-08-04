@@ -41,7 +41,7 @@ namespace GalacticScale
             Canvas.ForceUpdateCanvases();
             Label = options.Label;
             OnClick = options.callback;
-            options.postfix?.Invoke();
+            //options.postfix?.Invoke();
 
         }
     }
