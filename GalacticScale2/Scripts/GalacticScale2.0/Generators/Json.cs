@@ -100,12 +100,12 @@ namespace GalacticScale.Generators
 
         private void CustomFileSelectorPostfix()
         {
-            //GS2.Log("Json:Postfix");
+            GS2.Log("Json:Postfix");
             var index = 0;
             for (var i = 0; i < filenames.Count; i++)
                 if (ImportFilename == filenames[i])
                     index = i;
-            options[0].RectTransform.GetComponentInChildren<UIComboBox>().itemIndex = index;
+            options[0].RectTransform.GetComponentInChildren<GSUIDropdown>().Value = index;
         }
 
         // private void FilenameInputPostfix()
@@ -144,7 +144,7 @@ namespace GalacticScale.Generators
             if (filenames.Count == 0)
                 filenames.Add("No Files Found"); //foreach (string n in filenames) GS2.Log("File:" + n);
             if (options != null && options.Count > 0 && options[0].RectTransform != null)
-                options[0].RectTransform.GetComponentInChildren<UIComboBox>().Items = filenames;
+                options[0].RectTransform.GetComponentInChildren<GSUIDropdown>().Items = filenames;
         }
     }
 }

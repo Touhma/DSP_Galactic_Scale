@@ -51,11 +51,11 @@ namespace GalacticScale
 
             GSSliderConfig sc = (GSSliderConfig) options.Data;
             //_dropdown.AddOptions(options.Data as List<string>);
-            Value = sc.defaultValue;
+            //Value = sc.defaultValue;
             minValue = sc.minValue;
             maxValue = sc.maxValue;
             OnChange = options.callback;
-            options.Postfix?.Invoke();
+            options.postfix?.Invoke();
 
         }
 

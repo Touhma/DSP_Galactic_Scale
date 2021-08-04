@@ -268,10 +268,9 @@ namespace GalacticScale
                     /*GS2.Log("index found!" + i);*/
                     GeneratorIndex = i;
             GS2.Log("Got this far");
-            if (optionRects[0] != null)
-                //GS2.Log("Setting combobox for generator index to " + generatorIndex);
-            GeneratorDropdown._dropdown.value = GeneratorIndex;
-            //else GS2.Log("optionRects[0] == null!@#");
+            //if (optionRects?[0] != null)
+            //if (GeneratorIndex >= 0 && GeneratorIndex < GeneratorDropdown._dropdown.options.Count)
+            //    GeneratorDropdown._dropdown.value = GeneratorIndex;
         }
 
         private static RectTransform CreateTemplate(RectTransform original)
@@ -288,10 +287,8 @@ namespace GalacticScale
         // Method that handles creation of the settings tab
         private static void CreateOptionsUI()
         {
-            var a = AppDomain.CurrentDomain.GetAssemblies().Select((asm) => asm.GetName().Name.ToString());
-            if (!a.ToList().Contains("GSUI")) Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
-            //a = AppDomain.CurrentDomain.GetAssemblies().Select((asm) => asm.GetName().ToString()); 
-            //foreach (var b in a) GS2.Warn(b);
+            Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
+
             var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
             themeselector = Object.Instantiate(go, details, false);
             var sp = GS2.bundle.LoadAsset<GameObject>("SettingsPanel");
@@ -300,41 +297,7 @@ namespace GalacticScale
             SettingsPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorX, anchorY);
 
             options.AddRange(GS2.Config.Options);
-            for (var i = 0; i < options.Count; i++)
-            {
-                switch (options[i].Type)
-                {
-                    case "Combobox":
-                        var dropdown = SettingsPanel.contents.AddDropdown();
-                        dropdown.initialize(options[i]);
-                        if (i == 0) GeneratorDropdown = dropdown;
-                        //CreateComboBox(options[i], details, i);
-                        break;
-                    case "Input":
-                        var input = SettingsPanel.contents.AddInput();
-                        input.initialize(options[i]);
-                        //CreateInputField(options[i], details, i);
-                        break;
-                    case "Button":
-                        var button = SettingsPanel.contents.AddButton();
-                        button.initialize(options[i]);
-                        //CreateButton(options[i], details, i);
-                        break;
-                    case "Checkbox":
-                        var toggle = SettingsPanel.contents.AddToggle();
-                        toggle.initialize(options[i]);
-                        //CreateCheckBox(options[i], details, i);
-                        break;
-                    case "Slider":
-                        var slider = SettingsPanel.contents.AddSlider();
-                        slider.initialize(options[i]);
-                        //CreateSlider(options[i], details, i);
-                        break;
-                    default:
-                        GS2.Warn($"Couldn't create option {options[i].Label}");
-                        break;
-                }
-            }
+
 
 
             
@@ -344,14 +307,21 @@ namespace GalacticScale
             tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x,tsRect.anchoredPosition.x+ offset);
 
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
-            //GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.generators[currentGenIndex].Name);
+            GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
+            GS2.Warn(generatorPluginOptions.Count.ToString());
             for (var i = 0; i < generatorPluginOptions.Count; i++)
             {
                 //for each canvas
-                //GS2.Log("Creating Canvas " + i);
+                GS2.Log("Creating Canvas " + i);
                 var canvas = Object.Instantiate(templateOptionsCanvas, details, false);
+                var panelPrefab = Object.Instantiate(sp, canvas, false);
+                //var GeneratorPanel = settingsPanelGO.GetComponent<GSUIPanel>();
+
+                
+                canvas.anchoredPosition = new Vector2(templateOptionsCanvas.anchoredPosition.x, anchorY);
                 GeneratorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
+                GS2.Warn($"{currentGenIndex} is the current gen index. this one is {i}");
                 if (currentGenIndex == i)
                 {
                     //GS2.Log("Setting canvas active");
@@ -362,9 +332,53 @@ namespace GalacticScale
                 {
                     canvas.gameObject.SetActive(false);
                 }
-
+                GS2.Log($"Creating Generator Plugin UIElements for {i}");
                 AddGeneratorPluginUIElements(canvas, i);
             }
+
+            for (var i = 0; i < options.Count; i++) // Main Settings
+            {
+                switch (options[i].Type)
+                {
+                    case "Combobox":
+                        
+                        var dropdown = SettingsPanel.contents.AddDropdown();
+                        options[i].RectTransform = dropdown.GetComponent<RectTransform>();
+                        dropdown.initialize(options[i]);
+                        
+                        if (i == 0) GeneratorDropdown = dropdown;
+                        //CreateComboBox(options[i], details, i);
+                        break;
+                    case "Input":
+                        var input = SettingsPanel.contents.AddInput();options[i].RectTransform = input.GetComponent<RectTransform>();
+                        input.initialize(options[i]);
+                        
+                        //CreateInputField(options[i], details, i);
+                        break;
+                    case "Button":
+                        var button = SettingsPanel.contents.AddButton();options[i].RectTransform = button.GetComponent<RectTransform>();
+                        button.initialize(options[i]);
+                        
+                        //CreateButton(options[i], details, i);
+                        break;
+                    case "Checkbox":
+                        var toggle = SettingsPanel.contents.AddToggle();options[i].RectTransform = toggle.GetComponent<RectTransform>();
+                        toggle.initialize(options[i]);
+                        
+                        //CreateCheckBox(options[i], details, i);
+                        break;
+                    case "Slider":
+                        var slider = SettingsPanel.contents.AddSlider();options[i].RectTransform = slider.GetComponent<RectTransform>();
+                        slider.initialize(options[i]);
+                        
+                        //CreateSlider(options[i], details, i);
+                        break;
+                    default:
+                        GS2.Warn($"Couldn't create option {options[i].Label}");
+                        break;
+                }
+            }
+
         }
 
 
@@ -374,31 +388,68 @@ namespace GalacticScale
             GS2.Log("AddGeneratorPluginUIElements: " + GS2.Generators[genIndex].Name);
             var generatorPluginOption = generatorPluginOptions[genIndex];
             GS2.Log(GS2.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
+            var GenPanel = canvas.GetComponentInChildren<GSUIPanel>();
             for (var i = 0; i < generatorPluginOption.Count; i++)
             {
                 switch (generatorPluginOption[i].Type)
                 {
                     case "Combobox":
-                        CreateComboBox(generatorPluginOption[i], canvas, i);
-                        break;
-                    case "Button":
-                        CreateButton(generatorPluginOption[i], canvas, i);
+                        var dropdown = GenPanel.contents.AddDropdown(); generatorPluginOption[i].RectTransform = dropdown.GetComponent<RectTransform>();
+                        dropdown.initialize(generatorPluginOption[i]);
+
+                
+                        //CreateComboBox(generatorPluginOption[i], details, i);
                         break;
                     case "Input":
-                        CreateInputField(generatorPluginOption[i], canvas, i);
+                        var input = GenPanel.contents.AddInput(); generatorPluginOption[i].RectTransform = input.GetComponent<RectTransform>();
+                        input.initialize(generatorPluginOption[i]);
+
+                        //CreateInputField(generatorPluginOption[i], details, i);
+                        break;
+                    case "Button":
+                        var button = GenPanel.contents.AddButton(); generatorPluginOption[i].RectTransform = button.GetComponent<RectTransform>();
+                        button.initialize(generatorPluginOption[i]);
+
+                        //CreateButton(generatorPluginOption[i], details, i);
                         break;
                     case "Checkbox":
-                        CreateCheckBox(generatorPluginOption[i], canvas, i);
+                        var toggle = GenPanel.contents.AddToggle(); generatorPluginOption[i].RectTransform = toggle.GetComponent<RectTransform>();
+                        toggle.initialize(generatorPluginOption[i]);
+
+                        //CreateCheckBox(generatorPluginOption[i], details, i);
                         break;
                     case "Slider":
-                        CreateSlider(generatorPluginOption[i], canvas, i);
+                        var slider = GenPanel.contents.AddSlider(); generatorPluginOption[i].RectTransform = slider.GetComponent<RectTransform>();
+                        slider.initialize(generatorPluginOption[i]);
+
+                        //CreateSlider(generatorPluginOption[i], details, i);
                         break;
                     default:
                         GS2.Warn($"Couldn't create option {generatorPluginOption[i].Label}");
                         break;
                 }
+                //{
+                //    case "Combobox":
+                //        CreateComboBox(generatorPluginOption[i], canvas, i);
+                //        break;
+                //    case "Button":
+                //        CreateButton(generatorPluginOption[i], canvas, i);
+                //        break;
+                //    case "Input":
+                //        CreateInputField(generatorPluginOption[i], canvas, i);
+                //        break;
+                //    case "Checkbox":
+                //        CreateCheckBox(generatorPluginOption[i], canvas, i);
+                //        break;
+                //    case "Slider":
+                //        CreateSlider(generatorPluginOption[i], canvas, i);
+                //        break;
+                //    default:
+                //        GS2.Warn($"Couldn't create option {generatorPluginOption[i].Label}");
+                //        break;
+                //}
 
-                if (generatorPluginOption[i].Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(generatorPluginOption[i].Postfix));
+                //if (generatorPluginOption[i].postfix != null) OptionsUIPostfix.AddListener(new UnityAction(generatorPluginOption[i].postfix));
             }
         }
 
@@ -426,7 +477,7 @@ namespace GalacticScale
             tipTransform.gameObject.name = "optionTip-" + index;
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             tipTransform.GetComponent<Text>().text = o.Tip;
-            if (o.Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             //GS2.Log("Finished Creating ComboBox");
         }
 
@@ -457,7 +508,7 @@ namespace GalacticScale
             tipTransform.gameObject.name = "optionTip-" + index;
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             //tipTransform.GetComponent<Text>().text = o.tip; GS2.Log("CreateSlider17");
-            if (o.Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
         }
 
         private static void CreateCheckBox(GSUI o, RectTransform canvas, int index)
@@ -481,7 +532,7 @@ namespace GalacticScale
             //tipTransform.gameObject.name = "optionTip-" + (index);
             //Object.Destroy(tipTransform.GetComponent<Localizer>());
             //tipTransform.GetComponent<Text>().text = o.tip;
-            if (o.Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
             //GS2.Log("Finished Creating ComboBox");
         }
 
@@ -520,7 +571,7 @@ namespace GalacticScale
             tipTransform.gameObject.name = "optionTip-" + index; //GS2.Log("-16");
             Object.Destroy(tipTransform.GetComponent<Localizer>()); //GS2.Log("-17");
             tipTransform.GetComponent<Text>().text = o.Tip; // GS2.Log("-18");
-            if (o.Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.Postfix)); // GS2.Log("-19");
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix)); // GS2.Log("-19");
             //GS2.Log("Finished Creating InputField");
         } // Create a button from a GSOption definition
 
@@ -547,7 +598,7 @@ namespace GalacticScale
             tipTransform.gameObject.name = "optionTip-" + index;
             Object.Destroy(tipTransform.GetComponent<Localizer>());
             tipTransform.GetComponent<Text>().text = o.Tip;
-            if (o.Postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.Postfix));
+            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
         }
 
         // Callback for own Generator ComboBox Selection Event

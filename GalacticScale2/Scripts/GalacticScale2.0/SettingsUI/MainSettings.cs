@@ -58,11 +58,15 @@ namespace GalacticScale
 
         public void Import(GSGenPreferences preferences)
         {
-            // GS2.Warn("!");
+            GS2.Warn("!");
             Preferences = preferences;
+            GS2.Warn("!!");
             var id = Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
+            GS2.Warn("!!!");
             GS2.ActiveGenerator = GS2.GetGeneratorByID(id);
+            GS2.Warn("!!!!");
             Preferences.Set("Generator", _generatorNames.IndexOf(GS2.ActiveGenerator.Name));
+            GS2.Warn("!!!!!");
         }
 
         public void Init()
@@ -117,39 +121,23 @@ namespace GalacticScale
         }
 
 
-        //private static void FixOrbits(Val o)
-        //{
-        //    var v =GS2.themeSelector.Get();
-        //    foreach (var c in v)
-        //    {
-        //        GS2.Warn($"::{c}");
-        //    }
-        //}
-        // private static void FixOrbits(Val o)
-        // {
-        //     if (GS2.Vanilla || GS2.IsMenuDemo) return;
-        //     if (GameMain.localPlanet == null) return;
-        //     if (GS2.galaxy == null || GS2.galaxy.stars == null) return;
-        //     foreach (var star in GS2.galaxy.stars)
-        //     foreach (var planet in star.planets)
-        //         if (planet.orbitalPeriod >= 999f && planet.orbitalPeriod <= 1001f)
-        //         {
-        //             var gsPlanet = GS2.GetGSPlanet(planet);
-        //             planet.orbitalPeriod = 50000f;
-        //             gsPlanet.OrbitalPeriod = 50000f;
-        //             GS2.Warn($"Fixing {planet.name}: New Orbit Period:{planet.orbitalPeriod}");
-        //         }
-        // }
-
         private static void GeneratorCallback(Val result)
         {
-            GS2.ActiveGenerator = GS2.Generators[result];
+            GS2.Warn($"Generator Callback:{(int)result}");
+            GS2.ActiveGenerator = GS2.Generators[(int)result];
+            GS2.Warn("Active Generator = " + GS2.ActiveGenerator.Name);
             foreach (var canvas in SettingsUI.GeneratorCanvases)
                 canvas.gameObject.SetActive(false);
-            SettingsUI.GeneratorCanvases[result].gameObject.SetActive(true);
-            SettingsUI.GeneratorIndex = result;
+            GS2.Warn("They have been set inactive");
+            GS2.Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set "+(int)result);
+            SettingsUI.GeneratorCanvases[(int)result].gameObject.SetActive(true);
+            GS2.Warn("Correct one set active");
+            SettingsUI.GeneratorIndex = (int)result;
+            GS2.Warn("Gen Index Set");
             SettingsUI.UpdateContentRect();
+            GS2.Warn("Updated ContentRect");
             GS2.SavePreferences();
+            GS2.Warn("Preferences Saved");
         }
 
         private void ExportJsonGalaxy(Val o)

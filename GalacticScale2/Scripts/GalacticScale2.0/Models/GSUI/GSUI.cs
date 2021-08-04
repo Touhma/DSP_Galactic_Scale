@@ -31,9 +31,9 @@ namespace GalacticScale
             Data = data;
             this.callback = callback;
             if (postfix == null)
-                Postfix = delegate { };
+                this.postfix = delegate { };
             else
-                Postfix = postfix;
+                this.postfix = postfix;
             Tip = tip;
             //GS2.Warn("Created GSUI " + label);
         }
@@ -48,9 +48,9 @@ namespace GalacticScale
             Data = data;
             this.callback = callback;
             if (postfix == null)
-                Postfix = delegate { };
+                this.postfix = delegate { };
             else
-                Postfix = postfix;
+                this.postfix = postfix;
             Tip = tip;
         }
 
@@ -106,7 +106,7 @@ namespace GalacticScale
 
         public string Tip { get; }
 
-        public GSOptionPostfix Postfix { get; private set; }
+        public GSOptionPostfix postfix { get; private set; }
 
         private (bool succeeded, float value) GetFloat(object o)
         {
@@ -241,9 +241,13 @@ namespace GalacticScale
 
         public bool Set(Val o)
         {
-            // GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
+            GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
 
-            if (RectTransform == null) return false;
+            if (RectTransform == null)
+             {   GS2.Warn($"RectTransform for {Label} null");
+            
+                return false;
+            }
             switch (Type)
             {
                 case "Slider":
@@ -277,14 +281,14 @@ namespace GalacticScale
                     //    GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
                     //    return false;
                     //}
-                    var toggle = RectTransform.GetComponentInChildren<Toggle>();
+                    var toggle = RectTransform.GetComponent<GSUIToggle>();
                     if (toggle is null)
                     {
                         GS2.Error($"Failed to find Toggle for {Label}");
                         return false;
                     }
-
-                    toggle.isOn = o; // checkboxResult.value;
+                    GS2.Log($"Found toggle for {Label} setting isOn:{o}");
+                    toggle.Value = o; // checkboxResult.value;
                     return true;
                 case "Combobox":
                     //var comboResult = GetInt(o);
@@ -298,20 +302,20 @@ namespace GalacticScale
                     //    GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value < 0");
                     //    return false;
                     //}
-                    var cb = RectTransform.GetComponentInChildren<UIComboBox>();
+                    var cb = RectTransform.GetComponentInChildren<Dropdown>();
                     if (cb is null)
                     {
                         GS2.Error($"Failed to find UICombobox for {Label}");
                         return false;
                     }
 
-                    if (o > cb.Items.Count - 1)
+                    if (o > cb.options.Count - 1)
                     {
                         GS2.Error($"Failed to set {o} for combobox '{Label}': Value > Item Count");
                         return false;
                     }
 
-                    cb.itemIndex = o;
+                    cb.value = o;
                     return true;
             }
 
@@ -339,7 +343,7 @@ namespace GalacticScale
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
                 new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, tip);
             instance.callback = callback;
-            instance.Postfix = postfix;
+            instance.postfix = postfix;
             return instance;
         }
 
@@ -352,7 +356,7 @@ namespace GalacticScale
                 new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
             var defaultCallback = instance.CreateDefaultCallback(callback);
             instance.callback = CreatePlanetSizeCallback(instance, defaultCallback);
-            instance.Postfix = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
@@ -364,7 +368,7 @@ namespace GalacticScale
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
                 new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, callback, postfix, tip);
             instance.callback = CreatePlanetSizeCallback(instance, callback);
-            instance.Postfix = postfix;
+            instance.postfix = postfix;
             return instance;
         }
 
@@ -377,7 +381,7 @@ namespace GalacticScale
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
                 new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.Postfix = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
@@ -393,7 +397,7 @@ namespace GalacticScale
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
             //if (planetSizes) CB = CreatePlanetSizeCallback(instance, defaultCallback);
             instance.callback = CB;
-            instance.Postfix = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             instance.increment = increment;
             return instance;
         }
@@ -428,7 +432,7 @@ namespace GalacticScale
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Checkbox", defaultValue,
                 null, null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.Postfix = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
@@ -448,7 +452,7 @@ namespace GalacticScale
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Combobox", items, null,
                 null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.Postfix = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
@@ -468,7 +472,7 @@ namespace GalacticScale
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Input", defaultValue, null,
                 null, tip);
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.Postfix = instance.CreateDefaultPostfix();
+            instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
@@ -551,9 +555,10 @@ namespace GalacticScale
 
         private GSOptionPostfix CreateDefaultPostfix()
         {
+            GS2.Warn("Creating DefaultPostfix for {Label}");
             return () =>
             {
-                // GS2.Warn($"Creating DefaultPostfix for {Label}");
+                GS2.Warn($"Executing DefaultPostfix for {Label}");
 
                 if (Generator is null)
                 {
@@ -563,14 +568,15 @@ namespace GalacticScale
 
 
                 var value = Generator.Export().Get(key);
-                // GS2.Log($"{key} Value:{value} is null?:{value == null}");
+                GS2.Log($"{key} Value:{value} is null?:{value == null}");
                 if (value == null)
                 {
-                    // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                    GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
                     value = DefaultValue;
                 }
                 if (value != null)
                 {
+                    GS2.Warn($"Setting non null value for {key} to {value}");
                     Set(value);
                 }
                 else GS2.Log($"Caution: Preference value for {Label} not found.");

@@ -25,7 +25,7 @@ namespace GalacticScale
         public bool Value
         {
             get => _Toggle.isOn;
-            set => _Toggle.isOn = value;
+            set { GS2.Warn($"Setting Value for {Label} to {value}"); _Toggle.isOn = value; }
         }
 
         public GSOptionCallback OnChange;
@@ -38,14 +38,11 @@ namespace GalacticScale
         }
         public void initialize(GSUI options)
         {
-            GS2.Log("Initializing");
-
-            //_dropdown.AddOptions(options.Data as List<string>);
-            Value = (bool) options.Data;
+            GS2.Log($"Initializing {Label} {options.Data} {options.DefaultValue} {(options.postfix == null)}");
+            //Value = (bool) options.Data;
             Label = options.Label;
             OnChange = options.callback;
-            options.Postfix?.Invoke();
-
+            options.postfix?.Invoke();
         }
     }
 

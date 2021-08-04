@@ -77,7 +77,7 @@ namespace GalacticScale
             //minValue = sc.minValue;
             //maxValue = sc.maxValue;
             //OnChange = options.callback;
-            options.Postfix?.Invoke();
+            options.postfix?.Invoke();
 
         }
 
