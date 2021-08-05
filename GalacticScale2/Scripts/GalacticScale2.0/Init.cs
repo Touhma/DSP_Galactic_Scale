@@ -125,6 +125,7 @@ namespace GalacticScale
             GS2.Log("Loading External Themes");
             LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
             ExternalThemeProcessor.LoadEnabledThemes();
+            GS2.Config.InitThemePanel();
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
             if (Config.Dev)
             {

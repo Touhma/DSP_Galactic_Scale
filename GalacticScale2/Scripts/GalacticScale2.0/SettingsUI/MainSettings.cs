@@ -84,15 +84,48 @@ namespace GalacticScale
             Options.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename"));
             Options.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON"));
             Options.Add(GSUI.Checkbox("(Test) Fix CopyPaste Inserter Length".Translate(), true, "Fix CopyPaste"));
-            Options.Add(GSUI.Button("Export All Themes".Translate(), "Export", ExportAllThemes));
+            
             //Options.Add(GSUI.Checkbox("Adjust Inserter Length ", false, "Test"));
             //Options.Add(GSUI.Input("Inserter Length Adjust", "0", "TestNum"));
             //Options.Add(GSUI.Button("Debug ThemeSelector", "Go", FixOrbits));
 
             _exportButton = Options.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(),
                 ExportJsonGalaxy));
-        }
 
+           
+        }
+        public void InitThemePanel()
+        {
+            var externalThemesGroupOptions = new List<GSUI>() {
+                GSUI.Button("Export All Themes".Translate(), "Export", ExportAllThemes)
+            };
+            foreach (var themelibrary in GS2.availableExternalThemes)
+            {
+                var Folder = themelibrary.Key;
+                var Library = themelibrary.Value;
+                if (Folder == "Root")
+                {
+                    foreach (var theme in Library)
+                    {
+                        GSOptionCallback callback = (Val o) => { GS2.Log(o); };
+                        externalThemesGroupOptions.Add(GSUI.Checkbox(themelibrary.Key.Translate(), false, callback));
+                    }
+
+                }
+                else
+                {
+                    var listoptions = new List<GSUI>();
+                    foreach (var theme in Library)
+                    {
+                        listoptions.Add(GSUI.Checkbox(theme.Key, false, (o) => GS2.Log(o)));
+                    }
+                    var FolderGroup = GSUI.Group(Folder, listoptions);
+                    externalThemesGroupOptions.Add(FolderGroup);
+                }
+            }
+
+            var externalThemesGroup = Options.Add(GSUI.Group("External Themes", externalThemesGroupOptions));
+        }
         private void ExportAllThemes(Val o)
         {
             if (GameMain.isPaused)
