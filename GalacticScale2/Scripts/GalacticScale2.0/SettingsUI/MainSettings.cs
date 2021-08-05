@@ -134,7 +134,7 @@ namespace GalacticScale
             GS2.Warn("Correct one set active");
             SettingsUI.GeneratorIndex = (int)result;
             GS2.Warn("Gen Index Set");
-            SettingsUI.UpdateContentRect();
+            //SettingsUI.UpdateContentRect();
             GS2.Warn("Updated ContentRect");
             GS2.SavePreferences();
             GS2.Warn("Preferences Saved");

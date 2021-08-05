@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+//using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using UITools;
+//using UITools;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -36,14 +36,14 @@ namespace GalacticScale
         private static Text[] tabTexts;
         public static RectTransform seedInput;
         public static RectTransform details;
-        private static RectTransform scrollview;
-        private static RectTransform templateOptionsCanvas;
-        private static RectTransform templateUIComboBox;
-        private static RectTransform templateCheckBox;
-        private static RectTransform templateInputField;
-        private static RectTransform templateSlider;
-        private static RectTransform templateButton;
-        private static RectTransform templateScrollView;
+        //private static RectTransform scrollview;
+        //private static RectTransform templateOptionsCanvas;
+        //private static RectTransform templateUIComboBox;
+        //private static RectTransform templateCheckBox;
+        //private static RectTransform templateInputField;
+        //private static RectTransform templateSlider;
+        //private static RectTransform templateButton;
+        //private static RectTransform templateScrollView;
 
         private static RectTransform GSSettingsPanel;
         private static GSUIPanel SettingsPanel;
@@ -216,44 +216,44 @@ namespace GalacticScale
             //GS2.Log("CreateGalacticScaleSettingsPage Test11");
             //UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/list/scroll-view/viewport/content
             //UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport
-            UpdateContentRect();
+            //UpdateContentRect();
             //viewportRect.sizeDelta = this.keyScrollVbarRect.gameObject.activeSelf ? new Vector2(-10f, 0.0f) : Vector2.zero;
-            
+
         }
 
-        public static void UpdateContentRect()
-        {
-            return;
-            var mainHeight = Math.Abs(SettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
-            var activeCanvas = GeneratorCanvases[GeneratorIndex];
-            var genHeight = 0f;
-            if (activeCanvas != null)
-            {
-                var genSettingsPanel = activeCanvas.GetComponentInChildren<GSUIPanel>();
-                if (genSettingsPanel != null)
-                    genHeight = Math.Abs(genSettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
-            }
-            else GS2.Warn("COULDNT GET ACTIVEGEN");
-            
-            var contentRect = GameObject
-    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
-    .GetComponent<RectTransform>();
-            contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, Math.Max(genHeight, mainHeight));
-            contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),Mathf.Round(contentRect.anchoredPosition.y));
-            GS2.Warn($"Updated sizeDelta to {contentRect.sizeDelta.x}, {contentRect.sizeDelta.y}");
-            return;
-            //var optionlist = generatorPluginOptions[GeneratorIndex];
-            //var entries = optionlist.Count;
-            //GS2.LogJson(optionlist, true);
-            //GS2.Warn("Option List Count = " + entries);
-            //var contentRect = GameObject
-            //    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
-            //    .GetComponent<RectTransform>();
-            
-            //contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 42 * entries + 8);
-            //contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),
-            //    Mathf.Round(contentRect.anchoredPosition.y));
-        }
+        //    public static void UpdateContentRect()
+        //    {
+        //        return;
+        //        var mainHeight = Math.Abs(SettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
+        //        var activeCanvas = GeneratorCanvases[GeneratorIndex];
+        //        var genHeight = 0f;
+        //        if (activeCanvas != null)
+        //        {
+        //            var genSettingsPanel = activeCanvas.GetComponentInChildren<GSUIPanel>();
+        //            if (genSettingsPanel != null)
+        //                genHeight = Math.Abs(genSettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
+        //        }
+        //        else GS2.Warn("COULDNT GET ACTIVEGEN");
+
+        //        var contentRect = GameObject
+        //.Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+        //.GetComponent<RectTransform>();
+        //        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, Math.Max(genHeight, mainHeight));
+        //        contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),Mathf.Round(contentRect.anchoredPosition.y));
+        //        GS2.Warn($"Updated sizeDelta to {contentRect.sizeDelta.x}, {contentRect.sizeDelta.y}");
+        //        return;
+        //        //var optionlist = generatorPluginOptions[GeneratorIndex];
+        //        //var entries = optionlist.Count;
+        //        //GS2.LogJson(optionlist, true);
+        //        //GS2.Warn("Option List Count = " + entries);
+        //        //var contentRect = GameObject
+        //        //    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+        //        //    .GetComponent<RectTransform>();
+
+        //        //contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 42 * entries + 8);
+        //        //contentRect.anchoredPosition = new Vector2(Mathf.Round(contentRect.anchoredPosition.x),
+        //        //    Mathf.Round(contentRect.anchoredPosition.y));
+        //    }
 
         private static void ImportCustomGeneratorOptions()
         {
@@ -297,16 +297,16 @@ namespace GalacticScale
             //    GeneratorDropdown._dropdown.value = GeneratorIndex;
         }
 
-        private static RectTransform CreateTemplate(RectTransform original)
-        {
-            var template = Object.Instantiate(original,
-                GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
-            template.gameObject.SetActive(false);
-            var l = template.GetComponentInChildren<Localizer>();
-            if (l != null) Object.Destroy(l);
+        //private static RectTransform CreateTemplate(RectTransform original)
+        //{
+        //    var template = Object.Instantiate(original,
+        //        GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
+        //    template.gameObject.SetActive(false);
+        //    var l = template.GetComponentInChildren<Localizer>();
+        //    if (l != null) Object.Destroy(l);
 
-            return template;
-        }
+        //    return template;
+        //}
 
         // Method that handles creation of the settings tab
         private static void CreateOptionsUI()
@@ -331,19 +331,19 @@ namespace GalacticScale
             GS2.Log("@");
             options.AddRange(GS2.Config.Options);
 
-    //        var contentRect = GameObject
-    //.Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
-    //.GetComponent<RectTransform>();
-    //        var csf = contentRect.gameObject.AddComponent<ContentSizeFitter>();
-    //        csf.verticalFit = ContentSizeFitter.FitMode.MinSize; 
-    //        csf.SetLayoutVertical();
-            
+            //        var contentRect = GameObject
+            //.Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+            //.GetComponent<RectTransform>();
+            //        var csf = contentRect.gameObject.AddComponent<ContentSizeFitter>();
+            //        csf.verticalFit = ContentSizeFitter.FitMode.MinSize; 
+            //        csf.SetLayoutVertical();
+
 
 
 
             var tsRect = themeselector.GetComponent<RectTransform>();
             var offset = options.Count * -40;
-            tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x,tsRect.anchoredPosition.x+ offset);
+            tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x, tsRect.anchoredPosition.x + offset);
 
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
             GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
@@ -382,38 +382,37 @@ namespace GalacticScale
             {
                 switch (options[i].Type)
                 {
+                    case "Group":
+                        var list = SettingsPanel.contents.AddList();
+                        options[i].RectTransform = list.GetComponent<RectTransform>();
+                        list.initialize(options[i]);
+                        ProcessListContents(list, options[i]);
+                        break;
                     case "Combobox":
-                        
                         var dropdown = SettingsPanel.contents.AddDropdown();
                         options[i].RectTransform = dropdown.GetComponent<RectTransform>();
                         dropdown.initialize(options[i]);
-                        
                         if (i == 0) GeneratorDropdown = dropdown;
-                        //CreateComboBox(options[i], details, i);
                         break;
                     case "Input":
-                        var input = SettingsPanel.contents.AddInput();options[i].RectTransform = input.GetComponent<RectTransform>();
+                        var input = SettingsPanel.contents.AddInput();
+                        options[i].RectTransform = input.GetComponent<RectTransform>();
                         input.initialize(options[i]);
-                        
-                        //CreateInputField(options[i], details, i);
                         break;
                     case "Button":
-                        var button = SettingsPanel.contents.AddButton();options[i].RectTransform = button.GetComponent<RectTransform>();
+                        var button = SettingsPanel.contents.AddButton();
+                        options[i].RectTransform = button.GetComponent<RectTransform>();
                         button.initialize(options[i]);
-                        
-                        //CreateButton(options[i], details, i);
                         break;
                     case "Checkbox":
-                        var toggle = SettingsPanel.contents.AddToggle();options[i].RectTransform = toggle.GetComponent<RectTransform>();
+                        var toggle = SettingsPanel.contents.AddToggle();
+                        options[i].RectTransform = toggle.GetComponent<RectTransform>();
                         toggle.initialize(options[i]);
-                        
-                        //CreateCheckBox(options[i], details, i);
                         break;
                     case "Slider":
-                        var slider = SettingsPanel.contents.AddSlider();options[i].RectTransform = slider.GetComponent<RectTransform>();
+                        var slider = SettingsPanel.contents.AddSlider();
+                        options[i].RectTransform = slider.GetComponent<RectTransform>();
                         slider.initialize(options[i]);
-                        
-                        //CreateSlider(options[i], details, i);
                         break;
                     default:
                         GS2.Warn($"Couldn't create option {options[i].Label}");
@@ -421,6 +420,51 @@ namespace GalacticScale
                 }
             }
 
+        }
+
+        private static void ProcessListContents(GSUIList parentList, GSUI group)
+        {
+            var config = (GSUIGroupConfig)group.Data;
+            foreach (var option in config.options)
+            {
+                switch (option.Type)
+                {
+                    case "Group":
+                        var list = parentList.AddList();
+                        option.RectTransform = list.GetComponent<RectTransform>();
+                        list.initialize(option);
+                        ProcessListContents(list, option);
+                        break;
+                    case "Combobox":
+                        var dropdown = parentList.AddDropdown();
+                        option.RectTransform = dropdown.GetComponent<RectTransform>();
+                        dropdown.initialize(option);
+                        break;
+                    case "Input":
+                        var input = parentList.AddInput();
+                        option.RectTransform = input.GetComponent<RectTransform>();
+                        input.initialize(option);
+                        break;
+                    case "Button":
+                        var button = parentList.AddButton();
+                        option.RectTransform = button.GetComponent<RectTransform>();
+                        button.initialize(option);
+                        break;
+                    case "Checkbox":
+                        var toggle = parentList.AddToggle();
+                        option.RectTransform = toggle.GetComponent<RectTransform>();
+                        toggle.initialize(option);
+                        break;
+                    case "Slider":
+                        var slider = parentList.AddSlider();
+                        option.RectTransform = slider.GetComponent<RectTransform>();
+                        slider.initialize(option);
+                        break;
+                    default:
+                        GS2.Warn($"Couldn't create option {option.Label}");
+                        break;
+                }
+            }
         }
 
 
@@ -439,7 +483,7 @@ namespace GalacticScale
                         var dropdown = GenPanel.contents.AddDropdown(); generatorPluginOption[i].RectTransform = dropdown.GetComponent<RectTransform>();
                         dropdown.initialize(generatorPluginOption[i]);
 
-                
+
                         //CreateComboBox(generatorPluginOption[i], details, i);
                         break;
                     case "Input":
@@ -496,152 +540,152 @@ namespace GalacticScale
         }
 
         // Create a combobox from a GSOption definition
-        private static void CreateComboBox(GSUI o, RectTransform canvas, int index)
-        {
-            //GS2.Log("CreateComboBox");
-            var comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
-            comboBoxRect.name = o.Label;
-            comboBoxRect.gameObject.SetActive(true);
-            optionRects.Add(comboBoxRect);
-            o.RectTransform = comboBoxRect;
-            var offset = index * -40;
-            comboBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
-            var comboBoxUI = comboBoxRect.GetComponentInChildren<UIComboBox>();
-            comboBoxUI.name = o.Label + "_comboBox";
-            comboBoxUI.Items = o.Data as List<string>;
-            comboBoxUI.UpdateItems();
-            comboBoxUI.itemIndex = 0;
-            comboBoxUI.onItemIndexChange.RemoveAllListeners();
-            if (o.callback != null) comboBoxUI.onSubmit.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
-            //if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
-            comboBoxRect.GetComponentInChildren<Text>().text = o.Label;
-            var tipTransform = comboBoxRect.GetChild(0).GetComponent<RectTransform>();
-            tipTransform.gameObject.name = "optionTip-" + index;
-            Object.Destroy(tipTransform.GetComponent<Localizer>());
-            tipTransform.GetComponent<Text>().text = o.Tip;
-            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
-            //GS2.Log("Finished Creating ComboBox");
-        }
+        //private static void CreateComboBox(GSUI o, RectTransform canvas, int index)
+        //{
+        //    //GS2.Log("CreateComboBox");
+        //    var comboBoxRect = Object.Instantiate(templateUIComboBox, canvas);
+        //    comboBoxRect.name = o.Label;
+        //    comboBoxRect.gameObject.SetActive(true);
+        //    optionRects.Add(comboBoxRect);
+        //    o.RectTransform = comboBoxRect;
+        //    var offset = index * -40;
+        //    comboBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+        //    var comboBoxUI = comboBoxRect.GetComponentInChildren<UIComboBox>();
+        //    comboBoxUI.name = o.Label + "_comboBox";
+        //    comboBoxUI.Items = o.Data as List<string>;
+        //    comboBoxUI.UpdateItems();
+        //    comboBoxUI.itemIndex = 0;
+        //    comboBoxUI.onItemIndexChange.RemoveAllListeners();
+        //    if (o.callback != null) comboBoxUI.onSubmit.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
+        //    //if (o.callback != null) comboBoxUI.onItemIndexChange.AddListener(delegate { o.callback(comboBoxUI.itemIndex); });
+        //    comboBoxRect.GetComponentInChildren<Text>().text = o.Label;
+        //    var tipTransform = comboBoxRect.GetChild(0).GetComponent<RectTransform>();
+        //    tipTransform.gameObject.name = "optionTip-" + index;
+        //    Object.Destroy(tipTransform.GetComponent<Localizer>());
+        //    tipTransform.GetComponent<Text>().text = o.Tip;
+        //    if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
+        //    //GS2.Log("Finished Creating ComboBox");
+        //}
 
-        private static void CreateSlider(GSUI o, RectTransform canvas, int index)
-        {
-            var sliderRect = Object.Instantiate(templateSlider, canvas);
-            sliderRect.name = o.Label;
-            sliderRect.gameObject.SetActive(true);
-            optionRects.Add(sliderRect);
-            o.RectTransform = sliderRect;
-            var offset = index * -40;
-            sliderRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
-            var slider = sliderRect.GetComponentInChildren<Slider>();
-            slider.name = o.Label + "_comboBox";
-            var label = slider.GetComponentInChildren<Text>();
+        //private static void CreateSlider(GSUI o, RectTransform canvas, int index)
+        //{
+        //    var sliderRect = Object.Instantiate(templateSlider, canvas);
+        //    sliderRect.name = o.Label;
+        //    sliderRect.gameObject.SetActive(true);
+        //    optionRects.Add(sliderRect);
+        //    o.RectTransform = sliderRect;
+        //    var offset = index * -40;
+        //    sliderRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+        //    var slider = sliderRect.GetComponentInChildren<Slider>();
+        //    slider.name = o.Label + "_comboBox";
+        //    var label = slider.GetComponentInChildren<Text>();
 
-            var gssc = (GSSliderConfig) o.Data;
-            slider.minValue = gssc.minValue;
-            slider.maxValue = gssc.maxValue;
-            slider.wholeNumbers = o.increment % 1 == 0;
-            slider.value = gssc.defaultValue;
-            label.text = slider.value.ToString();
-            slider.onValueChanged.AddListener(v => label.text = v.ToString());
-            if (o.callback != null) slider.onValueChanged.AddListener(delegate { o.callback(slider.value); });
+        //    var gssc = (GSSliderConfig) o.Data;
+        //    slider.minValue = gssc.minValue;
+        //    slider.maxValue = gssc.maxValue;
+        //    slider.wholeNumbers = o.increment % 1 == 0;
+        //    slider.value = gssc.defaultValue;
+        //    label.text = slider.value.ToString();
+        //    slider.onValueChanged.AddListener(v => label.text = v.ToString());
+        //    if (o.callback != null) slider.onValueChanged.AddListener(delegate { o.callback(slider.value); });
 
-            sliderRect.GetComponentInChildren<Text>().text = o.Label;
-            var tipTransform = sliderRect.GetChild(0).GetComponent<RectTransform>();
-            tipTransform.gameObject.name = "optionTip-" + index;
-            Object.Destroy(tipTransform.GetComponent<Localizer>());
-            //tipTransform.GetComponent<Text>().text = o.tip; GS2.Log("CreateSlider17");
-            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
-        }
+        //    sliderRect.GetComponentInChildren<Text>().text = o.Label;
+        //    var tipTransform = sliderRect.GetChild(0).GetComponent<RectTransform>();
+        //    tipTransform.gameObject.name = "optionTip-" + index;
+        //    Object.Destroy(tipTransform.GetComponent<Localizer>());
+        //    //tipTransform.GetComponent<Text>().text = o.tip; GS2.Log("CreateSlider17");
+        //    if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
+        //}
 
-        private static void CreateCheckBox(GSUI o, RectTransform canvas, int index)
-        {
-            //GS2.Log("CreateComboBox");
-            var checkBoxRect = Object.Instantiate(templateCheckBox, canvas);
-            checkBoxRect.name = o.Label;
-            checkBoxRect.gameObject.SetActive(true);
-            optionRects.Add(checkBoxRect);
-            o.RectTransform = checkBoxRect;
-            var offset = index * -40;
-            checkBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
-            var toggle = checkBoxRect.GetComponentInChildren<Toggle>();
-            toggle.name = o.Label + "_checkBox";
-            toggle.isOn = (bool) o.Data;
-            toggle.onValueChanged.RemoveAllListeners();
-            if (o.callback != null) toggle.onValueChanged.AddListener(delegate { o.callback(toggle.isOn); });
+        //private static void CreateCheckBox(GSUI o, RectTransform canvas, int index)
+        //{
+        //    //GS2.Log("CreateComboBox");
+        //    var checkBoxRect = Object.Instantiate(templateCheckBox, canvas);
+        //    checkBoxRect.name = o.Label;
+        //    checkBoxRect.gameObject.SetActive(true);
+        //    optionRects.Add(checkBoxRect);
+        //    o.RectTransform = checkBoxRect;
+        //    var offset = index * -40;
+        //    checkBoxRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+        //    var toggle = checkBoxRect.GetComponentInChildren<Toggle>();
+        //    toggle.name = o.Label + "_checkBox";
+        //    toggle.isOn = (bool) o.Data;
+        //    toggle.onValueChanged.RemoveAllListeners();
+        //    if (o.callback != null) toggle.onValueChanged.AddListener(delegate { o.callback(toggle.isOn); });
 
-            checkBoxRect.GetComponentInChildren<Text>().text = o.Label;
-            //RectTransform tipTransform = checkBoxRect.GetChild(0).GetComponent<RectTransform>();
-            //tipTransform.gameObject.name = "optionTip-" + (index);
-            //Object.Destroy(tipTransform.GetComponent<Localizer>());
-            //tipTransform.GetComponent<Text>().text = o.tip;
-            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
-            //GS2.Log("Finished Creating ComboBox");
-        }
+        //    checkBoxRect.GetComponentInChildren<Text>().text = o.Label;
+        //    //RectTransform tipTransform = checkBoxRect.GetChild(0).GetComponent<RectTransform>();
+        //    //tipTransform.gameObject.name = "optionTip-" + (index);
+        //    //Object.Destroy(tipTransform.GetComponent<Localizer>());
+        //    //tipTransform.GetComponent<Text>().text = o.tip;
+        //    if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
+        //    //GS2.Log("Finished Creating ComboBox");
+        //}
 
-        // Create an input field from a GSOption definition
-        private static void CreateInputField(GSUI o, RectTransform canvas, int index)
-        {
-            //GS2.Log("CreateInputField");
-            var inputRect = Object.Instantiate(templateInputField, canvas);
-            //GS2.Log("-1");
-            inputRect.name = o.Label;
-            //GS2.Log("-2");
-            inputRect.gameObject.SetActive(true);
-            //GS2.Log("-3");
-            optionRects.Add(inputRect);
-            //GS2.Log("-4");
-            o.RectTransform = inputRect;
-            //GS2.Log("-5");
-            var offset = index * -40;
-            //GS2.Log("-6");
-            inputRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
-            //GS2.Log("-7");
-            var inputUI = inputRect.GetComponentInChildren<InputField>();
-            //GS2.Log("-8");
-            inputUI.name = o.Label + "_inputField";
-            //GS2.Log("-9");
-            inputUI.text = o.Data as string;
-            //GS2.Log("-10");
-            inputUI.onValueChanged.RemoveAllListeners();
-            //GS2.Log("-11");
-            if (o.callback != null)
-                inputUI.onValueChanged.AddListener(delegate { o.callback(inputUI.text); }); //GS2.Log("-12");
+        //// Create an input field from a GSOption definition
+        //private static void CreateInputField(GSUI o, RectTransform canvas, int index)
+        //{
+        //    //GS2.Log("CreateInputField");
+        //    var inputRect = Object.Instantiate(templateInputField, canvas);
+        //    //GS2.Log("-1");
+        //    inputRect.name = o.Label;
+        //    //GS2.Log("-2");
+        //    inputRect.gameObject.SetActive(true);
+        //    //GS2.Log("-3");
+        //    optionRects.Add(inputRect);
+        //    //GS2.Log("-4");
+        //    o.RectTransform = inputRect;
+        //    //GS2.Log("-5");
+        //    var offset = index * -40;
+        //    //GS2.Log("-6");
+        //    inputRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+        //    //GS2.Log("-7");
+        //    var inputUI = inputRect.GetComponentInChildren<InputField>();
+        //    //GS2.Log("-8");
+        //    inputUI.name = o.Label + "_inputField";
+        //    //GS2.Log("-9");
+        //    inputUI.text = o.Data as string;
+        //    //GS2.Log("-10");
+        //    inputUI.onValueChanged.RemoveAllListeners();
+        //    //GS2.Log("-11");
+        //    if (o.callback != null)
+        //        inputUI.onValueChanged.AddListener(delegate { o.callback(inputUI.text); }); //GS2.Log("-12");
 
-            inputRect.GetComponentInChildren<Text>().text = o.Label; //GS2.Log("-13");
-            Object.Destroy(inputUI.GetComponentInChildren<EventTrigger>()); //GS2.Log("-14");
-            var tipTransform = inputRect.GetChild(0).GetComponent<RectTransform>(); //GS2.Log("-15");
-            tipTransform.gameObject.name = "optionTip-" + index; //GS2.Log("-16");
-            Object.Destroy(tipTransform.GetComponent<Localizer>()); //GS2.Log("-17");
-            tipTransform.GetComponent<Text>().text = o.Tip; // GS2.Log("-18");
-            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix)); // GS2.Log("-19");
-            //GS2.Log("Finished Creating InputField");
-        } // Create a button from a GSOption definition
+        //    inputRect.GetComponentInChildren<Text>().text = o.Label; //GS2.Log("-13");
+        //    Object.Destroy(inputUI.GetComponentInChildren<EventTrigger>()); //GS2.Log("-14");
+        //    var tipTransform = inputRect.GetChild(0).GetComponent<RectTransform>(); //GS2.Log("-15");
+        //    tipTransform.gameObject.name = "optionTip-" + index; //GS2.Log("-16");
+        //    Object.Destroy(tipTransform.GetComponent<Localizer>()); //GS2.Log("-17");
+        //    tipTransform.GetComponent<Text>().text = o.Tip; // GS2.Log("-18");
+        //    if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix)); // GS2.Log("-19");
+        //    //GS2.Log("Finished Creating InputField");
+        //} // Create a button from a GSOption definition
 
-        private static void CreateButton(GSUI o, RectTransform canvas, int index)
-        {
-            //GS2.Log("CreateButton "+o.Label);
-            var buttonRect = Object.Instantiate(templateButton, canvas);
-            buttonRect.name = o.Label;
-            buttonRect.gameObject.SetActive(true);
-            optionRects.Add(buttonRect);
-            o.RectTransform = buttonRect;
-            var offset = index * -40;
-            buttonRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
-            var uiButton = buttonRect.GetComponentInChildren<UIButton>();
-            uiButton.name = o.Label + "_button";
-            uiButton.button.onClick.RemoveAllListeners();
-            uiButton.GetComponentInChildren<Text>().text = o.Data.ToString();
-            var l = uiButton.GetComponentInChildren<Localizer>();
-            Object.Destroy(l);
-            if (o.callback != null) uiButton.button.onClick.AddListener(delegate { o.callback(null); });
+        //private static void CreateButton(GSUI o, RectTransform canvas, int index)
+        //{
+        //    //GS2.Log("CreateButton "+o.Label);
+        //    var buttonRect = Object.Instantiate(templateButton, canvas);
+        //    buttonRect.name = o.Label;
+        //    buttonRect.gameObject.SetActive(true);
+        //    optionRects.Add(buttonRect);
+        //    o.RectTransform = buttonRect;
+        //    var offset = index * -40;
+        //    buttonRect.anchoredPosition = new Vector2(anchorX, anchorY + offset);
+        //    var uiButton = buttonRect.GetComponentInChildren<UIButton>();
+        //    uiButton.name = o.Label + "_button";
+        //    uiButton.button.onClick.RemoveAllListeners();
+        //    uiButton.GetComponentInChildren<Text>().text = o.Data.ToString();
+        //    var l = uiButton.GetComponentInChildren<Localizer>();
+        //    Object.Destroy(l);
+        //    if (o.callback != null) uiButton.button.onClick.AddListener(delegate { o.callback(null); });
 
-            buttonRect.GetComponentInChildren<Text>().text = o.Label;
-            var tipTransform = buttonRect.GetChild(0).GetComponent<RectTransform>();
-            tipTransform.gameObject.name = "optionTip-" + index;
-            Object.Destroy(tipTransform.GetComponent<Localizer>());
-            tipTransform.GetComponent<Text>().text = o.Tip;
-            if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
-        }
+        //    buttonRect.GetComponentInChildren<Text>().text = o.Label;
+        //    var tipTransform = buttonRect.GetChild(0).GetComponent<RectTransform>();
+        //    tipTransform.gameObject.name = "optionTip-" + index;
+        //    Object.Destroy(tipTransform.GetComponent<Localizer>());
+        //    tipTransform.GetComponent<Text>().text = o.Tip;
+        //    if (o.postfix != null) OptionsUIPostfix.AddListener(new UnityAction(o.postfix));
+        //}
 
         // Callback for own Generator ComboBox Selection Event
         private static void GeneratorSelected(Val result)
@@ -653,7 +697,7 @@ namespace GalacticScale
             //GS2.Log("trying to setactive");
             GeneratorCanvases[result].gameObject.SetActive(true);
             GeneratorIndex = result;
-            UpdateContentRect();
+            //UpdateContentRect();
             //GS2.Log("trying to save prefs");
             GS2.SavePreferences();
         }
@@ -666,7 +710,7 @@ namespace GalacticScale
 
         public static void DisableDetails()
         {
-           details?.gameObject?.SetActive(false);
+            details?.gameObject?.SetActive(false);
         }
     }
 }

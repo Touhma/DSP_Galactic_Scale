@@ -99,6 +99,21 @@ namespace GalacticScale
             go.SetActive(true);
             return go.GetComponent<GSUIInput>();
         }
+
+        internal GSUIList AddList()
+        {
+            var go = AddItem(templates.list);
+            go.SetActive(true);
+            return go.GetComponent<GSUIList>();
+        }
+        public void initialize(GSUI group)
+        {
+            var data = (GSUIGroupConfig)group.Data;
+            Label = group.Label;
+            Collapsible = data.collapsible;
+            ShowHeader = data.header;
+
+        }
     }
 
 

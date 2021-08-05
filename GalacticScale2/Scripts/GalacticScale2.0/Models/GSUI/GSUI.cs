@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -341,6 +342,12 @@ namespace GalacticScale
             return true;
         }
 
+        public static GSUI Group(string label, List<GSUI> options, bool header = true, bool collapsible = true)
+        {
+            var data = new GSUIGroupConfig(options, header, collapsible);
+            var instance = new GSUI(label, null, "Group", data, null);
+            return instance;
+        }
         // Slider (Integer, no key)
         public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback,
             GSOptionPostfix postfix = null, string tip = "")
@@ -601,5 +608,18 @@ namespace GalacticScale
             p.Set(key, value);
             Generator.Import(p);
         }
+    }
+public class GSUIGroupConfig
+{
+        public List<GSUI> options = new List<GSUI>();
+        public bool header = true;
+        public bool collapsible = true;
+        public GSUIGroupConfig(List<GSUI> options, bool header, bool collapsible)
+        {
+            this.options = options;
+            this.header = header;
+            this.collapsible = collapsible;
+        }
+        public GSUIGroupConfig() { }
     }
 }
