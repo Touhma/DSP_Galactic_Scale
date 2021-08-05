@@ -64,6 +64,7 @@ namespace GalacticScale
                     var path2 = Path.Combine(AssemblyPath, "galactic.bundle");
                     if (File.Exists(path)) _bundle = AssetBundle.LoadFromFile(path);
                     else _bundle = AssetBundle.LoadFromFile(path2);
+                    foreach (var name in _bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
                 }
 
                 if (_bundle == null)

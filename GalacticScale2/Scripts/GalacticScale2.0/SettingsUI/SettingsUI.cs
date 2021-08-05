@@ -45,6 +45,7 @@ namespace GalacticScale
         private static RectTransform templateButton;
         private static RectTransform templateScrollView;
 
+        private static RectTransform GSSettingsPanel;
         private static GSUIPanel SettingsPanel;
         private static GSUIDropdown GeneratorDropdown;
         public static RectTransform comboTemplate;
@@ -83,115 +84,119 @@ namespace GalacticScale
             tabTexts.AddItem(galacticButton.GetComponentInChildren<Text>());
 
 
-            var scrollviewTemplate = GameObject
-                .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/list")
-                .GetComponent<RectTransform>();
-            scrollview = Object.Instantiate(scrollviewTemplate,
-                GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
-            scrollview.offsetMax = new Vector2(0, 0);
-            scrollview.offsetMin = new Vector2(0, 0);
-            scrollview.name = "GalacticScaleSettings";
-            var svContent = scrollview.GetComponentInChildren<EnsureIntPosition>();
-            while (svContent.transform.childCount > 0)
-                Object.DestroyImmediate(svContent.transform.GetChild(0).gameObject);
+            //var scrollviewTemplate = GameObject
+            //    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/list")
+            //    .GetComponent<RectTransform>();
+            //scrollview = Object.Instantiate(scrollviewTemplate,
+            //    GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
+            //scrollview.offsetMax = new Vector2(0, 0);
+            //scrollview.offsetMin = new Vector2(0, 0);
+            //scrollview.name = "GalacticScaleSettings";
+            //var svContent = scrollview.GetComponentInChildren<EnsureIntPosition>();
+            //while (svContent.transform.childCount > 0)
+            //    Object.DestroyImmediate(svContent.transform.GetChild(0).gameObject);
             //   UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/sep-line-bottom-1
             //  UI Root/Overlay Canvas/Top Windows/Option Window/details/content-4/sep-line-top-1
             //Create the galactic scale settings panel
             var detailsTemplate = GameObject.Find("Option Window/details/content-5").GetComponent<RectTransform>();
-            details = Object.Instantiate(detailsTemplate,
-                scrollview.GetComponentInChildren<EnsureIntPosition>().GetComponent<RectTransform>(), false);
-            templateScrollView = Object.Instantiate(scrollview, details, false);
-            templateScrollView.gameObject.SetActive(false);
+            //details = scrollview;
+            details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
+
+
+            //templateScrollView = Object.Instantiate(scrollview, details, false);
+            //templateScrollView.gameObject.SetActive(false);
             //details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
-            scrollview.gameObject.SetActive(false);
+            //scrollview.gameObject.SetActive(false);
             details.gameObject.SetActive(true);
             details.gameObject.name = "content-gs";
-            var advisorTips = details.Find("advisor-tips");
-            if (advisorTips != null) Object.Destroy(advisorTips.gameObject);
-            //Destroy surplus ui elements
-            var tipLevel = details.Find("tiplevel");
-            if (tipLevel != null) Object.Destroy(tipLevel.gameObject);
+            //var advisorTips = details.Find("advisor-tips");
+            //if (advisorTips != null) Object.Destroy(advisorTips.gameObject);
+            ////Destroy surplus ui elements
+            //var tipLevel = details.Find("tiplevel");
+            //if (tipLevel != null) Object.Destroy(tipLevel.gameObject);
 
 
             //Copy original combobox as a template, then get rid of it
             var languageCombo = details.Find("language").GetComponent<RectTransform>();
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;
-            templateUIComboBox = CreateTemplate(details.Find("language").GetComponent<RectTransform>());
-            comboTemplate = templateUIComboBox.GetComponentInChildren<UIComboBox>().GetComponent<RectTransform>();
-            Object.Destroy(languageCombo.gameObject);
+            while (details.transform.childCount > 0)
+                Object.DestroyImmediate(details.transform.GetChild(0).gameObject);
+            //templateUIComboBox = CreateTemplate(details.Find("language").GetComponent<RectTransform>());
+            //comboTemplate = templateUIComboBox.GetComponentInChildren<UIComboBox>().GetComponent<RectTransform>();
+            //Object.Destroy(languageCombo.gameObject);
 
             //Create a template of a button
-            var revertButton = details.Find("revert-button");
-            if (revertButton == null) GS2.Log("Couldn't find revert button");
+            //var revertButton = details.Find("revert-button");
+            //if (revertButton == null) GS2.Log("Couldn't find revert button");
             //GS2.Log("CreateGalacticScaleSettingsPage Test6");
-            templateButton = CreateTemplate(templateUIComboBox);
+            //templateButton = CreateTemplate(templateUIComboBox);
             //GS2.Log("CreateGalacticScaleSettingsPage Test6.1");
-            templateButton.GetComponentInChildren<UIComboBox>().gameObject.SetActive(false);
-            //Object.Destroy(templateButton.GetComponentInChildren<UIComboBox>().gameObject);
-            //GS2.Log("CreateGalacticScaleSettingsPage Test6.2");
-            var templateButtonButton =
-                Object.Instantiate(revertButton.GetComponent<RectTransform>(), templateButton, false);
-            //GS2.Log("CreateGalacticScaleSettingsPage Test6.3"); 
-            templateButtonButton.anchoredPosition = new Vector2(250, 0);
-            //GS2.Log("CreateGalacticScaleSettingsPage Test6.4"); 
-            templateButtonButton.sizeDelta = new Vector2(200, 30);
-            //GS2.Log("CreateGalacticScaleSettingsPage Test6.5"); 
-            templateButton.anchorMin = templateButton.anchorMax = new Vector2(0, 1);
-            //GS2.Log("CreateGalacticScaleSettingsPage Test6.6"); 
-            templateButton.anchoredPosition = new Vector2(anchorX, anchorY);
+            //templateButton.GetComponentInChildren<UIComboBox>().gameObject.SetActive(false);
+            ////Object.Destroy(templateButton.GetComponentInChildren<UIComboBox>().gameObject);
+            ////GS2.Log("CreateGalacticScaleSettingsPage Test6.2");
+            //var templateButtonButton =
+            //    Object.Instantiate(revertButton.GetComponent<RectTransform>(), templateButton, false);
+            ////GS2.Log("CreateGalacticScaleSettingsPage Test6.3"); 
+            //templateButtonButton.anchoredPosition = new Vector2(250, 0);
+            ////GS2.Log("CreateGalacticScaleSettingsPage Test6.4"); 
+            //templateButtonButton.sizeDelta = new Vector2(200, 30);
+            ////GS2.Log("CreateGalacticScaleSettingsPage Test6.5"); 
+            //templateButton.anchorMin = templateButton.anchorMax = new Vector2(0, 1);
+            ////GS2.Log("CreateGalacticScaleSettingsPage Test6.6"); 
+            //templateButton.anchoredPosition = new Vector2(anchorX, anchorY);
             //GS2.Log("CreateGalacticScaleSettingsPage Test6.7"); 
-            if (revertButton != null) Object.Destroy(revertButton.gameObject);
-
+            //if (revertButton != null) Object.Destroy(revertButton.gameObject);
+            //details = scrollview;
             //GS2.Log("CreateGalacticScaleSettingsPage TEST");
-            templateOptionsCanvas = Object.Instantiate(details, details, false);
-            templateOptionsCanvas.anchoredPosition = details.anchoredPosition + new Vector2(750f, 0);
-            templateOptionsCanvas.gameObject.name = "templateCanvasPanel";
-            //GS2.Log("CreateGalacticScaleSettingsPage TEST2");
-            while (templateOptionsCanvas.transform.childCount > 0)
-                Object.DestroyImmediate(templateOptionsCanvas.transform.GetChild(0).gameObject);
+            //templateOptionsCanvas = Object.Instantiate(details, details, false);
+            //templateOptionsCanvas.anchoredPosition = details.anchoredPosition + new Vector2(750f, 0);
+            //templateOptionsCanvas.gameObject.name = "templateCanvasPanel";
+            ////GS2.Log("CreateGalacticScaleSettingsPage TEST2");
+            //while (templateOptionsCanvas.transform.childCount > 0)
+            //    Object.DestroyImmediate(templateOptionsCanvas.transform.GetChild(0).gameObject);
             //GS2.Log("CreateGalacticScaleSettingsPage TEST3");
-            var checkBoxProto = GameObject.Find("Option Window/details/content-1/fullscreen")
-                .GetComponent<RectTransform>(); //need to remove localizer, has textcomponent, and child called Checkbox with a UIToggle and a unityengine.ui.toggle
-            templateCheckBox = CreateTemplate(checkBoxProto);
-            //GS2.Log("CreateGalacticScaleSettingsPage TEST4"); 
-            var sliderProto = GameObject.Find("Option Window/details/content-1/dofblur")
-                .GetComponent<RectTransform>(); // localizer,  a textcomponent, has child called slider which has a UI.Slider component ,
-            templateSlider = CreateTemplate(sliderProto);
+            //var checkBoxProto = GameObject.Find("Option Window/details/content-1/fullscreen")
+            //    .GetComponent<RectTransform>(); //need to remove localizer, has textcomponent, and child called Checkbox with a UIToggle and a unityengine.ui.toggle
+            //templateCheckBox = CreateTemplate(checkBoxProto);
+            ////GS2.Log("CreateGalacticScaleSettingsPage TEST4"); 
+            //var sliderProto = GameObject.Find("Option Window/details/content-1/dofblur")
+            //    .GetComponent<RectTransform>(); // localizer,  a textcomponent, has child called slider which has a UI.Slider component ,
+            //templateSlider = CreateTemplate(sliderProto);
             //GS2.Log("CreateGalacticScaleSettingsPage TEST5");
 
             //RectTransform inputFieldProto = seedInput;
-            var inputFieldGO = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
-            var inputFieldProto = Object.Instantiate(inputFieldGO.GetComponent<RectTransform>(), details, false);
-            //GS2.Log("Hmm");
+            //var inputFieldGO = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
+            //var inputFieldProto = Object.Instantiate(inputFieldGO.GetComponent<RectTransform>(), details, false);
+            ////GS2.Log("Hmm");
             //localizer, has a ui.text comp, a child called inputfield which has a ui.inputfield, a uibutton and a eventsystems.eventtrigger
             //inputFieldProto.GetComponent<InputField>().interactable = true;
-            if (inputFieldProto.transform.parent.GetComponent<Text>() != null)
-                inputFieldProto.transform.parent.GetComponent<Text>().enabled = true;
-            //GS2.Log("Hmm2");
-            inputFieldProto.GetComponentInChildren<Text>().enabled = true;
-            //GS2.Log("Hmm3");
-            if (inputFieldProto.GetComponent<Image>() != null) inputFieldProto.GetComponent<Image>().enabled = true;
+            //if (inputFieldProto.transform.parent.GetComponent<Text>() != null)
+            //    inputFieldProto.transform.parent.GetComponent<Text>().enabled = true;
+            ////GS2.Log("Hmm2");
+            //inputFieldProto.GetComponentInChildren<Text>().enabled = true;
+            ////GS2.Log("Hmm3");
+            //if (inputFieldProto.GetComponent<Image>() != null) inputFieldProto.GetComponent<Image>().enabled = true;
             //GS2.Log("CreateGalacticScaleSettingsPage TEST6 - " + (seedInput != null));
-            var tempTransform = CreateTemplate(templateUIComboBox);
+            //var tempTransform = CreateTemplate(templateUIComboBox);
             //GS2.Log("CreateGalacticScaleSettingsPage TEST7");
-            var tr = tempTransform.GetComponentInChildren<UIComboBox>();
+            //var tr = tempTransform.GetComponentInChildren<UIComboBox>();
             //GS2.Log("CreateGalacticScaleSettingsPage TEST7.5"); 
-            var tr2 = tr.GetComponent<RectTransform>();
+            //var tr2 = tr.GetComponent<RectTransform>();
             //GS2.Log("CreateGalacticScaleSettingsPage TEST8");
-            tempTransform.name = "TempTransform";
-            inputFieldProto.name = "inputFieldProto";
-            inputFieldProto.GetComponent<InputField>().characterLimit = 0;
-            inputFieldProto.SetParent(tempTransform);
-            inputFieldProto.anchorMin = tr2.anchorMin;
-            inputFieldProto.anchorMax = tr2.anchorMax;
-            inputFieldProto.offsetMin = tr2.offsetMin;
-            inputFieldProto.offsetMax = tr2.offsetMax;
-            inputFieldProto.sizeDelta = tr2.sizeDelta;
-            inputFieldProto.anchoredPosition = new Vector2(250, -15);
-            Object.DestroyImmediate(tempTransform.GetComponentInChildren<UIComboBox>().gameObject);
-            templateInputField = CreateTemplate(tempTransform);
-            templateInputField.name = "templateInputField*";
+            //tempTransform.name = "TempTransform";
+            //inputFieldProto.name = "inputFieldProto";
+            //inputFieldProto.GetComponent<InputField>().characterLimit = 0;
+            //inputFieldProto.SetParent(tempTransform);
+            //inputFieldProto.anchorMin = tr2.anchorMin;
+            //inputFieldProto.anchorMax = tr2.anchorMax;
+            //inputFieldProto.offsetMin = tr2.offsetMin;
+            //inputFieldProto.offsetMax = tr2.offsetMax;
+            //inputFieldProto.sizeDelta = tr2.sizeDelta;
+            //inputFieldProto.anchoredPosition = new Vector2(250, -15);
+            //Object.DestroyImmediate(tempTransform.GetComponentInChildren<UIComboBox>().gameObject);
+            //templateInputField = CreateTemplate(tempTransform);
+            //templateInputField.name = "templateInputField*";
 
 
             //GS2.Log("CreateGalacticScaleSettingsPage 4");
@@ -218,6 +223,7 @@ namespace GalacticScale
 
         public static void UpdateContentRect()
         {
+            return;
             var mainHeight = Math.Abs(SettingsPanel.contents.ListContents.GetComponent<RectTransform>().rect.height);
             var activeCanvas = GeneratorCanvases[GeneratorIndex];
             var genHeight = 0f;
@@ -306,22 +312,31 @@ namespace GalacticScale
         private static void CreateOptionsUI()
         {
             Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
-
+            GS2.Log("@");
             var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
+            GS2.Log("@@");
             themeselector = Object.Instantiate(go, details, false);
+            GS2.Log("@");
+            var gsp = GS2.bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
+            GS2.Log("@@@");
+            GSSettingsPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();
+            GSSettingsPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;
+            GS2.Log("@");
             var sp = GS2.bundle.LoadAsset<GameObject>("SettingsPanel");
-            var settingsPanelGO = Object.Instantiate(sp, details, false);
-            SettingsPanel = settingsPanelGO.GetComponent<GSUIPanel>();
-            SettingsPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorX, anchorY);
-
+            //var settingsPanelGO = Object.Instantiate(sp, details, false);
+            //SettingsPanel = settingsPanelGO.GetComponent<GSUIPanel>();
+            GS2.Log("@@@@");
+            SettingsPanel = GSSettingsPanel.GetComponentInChildren<GSUIPanel>();
+            //SettingsPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchorX, anchorY);
+            GS2.Log("@");
             options.AddRange(GS2.Config.Options);
 
-            var contentRect = GameObject
-    .Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
-    .GetComponent<RectTransform>();
-            var csf = contentRect.gameObject.AddComponent<ContentSizeFitter>();
-            csf.verticalFit = ContentSizeFitter.FitMode.MinSize; 
-            csf.SetLayoutVertical();
+    //        var contentRect = GameObject
+    //.Find("UI Root/Overlay Canvas/Top Windows/Option Window/details/GalacticScaleSettings/scroll-view/viewport/content")
+    //.GetComponent<RectTransform>();
+    //        var csf = contentRect.gameObject.AddComponent<ContentSizeFitter>();
+    //        csf.verticalFit = ContentSizeFitter.FitMode.MinSize; 
+    //        csf.SetLayoutVertical();
             
 
 
@@ -333,22 +348,25 @@ namespace GalacticScale
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
             GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
             GS2.Warn(generatorPluginOptions.Count.ToString());
+            var scrollContentRect = SettingsPanel.transform.parent.GetComponent<RectTransform>();
             for (var i = 0; i < generatorPluginOptions.Count; i++)
             {
                 //for each canvas
                 GS2.Log("Creating Canvas " + i);
-                var canvas = Object.Instantiate(templateOptionsCanvas, details, false);
-                var panelPrefab = Object.Instantiate(sp, canvas, false);
+                //var canvas = Object.Instantiate(details, details, false);
+                var canvas = Object.Instantiate(sp, scrollContentRect, false).GetComponent<RectTransform>();
                 //var GeneratorPanel = settingsPanelGO.GetComponent<GSUIPanel>();
 
-                
-                canvas.anchoredPosition = new Vector2(templateOptionsCanvas.anchoredPosition.x, anchorY);
+                GS2.Log("..");
+                canvas.anchoredPosition = new Vector2(anchorX + 750, anchorY);
+                GS2.Log("..");
                 GeneratorCanvases.Add(canvas);
+                GS2.Log("..");
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
                 GS2.Warn($"{currentGenIndex} is the current gen index. this one is {i}");
                 if (currentGenIndex == i)
                 {
-                    //GS2.Log("Setting canvas active");
+                    GS2.Log("Setting canvas active");
                     canvas.gameObject.SetActive(true);
                     Canvas.ForceUpdateCanvases();
                 }
@@ -643,12 +661,12 @@ namespace GalacticScale
         public static void GalacticScaleTabClick()
         {
             UIRoot.instance.optionWindow.SetTabIndex(MainTabIndex, false);
-            scrollview.gameObject.SetActive(true);
+            details?.gameObject?.SetActive(true);
         }
 
         public static void DisableDetails()
         {
-            if (scrollview != null && scrollview.gameObject != null) scrollview.gameObject.SetActive(false);
+           details?.gameObject?.SetActive(false);
         }
     }
 }
