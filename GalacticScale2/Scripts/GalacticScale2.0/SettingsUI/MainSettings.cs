@@ -108,7 +108,7 @@ namespace GalacticScale
                     foreach (var theme in Library)
                     {
                         GSOptionCallback callback = (Val o) => { GS2.Log(o); };
-                        externalThemesGroupOptions.Add(GSUI.Checkbox(themelibrary.Key.Translate(), false, callback));
+                        externalThemesGroupOptions.Add(GSUI.Checkbox(theme.Key.Translate(), false, callback));
                     }
 
                 }
@@ -117,7 +117,7 @@ namespace GalacticScale
                     var listoptions = new List<GSUI>();
                     foreach (var theme in Library)
                     {
-                        listoptions.Add(GSUI.Checkbox(theme.Key, false, (o) => GS2.Log(o)));
+                        listoptions.Add(GSUI.Checkbox("->"+theme.Key, false, (o) => GS2.Log(o)));
                     }
                     var FolderGroup = GSUI.Group(Folder, listoptions);
                     externalThemesGroupOptions.Add(FolderGroup);

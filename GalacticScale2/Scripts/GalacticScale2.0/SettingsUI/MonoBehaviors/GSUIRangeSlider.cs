@@ -16,6 +16,11 @@ namespace GalacticScale
             get => _slider.MaxValue;
             set => _slider.MaxValue = value;
         }
+        public bool interactable
+        {
+            get => _slider.interactable;
+            set => _slider.interactable = value;
+        }
         public GSOptionCallback OnLowChange;
         public GSOptionCallback OnHighChange;
         public RangeSlider _slider;

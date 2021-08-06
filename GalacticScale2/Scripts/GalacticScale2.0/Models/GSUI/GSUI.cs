@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,11 @@ namespace GalacticScale
         public float increment = 1f;
         private readonly string key;
         public RectTransform RectTransform;
+        public string Label { get; }
+        public string Hint { get; private set; }
+        public string Type { get; }
 
+        public object Data { get; private set; }
         private GSUI()
         {
         }
@@ -35,12 +40,12 @@ namespace GalacticScale
                 this.postfix = delegate { };
             else
                 this.postfix = postfix;
-            Tip = tip;
+            Hint = tip;
             //GS2.Warn("Created GSUI " + label);
         }
 
         public GSUI(iConfigurableGenerator generator, string key, string label, string type, object data,
-            GSOptionCallback callback, GSOptionPostfix postfix = null, string tip = "")
+            GSOptionCallback callback, GSOptionPostfix postfix = null, string hint = "")
         {
             this.generator = generator;
             this.key = key;
@@ -52,7 +57,7 @@ namespace GalacticScale
                 this.postfix = delegate { };
             else
                 this.postfix = postfix;
-            Tip = tip;
+            Hint = hint;
         }
 
         private iConfigurableGenerator Generator
@@ -66,11 +71,7 @@ namespace GalacticScale
         }
 
         private Slider slider => RectTransform.GetComponentInChildren<Slider>();
-        public string Label { get; }
 
-        public string Type { get; }
-
-        public object Data { get; private set; }
 
         public Val DefaultValue
         {
@@ -79,8 +80,11 @@ namespace GalacticScale
                 switch (Type)
                 {
                     case "Slider":
-                        var cfg = Data is GSSliderConfig ? (GSSliderConfig) Data : new GSSliderConfig(-1, -1, -1);
+                        var cfg = Data is GSSliderConfig ? (GSSliderConfig)Data : new GSSliderConfig(-1, -1, -1);
                         return cfg.defaultValue;
+                    case "RangeSlider":
+                        var rcfg = Data is GSRangeSliderConfig ? (GSRangeSliderConfig)Data : new GSRangeSliderConfig(-1, -1, -1, -1);
+                        return rcfg.defaultValue;
                     case "Checkbox":
                         var bresult = GetBool(Data);
                         if (bresult.succeeded) return bresult.value;
@@ -104,8 +108,6 @@ namespace GalacticScale
         }
 
         public bool Disabled { get; private set; }
-
-        public string Tip { get; }
 
         public GSOptionPostfix postfix { get; private set; }
 
@@ -158,6 +160,10 @@ namespace GalacticScale
             GS2.Warn("Set Image Done");
             switch (Type)
             {
+                case "List":
+                    RectTransform.GetComponent<GSUIList>().interactable = false;
+                    Disabled = true;
+                    return true;
                 case "Checkbox":
                     GS2.Warn("Disabling Checkbox");
 
@@ -184,6 +190,11 @@ namespace GalacticScale
                     RectTransform.GetComponentInChildren<Slider>().interactable = false;
                     Disabled = true;
                     return true;
+                case "RangeSlider":
+                    GS2.Warn("Disabling RangeSlider");
+                    RectTransform.GetComponentInChildren<GSUIRangeSlider>().interactable = false;
+                    Disabled = true;
+                    return true;
             }
 
             return false;
@@ -207,6 +218,10 @@ namespace GalacticScale
 
             switch (Type)
             {
+                case "List":
+                    RectTransform.GetComponent<GSUIList>().interactable = true;
+                    Disabled = false;
+                    return true;
                 case "Checkbox":
                     RectTransform.GetComponent<Toggle>().interactable = true;
                     Disabled = false;
@@ -227,11 +242,15 @@ namespace GalacticScale
                     RectTransform.GetComponentInChildren<Slider>().interactable = true;
                     Disabled = false;
                     return true;
+                case "RangeSlider":
+                    RectTransform.GetComponentInChildren<GSUIRangeSlider>().interactable = true;
+                    Disabled = false;
+                    return true;
             }
 
             return false;
         }
-
+        public void SetHint(string hint) => Hint = hint;
         public bool Set(GSSliderConfig cfg)
         {
             //GS2.Warn("Setting Slider? : " + label);
@@ -257,20 +276,14 @@ namespace GalacticScale
             }
             switch (Type)
             {
+
+                case "RangeSlider":
+                    var ff = (ValueTuple<float, float>)o;
+                    RectTransform.GetComponent<GSUIRangeSlider>().LowValue = ff.Item1;
+                    RectTransform.GetComponent<GSUIRangeSlider>().HighValue = ff.Item2;
+                    return true;
                 case "Slider":
-                    //GS2.Warn("Setting Slider " + label);
-                    //GS2.Warn(o.ToString());
-                    //var sliderResult = GetFloat(o);
-                    //if (sliderResult.succeeded)
-                    //{
-                    //    //GS2.Warn($"Parsed as float:{sliderResult.value}");
-                    //}
-                    //else
-                    //{
-                    //    GS2.Error($"Failed to parse slider Set method input of {o} for slider '{label}'");
-                    //    return false;
-                    //}
-                    RectTransform.GetComponentInChildren<Slider>().value = o; //sliderResult.value;
+                    RectTransform.GetComponentInChildren<Slider>().value = o; 
                     return true;
                 case "Input":
                     if (o == null)
@@ -282,33 +295,16 @@ namespace GalacticScale
                     RectTransform.GetComponentInChildren<InputField>().text = o;
                     return true;
                 case "Checkbox":
-                    //var checkboxResult = GetBool(o);
-                    //if (!checkboxResult.succeeded)
-                    //{
-                    //    GS2.Error($"Failed to parse checkbox Set method input of {o} for checkbox '{label}'");
-                    //    return false;
-                    //}
-                    var toggle = RectTransform.GetComponent<GSUIToggle>();
+                     var toggle = RectTransform.GetComponent<GSUIToggle>();
                     if (toggle is null)
                     {
                         GS2.Error($"Failed to find Toggle for {Label}");
                         return false;
                     }
                     GS2.Log($"Found toggle for {Label} setting isOn:{o}");
-                    toggle.Value = o; // checkboxResult.value;
+                    toggle.Value = o; 
                     return true;
                 case "Combobox":
-                    //var comboResult = GetInt(o);
-                    //if (!comboResult.succeeded)
-                    //{
-                    //    GS2.Error($"Failed to parse combobox Set method input of {o} for combobox '{label}'");
-                    //    return false;
-                    //} //else GS2.Log($"Parsed as int {comboboxValue}");
-                    //if (comboResult.value < 0)
-                    //{
-                    //    GS2.Error($"Failed to set {comboResult.value} for combobox '{label}': Value < 0");
-                    //    return false;
-                    //}
                     var cb = RectTransform.GetComponentInChildren<Dropdown>();
                     if (cb is null)
                     {
@@ -341,8 +337,15 @@ namespace GalacticScale
             if (RectTransform != null) RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
             return true;
         }
-
-        public static GSUI Group(string label, List<GSUI> options, bool header = true, bool collapsible = true)
+        public static GSUI Header(string label, string hint = "")
+        {
+            return new GSUI(label, null, "Header", null, null, null, hint);
+        }
+        public static GSUI Spacer()
+        {
+            return new GSUI(null, null, "Spacer", null, null, null, null);
+        }
+        public static GSUI Group(string label, List<GSUI> options, string hint = "", bool header = true, bool collapsible = true)
         {
             var data = new GSUIGroupConfig(options, header, collapsible);
             var instance = new GSUI(label, null, "Group", data, null);
@@ -350,11 +353,11 @@ namespace GalacticScale
         }
         // Slider (Integer, no key)
         public static GSUI Slider(string label, float min, float val, float max, GSOptionCallback callback,
-            GSOptionPostfix postfix = null, string tip = "")
+            GSOptionPostfix postfix = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, tip);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, hint);
             instance.callback = callback;
             instance.postfix = postfix;
             return instance;
@@ -362,11 +365,11 @@ namespace GalacticScale
 
         // Slider for Planet Sizes with key
         public static GSUI PlanetSizeSlider(string label, float min, float val, float max, string key,
-            GSOptionCallback callback = null, string tip = "")
+            GSOptionCallback callback = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, hint);
             var defaultCallback = instance.CreateDefaultCallback(callback);
             instance.callback = CreatePlanetSizeCallback(instance, defaultCallback);
             instance.postfix = instance.CreateDefaultPostfix();
@@ -375,11 +378,11 @@ namespace GalacticScale
 
         // Slider for Planet Sizes without key
         public static GSUI PlanetSizeSlider(string label, float min, float val, float max,
-            GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "")
+            GSOptionCallback callback = null, GSOptionPostfix postfix = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, callback, postfix, tip);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, callback, postfix, hint);
             instance.callback = CreatePlanetSizeCallback(instance, callback);
             instance.postfix = postfix;
             return instance;
@@ -387,12 +390,12 @@ namespace GalacticScale
 
         //Slider with preferences Key
         public static GSUI Slider(string label, float min, float val, float max, string key,
-            GSOptionCallback callback = null, string tip = "")
+            GSOptionCallback callback = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             // GS2.Warn($"{label} Slider Creation...({val})");
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, hint);
             instance.callback = instance.CreateDefaultCallback(callback);
             instance.postfix = instance.CreateDefaultPostfix();
             return instance;
@@ -400,11 +403,11 @@ namespace GalacticScale
 
         //Slider with increment and preferences Key
         public static GSUI Slider(string label, float min, float val, float max, float increment, string key,
-            GSOptionCallback callback = null, string tip = "")
+            GSOptionCallback callback = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, tip);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, hint);
             var defaultCallback = instance.CreateDefaultCallback(callback);
             var CB = defaultCallback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
@@ -414,14 +417,30 @@ namespace GalacticScale
             instance.increment = increment;
             return instance;
         }
+        //RangeSlider with increment and preferences Key
 
+        public static GSUI RangeSlider(string label, float min, float lowVal, float highVal, float max, float increment, string key,
+    GSOptionCallback callback = null, string hint = "")
+        {
+            var t = Utils.GetCallingType();
+            var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "RangeSlider",
+                new GSRangeSliderConfig { minValue = min, maxValue = max, defaultLowValue = lowVal, defaultHighValue = highVal }, null, null, hint);
+            var defaultCallback = instance.CreateDefaultCallback(callback);
+            var CB = defaultCallback;
+            if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
+            //if (planetSizes) CB = CreatePlanetSizeCallback(instance, defaultCallback);
+            instance.callback = CB;
+            instance.postfix = instance.CreateDefaultPostfix();
+            instance.increment = increment;
+            return instance;
+        }
         //Slider with increment and no Key
         public static GSUI Slider(string label, float min, float val, float max, float increment,
-            GSOptionCallback callback = null, GSOptionPostfix postfix = null, string tip = "")
+            GSOptionCallback callback = null, GSOptionPostfix postfix = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, tip);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, postfix, hint);
             var CB = callback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, callback);
             instance.callback = CB;
@@ -430,71 +449,71 @@ namespace GalacticScale
         }
 
         public static GSUI Checkbox(string label, bool value, GSOptionCallback callback, GSOptionPostfix postfix = null,
-            string tip = "")
+            string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Checkbox", value, callback,
-                postfix, tip);
+                postfix, hint);
             return instance;
         }
 
         public static GSUI Checkbox(string label, bool defaultValue, string key, GSOptionCallback callback = null,
-            string tip = "")
+            string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Checkbox", defaultValue,
-                null, null, tip);
+                null, null, hint);
             instance.callback = instance.CreateDefaultCallback(callback);
             instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
         public static GSUI Combobox(string label, List<string> items, GSOptionCallback callback,
-            GSOptionPostfix postfix = null, string tip = "")
+            GSOptionPostfix postfix = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Combobox", items, callback,
-                postfix, tip);
+                postfix, hint);
             return instance;
         }
 
         public static GSUI Combobox(string label, List<string> items, int defaultValue, string key,
-            GSOptionCallback callback = null, string tip = "")
+            GSOptionCallback callback = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Combobox", items, null,
-                null, tip);
+                null, hint);
             instance.callback = instance.CreateDefaultCallback(callback);
             instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
         public static GSUI Input(string label, string value, GSOptionCallback callback, GSOptionPostfix postfix = null,
-            string tip = "")
+            string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Input", value, callback,
-                postfix, tip);
+                postfix, hint);
             return instance;
         }
 
         public static GSUI Input(string label, string defaultValue, string key, GSOptionCallback callback = null,
-            string tip = "")
+            string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Input", defaultValue, null,
-                null, tip);
+                null, hint);
             instance.callback = instance.CreateDefaultCallback(callback);
             instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
 
         public static GSUI Button(string label, string caption, GSOptionCallback callback,
-            GSOptionPostfix postfix = null, string tip = "")
+            GSOptionPostfix postfix = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), null, label, "Button", caption, callback,
-                null, tip);
+                null, hint);
             return instance;
         }
 
@@ -621,5 +640,33 @@ public class GSUIGroupConfig
             this.collapsible = collapsible;
         }
         public GSUIGroupConfig() { }
+    }
+    public struct GSSliderConfig
+    {
+        public float minValue;
+        public float maxValue;
+        public float defaultValue;
+
+        public GSSliderConfig(float minValue, float value, float maxValue)
+        {
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+            defaultValue = value;
+        }
+    }
+    public struct GSRangeSliderConfig
+    {
+        public float minValue;
+        public float maxValue;
+        public float defaultLowValue;
+        public float defaultHighValue;
+        public ValueTuple<float, float> defaultValue { get => (defaultLowValue, defaultHighValue); }
+        public GSRangeSliderConfig(float minValue, float lowValue, float highValue, float maxValue)
+        {
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+            defaultLowValue = lowValue;
+            defaultHighValue = highValue;
+        }
     }
 }

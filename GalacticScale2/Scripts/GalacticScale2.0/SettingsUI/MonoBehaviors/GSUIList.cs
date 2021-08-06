@@ -20,6 +20,19 @@ namespace GalacticScale
         public bool ShowHeader = true;
         public Text _labelText;
         public Text _hintText;
+        public bool interactable
+        {
+            get
+            {
+                return ListCollapseButton.GetComponent<Button>().interactable;
+            }
+            set
+            {
+                ListCollapseButton.GetComponent<Button>().interactable = value;
+                ListContents.SetActive(value);
+               
+            }
+        }
         public string Hint
         {
             get => _hintText.text;

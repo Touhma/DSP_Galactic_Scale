@@ -1,4 +1,6 @@
-﻿namespace GalacticScale
+﻿using System;
+
+namespace GalacticScale
 {
     public class Val
     {
@@ -15,7 +17,11 @@
         {
             return val.ToString();
         }
-
+        public (float, float)FloatFloat()
+        {
+           var x = (ValueTuple<float, float>)val;
+            return x;
+        }
         public int Int(int def = -1)
         {
             if (int.TryParse(ToString(), out var i)) return i;
@@ -82,7 +88,8 @@
         {
             return new Val(i);
         }
-
+        public static implicit operator Val((float, float) i) => new Val(i);
+        public static implicit operator (float, float)(Val v) => v.FloatFloat();
         public static implicit operator int(Val v)
         {
             return v.Int();
