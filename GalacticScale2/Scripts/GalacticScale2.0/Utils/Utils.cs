@@ -24,7 +24,13 @@ namespace GalacticScale
 
             return fsJsonPrinter.PrettyJson(data);
         }
-
+        public static VectorLF3 PolarToCartesian(double p, double theta, double phi)
+        {
+            var x = p * Math.Sin(phi) * Math.Cos(theta);
+            var y = p * Math.Sin(phi) * Math.Sin(theta);
+            var z = p * Math.Cos(phi);
+            return new VectorLF3(z, y, z);
+        }
         public static Vector3 PositionAtSurface(Vector3 position, GSPlanet planet)
         {
             return position.normalized * planet.planetData.data.QueryHeight(position);
