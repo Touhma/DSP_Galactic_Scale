@@ -24,7 +24,7 @@ namespace GalacticScale.Generators
         private GS2.Random random;
 
 
-        public string Name => "Dev Gen";
+        public string Name => "Galactic Scale 2";
 
         public string Author => "innominata";
 

@@ -15,7 +15,7 @@ namespace GalacticScale
             var overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;
 
-            var contentGS = GameObject.Find("Option Window/details/GalacticScaleSettings");
+            var contentGS = GameObject.Find("Option Window/details/content-gs");
             GS2.LoadExternalThemes(Path.Combine(GS2.DataDir, "CustomThemes"));
             
             if (contentGS == null)
@@ -26,7 +26,7 @@ namespace GalacticScale
             }
             else
             {
-                GS2.RefreshThemeList();
+                // GS2.RefreshThemeList();
             }
             UIRoot.instance.optionWindow.SetTabIndex(SettingsUI.MainTabIndex, false);
             SettingsUI.GalacticScaleTabClick();

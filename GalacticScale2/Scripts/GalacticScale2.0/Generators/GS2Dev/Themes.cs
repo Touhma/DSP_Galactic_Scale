@@ -7,7 +7,7 @@ namespace GalacticScale.Generators
     {
         public static string[] baseKeys;
 
-        public void SetupBaseThemes()
+        public static void SetupBaseThemes()
         {
             var newLibrary = new ThemeLibrary();
             foreach (var v in ThemeLibrary.Vanilla())

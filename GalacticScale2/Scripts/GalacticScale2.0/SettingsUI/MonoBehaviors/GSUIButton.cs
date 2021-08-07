@@ -35,11 +35,12 @@ namespace GalacticScale
         }
         public void initialize(GSUI options)
         {
-            GS2.Log("Initializing");
+            // GS2.Log("Initializing");
             //_dropdown.AddOptions(options.Data as List<string>);
             Caption = (string)options.Data;
             Canvas.ForceUpdateCanvases();
             Label = options.Label;
+            Hint = options.Hint;
             OnClick = options.callback;
             //options.postfix?.Invoke();
 

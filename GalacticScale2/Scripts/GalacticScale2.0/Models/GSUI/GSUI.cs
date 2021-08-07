@@ -267,10 +267,11 @@ namespace GalacticScale
 
         public bool Set(Val o)
         {
-            GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
+            // GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
 
             if (RectTransform == null)
-             {   GS2.Warn($"RectTransform for {Label} null");
+             {   
+                 // GS2.Warn($"RectTransform for {Label} null");
             
                 return false;
             }
@@ -278,6 +279,7 @@ namespace GalacticScale
             {
 
                 case "RangeSlider":
+                    GS2.Warn("Trying to valuetuple o");
                     var ff = (ValueTuple<float, float>)o;
                     RectTransform.GetComponent<GSUIRangeSlider>().LowValue = ff.Item1;
                     RectTransform.GetComponent<GSUIRangeSlider>().HighValue = ff.Item2;
@@ -301,7 +303,7 @@ namespace GalacticScale
                         GS2.Error($"Failed to find Toggle for {Label}");
                         return false;
                     }
-                    GS2.Log($"Found toggle for {Label} setting isOn:{o}");
+                    // GS2.Log($"Found toggle for {Label} setting isOn:{o}");
                     toggle.Value = o; 
                     return true;
                 case "Combobox":
@@ -420,11 +422,11 @@ namespace GalacticScale
         //RangeSlider with increment and preferences Key
 
         public static GSUI RangeSlider(string label, float min, float lowVal, float highVal, float max, float increment, string key,
-    GSOptionCallback callback = null, string hint = "")
+    GSOptionCallback callback = null, GSOptionCallback callbackLow = null, GSOptionCallback callbackHigh = null, string hint = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "RangeSlider",
-                new GSRangeSliderConfig { minValue = min, maxValue = max, defaultLowValue = lowVal, defaultHighValue = highVal }, null, null, hint);
+                new GSRangeSliderConfig { minValue = min, maxValue = max, defaultLowValue = lowVal, defaultHighValue = highVal, callbackLow = callbackLow, callbackHigh = callbackHigh}, null, null, hint);
             var defaultCallback = instance.CreateDefaultCallback(callback);
             var CB = defaultCallback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
@@ -587,10 +589,10 @@ namespace GalacticScale
 
         private GSOptionPostfix CreateDefaultPostfix()
         {
-            GS2.Warn("Creating DefaultPostfix for {Label}");
+            // GS2.Warn("Creating DefaultPostfix for {Label}");
             return () =>
             {
-                GS2.Warn($"Executing DefaultPostfix for {Label}");
+                // GS2.Warn($"Executing DefaultPostfix for {Label}");
 
                 if (Generator is null)
                 {
@@ -600,15 +602,15 @@ namespace GalacticScale
 
 
                 var value = Generator.Export().Get(key);
-                GS2.Log($"{key} Value:{value} is null?:{value == null}");
+                // GS2.Log($"{key} Value:{value} is null?:{value == null}");
                 if (value == null)
                 {
-                    GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                    // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
                     value = DefaultValue;
                 }
                 if (value != null)
                 {
-                    GS2.Warn($"Setting non null value for {key} to {value}");
+                    // GS2.Warn($"Setting non null value for {key} to {value}");
                     Set(value);
                 }
                 else GS2.Log($"Caution: Preference value for {Label} not found.");
@@ -627,6 +629,12 @@ namespace GalacticScale
             p.Set(key, value);
             Generator.Import(p);
         }
+
+        public static GSUI Separator()
+        {
+            return new GSUI(null, null, null, "Separator", null, null, null, null);
+        }
+
     }
 public class GSUIGroupConfig
 {
@@ -656,17 +664,21 @@ public class GSUIGroupConfig
     }
     public struct GSRangeSliderConfig
     {
+        public GSOptionCallback callbackLow;
+        public GSOptionCallback callbackHigh;
         public float minValue;
         public float maxValue;
         public float defaultLowValue;
         public float defaultHighValue;
         public ValueTuple<float, float> defaultValue { get => (defaultLowValue, defaultHighValue); }
-        public GSRangeSliderConfig(float minValue, float lowValue, float highValue, float maxValue)
+        public GSRangeSliderConfig(float minValue, float lowValue, float highValue, float maxValue, GSOptionCallback callbackLow = null, GSOptionCallback callbackHigh = null)
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
             defaultLowValue = lowValue;
             defaultHighValue = highValue;
+            this.callbackHigh = callbackHigh;
+            this.callbackLow = callbackLow;
         }
     }
 }

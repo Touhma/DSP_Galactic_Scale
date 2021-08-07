@@ -37,9 +37,13 @@ namespace GalacticScale
 
             GS2.Log("Checking localPlanet... " + (__instance.gameData.localPlanet == null ? "Null" : "Exists"));
             if (__instance.gameData.localPlanet == null)
-                return GS2.AbortGameStart(
+            {
+                if (GameMain.localPlanet != null)
+                {
+                    __instance.gameData.localPlanet = GameMain.localPlanet;
+                }else return GS2.AbortGameStart(
                     "Unable to find a habitable starting planet. If loading from a custon JSON, please check it for errors with an online tool.");
-
+            }
             __instance.localPlanet = __instance.gameData.localPlanet;
             GS2.Log("Checking birthPoint... " + (__instance.localPlanet.birthPoint == null ? "Null" : "Exists"));
             __instance.targetPos = __instance.localPlanet.birthPoint;

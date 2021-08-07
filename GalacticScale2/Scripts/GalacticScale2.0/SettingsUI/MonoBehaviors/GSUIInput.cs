@@ -45,7 +45,8 @@ namespace GalacticScale
         {
             //GS2.Log("Initializing");
             Label = options.Label;
-            Value = (string)options.Data;
+            Hint = options.Hint;
+            // Value = (string)options.Data;
             OnChange = options.callback;
             //options.postfix?.Invoke();
 

@@ -329,11 +329,13 @@ namespace GalacticScale.Generators
                     DefaultStarCountCallback)));
             UI.Add("starSizeMulti",
                 Options.Add(GSUI.Slider("Star Size Multiplier".Translate(), 1f, 10f, 20f, 0.1f, "starSizeMulti")));
+            var bOptions = new GSOptions();
             UI.Add("birthPlanetSize",
-                Options.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize")));
+                bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize")));
             UI.Add("birthPlanetUnlock",
-                Options.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock")));
-            UI.Add("birthPlanetSiTi", Options.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi")));
+                bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock")));
+            UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi")));
+            Options.Add(GSUI.Group("Birth Planet Settings", bOptions, "Settings that only affect the starting planet"));
             UI.Add("moonsAreSmall", Options.Add(GSUI.Checkbox("Moons Are Small".Translate(), true, "moonsAreSmall")));
             UI.Add("moonBias", Options.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias")));
             UI.Add("hugeGasGiants", Options.Add(GSUI.Checkbox("Huge Gas Giants".Translate(), true, "hugeGasGiants")));
@@ -343,22 +345,26 @@ namespace GalacticScale.Generators
             UI.Add("secondarySatellites",
                 Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites")));
 
-            UI.Add("freqK", Options.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
-            UI.Add("freqM", Options.Add(GSUI.Slider("Freq. Type M".Translate(), 0, 50, 100, "freqM")));
-            UI.Add("freqG", Options.Add(GSUI.Slider("Freq. Type G".Translate(), 0, 30, 100, "freqG")));
-            UI.Add("freqF", Options.Add(GSUI.Slider("Freq. Type F".Translate(), 0, 25, 100, "freqF")));
-            UI.Add("freqA", Options.Add(GSUI.Slider("Freq. Type A".Translate(), 0, 10, 100, "freqA")));
-            UI.Add("freqB", Options.Add(GSUI.Slider("Freq. Type B".Translate(), 0, 4, 100, "freqB")));
-            UI.Add("freqO", Options.Add(GSUI.Slider("Freq. Type O".Translate(), 0, 2, 100, "freqO")));
-            UI.Add("freqBH", Options.Add(GSUI.Slider("Freq. BlackHole".Translate(), 0, 1, 100, "freqBH")));
-            UI.Add("freqN", Options.Add(GSUI.Slider("Freq. Neutron".Translate(), 0, 1, 100, "freqN")));
-            UI.Add("freqW", Options.Add(GSUI.Slider("Freq. WhiteDwarf".Translate(), 0, 2, 100, "freqW")));
-            UI.Add("freqRG", Options.Add(GSUI.Slider("Freq. Red Giant".Translate(), 0, 1, 100, "freqRG")));
-            UI.Add("freqYG", Options.Add(GSUI.Slider("Freq. Yellow Giant".Translate(), 0, 1, 100, "freqYG")));
-            UI.Add("freqWG", Options.Add(GSUI.Slider("Freq. White Giant".Translate(), 0, 1, 100, "freqWG")));
-            UI.Add("freqBG", Options.Add(GSUI.Slider("Freq. Blue Giant".Translate(), 0, 1, 100, "freqBG")));
-
-            //options.Add(GSUI.Header("Default Settings", "Changing These Will Reset All Star Specific Options Below"));
+            var FreqOptions = new GSOptions();
+            UI.Add("freqK", FreqOptions.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
+            UI.Add("freqM", FreqOptions.Add(GSUI.Slider("Freq. Type M".Translate(), 0, 50, 100, "freqM")));
+            UI.Add("freqG", FreqOptions.Add(GSUI.Slider("Freq. Type G".Translate(), 0, 30, 100, "freqG")));
+            UI.Add("freqF", FreqOptions.Add(GSUI.Slider("Freq. Type F".Translate(), 0, 25, 100, "freqF")));
+            UI.Add("freqA", FreqOptions.Add(GSUI.Slider("Freq. Type A".Translate(), 0, 10, 100, "freqA")));
+            UI.Add("freqB", FreqOptions.Add(GSUI.Slider("Freq. Type B".Translate(), 0, 4, 100, "freqB")));
+            UI.Add("freqO", FreqOptions.Add(GSUI.Slider("Freq. Type O".Translate(), 0, 2, 100, "freqO")));
+            UI.Add("freqBH", FreqOptions.Add(GSUI.Slider("Freq. BlackHole".Translate(), 0, 1, 100, "freqBH")));
+            UI.Add("freqN", FreqOptions.Add(GSUI.Slider("Freq. Neutron".Translate(), 0, 1, 100, "freqN")));
+            UI.Add("freqW", FreqOptions.Add(GSUI.Slider("Freq. WhiteDwarf".Translate(), 0, 2, 100, "freqW")));
+            UI.Add("freqRG", FreqOptions.Add(GSUI.Slider("Freq. Red Giant".Translate(), 0, 1, 100, "freqRG")));
+            UI.Add("freqYG", FreqOptions.Add(GSUI.Slider("Freq. Yellow Giant".Translate(), 0, 1, 100, "freqYG")));
+            UI.Add("freqWG", FreqOptions.Add(GSUI.Slider("Freq. White Giant".Translate(), 0, 1, 100, "freqWG")));
+            UI.Add("freqBG", FreqOptions.Add(GSUI.Slider("Freq. Blue Giant".Translate(), 0, 1, 100, "freqBG")));
+            Options.Add(GSUI.Group("Star Relative Frequencies", FreqOptions, "How often to select a star type"));
+            Options.Add(GSUI.Spacer());
+            Options.Add(GSUI.Header("Default Settings", "Changing these will reset all star specific options below"));
+            
+            Options.Add(GSUI.RangeSlider("Test Slider", 1, 3, 10, 25, 1f, "test", null, testLow, testHigh, "Size of Starting Planet. 200 is normal"));
             UI.Add("minPlanetCount",
                 Options.Add(GSUI.Slider("Min Planets/System".Translate(), 1, 4, 25, "minPlanetCount", MinPlanetCountCallback)));
             UI.Add("maxPlanetCount",
@@ -375,40 +381,49 @@ namespace GalacticScale.Generators
 
             UI.Add("chanceGas", Options.Add(GSUI.Slider("Chance Gas".Translate(), 10, 20, l?99:50, "chanceGas", GasChanceCallback)));
             UI.Add("chanceMoon", Options.Add(GSUI.Slider("Chance Moon".Translate(), 10, 20, 80, "chanceMoon", MoonChanceCallback)));
-            UI.Add("systemDensity",
-                Options.Add(GSUI.Slider("System Density".Translate(), 1, 3, 5, "systemDensity", SystemDensityCallback)));
-
+            UI.Add("systemDensity", Options.Add(GSUI.Slider("System Density".Translate(), 1, 3, 5, "systemDensity", SystemDensityCallback)));
+            Options.Add(GSUI.Separator());
             for (var i = 0; i < 14; i++)
             {
+                var tOptions = new GSOptions();
                 //options.Add(GSUI.Header("$Type K Star Override", "Settings for K type stars only"));
                 typeCallbacks.Add($"{typeLetter[i]}minPlanetSize", CreateTypeMinPlanetSizeCallback(typeLetter[i]));
                 typeCallbacks.Add($"{typeLetter[i]}maxPlanetSize", CreateTypeMaxPlanetSizeCallback(typeLetter[i]));
                 UI.Add($"{typeLetter[i]}minPlanetCount",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} Min Planets".Translate(), 1, 1, 25, $"{typeLetter[i]}minPlanetCount")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Min Planets".Translate(), 1, 1, 25, $"{typeLetter[i]}minPlanetCount")));
                 UI.Add($"{typeLetter[i]}maxPlanetCount",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} Max Planets".Translate(), 1, 10, 25,
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Max Planets".Translate(), 1, 10, 25,
                         $"{typeLetter[i]}maxPlanetCount")));
                 UI.Add($"{typeLetter[i]}countBias",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias")));
                 UI.Add($"{typeLetter[i]}minPlanetSize",
-                    Options.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Min Size".Translate(), 30, 50, 200,
+                    tOptions.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Min Size".Translate(), 30, 50, 200,
                         $"{typeLetter[i]}minPlanetSize", typeCallbacks[$"{typeLetter[i]}minPlanetSize"])));
                 UI.Add($"{typeLetter[i]}maxPlanetSize",
-                    Options.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Max Size".Translate(), 200, 500, 500,
+                    tOptions.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Max Size".Translate(), 200, 500, 500,
                         $"{typeLetter[i]}maxPlanetSize", typeCallbacks[$"{typeLetter[i]}maxPlanetSize"])));
                 UI.Add($"{typeLetter[i]}sizeBias",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias")));
                 UI.Add($"{typeLetter[i]}chanceGas",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} %Gas".Translate(), l?0:10, 20, l?99:50, $"{typeLetter[i]}chanceGas")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} %Gas".Translate(), l?0:10, 20, l?99:50, $"{typeLetter[i]}chanceGas")));
                 UI.Add($"{typeLetter[i]}chanceMoon",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} %Moon".Translate(), l?0:10, 20, l?99:80, $"{typeLetter[i]}chanceMoon")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} %Moon".Translate(), l?0:10, 20, l?99:80, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}systemDensity",
-                    Options.Add(GSUI.Slider($"{typeDesc[i]} Density".Translate(), 1, 3, 5, $"{typeLetter[i]}systemDensity")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Density".Translate(), 1, 3, 5, $"{typeLetter[i]}systemDensity")));
+                Options.Add(GSUI.Group($"Type {typeLetter[i]} Overrides", tOptions, $"Change Settings for Type {typeLetter[i]} stars"));
             }
             Options.Add(GSUI.Button("Reset".Translate(), "Now".Translate(), Reset));
             loaded = true;
         }
 
+        private GSOptionCallback testLow(Val o)
+        {
+            
+        }    
+        private GSOptionCallback testHigh(Val o)
+        {
+            
+        }
         private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)
         {
             return o =>

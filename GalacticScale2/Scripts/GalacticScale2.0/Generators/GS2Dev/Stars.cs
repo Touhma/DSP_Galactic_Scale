@@ -6,11 +6,11 @@ namespace GalacticScale.Generators
     public partial class GS2Generator2 : iConfigurableGenerator
     {
         
-        private void GenerateStars(int starCount)
+        public void GenerateStars(int starCount, int startID = 0)
         {
             Log("Generating Stars");
 
-            for (var i = 0; i < starCount; i++)
+            for (var i = startID; i < starCount; i++)
             {
                 var (type, spectr) = ChooseStarType();
                 var star = new GSStar(random.Next(), SystemNames.GetName(i), spectr, type,

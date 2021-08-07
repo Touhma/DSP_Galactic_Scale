@@ -173,7 +173,7 @@ namespace GalacticScale
         {
             //GS2.Log("-Start "+Name + " " + GS2.GetCaller());
             Init();
-            GS2.Log("Adding to Library " + Name + " " + DisplayName);
+            // GS2.Log("Adding to Library " + Name + " " + DisplayName);
             AddToLibrary();
             //GS2.LogJson(GS2.ThemeLibrary);
             //GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap?.GetInstanceID());
@@ -578,7 +578,7 @@ namespace GalacticScale
                 }
                 else
                 {
-                    GS2.Log("Failed to Create Material|" + Name);
+                    // GS2.Log("Failed to Create Material|" + Name);
                     material = Resources.Load<Material>(MaterialPath + materialType);
                 }
             }

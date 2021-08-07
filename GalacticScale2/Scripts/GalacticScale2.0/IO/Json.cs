@@ -11,7 +11,7 @@ namespace GalacticScale
     {
         public static void LoadExternalThemes(string path)
         {
-            GS2.Log($"Loading External Themes from: {path}");
+            // GS2.Log($"Loading External Themes from: {path}");
             ThemeLibrary tl = new ThemeLibrary();
             if (!Directory.Exists(path))
             {
@@ -27,15 +27,15 @@ namespace GalacticScale
             foreach (var directory in directories)
             {
                 var DirName = new DirectoryInfo(directory).Name;
-                GS2.Log($"Searching directory:{directory}");
+                // GS2.Log($"Searching directory:{directory}");
                 if (availableExternalThemes.ContainsKey(DirName))
                     availableExternalThemes[DirName] = LoadDirectoryJsonThemes(directory);
                 else availableExternalThemes.Add(DirName, LoadDirectoryJsonThemes(directory));
             }
             foreach (var filename in files)
             {
-                Log($"Found file:{filename}");
-                Warn(new FileInfo(filename).Extension);
+                // Log($"Found file:{filename}");
+                // Warn(new FileInfo(filename).Extension);
                 if (new FileInfo(filename).Extension != ".json") continue;
                 GSTheme theme = LoadJsonTheme(filename);
                 if (theme != null)
@@ -69,10 +69,10 @@ namespace GalacticScale
         }
         public static GSTheme LoadJsonTheme(string filename)
         {
-            Log("Loading JSON Theme " + filename);
+            // Log("Loading JSON Theme " + filename);
             if (new FileInfo(filename).Extension != ".json")
             {
-                GS2.Warn($"Non Json File Skipped: {filename}");
+                // GS2.Warn($"Non Json File Skipped: {filename}");
                 return null;
             }
             var json = File.ReadAllText(filename);
@@ -84,7 +84,7 @@ namespace GalacticScale
                 GS2.Error("Loading of Json Theme " + filename + " failed. "+fsresult.FormattedMessages);
                 return null;
             }
-            Log("Trying To Deserialize JSON");
+            // Log("Trying To Deserialize JSON");
             var serializer = new fsSerializer();
             var deserializeResult = serializer.TryDeserialize(data, ref result);
             if (deserializeResult.Failed)
@@ -96,43 +96,43 @@ namespace GalacticScale
         }
         public static bool LoadSettingsFromJson(string path)
         {
-            Log("Start");
+            // Log("Start");
             if (!CheckJsonFileExists(path)) return false;
 
-            Log("Path = " + path);
+            // Log("Path = " + path);
             var serializer = new fsSerializer();
             GSSettings.Stars.Clear();
-            Log("Initializing ThemeLibrary");
+            // Log("Initializing ThemeLibrary");
             GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
-            Log("Reading JSON");
+            // Log("Reading JSON");
             var json = File.ReadAllText(path);
             var result = GSSettings.Instance;
-            Log("Parsing JSON");
+            // Log("Parsing JSON");
             var data = fsJsonParser.Parse(json);
-            Log("Trying To Deserialize JSON");
+            // Log("Trying To Deserialize JSON");
             serializer.TryDeserialize(data, ref result);
-            Log("End");
+            // Log("End");
             return true;
         }
 
         public static void SaveSettingsToJson(string path)
         {
-            Log("Saving Settings to " + path);
+            // Log("Saving Settings to " + path);
             var serializer = new fsSerializer();
             serializer.TrySerialize(GSSettings.Instance, out var data).AssertSuccessWithoutWarnings();
             var json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
-            Log("End");
+            // Log("End");
         }
 
         public static void DumpObjectToJson(string path, object obj)
         {
-            Log("Dumping Object to " + path);
+            // Log("Dumping Object to " + path);
             var serializer = new fsSerializer();
             serializer.TrySerialize(obj, out var data).AssertSuccessWithoutWarnings();
             var json = fsJsonPrinter.PrettyJson(data);
             File.WriteAllText(path, json);
-            Log("End");
+            // Log("End");
         }
 
         public static void DumpException(Exception e)

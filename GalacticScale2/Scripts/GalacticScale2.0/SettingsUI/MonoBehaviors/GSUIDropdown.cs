@@ -1,38 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace GalacticScale
 {
     public class GSUIDropdown : MonoBehaviour
     {
-        
-
-
-
         public Dropdown _dropdown;
-        public GSOptionCallback OnChange;
         public Text _labelText;
         public Text _hintText;
+        public GSOptionCallback OnChange;
+
         public List<string> Items
         {
-            get=> _dropdown.options.Select((option)=>option.text).ToList();
-            set  { GS2.Warn($"Setting Items for {Label}"); _dropdown.options = value.Select((s) => new Dropdown.OptionData() { text = s }).ToList(); }
+            get => _dropdown.options.Select(option => option.text).ToList();
+            set
+            {
+                // GS2.Warn($"Setting Items for {Label}");
+                _dropdown.options = value.Select(s => new Dropdown.OptionData { text = s }).ToList();
+            }
         }
+
         public string Hint
         {
             get => _hintText.text;
             set => _hintText.text = value;
         }
+
         public string Label
         {
             get => _labelText.text;
             set => _labelText.text = value;
         }
+
         public int Value
         {
             get
@@ -42,34 +44,37 @@ namespace GalacticScale
                     GS2.Warn($"Index out of bounds: {Label} {_dropdown.value} {Items.Count}");
                     return -1;
                 }
+
                 return _dropdown.value;
             }
-            set { 
-                GS2.Warn("Setting Value to " + value + "/" +Items.Count) ; 
+            set =>
+                // GS2.Warn("Setting Value to " + value + "/" +Items.Count) ; 
                 _dropdown.value = value;
-            }
         }
 
         public void Start()
         {
             if (!GS2.canvasOverlay)
-            Fix(null);
+                Fix(null);
         }
+
         public void OnValueChange(int value)
         {
-            GS2.Log($"ValueChange {value}");
+            // GS2.Log($"ValueChange {value}");
             GS2.WarnJson(Items);
-            if (value < 0 || value >= Items.Count )
+            if (value < 0 || value >= Items.Count)
             {
                 GS2.Warn($"Index out of bounds: {Label} {value}");
                 return;
             }
+
             //Value = Items[value];
             OnChange?.Invoke(value);
         }
+
         public void initialize(GSUI options)
         {
-            GS2.Log("Initializing");
+            // GS2.Log("Initializing");
             Items = options.Data as List<string>;
             OnChange = options.callback;
             // var ap = _dropdown.GetComponent<RectTransform>().anchoredPosition;
@@ -84,9 +89,10 @@ namespace GalacticScale
             //GS2.LogJson(options.Data);
             //Value = options.DefaultValue;
             Label = options.Label;
+            Hint = options.Hint;
             //options.postfix?.Invoke();
-
         }
+
         public void Fix(BaseEventData e)
         {
             //GS2.Warn("Fix");
@@ -113,7 +119,5 @@ namespace GalacticScale
             //float num = (float)Mathf.Clamp(this._dropdown.value, 0, Mathf.Max(0, this.Items.Count - this._dropdown.options.Count));
             //m_DropDownContent.anchoredPosition = new Vector2(m_DropDownContent.anchoredPosition.x, num * 40f);
         }
-        
     }
-
 }

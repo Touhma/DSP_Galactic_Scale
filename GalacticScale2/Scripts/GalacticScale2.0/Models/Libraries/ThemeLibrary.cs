@@ -25,12 +25,12 @@ namespace GalacticScale
 
         public new GSTheme Add(string name, GSTheme theme)
         {
-            GS2.Warn($"Adding {name},{theme == null}");
+            // GS2.Warn($"Adding {name},{theme == null}");
             if (theme == null) return null;
             if (string.IsNullOrEmpty(name)) name = theme.Name??"Hmm";
             if (ContainsKey(name))
             {
-                GS2.Warn("Theme already exists. Updating.");
+                // GS2.Warn("Theme already exists. Updating.");
                 this[name] = theme;
                 return theme;
             }
@@ -42,7 +42,7 @@ namespace GalacticScale
             foreach (var theme in values)
             {
                 if (ContainsKey(theme.Key)) {
-                    GS2.Warn("Adding Duplicate Theme " + theme.Key);
+                    // GS2.Warn("Adding Duplicate Theme " + theme.Key);
                     this[theme.Key] = theme.Value; 
                 }
                 else Add(theme.Key, theme.Value);
@@ -206,8 +206,36 @@ EThemeDistribute distribute = EThemeDistribute.Default)
                 foreach (var k in this)
                     GS2.Warn(
                         $"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
-                if (type == EThemeType.Gas) results.Add(Themes.Gas);
-                else results.Add(Themes.Mediterranean);
+                if (type == EThemeType.Gas)
+                {
+                    switch (heat)
+                    {
+                        case EThemeHeat.Cold: results.Add(Themes.IceGiant);
+                            break;
+                        case EThemeHeat.Temperate: results.Add(Themes.Gas2);
+                            break;
+                        case EThemeHeat.Frozen: results.Add(Themes.IceGiant2);
+                            break;
+                        case EThemeHeat.Warm:
+                        case EThemeHeat.Hot: results.Add(Themes.Gas);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (heat)
+                    {
+                        case EThemeHeat.Temperate:results.Add(Themes.Mediterranean);
+                            break;
+                        case EThemeHeat.Cold:
+                        case EThemeHeat.Frozen:results.Add(Themes.AshenGelisol);
+                            break;
+                        case EThemeHeat.Warm:results.Add(Themes.Barren);
+                            break;
+                        case EThemeHeat.Hot:results.Add(Themes.VolcanicAsh);
+                            break;
+                    }
+                }
             }
 
             // GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
@@ -215,86 +243,6 @@ EThemeDistribute distribute = EThemeDistribute.Default)
             return results;
             
         }
-        //public List<string> Desert {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.PlanetType == EPlanetType.Desert && kv.Value.ThemeType != EThemeType.Private) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> Volcanic {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.PlanetType == EPlanetType.Vocano && kv.Value.ThemeType != EThemeType.Private) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> Ice {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.PlanetType == EPlanetType.Ice && kv.Value.ThemeType != EThemeType.Private) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> GasGiant {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (kv.Value.PlanetType == EPlanetType.Gas && kv.Value.Temperature >= 0 && kv.Value.Temperature < 4 && kv.Value.ThemeType != EThemeType.Private) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> HotGasGiant {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (
-        //                kv.Value.PlanetType == EPlanetType.Gas
-        //                && kv.Value.Temperature >= 4
-        //                && kv.Value.ThemeType != EThemeType.Private
-        //            ) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
-        //public List<string> IceGiant {
-        //    get {
-        //        List<string> list = new List<string>();
-        //        foreach (KeyValuePair<string, GSTheme> kv in this) {
-        //            if (
-        //                kv.Value.PlanetType == EPlanetType.Gas
-        //                && kv.Value.Temperature < 0
-        //                && kv.Value.ThemeType != EThemeType.Private
-        //            ) {
-        //                list.Add(kv.Key);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-        //}
 
         public GSTheme Random()
         {

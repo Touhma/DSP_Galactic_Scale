@@ -30,7 +30,7 @@ namespace GalacticScale
         //private static readonly List<RectTransform> optionRects = new List<RectTransform>();
         public static readonly List<RectTransform> GeneratorCanvases = new List<RectTransform>();
         public static readonly List<List<GSUI>> generatorPluginOptions = new List<List<GSUI>>();
-        public static GameObject themeselector;
+        // public static GameObject themeselector;
         private static float anchorX;
         private static float anchorY;
         public static int GeneratorIndex;
@@ -65,7 +65,7 @@ namespace GalacticScale
             details.gameObject.SetActive(true);
             details.gameObject.name = "content-gs";
 
-            var languageCombo = details.Find("language").GetComponent<RectTransform>();
+             var languageCombo = details.Find("language").GetComponent<RectTransform>();
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;
             while (details.transform.childCount > 0)
@@ -121,19 +121,19 @@ namespace GalacticScale
         private static void CreateOptionsUI()
         {
             Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
-            var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
-            themeselector = Object.Instantiate(go, details, false);
-            var gsp = GS2.bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
+            // var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
+            // themeselector = Object.Instantiate(go, details, false);
+            var gsp = GS2.Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
             GSSettingsPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();
             GSSettingsPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;
-            var sp = GS2.bundle.LoadAsset<GameObject>("SettingsPanel");
+            var sp = GS2.Bundle.LoadAsset<GameObject>("SettingsPanel");
 
             SettingsPanel = GSSettingsPanel.GetComponentInChildren<GSUIPanel>();
             options.AddRange(GS2.Config.Options);
 
-            var tsRect = themeselector.GetComponent<RectTransform>();
-            var offset = options.Count * -40;
-            tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x, tsRect.anchoredPosition.x + offset);
+            // var tsRect = themeselector.GetComponent<RectTransform>();
+            // var offset = options.Count * -40;
+            // tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x, tsRect.anchoredPosition.x + offset);
 
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
             GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
@@ -226,7 +226,25 @@ namespace GalacticScale
                     var slider = list.AddSlider(); 
                     option.RectTransform = slider.GetComponent<RectTransform>();
                     slider.initialize(option);
+                    break;                    
+                case "RangeSlider":
+                    var rslider = list.AddRangeSlider(); 
+                    option.RectTransform = rslider.GetComponent<RectTransform>();
+                    rslider.initialize(option);
+                    break;               
+                case "Header":
+                    var header = list.AddHeader(); 
+                    option.RectTransform = header.GetComponent<RectTransform>();
+                    header.initialize(option);
                     break;
+                case "Spacer":
+                    var spacer = list.AddSpacer();
+                    option.RectTransform = spacer;
+                    break;
+                    case "Separator":
+                        var separator = list.AddSeparator();
+                        option.RectTransform = separator;
+                        break;
                 default:
                     GS2.Warn($"Couldn't create option {option.Label}");
                     break;

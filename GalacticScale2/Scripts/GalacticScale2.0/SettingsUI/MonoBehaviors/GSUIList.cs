@@ -45,7 +45,7 @@ namespace GalacticScale
         }
         public GameObject AddItem(GSUITemplate template)
         {
-            GS2.Log($"Adding Item Template Null?:{template == null} ListContents Null?{ListContents == null}");
+            // GS2.Log($"Adding Item Template Null?:{template == null} ListContents Null?{ListContents == null}");
             var newItem = Instantiate(template.gameObject, ListContents.transform, false);
             Contents.Add(newItem);
             return newItem;
@@ -75,6 +75,10 @@ namespace GalacticScale
 
         }
 
+        public void ForceLayoutRebuild(RectTransform transform)
+        {
+            LayoutRebuilder.MarkLayoutForRebuild(transform);
+        }
         public GSUIRangeSlider AddRangeSlider()
         {
             var go = AddItem(templates.rangeslider);
@@ -123,9 +127,23 @@ namespace GalacticScale
         {
             var data = (GSUIGroupConfig)group.Data;
             Label = group.Label;
+            Hint = group.Hint;
             Collapsible = data.collapsible;
             ShowHeader = data.header;
 
+        }
+
+        public RectTransform AddSpacer()
+        {
+            var go = AddItem(templates.spacer);
+            go.SetActive(true);
+            return go.GetComponent<RectTransform>();
+        }        
+        public RectTransform AddSeparator()
+        {
+            var go = AddItem(templates.separator);
+            go.SetActive(true);
+            return go.GetComponent<RectTransform>();
         }
     }
 

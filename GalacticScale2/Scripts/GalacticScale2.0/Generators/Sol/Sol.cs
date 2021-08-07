@@ -719,8 +719,9 @@ namespace GalacticScale.Generators
         public void GenerateSol(GSStar sol)
         {
             //GS2.Log("Generating the Sol System");
-
-            GS2Generator.InitThemes();
+            GS2Generator2.SetupBaseThemes();
+            GS2Generator2.InitThemes();
+            
             var luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f, 3278f, 0, 6.68f, 3278f, 0,
                 1.36f);
             ref var planets = ref sol.Planets;

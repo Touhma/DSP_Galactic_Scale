@@ -47,12 +47,16 @@ namespace GalacticScale
         }
         public void initialize(GSUI options)
         {
-            GS2.Log("Initializing");
+            // GS2.Log("Initializing");
 
             GSSliderConfig sc = (GSSliderConfig) options.Data;
             //_dropdown.AddOptions(options.Data as List<string>);
             //Value = sc.defaultValue;
             Label = options.Label;
+            Hint = options.Hint;
+            var wholenumbers = (options.increment %1f == 0);
+            _slider.wholeNumbers = wholenumbers;
+            
             minValue = sc.minValue;
             maxValue = sc.maxValue;
             OnChange = options.callback;

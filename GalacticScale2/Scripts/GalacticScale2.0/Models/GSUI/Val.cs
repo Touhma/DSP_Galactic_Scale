@@ -17,10 +17,12 @@ namespace GalacticScale
         {
             return val.ToString();
         }
-        public (float, float)FloatFloat()
+        public ValueTuple<float, float> FloatFloat()
         {
-           var x = (ValueTuple<float, float>)val;
-            return x;
+            var v = val.ToString().Split('(', ',', ')');
+            float.TryParse(v[1], out float i);
+            float.TryParse(v[2], out float j);
+            return (i,j);
         }
         public int Int(int def = -1)
         {
@@ -88,8 +90,8 @@ namespace GalacticScale
         {
             return new Val(i);
         }
-        public static implicit operator Val((float, float) i) => new Val(i);
-        public static implicit operator (float, float)(Val v) => v.FloatFloat();
+        public static implicit operator Val(ValueTuple<float, float> i) => new Val(i);
+        public static implicit operator ValueTuple<float, float>(Val v) => v.FloatFloat();
         public static implicit operator int(Val v)
         {
             return v.Int();

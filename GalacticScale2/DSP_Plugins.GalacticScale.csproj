@@ -332,6 +332,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\VolcanicAsh.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\Mediterranean.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2R.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\Vanilla.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetFactory\FlattenTerrain.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\NearColliderLogic\GetVeinsInAreaNonAlloc.cs" />

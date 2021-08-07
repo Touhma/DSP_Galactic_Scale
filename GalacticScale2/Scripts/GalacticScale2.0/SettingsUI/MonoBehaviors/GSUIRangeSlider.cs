@@ -23,6 +23,7 @@ namespace GalacticScale
         }
         public GSOptionCallback OnLowChange;
         public GSOptionCallback OnHighChange;
+        public GSOptionCallback OnChange;
         public RangeSlider _slider;
         public Text _labelText;
         public Text _hintText;
@@ -56,13 +57,13 @@ namespace GalacticScale
         public Text _highValueText;
         public void OnSliderValueChange(float LowValue, float HighValue)
         {
-            GS2.Log("SliderValChange(Range)");
+            // GS2.Log("SliderValChange(Range)");
             float lowValue = (int)(LowValue * 100) / 100f;
             float highValue = (int)(HighValue * 100) / 100f;
             _lowValueText.text = lowValue.ToString();
             _highValueText.text = highValue.ToString();
-            if (OnLowChange != null) OnLowChange.Invoke(lowValue);
-            if (OnHighChange != null) OnHighChange.Invoke(highValue);
+            if (OnLowChange != null) OnLowChange?.Invoke(lowValue);
+            if (OnHighChange != null) OnHighChange?.Invoke(highValue);
         }
         public void Start()
         {
@@ -74,15 +75,20 @@ namespace GalacticScale
         }
         public void initialize(GSUI options)
         {
-            GS2.Log("Initializing");
-
-            GSSliderConfig sc = (GSSliderConfig)options.Data;
+            // GS2.Log("Initializing");
+            Label = options.Label;
+            Hint = options.Hint;
+            GSRangeSliderConfig sc = (GSRangeSliderConfig)options.Data;
             //_dropdown.AddOptions(options.Data as List<string>);
-            //Value = sc.defaultValue;
-            //minValue = sc.minValue;
-            //maxValue = sc.maxValue;
-            //OnChange = options.callback;
-            //options.postfix?.Invoke();
+            LowValue = sc.defaultLowValue;
+            HighValue = sc.defaultHighValue;
+            minValue = sc.minValue;
+            maxValue = sc.maxValue;
+            OnLowChange = sc.callbackLow;
+            OnHighChange = sc.callbackHigh;
+            OnChange = options.callback;
+            _slider.WholeNumbers = (options.increment % 1f == 0);
+            // options.postfix?.Invoke();
 
         }
 

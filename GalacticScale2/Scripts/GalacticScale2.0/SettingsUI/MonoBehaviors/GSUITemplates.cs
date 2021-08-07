@@ -15,6 +15,7 @@ namespace GalacticScale
         public GSUITemplate dropdown;
         public GSUITemplate header;
         public GSUITemplate spacer;
+        public GSUITemplate separator;
         public GSUITemplate toggle;
         public GSUITemplate input;
     }
