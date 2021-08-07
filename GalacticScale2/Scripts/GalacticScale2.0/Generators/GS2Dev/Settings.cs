@@ -363,8 +363,8 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Group("Star Relative Frequencies", FreqOptions, "How often to select a star type"));
             Options.Add(GSUI.Spacer());
             Options.Add(GSUI.Header("Default Settings", "Changing these will reset all star specific options below"));
-            
-            Options.Add(GSUI.RangeSlider("Test Slider", 1, 3, 10, 25, 1f, "test", null, testLow, testHigh, "Size of Starting Planet. 200 is normal"));
+            //Options.Add(GSUI.RangeSlider("Test", 1, 3, 10, 25, 1f, "test", null, testLow, testHigh, "Size of Starting Planet. 200 is normal"));
+
             UI.Add("minPlanetCount",
                 Options.Add(GSUI.Slider("Min Planets/System".Translate(), 1, 4, 25, "minPlanetCount", MinPlanetCountCallback)));
             UI.Add("maxPlanetCount",
@@ -416,13 +416,13 @@ namespace GalacticScale.Generators
             loaded = true;
         }
 
-        private GSOptionCallback testLow(Val o)
+        private void testLow(Val o)
         {
-            
+            GS2.Warn(o);
         }    
-        private GSOptionCallback testHigh(Val o)
+        private void testHigh(Val o)
         {
-            
+            GS2.Warn(o);
         }
         private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)
         {

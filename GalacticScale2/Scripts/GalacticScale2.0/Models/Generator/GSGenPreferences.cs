@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             return ContainsKey(key) ? this[key] : null;
         }
-
+        
         public string GetString(string key, string Default = "", bool forceToString = false)
         {
             var parsedString = ContainsKey(key)
