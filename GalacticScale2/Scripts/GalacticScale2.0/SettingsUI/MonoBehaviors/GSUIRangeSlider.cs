@@ -81,8 +81,8 @@ namespace GalacticScale
             Hint = options.Hint;
             GSRangeSliderConfig sc = (GSRangeSliderConfig)options.Data;
             //_dropdown.AddOptions(options.Data as List<string>);
-            LowValue = sc.defaultLowValue;
-            HighValue = sc.defaultHighValue;
+            // LowValue = sc.defaultLowValue;
+            // HighValue = sc.defaultHighValue;
             minValue = sc.minValue;
             maxValue = sc.maxValue;
             OnLowChange = sc.callbackLow;

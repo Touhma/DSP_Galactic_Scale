@@ -18,6 +18,7 @@ namespace GalacticScale
             for (var i = 0; i < GSSettings.StarCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc, random);
             Log($"Planets Created in {highStopwatch.duration:F5}s");highStopwatch.Begin();
             Log("Planets have been created");
+            galaxy.starCount = galaxy.stars.Length;
             var astroPoses = galaxy.astroPoses;
             for (var index = 0; index < galaxy.astroPoses.Length; ++index)
             {
@@ -35,7 +36,19 @@ namespace GalacticScale
             }
             Log($"Astroposes filled in {highStopwatch.duration:F5}s");highStopwatch.Begin();
             Log("Updating Poses");
-            galaxy.UpdatePoses(0.0);
+            // galaxy.UpdatePoses(0.0);
+            
+                for (int i = 0; i < galaxy.stars.Length; i++)
+                {
+                    if (galaxy.stars[i] == null) GS2.Error($"GalaxyStars[{i}] null");
+                    galaxy.stars[i].planetCount = galaxy.stars[i].planets.Length;
+                    for (int j = 0; j < galaxy.stars[i].planets.Length; j++)
+                    {
+                        if (galaxy.stars[i].planets[j] == null) Error($"GalaxyStars[{i}].planets[{j}] null");
+                        galaxy.stars[i].planets[j].UpdateRuntimePose(0.0);
+                    }
+                }
+
             Log($"Astroposes Initialized in {highStopwatch.duration:F5}s");highStopwatch.Begin();
             Log("End");
         }

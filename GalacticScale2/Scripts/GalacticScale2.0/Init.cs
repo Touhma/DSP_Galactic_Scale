@@ -85,6 +85,12 @@ namespace GalacticScale
         public static void Init()
 
         {
+            if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
+            {
+                updateMessage +=
+                    "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward";
+                File.Delete(Path.Combine(AssemblyPath, "icon.png"));
+            }
             Warn("Start");
             NebulaCompatibility.Init();
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))

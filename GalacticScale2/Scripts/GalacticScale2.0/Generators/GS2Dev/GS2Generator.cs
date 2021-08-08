@@ -75,11 +75,23 @@ namespace GalacticScale.Generators
             Log($"Sanity Checked: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             EnsureBirthSystemHasTi();
+            // GS2.Warn("BIRTHSTAR");
+            // Warn($"{birthStar.Name} {birthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
+            var bsInt = preferences.GetInt("birthStar", 14);
+            if (bsInt == 14) return;
+            var starType = (EStar)bsInt;
+            (EStarType type, ESpectrType spectr) tt = starType.Convert();
+            var newBirthStar = new GSStar(random.Next(), birthStar.Name, tt.spectr, tt.type, birthStar.Planets);
+            var bpIndex = birthStar.Planets.IndexOf(birthPlanet);
+            var bsIndex = GSSettings.Stars.IndexOf(birthStar);
             //for (var i = 0; i < 200; i++)
             //{
             //    GS2.Warn("N:"+NameGen.New(birthPlanet));
             //}
-            Log("End");
+            // Warn($"END:{newBirthStar.Name} {newBirthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
+            GSSettings.Stars[bsIndex] = newBirthStar;
+            GSSettings.Stars[bsIndex].Planets[bpIndex] = birthPlanet;
+            // Log("End");
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 
@@ -124,6 +136,7 @@ namespace GalacticScale.Generators
             }
             //Log("Logging BirthPlanet Json");
             //LogJson(birthPlanet, true);
+            
         }
 
 

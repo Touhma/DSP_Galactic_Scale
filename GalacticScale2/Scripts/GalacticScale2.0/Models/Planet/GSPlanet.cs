@@ -306,7 +306,7 @@ namespace GalacticScale
         {
             if (random == null) random = new GS2.Random(GSSettings.Seed);
 
-            orbitRadius = 0; // random.Next(10);
+            orbitRadius = -1; // random.Next(10);
             return orbitRadius;
         }
 

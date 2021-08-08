@@ -833,7 +833,7 @@ namespace GalacticScale
             //GS2.Log("Start");
             if (oceanMat == null)
             {
-                GS2.Warn("oceanMat Null for " + Name);
+                // GS2.Warn("oceanMat Null for " + Name);
                 return;
             }
 

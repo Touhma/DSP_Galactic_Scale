@@ -22,7 +22,7 @@ namespace GalacticScale
         public string Label { get; }
         public string Hint { get; private set; }
         public string Type { get; }
-
+        private int comboDefault = -1;
         public object Data { get; private set; }
         private GSUI()
         {
@@ -97,8 +97,10 @@ namespace GalacticScale
                     case "Input":
                         return Data.ToString();
                     case "Combobox":
-                        var cbresult = GetInt(Data);
-                        if (cbresult.succeeded) return cbresult.value;
+                        GS2.Warn($"Combo {Label} {Data}");
+                        // var cbresult = GetInt(Data);
+                        // if (cbresult.succeeded) return cbresult.value;
+                        if (comboDefault >= 0) return comboDefault;
                         GS2.Warn($"No default value found for Combobox {Label}");
                         return false;
                 }
@@ -169,7 +171,9 @@ namespace GalacticScale
                     GS2.Warn("Disabling Checkbox");
 
                     RectTransform.GetComponent<Toggle>().interactable = false;
+                    GS2.Warn("!");
                     Disabled = true;
+                    GS2.Warn("!!");
                     return true;
                 case "Combobox":
                     GS2.Warn("Disabling Combobox");
@@ -280,10 +284,11 @@ namespace GalacticScale
             {
 
                 case "RangeSlider":
-                    // GS2.Warn("Trying to valuetuple o");
-                    var ff = (ValueTuple<float, float>)o;
+                    // GS2.Warn($"Trying to valuetuple {o} for {Label}");
+                    (float, float) ff = o;
                     RectTransform.GetComponent<GSUIRangeSlider>().LowValue = ff.Item1;
                     RectTransform.GetComponent<GSUIRangeSlider>().HighValue = ff.Item2;
+                    // GS2.Warn($"{RectTransform.GetComponent<GSUIRangeSlider>().LowValue} {RectTransform.GetComponent<GSUIRangeSlider>().HighValue}");
                     return true;
                 case "Slider":
                     RectTransform.GetComponentInChildren<Slider>().value = o; 
@@ -321,6 +326,7 @@ namespace GalacticScale
                         return false;
                     }
 
+                    comboDefault = o;
                     cb.value = o;
                     return true;
             }
@@ -501,6 +507,7 @@ namespace GalacticScale
                 null, hint);
             instance.callback = instance.CreateDefaultCallback(callback);
             instance.postfix = instance.CreateDefaultPostfix();
+            instance.comboDefault = defaultValue;
             return instance;
         }
 
