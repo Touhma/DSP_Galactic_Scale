@@ -783,8 +783,8 @@ namespace GalacticScale.Generators
             {
                 case 1: return 100;
                 case 2: return 70;
-                case 4: return 30;
-                case 5: return 20;
+                case 4: return 45;
+                case 5: return 35;
                 default: return 50;
             }
         }

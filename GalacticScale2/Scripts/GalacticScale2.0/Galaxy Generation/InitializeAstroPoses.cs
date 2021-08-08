@@ -45,7 +45,7 @@ namespace GalacticScale
                     for (int j = 0; j < galaxy.stars[i].planets.Length; j++)
                     {
                         if (galaxy.stars[i].planets[j] == null) Error($"GalaxyStars[{i}].planets[{j}] null");
-                        galaxy.stars[i].planets[j].UpdateRuntimePose(0.0);
+                        else galaxy.stars[i].planets[j].UpdateRuntimePose(0.0);
                     }
                 }
 

@@ -108,6 +108,7 @@ namespace GalacticScale.Generators
             float density = (2f*GetSystemDensityBiasForStar(star))/100f;
             GS2.Warn($"Density:{density} MaxOrbit:{star.MaxOrbit}");
             var max = Mathf.Clamp(density * Mathf.Max(maxByPlanetCount, minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit")*2f, star.MaxOrbit);
+            max = Mathf.Max(max, maxByPlanetCount * (density / 2));
             Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             star.genData.Set("maxOrbit", max);
             return max;
