@@ -19,14 +19,14 @@ namespace GalacticScale
                 GS2.externalThemes = new ThemeLibrary();
                 foreach (string name in GS2.Config.ExternalThemeNames)
                 {
-                    GS2.Log($"Loading {name}");
+                    // GS2.Log($"Loading {name}");
                     var fragments = name.Split('|');
                     var group = fragments[0];
                     var item = fragments[1];
                     if (availableExternalThemes.ContainsKey(group) && availableExternalThemes[group].ContainsKey(item))
                     {
                         GS2.externalThemes.Add(item, GS2.availableExternalThemes[group][item]);
-                        GS2.Log("Added {name}");
+                        // GS2.Log("Added {name}");
                     }
                     else
                     {
@@ -48,9 +48,9 @@ namespace GalacticScale
                     // }
 
                 }
-                GS2.Warn("External Themes:");
-                GS2.LogJson(GS2.externalThemes.Keys.ToList());
-                GS2.Warn("End External Themes");
+                // GS2.Warn("External Themes:");
+                // GS2.LogJson(GS2.externalThemes.Keys.ToList());
+                // GS2.Warn("End External Themes");
             }
         }
     }

@@ -254,9 +254,33 @@ namespace GalacticScale.Generators
                 ui.Value.Set(preferences.Get(ui.Key));
             }
         }
+
+        public Dictionary<string, (float, float)> hzDefs = new Dictionary<string, (float, float)>();
+        public void getHZ()
+        {
+            hzDefs.Add("K", Utils.CalculateHabitableZone(1.2f));
+            hzDefs.Add("M", Utils.CalculateHabitableZone(0.6f));
+            hzDefs.Add("A", Utils.CalculateHabitableZone(2.1f));
+            hzDefs.Add("B", Utils.CalculateHabitableZone(5f));
+            hzDefs.Add("F", Utils.CalculateHabitableZone(1.3f));
+            hzDefs.Add("G", Utils.CalculateHabitableZone(1f));
+            hzDefs.Add("O", Utils.CalculateHabitableZone(12f));
+            hzDefs.Add("RG", Utils.CalculateHabitableZone(.85f));
+            hzDefs.Add("YG", Utils.CalculateHabitableZone(1f));
+            hzDefs.Add("WG", Utils.CalculateHabitableZone(6f));
+            hzDefs.Add("BG", Utils.CalculateHabitableZone(10f));
+            hzDefs.Add("W", Utils.CalculateHabitableZone(0.05f));
+            hzDefs.Add("N", Utils.CalculateHabitableZone(0.35f));
+            hzDefs.Add("BH", Utils.CalculateHabitableZone(0.006f));
+        }
         private void InitPreferences()
         {
             GS2.Log("InitPreferences");
+            getHZ();
+            foreach (var hz in hzDefs)
+            {
+                preferences.Set($"{hz.Key}hz", hz.Value);
+            }
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("safeMode", false);
             preferences.Set("ludicrousMode", false);
@@ -272,10 +296,12 @@ namespace GalacticScale.Generators
             preferences.Set("tidalLockInnerPlanets", false);
             preferences.Set("secondarySatellites", false);
             preferences.Set("moonBias", 50);
-            preferences.Set("minPlanetCount", 1);
-            preferences.Set("maxPlanetCount", 10);
-            preferences.Set("minPlanetSize", 30);
-            preferences.Set("maxPlanetSize", 500);
+            // preferences.Set("minPlanetCount", 1);
+            // preferences.Set("maxPlanetCount", 10);
+            // preferences.Set("minPlanetSize", 30);
+            // preferences.Set("maxPlanetSize", 500);
+            preferences.Set($"planetCount", (1,10));
+            preferences.Set($"planetSize", (50,500));
             preferences.Set("sizeBias", 50);
             preferences.Set("countBias", 50);
             preferences.Set("freqK", 40);
@@ -297,10 +323,12 @@ namespace GalacticScale.Generators
             preferences.Set("systemDensity", 3);
             for (var i = 0; i < 14; i++)
             {
-                preferences.Set($"{typeLetter[i]}minPlanetCount", 1);
-                preferences.Set($"{typeLetter[i]}maxPlanetCount", 10);
-                preferences.Set($"{typeLetter[i]}maxPlanetSize", 500);
-                preferences.Set($"{typeLetter[i]}minPlanetSize", 50);
+                preferences.Set($"{typeLetter[i]}planetCount", (1,10));
+                preferences.Set($"{typeLetter[i]}planetSize", (50,500));
+                // preferences.Set($"{typeLetter[i]}minPlanetCount", 1);
+                // preferences.Set($"{typeLetter[i]}maxPlanetCount", 10);
+                // preferences.Set($"{typeLetter[i]}maxPlanetSize", 500);
+                // preferences.Set($"{typeLetter[i]}minPlanetSize", 50);
                 preferences.Set($"{typeLetter[i]}sizeBias", 50);
                 preferences.Set($"{typeLetter[i]}countBias", 50);
                 preferences.Set($"{typeLetter[i]}chanceGas", 20);
@@ -363,20 +391,22 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Group("Star Relative Frequencies", FreqOptions, "How often to select a star type"));
             Options.Add(GSUI.Spacer());
             Options.Add(GSUI.Header("Default Settings", "Changing these will reset all star specific options below"));
-            //Options.Add(GSUI.RangeSlider("Test", 1, 3, 10, 25, 1f, "test", null, testLow, testHigh, "Size of Starting Planet. 200 is normal"));
+            UI.Add("planetCount", Options.Add(GSUI.RangeSlider("Planet Count", 1, 2, 10, 25, 1f, "planetCount", null, planetCountLow, planetCountHigh, "Size of Starting Planet. 200 is normal")));
 
-            UI.Add("minPlanetCount",
-                Options.Add(GSUI.Slider("Min Planets/System".Translate(), 1, 4, 25, "minPlanetCount", MinPlanetCountCallback)));
-            UI.Add("maxPlanetCount",
-                Options.Add(GSUI.Slider("Max Planets/System".Translate(), 1, 10, 25, "maxPlanetCount", MaxPlanetCountCallback)));
+            // UI.Add("minPlanetCount",
+            //     Options.Add(GSUI.Slider("Min Planets/System".Translate(), 1, 4, 25, "minPlanetCount", MinPlanetCountCallback)));
+            // UI.Add("maxPlanetCount",
+            //     Options.Add(GSUI.Slider("Max Planets/System".Translate(), 1, 10, 25, "maxPlanetCount", MaxPlanetCountCallback)));
             UI.Add("countBias",
                 Options.Add(GSUI.Slider("Planet Count Bias".Translate(), 0, 50, 100, "sizeBias", CountBiasCallback)));
-            UI.Add("minPlanetSize",
-                Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 30, 50, 200, "minPlanetSize",
-                    MinPlanetSizeCallback)));
-            UI.Add("maxPlanetSize",
-                Options.Add(GSUI.PlanetSizeSlider("Max planet size".Translate(), 200, 500, 500, "maxPlanetSize",
-                    MaxPlanetSizeCallback)));
+            UI.Add("planetSize",Options.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size", 5, 50, 400, 510, "planetSize", planetSize,
+                planetSizeLow, planetSizeHigh, "Min/Max Size of Rocky Planets")));
+            // UI.Add("minPlanetSize",
+            //     Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 30, 50, 200, "minPlanetSize",
+            //         MinPlanetSizeCallback)));
+            // UI.Add("maxPlanetSize",
+            //     Options.Add(GSUI.PlanetSizeSlider("Max planet size".Translate(), 200, 500, 500, "maxPlanetSize",
+            //         MaxPlanetSizeCallback)));
             UI.Add("sizeBias", Options.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback)));
 
             UI.Add("chanceGas", Options.Add(GSUI.Slider("Chance Gas".Translate(), 10, 20, l?99:50, "chanceGas", GasChanceCallback)));
@@ -387,68 +417,93 @@ namespace GalacticScale.Generators
             {
                 var tOptions = new GSOptions();
                 //options.Add(GSUI.Header("$Type K Star Override", "Settings for K type stars only"));
-                typeCallbacks.Add($"{typeLetter[i]}minPlanetSize", CreateTypeMinPlanetSizeCallback(typeLetter[i]));
-                typeCallbacks.Add($"{typeLetter[i]}maxPlanetSize", CreateTypeMaxPlanetSizeCallback(typeLetter[i]));
-                UI.Add($"{typeLetter[i]}minPlanetCount",
-                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Min Planets".Translate(), 1, 1, 25, $"{typeLetter[i]}minPlanetCount")));
-                UI.Add($"{typeLetter[i]}maxPlanetCount",
-                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Max Planets".Translate(), 1, 10, 25,
-                        $"{typeLetter[i]}maxPlanetCount")));
+                // typeCallbacks.Add($"{typeLetter[i]}minPlanetSize", CreateTypeMinPlanetSizeCallback(typeLetter[i]));
+                // typeCallbacks.Add($"{typeLetter[i]}maxPlanetSize", CreateTypeMaxPlanetSizeCallback(typeLetter[i]));
+                UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider($"{typeDesc[i]} Planet Count", 1, 2, 10, 25, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range")));
+
+                // UI.Add($"{typeLetter[i]}minPlanetCount",
+                //     tOptions.Add(GSUI.Slider($"{typeDesc[i]} Min Planets".Translate(), 1, 1, 25, $"{typeLetter[i]}minPlanetCount")));
+                // UI.Add($"{typeLetter[i]}maxPlanetCount",
+                //     tOptions.Add(GSUI.Slider($"{typeDesc[i]} Max Planets".Translate(), 1, 10, 25,
+                //         $"{typeLetter[i]}maxPlanetCount")));
                 UI.Add($"{typeLetter[i]}countBias",
                     tOptions.Add(GSUI.Slider($"{typeDesc[i]} Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias")));
-                UI.Add($"{typeLetter[i]}minPlanetSize",
-                    tOptions.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Min Size".Translate(), 30, 50, 200,
-                        $"{typeLetter[i]}minPlanetSize", typeCallbacks[$"{typeLetter[i]}minPlanetSize"])));
-                UI.Add($"{typeLetter[i]}maxPlanetSize",
-                    tOptions.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Max Size".Translate(), 200, 500, 500,
-                        $"{typeLetter[i]}maxPlanetSize", typeCallbacks[$"{typeLetter[i]}maxPlanetSize"])));
+                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider($"{typeDesc[i]} Telluric Planet Size", 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range")));
+                // UI.Add($"{typeLetter[i]}minPlanetSize",
+                //     tOptions.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Min Size".Translate(), 30, 50, 200,
+                //         $"{typeLetter[i]}minPlanetSize", typeCallbacks[$"{typeLetter[i]}minPlanetSize"])));
+                // UI.Add($"{typeLetter[i]}maxPlanetSize",
+                //     tOptions.Add(GSUI.PlanetSizeSlider($"{typeDesc[i]} Max Size".Translate(), 200, 500, 500,
+                //         $"{typeLetter[i]}maxPlanetSize", typeCallbacks[$"{typeLetter[i]}maxPlanetSize"])));
                 UI.Add($"{typeLetter[i]}sizeBias",
-                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias")));
+                    tOptions.Add(GSUI.Slider($"{typeDesc[i]} Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes")));
+                UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone", false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below")));
+                UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone", 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,1)).Item1,preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,3)).Item2, 10, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Habitable Zone override" )));
                 UI.Add($"{typeLetter[i]}chanceGas",
                     tOptions.Add(GSUI.Slider($"{typeDesc[i]} %Gas".Translate(), l?0:10, 20, l?99:50, $"{typeLetter[i]}chanceGas")));
                 UI.Add($"{typeLetter[i]}chanceMoon",
                     tOptions.Add(GSUI.Slider($"{typeDesc[i]} %Moon".Translate(), l?0:10, 20, l?99:80, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}systemDensity",
                     tOptions.Add(GSUI.Slider($"{typeDesc[i]} Density".Translate(), 1, 3, 5, $"{typeLetter[i]}systemDensity")));
-                Options.Add(GSUI.Group($"Type {typeLetter[i]} Overrides", tOptions, $"Change Settings for Type {typeLetter[i]} stars"));
+                Options.Add(GSUI.Group($"{typeDesc[i]} Overrides", tOptions, $"Change Settings for Type {typeDesc[i]} stars"));
+                Options.Add(GSUI.Separator());
             }
             Options.Add(GSUI.Button("Reset".Translate(), "Now".Translate(), Reset));
             loaded = true;
         }
 
-        private void testLow(Val o)
+        private void planetCountLow(Val o)
         {
-            GS2.Warn(o);
+            Warn(o);
+            
+            SetAllStarTypeRSMin("planetCount", o);
         }    
-        private void testHigh(Val o)
+        private void planetCountHigh(Val o)
         {
             GS2.Warn(o);
-        }
-        private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)
+            SetAllStarTypeRSMax("planetCount", o);
+        }        
+        private void planetSizeLow(Val o)
         {
-            return o =>
-            {
-                var maxSize = preferences.GetFloat($"{type}maxPlanetSize");
-                if (maxSize == -1f) maxSize = 510;
-                if (maxSize < (float) o) o = maxSize;
-                if (preferences.GetBool("safeMode")) preferences.Set($"{type}minPlanetSize", SafePlanetSize((float) o));
-                else preferences.Set($"{type}minPlanetSize", Utils.ParsePlanetSize((float) o));
-                UI[$"{type}minPlanetSize"].Set(preferences.GetFloat($"{type}minPlanetSize"));
-            };
+            Warn(o);
+            
+            SetAllStarTypeRSMin("planetSize", Utils.ParsePlanetSize(o));
+        }    
+        private void planetSizeHigh(Val o)
+        {
+            GS2.Warn(o);
+            SetAllStarTypeRSMax("planetSize", Utils.ParsePlanetSize(o));
         }
 
-        private GSOptionCallback CreateTypeMaxPlanetSizeCallback(string type)
+        private void planetSize(Val o)
         {
-            return o =>
-            {
-                var minSize = preferences.GetFloat($"{type}minPlanetSize");
-                if (minSize == -1f) minSize = 5;
-                if (minSize > (float) o) o = minSize;
-                if (preferences.GetBool("safeMode")) preferences.Set($"{type}maxPlanetSize", SafePlanetSize((float) o));
-                else preferences.Set($"{type}maxPlanetSize", Utils.ParsePlanetSize((float) o));
-                UI[$"{type}maxPlanetSize"].Set(preferences.GetFloat($"{type}maxPlanetSize"));
-            };
+            Warn(o);
         }
+        // private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)
+        // {
+        //     return o =>
+        //     {
+        //         var maxSize = preferences.GetFloat($"{type}maxPlanetSize");
+        //         if (maxSize == -1f) maxSize = 510;
+        //         if (maxSize < (float) o) o = maxSize;
+        //         if (preferences.GetBool("safeMode")) preferences.Set($"{type}minPlanetSize", SafePlanetSize((float) o));
+        //         else preferences.Set($"{type}minPlanetSize", Utils.ParsePlanetSize((float) o));
+        //         UI[$"{type}minPlanetSize"].Set(preferences.GetFloat($"{type}minPlanetSize"));
+        //     };
+        // }
+        //
+        // private GSOptionCallback CreateTypeMaxPlanetSizeCallback(string type)
+        // {
+        //     return o =>
+        //     {
+        //         var minSize = preferences.GetFloat($"{type}minPlanetSize");
+        //         if (minSize == -1f) minSize = 5;
+        //         if (minSize > (float) o) o = minSize;
+        //         if (preferences.GetBool("safeMode")) preferences.Set($"{type}maxPlanetSize", SafePlanetSize((float) o));
+        //         else preferences.Set($"{type}maxPlanetSize", Utils.ParsePlanetSize((float) o));
+        //         UI[$"{type}maxPlanetSize"].Set(preferences.GetFloat($"{type}maxPlanetSize"));
+        //     };
+        // }
 
         private void SizeBiasCallback(Val o)
         {
@@ -476,83 +531,100 @@ namespace GalacticScale.Generators
             SetAllStarTypeOptions("systemDensity", o);
         }
 
-        private void MinPlanetCountCallback(Val o)
-        {
-            var maxCount = preferences.GetInt("maxPlanetCount");
-            if (maxCount == -1f) maxCount = 25;
-            if (maxCount < o)
-            {
-                //GS2.Warn("<");
-                o = maxCount;
-                preferences.Set("minPlanetCount", maxCount);
-                UI["minPlanetCount"].Set(o);
-            }
-
-            SetAllStarTypeOptions("minPlanetCount", o);
-        }
-
-        private void MaxPlanetCountCallback(Val o)
-        {
-            var minCount = preferences.GetInt("minPlanetCount");
-            if (minCount == -1f) minCount = 1;
-            if (minCount > o)
-            {
-                //GS2.Warn(">");
-                o = minCount;
-                preferences.Set("maxPlanetCount", minCount);
-                UI["maxPlanetCount"].Set(o);
-            }
-
-            SetAllStarTypeOptions("maxPlanetCount", o);
-        }
+        // private void MinPlanetCountCallback(Val o)
+        // {
+        //     var maxCount = preferences.GetInt("maxPlanetCount");
+        //     if (maxCount == -1f) maxCount = 25;
+        //     if (maxCount < o)
+        //     {
+        //         //GS2.Warn("<");
+        //         o = maxCount;
+        //         preferences.Set("minPlanetCount", maxCount);
+        //         UI["minPlanetCount"].Set(o);
+        //     }
+        //
+        //     SetAllStarTypeOptions("minPlanetCount", o);
+        // }
+        //
+        // private void MaxPlanetCountCallback(Val o)
+        // {
+        //     var minCount = preferences.GetInt("minPlanetCount");
+        //     if (minCount == -1f) minCount = 1;
+        //     if (minCount > o)
+        //     {
+        //         //GS2.Warn(">");
+        //         o = minCount;
+        //         preferences.Set("maxPlanetCount", minCount);
+        //         UI["maxPlanetCount"].Set(o);
+        //     }
+        //
+        //     SetAllStarTypeOptions("maxPlanetCount", o);
+        // }
 
         private void SetAllStarTypeOptions(string key, Val value)
         {
             for (var i = 0; i < 14; i++) UI[$"{typeLetter[i]}{key}"].Set(value);
         }
-
-        private void SetAllStarTypeMinSize(Val value)
+        private void SetAllStarTypeRSMin(string key, Val value)
         {
-            for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}minPlanetSize"](value);
+            for (var i = 0; i < 14; i++)
+            {
+                var high = preferences.GetFloatFloat($"{typeLetter[i]}{key}", (1, 10)).Item2;//UI[$"{typeLetter[i]}{key}"].RectTransform.GetComponent<GSUIRangeSlider>().HighValue;
+                UI[$"{typeLetter[i]}{key}"].Set((value, high));
+                preferences.Set($"{typeLetter[i]}{key}", (value, high));
+            }
         }
-
-        private void SetAllStarTypeMaxSize(Val value)
+        private void SetAllStarTypeRSMax(string key, Val value)
         {
-            for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}maxPlanetSize"](value);
+            for (var i = 0; i < 14; i++)
+            {
+                var low = preferences.GetFloatFloat($"{typeLetter[i]}{key}", (1, 10)).Item1;//UI[$"{typeLetter[i]}{key}"].RectTransform.GetComponent<GSUIRangeSlider>().LowValue;
+                UI[$"{typeLetter[i]}{key}"].Set((low,value));
+                preferences.Set($"{typeLetter[i]}{key}", (low, value));
+            }
         }
+        // private void SetAllStarTypeMinSize(Val value)
+        // {
+        //     for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}minPlanetSize"](value);
+        // }
+        //
+        // private void SetAllStarTypeMaxSize(Val value)
+        // {
+        //     for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}maxPlanetSize"](value);
+        // }
 
-        private void MinPlanetSizeCallback(Val o)
-        {
-            var maxSize = preferences.GetFloat("maxPlanetSize");
-            if (maxSize == -1f) maxSize = 510;
-            if (maxSize < o) o = maxSize;
-            if (preferences.GetBool("safeMode")) preferences.Set("minPlanetSize", SafePlanetSize(o));
-            else preferences.Set("minPlanetSize", Utils.ParsePlanetSize(o));
-            UI["minPlanetSize"].Set(preferences.GetFloat("minPlanetSize"));
-            SetAllStarTypeMinSize(o);
-        }
+        // private void MinPlanetSizeCallback(Val o)
+        // {
+        //     var maxSize = preferences.GetFloat("maxPlanetSize");
+        //     if (maxSize == -1f) maxSize = 510;
+        //     if (maxSize < o) o = maxSize;
+        //     if (preferences.GetBool("safeMode")) preferences.Set("minPlanetSize", SafePlanetSize(o));
+        //     else preferences.Set("minPlanetSize", Utils.ParsePlanetSize(o));
+        //     UI["minPlanetSize"].Set(preferences.GetFloat("minPlanetSize"));
+        //     SetAllStarTypeMinSize(o);
+        // }
+        //
+        // private void MaxPlanetSizeCallback(Val o)
+        // {
+        //     var t = o;
+        //     var minSize = preferences.GetFloat("minPlanetSize");
+        //     if (minSize == -1f) minSize = 5;
+        //     if (minSize > o) o = minSize;
+        //     if (preferences.GetBool("safeMode")) preferences.Set("maxPlanetSize", SafePlanetSize(o));
+        //     else preferences.Set("maxPlanetSize", Utils.ParsePlanetSize(o));
+        //     UI["maxPlanetSize"].Set(preferences.GetFloat("maxPlanetSize"));
+        //     SetAllStarTypeMaxSize(o);
+        // }
 
-        private void MaxPlanetSizeCallback(Val o)
-        {
-            var t = o;
-            var minSize = preferences.GetFloat("minPlanetSize");
-            if (minSize == -1f) minSize = 5;
-            if (minSize > o) o = minSize;
-            if (preferences.GetBool("safeMode")) preferences.Set("maxPlanetSize", SafePlanetSize(o));
-            else preferences.Set("maxPlanetSize", Utils.ParsePlanetSize(o));
-            UI["maxPlanetSize"].Set(preferences.GetFloat("maxPlanetSize"));
-            SetAllStarTypeMaxSize(o);
-        }
+        // private float SafePlanetSize(float size)
+        // {
+        //     if (size > 350) return 400;
+        //     if (size > 250) return 300;
+        //     if (size > 150) return 200;
+        //     return 100;
+        // }
 
-        private float SafePlanetSize(float size)
-        {
-            if (size > 350) return 400;
-            if (size > 250) return 300;
-            if (size > 150) return 200;
-            return 100;
-        }
-
-        private Dictionary<string, double> CalculateFrequencies()
+        private void CalculateFrequencies()
         {
             var StarFreqTupleArray = new (string type, double chance)[14];
             var fK = preferences.GetDouble("freqK", 40);
@@ -598,8 +670,6 @@ namespace GalacticScale.Generators
                 StarFreqTupleArray[i].chance += previousElement.chance;
             }
             //GS2.LogJson(starFreq, true);
-
-            return starFreq;
         }
 
         private (EStarType type, ESpectrType spectr) ChooseStarType()
@@ -636,25 +706,33 @@ namespace GalacticScale.Generators
         private int GetMaxPlanetCountForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);
-            return preferences.GetInt($"{sl}maxPlanetCount", preferences.GetInt("maxPlanetCount"));
+            var t = preferences.GetFloatFloat($"{sl}planetCount", (1, 10));
+            return (int)t.Item2;
+            // return preferences.GetInt($"{sl}maxPlanetCount", preferences.GetInt("maxPlanetCount"));
         }
 
         private int GetMinPlanetCountForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);
-            return preferences.GetInt($"{sl}minPlanetCount", preferences.GetInt("minPlanetCount"));
+            var t = preferences.GetFloatFloat($"{sl}planetCount", (1, 10));
+            return (int)t.Item1;
+            // return preferences.GetInt($"{sl}minPlanetCount", preferences.GetInt("minPlanetCount"));
         }
 
         private int GetMaxPlanetSizeForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);
-            return preferences.GetInt($"{sl}maxPlanetSize", preferences.GetInt("maxPlanetSize"));
+            var t = preferences.GetFloatFloat($"{sl}planetSize", (30, 500));
+            return (int)t.Item2;
+            // return preferences.GetInt($"{sl}maxPlanetSize", preferences.GetInt("maxPlanetSize"));
         }
 
         private int GetMinPlanetSizeForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);
-            return preferences.GetInt($"{sl}minPlanetSize", preferences.GetInt("minPlanetSize"));
+            var t = preferences.GetFloatFloat($"{sl}planetSize", (30, 500));
+            return (int)t.Item1;
+            // return preferences.GetInt($"{sl}minPlanetSize", preferences.GetInt("minPlanetSize"));
         }
 
         private int GetSizeBiasForStar(GSStar star)

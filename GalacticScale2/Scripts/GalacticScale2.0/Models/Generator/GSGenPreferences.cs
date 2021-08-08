@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GSSerializer;
 
 namespace GalacticScale
@@ -69,6 +70,12 @@ namespace GalacticScale
             return ContainsKey(key) ? bool.TryParse(this[key], out parsedResult) ? parsedResult : Default : Default;
         }
 
+        public (float lowValue, float highValue) GetFloatFloat(string key, (float, float) Default = new ValueTuple<float, float>())
+        {
+            if (!ContainsKey(key)) return Default;
+            Val o = this[key];
+            return o;
+        }
         public void Set(string key, object value)
         {
             if (value.GetType() == typeof(List<string>))

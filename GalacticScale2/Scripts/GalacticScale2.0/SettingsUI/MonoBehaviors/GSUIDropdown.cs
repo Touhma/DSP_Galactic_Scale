@@ -61,7 +61,7 @@ namespace GalacticScale
         public void OnValueChange(int value)
         {
             // GS2.Log($"ValueChange {value}");
-            GS2.WarnJson(Items);
+            // GS2.WarnJson(Items);
             if (value < 0 || value >= Items.Count)
             {
                 GS2.Warn($"Index out of bounds: {Label} {value}");

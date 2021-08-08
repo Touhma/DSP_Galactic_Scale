@@ -129,7 +129,7 @@ namespace GalacticScale
                         // GS2.Log($"Setting {key} to {def}");
                         GSOptionCallback callback = (Val o) =>
                         {
-                            GS2.Log(key + " " + o); 
+                            // GS2.Log(key + " " + o); 
                             SetExternalTheme(Folder, theme.Key, o);
                         };
                         GSUI checkbox = null;
@@ -162,7 +162,7 @@ namespace GalacticScale
                         var checkbox = GSUI.Checkbox("  " + theme.Key, def,
                             (o) =>
                             {
-                                GS2.Log(Folder + "|" + theme.Key + " " + o);
+                                // GS2.Log(Folder + "|" + theme.Key + " " + o);
                                 SetExternalTheme(Folder, theme.Key, o);
                             }, postfix
 

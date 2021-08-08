@@ -136,13 +136,13 @@ namespace GalacticScale
             // tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x, tsRect.anchoredPosition.x + offset);
 
             var currentGenIndex = GS2.GetCurrentGeneratorIndex();
-            GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
-            GS2.Warn(generatorPluginOptions.Count.ToString());
+            // GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
+            // GS2.Warn(generatorPluginOptions.Count.ToString());
             var scrollContentRect = SettingsPanel.transform.parent.GetComponent<RectTransform>();
             for (var i = 0; i < generatorPluginOptions.Count; i++)
             {
                 //for each canvas
-                GS2.Log("Creating Canvas " + i);
+                // GS2.Log("Creating Canvas " + i);
                 var canvas = Object.Instantiate(sp, scrollContentRect, false).GetComponent<RectTransform>();
 
                 canvas.anchoredPosition = new Vector2(anchorX + 750, anchorY);
@@ -150,7 +150,7 @@ namespace GalacticScale
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
                 if (currentGenIndex == i)
                 {
-                    GS2.Log("Setting canvas active");
+                    // GS2.Log("Setting canvas active");
                     canvas.gameObject.SetActive(true);
                     Canvas.ForceUpdateCanvases();
                 }
@@ -158,7 +158,7 @@ namespace GalacticScale
                 {
                     canvas.gameObject.SetActive(false);
                 }
-                GS2.Log($"Creating Generator Plugin UIElements for {i}");
+                // GS2.Log($"Creating Generator Plugin UIElements for {i}");
                 AddGeneratorPluginUIElements(canvas, i);
             }
 
@@ -182,9 +182,9 @@ namespace GalacticScale
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
         {
-            GS2.Log("AddGeneratorPluginUIElements: " + GS2.Generators[genIndex].Name);
+            // GS2.Log("AddGeneratorPluginUIElements: " + GS2.Generators[genIndex].Name);
             var generatorPluginOption = generatorPluginOptions[genIndex];
-            GS2.Log(GS2.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
+            // GS2.Log(GS2.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
             var list = canvas.GetComponentInChildren<GSUIPanel>().contents;
             for (var i = 0; i < generatorPluginOption.Count; i++)
             {
