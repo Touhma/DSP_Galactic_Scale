@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
-using rail;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GalacticScale
 {
@@ -17,11 +17,10 @@ namespace GalacticScale
         public static bool Failed = false;
         public static string updateMessage = "";
         public static bool Initialized = false;
-        public static Dictionary<string,ThemeLibrary> availableExternalThemes = new Dictionary<string, ThemeLibrary>();
-
-        public static ExternalThemeSelector themeSelector;
-        // public static bool CheatMode = false;
+        public static Dictionary<string, ThemeLibrary> availableExternalThemes = new Dictionary<string, ThemeLibrary>();
+        public static bool canvasOverlay = false;
         public static bool ResearchUnlocked = false;
+        public static Image splashImage;
 
         // public static bool MinifyJson = false;
         public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
@@ -37,7 +36,9 @@ namespace GalacticScale
         public static GameDesc gameDesc;
         public static Dictionary<int, GSPlanet> gsPlanets = new Dictionary<int, GSPlanet>();
         public static Dictionary<int, GSStar> gsStars = new Dictionary<int, GSStar>();
-        private static AssetBundle _bundle;
+        private static AssetBundle bundle;
+
+        public static bool MenuHasLoaded;
         // public static AssetBundle bundle2;
 
         public static bool IsMenuDemo
@@ -54,19 +55,20 @@ namespace GalacticScale
 
         public static bool Vanilla => ActiveGenerator.GUID == "space.customizing.generators.vanilla";
 
-        public static AssetBundle bundle
+        public static AssetBundle Bundle
         {
             get
             {
-                if (_bundle == null)
+                if (bundle == null)
                 {
                     var path = Path.Combine(AssemblyPath, "galacticbundle");
                     var path2 = Path.Combine(AssemblyPath, "galactic.bundle");
-                    if (File.Exists(path)) _bundle = AssetBundle.LoadFromFile(path);
-                    else _bundle = AssetBundle.LoadFromFile(path2);
+                    if (File.Exists(path)) bundle = AssetBundle.LoadFromFile(path);
+                    else bundle = AssetBundle.LoadFromFile(path2);
+                    // foreach (var name in _bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
                 }
 
-                if (_bundle == null)
+                if (bundle == null)
                 {
                     Error("Failed to load AssetBundle!");
                     UIMessageBox.Show("Error",
@@ -76,71 +78,67 @@ namespace GalacticScale
                     return null;
                 }
 
-                return _bundle;
+                return bundle;
             }
         }
 
         public static void Init()
 
         {
-            GS2.Warn("Start");
-            // if (bundle2 == null)
-            // {
-            //     var path = Path.Combine(AssemblyPath, "themeselector");
-            //     if (File.Exists(path)) bundle2 = AssetBundle.LoadFromFile(path);
-            //     GS2.Warn(" ");
-            //     
-            //     GS2.Warn(" ");
-            // }
+            if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
+            {
+                updateMessage +=
+                    "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward";
+                File.Delete(Path.Combine(AssemblyPath, "icon.png"));
+            }
+            Warn("Start");
             NebulaCompatibility.Init();
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
-                GS2.Warn($"Moving Configs from {OldDataDir} to {DataDir}");
+                Warn($"Moving Configs from {OldDataDir} to {DataDir}");
                 Directory.Move(OldDataDir, DataDir);
-                updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n";
-
+                updateMessage +=
+                    "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n";
             }
+
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             Config.Init();
-            
+
             LoadPreferences(true);
-            // LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
-            // ExternalThemeProcessor.LoadEnabledThemes();
-            //LogJson(availableExternalThemes);
-            Log("GalacticScale2|Creating List of Themes");
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
-            Log("GalacticScale2|Init|Processing Themes");
             foreach (var t in themes) t.Process();
             LoadPlugins();
             LoadPreferences();
             Log("End");
         }
 
-        public static bool MenuHasLoaded = false;
         public static void OnMenuLoaded()
         {
             if (MenuHasLoaded) return;
             MenuHasLoaded = true;
-            GS2.Log("Loading External Themes");
+            Log("Loading External Themes");
             LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
             ExternalThemeProcessor.LoadEnabledThemes();
+            Config.InitThemePanel();
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
             if (Config.Dev)
             {
                 var da = LDB._veges.dataArray;
-                Dictionary<int, string> vegeDict = new Dictionary<int, string>();
+                var vegeDict = new Dictionary<int, string>();
                 foreach (var vegeProto in da)
                 {
-                    string name = vegeProto.Name;
-                    string name2 = vegeProto.name;
-                    int id = vegeProto.ID;
+                    var name = vegeProto.Name;
+                    var name2 = vegeProto.name;
+                    var id = vegeProto.ID;
                     vegeDict.Add(id, name.Translate() + " " + name2.Translate());
                 }
+
                 DumpObjectToJson(Path.Combine(DataDir, "ldbvege.json"), vegeDict);
             }
+
             if (updateMessage != "")
             {
-                UIMessageBox.Show("Update Information", GS2.updateMessage, "Noted!", 0);
+                UIMessageBox.Show("Update Information", updateMessage, "Noted!", 0);
                 updateMessage = "";
             }
         }

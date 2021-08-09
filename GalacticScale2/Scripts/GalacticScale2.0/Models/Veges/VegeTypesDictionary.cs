@@ -327,7 +327,8 @@ namespace GalacticScale
                 ["MedFragment6"] = 1005,
                 ["MedFragment7"] = 1006,
                 ["MedFragment8"] = 1007,
-
+                ["MedBroken7"] = 1006,
+                ["MedBroken8"] = 1007,
                 ["RedStoneGrass3"] = 1011,
                 ["RedStoneGrass8"] = 1012,
                 ["RedStoneGrass9"] = 1013,

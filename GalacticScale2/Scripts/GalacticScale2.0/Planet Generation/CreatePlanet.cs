@@ -64,6 +64,11 @@ namespace GalacticScale
             planet.name = gsPlanet.Name != "" ? gsPlanet.Name : star.name + " " + roman;
             // GS2.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
             planet.orbitRadius = gsPlanet.OrbitRadius;
+            if (planet.orbitRadius < 0)
+            {
+                GS2.Warn($"Planet {planet.name} orbit broken. {star.type} {star.spectr}");
+                planet.orbitRadius = random.NextFloat(1, 50);
+            }
             planet.orbitInclination = gsPlanet.OrbitInclination;
             //planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
             planet.orbitalPeriod = gsPlanet.OrbitalPeriod;

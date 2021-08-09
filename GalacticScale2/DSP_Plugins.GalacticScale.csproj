@@ -50,6 +50,9 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="GSUI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\GSUI.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\netstandard.dll</HintPath>
     </Reference>
@@ -151,7 +154,6 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
-    <Compile Include="Scripts\3rdParty\RangeSlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
@@ -225,8 +227,10 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetCoroutine.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PowerSystem\PatchOnPowerSystem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\TrashSystem\Gravity.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\OnStarCountSliderValueChange - Copy.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIMainMenu\_OnOpen.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\_OnClose.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarDetail\RefreshDynamicProperties.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\Modeler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\LUT Rework.cs" />
@@ -250,7 +254,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\OnNavigationArrive.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlayerMove_Sail\GameTick.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\EnterGame.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\OnStarCountSliderValueChange.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\OnResourceMultiplierValueChange.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\_OnOpen.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\_OnInit.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\SetStarMapGalaxy.cs" />
@@ -275,19 +279,16 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ExternalThemeSelector.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MainSettings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIDropdown.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIHeader.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIRangeSlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUISlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIInput.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIBtn.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIButton.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIList.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIPanel.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUITemplate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUITemplates.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIToggle.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\NoTutorials.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\SkipPrologueCheckbox.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ForceRareSpawnCheckbox.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\DebugCheckbox.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectGroup.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectItem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectorUI.cs" />
@@ -332,6 +333,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\VolcanicAsh.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\Mediterranean.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2R.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\Vanilla.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetFactory\FlattenTerrain.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\NearColliderLogic\GetVeinsInAreaNonAlloc.cs" />
@@ -431,7 +433,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

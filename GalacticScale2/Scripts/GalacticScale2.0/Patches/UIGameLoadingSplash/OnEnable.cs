@@ -17,7 +17,7 @@ namespace GalacticScale
             foreach (var image in images)
                 if (image.name == "black-bg")
                 {
-                    var splash = Utils.GetSpriteAsset("splash");
+                    var splash = Utils.GetSplashSprite();
                     if (splash != null) image.sprite = splash;
 
                     image.color = Color.white;

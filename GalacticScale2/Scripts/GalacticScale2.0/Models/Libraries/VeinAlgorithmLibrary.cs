@@ -11,7 +11,8 @@ namespace GalacticScale
             return new VeinAlgorithmLibrary
             {
                 ["Vanilla"] = VeinAlgorithms.GenerateVeinsVanilla,
-                ["GS2"] = VeinAlgorithms.GenerateVeinsGS2
+                ["GS2"] = VeinAlgorithms.GenerateVeinsGS2,
+                ["GS2R"] = VeinAlgorithms.GenerateVeinsGS2R
             };
         }
 

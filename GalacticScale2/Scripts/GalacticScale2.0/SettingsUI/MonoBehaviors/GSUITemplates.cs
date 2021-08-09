@@ -10,13 +10,14 @@ namespace GalacticScale
     {
         public GSUITemplate list;
         public GSUITemplate button;
-        public GSUITemplate minmax;
+        public GSUITemplate rangeslider;
         public GSUITemplate slider;
-        public GSUITemplate combo;
+        public GSUITemplate dropdown;
         public GSUITemplate header;
         public GSUITemplate spacer;
+        public GSUITemplate separator;
         public GSUITemplate toggle;
-        
+        public GSUITemplate input;
     }
 
 }

@@ -94,7 +94,7 @@ namespace GalacticScale
                 //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
                 if (CubeMap == "GS2")
                 {
-                    var x = GS2.bundle.LoadAsset<Cubemap>("cube2");
+                    var x = GS2.Bundle.LoadAsset<Cubemap>("cube2");
                     if (Reflections.a != 0)
                         ReflectionMap = Utils.TintCubeMap(x, Reflections);
                     //GS2.Log("Set Reflection Map to Tinted One");

@@ -15,31 +15,42 @@ namespace GalacticScale
         {
             public static void LoadEnabledThemes()
             {
-                GS2.LogJson(Config.ExternalThemeNames);
+                // GS2.LogJson(Config.ExternalThemeNames);
+                GS2.externalThemes = new ThemeLibrary();
                 foreach (string name in GS2.Config.ExternalThemeNames)
                 {
+                    // GS2.Log($"Loading {name}");
                     var fragments = name.Split('|');
                     var group = fragments[0];
                     var item = fragments[1];
-                    if (group == "Root")
+                    if (availableExternalThemes.ContainsKey(group) && availableExternalThemes[group].ContainsKey(item))
                     {
-                        if (!GS2.availableExternalThemes.ContainsKey("Root"))
-                        {
-                            GS2.Log("No loose themes loaded!");
-                            continue;
-                        }
-                        ThemeLibrary tl = GS2.availableExternalThemes["Root"];
-                        if (tl.ContainsKey(item)) GS2.externalThemes.Add(item, tl[item]);
+                        GS2.externalThemes.Add(item, GS2.availableExternalThemes[group][item]);
+                        // GS2.Log("Added {name}");
                     }
-                    else if (GS2.availableExternalThemes.ContainsKey(group))
+                    else
                     {
-                        GS2.externalThemes.AddRange(GS2.availableExternalThemes[group]);
+                        GS2.Warn($"Missing Theme {group} - {item}");
                     }
+                    // if (group == "Root")
+                    // {
+                    //     if (!GS2.availableExternalThemes.ContainsKey("Root"))
+                    //     {
+                    //         GS2.Log("No loose themes loaded!");
+                    //         continue;
+                    //     }
+                    //     ThemeLibrary tl = GS2.availableExternalThemes["Root"];
+                    //     if (tl.ContainsKey(item)) GS2.externalThemes.Add(item, tl[item]);
+                    // }
+                    // else if (GS2.availableExternalThemes.ContainsKey(group))
+                    // {
+                    //     GS2.externalThemes.AddRange(GS2.availableExternalThemes[group]);
+                    // }
 
                 }
-                GS2.Warn("External Themes:");
-                GS2.LogJson(GS2.externalThemes.Keys.ToList());
-                GS2.Warn("End External Themes");
+                // GS2.Warn("External Themes:");
+                // GS2.LogJson(GS2.externalThemes.Keys.ToList());
+                // GS2.Warn("End External Themes");
             }
         }
     }

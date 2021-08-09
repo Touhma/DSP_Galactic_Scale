@@ -24,7 +24,13 @@ namespace GalacticScale
 
             return fsJsonPrinter.PrettyJson(data);
         }
-
+        public static VectorLF3 PolarToCartesian(double p, double theta, double phi)
+        {
+            var x = p * Math.Sin(phi) * Math.Cos(theta);
+            var y = p * Math.Sin(phi) * Math.Sin(theta);
+            var z = p * Math.Cos(phi);
+            return new VectorLF3(z, y, z);
+        }
         public static Vector3 PositionAtSurface(Vector3 position, GSPlanet planet)
         {
             return position.normalized * planet.planetData.data.QueryHeight(position);
@@ -86,6 +92,7 @@ namespace GalacticScale
 
         public static float CalculateOrbitPeriod(float orbitRadius, float speed = 0.0005f)
         {
+            if (orbitRadius <= 0) return 100000f;
             var d = Mathf.PI * orbitRadius * 2;
             return d / speed;
         }
@@ -148,9 +155,25 @@ namespace GalacticScale
 
         public static Sprite GetSpriteAsset(string name)
         {
-            return GS2.bundle.LoadAsset<Sprite>(name);
+            return GS2.Bundle.LoadAsset<Sprite>(name);
         }
-
+        public static Sprite GetSplashSprite()
+        {
+            var r = new System.Random();
+            var i = r.Next(8);
+            var spriteName = "splash";
+            if (i > 0) spriteName = "s" + i;
+            // switch (i)
+            // {
+            //     case 1: spriteName = "s1"; break;
+            //     case 2: spriteName = "s2"; break;
+            //     case 3: spriteName = "s3"; break;
+            //     case 4: spriteName = "s4"; break;
+            //     case 4: spriteName = "s4"; break;
+            //     
+            // }
+            return GS2.Bundle.LoadAsset<Sprite>(spriteName);
+        }
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
             // return input; //Kills performance too much to use!
@@ -215,7 +238,7 @@ namespace GalacticScale
 
         public static Texture GetTextureFromBundle(string name)
         {
-            var bundle = GS2.bundle;
+            var bundle = GS2.Bundle;
             return bundle.LoadAsset<Texture>(name);
         }
 

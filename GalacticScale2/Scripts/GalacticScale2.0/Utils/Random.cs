@@ -75,7 +75,13 @@ namespace GalacticScale
                     return maxExclusive - 1;
                 }
 
-                return base.Next(minInclusive, maxExclusive);
+                if (maxExclusive < 0)
+                {
+                    Error($"Max {maxExclusive} < 0");
+                    return maxExclusive;
+                }
+            
+            return base.Next(minInclusive, maxExclusive);
             }
 
             public int NextInclusive(int minInclusive, int maxInclusive)

@@ -58,9 +58,15 @@ namespace GalacticScale.Generators
                 //Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
-
-                    if (range.outer - range.inner > 4 * planet.SystemRadius)
+                {
+                    //GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius}");
+                    if (range.outer - range.inner >
+                        (1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
+                    {
+                        //Log($"Adding {range}");
                         availableOrbits.Add(range);
+                    }
+                }
 
                 if (availableOrbits.Count == 0)
                 {
@@ -78,22 +84,24 @@ namespace GalacticScale.Generators
                             success = true;
                             break;
                         }
-
+                    //GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
                     if (success) continue;
 
-                    Warn("After all that, just couldn't find an orbit. Throwing planet into the sun.");
+                    Warn($"After all that, just couldn't find an orbit for {planet.Name}. Throwing planet into the sun.");
                     star.Planets.Remove(planet);
                     continue;
                 }
 
                 var selectedRange = r.Item(availableOrbits);
-
-                var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius*2,
-                    selectedRange.outer - planet.SystemRadius*2);
+                GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
+                var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius,
+                    selectedRange.outer - planet.SystemRadius);
                 freeOrbitRanges.Remove(selectedRange);
                 orbit = new Orbit(radius);
                 orbit.planets.Add(planet);
                 planet.OrbitRadius = radius;
+                //GS2.Log($"-{planet.Name} orbit radius {planet.OrbitRadius}");
+
                 planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                 //Log(
                     //$"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
@@ -120,7 +128,7 @@ namespace GalacticScale.Generators
                         var planet = planets2[j];
                         planet.Name += $" {i}{(EAlphabet) j}";
                     }
-                else planets2[0].Name += $" {i}";
+                // else planets2[0].Name += $" {i}";
             }
         }
 

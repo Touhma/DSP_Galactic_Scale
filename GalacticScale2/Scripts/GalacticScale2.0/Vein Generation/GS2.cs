@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GalacticScale
@@ -33,7 +34,18 @@ namespace GalacticScale
 
         private static void InitializeFromVeinSettings(GSPlanet gsPlanet)
         {
-            gsPlanet.veinSettings = GS2.ThemeLibrary[gsPlanet.Theme].VeinSettings.Clone();
+            // GS2.Warn($"Initializing Veins for Theme { gsPlanet.Theme}");
+            // GS2.WarnJson(gsPlanet?.veinSettings);
+            if (gsPlanet?.veinSettings == null)
+            {
+                // GS2.Log("Cloning veinsettings for planet");
+                if (!GSSettings.ThemeLibrary.ContainsKey(gsPlanet.Theme))
+                {
+                    GS2.Warn($"{gsPlanet.Theme} not found in themelibrary. ThemeLibrary Contents:");
+                    GS2.WarnJson(GSSettings.ThemeLibrary.Keys.ToList());
+                }
+                gsPlanet.veinSettings = GSSettings.ThemeLibrary[gsPlanet.Theme].VeinSettings.Clone();
+            }
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
             foreach (var veinGroup in ores) veinSpots[(int) veinGroup.type]++;

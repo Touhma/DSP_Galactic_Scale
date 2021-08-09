@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GSSerializer;
 
 namespace GalacticScale
@@ -9,7 +10,7 @@ namespace GalacticScale
         {
             return ContainsKey(key) ? this[key] : null;
         }
-
+        
         public string GetString(string key, string Default = "", bool forceToString = false)
         {
             var parsedString = ContainsKey(key)
@@ -37,25 +38,30 @@ namespace GalacticScale
             return ContainsKey(key) ? double.TryParse(this[key], out parsedResult) ? parsedResult : Default : Default;
         }
 
-        internal List<string> StringList(string key, List<string> Default)
+        public List<string> GetStringList(string key, List<string> Default)
         {
+            // GS2.Warn("Getting StringList " + key);
             if (!ContainsKey(key)) return Default;
+            // GS2.Warn("Didnt return default");
             var fsSerializer = new fsSerializer();
-            List<string> parsedResult = new List<string>();
-            fsResult result = fsJsonParser.Parse(this[key], out fsData data);
+            var parsedResult = new List<string>();
+            var result = fsJsonParser.Parse(this[key], out var data);
             if (result.Failed)
             {
                 GS2.Warn("Failed to parse StringList " + key);
                 return Default;
             }
+
             var deserializedResult = fsSerializer.TryDeserialize(data, ref parsedResult);
             if (deserializedResult.Failed)
             {
                 GS2.Warn("Failed to deserialize StringList " + key);
                 return Default;
             }
+
+            // GS2.Warn("Returning:");
+            // GS2.WarnJson(parsedResult);
             return parsedResult;
-            
         }
 
         public bool GetBool(string key, bool Default = false)
@@ -64,21 +70,31 @@ namespace GalacticScale
             return ContainsKey(key) ? bool.TryParse(this[key], out parsedResult) ? parsedResult : Default : Default;
         }
 
+        public (float lowValue, float highValue) GetFloatFloat(string key, (float, float) Default = new ValueTuple<float, float>())
+        {
+            if (!ContainsKey(key)) return Default;
+            Val o = this[key];
+            return o;
+        }
         public void Set(string key, object value)
         {
             if (value.GetType() == typeof(List<string>))
             {
-                fsSerializer fs = new fsSerializer();
-                var result = fs.TrySerialize(value, out fsData data);
+                var fs = new fsSerializer();
+                var result = fs.TrySerialize(value, out var data);
                 if (result.Failed)
                 {
                     GS2.Warn("Failed to Serialize " + key);
                     return;
                 }
+
                 var stringResult = fsJsonPrinter.CompressedJson(data);
                 this[key] = stringResult;
             }
-            else this[key] = value.ToString();
+            else
+            {
+                this[key] = value.ToString();
+            }
         }
 
         public string SerializeAndSet(string key, object value)
