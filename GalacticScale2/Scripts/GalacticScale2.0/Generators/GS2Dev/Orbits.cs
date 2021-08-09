@@ -59,10 +59,13 @@ namespace GalacticScale.Generators
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
                 {
-                    GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius}");
+                    //GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius}");
                     if (range.outer - range.inner >
                         (1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
-                    {Log($"Adding {range}"); availableOrbits.Add(range);}
+                    {
+                        //Log($"Adding {range}");
+                        availableOrbits.Add(range);
+                    }
                 }
 
                 if (availableOrbits.Count == 0)
@@ -81,7 +84,7 @@ namespace GalacticScale.Generators
                             success = true;
                             break;
                         }
-                    GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
+                    //GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
                     if (success) continue;
 
                     Warn($"After all that, just couldn't find an orbit for {planet.Name}. Throwing planet into the sun.");
@@ -97,7 +100,7 @@ namespace GalacticScale.Generators
                 orbit = new Orbit(radius);
                 orbit.planets.Add(planet);
                 planet.OrbitRadius = radius;
-                GS2.Log($"-{planet.Name} orbit radius {planet.OrbitRadius}");
+                //GS2.Log($"-{planet.Name} orbit radius {planet.OrbitRadius}");
 
                 planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                 //Log(

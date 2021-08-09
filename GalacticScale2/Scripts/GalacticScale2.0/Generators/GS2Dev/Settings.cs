@@ -331,6 +331,7 @@ namespace GalacticScale.Generators
             preferences.Set("systemDensity", 3);
             for (var i = 0; i < 14; i++)
             {
+                preferences.Set($"{typeLetter[i]}minStars", 0);
                 preferences.Set($"{typeLetter[i]}planetCount", (1,10));
                 preferences.Set($"{typeLetter[i]}planetSize", (50,500));
                 // preferences.Set($"{typeLetter[i]}minPlanetCount", 1);
@@ -399,19 +400,33 @@ namespace GalacticScale.Generators
 
             var FreqOptions = new GSOptions();
             UI.Add("freqK", FreqOptions.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
+            UI.Add("KminStars", FreqOptions.Add(GSUI.Slider("Minimum Type K".Translate(), 0, 0, 100, "KminStars")));
             UI.Add("freqM", FreqOptions.Add(GSUI.Slider("Freq. Type M".Translate(), 0, 50, 100, "freqM")));
+            UI.Add("MminStars", FreqOptions.Add(GSUI.Slider("Minimum Type M".Translate(), 0, 0, 100, "MminStars")));
             UI.Add("freqG", FreqOptions.Add(GSUI.Slider("Freq. Type G".Translate(), 0, 30, 100, "freqG")));
+            UI.Add("GminStars", FreqOptions.Add(GSUI.Slider("Minimum Type G".Translate(), 0, 0, 100, "GminStars")));
             UI.Add("freqF", FreqOptions.Add(GSUI.Slider("Freq. Type F".Translate(), 0, 25, 100, "freqF")));
+            UI.Add("FminStars", FreqOptions.Add(GSUI.Slider("Minimum Type F".Translate(), 0, 0, 100, "FminStars")));
             UI.Add("freqA", FreqOptions.Add(GSUI.Slider("Freq. Type A".Translate(), 0, 10, 100, "freqA")));
+            UI.Add("AminStars", FreqOptions.Add(GSUI.Slider("Minimum Type A".Translate(), 0, 0, 100, "AminStars")));
             UI.Add("freqB", FreqOptions.Add(GSUI.Slider("Freq. Type B".Translate(), 0, 4, 100, "freqB")));
+            UI.Add("BminStars", FreqOptions.Add(GSUI.Slider("Minimum Type B".Translate(), 0, 0, 100, "BminStars")));
             UI.Add("freqO", FreqOptions.Add(GSUI.Slider("Freq. Type O".Translate(), 0, 2, 100, "freqO")));
+            UI.Add("OminStars", FreqOptions.Add(GSUI.Slider("Minimum Type O".Translate(), 0, 0, 100, "OminStars")));
             UI.Add("freqBH", FreqOptions.Add(GSUI.Slider("Freq. BlackHole".Translate(), 0, 1, 100, "freqBH")));
+            UI.Add("BHminStars", FreqOptions.Add(GSUI.Slider("Minimum BlackHole".Translate(), 0, 0, 100, "BHminStars")));
             UI.Add("freqN", FreqOptions.Add(GSUI.Slider("Freq. Neutron".Translate(), 0, 1, 100, "freqN")));
+            UI.Add("NminStars", FreqOptions.Add(GSUI.Slider("Minimum Neutron".Translate(), 0, 0, 100, "NminStars")));
             UI.Add("freqW", FreqOptions.Add(GSUI.Slider("Freq. WhiteDwarf".Translate(), 0, 2, 100, "freqW")));
+            UI.Add("WminStars", FreqOptions.Add(GSUI.Slider("Minimum WhiteDwarf".Translate(), 0, 0, 100, "WminStars")));
             UI.Add("freqRG", FreqOptions.Add(GSUI.Slider("Freq. Red Giant".Translate(), 0, 1, 100, "freqRG")));
+            UI.Add("RGminStars", FreqOptions.Add(GSUI.Slider("Minimum Red Giant".Translate(), 0, 0, 100, "RGminStars")));
             UI.Add("freqYG", FreqOptions.Add(GSUI.Slider("Freq. Yellow Giant".Translate(), 0, 1, 100, "freqYG")));
+            UI.Add("YGminStars", FreqOptions.Add(GSUI.Slider("Minimum Yellow Giant".Translate(), 0,0, 100, "YGminStars")));
             UI.Add("freqWG", FreqOptions.Add(GSUI.Slider("Freq. White Giant".Translate(), 0, 1, 100, "freqWG")));
+            UI.Add("WGminStars", FreqOptions.Add(GSUI.Slider("Minimum White Giant".Translate(), 0, 0, 100, "WGminStars")));
             UI.Add("freqBG", FreqOptions.Add(GSUI.Slider("Freq. Blue Giant".Translate(), 0, 1, 100, "freqBG")));
+            UI.Add("BGminStars", FreqOptions.Add(GSUI.Slider("Minimum Blue Giant".Translate(), 0, 0, 100, "BGminStars")));
             Options.Add(GSUI.Group("Star Relative Frequencies", FreqOptions, "How often to select a star type"));
             Options.Add(GSUI.Spacer());
             Options.Add(GSUI.Header("Default Settings", "Changing these will reset all star specific options below"));
@@ -695,19 +710,39 @@ namespace GalacticScale.Generators
             }
             //GS2.LogJson(starFreq, true);
         }
-
+        private List<string> ForcedStars = new List<string>();
+        private void InitForcedStars()
+        {
+            ForcedStars = new List<string>();
+            for (var i = 0; i < 14; i++)
+            {
+                var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
+                for (var j = 0; j < count; j++) ForcedStars.Add(typeLetter[i]);
+            }
+            GS2.Warn("Forced Stars:");
+            GS2.WarnJson(ForcedStars);
+        }
         private (EStarType type, ESpectrType spectr) ChooseStarType()
         {
-            var choice = random.NextDouble();
             var starType = "";
-            for (var i = 0; i < starFreq.Count; i++)
-                if (choice < starFreq.ElementAt(i).Value)
-                {
-                    starType = starFreq.ElementAt(i).Key;
-                    //GS2.Warn($"Picked Startype {starType} with choice {choice} and value {starFreq.ElementAt(i).Value}");
-                    break;
-                }
+            if (ForcedStars.Count > 0)
+            {
+                var choice = random.ItemWithIndex(ForcedStars);
+                starType = choice.Item2;
+                ForcedStars.RemoveAt(choice.Item1);
+            }
+            else
+            {
+                var choice = random.NextDouble();
 
+                for (var i = 0; i < starFreq.Count; i++)
+                    if (choice < starFreq.ElementAt(i).Value)
+                    {
+                        starType = starFreq.ElementAt(i).Key;
+                        //GS2.Warn($"Picked Startype {starType} with choice {choice} and value {starFreq.ElementAt(i).Value}");
+                        break;
+                    }
+            }
             switch (starType)
             {
                 case "K": return (EStarType.MainSeqStar, ESpectrType.K);

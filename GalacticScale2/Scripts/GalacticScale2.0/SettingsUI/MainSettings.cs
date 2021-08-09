@@ -27,6 +27,7 @@ namespace GalacticScale
         public bool FixCopyPaste => true; //Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
+        public float ResourceMultiplier => Preferences.GetFloat("Resource Multiplier", 1f);
         public List<string> ExternalThemeNames => Preferences.GetStringList("External Themes", new List<string>());
         public Dictionary<string, GSUI> ThemeCheckboxes = new Dictionary<string, GSUI>();
         public string Name => "Main Settings";
@@ -90,6 +91,11 @@ namespace GalacticScale
             Options.Add(GSUI.Group("Custom Galaxy Export", JsonOptions, "Usable once in game"));
         }
 
+        public void SetResourceMultiplier(float val)
+        {
+            Preferences.Set("Resource Multiplier", val);
+            GS2.SavePreferences();
+        }
         public void SetExternalTheme(string folder, string name, bool value)
         {
             // GS2.Warn($"Setting External Theme:{folder}|{name} to {value}");

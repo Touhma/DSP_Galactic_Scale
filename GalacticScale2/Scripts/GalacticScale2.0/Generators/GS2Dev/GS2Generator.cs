@@ -43,6 +43,7 @@ namespace GalacticScale.Generators
             Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
             highStopwatch.Begin();
+            InitForcedStars();
             SetupBaseThemes();
             Log($"Base Themes Setup: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
