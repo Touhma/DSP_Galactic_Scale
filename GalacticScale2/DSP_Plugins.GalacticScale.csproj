@@ -227,7 +227,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetModelingManager\ModelingPlanetCoroutine.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PowerSystem\PatchOnPowerSystem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\TrashSystem\Gravity.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\OnStarCountSliderValueChange - Copy.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIGalaxySelect\OnStarCountSliderValueChange.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIGameLoadingSplash\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIMainMenu\_OnOpen.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIOptionWindow\_OnClose.cs" />
@@ -433,7 +433,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

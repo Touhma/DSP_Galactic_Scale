@@ -277,8 +277,8 @@ namespace GalacticScale.Generators
             hzDefs.Add("YG", Utils.CalculateHabitableZone(1f));
             hzDefs.Add("WG", Utils.CalculateHabitableZone(6f));
             hzDefs.Add("BG", Utils.CalculateHabitableZone(10f));
-            hzDefs.Add("W", Utils.CalculateHabitableZone(0.05f));
-            hzDefs.Add("N", Utils.CalculateHabitableZone(0.35f));
+            hzDefs.Add("WD", Utils.CalculateHabitableZone(0.05f));
+            hzDefs.Add("NS", Utils.CalculateHabitableZone(0.35f));
             hzDefs.Add("BH", Utils.CalculateHabitableZone(0.006f));
         }
         private void InitPreferences()
@@ -320,8 +320,8 @@ namespace GalacticScale.Generators
             preferences.Set("freqB", 4);
             preferences.Set("freqO", 2);
             preferences.Set("freqBH", 1);
-            preferences.Set("freqN", 1);
-            preferences.Set("freqW", 2);
+            preferences.Set("freqNS", 1);
+            preferences.Set("freqWD", 2);
             preferences.Set("freqRG", 1);
             preferences.Set("freqYG", 1);
             preferences.Set("freqWG", 1);
@@ -415,10 +415,10 @@ namespace GalacticScale.Generators
             UI.Add("OminStars", FreqOptions.Add(GSUI.Slider("Minimum Type O".Translate(), 0, 0, 100, "OminStars")));
             UI.Add("freqBH", FreqOptions.Add(GSUI.Slider("Freq. BlackHole".Translate(), 0, 1, 100, "freqBH")));
             UI.Add("BHminStars", FreqOptions.Add(GSUI.Slider("Minimum BlackHole".Translate(), 0, 0, 100, "BHminStars")));
-            UI.Add("freqN", FreqOptions.Add(GSUI.Slider("Freq. Neutron".Translate(), 0, 1, 100, "freqN")));
-            UI.Add("NminStars", FreqOptions.Add(GSUI.Slider("Minimum Neutron".Translate(), 0, 0, 100, "NminStars")));
-            UI.Add("freqW", FreqOptions.Add(GSUI.Slider("Freq. WhiteDwarf".Translate(), 0, 2, 100, "freqW")));
-            UI.Add("WminStars", FreqOptions.Add(GSUI.Slider("Minimum WhiteDwarf".Translate(), 0, 0, 100, "WminStars")));
+            UI.Add("freqNS", FreqOptions.Add(GSUI.Slider("Freq. Neutron".Translate(), 0, 1, 100, "freqNS")));
+            UI.Add("NSminStars", FreqOptions.Add(GSUI.Slider("Minimum Neutron".Translate(), 0, 0, 100, "NSminStars")));
+            UI.Add("freqWD", FreqOptions.Add(GSUI.Slider("Freq. WhiteDwarf".Translate(), 0, 2, 100, "freqWD")));
+            UI.Add("WDminStars", FreqOptions.Add(GSUI.Slider("Minimum WhiteDwarf".Translate(), 0, 0, 100, "WDminStars")));
             UI.Add("freqRG", FreqOptions.Add(GSUI.Slider("Freq. Red Giant".Translate(), 0, 1, 100, "freqRG")));
             UI.Add("RGminStars", FreqOptions.Add(GSUI.Slider("Minimum Red Giant".Translate(), 0, 0, 100, "RGminStars")));
             UI.Add("freqYG", FreqOptions.Add(GSUI.Slider("Freq. Yellow Giant".Translate(), 0, 1, 100, "freqYG")));
@@ -674,8 +674,8 @@ namespace GalacticScale.Generators
             var fB = preferences.GetDouble("freqB", 4);
             var fO = preferences.GetDouble("freqO", 2);
             var fBH = preferences.GetDouble("freqBH", 1);
-            var fN = preferences.GetDouble("freqN", 1);
-            var fW = preferences.GetDouble("freqW", 2);
+            var fN = preferences.GetDouble("freqNS", 1);
+            var fW = preferences.GetDouble("freqWD", 2);
             var fRG = preferences.GetDouble("freqRG", 1);
             var fYG = preferences.GetDouble("freqYG", 1);
             var fWG = preferences.GetDouble("freqWG", 1);
@@ -691,8 +691,8 @@ namespace GalacticScale.Generators
             StarFreqTupleArray[5] = ("B", fB / total);
             StarFreqTupleArray[6] = ("O", fO / total);
             StarFreqTupleArray[7] = ("BH", fBH / total);
-            StarFreqTupleArray[8] = ("N", fN / total);
-            StarFreqTupleArray[9] = ("W", fW / total);
+            StarFreqTupleArray[8] = ("NS", fN / total);
+            StarFreqTupleArray[9] = ("WD", fW / total);
             StarFreqTupleArray[10] = ("RG", fRG / total);
             StarFreqTupleArray[11] = ("YG", fYG / total);
             StarFreqTupleArray[12] = ("WG", fWG / total);
@@ -753,8 +753,8 @@ namespace GalacticScale.Generators
                 case "B": return (EStarType.MainSeqStar, ESpectrType.B);
                 case "O": return (EStarType.MainSeqStar, ESpectrType.O);
                 case "BH": return (EStarType.BlackHole, ESpectrType.X);
-                case "N": return (EStarType.NeutronStar, ESpectrType.X);
-                case "W": return (EStarType.WhiteDwarf, ESpectrType.X);
+                case "NS": return (EStarType.NeutronStar, ESpectrType.X);
+                case "WD": return (EStarType.WhiteDwarf, ESpectrType.X);
                 case "RG": return (EStarType.GiantStar, ESpectrType.M);
                 case "YG": return (EStarType.GiantStar, ESpectrType.G);
                 case "WG": return (EStarType.GiantStar, ESpectrType.A);
