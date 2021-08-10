@@ -146,13 +146,13 @@ namespace GalacticScale.Generators
                     body.OrbitInclination = (random.NextBool() ? 1 : -1) * (10f + random.NextFloat() * 50f);
                 body.OrbitPhase = random.Next(360);
                 body.Obliquity = random.NextFloat() * 20;
-                body.RotationPeriod = random.Next(60, 3600);
+                body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f)*random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
                 if (IsPlanetOfStar(star, body) && body.OrbitRadius < preferences.GetFloat("innerPlanetDistance", 1f) && (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets", false)) )
                     body.RotationPeriod = body.OrbitalPeriod; // Tidal Lock
-                else if (body.OrbitRadius < 1.5f && random.NextFloat() < 0.2f)
+                else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 1.5f && random.NextFloat() < 0.2f)
                     body.RotationPeriod = body.OrbitalPeriod / 2; // 1:2 Resonance
-                else if (body.OrbitRadius < 2f && random.NextFloat() < 0.1f)
+                else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 2f && random.NextFloat() < 0.1f)
                     body.RotationPeriod = body.OrbitalPeriod / 4; // 1:4 Resonance
                 if (random.NextDouble() < 0.05) // Crazy Obliquity
                     body.Obliquity = random.NextFloat(20f, 85f);
