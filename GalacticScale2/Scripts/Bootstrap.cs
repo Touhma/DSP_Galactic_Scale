@@ -38,6 +38,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Path));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDesc));
+            Harmony.CreateAndPatchAll(typeof(PatchOnGameHistoryData));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameLoader));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameMain));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameOption));

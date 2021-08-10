@@ -28,6 +28,7 @@ namespace GalacticScale
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
         public float ResourceMultiplier => Preferences.GetFloat("Resource Multiplier", 1f);
+        public float LogisticsShipMulti => Preferences.GetFloat("Logistics Ship Multi", 1f);
         public List<string> ExternalThemeNames => Preferences.GetStringList("External Themes", new List<string>());
         public Dictionary<string, GSUI> ThemeCheckboxes = new Dictionary<string, GSUI>();
         public string Name => "Main Settings";
@@ -72,7 +73,7 @@ namespace GalacticScale
             _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
             // GS2.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator",
-                GeneratorCallback, "Try them all!"));
+                GeneratorCallback, "Try them all!".Translate()));
             
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
@@ -80,15 +81,16 @@ namespace GalacticScale
             
 
             var DebugOptions = new GSOptions();
-            DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false,  "Debug Log", null, "Print extra logs to BepInEx console"));
-            DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks"));
-            _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode", null, "All Research, TP by ctrl-click nav arrow"));
-            Options.Add(GSUI.Group("Debug Options", DebugOptions, "Useful for testing galaxies/themes"));
+            DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false,  "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
+            _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode", null, "All Research, TP by ctrl-click nav arrow".Translate()));
+            DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
+            Options.Add(GSUI.Group("Debug Options", DebugOptions, "Useful for testing galaxies/themes".Translate()));
             var JsonOptions = new GSOptions();
-            JsonOptions.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename", null, "Excluding .json"));
-            JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes"));
-            _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File"));
-            Options.Add(GSUI.Group("Custom Galaxy Export", JsonOptions, "Usable once in game"));
+            JsonOptions.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename", null, "Excluding .json".Translate()));
+            JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes".Translate()));
+            _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File".Translate()));
+            Options.Add(GSUI.Group("Custom Galaxy Export", JsonOptions, "Usable once in game".Translate()));
         }
 
         public void SetResourceMultiplier(float val)

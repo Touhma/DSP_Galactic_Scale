@@ -216,6 +216,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\Init.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\OnActivePlanetLoaded.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\GetOrCreateFactory.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GameHistoryData\UnlockTechFunction.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameLoader\FixedUpdate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\LeaveStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\End.cs" />

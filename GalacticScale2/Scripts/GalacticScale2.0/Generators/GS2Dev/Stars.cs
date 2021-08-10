@@ -87,10 +87,13 @@ namespace GalacticScale.Generators
 
         private float CalculateMinimumOrbit(GSStar star)
         {
+            var sl = GetTypeLetterFromStar(star);
+            
             var radius = star.RadiusAU;
             var lum = star.luminosity;
             var min = radius +( 0.5f * radius * Mathf.Sqrt(Mathf.Sqrt(lum)));
             min = Mathf.Clamp(min , radius * 1.2f, 100f);
+            if (preferences.GetBool($"{sl}orbitOverride")) (min, _) = preferences.GetFloatFloat($"{sl}orbits", (0.02f,20f));
             star.genData.Set("minOrbit", min);
             Warn($"Getting Min Orbit for Star {star.Name} Min:{min}");
             return min;
@@ -98,6 +101,8 @@ namespace GalacticScale.Generators
 
         private float CalculateMaximumOrbit(GSStar star)
         {
+            var sl = GetTypeLetterFromStar(star);
+
             var minMaxOrbit = 5f;
             var lum = star.luminosity;
             var hzMax = star.genData.Get("maxHZ");
@@ -105,10 +110,10 @@ namespace GalacticScale.Generators
             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
             var maxOrbitByHabitableZone = 2f * hzMax;
             var maxByPlanetCount = star.bodyCount * 0.3f;
-            float density = (2f*GetSystemDensityBiasForStar(star))/100f;
-            GS2.Warn($"Density:{density} MaxOrbit:{star.MaxOrbit}");
-            var max = Mathf.Clamp(density * Mathf.Max(maxByPlanetCount, minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit")*2f, star.MaxOrbit);
-            max = Mathf.Max(max, maxByPlanetCount * (density / 2));
+            // float density = (2f*GetSystemDensityBiasForStar(star))/100f;
+            // GS2.Warn($"Density:{density} MaxOrbit:{star.MaxOrbit}");
+            var max = Mathf.Clamp(Mathf.Max(maxByPlanetCount, minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit")*2f, star.MaxOrbit);
+            if (preferences.GetBool($"{sl}orbitOverride")) (_, max) = preferences.GetFloatFloat($"{sl}orbits", (0.02f,20f));
             Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             star.genData.Set("maxOrbit", max);
             return max;
