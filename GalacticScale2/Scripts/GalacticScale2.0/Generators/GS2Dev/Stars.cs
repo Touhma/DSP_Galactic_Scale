@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 using static GalacticScale.GS2;
 
 namespace GalacticScale.Generators
@@ -9,10 +11,10 @@ namespace GalacticScale.Generators
         public void GenerateStars(int starCount, int startID = 0)
         {
             Log("Generating Stars");
-
+            var birthIndex = random.Next(starCount);
             for (var i = startID; i < starCount; i++)
             {
-                var (type, spectr) = ChooseStarType();
+                var (type, spectr) = ChooseStarType((i == birthIndex));
                 var star = new GSStar(random.Next(), SystemNames.GetName(i), spectr, type,
                     new GSPlanets());
                 if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
@@ -24,7 +26,18 @@ namespace GalacticScale.Generators
                 star.Seed = random.Next();
                 GSSettings.Stars.Add(star);
             }
-            birthStar = random.Item(GSSettings.Stars);
+            var bsInt = preferences.GetInt("birthStar", 14);
+            if (bsInt < 14)
+            {
+                var birthStarDesc = ((EStar)bsInt).Convert();
+                var availBirthStars = (from s in GSSettings.Stars
+                                       where s.Type == birthStarDesc.Item1
+                                       where s.Spectr == birthStarDesc.Item2
+                                       select s).ToList<GSStar>();
+                GS2.WarnJson(availBirthStars);
+                GS2.WarnJson(GSSettings.Stars);
+                    birthStar = random.Item(availBirthStars);                   
+            } else  birthStar = random.Item(GSSettings.Stars);
 
             
         }
