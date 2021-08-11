@@ -436,7 +436,7 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Group("Star Relative Frequencies".Translate(), FreqOptions, "How often to select a star type".Translate()));
             Options.Add(GSUI.Spacer());
             Options.Add(GSUI.Header("Default Settings".Translate(), "Changing these will reset all star specific options below".Translate()));
-            UI.Add("planetCount", Options.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, planetCountLow, planetCountHigh, "Size of Starting Planet. 200 is normal".Translate())));
+            UI.Add("planetCount", Options.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, planetCountLow, planetCountHigh, "The amount of planets per star".Translate())));
             UI.Add("countBias", Options.Add(GSUI.Slider("Planet Count Bias".Translate(), 0, 50, 100, "sizeBias", CountBiasCallback)));
             UI.Add("planetSize",Options.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", planetSize, planetSizeLow, planetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             UI.Add("sizeBias", Options.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback)));
