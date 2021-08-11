@@ -39,13 +39,6 @@ namespace GalacticScale.Generators
         public void Import(GSGenPreferences preferences)
         {
             
-            if (!this.preferences.GetBool("ludicrousMode", false) && preferences.GetBool("ludicrousMode", false))
-            {
-               
-                EnableLudicrousMode();
-                Config.MaxStarCount = 4096;
-            }
-
             // this.preferences = preferences;
             for (var i = 0; i < preferences.Count; i++)
             {
@@ -119,92 +112,9 @@ namespace GalacticScale.Generators
             return "WD";
         }
 
-        public void EnableLudicrousMode()
-        {
-            LockUI("ludicrousMode", false);LockUI("safeMode", false);
-            return;
-            // Log("Enabling LudicrousMode");
-            // Config.MaxStarCount = 4096;
-            // UI["safeMode"].Set(false);
-            // preferences.Set("safeMode", false);
-            //
-            // UI["starSizeMulti"].Set(new GSSliderConfig(0.1f, preferences.GetFloat("starSizeMulti"), 100f));
-            // UI["minPlanetSize"].Set(new GSSliderConfig(5, preferences.GetInt("minPlanetSize"), 500));
-            // UI["maxPlanetSize"].Set(new GSSliderConfig(50, preferences.GetInt("maxPlanetSize"), 510));
-            // UI["defaultStarCount"].Set(new GSSliderConfig(1, preferences.GetInt("defaultStarCount"), 4096));
-            // UI["minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt("minPlanetCount"), 99));
-            // UI["maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt("maxPlanetCount"), 99));
-            // UI["chanceGas"].Set(new GSSliderConfig(0, preferences.GetInt("chanceGas"), 99));
-            // UI["chanceMoon"].Set(new GSSliderConfig(0, preferences.GetInt("chanceMoon"), 99));
-            // for (var i = 0; i < 14; i++)
-            // {
-            //     UI[$"{typeLetter[i]}chanceGas"].Set(new GSSliderConfig(0,preferences.GetInt($"{typeLetter[i]}chanceGas", 99), 99));
-            //     UI[$"{typeLetter[i]}chanceMoon"].Set(new GSSliderConfig(0,preferences.GetInt($"{typeLetter[i]}chanceMoon"), 99));
-            //     UI[$"{typeLetter[i]}minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt($"{typeLetter[i]}minPlanetCount"), 99));
-            //     UI[$"{typeLetter[i]}maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt($"{typeLetter[i]}maxPlanetCount"), 99));
-            //     UI[$"{typeLetter[i]}minPlanetSize"].Set(new GSSliderConfig(5, preferences.GetInt($"{typeLetter[i]}minPlanetSize"), 500));
-            //     UI[$"{typeLetter[i]}maxPlanetSize"].Set(new GSSliderConfig(50, preferences.GetInt($"{typeLetter[i]}maxPlanetSize"), 510));
-            //
-            // }
-        }
+      
 
-        public void DisableLudicrousMode()
-        {
-            Log("Disabling LudicrousMode");
-            // Config.MaxStarCount = 1024;
-            //
-            // UI["starSizeMulti"].Set(new GSSliderConfig(1f, preferences.GetFloat("starSizeMulti"), 20f));
-            // UI["minPlanetSize"].Set(new GSSliderConfig(30, preferences.GetInt("minPlanetSize"), 200));
-            // UI["maxPlanetSize"].Set(new GSSliderConfig(200, preferences.GetInt("maxPlanetSize"), 500));
-            // UI["defaultStarCount"].Set(new GSSliderConfig(1, preferences.GetInt("defaultStarCount"), 1024));
-            // UI["minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt("minPlanetCount"), 25));
-            // UI["maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt("maxPlanetCount"), 25));
-            // UI["chanceGas"].Set(new GSSliderConfig(10, Mathf.Clamp(preferences.GetInt("chanceGas"), 10, 50), 50));
-            // UI["chanceMoon"].Set(new GSSliderConfig(10, Mathf.Clamp(preferences.GetInt("chanceMoon"), 10, 80), 80));
-            // for (var i = 0; i < 14; i++)
-            // {
-            //     UI[$"{typeLetter[i]}chanceGas"].Set(new GSSliderConfig(0,Mathf.Clamp(preferences.GetInt($"{typeLetter[i]}chanceGas"), 10, 50), 50));
-            //     UI[$"{typeLetter[i]}chanceMoon"].Set(new GSSliderConfig(0,Mathf.Clamp(preferences.GetInt($"{typeLetter[i]}chanceMoon"), 10, 80), 80));
-            //     UI[$"{typeLetter[i]}minPlanetCount"].Set(new GSSliderConfig(0, preferences.GetInt($"{typeLetter[i]}minPlanetCount"), 25));
-            //     UI[$"{typeLetter[i]}maxPlanetCount"].Set(new GSSliderConfig(1, preferences.GetInt($"{typeLetter[i]}maxPlanetCount"), 25));
-            //     UI[$"{typeLetter[i]}minPlanetSize"].Set(new GSSliderConfig(30, preferences.GetInt($"{typeLetter[i]}minPlanetSize"), 200));
-            //     UI[$"{typeLetter[i]}maxPlanetSize"].Set(new GSSliderConfig(200, preferences.GetInt($"{typeLetter[i]}maxPlanetSize"), 500));
-            //
-            // }
-        }
-
-        public void EnableSafeMode()
-        {
-            LockUI("ludicrousMode", false);
-            LockUI("safeMode", false);
-            return;
-            // GS2.Warn("Enabling SafeMode");
-            // LockUI("ludicrousMode", false);
-            // DisableLudicrousMode();
-            // UI["minPlanetSize"].Set(new GSSliderConfig(100, 100, 200));
-            // UI["maxPlanetSize"].Set(new GSSliderConfig(200, 300, 400));
-            // LockUI("birthPlanetSize", 200);
-            // LockUI("birthPlanetSiTi", false);
-            // LockUI("birthPlanetUnlock", false);
-            // LockUI("hugeGasGiants", false);
-            // LockUI("galaxyDensity", 5);
-            // UI["defaultStarCount"].Set(new GSSliderConfig(8, 32, 64));
-            // LockUI("moonsAreSmall", false);
-            // LockUI("secondarySatellites", false);
-            // UI["minPlanetCount"].Set(new GSSliderConfig(1, 1, 5));
-            // UI["maxPlanetCount"].Set(new GSSliderConfig(1, 6, 6));
-            // for (var i = 0; i < 14; i++)
-            // {
-            //     LockUI($"{typeLetter[i]}minPlanetCount", 1);
-            //     LockUI($"{typeLetter[i]}maxPlanetCount", 6);
-            //     LockUI($"{typeLetter[i]}minPlanetSize", 100);
-            //     LockUI($"{typeLetter[i]}maxPlanetSize", 400);
-            //     LockUI($"{typeLetter[i]}sizeBias", 50);
-            //     LockUI($"{typeLetter[i]}chanceGas", 50);
-            //     LockUI($"{typeLetter[i]}chanceMoon", 50);
-            //     LockUI($"{typeLetter[i]}systemDensity", 3);
-            // }
-        }
+       
 
         private void LockUI(string key, Val value)
         {
@@ -256,16 +166,19 @@ namespace GalacticScale.Generators
 
         public void Reset(Val o)
         {
+            preferences = new GSGenPreferences();
             InitPreferences();
             foreach (var ui in UI)
             {
-                ui.Value.Set(preferences.Get(ui.Key));
+                GS2.Log($"Resetting {ui.Key}");
+                if (GSUI.Settables.Contains(ui.Value.Type)) ui.Value.Set(preferences.Get(ui.Key));
             }
         }
 
         public Dictionary<string, (float, float)> hzDefs = new Dictionary<string, (float, float)>();
         public void getHZ()
         {
+            hzDefs = new Dictionary<string, (float, float)>();
             hzDefs.Add("K", Utils.CalculateHabitableZone(1.2f));
             hzDefs.Add("M", Utils.CalculateHabitableZone(0.6f));
             hzDefs.Add("A", Utils.CalculateHabitableZone(2.1f));
@@ -289,6 +202,7 @@ namespace GalacticScale.Generators
             {
                 preferences.Set($"{hz.Key}hz", hz.Value);
             }
+            preferences.Set("birthPlanetStar", 14);
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("safeMode", false);
@@ -330,6 +244,7 @@ namespace GalacticScale.Generators
             preferences.Set("freqBG", 1);
             preferences.Set("chanceGas", 20);
             preferences.Set("chanceMoon", 20);
+            preferences.Set("chanceMoonMoon", 5);
             // preferences.Set("systemDensity", 3);
             for (var i = 0; i < 14; i++)
             {
@@ -347,6 +262,8 @@ namespace GalacticScale.Generators
                 // preferences.Set($"{typeLetter[i]}systemDensity", 3);
                 preferences.Set($"{typeLetter[i]}orbits", (0.1,10));
                 preferences.Set($"{typeLetter[i]}orbitOverride", false);
+                preferences.Set($"{typeLetter[i]}inclination", -1);
+                preferences.Set($"{typeLetter[i]}hzOverride", false);
             }
         }
 
@@ -364,22 +281,24 @@ namespace GalacticScale.Generators
                 "RedGiant",
                 "Random"
             };
-            Val l = preferences.GetBool("ludicrousMode", false);
-            GS2.Warn(l);
-            UI.Add("safeMode", Options.Add(GSUI.Checkbox("Safe Mode".Translate(), false, "safeMode", o =>
-            {
-                if ((bool) o) EnableSafeMode();
-                else DisableSafeMode();
-            }, "Disabled for now".Translate())));
+
+            // Val l = false;//preferences.GetBool("ludicrousMode", false);
+            // GS2.Warn(l);
+            // UI.Add("safeMode", Options.Add(GSUI.Checkbox("Safe Mode".Translate(), false, "safeMode", o =>
+            // {
+            //     if ((bool) o) EnableSafeMode();
+            //     else DisableSafeMode();
+            // }, "Disabled for now")));
+            //
+            //
+            // UI.Add("ludicrousMode", Options.Add(GSUI.Checkbox("Ludicrous Mode".Translate(), false, "ludicrousMode", o =>
+            // {
+            //     if ((bool) o) EnableLudicrousMode();
+            //     else DisableLudicrousMode();
+            // }, "Disabled for now")));
+
             
-            
-            UI.Add("ludicrousMode", Options.Add(GSUI.Checkbox("Ludicrous Mode".Translate(), false, "ludicrousMode", o =>
-            {
-                if ((bool) o) EnableLudicrousMode();
-                else DisableLudicrousMode();
-            }, "Disabled for now".Translate())));
-            
-            UI.Add("galaxyDensity", Options.Add(GSUI.Slider("Galaxy Density".Translate(), 1, 5, 9, "galaxyDensity", null, "Higher = Stars are closer to each other".Translate())));
+            UI.Add("galaxyDensity", Options.Add(GSUI.Slider("Galaxy Spread".Translate(), 1, 5, 9, "galaxyDensity", null, "Lower = Stars are closer to each other".Translate())));
             UI.Add("defaultStarCount",
                 Options.Add(GSUI.Slider("Default StarCount".Translate(), 1, 64, 1024, "defaultStarCount",
                     DefaultStarCountCallback, "How many stars should the slider default to".Translate())));
@@ -400,9 +319,11 @@ namespace GalacticScale.Generators
                 Options.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets")));
             UI.Add("innerPlanetDistance", Options.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
             UI.Add("allowResonances", Options.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
-            UI.Add("rotationMulti", Options.Add(GSUI.Slider("Rotation Multiplier".Translate(), 0.5f, 1, 100, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
-            UI.Add("secondarySatellites",
-                Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
+            UI.Add("rotationMulti", Options.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 100, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
+            UI.Add("secondarySatellites", Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
+
+
+            UI.Add("chanceMoonMoon", Options.Add(GSUI.Slider("Secondary Satellite Chance".Translate(), 0, 5, 99, "chanceMoonMoon", null, "% Chance for a moon to have a moon".Translate())));
 
             var FreqOptions = new GSOptions();
             UI.Add("freqK", FreqOptions.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
@@ -440,8 +361,8 @@ namespace GalacticScale.Generators
             UI.Add("countBias", Options.Add(GSUI.Slider("Planet Count Bias".Translate(), 0, 50, 100, "sizeBias", CountBiasCallback)));
             UI.Add("planetSize",Options.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", planetSize, planetSizeLow, planetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             UI.Add("sizeBias", Options.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback)));
-            UI.Add("chanceGas", Options.Add(GSUI.Slider("Chance Gas".Translate(), 10, 20, l?99:50, "chanceGas", GasChanceCallback)));
-            UI.Add("chanceMoon", Options.Add(GSUI.Slider("Chance Moon".Translate(), 10, 20, 80, "chanceMoon", MoonChanceCallback)));
+            UI.Add("chanceGas", Options.Add(GSUI.Slider("Chance Gas".Translate(), 0, 20, 99, "chanceGas", GasChanceCallback)));
+            UI.Add("chanceMoon", Options.Add(GSUI.Slider("Chance Moon".Translate(), 0, 20, 99, "chanceMoon", MoonChanceCallback)));
             // UI.Add("systemDensity", Options.Add(GSUI.Slider("System Density".Translate(), 1, 3, 5, "systemDensity", SystemDensityCallback)));
             Options.Add(GSUI.Separator());
             for (var i = 0; i < 14; i++)
@@ -454,8 +375,8 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider($"Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
                 UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,1)).Item1,preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,3)).Item2, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Force habitable zone between these distances".Translate())));
-                UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider($"Chance for Gas giant".Translate(), l?0:10, 20, l?99:50, $"{typeLetter[i]}chanceGas")));
-                UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider($"Chance for Moon".Translate(), l?0:10, 20, l?99:80, $"{typeLetter[i]}chanceMoon")));
+                UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider($"Chance for Gas giant".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceGas")));
+                UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider($"Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider($"Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 1f, $"{typeLetter[i]}orbits", null, null, null, "Force the distances planets can spawn between".Translate())));
                 UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 90, 1f, $"{typeLetter[i]}inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum angle of orbit".Translate(), true)));
@@ -468,16 +389,6 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Button("Reset".Translate(), "Now".Translate(), Reset));
             loaded = true;
         }
-
-        //private void CreateTypeInclinationCallBack(string key)
-        //{
-        //    typeCallbacks.Add(key, (o) =>
-        //    {
-        //        GS2.Log(key + " " + o);
-        //        var t = UI[key].RectTransform.GetComponent<GSUISlider>();
-        //        t.negativeIsRandom = true;
-        //    });
-        //}
 
         private void planetCountLow(Val o)
         {
@@ -506,31 +417,6 @@ namespace GalacticScale.Generators
         {
             Warn(o);
         }
-        // private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)
-        // {
-        //     return o =>
-        //     {
-        //         var maxSize = preferences.GetFloat($"{type}maxPlanetSize");
-        //         if (maxSize == -1f) maxSize = 510;
-        //         if (maxSize < (float) o) o = maxSize;
-        //         if (preferences.GetBool("safeMode")) preferences.Set($"{type}minPlanetSize", SafePlanetSize((float) o));
-        //         else preferences.Set($"{type}minPlanetSize", Utils.ParsePlanetSize((float) o));
-        //         UI[$"{type}minPlanetSize"].Set(preferences.GetFloat($"{type}minPlanetSize"));
-        //     };
-        // }
-        //
-        // private GSOptionCallback CreateTypeMaxPlanetSizeCallback(string type)
-        // {
-        //     return o =>
-        //     {
-        //         var minSize = preferences.GetFloat($"{type}minPlanetSize");
-        //         if (minSize == -1f) minSize = 5;
-        //         if (minSize > (float) o) o = minSize;
-        //         if (preferences.GetBool("safeMode")) preferences.Set($"{type}maxPlanetSize", SafePlanetSize((float) o));
-        //         else preferences.Set($"{type}maxPlanetSize", Utils.ParsePlanetSize((float) o));
-        //         UI[$"{type}maxPlanetSize"].Set(preferences.GetFloat($"{type}maxPlanetSize"));
-        //     };
-        // }
 
         private void SizeBiasCallback(Val o)
         {
@@ -558,36 +444,6 @@ namespace GalacticScale.Generators
             SetAllStarTypeOptions("systemDensity", o);
         }
 
-        // private void MinPlanetCountCallback(Val o)
-        // {
-        //     var maxCount = preferences.GetInt("maxPlanetCount");
-        //     if (maxCount == -1f) maxCount = 25;
-        //     if (maxCount < o)
-        //     {
-        //         //GS2.Warn("<");
-        //         o = maxCount;
-        //         preferences.Set("minPlanetCount", maxCount);
-        //         UI["minPlanetCount"].Set(o);
-        //     }
-        //
-        //     SetAllStarTypeOptions("minPlanetCount", o);
-        // }
-        //
-        // private void MaxPlanetCountCallback(Val o)
-        // {
-        //     var minCount = preferences.GetInt("minPlanetCount");
-        //     if (minCount == -1f) minCount = 1;
-        //     if (minCount > o)
-        //     {
-        //         //GS2.Warn(">");
-        //         o = minCount;
-        //         preferences.Set("maxPlanetCount", minCount);
-        //         UI["maxPlanetCount"].Set(o);
-        //     }
-        //
-        //     SetAllStarTypeOptions("maxPlanetCount", o);
-        // }
-
         private void SetAllStarTypeOptions(string key, Val value)
         {
             for (var i = 0; i < 14; i++) UI[$"{typeLetter[i]}{key}"].Set(value);
@@ -610,46 +466,6 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}{key}", (low, value));
             }
         }
-        // private void SetAllStarTypeMinSize(Val value)
-        // {
-        //     for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}minPlanetSize"](value);
-        // }
-        //
-        // private void SetAllStarTypeMaxSize(Val value)
-        // {
-        //     for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}maxPlanetSize"](value);
-        // }
-
-        // private void MinPlanetSizeCallback(Val o)
-        // {
-        //     var maxSize = preferences.GetFloat("maxPlanetSize");
-        //     if (maxSize == -1f) maxSize = 510;
-        //     if (maxSize < o) o = maxSize;
-        //     if (preferences.GetBool("safeMode")) preferences.Set("minPlanetSize", SafePlanetSize(o));
-        //     else preferences.Set("minPlanetSize", Utils.ParsePlanetSize(o));
-        //     UI["minPlanetSize"].Set(preferences.GetFloat("minPlanetSize"));
-        //     SetAllStarTypeMinSize(o);
-        // }
-        //
-        // private void MaxPlanetSizeCallback(Val o)
-        // {
-        //     var t = o;
-        //     var minSize = preferences.GetFloat("minPlanetSize");
-        //     if (minSize == -1f) minSize = 5;
-        //     if (minSize > o) o = minSize;
-        //     if (preferences.GetBool("safeMode")) preferences.Set("maxPlanetSize", SafePlanetSize(o));
-        //     else preferences.Set("maxPlanetSize", Utils.ParsePlanetSize(o));
-        //     UI["maxPlanetSize"].Set(preferences.GetFloat("maxPlanetSize"));
-        //     SetAllStarTypeMaxSize(o);
-        // }
-
-        // private float SafePlanetSize(float size)
-        // {
-        //     if (size > 350) return 400;
-        //     if (size > 250) return 300;
-        //     if (size > 150) return 200;
-        //     return 100;
-        // }
 
         private void CalculateFrequencies()
         {
@@ -696,7 +512,6 @@ namespace GalacticScale.Generators
                 starFreq.Add(element.type, element.chance + previousElement.chance);
                 StarFreqTupleArray[i].chance += previousElement.chance;
             }
-            //GS2.LogJson(starFreq, true);
         }
         private List<string> ForcedStars = new List<string>();
         private void InitForcedStars()
@@ -709,8 +524,6 @@ namespace GalacticScale.Generators
                 var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
                 for (var j = 0; j < count; j++) ForcedStars.Add(typeLetter[i]);
             }
-            GS2.Warn("Forced Stars:");
-            GS2.WarnJson(ForcedStars);
         }
         private (EStarType type, ESpectrType spectr) ChooseStarType(bool birth = false)
         {

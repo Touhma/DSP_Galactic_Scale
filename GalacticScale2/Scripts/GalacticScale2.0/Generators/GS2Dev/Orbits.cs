@@ -93,7 +93,7 @@ namespace GalacticScale.Generators
                 }
 
                 var selectedRange = r.Item(availableOrbits);
-                GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
+                // GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
                 var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius,
                     selectedRange.outer - planet.SystemRadius);
                 freeOrbitRanges.Remove(selectedRange);

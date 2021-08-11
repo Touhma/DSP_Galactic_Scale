@@ -103,9 +103,9 @@ namespace GalacticScale
         }
 
         public string Query(GS2.Random random, EThemeType type, EThemeHeat heat, int radius,
-            EThemeDistribute distribute = EThemeDistribute.Default)
+            EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
-            var themes = Query(type, heat, radius, distribute);
+            var themes = Query(type, heat, radius, distribute, habitable);
             return random.Item(themes);
         }
         public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius,
@@ -120,10 +120,12 @@ EThemeDistribute distribute = EThemeDistribute.Default)
             var themes = Query(starTypes, type, heat, radius, distribute);
             return random.Item(themes);
         }
-        public List<string> Query(EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+
+        public List<string> Query(EThemeType type, EThemeHeat heat, int radius,
+            EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
             var allstars = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
-            var themes = QueryThemes(allstars, type, heat, radius, distribute);
+            var themes = QueryThemes(allstars, type, heat, radius, distribute, habitable);
             var results = from theme in themes
                           select theme.Name;
             return results.ToList();
@@ -142,7 +144,7 @@ EThemeDistribute distribute = EThemeDistribute.Default)
                           select theme.Name;
             return results.ToList();
         }
-        public List<GSTheme> QueryThemes(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        public List<GSTheme> QueryThemes(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
 
             //List<GSTheme> list = new List<GSTheme>();
@@ -182,11 +184,8 @@ EThemeDistribute distribute = EThemeDistribute.Default)
             (float min, float max) temp = (3, 6);
 
             if (heat == EThemeHeat.Warm) temp = (1, 3);
-
             if (heat == EThemeHeat.Temperate) temp = (0, 1);
-
             if (heat == EThemeHeat.Cold) temp = (-3, 0);
-
             if (heat == EThemeHeat.Frozen) temp = (-6, -3);
 
             var q = from theme in this
@@ -199,6 +198,10 @@ EThemeDistribute distribute = EThemeDistribute.Default)
                     where theme.Value.MinRadius <= (radius > 0 ? radius : 510)
                     select theme.Value;
             List<GalacticScale.GSTheme> results = q.ToList();
+            if (habitable)
+            {
+                results = (from theme in results where theme.Habitable == true select theme).ToList();
+            }
             if (results.Count == 0)
             {
                 GS2.Error(

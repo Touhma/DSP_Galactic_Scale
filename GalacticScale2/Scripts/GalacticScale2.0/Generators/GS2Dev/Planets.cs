@@ -23,6 +23,7 @@ namespace GalacticScale.Generators
             var starBodyCount = GetStarPlanetCount(star);
             if (starBodyCount == 0) return;
             var moonChance = GetMoonChanceForStar(star);
+            var moonMoonChance = preferences.GetFloat("chanceMoonMoon", 5f);
             var moonCount = 0;
             var secondaryMoonCount = 0;
             var protos = new List<ProtoPlanet>();
@@ -62,7 +63,7 @@ namespace GalacticScale.Generators
             //    //GS2.Warn("Clamping Radius");
             //}
             for (var i = 0; i < moonCount; i++)
-                if (preferences.GetBool("secondarySatellites") && random.NextPick(moonChance) && i != 0)
+                if (preferences.GetBool("secondarySatellites") && random.NextPick(moonMoonChance) && i != 0)
                 {
                     secondaryMoonCount++; // i != 0 Make sure we have at least one actual satellite
                 }
@@ -144,21 +145,21 @@ namespace GalacticScale.Generators
                 if (IsPlanetOfStar(star, body))
                 {
 
-                    GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
+                    // GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
                     body.OrbitInclination = random.NextFloat() * 4 + random.NextFloat() * 5;
                 }
                 if (!IsPlanetOfStar(star, body))
                 {
-                    GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
+                    // GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
                     body.OrbitInclination = random.NextFloat() * 50f;
                 }
                 body.OrbitPhase = random.Next(360);
                 body.Obliquity = random.NextFloat() * 20;
                 var starInc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}inclination", -1);
-                GS2.Log($"StarInc {starInc}");
+                // GS2.Log($"StarInc {starInc}");
                 if (IsPlanetOfStar(star, body) && starInc > -1)
                 {
-                    GS2.Warn($"SETTING starInc Orbit Inclination of {star.Name} to {starInc}");
+                    // GS2.Warn($"SETTING starInc Orbit Inclination of {star.Name} to {starInc}");
                     body.OrbitInclination = random.NextFloat(starInc);
                 }
                 body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f)*random.Next(60, 3600);
@@ -173,7 +174,7 @@ namespace GalacticScale.Generators
                     body.Obliquity = random.NextFloat(20f, 85f);
                 if (starInc == -1 && random.NextDouble() < 0.05) // Crazy Inclination
                 {
-                    GS2.Warn("Setting Crazy Inclination for " + star.Name);
+                    // GS2.Warn("Setting Crazy Inclination for " + star.Name);
                     body.OrbitInclination = random.NextFloat(20f, 85f);
                 }
 
@@ -243,42 +244,43 @@ namespace GalacticScale.Generators
             return 0.01f + random.NextFloat(0f, 0.05f);
         }
 
-public float GetOrbitGap(GSStar star)
-        {
-            (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            float pCount = star.Planets.Count;
-            var maxOrbitByRadius = Mathf.Sqrt(star.radius);
-            var maxOrbitByHabitableZone = 30f * hz.min;
-            var maxOrbitByPlanetCount = 50f * pCount / 99f;
-            var maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius, maxOrbitByHabitableZone);
-            var averageOrbit = maxOrbit / pCount;
-            var result = ClampedNormal(0.1f, maxOrbit / pCount, GetSystemDensityBiasForStar(star));
-            Warn(
-                $"Getting Orbit Gap for Star {star.Name} with {pCount} planets. Avg:{averageOrbit} MaxbyRadius:{maxOrbitByRadius} MaxbyPCount:{maxOrbitByPlanetCount} MaxByHZ:{maxOrbitByHabitableZone} Max:{maxOrbit} HabitableZone:{hz.Item1 * 10f}:{hz.Item2 * 10f} = {result}");
-            return result; // random.NextFloat(0.1f, 2f * averageOrbit);
-        }
-
-        public void SelectPlanetThemes(GSStar star)
-        {
-            foreach (var planet in star.Planets)
-            {
-                if (planet == birthPlanet)
-                {
-                    planet.Theme = "Prairie";
-                    planet.Scale = 1f;
-                    continue;
-                }
-                var heat = CalculateThemeHeat(star, planet.OrbitRadius);
-                var type = EThemeType.Planet;
-                if (planet.Scale == 10f) type = EThemeType.Gas;
-                planet.Theme = GSSettings.ThemeLibrary.Query(random, type, heat, planet.Radius);
-                //Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
-                foreach (var body in planet.Bodies)
-                    if (body != planet)
-                        body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
-                //Warn($"Set Theme for {body.Name} to {body.Theme}");
-            }
-        }
+// public float GetOrbitGap(GSStar star)
+//         {
+//             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
+//             float pCount = star.Planets.Count;
+//             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
+//             var maxOrbitByHabitableZone = 30f * hz.min;
+//             var maxOrbitByPlanetCount = 50f * pCount / 99f;
+//             var maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius, maxOrbitByHabitableZone);
+//             var averageOrbit = maxOrbit / pCount;
+//             var result = ClampedNormal(0.1f, maxOrbit / pCount, GetSystemDensityBiasForStar(star));
+//             Warn(
+//                 $"Getting Orbit Gap for Star {star.Name} with {pCount} planets. Avg:{averageOrbit} MaxbyRadius:{maxOrbitByRadius} MaxbyPCount:{maxOrbitByPlanetCount} MaxByHZ:{maxOrbitByHabitableZone} Max:{maxOrbit} HabitableZone:{hz.Item1 * 10f}:{hz.Item2 * 10f} = {result}");
+//             return result; // random.NextFloat(0.1f, 2f * averageOrbit);
+//         }
+//
+         public void SelectPlanetThemes(GSStar star)
+         {
+             foreach (var planet in star.Planets)
+             {
+                 if (planet == birthPlanet)
+                 {
+                     var habitableTheme  = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200));
+                     planet.Theme = habitableTheme;
+                     planet.Scale = 1f;
+                     continue;
+                 }
+                 var heat = CalculateThemeHeat(star, planet.OrbitRadius);
+                 var type = EThemeType.Planet;
+                 if (planet.Scale == 10f) type = EThemeType.Gas;
+                 planet.Theme = GSSettings.ThemeLibrary.Query(random, type, heat, planet.Radius);
+                 //Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
+                 foreach (var body in planet.Bodies)
+                     if (body != planet)
+                         body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
+                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
+             }
+         }
 
         public bool CalculateIsGas(GSStar star)
         {

@@ -682,6 +682,14 @@ namespace GalacticScale
             return new GSUI(null, null, null, "Separator", null, null, null, null);
         }
 
+        public static List<string> Settables = new List<string>()
+        {
+            "Slider",
+            "RangeSlider",
+            "Checkbox",
+            "Combobox",
+            "Inputfield"
+        };
     }
 public class GSUIGroupConfig
 {

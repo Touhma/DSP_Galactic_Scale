@@ -34,8 +34,8 @@ namespace GalacticScale.Generators
                                        where s.Type == birthStarDesc.Item1
                                        where s.Spectr == birthStarDesc.Item2
                                        select s).ToList<GSStar>();
-                GS2.WarnJson(availBirthStars);
-                GS2.WarnJson(GSSettings.Stars);
+                // GS2.WarnJson(availBirthStars);
+                // GS2.WarnJson(GSSettings.Stars);
                     birthStar = random.Item(availBirthStars);                   
             } else  birthStar = random.Item(GSSettings.Stars);
 
@@ -108,7 +108,7 @@ namespace GalacticScale.Generators
             min = Mathf.Clamp(min , radius * 1.2f, 100f);
             if (preferences.GetBool($"{sl}orbitOverride")) (min, _) = preferences.GetFloatFloat($"{sl}orbits", (0.02f,20f));
             star.genData.Set("minOrbit", min);
-            Warn($"Getting Min Orbit for Star {star.Name} Min:{min}");
+            // Warn($"Getting Min Orbit for Star {star.Name} Min:{min}");
             return min;
         }
 
