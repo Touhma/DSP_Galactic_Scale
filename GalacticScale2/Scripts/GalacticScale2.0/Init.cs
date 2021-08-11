@@ -70,10 +70,10 @@ namespace GalacticScale
 
                 if (bundle == null)
                 {
-                    Error("Failed to load AssetBundle!");
+                    Error("Failed to load AssetBundle!".Translate());
                     UIMessageBox.Show("Error",
-                        "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory",
-                        "Return", 0);
+                        "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory".Translate(),
+                        "Return".Translate(), 0);
 
                     return null;
                 }
@@ -88,7 +88,7 @@ namespace GalacticScale
             if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
             {
                 updateMessage +=
-                    "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward";
+                    "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
                 File.Delete(Path.Combine(AssemblyPath, "icon.png"));
             }
             Warn("Start");
@@ -98,7 +98,7 @@ namespace GalacticScale
                 Warn($"Moving Configs from {OldDataDir} to {DataDir}");
                 Directory.Move(OldDataDir, DataDir);
                 updateMessage +=
-                    "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n";
+                    "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
 
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
