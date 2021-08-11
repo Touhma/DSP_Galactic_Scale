@@ -281,6 +281,7 @@ namespace GalacticScale.Generators
                 "RedGiant",
                 "Random"
             };
+
             // Val l = false;//preferences.GetBool("ludicrousMode", false);
             // GS2.Warn(l);
             // UI.Add("safeMode", Options.Add(GSUI.Checkbox("Safe Mode".Translate(), false, "safeMode", o =>
@@ -295,6 +296,7 @@ namespace GalacticScale.Generators
             //     if ((bool) o) EnableLudicrousMode();
             //     else DisableLudicrousMode();
             // }, "Disabled for now")));
+
             
             UI.Add("galaxyDensity", Options.Add(GSUI.Slider("Galaxy Spread".Translate(), 1, 5, 9, "galaxyDensity", null, "Lower = Stars are closer to each other".Translate())));
             UI.Add("defaultStarCount",
@@ -308,7 +310,7 @@ namespace GalacticScale.Generators
             UI.Add("birthPlanetUnlock",
                 bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for birth planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanius on the birth planet".Translate())));
-            UI.Add("birthPlanetStar", bOptions.Add(GSUI.Combobox("BirthPlanet Star", starTypes, 7, "birthStar",null, "Type of Star to Start at")));
+            UI.Add("birthPlanetStar", bOptions.Add(GSUI.Combobox("BirthPlanet Star".Translate(), starTypes, 7, "birthStar",null, "Type of Star to Start at".Translate())));
             Options.Add(GSUI.Group("Birth Planet Settings".Translate(), bOptions, "Settings that only affect the starting planet".Translate()));
             UI.Add("moonsAreSmall", Options.Add(GSUI.Checkbox("Moons Are Small".Translate(), true, "moonsAreSmall", null, "Try to ensure moons are 1/2 their planets size or less".Translate())));
             UI.Add("moonBias", Options.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias", null, "Lower prefers telluric plants, higher gas giants".Translate())));
@@ -318,9 +320,11 @@ namespace GalacticScale.Generators
             UI.Add("innerPlanetDistance", Options.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
             UI.Add("allowResonances", Options.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
             UI.Add("rotationMulti", Options.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 100, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
-            UI.Add("secondarySatellites",
-                Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons")));
+            UI.Add("secondarySatellites", Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
+
+
             UI.Add("chanceMoonMoon", Options.Add(GSUI.Slider("Secondary Satellite Chance".Translate(), 0, 5, 99, "chanceMoonMoon", null, "% Chance for a moon to have a moon".Translate())));
+
             var FreqOptions = new GSOptions();
             UI.Add("freqK", FreqOptions.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
             UI.Add("KminStars", FreqOptions.Add(GSUI.Slider("Minimum Type K".Translate(), 0, 0, 100, "KminStars")));
@@ -386,16 +390,6 @@ namespace GalacticScale.Generators
             loaded = true;
         }
 
-        //private void CreateTypeInclinationCallBack(string key)
-        //{
-        //    typeCallbacks.Add(key, (o) =>
-        //    {
-        //        GS2.Log(key + " " + o);
-        //        var t = UI[key].RectTransform.GetComponent<GSUISlider>();
-        //        t.negativeIsRandom = true;
-        //    });
-        //}
-
         private void planetCountLow(Val o)
         {
             Warn(o);
@@ -423,31 +417,6 @@ namespace GalacticScale.Generators
         {
             Warn(o);
         }
-        // private GSOptionCallback CreateTypeMinPlanetSizeCallback(string type)
-        // {
-        //     return o =>
-        //     {
-        //         var maxSize = preferences.GetFloat($"{type}maxPlanetSize");
-        //         if (maxSize == -1f) maxSize = 510;
-        //         if (maxSize < (float) o) o = maxSize;
-        //         if (preferences.GetBool("safeMode")) preferences.Set($"{type}minPlanetSize", SafePlanetSize((float) o));
-        //         else preferences.Set($"{type}minPlanetSize", Utils.ParsePlanetSize((float) o));
-        //         UI[$"{type}minPlanetSize"].Set(preferences.GetFloat($"{type}minPlanetSize"));
-        //     };
-        // }
-        //
-        // private GSOptionCallback CreateTypeMaxPlanetSizeCallback(string type)
-        // {
-        //     return o =>
-        //     {
-        //         var minSize = preferences.GetFloat($"{type}minPlanetSize");
-        //         if (minSize == -1f) minSize = 5;
-        //         if (minSize > (float) o) o = minSize;
-        //         if (preferences.GetBool("safeMode")) preferences.Set($"{type}maxPlanetSize", SafePlanetSize((float) o));
-        //         else preferences.Set($"{type}maxPlanetSize", Utils.ParsePlanetSize((float) o));
-        //         UI[$"{type}maxPlanetSize"].Set(preferences.GetFloat($"{type}maxPlanetSize"));
-        //     };
-        // }
 
         private void SizeBiasCallback(Val o)
         {
@@ -475,36 +444,6 @@ namespace GalacticScale.Generators
             SetAllStarTypeOptions("systemDensity", o);
         }
 
-        // private void MinPlanetCountCallback(Val o)
-        // {
-        //     var maxCount = preferences.GetInt("maxPlanetCount");
-        //     if (maxCount == -1f) maxCount = 25;
-        //     if (maxCount < o)
-        //     {
-        //         //GS2.Warn("<");
-        //         o = maxCount;
-        //         preferences.Set("minPlanetCount", maxCount);
-        //         UI["minPlanetCount"].Set(o);
-        //     }
-        //
-        //     SetAllStarTypeOptions("minPlanetCount", o);
-        // }
-        //
-        // private void MaxPlanetCountCallback(Val o)
-        // {
-        //     var minCount = preferences.GetInt("minPlanetCount");
-        //     if (minCount == -1f) minCount = 1;
-        //     if (minCount > o)
-        //     {
-        //         //GS2.Warn(">");
-        //         o = minCount;
-        //         preferences.Set("maxPlanetCount", minCount);
-        //         UI["maxPlanetCount"].Set(o);
-        //     }
-        //
-        //     SetAllStarTypeOptions("maxPlanetCount", o);
-        // }
-
         private void SetAllStarTypeOptions(string key, Val value)
         {
             for (var i = 0; i < 14; i++) UI[$"{typeLetter[i]}{key}"].Set(value);
@@ -527,46 +466,6 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}{key}", (low, value));
             }
         }
-        // private void SetAllStarTypeMinSize(Val value)
-        // {
-        //     for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}minPlanetSize"](value);
-        // }
-        //
-        // private void SetAllStarTypeMaxSize(Val value)
-        // {
-        //     for (var i = 0; i < 14; i++) typeCallbacks[$"{typeLetter[i]}maxPlanetSize"](value);
-        // }
-
-        // private void MinPlanetSizeCallback(Val o)
-        // {
-        //     var maxSize = preferences.GetFloat("maxPlanetSize");
-        //     if (maxSize == -1f) maxSize = 510;
-        //     if (maxSize < o) o = maxSize;
-        //     if (preferences.GetBool("safeMode")) preferences.Set("minPlanetSize", SafePlanetSize(o));
-        //     else preferences.Set("minPlanetSize", Utils.ParsePlanetSize(o));
-        //     UI["minPlanetSize"].Set(preferences.GetFloat("minPlanetSize"));
-        //     SetAllStarTypeMinSize(o);
-        // }
-        //
-        // private void MaxPlanetSizeCallback(Val o)
-        // {
-        //     var t = o;
-        //     var minSize = preferences.GetFloat("minPlanetSize");
-        //     if (minSize == -1f) minSize = 5;
-        //     if (minSize > o) o = minSize;
-        //     if (preferences.GetBool("safeMode")) preferences.Set("maxPlanetSize", SafePlanetSize(o));
-        //     else preferences.Set("maxPlanetSize", Utils.ParsePlanetSize(o));
-        //     UI["maxPlanetSize"].Set(preferences.GetFloat("maxPlanetSize"));
-        //     SetAllStarTypeMaxSize(o);
-        // }
-
-        // private float SafePlanetSize(float size)
-        // {
-        //     if (size > 350) return 400;
-        //     if (size > 250) return 300;
-        //     if (size > 150) return 200;
-        //     return 100;
-        // }
 
         private void CalculateFrequencies()
         {
@@ -613,7 +512,6 @@ namespace GalacticScale.Generators
                 starFreq.Add(element.type, element.chance + previousElement.chance);
                 StarFreqTupleArray[i].chance += previousElement.chance;
             }
-            //GS2.LogJson(starFreq, true);
         }
         private List<string> ForcedStars = new List<string>();
         private void InitForcedStars()
@@ -626,8 +524,6 @@ namespace GalacticScale.Generators
                 var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
                 for (var j = 0; j < count; j++) ForcedStars.Add(typeLetter[i]);
             }
-            // GS2.Warn("Forced Stars:");
-            // GS2.WarnJson(ForcedStars);
         }
         private (EStarType type, ESpectrType spectr) ChooseStarType(bool birth = false)
         {
