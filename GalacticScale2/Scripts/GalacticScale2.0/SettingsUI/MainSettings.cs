@@ -85,12 +85,12 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode", null, "All Research, TP by ctrl-click nav arrow".Translate()));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
-            Options.Add(GSUI.Group("Debug Options", DebugOptions, "Useful for testing galaxies/themes".Translate()));
+            Options.Add(GSUI.Group("Debug Options".Translate(), DebugOptions, "Useful for testing galaxies/themes".Translate()));
             var JsonOptions = new GSOptions();
             JsonOptions.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename", null, "Excluding .json".Translate()));
             JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes".Translate()));
             _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File".Translate()));
-            Options.Add(GSUI.Group("Custom Galaxy Export", JsonOptions, "Usable once in game".Translate()));
+            Options.Add(GSUI.Group("Custom Galaxy Export".Translate(), JsonOptions, "Usable once in game".Translate()));
         }
 
         public void SetResourceMultiplier(float val)
@@ -117,7 +117,7 @@ namespace GalacticScale
         public void InitThemePanel()
         {
             var externalThemesGroupOptions = new List<GSUI>() {
-                GSUI.Button("Export All Themes".Translate(), "Export", ExportAllThemes)
+                GSUI.Button("Export All Themes".Translate(), "Export".Translate(), ExportAllThemes)
             };
             // GS2.Warn("ExternalThemeNames");
             // GS2.WarnJson(ExternalThemeNames);
@@ -183,7 +183,7 @@ namespace GalacticScale
                 }
             }
 
-            var externalThemesGroup = Options.Add(GSUI.Group("External Themes", externalThemesGroupOptions));
+            var externalThemesGroup = Options.Add(GSUI.Group("External Themes".Translate(), externalThemesGroupOptions));
         }
         private void ExportAllThemes(Val o)
         {

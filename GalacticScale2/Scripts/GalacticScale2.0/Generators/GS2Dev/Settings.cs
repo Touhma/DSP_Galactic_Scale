@@ -370,14 +370,14 @@ namespace GalacticScale.Generators
             {
                 if ((bool) o) EnableSafeMode();
                 else DisableSafeMode();
-            }, "Disabled for now")));
+            }, "Disabled for now".Translate())));
             
             
             UI.Add("ludicrousMode", Options.Add(GSUI.Checkbox("Ludicrous Mode".Translate(), false, "ludicrousMode", o =>
             {
                 if ((bool) o) EnableLudicrousMode();
                 else DisableLudicrousMode();
-            }, "Disabled for now")));
+            }, "Disabled for now".Translate())));
             
             UI.Add("galaxyDensity", Options.Add(GSUI.Slider("Galaxy Density".Translate(), 1, 5, 9, "galaxyDensity", null, "Higher = Stars are closer to each other".Translate())));
             UI.Add("defaultStarCount",
@@ -391,7 +391,7 @@ namespace GalacticScale.Generators
             UI.Add("birthPlanetUnlock",
                 bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for birth planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanius on the birth planet".Translate())));
-            UI.Add("birthPlanetStar", bOptions.Add(GSUI.Combobox("BirthPlanet Star", starTypes, 7, "birthStar",null, "Type of Star to Start at")));
+            UI.Add("birthPlanetStar", bOptions.Add(GSUI.Combobox("BirthPlanet Star".Translate(), starTypes, 7, "birthStar",null, "Type of Star to Start at".Translate())));
             Options.Add(GSUI.Group("Birth Planet Settings".Translate(), bOptions, "Settings that only affect the starting planet".Translate()));
             UI.Add("moonsAreSmall", Options.Add(GSUI.Checkbox("Moons Are Small".Translate(), true, "moonsAreSmall", null, "Try to ensure moons are 1/2 their planets size or less".Translate())));
             UI.Add("moonBias", Options.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias", null, "Lower prefers telluric plants, higher gas giants".Translate())));
@@ -402,7 +402,7 @@ namespace GalacticScale.Generators
             UI.Add("allowResonances", Options.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
             UI.Add("rotationMulti", Options.Add(GSUI.Slider("Rotation Multiplier".Translate(), 0.5f, 1, 100, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
             UI.Add("secondarySatellites",
-                Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons")));
+                Options.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
 
             var FreqOptions = new GSOptions();
             UI.Add("freqK", FreqOptions.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
