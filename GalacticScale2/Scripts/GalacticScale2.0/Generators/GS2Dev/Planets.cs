@@ -101,7 +101,7 @@ namespace GalacticScale.Generators
             {
                 if (proto.gas)
                     if (proto.radius < 50)
-                        Warn("GAS AND NOT 50");
+                        Warn("GAS AND NOT >= 50");
                 var planet = new GSPlanet(star.Name + "-Planet", null, proto.radius, -1, -1, -1, -1, -1, -1, -1, -1);
                 if (proto.birth) birthPlanet = planet;
                 //planet.fields.Add("gas", proto.gas.ToString());
@@ -141,11 +141,26 @@ namespace GalacticScale.Generators
             foreach (var body in star.Bodies)
             {
                 body.RotationPhase = random.Next(360);
-                body.OrbitInclination = random.NextFloat() * 4 + random.NextFloat() * 5;
+                if (IsPlanetOfStar(star, body))
+                {
+
+                    GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
+                    body.OrbitInclination = random.NextFloat() * 4 + random.NextFloat() * 5;
+                }
                 if (!IsPlanetOfStar(star, body))
-                    body.OrbitInclination = (random.NextBool() ? 1 : -1) * (10f + random.NextFloat() * 50f);
+                {
+                    GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
+                    body.OrbitInclination = random.NextFloat() * 50f;
+                }
                 body.OrbitPhase = random.Next(360);
                 body.Obliquity = random.NextFloat() * 20;
+                var starInc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}inclination", -1);
+                GS2.Log($"StarInc {starInc}");
+                if (IsPlanetOfStar(star, body) && starInc > -1)
+                {
+                    GS2.Warn($"SETTING starInc Orbit Inclination of {star.Name} to {starInc}");
+                    body.OrbitInclination = random.NextFloat(starInc);
+                }
                 body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f)*random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
                 if (IsPlanetOfStar(star, body) && body.OrbitRadius < preferences.GetFloat("innerPlanetDistance", 1f) && (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets", false)) )
@@ -156,8 +171,11 @@ namespace GalacticScale.Generators
                     body.RotationPeriod = body.OrbitalPeriod / 4; // 1:4 Resonance
                 if (random.NextDouble() < 0.05) // Crazy Obliquity
                     body.Obliquity = random.NextFloat(20f, 85f);
-                if (random.NextDouble() < 0.05) // Crazy Inclination
+                if (starInc == -1 && random.NextDouble() < 0.05) // Crazy Inclination
+                {
+                    GS2.Warn("Setting Crazy Inclination for " + star.Name);
                     body.OrbitInclination = random.NextFloat(20f, 85f);
+                }
 
                 // Force inclinations for testing
                 // body.OrbitInclination = 0f;

@@ -412,11 +412,11 @@ namespace GalacticScale
 
         //Slider with increment and preferences Key
         public static GSUI Slider(string label, float min, float val, float max, float increment, string key,
-            GSOptionCallback callback = null, string hint = "")
+            GSOptionCallback callback = null, string hint = "", bool negativeIsRandom = false)
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val}, null, null, hint);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val, negativeIsRandom = negativeIsRandom}, null, null, hint);
             var defaultCallback = instance.CreateDefaultCallback(callback);
             var CB = defaultCallback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
@@ -701,12 +701,14 @@ public class GSUIGroupConfig
         public float minValue;
         public float maxValue;
         public float defaultValue;
+        public bool negativeIsRandom;
 
-        public GSSliderConfig(float minValue, float value, float maxValue)
+        public GSSliderConfig(float minValue, float value, float maxValue, bool negativeIsRandom = false)
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
             defaultValue = value;
+            this.negativeIsRandom = negativeIsRandom;
         }
     }
     public struct GSRangeSliderConfig

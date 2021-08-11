@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using static GalacticScale.GS2;
 namespace GalacticScale.Generators
 {
@@ -9,8 +10,7 @@ namespace GalacticScale.Generators
         private GSGenPreferences preferences = new GSGenPreferences();
         private Dictionary<string, double> starFreq = new Dictionary<string, double>();
 
-        private readonly Dictionary<string, GSOptionCallback>
-            typeCallbacks = new Dictionary<string, GSOptionCallback>();
+        private readonly Dictionary<string, GSOptionCallback> typeCallbacks = new Dictionary<string, GSOptionCallback>();
 
         private readonly string[] typeDesc =
         {
@@ -436,7 +436,7 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Group("Star Relative Frequencies".Translate(), FreqOptions, "How often to select a star type".Translate()));
             Options.Add(GSUI.Spacer());
             Options.Add(GSUI.Header("Default Settings".Translate(), "Changing these will reset all star specific options below".Translate()));
-            UI.Add("planetCount", Options.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, planetCountLow, planetCountHigh, "Size of Starting Planet. 200 is normal".Translate())));
+            UI.Add("planetCount", Options.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, planetCountLow, planetCountHigh, "The amount of planets per star".Translate())));
             UI.Add("countBias", Options.Add(GSUI.Slider("Planet Count Bias".Translate(), 0, 50, 100, "sizeBias", CountBiasCallback)));
             UI.Add("planetSize",Options.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", planetSize, planetSizeLow, planetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             UI.Add("sizeBias", Options.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback)));
@@ -446,18 +446,20 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Separator());
             for (var i = 0; i < 14; i++)
             {
+                //CreateTypeInclinationCallBack($"{typeLetter[i]}inclination");
                 var tOptions = new GSOptions();
-                UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider($"{typeDesc[i]} Planet Count".Translate(), 1, 2, 10, 99, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range".Translate())));
-                UI.Add($"{typeLetter[i]}countBias", tOptions.Add(GSUI.Slider($"{typeDesc[i]} Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias", null, "Prefer Less (lower) or More (higher) Counts".Translate())));
-                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider($"{typeDesc[i]} Telluric Planet Size".Translate(), 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
-                UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider($"{typeDesc[i]} Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
+                UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider($"Planet Count".Translate(), 1, 2, 10, 99, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range".Translate())));
+                UI.Add($"{typeLetter[i]}countBias", tOptions.Add(GSUI.Slider($"Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias", null, "Prefer Less (lower) or More (higher) Counts".Translate())));
+                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider($"Telluric Planet Size".Translate(), 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
+                UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider($"Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
                 UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below".Translate())));
-                UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,1)).Item1,preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,3)).Item2, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Habitable Zone override".Translate())));
-                UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider($"{typeDesc[i]} %Gas".Translate(), l?0:10, 20, l?99:50, $"{typeLetter[i]}chanceGas")));
-                UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider($"{typeDesc[i]} %Moon".Translate(), l?0:10, 20, l?99:80, $"{typeLetter[i]}chanceMoon")));
+                UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,1)).Item1,preferences.GetFloatFloat($"{typeLetter[i]}hz", (0,3)).Item2, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Force habitable zone between these distances".Translate())));
+                UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider($"Chance for Gas giant".Translate(), l?0:10, 20, l?99:50, $"{typeLetter[i]}chanceGas")));
+                UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider($"Chance for Moon".Translate(), l?0:10, 20, l?99:80, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
-                UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider($"{typeDesc[i]} Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 1f, $"{typeLetter[i]}orbits", null, null, null, "Distances planets can spawn between".Translate())));
-
+                UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider($"Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 1f, $"{typeLetter[i]}orbits", null, null, null, "Force the distances planets can spawn between".Translate())));
+                UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 90, 1f, $"{typeLetter[i]}inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum angle of orbit".Translate(), true)));
+                //UI[$"{typeLetter[i]}inclination"].Set(new GSSliderConfig(-1, -1, 90, true));
           
                 // UI.Add($"{typeLetter[i]}systemDensity", tOptions.Add(GSUI.Slider($"{typeDesc[i]} Density".Translate(), 1, 3, 5, $"{typeLetter[i]}systemDensity", null, "Lower is less dense".Translate())));
                 Options.Add(GSUI.Group($"{typeDesc[i]} Overrides".Translate(), tOptions, $"Change Settings for Type {typeDesc[i]} stars".Translate()));
@@ -466,6 +468,16 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Button("Reset".Translate(), "Now".Translate(), Reset));
             loaded = true;
         }
+
+        //private void CreateTypeInclinationCallBack(string key)
+        //{
+        //    typeCallbacks.Add(key, (o) =>
+        //    {
+        //        GS2.Log(key + " " + o);
+        //        var t = UI[key].RectTransform.GetComponent<GSUISlider>();
+        //        t.negativeIsRandom = true;
+        //    });
+        //}
 
         private void planetCountLow(Val o)
         {
@@ -690,6 +702,8 @@ namespace GalacticScale.Generators
         private void InitForcedStars()
         {
             ForcedStars = new List<string>();
+            
+
             for (var i = 0; i < 14; i++)
             {
                 var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
@@ -698,8 +712,13 @@ namespace GalacticScale.Generators
             GS2.Warn("Forced Stars:");
             GS2.WarnJson(ForcedStars);
         }
-        private (EStarType type, ESpectrType spectr) ChooseStarType()
+        private (EStarType type, ESpectrType spectr) ChooseStarType(bool birth = false)
         {
+            var bsInt = preferences.GetInt("birthStar", 14);
+            if (bsInt < 14 && birth)
+            {               
+                return ((EStar)bsInt).Convert();
+            }
             var starType = "";
             if (ForcedStars.Count > 0)
             {
