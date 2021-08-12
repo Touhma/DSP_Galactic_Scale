@@ -93,7 +93,7 @@ namespace GalacticScale.Generators
             ReadStarData();
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             //GS2.Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);

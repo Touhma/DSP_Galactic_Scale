@@ -30,7 +30,7 @@
             //OnImportPositionsClick(null);
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             var p = new GSPlanets();
             for (var i = 1f; i < 50f; i++) p.Add(new GSPlanet("Test", "OceanWorld", 100, i, -1, -1, 0, -1, -1, -1, 1f));

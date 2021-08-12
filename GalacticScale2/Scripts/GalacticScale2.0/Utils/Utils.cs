@@ -375,5 +375,38 @@ namespace GalacticScale
                 public IntPtr Value;
             }
         }
+
+        public static int GetStarDataGasCount(StarData sd)
+        {
+            if (sd == null) return -1;
+            int count = 0;
+            foreach (var planet in sd.planets)
+            {
+                if (planet.type == EPlanetType.Gas) count++;
+            }
+
+            return count;
+        }
+        public static int GetStarDataTelluricCount(StarData sd)
+        {
+            if (sd == null) return -1;
+            int count = 0;
+            foreach (var planet in sd.planets)
+            {
+                if (planet.type != EPlanetType.Gas && planet.orbitAroundPlanet == null) count++;
+            }
+
+            return count;
+        }
+        public static int GetStarDataMoonCount(StarData sd)
+        {
+            if (sd == null) return -1;
+            int count = 0;
+            foreach (var planet in sd.planets)
+            {
+                if (planet.orbitAroundPlanet != null) count++;
+            }
+            return count;
+        }
     }
 }

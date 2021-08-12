@@ -118,6 +118,8 @@ namespace GalacticScale
                 }
 
                 GS2.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
+                GS2.Warn($"BirthPlanetName:{birthPlanetName}");
+                
                 if (Stars.HabitablePlanets.Count > 0)
                 {
                     GS2.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");
@@ -131,7 +133,7 @@ namespace GalacticScale
                 if (StarCount > 0 && PlanetCount > 0) return Stars[0].Planets[0];
 
                 GS2.Error("Could not find birthplanet as there are no stars or planets.");
-                GS2.AbortGameStart("Could not find birthplanet as there are no stars or planets.");
+                GS2.AbortGameStart("Could not find birthplanet as there are no stars or planets.".Translate());
                 return null;
             }
         }

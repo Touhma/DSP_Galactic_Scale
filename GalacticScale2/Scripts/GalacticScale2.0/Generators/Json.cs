@@ -41,7 +41,7 @@ namespace GalacticScale.Generators
             GS2.Log("Generator:Json|Init|End");
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             GS2.Log("Generator:Json|Generate");
             if (string.IsNullOrEmpty(ImportFilename))
