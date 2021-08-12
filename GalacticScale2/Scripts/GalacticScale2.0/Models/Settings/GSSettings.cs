@@ -133,7 +133,7 @@ namespace GalacticScale
                 if (StarCount > 0 && PlanetCount > 0) return Stars[0].Planets[0];
 
                 GS2.Error("Could not find birthplanet as there are no stars or planets.");
-                GS2.AbortGameStart("Could not find birthplanet as there are no stars or planets.");
+                GS2.AbortGameStart("Could not find birthplanet as there are no stars or planets.".Translate());
                 return null;
             }
         }
