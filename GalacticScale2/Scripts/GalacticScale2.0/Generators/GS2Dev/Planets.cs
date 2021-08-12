@@ -28,27 +28,48 @@ namespace GalacticScale.Generators
             if (starBodyCount == 0) return;
             var moonChance = GetMoonChanceForStar(star);
             var gasChance = GetGasChanceForStar(star);
-            var moonMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
-            var subMoonChance = moonMoonChance * moonChance;
-            moonChance = moonChance - subMoonChance;
+            var subMoonChance = 0.0;
+            if (preferences.GetBool("secondarySatellites", false))
+            {
+                subMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f ;
+                //moonChance = moonChance - subMoonChance;
+            }
+
             var gasCount = Mathf.RoundToInt(starBodyCount * (float)gasChance);
+            
             var telluricCount = starBodyCount - gasCount;
+            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount}");
             if (telluricCount == 0 && star == birthStar)
             {
                 telluricCount = 1;
                 gasCount--;
             }
             var moonCount = Mathf.RoundToInt(telluricCount * (float)moonChance);
+            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
+            telluricCount = telluricCount - moonCount;
+            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
+
             if (telluricCount == 0 && star == birthStar)
             {
                 telluricCount = 1;
                 moonCount--;
             }
+            if (moonCount > 0 && gasCount == 0 && telluricCount == 0)
+            {
+                if (star == birthStar) telluricCount++;
+                else if (gasChance > 0) gasCount++;
+                else telluricCount++;
+                if (moonCount > 0) moonCount--;
+            }
+            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
+
             var secondaryMoonCount = Mathf.RoundToInt((moonCount -1) * (float)subMoonChance);
             moonCount -= secondaryMoonCount;
-            
+            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount} SecondaryMoonCount:{secondaryMoonCount}");
+            GS2.Log($"GasChance:{gasChance} TelluricChance:{1-gasChance} MoonChance:{moonChance} SecondaryMoonChance:{subMoonChance}");
 
-            
+
+
             var moons = new GSPlanets();
             if (star == birthStar)
             {
