@@ -112,7 +112,7 @@ namespace GalacticScale.Generators
         private void SelectBirthPlanet()
         {
             Log("Picking BirthPlanet");
-            PickNewBirthPlanet();
+            //PickNewBirthPlanet();
             Log($"Birthplanet Picked: {birthPlanet.Name} Orbiting at {birthPlanet.OrbitRadius} of star with hz: {birthStar.genData.Get("minHZ").String()}:{birthStar.genData.Get("maxHZ").String()}");
             if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
             Log((birthPlanet != null).ToString());
@@ -180,97 +180,97 @@ namespace GalacticScale.Generators
             return false;
         }
 
-        private void FixOrbitsForBirthPlanet(int newRadius)
-        {
-            var radiusDifference = newRadius - birthPlanet.Radius;
-            var newRadiusAU = newRadius * 0.000025f;
-            var auRadiusDifference = radiusDifference * 0.000025f;
-            if (birthPlanet.MoonCount > 0)
-                for (var i = 0; i < birthPlanet.MoonCount; i++)
-                    if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
-                    {
-                        birthPlanet.Moons.RemoveRange(0, i + 1);
-                        Log($"Fixed birthplanet orbits by removing {i + 1} moons");
-                        return;
-                    }
+        //private void FixOrbitsForBirthPlanet(int newRadius)
+        //{
+        //    var radiusDifference = newRadius - birthPlanet.Radius;
+        //    var newRadiusAU = newRadius * 0.000025f;
+        //    var auRadiusDifference = radiusDifference * 0.000025f;
+        //    if (birthPlanet.MoonCount > 0)
+        //        for (var i = 0; i < birthPlanet.MoonCount; i++)
+        //            if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
+        //            {
+        //                birthPlanet.Moons.RemoveRange(0, i + 1);
+        //                Log($"Fixed birthplanet orbits by removing {i + 1} moons");
+        //                return;
+        //            }
 
-            //Is the birthPlanet a moon?
-            if (birthPlanetIsMoon)
-            {
-                //Can we solve this by removing sub moons?
-                if (birthPlanet.MoonCount > 0)
-                    for (var i = 0; i < birthPlanet.MoonCount; i++)
-                        if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
-                        {
-                            birthPlanet.Moons.RemoveRange(0, i + 1);
-                            Log($"Fixed birthplanet orbits by removing {i + 1} sub moons");
-                            return;
-                        }
+        //    //Is the birthPlanet a moon?
+        //    if (birthPlanetIsMoon)
+        //    {
+        //        //Can we solve this by removing sub moons?
+        //        if (birthPlanet.MoonCount > 0)
+        //            for (var i = 0; i < birthPlanet.MoonCount; i++)
+        //                if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
+        //                {
+        //                    birthPlanet.Moons.RemoveRange(0, i + 1);
+        //                    Log($"Fixed birthplanet orbits by removing {i + 1} sub moons");
+        //                    return;
+        //                }
 
-                //Can we solve this by removing host moons?
-                if (birthPlanetHost.MoonCount > 1)
-                {
-                    var cumulativeSystemRadii = 0.0;
-                    for (var i = birthPlanetIndex - 1; i > 0; i--)
-                    {
-                        // check in towards the host
-                        cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
-                        if (cumulativeSystemRadii > auRadiusDifference)
-                        {
-                            birthPlanetHost.Moons.RemoveRange(i, birthPlanetIndex - i);
-                            birthPlanet.OrbitRadius -= auRadiusDifference;
-                            Log($"Fixed birthplanet orbits by removing {birthPlanetIndex - i} host moons on inside");
-                        }
-                    }
+        //        //Can we solve this by removing host moons?
+        //        if (birthPlanetHost.MoonCount > 1)
+        //        {
+        //            var cumulativeSystemRadii = 0.0;
+        //            for (var i = birthPlanetIndex - 1; i > 0; i--)
+        //            {
+        //                // check in towards the host
+        //                cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
+        //                if (cumulativeSystemRadii > auRadiusDifference)
+        //                {
+        //                    birthPlanetHost.Moons.RemoveRange(i, birthPlanetIndex - i);
+        //                    birthPlanet.OrbitRadius -= auRadiusDifference;
+        //                    Log($"Fixed birthplanet orbits by removing {birthPlanetIndex - i} host moons on inside");
+        //                }
+        //            }
 
-                    cumulativeSystemRadii = 0.0;
-                    for (var i = birthPlanetIndex + 1; i < birthPlanetHost.MoonCount; i++)
-                    {
-                        // check out away from the host
-                        cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
-                        if (cumulativeSystemRadii > auRadiusDifference)
-                        {
-                            birthPlanetHost.Moons.RemoveRange(birthPlanetIndex + 1, i - birthPlanetIndex);
-                            birthPlanet.OrbitRadius -= auRadiusDifference;
-                            Log($"Fixed birthplanet orbits by removing {i - birthPlanetIndex} host moons on outside");
-                        }
-                    }
-                }
+        //            cumulativeSystemRadii = 0.0;
+        //            for (var i = birthPlanetIndex + 1; i < birthPlanetHost.MoonCount; i++)
+        //            {
+        //                // check out away from the host
+        //                cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
+        //                if (cumulativeSystemRadii > auRadiusDifference)
+        //                {
+        //                    birthPlanetHost.Moons.RemoveRange(birthPlanetIndex + 1, i - birthPlanetIndex);
+        //                    birthPlanet.OrbitRadius -= auRadiusDifference;
+        //                    Log($"Fixed birthplanet orbits by removing {i - birthPlanetIndex} host moons on outside");
+        //                }
+        //            }
+        //        }
 
-                //Can we solve this by making the host smaller?
-                if (birthPlanetHost.Scale == 1f && birthPlanetHost.RadiusAU > auRadiusDifference)
-                {
-                    birthPlanetHost.Radius -= radiusDifference;
-                    Log("Fixed birthplanet orbits by making host planet smaller");
-                    return;
-                }
+        //        //Can we solve this by making the host smaller?
+        //        if (birthPlanetHost.Scale == 1f && birthPlanetHost.RadiusAU > auRadiusDifference)
+        //        {
+        //            birthPlanetHost.Radius -= radiusDifference;
+        //            Log("Fixed birthplanet orbits by making host planet smaller");
+        //            return;
+        //        }
 
-                if (birthPlanetHost.Scale == 10f && birthPlanetHost.RadiusAU > auRadiusDifference)
-                {
-                    var reduction = Mathf.Max(Utils.ParsePlanetSize(radiusDifference / 10), 10);
-                    birthPlanetHost.Radius -= reduction;
-                    Warn("Fixed birthplanet orbits by making host planet smaller");
-                    return;
-                }
-            }
+        //        if (birthPlanetHost.Scale == 10f && birthPlanetHost.RadiusAU > auRadiusDifference)
+        //        {
+        //            var reduction = Mathf.Max(Utils.ParsePlanetSize(radiusDifference / 10), 10);
+        //            birthPlanetHost.Radius -= reduction;
+        //            Warn("Fixed birthplanet orbits by making host planet smaller");
+        //            return;
+        //        }
+        //    }
 
-            //Is the birthPlanet a planet?
-            if (!birthPlanetIsMoon)
-            {
-                //Fix by moving all orbits out
-                for (var i = birthPlanetIndex; i < birthStar.PlanetCount; i++)
-                {
-                    birthStar.Planets[i].OrbitRadius += 2 * auRadiusDifference;
-                    birthPlanet.OrbitRadius -= auRadiusDifference;
-                }
+        //    //Is the birthPlanet a planet?
+        //    if (!birthPlanetIsMoon)
+        //    {
+        //        //Fix by moving all orbits out
+        //        for (var i = birthPlanetIndex; i < birthStar.PlanetCount; i++)
+        //        {
+        //            birthStar.Planets[i].OrbitRadius += 2 * auRadiusDifference;
+        //            birthPlanet.OrbitRadius -= auRadiusDifference;
+        //        }
 
-                Log(
-                    $"Fixed birthplanet orbits by adding size difference to orbit radius for all planets at or above index {birthPlanetIndex}");
-                return;
-            }
+        //        Log(
+        //            $"Fixed birthplanet orbits by adding size difference to orbit radius for all planets at or above index {birthPlanetIndex}");
+        //        return;
+        //    }
 
-            Error("Failed to adjust orbits for birthPlanet Increased Size");
-        }
+        //    Error("Failed to adjust orbits for birthPlanet Increased Size");
+        //}
 
         public void SetGalaxyDensity(int density)
         {

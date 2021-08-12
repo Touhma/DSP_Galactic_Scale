@@ -45,67 +45,91 @@ namespace GalacticScale.Generators
             {
                 Orbit orbit;
                 var planet = planets[i];
+                GS2.Log($"Finding Orbit for planet {planet.Name}");
                 if (planet == birthPlanet)
                 {
                     // planet.Name += " BIRTH";
                     continue;
                 }
 
-                // Log(planet.SystemRadius.ToString());
-                planet.OrbitInclination = 0f;
+                Log(planet.SystemRadius.ToString());
+                //planet.OrbitInclination = 0f;
 
 
-                //Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
+                Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
                 {
-                    //GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius}");
+                    GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2 * planet.SystemRadius}");
                     if (range.outer - range.inner >
                         (1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
                     {
-                        //Log($"Adding {range}");
+                        Log($"Adding {range}");
                         availableOrbits.Add(range);
                     }
                 }
 
                 if (availableOrbits.Count == 0)
                 {
-                    //Warn("Free Orbit Ranges:");
+                    Warn("Free Orbit Ranges:");
                     // LogJson(freeOrbitRanges);
-                    //Warn($"No Orbit Ranges found for planet {planet.Name} radius:{planet.SystemRadius}");
+                    Warn($"No Orbit Ranges found for planet {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} radius:{planet.SystemRadius}");
                     var success = false;
                     foreach (var existingOrbit in orbits)
                         if (existingOrbit.hasRoom && existingOrbit.SystemRadius > planet.SystemRadius)
                         {
-                            // Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
+                            Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
                             existingOrbit.planets.Add(planet);
                             planet.OrbitRadius = existingOrbit.radius;
                             planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                             success = true;
                             break;
                         }
-                    //GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
+                    GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
                     if (success) continue;
 
-                    Warn($"After all that, just couldn't find an orbit for {planet.Name}. Throwing planet into the sun.");
-                    star.Planets.Remove(planet);
+                    Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
+                    if (star.Planets.Contains(planet))
+                    {
+                        GS2.Warn("Removing Planet");
+                        star.Planets.Remove(planet);
+                    }
+                    else
+                    {
+                        foreach (var p in star.Planets)
+                        {
+                            if (p.Moons.Contains(planet)) { GS2.Warn("Removing Moon"); p.Moons.Remove(planet); }
+                            else
+                            {
+                                foreach (var m in p.Moons)
+                                {
+                                    if (m.Moons.Contains(planet)) { GS2.Warn("Removing MoonMoon"); m.Moons.Remove(planet); }
+                                }
+                            }
+                        }
+                    }
                     continue;
                 }
+                if (availableOrbits.Count == 0)
 
+                {
+                    GS2.Log($"No Available Orbits Found for Planet {planet.Name}");    
+                    continue;
+                }
                 var selectedRange = r.Item(availableOrbits);
-                // GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
+                GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
                 var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius,
                     selectedRange.outer - planet.SystemRadius);
                 freeOrbitRanges.Remove(selectedRange);
                 orbit = new Orbit(radius);
                 orbit.planets.Add(planet);
                 planet.OrbitRadius = radius;
-                //GS2.Log($"-{planet.Name} orbit radius {planet.OrbitRadius}");
+                GS2.Log($"-{planet.Name} orbit radius {planet.OrbitRadius}");
 
                 planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
-                //Log(
-                    //$"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
-                orbits.Add(orbit);
+                Log(
+                $"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
+            orbits.Add(orbit);
                 var minGap = 0.1f;
 
                 if (radius - planet.SystemRadius*2 - selectedRange.inner > minGap)

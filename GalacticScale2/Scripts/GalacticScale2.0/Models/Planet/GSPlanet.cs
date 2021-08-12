@@ -6,6 +6,21 @@ namespace GalacticScale
 {
     public class GSPlanet
     {
+        public string _type
+        {
+            get
+            {
+                if (scale == 10f) return "Gas";
+                return "Telluric";
+            }
+        }
+        public string details
+        {
+            get
+            {
+                return $"Name:{Name} Theme:{Theme} Radius:{Radius} Type:{_type}";
+            }
+        }
         [NonSerialized]
         public Dictionary<string, string>
             fields = new Dictionary<string, string>(); // Temporary string store for generator use, not saved
@@ -30,6 +45,8 @@ namespace GalacticScale
         [SerializeField] private float scale = -1;
 
         private string theme;
+        [NonSerialized]
+        public readonly ValStore genData = new ValStore();
 
         [NonSerialized] public GSPlanetVeins veinData = new GSPlanetVeins();
 
@@ -268,7 +285,7 @@ namespace GalacticScale
 
         public override string ToString()
         {
-            return Name;
+            return details;
         }
 
         private string InitTheme()
