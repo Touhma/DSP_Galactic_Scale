@@ -6,6 +6,13 @@ namespace GalacticScale
 {
     public partial class PatchOnUIVirtualStarmap
     {
+        // GSSettings.Instance.birthStar =
+        //     __instance.starPool[GSSettings.BirthPlanet.planetData.star.index].starData;
+        // GS2.ActiveGenerator.Generate(GSSettings.StarCount,__instance.starPool[GSSettings.BirthPlanet.planetData.star.index].starData );
+        // __instance.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
+        // __instance.OnGalaxyDataReset();
+
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIVirtualStarmap), "_OnLateUpdate")]
         public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)
@@ -27,7 +34,7 @@ namespace GalacticScale
                     var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     var num2 = Kit.ClosestPoint2Straight(ray.origin, ray.GetPoint(300f), starData.position);
                     var num3 = Vector3.Distance(ray.GetPoint(300f * num2), starData.position);
-                    if (num3 < (double) num1)
+                    if (num3 < (double)num1)
                     {
                         num1 = num3 >= __instance.starPool[index2].pointRenderer.transform.localScale.x * 0.25
                             ? num3
@@ -47,17 +54,30 @@ namespace GalacticScale
 
             var pressing = VFInput.rtsConfirm.pressing;
             var flag1 = !string.IsNullOrEmpty(__instance.clickText);
-            for (var index2 = 1; index2 < __instance.starPool.Count; ++index2)
+            for (var index2 = 0; index2 < __instance.starPool.Count; ++index2)
             {
                 var flag2 = __instance.starPool[index2].active && index2 == index1;
                 __instance.starPool[index2].nameText.gameObject.SetActive(flag2);
 
                 if (flag2 & flag1)
                 {
+                    GS2.Log("0");
                     if (pressing)
-                        __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" +
-                                                                    __instance.clickText.Translate();
+                    {
+                        GS2.ActiveGenerator.Generate(GSSettings.StarCount, __instance.starPool[index1].starData);
+                        __instance.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
+                        __instance.OnGalaxyDataReset();
+                        // __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" +
+                        //                                             __instance.clickText.Translate();
+                    }
 
+                    GS2.Log(__instance.starPool[index1].starData.name + " - " +
+                            __instance.starPool[index2].starData.name);
+                    var sd = __instance.starPool[index2]?.starData;
+                    GS2.Log("1");
+                    if (__instance.starPool[index2]?.nameText?.text != null) __instance.starPool[index2].nameText.text = $"{__instance.starPool[index2].textContent} \r\n Gas Giants:{Utils.GetStarDataGasCount(sd)}\r\nPlanets:{Utils.GetStarDataTelluricCount(sd)}\n\n Moons:{Utils.GetStarDataMoonCount(sd)}";
+                    GS2.Log("2");
+                    GS2.Log($"{sd?.planetCount}");
                     __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
                         __instance.starPool[index2].nameText.preferredWidth,
                         __instance.starPool[index2].nameText.preferredHeight);
@@ -96,7 +116,7 @@ namespace GalacticScale
             __instance.starPointSelection.material.SetColor("_TintColor", color1);
             __instance.starPointSelection.transform.localPosition = starData1.position;
             __instance.starPointSelection.transform.localScale =
-                Vector3.one * (float) (num4 * 0.600000023841858 + 0.600000023841858);
+                Vector3.one * (float)(num4 * 0.600000023841858 + 0.600000023841858);
             return false;
         }
     }

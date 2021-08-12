@@ -33,9 +33,14 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.gs2dev";
-
-        public void Generate(int starCount)
+        private string forcedBirthStar = null;
+        public void Generate(int starCount, StarData forcedBirthStar = null)
         {
+            if (forcedBirthStar != null)
+            {
+                this.forcedBirthStar = forcedBirthStar.name;
+                GS2.Warn("Forcing BirthStar to "+this.forcedBirthStar);
+            }
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
             
@@ -69,7 +74,8 @@ namespace GalacticScale.Generators
             SetPlanetOrbitPhase();
             Log($"Orbits Phased: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
-            SelectBirthPlanet();
+            // SelectBirthPlanet();
+            if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
             Log($"BirthPlanet Selected: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             SanityCheck();
@@ -78,21 +84,27 @@ namespace GalacticScale.Generators
             EnsureBirthSystemHasTi();
             // GS2.Warn("BIRTHSTAR");
             // Warn($"{birthStar.Name} {birthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
-            var bsInt = preferences.GetInt("birthStar", 14);
-            if (bsInt == 14) return;
-            var starType = (EStar)bsInt;
-            (EStarType type, ESpectrType spectr) tt = starType.Convert();
-            var newBirthStar = new GSStar(random.Next(), birthStar.Name, tt.spectr, tt.type, birthStar.Planets);
-            var bpIndex = birthStar.Planets.IndexOf(birthPlanet);
-            var bsIndex = GSSettings.Stars.IndexOf(birthStar);
-            //for (var i = 0; i < 200; i++)
-            //{
-            //    GS2.Warn("N:"+NameGen.New(birthPlanet));
-            //}
-            // Warn($"END:{newBirthStar.Name} {newBirthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
-            GSSettings.Stars[bsIndex] = newBirthStar;
-            GSSettings.Stars[bsIndex].Planets[bpIndex] = birthPlanet;
+            // if (forcedBirthStar == null)
+            // {
+            //     var bsInt = preferences.GetInt("birthStar", 14);
+            //     if (bsInt == 14) return;
+            //     var starType = (EStar)bsInt;
+            //     (EStarType type, ESpectrType spectr) tt = starType.Convert();
+            //     var newBirthStar = new GSStar(random.Next(), birthStar.Name, tt.spectr, tt.type, birthStar.Planets);
+            //     var bpIndex = birthStar.Planets.IndexOf(birthPlanet);
+            //     var bsIndex = GSSettings.Stars.IndexOf(birthStar);
+            //
+            //
+            // //for (var i = 0; i < 200; i++)
+            // //{
+            // //    GS2.Warn("N:"+NameGen.New(birthPlanet));
+            // //}
+            // // Warn($"END:{newBirthStar.Name} {newBirthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
+            // GSSettings.Stars[bsIndex] = newBirthStar;
+            // GSSettings.Stars[bsIndex].Planets[bpIndex] = birthPlanet;
+            // }
             // Log("End");
+            GSSettings.BirthPlanetName = birthPlanet.Name;
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 
@@ -101,7 +113,7 @@ namespace GalacticScale.Generators
         {
             foreach (var star in GSSettings.Stars)
                 //GS2.Warn($"DysonRadius for star {star.Name} is {star.dysonRadius}");
-
+            
             foreach (var body in star.Bodies)
             foreach (var m in body.Moons)
                 if (m.Radius > body.Radius && body.Scale != 10f)
@@ -109,36 +121,36 @@ namespace GalacticScale.Generators
                         $"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
         }
 
-        private void SelectBirthPlanet()
-        {
-            Log("Picking BirthPlanet");
-            //PickNewBirthPlanet();
-            Log($"Birthplanet Picked: {birthPlanet.Name} Orbiting at {birthPlanet.OrbitRadius} of star with hz: {birthStar.genData.Get("minHZ").String()}:{birthStar.genData.Get("maxHZ").String()}");
-            if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
-            Log((birthPlanet != null).ToString());
-            GSSettings.BirthPlanetName = birthPlanet.Name;
-            Log("BirthPlanet Set");
-            if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
-
-            if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
-            {
-                Log("Forcing BirthPlanet Size");
-                //int oldRadius = birthPlanet.Radius;
-                var newRadius = preferences.GetInt("birthPlanetSize", 400);
-
-                // if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
-                // {
-                //     Log("Fixing Orbits...");
-                //     FixOrbitsForBirthPlanet(newRadius);
-                // }
-
-                birthPlanet.Radius = newRadius;
-                birthPlanet.Scale = 1f;
-            }
-            //Log("Logging BirthPlanet Json");
-            //LogJson(birthPlanet, true);
-            
-        }
+        // private void SelectBirthPlanet()
+        // {
+        //     Log("Picking BirthPlanet");
+        //     //PickNewBirthPlanet();
+        //     Log($"Birthplanet Picked: {birthPlanet.Name} Orbiting at {birthPlanet.OrbitRadius} of star with hz: {birthStar.genData.Get("minHZ").String()}:{birthStar.genData.Get("maxHZ").String()}");
+        //     if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
+        //     Log((birthPlanet != null).ToString());
+        //     GSSettings.BirthPlanetName = birthPlanet.Name;
+        //     Log("BirthPlanet Set");
+        //     if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
+        //
+        //     if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
+        //     {
+        //         Log("Forcing BirthPlanet Size");
+        //         //int oldRadius = birthPlanet.Radius;
+        //         var newRadius = preferences.GetInt("birthPlanetSize", 400);
+        //
+        //         // if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
+        //         // {
+        //         //     Log("Fixing Orbits...");
+        //         //     FixOrbitsForBirthPlanet(newRadius);
+        //         // }
+        //
+        //         birthPlanet.Radius = newRadius;
+        //         birthPlanet.Scale = 1f;
+        //     }
+        //     //Log("Logging BirthPlanet Json");
+        //     //LogJson(birthPlanet, true);
+        //     
+        // }
 
 
         private void EnsureBirthSystemHasTi()
@@ -159,7 +171,7 @@ namespace GalacticScale.Generators
                         GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
                     // }
                     var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol",
-                        GetStarPlanetSize(birthStar), 0.03f, 66f, 1000f, 0f,
+                        GetStarPlanetSize(birthStar), 0.03f, 66f, 900f, 0f,
                         66f, 360f, 0f, -1f));
                     tiPlanet.OrbitalPeriod =
                         Utils.CalculateOrbitPeriodFromStarMass(tiPlanet.OrbitRadius, birthStar.mass);
@@ -377,12 +389,12 @@ namespace GalacticScale.Generators
         private void AddSiTiToBirthPlanet()
         {
             Warn("Setting SI/TI");
-            birthPlanet.GsTheme.VeinSettings.Algorithm = "GS2";
+            birthPlanet.veinSettings.Algorithm = "GS2";
             birthPlanet.GsTheme.CustomGeneration = true;
-            birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
+            birthPlanet.veinSettings.VeinTypes.Add(GSVeinType.Generate(
                 EVeinType.Silicium,
                 1, 10, 0.6f, 0.6f, 5, 10, false));
-            birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
+            birthPlanet.veinSettings.VeinTypes.Add(GSVeinType.Generate(
                 EVeinType.Titanium,
                 1, 10, 0.6f, 0.6f, 5, 10, false));
         }

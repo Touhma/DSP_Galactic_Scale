@@ -118,6 +118,8 @@ namespace GalacticScale
                 }
 
                 GS2.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
+                GS2.Warn($"BirthPlanetName:{birthPlanetName}");
+                
                 if (Stars.HabitablePlanets.Count > 0)
                 {
                     GS2.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");

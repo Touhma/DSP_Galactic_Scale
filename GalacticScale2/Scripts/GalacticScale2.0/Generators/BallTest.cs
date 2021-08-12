@@ -30,7 +30,7 @@
             //OnImportPositionsClick(null);
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             //starCount = 2048;
             var random = new GS2.Random(GSSettings.Seed);

@@ -39,6 +39,18 @@ namespace GalacticScale.Generators
                     birthStar = random.Item(availBirthStars);                   
             } else  birthStar = random.Item(GSSettings.Stars);
 
+            if (forcedBirthStar != null)
+            {
+                GS2.Warn("Forcing birthStar");
+                foreach (var star in GSSettings.Stars)
+                {
+                    if (star.Name == forcedBirthStar) {
+                        birthStar = star;
+                        GS2.Warn("birthStar forced");
+                        break;
+                    }
+                }
+            }
             
         }
         private int GetStarPlanetCount(GSStar star)
@@ -104,9 +116,10 @@ namespace GalacticScale.Generators
             
             var radius = star.RadiusAU;
             var lum = star.luminosity;
-            var min = radius +( 0.5f * radius * Mathf.Sqrt(Mathf.Sqrt(lum)));
-            min = Mathf.Clamp(min , radius * 1.2f, 100f);
+            var min = radius +( 0.2f * radius * Mathf.Sqrt(Mathf.Sqrt(lum)));
+            
             if (preferences.GetBool($"{sl}orbitOverride")) (min, _) = preferences.GetFloatFloat($"{sl}orbits", (0.02f,20f));
+            min = Mathf.Clamp(min , radius * 1.1f, 100f);
             star.genData.Set("minOrbit", min);
             // Warn($"Getting Min Orbit for Star {star.Name} Min:{min}");
             return min;
@@ -127,7 +140,7 @@ namespace GalacticScale.Generators
             // GS2.Warn($"Density:{density} MaxOrbit:{star.MaxOrbit}");
             var max = Mathf.Clamp(Mathf.Max(maxByPlanetCount, minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit")*2f, star.MaxOrbit);
             if (preferences.GetBool($"{sl}orbitOverride")) (_, max) = preferences.GetFloatFloat($"{sl}orbits", (0.02f,20f));
-            Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
+            // Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             star.genData.Set("maxOrbit", max);
             return max;
         }

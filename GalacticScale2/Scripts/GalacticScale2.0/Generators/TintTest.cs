@@ -152,7 +152,7 @@ namespace GalacticScale.Generators
         }
 
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             throw new Exception("Doh"); //generate(starCount);
         }
@@ -167,7 +167,7 @@ namespace GalacticScale.Generators
         }
 
 
-        public void generate(int starCount)
+        public void generate(int starCount, StarData birthStar = null)
         {
             //GS2.Log("TT:Creating New Settings");
 

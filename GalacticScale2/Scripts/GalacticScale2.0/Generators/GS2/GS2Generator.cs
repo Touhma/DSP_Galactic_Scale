@@ -30,7 +30,7 @@ namespace GalacticScale.Generators
 
         public string GUID => "space.customizing.generators.gs2";
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
@@ -97,6 +97,7 @@ namespace GalacticScale.Generators
             }
 
             EnsureBirthSystemHasTi();
+            GSSettings.BirthPlanetName = birthPlanet.Name;
         }
 
 

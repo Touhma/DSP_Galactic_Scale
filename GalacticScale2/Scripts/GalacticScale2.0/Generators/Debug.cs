@@ -38,7 +38,7 @@ namespace GalacticScale.Generators
             //OnImportPositionsClick(null);
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             foreach (var a in stars) GS2.Log(a.Name);
             var p = new GSPlanets();

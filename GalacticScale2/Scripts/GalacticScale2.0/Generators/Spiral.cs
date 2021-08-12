@@ -23,7 +23,7 @@ namespace GalacticScale.Generators
         }
 
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             generate(starCount);
         }

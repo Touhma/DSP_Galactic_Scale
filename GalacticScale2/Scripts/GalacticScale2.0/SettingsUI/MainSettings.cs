@@ -53,7 +53,7 @@ namespace GalacticScale
             return Preferences;
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
             _generatorsCombobox?.SetItems(_generatorNames);

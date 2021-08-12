@@ -45,7 +45,7 @@ namespace GalacticScale.Generators
             uiList = Options.Add(GSUI.Combobox("Themes Captured", themeNames, null));
         }
 
-        public void Generate(int starCount)
+        public void Generate(int starCount, StarData birthStar = null)
         {
             var random = new GS2.Random(GSSettings.Seed);
             var p = new GSPlanets();
