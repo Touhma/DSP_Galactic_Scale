@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static GalacticScale.GS2;
 
@@ -6,12 +7,35 @@ namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
     {
+        public void NamePlanets(GSStar star)
+        {
+            var i = 1;
+            foreach (var planet in star.Planets)
+            {
+                planet.Name = $"{star.Name} - {RomanNumbers.roman[i]}";
+                var j = 1;
+                foreach (var moon in planet.Moons) {
+                    moon.Name = $"{planet.Name} - {RomanNumbers.roman[j]}";
+                    var h = 1;
+                    foreach (var moon2 in moon.Moons)
+                    {
+                        moon2.Name = $"{moon.Name} - {RomanNumbers.roman[h]}";
+                        h++;
+                    }
+                    j++;
+                }
+                i++;
+            }
+        }
         private void AssignPlanetOrbits(GSStar star)
         {
+            GS2.Warn("Start:"+star.Planets.Count);
             var r = new GS2.Random(star.Seed);
             var orbits = new List<Orbit>();
             ref var planets = ref star.Planets;
+            GSPlanets brokenPlanets = new GSPlanets();
             planets.Sort(PlanetSortBySystemRadius);
+            GS2.WarnJson((from s in planets select s.details).ToList());
             CalculateHabitableZone(star);
             var minimumOrbit = CalculateMinimumOrbit(star);
             var maximumOrbit = CalculateMaximumOrbit(star);
@@ -40,12 +64,12 @@ namespace GalacticScale.Generators
                 freeOrbitRanges.Clear();
                 freeOrbitRanges.Add((minimumOrbit, maximumOrbit));
             }
-
+            GS2.Warn("Begin Loop:" + star.Planets.Count);
             for (var i = 0; i < planets.Count; i++)
             {
                 Orbit orbit;
                 var planet = planets[i];
-                GS2.Log($"Finding Orbit for planet {planet.Name}");
+                GS2.Log($"Finding Orbit for planet index {i} - {planet.Name}");
                 if (planet == birthPlanet)
                 {
                     // planet.Name += " BIRTH";
@@ -89,25 +113,10 @@ namespace GalacticScale.Generators
                     if (success) continue;
 
                     Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
-                    if (star.Planets.Contains(planet))
-                    {
-                        GS2.Warn("Removing Planet");
-                        star.Planets.Remove(planet);
-                    }
-                    else
-                    {
-                        foreach (var p in star.Planets)
-                        {
-                            if (p.Moons.Contains(planet)) { GS2.Warn("Removing Moon"); p.Moons.Remove(planet); }
-                            else
-                            {
-                                foreach (var m in p.Moons)
-                                {
-                                    if (m.Moons.Contains(planet)) { GS2.Warn("Removing MoonMoon"); m.Moons.Remove(planet); }
-                                }
-                            }
-                        }
-                    }
+
+                    brokenPlanets.Add(planet);     
+                    
+                    
                     continue;
                 }
                 if (availableOrbits.Count == 0)
@@ -137,7 +146,12 @@ namespace GalacticScale.Generators
                 if (selectedRange.outer - radius - planet.SystemRadius*2 > minGap)
                     freeOrbitRanges.Add((radius + planet.SystemRadius*2, selectedRange.outer));
             }
-
+            foreach (var brokenPlanet in brokenPlanets)
+            {
+                GS2.Warn($"Removing Planet {brokenPlanet}");
+                star.Planets.Remove(brokenPlanet);
+            }
+            brokenPlanets = null;
             starOrbits[star] = orbits;
             star.Planets.Sort(PlanetSortByOrbit);
             orbits.Sort(OrbitSort);

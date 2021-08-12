@@ -13,7 +13,7 @@ namespace GalacticScale.Generators
         private GSPlanet birthPlanet;
         private GSPlanet birthPlanetHost;
         private int birthPlanetIndex = -1;
-        private bool birthPlanetIsMoon;
+        //private bool birthPlanetIsMoon;
         private GSStar birthStar;
         private float maxStepLength = 3.5f;
         private float minDistance = 2f;
@@ -455,7 +455,7 @@ namespace GalacticScale.Generators
                 {
                     if (birthStar.Planets[i] == birthPlanet)
                     {
-                        birthPlanetIsMoon = false;
+                        //birthPlanetIsMoon = false;
                         birthPlanetIndex = i;
                         Log($"Selected {birthPlanet.Name} as birthPlanet (planet) index {i} of star {birthStar.Name}");
                         return;
@@ -465,7 +465,7 @@ namespace GalacticScale.Generators
                     {
                         if (birthStar.Planets[i].Moons[j] == birthPlanet)
                         {
-                            birthPlanetIsMoon = true;
+                            //birthPlanetIsMoon = true;
                             birthPlanetHost = birthStar.Planets[i];
                             birthPlanetIndex = j;
                             Log(
@@ -476,7 +476,7 @@ namespace GalacticScale.Generators
                         for (var k = 0; k < birthStar.Planets[i].Moons[j].Moons.Count; k++)
                             if (birthStar.Planets[i].Moons[j].Moons[k] == birthPlanet)
                             {
-                                birthPlanetIsMoon = true;
+                                //birthPlanetIsMoon = true;
                                 birthPlanetHost = birthStar.Planets[i].Moons[j];
                                 birthPlanetIndex = k;
                                 Log(

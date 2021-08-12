@@ -11,16 +11,16 @@ namespace GalacticScale.Generators
     {
         private void GeneratePlanets()
         {
-            // var highStopwatch = new HighStopwatch();
-            foreach (var star in GSSettings.Stars) GeneratePlanetsForStar(star);
-            // GS2.Log($"Planet Creation Finished in {highStopwatch.duration}");
-
+            foreach (var star in GSSettings.Stars)
+            {
+                GeneratePlanetsForStar(star);
+                NamePlanets(star);
+            }
         }
 
         private void GeneratePlanetsForStar(GSStar star)
         {
             GS2.Warn($"Creating Planets for {star.Name}");
-            // var highStopwatch = new HighStopwatch();
             star.Planets = new GSPlanets();
             var starBodyCount = GetStarPlanetCount(star);
             if (starBodyCount == 0) return;
@@ -28,24 +28,14 @@ namespace GalacticScale.Generators
             var moonMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
             var moonCount = 0;
             var secondaryMoonCount = 0;
-            //var protos = new List<ProtoPlanet>();
-            //var moons = new List<ProtoPlanet>();
             var moons = new GSPlanets();
             if (star == birthStar)
             {
-                //protos.Add(new ProtoPlanet() { gas = false, radius = preferences.GetInt("birthPlanetSize", 200), birth = true });
                 birthPlanet = star.Planets.Add(new GSPlanet("BirthPlanet", "Mediterranean", preferences.GetInt("birthPlanetSize", 200), -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets()));
                 GS2.Log($"Created Birth Planet: {birthPlanet}");
             }
-            //else protos.Add(new ProtoPlanet {gas = CalculateIsGas(star), radius = GetStarPlanetSize(star)});
-            //else
-            //{
-            //    var isGas = CalculateIsGas(star);
-            //    var radius = GetStarPlanetSize(star);
-            //    star.Planets.Add(new GSPlanet("NotBirthPlanet"))
-            //}
-            //if (protos[0].radius < 50) protos[0].radius = 50;
-            for (var i = (star == birthStar) ? 1 : 0; i < starBodyCount; i++) { 
+            for (var i = (star == birthStar) ? 1 : 0; i < starBodyCount; i++)
+            {
                 if (random.NextPick(moonChance))
                 {
                     moonCount++;
@@ -54,7 +44,6 @@ namespace GalacticScale.Generators
                 {
                     var isGas = CalculateIsGas(star);
                     var radius = GetStarPlanetSize(star);
-                    //var p = new ProtoPlanet {gas = CalculateIsGas(star), radius = GetStarPlanetSize(star)};
                     var p = new GSPlanet("planet_" + i, (isGas) ? "Gas" : "Barren", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                     if (isGas && !preferences.GetBool("hugeGasGiants", true)) p.Radius = 80;
                     if (isGas) p.Scale = 10f;
@@ -62,44 +51,20 @@ namespace GalacticScale.Generators
                     p.genData.Add("hosttype", "star");
                     p.genData.Add("hostname", star.Name);
                     GS2.Log($"Created Planet:{p}");
-                    //if (p.gas)
-                    //{
-                    //    if (!preferences.GetBool("hugeGasGiants", true)) p.radius = 80;
-                    //    if (p.radius < 50)
-                    //        //Warn("Setting radius to 50 for gas");
-                    //        p.radius = 50;
-                    //}
-
-                    //protos.Add(p);
                 }
             }
-            //for (var i = 0; i < Math.Min(2, protos.Count); i++)
-            //    if (protos[i].gas && protos[i].radius > 80) //GS2.Warn("RADIUS 80"); 
-            //        protos[i].radius = 80;
-            //if (protos[i].radius > 300)
-            //{
-            //    protos[i].radius = Mathf.Clamp(300, GetMinPlanetSizeForStar(star), GetMaxPlanetSizeForStar(star)); 
-            //    //GS2.Warn("Clamping Radius");
-            //}
+
             for (var i = 0; i < moonCount; i++)
             {
                 if (preferences.GetBool("secondarySatellites") && random.NextPick(moonMoonChance) && i != 0)
                 {
-                    secondaryMoonCount++; // i != 0 Make sure we have at least one actual satellite
+                    secondaryMoonCount++;
                 }
                 else
                 {
-                    //ProtoPlanet randomProto;
-                    //List<ProtoPlanet> gasProtos = new List<ProtoPlanet>();
-                    //List<ProtoPlanet> telProtos = new List<ProtoPlanet>();
                     GSPlanet randomPlanet;
                     GSPlanets gasPlanets = new GSPlanets();
                     GSPlanets telPlanets = new GSPlanets();
-                    //foreach (var pp in protos)
-                    //{
-                    //    if (pp.gas) gasProtos.Add(pp);
-                    //    else telProtos.Add(pp);
-                    //}
                     foreach (var p in star.Planets)
                     {
                         if (p.Scale == 10f) gasPlanets.Add(p); else telPlanets.Add(p);
@@ -116,19 +81,6 @@ namespace GalacticScale.Generators
                     {
                         randomPlanet = random.Item(star.Planets);
                     }
-                    //if (gasProtos.Count > 0 && random.NextPick(preferences.GetInt("moonBias", 50)/100f))
-                    //{
-                    //    //Gas
-                    //    randomProto = random.Item(gasProtos);
-
-                    //} else if (telProtos.Count > 0)
-                    //{
-                    //    randomProto = random.Item(telProtos);
-                    //} else randomProto = random.Item(protos);
-                    //var moon = new ProtoPlanet
-                    //    {gas = false, radius = GetStarMoonSize(star, randomProto.radius, randomProto.gas)};
-                    //randomProto.moons.Add(moon);
-                    //moons.Add(moon);
                     var moon = new GSPlanet("Moon " + i, "Barren", GetStarMoonSize(star, randomPlanet.Radius, (randomPlanet.Scale == 10f)), -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                     randomPlanet.Moons.Add(moon);
                     moons.Add(moon);
@@ -140,48 +92,14 @@ namespace GalacticScale.Generators
             for (var i = 0; i < secondaryMoonCount; i++)
             {
                 var randomMoon = random.Item(moons);
-                var mm = new GSPlanet("MoonMoon"+i, "Barren", GetStarMoonSize(star, randomMoon.Radius, false), -1, -1, -1, -1, -1, -1, -1, -1, null);// {radius = GetStarMoonSize(star, randomMoon.radius, false)});
+                var mm = new GSPlanet("MoonMoon" + i, "Barren", GetStarMoonSize(star, randomMoon.Radius, false), -1, -1, -1, -1, -1, -1, -1, -1, null);// {radius = GetStarMoonSize(star, randomMoon.radius, false)});
                 randomMoon.Moons.Add(mm);
                 mm.genData.Add("hosttype", "moon");
                 mm.genData.Add("hostname", randomMoon.Name);
                 GS2.Log($"Added {mm} to {randomMoon}");
             }
 
-            //foreach (var proto in protos)
-            //{
-            //    if (proto.gas)
-            //        if (proto.radius < 50)
-            //            Warn("GAS AND NOT >= 50");
-            //    var planet = new GSPlanet(star.Name + "-Planet", null, proto.radius, -1, -1, -1, -1, -1, -1, -1, -1);
-            //    if (proto.birth) birthPlanet = planet;
-            //    //planet.fields.Add("gas", proto.gas.ToString());
-            //    if (proto.gas) planet.Scale = 10f;
-            //    else planet.Scale = 1f;
-            //    //Warn($"PlanetScale {planet.Name} {planet.Scale} {planet.Radius}");
-            //    if (proto.moons.Count > 0) planet.Moons = new GSPlanets();
-            //    foreach (var moon in proto.moons)
-            //    {
-            //        var planetMoon = new GSPlanet(star.Name + "-Moon", null, moon.radius, -1, -1, -1, -1, -1, -1, -1,
-            //            -1);
-            //        planetMoon.Scale = 1f;
-            //        if (moon.moons.Count > 0) planetMoon.Moons = new GSPlanets();
-            //        foreach (var moonmoon in moon.moons)
-            //        {
-            //            var moonMoon = new GSPlanet(star.Name + "-MoonMoon", null, moonmoon.radius, -1, -1, -1, -1, -1,
-            //                -1, -1, -1);
-            //            moonMoon.Scale = 1f;
-            //            moonMoon.genData.Add("hosttype", "moon");
-            //            moonMoon.genData.Add("hostname", planetMoon.Name);
-            //            planetMoon.Moons.Add(moonMoon);
-            //        }
-            //        planetMoon.genData.Add("hosttype", "planet");
-            //        planetMoon.genData.Add("hostname", planet.Name);
-            //        planet.Moons.Add(planetMoon);
-            //    }
-            //    planet.genData.Add("hosttype", "star");
-            //    planet.genData.Add("hostname", star.Name);
-            //    star.Planets.Add(planet);
-            //}
+
             GS2.WarnJson((from s in star.Planets select s.Name).ToList());
             GS2.Warn("Now Assigning Moon Orbits");
             AssignMoonOrbits(star);
@@ -190,8 +108,7 @@ namespace GalacticScale.Generators
             GS2.Warn("Now Assigning Themes");
             SelectPlanetThemes(star);
             GS2.Warn("Now assigning parameters");
-            FudgeNumbersForPlanets(star); // Probably want to revisit this :)
-            // GS2.Log($"Planet Creation for {star} Finished in {highStopwatch.duration}");
+            FudgeNumbersForPlanets(star);
         }
 
         private void FudgeNumbersForPlanets(GSStar star)
@@ -219,9 +136,9 @@ namespace GalacticScale.Generators
                     // GS2.Warn($"SETTING starInc Orbit Inclination of {star.Name} to {starInc}");
                     body.OrbitInclination = random.NextFloat(starInc);
                 }
-                body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f)*random.Next(60, 3600);
+                body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f) * random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
-                if (IsPlanetOfStar(star, body) && body.OrbitRadius < preferences.GetFloat("innerPlanetDistance", 1f) && (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets", false)) )
+                if (IsPlanetOfStar(star, body) && body.OrbitRadius < preferences.GetFloat("innerPlanetDistance", 1f) && (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets", false)))
                     body.RotationPeriod = body.OrbitalPeriod; // Tidal Lock
                 else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 1.5f && random.NextFloat() < 0.2f)
                     body.RotationPeriod = body.OrbitalPeriod / 2; // 1:2 Resonance
@@ -255,41 +172,22 @@ namespace GalacticScale.Generators
             for (var planetIndex = 0; planetIndex < star.PlanetCount; planetIndex++)
             {
                 var planet = star.Planets[planetIndex];
-                planet.Name = $"{star.Name} - {roman[planetIndex + 1]}";
                 //For each Planet
                 for (var moonIndex = 0; moonIndex < planet.MoonCount; moonIndex++)
                 {
                     var moon = planet.Moons[moonIndex];
-                    //moon.Name = $"{star.Name} - {roman[planetIndex + 1]} - {roman[moonIndex + 1]}";
                     //For Each Moon
                     for (var moon2Index = 0; moon2Index < moon.MoonCount; moon2Index++)
                     {
                         //for each subsatellite
-                        //float m2orbit;
-
                         var moon2 = moon.Moons[moon2Index];
-                        //moon2.Name =
-                            //$"{star.Name} - {roman[planetIndex + 1]} - {roman[moonIndex + 1]} - {roman[moon2Index + 1]}";
                         moon2.OrbitRadius = GetMoonOrbit() / 2f + GetNextAvailableOrbit(moon, moon2Index);
-                        //Warn($"{moon2.Name} OrbitRadius:{moon2.OrbitRadius} Moon.SystemRadius:{moon.SystemRadius} Moon2.RadiusAU:{moon2.RadiusAU}  ");
                         moon2.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon2.OrbitRadius);
                     }
 
                     moon.OrbitRadius = GetMoonOrbit() + GetNextAvailableOrbit(planet, moonIndex);
-                    //Warn($"{moon.Name} OrbitRadius:{moon.OrbitRadius} Planet.SystemRadius:{planet.SystemRadius} Moon.RadiusAU:{moon.RadiusAU} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale} Theme:{planet.Theme} ");
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }
-
-                // var pOrbit = SelectOrbit(star, planet);
-                // if (planetIndex == 0) pOrbit = star.RadiusAU * 1.5f + planet.SystemRadius;
-                // else
-                //     pOrbit = star.Planets[planetIndex - 1].SystemRadius + GetOrbitGap(star) +
-                //              star.Planets[planetIndex - 1].OrbitRadius + planet.SystemRadius;
-                //
-                // planet.OrbitRadius = pOrbit.radius;
-                //Warn($"{planet.Name} orbitRadius:{planet.OrbitRadius} systemRadius:{planet.SystemRadius} Planet Radius(AU):{planet.Radius}({planet.RadiusAU}) Planet Scale:{planet.Scale}");
-                //if (planetIndex != 0) Warn($"pOrbit = {star.Planets[planetIndex - 1].SystemRadius} + {GetOrbitGap(star)} + {star.Planets[planetIndex - 1].OrbitRadius} + {planet.SystemRadius};");
-                // planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
             }
             //Orbits should be set.
         }
@@ -301,43 +199,28 @@ namespace GalacticScale.Generators
             return 0.01f + random.NextFloat(0f, 0.05f);
         }
 
-// public float GetOrbitGap(GSStar star)
-//         {
-//             (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-//             float pCount = star.Planets.Count;
-//             var maxOrbitByRadius = Mathf.Sqrt(star.radius);
-//             var maxOrbitByHabitableZone = 30f * hz.min;
-//             var maxOrbitByPlanetCount = 50f * pCount / 99f;
-//             var maxOrbit = Mathf.Max(maxOrbitByPlanetCount, maxOrbitByRadius, maxOrbitByHabitableZone);
-//             var averageOrbit = maxOrbit / pCount;
-//             var result = ClampedNormal(0.1f, maxOrbit / pCount, GetSystemDensityBiasForStar(star));
-//             Warn(
-//                 $"Getting Orbit Gap for Star {star.Name} with {pCount} planets. Avg:{averageOrbit} MaxbyRadius:{maxOrbitByRadius} MaxbyPCount:{maxOrbitByPlanetCount} MaxByHZ:{maxOrbitByHabitableZone} Max:{maxOrbit} HabitableZone:{hz.Item1 * 10f}:{hz.Item2 * 10f} = {result}");
-//             return result; // random.NextFloat(0.1f, 2f * averageOrbit);
-//         }
-//
-         public void SelectPlanetThemes(GSStar star)
-         {
-             foreach (var planet in star.Planets)
-             {
-                 if (planet == birthPlanet)
-                 {
-                     var habitableTheme  = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200));
-                     planet.Theme = habitableTheme;
-                     planet.Scale = 1f;
-                     continue;
-                 }
-                 var heat = CalculateThemeHeat(star, planet.OrbitRadius);
-                 var type = EThemeType.Planet;
-                 if (planet.Scale == 10f) type = EThemeType.Gas;
-                 planet.Theme = GSSettings.ThemeLibrary.Query(random, type, heat, planet.Radius);
-                 //Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
-                 foreach (var body in planet.Bodies)
-                     if (body != planet)
-                         body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
-                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
-             }
-         }
+        public void SelectPlanetThemes(GSStar star)
+        {
+            foreach (var planet in star.Planets)
+            {
+                if (planet == birthPlanet)
+                {
+                    var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200));
+                    planet.Theme = habitableTheme;
+                    planet.Scale = 1f;
+                    continue;
+                }
+                var heat = CalculateThemeHeat(star, planet.OrbitRadius);
+                var type = EThemeType.Planet;
+                if (planet.Scale == 10f) type = EThemeType.Gas;
+                planet.Theme = GSSettings.ThemeLibrary.Query(random, type, heat, planet.Radius);
+                //Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
+                foreach (var body in planet.Bodies)
+                    if (body != planet)
+                        body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
+                //Warn($"Set Theme for {body.Name} to {body.Theme}");
+            }
+        }
 
         public bool CalculateIsGas(GSStar star)
         {
@@ -347,9 +230,6 @@ namespace GalacticScale.Generators
 
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
-            // (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
-            // GS2.Warn($"Habitable zone for {star.Name} is {hz.min} - {hz.max}");
-            //Warn($"HZ for {star.Name} {hz.min}-{hz.max}");
             (float min, float max) hz = (star.genData.Get("minHZ"), star.genData.Get("maxHZ"));
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;
@@ -357,13 +237,6 @@ namespace GalacticScale.Generators
             if (OrbitRadius < hz.max * 2) return EThemeHeat.Cold;
             return EThemeHeat.Frozen;
         }
-
-public class ProtoPlanet
-        {
-            public readonly List<ProtoPlanet> moons = new List<ProtoPlanet>();
-            public bool gas;
-            public int radius;
-            public bool birth = false;
-        }
     }
 }
+
