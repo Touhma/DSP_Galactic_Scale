@@ -84,9 +84,9 @@ namespace GalacticScale.Generators
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
                 {
-                    GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2 * planet.SystemRadius}");
-                    if (range.outer - range.inner >
-                        (1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
+                    GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(0.05f+ 2 * planet.SystemRadius)}");
+                    if (range.outer - range.inner > (0.05f+ 2 * planet.SystemRadius))
+                    //(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
                     {
                         Log($"Adding {range}");
                         availableOrbits.Add(range);
@@ -227,7 +227,16 @@ namespace GalacticScale.Generators
             {
                 get
                 {
-                    if (planets.Count < 6) return true;
+                    float largestRadius = 0f;
+                    foreach (var planet in planets)
+                    {
+                        if (planet.SystemRadius > largestRadius) largestRadius = planet.SystemRadius;
+                    }
+                    largestRadius += 0.05f;
+                    var circumference = radius * 2 * Mathf.PI;
+                    GS2.Log($"HasRoom Circumference = {circumference} largestRadius = {largestRadius} Planet Count = {planets.Count}");
+                    if (largestRadius * planets.Count < circumference) return true;
+                    //if (planets.Count < 10) return true;
                     return false;
                 }
             }
