@@ -47,6 +47,7 @@ namespace GalacticScale.Generators
 
             Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
+            random = new GS2.Random(GSSettings.Seed);
             highStopwatch.Begin();
             InitForcedStars();
             SetupBaseThemes();
@@ -58,7 +59,7 @@ namespace GalacticScale.Generators
             GSSettings.GalaxyParams.graphMaxStars = 512;
             //starCount = preferences.GetInt("defaultStarCount", 64);
             SetGalaxyDensity(preferences.GetInt("galaxyDensity", 5));
-            random = new GS2.Random(GSSettings.Seed);
+            
             highStopwatch.Begin();
             CalculateFrequencies();
             Log($"Frequencies Caltulated: {highStopwatch.duration:F5}");
@@ -346,7 +347,7 @@ namespace GalacticScale.Generators
         }
 
 
-        private int ClampedNormal(int min, int max, int bias)
+        private int ClampedNormal(GS2.Random random, int min, int max, int bias)
         {
             var range = max - min;
             var average = bias / 100f * range + min;
@@ -359,7 +360,7 @@ namespace GalacticScale.Generators
             return result;
         }
 
-        private float ClampedNormal(float min, float max, int bias)
+        private float ClampedNormal(GS2.Random random, float min, float max, int bias)
         {
             var range = max - min;
             var average = bias / 100f * range + min;
@@ -372,7 +373,7 @@ namespace GalacticScale.Generators
             return result;
         }
 
-        private int ClampedNormalSize(int min, int max, int bias)
+        private int ClampedNormalSize(GS2.Random random, int min, int max, int bias)
         {
             var range = max - min;
             var average = bias / 100f * range + min;

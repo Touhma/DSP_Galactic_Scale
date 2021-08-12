@@ -58,7 +58,7 @@ namespace GalacticScale.Generators
             var min = GetMinPlanetCountForStar(star);
             var max = GetMaxPlanetCountForStar(star);
             //int result = random.NextInclusive(min, max);
-            var result = ClampedNormal(min, max, GetCountBiasForStar(star));
+            var result = ClampedNormal(new GS2.Random(star.Seed), min, max, GetCountBiasForStar(star));
             //Log($"{star.Name} count :{result} min:{min} max:{max}");
             return result;
         }
@@ -83,7 +83,7 @@ namespace GalacticScale.Generators
             var range = max - min;
             var sd = (float) range / 4;
             //int size = Utils.ParsePlanetSize(random.Next(min, max));
-            var size =  Mathf.Clamp(ClampedNormalSize(min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
+            var size =  Mathf.Clamp(ClampedNormalSize(new GS2.Random(star.Seed), min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
             //if (size > hostRadius)
             //{
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
@@ -96,7 +96,7 @@ namespace GalacticScale.Generators
             var min = GetMinPlanetSizeForStar(star);
             var max = GetMaxPlanetSizeForStar(star);
             var bias = GetSizeBiasForStar(star);
-            return ClampedNormalSize(min, max, bias);
+            return ClampedNormalSize(new GS2.Random(star.Seed), min, max, bias);
         }
         private (float min, float max) CalculateHabitableZone(GSStar star)
         {

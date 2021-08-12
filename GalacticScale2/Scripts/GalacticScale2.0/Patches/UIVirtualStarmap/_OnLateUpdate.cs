@@ -61,7 +61,7 @@ namespace GalacticScale
 
                 if (flag2 & flag1)
                 {
-                    GS2.Log("0");
+                    // GS2.Log("0");
                     if (pressing)
                     {
                         GS2.ActiveGenerator.Generate(GSSettings.StarCount, __instance.starPool[index1].starData);
@@ -71,13 +71,13 @@ namespace GalacticScale
                         //                                             __instance.clickText.Translate();
                     }
 
-                    GS2.Log(__instance.starPool[index1].starData.name + " - " +
-                            __instance.starPool[index2].starData.name);
+                    // GS2.Log(__instance.starPool[index1].starData.name + " - " +
+                    //         __instance.starPool[index2].starData.name);
                     var sd = __instance.starPool[index2]?.starData;
-                    GS2.Log("1");
-                    if (__instance.starPool[index2]?.nameText?.text != null) __instance.starPool[index2].nameText.text = $"{__instance.starPool[index2].textContent} \r\n Gas Giants:{Utils.GetStarDataGasCount(sd)}\r\nPlanets:{Utils.GetStarDataTelluricCount(sd)}\n\n Moons:{Utils.GetStarDataMoonCount(sd)}";
-                    GS2.Log("2");
-                    GS2.Log($"{sd?.planetCount}");
+                    // GS2.Log("1");
+                    if (__instance.starPool[index2]?.nameText?.text != null) __instance.starPool[index2].nameText.text = $"{__instance.starPool[index2].textContent}\r\nGas Giants:{Utils.GetStarDataGasCount(sd)}\r\nPlanets:{Utils.GetStarDataTelluricCount(sd)}\n\nMoons:{Utils.GetStarDataMoonCount(sd)}";
+                    // GS2.Log("2");
+                    // GS2.Log($"{sd?.planetCount}");
                     __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
                         __instance.starPool[index2].nameText.preferredWidth,
                         __instance.starPool[index2].nameText.preferredHeight);
