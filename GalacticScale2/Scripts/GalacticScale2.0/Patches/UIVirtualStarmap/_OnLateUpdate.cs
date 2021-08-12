@@ -64,11 +64,18 @@ namespace GalacticScale
                     // GS2.Log("0");
                     if (pressing)
                     {
-                        GS2.ActiveGenerator.Generate(GSSettings.StarCount, __instance.starPool[index1].starData);
-                        __instance.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
-                        __instance.OnGalaxyDataReset();
-                        // __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" +
-                        //                                             __instance.clickText.Translate();
+                        if (GS2.ActiveGenerator.Config.enableStarSelector)
+                        {
+                            GS2.ActiveGenerator.Generate(GSSettings.StarCount, __instance.starPool[index1].starData);
+                            __instance.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
+                            __instance.OnGalaxyDataReset();
+                        }
+                        else
+                        {
+                           __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" + __instance.clickText.Translate(); 
+                        }
+                        
+                        
                     }
 
                     // GS2.Log(__instance.starPool[index1].starData.name + " - " +

@@ -9,15 +9,16 @@ namespace GalacticScale
         private int _minStarCount = 1;
         public bool DisableSeedInput;
         public bool DisableStarCountSlider;
-
+        public bool enableStarSelector = false;
         public GSGeneratorConfig(bool disableStarCountSlider = false, bool disableSeedInput = false,
-            int minStarCount = 1, int maxStarCount = 1024, int defaultStarCount = 1)
+            int minStarCount = 1, int maxStarCount = 1024, int defaultStarCount = 1, bool enableSelector = false)
         {
             DisableStarCountSlider = disableStarCountSlider;
             DisableSeedInput = disableSeedInput;
             MinStarCount = minStarCount;
             MaxStarCount = maxStarCount;
             DefaultStarCount = defaultStarCount;
+            enableStarSelector = enableSelector;
         }
 
         [SerializeField]

@@ -31,6 +31,7 @@ namespace GalacticScale.Generators
 
         public void Init()
         {
+            Config.enableStarSelector = true;
             AddUIElements();
             InitPreferences();
         }
