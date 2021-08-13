@@ -83,7 +83,7 @@ namespace GalacticScale.Generators
             var range = max - min;
             var sd = (float) range / 4;
             //int size = Utils.ParsePlanetSize(random.Next(min, max));
-            var size =  Mathf.Clamp(ClampedNormalSize(new GS2.Random(star.Seed), min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
+            var size =  Mathf.Clamp(ClampedNormalSize(random, min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
             //if (size > hostRadius)
             //{
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
@@ -96,12 +96,14 @@ namespace GalacticScale.Generators
             var min = GetMinPlanetSizeForStar(star);
             var max = GetMaxPlanetSizeForStar(star);
             var bias = GetSizeBiasForStar(star);
-            return ClampedNormalSize(new GS2.Random(star.Seed), min, max, bias);
+            return ClampedNormalSize(random, min, max, bias);
         }
         private (float min, float max) CalculateHabitableZone(GSStar star)
         {
             var lum = star.luminosity;
             var (min, max) = Utils.CalculateHabitableZone(lum);
+            min += star.RadiusAU;
+            max += star.RadiusAU;
             var sl = GetTypeLetterFromStar(star);
             if (preferences.GetBool($"{sl}hzOverride")) (min, max) = preferences.GetFloatFloat($"{sl}hz", (0,2));
             star.genData.Set("minHZ", min);
@@ -133,14 +135,14 @@ namespace GalacticScale.Generators
             var lum = star.luminosity;
             var hzMax = star.genData.Get("maxHZ");
             var maxOrbitByLuminosity = lum * 4f;
-            var maxOrbitByRadius = Mathf.Sqrt(star.radius);
+            var maxOrbitByRadius = Mathf.Pow(star.radius, 0.75f);
             var maxOrbitByHabitableZone = 2f * hzMax;
             var maxByPlanetCount = star.bodyCount * 0.3f;
             // float density = (2f*GetSystemDensityBiasForStar(star))/100f;
             // GS2.Warn($"Density:{density} MaxOrbit:{star.MaxOrbit}");
             var max = Mathf.Clamp(Mathf.Max(maxByPlanetCount, minMaxOrbit, maxOrbitByLuminosity, maxOrbitByRadius, maxOrbitByHabitableZone), star.genData.Get("minOrbit")*2f, star.MaxOrbit);
             if (preferences.GetBool($"{sl}orbitOverride")) (_, max) = preferences.GetFloatFloat($"{sl}orbits", (0.02f,20f));
-            // Warn($"Getting Max Orbit for Star {star.Name} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
+            // Warn($"Getting Max Orbit for Star {star.Name} HardCap:{star.MaxOrbit} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             star.genData.Set("maxOrbit", max);
             return max;
         }

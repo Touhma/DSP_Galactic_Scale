@@ -162,9 +162,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Settings.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Stars.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\Themes.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Settings.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\GS2Generator.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Generators\GS2\Themes.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\StarTest.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Logging\ConsoleSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\Val.cs" />
@@ -282,6 +279,7 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIDropdown.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIHeader.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIRangeSlider.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUISelector.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUISlider.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIInput.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIButton.cs" />
@@ -290,6 +288,7 @@
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUITemplate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUITemplates.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIToggle.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\SettingsUI\MonoBehaviors\GSUIToggleList.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectGroup.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectItem.cs" />
     <Compile Include="Scripts\GalacticScale2.0\SettingsUI\ThemeSelectorUI.cs" />

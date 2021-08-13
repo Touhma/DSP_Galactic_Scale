@@ -65,6 +65,7 @@ namespace GalacticScale
             var id = Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
             GS2.ActiveGenerator = GS2.GetGeneratorByID(id);
             Preferences.Set("Generator", _generatorNames.IndexOf(GS2.ActiveGenerator.Name));
+            if (!filenames.Contains(Preferences.GetString("Import Filename", null))) Preferences.Set("Import Filename", filenames[0]);
         }
 
         public void Init()
@@ -74,7 +75,7 @@ namespace GalacticScale
             // GS2.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator",
                 GeneratorCallback, "Try them all!".Translate()));
-            
+            RefreshFileNames();
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
             
@@ -90,7 +91,11 @@ namespace GalacticScale
             JsonOptions.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename", null, "Excluding .json".Translate()));
             JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes".Translate()));
             _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File".Translate()));
-            Options.Add(GSUI.Group("Custom Galaxy Export".Translate(), JsonOptions, "Usable once in game".Translate()));
+            JsonOptions.Add(GSUI.Button("Load Custom Galaxy".Translate(), "Load", LoadJsonGalaxy, null,
+                "Will end current game".Translate()));
+            JsonGalaxies = JsonOptions.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+
+            Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
         }
 
         public void SetResourceMultiplier(float val)
@@ -215,6 +220,14 @@ namespace GalacticScale
 
         private static void GeneratorCallback(Val result)
         {
+            if (GameMain.isPaused)
+            {
+                UIMessageBox.Show("Error".Translate(),
+                    "You cannot change the generator while in game."
+                        .Translate(),
+                    "Of course not!".Translate(), 2);
+                return;
+            }
             // GS2.Warn($"Generator Callback:{(int)result}");
             GS2.ActiveGenerator = GS2.Generators[(int)result];
             // GS2.Warn("Active Generator = " + GS2.ActiveGenerator.Name);
@@ -273,5 +286,60 @@ namespace GalacticScale
         {
             Preferences.Set("Use External Themes", val);
         }
+
+        public void LoadJsonGalaxy(Val o)
+        {
+            var ImportFilename = Preferences.GetString("Import Filename", null);
+            if (string.IsNullOrEmpty(ImportFilename))
+            {
+                UIMessageBox.Show("Error", "To use the Custom JSON Generator you must select a file to load.", "Ok", 1);
+                RefreshFileNames();
+            }
+
+            var path = Path.Combine(Path.Combine(GS2.DataDir, "CustomGalaxies"), ImportFilename + ".json");
+            GS2.LoadSettingsFromJson(path);
+            GS2.Log("Generator:Json|Generate|End");
+            GSSettings.Instance.imported = true;
+            // GS2.gameDesc.playerProto = 2;
+            GS2.gsStars.Clear();
+            GS2.gsPlanets.Clear();
+            // GS2.galaxy = new GalaxyData();
+            var gameDesc = new GameDesc();
+            gameDesc.SetForNewGame(UniverseGen.algoVersion, 1, 1, 1, 1f);
+            if (GS2.Config.SkipPrologue) DSPGame.StartGameSkipPrologue(gameDesc);
+            else DSPGame.StartGame(gameDesc);
+            // UniverseGen.CreateGalaxy(GS2.gameDesc);
+
+        }
+        public List<string> filenames = new List<string>();
+        public void RefreshFileNames()
+        {
+            //GS2.Log("Refreshing Filenames");
+            var customGalaxiesPath = Path.Combine(GS2.DataDir, "CustomGalaxies");
+            if (!Directory.Exists(customGalaxiesPath)) Directory.CreateDirectory(customGalaxiesPath);
+
+            filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll(Path.GetFileNameWithoutExtension);
+            if (filenames.Count == 0)
+                filenames.Add("No Files Found"); //foreach (string n in filenames) GS2.Log("File:" + n);
+                if (JsonGalaxies != null) JsonGalaxies.RectTransform.GetComponentInChildren<GSUIDropdown>().Items = filenames;
+        }
+        private void CustomFileSelectorCallback(Val result)
+        {
+            int index = result;
+            if (index > filenames.Count - 1) index = 0;
+            Preferences.Set("Import Filename", filenames[index]);
+            if (Preferences.GetString("Import Filename", null) == "No Files Found") Preferences.Set("Import Filename", "");
+            RefreshFileNames();
+        }
+        private void CustomFileSelectorPostfix()
+        {
+            GS2.Log("Json:Postfix");
+            var index = 0;
+            for (var i = 0; i < filenames.Count; i++)
+                if (Preferences.GetString("Import Filename", null) == filenames[i])
+                    index = i;
+            JsonGalaxies.RectTransform.GetComponentInChildren<GSUIDropdown>().Value = index;
+        }
+        public GSUI JsonGalaxies;
     }
 }

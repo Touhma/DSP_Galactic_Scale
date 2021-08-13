@@ -10,6 +10,7 @@ namespace GalacticScale
         public static bool CreateGalaxy(GameDesc gameDesc, ref GalaxyData __result, ref List<VectorLF3> ___tmp_poses)
         {
             GS2.gameDesc = gameDesc;
+            GS2.LogJson(gameDesc);
             if (DSPGame.IsMenuDemo) return true;
 
             if (GS2.Vanilla) return true;

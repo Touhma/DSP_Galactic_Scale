@@ -1,4 +1,6 @@
-﻿namespace GalacticScale
+﻿using System.Linq;
+
+namespace GalacticScale
 {
     public static partial class GS2
     {
@@ -15,7 +17,8 @@
             star.assignedIndex = index;
             if (star.Seed < 0) star.Seed = random.Next();
 
-            gsStars.Add(id, star);
+            if (!gsStars.ContainsKey(id)) gsStars.Add(id, star);
+            else gsStars[id] = star;
             starData.galaxy = galaxy;
             starData.index = index;
             starData.level = galaxy.starCount > 1 ? starData.index / (float) (galaxy.starCount - 1) : 0.0f;

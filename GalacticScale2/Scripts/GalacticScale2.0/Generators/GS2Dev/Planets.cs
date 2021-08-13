@@ -38,16 +38,16 @@ namespace GalacticScale.Generators
             var gasCount = Mathf.RoundToInt(starBodyCount * (float)gasChance);
             
             var telluricCount = starBodyCount - gasCount;
-            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount}");
+            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount}");
             if (telluricCount == 0 && star == birthStar)
             {
                 telluricCount = 1;
                 gasCount--;
             }
             var moonCount = Mathf.RoundToInt(telluricCount * (float)moonChance);
-            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
+            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
             telluricCount = telluricCount - moonCount;
-            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
+            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
 
             if (telluricCount == 0 && star == birthStar)
             {
@@ -61,12 +61,12 @@ namespace GalacticScale.Generators
                 else telluricCount++;
                 if (moonCount > 0) moonCount--;
             }
-            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
+            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
 
             var secondaryMoonCount = Mathf.RoundToInt((moonCount -1) * (float)subMoonChance);
             moonCount -= secondaryMoonCount;
-            GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount} SecondaryMoonCount:{secondaryMoonCount}");
-            GS2.Log($"GasChance:{gasChance} TelluricChance:{1-gasChance} MoonChance:{moonChance} SecondaryMoonChance:{subMoonChance}");
+            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount} SecondaryMoonCount:{secondaryMoonCount}");
+            // GS2.Log($"GasChance:{gasChance} TelluricChance:{1-gasChance} MoonChance:{moonChance} SecondaryMoonChance:{subMoonChance}");
 
 
 

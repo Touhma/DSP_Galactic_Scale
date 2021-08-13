@@ -45,7 +45,8 @@ namespace GalacticScale
 
             planet.number = index + 1;
             planet.id = star.id * 100 + index + 1;
-            gsPlanets.Add(planet.id, gsPlanet);
+            if (!gsPlanets.ContainsKey(planet.id)) gsPlanets.Add(planet.id, gsPlanet);
+            else gsPlanets[planet.id] = gsPlanet;
             // Log("Setting Roman");
             var roman = "";
 
