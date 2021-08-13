@@ -82,7 +82,7 @@ namespace GalacticScale
                     //         __instance.starPool[index2].starData.name);
                     var sd = __instance.starPool[index2]?.starData;
                     // GS2.Log("1");
-                    if (__instance.starPool[index2]?.nameText?.text != null) __instance.starPool[index2].nameText.text = $"{__instance.starPool[index2].textContent}\r\n{"Gas Giants".Translate()}:{Utils.GetStarDataGasCount(sd)}\r\n{"Planets".Translate()}:{Utils.GetStarDataTelluricCount(sd)}\n\n{"Moons".Translate()}:{Utils.GetStarDataMoonCount(sd)}";
+                    if (__instance.starPool[index2]?.nameText?.text != null) __instance.starPool[index2].nameText.text = $"{__instance.starPool[index2].textContent}\r\n{"Gas Giants".Translate()}:{Utils.GetStarDataGasCount(sd)}\r\n{"Planets".Translate()}:{Utils.GetStarDataTelluricCount(sd)}\r\n{"Moons".Translate()}:{Utils.GetStarDataMoonCount(sd)}";
                     // GS2.Log("2");
                     // GS2.Log($"{sd?.planetCount}");
                     __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
