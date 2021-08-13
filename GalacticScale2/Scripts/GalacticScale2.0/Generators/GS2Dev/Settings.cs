@@ -476,7 +476,7 @@ namespace GalacticScale.Generators
 
         private void GasChanceCallback(Val o)
         {
-            GS2.Warn("Setting Gas Chance"+ o.String());
+            // GS2.Warn("Setting Gas Chance"+ o.String());
             SetAllStarTypeOptions("chanceGas", o);
         }
 

@@ -41,12 +41,12 @@ namespace GalacticScale.Generators
 
             if (forcedBirthStar != null)
             {
-                GS2.Warn("Forcing birthStar");
+                // GS2.Warn("Forcing birthStar");
                 foreach (var star in GSSettings.Stars)
                 {
                     if (star.Name == forcedBirthStar) {
                         birthStar = star;
-                        GS2.Warn("birthStar forced");
+                        // GS2.Warn("birthStar forced");
                         break;
                     }
                 }

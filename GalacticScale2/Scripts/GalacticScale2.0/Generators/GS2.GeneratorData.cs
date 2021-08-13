@@ -16,7 +16,7 @@ namespace GalacticScale
             //new Generators.SizeTest(),
             //new Generators.TintTest(),
             new Sol(),
-            new JsonImport(),
+            // new JsonImport(),
             //new Generators.ThemeViewer(),
             //new Generators.Spiral(),
             //new Debug()

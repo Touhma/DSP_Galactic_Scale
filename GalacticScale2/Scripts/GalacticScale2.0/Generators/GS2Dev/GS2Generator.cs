@@ -39,7 +39,7 @@ namespace GalacticScale.Generators
             if (forcedBirthStar != null)
             {
                 this.forcedBirthStar = forcedBirthStar.name;
-                GS2.Warn("Forcing BirthStar to "+this.forcedBirthStar);
+                // GS2.Warn("Forcing BirthStar to "+this.forcedBirthStar);
             }
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
@@ -165,7 +165,7 @@ namespace GalacticScale.Generators
                         Themes.AshenGelisol.Process();
                         if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
                         {
-                            Warn("Nope" + GS2.ThemeLibrary.Count);
+                            // Warn("Nope" + GS2.ThemeLibrary.Count);
                             GSSettings.ThemeLibrary.Add("AshenGelisol", Themes.AshenGelisol);
                             Themes.AshenGelisol.Process();
                         }
@@ -389,7 +389,7 @@ namespace GalacticScale.Generators
 
         private void AddSiTiToBirthPlanet()
         {
-            Warn("Setting SI/TI");
+            // Warn("Setting SI/TI");
             birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
             birthPlanet.veinSettings.Algorithm = "GS2";
             birthPlanet.GsTheme.CustomGeneration = true;
