@@ -354,10 +354,12 @@ namespace GalacticScale
         {
             return new GSUI(null, null, "Spacer", null, null, null, null);
         }
-        public static GSUI Group(string label, List<GSUI> options, string hint = "", bool header = true, bool collapsible = true)
+        public static GSUI Group(string label, List<GSUI> options, string hint = "", bool header = true, bool collapsible = true, GSOptionCallback callback = null)
         {
             var data = new GSUIGroupConfig(options, header, collapsible);
+            
             var instance = new GSUI(label, null, "Group", data, null);
+            instance.callback = callback;
             return instance;
         }
         // Slider (Integer, no key)
@@ -696,6 +698,7 @@ public class GSUIGroupConfig
         public List<GSUI> options = new List<GSUI>();
         public bool header = true;
         public bool collapsible = true;
+        public GSOptionCallback callback = null;
         public GSUIGroupConfig(List<GSUI> options, bool header, bool collapsible)
         {
             this.options = options;

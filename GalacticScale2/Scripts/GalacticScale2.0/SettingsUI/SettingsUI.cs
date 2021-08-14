@@ -197,11 +197,23 @@ namespace GalacticScale
             switch (option.Type)
             {
                 case "Group":
-                    var newlist = list.AddList();
+                    if (option.callback == null){
+                        GS2.Log($"Adding normal list {option.Label}");
+                        var newlist = list.AddList();
                     option.RectTransform = newlist.GetComponent<RectTransform>();
-                    newlist.initialize(option);
+                    newlist.Initialize(option);
                     ProcessListContents(newlist, option);
-                    break;
+            }
+                    else
+                    {
+                        GS2.Log($"Adding toggle list {option.Label}");
+                        var newlist = list.AddToggleList();
+                        option.RectTransform = newlist.GetComponent<RectTransform>();
+                        newlist.Initialize(option);
+                        ProcessListContents(newlist, option);
+                    }
+
+            break;
                 case "Combobox":
                     var dropdown = list.AddDropdown(); 
                     option.RectTransform = dropdown.GetComponent<RectTransform>();

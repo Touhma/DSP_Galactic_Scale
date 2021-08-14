@@ -165,7 +165,19 @@ namespace GalacticScale
 
         public GSTheme baseTheme
         {
-            get => BaseName != "" && BaseName != null ? GS2.ThemeLibrary[BaseName] : null;
+            get
+            {
+                if (BaseName != "" && BaseName != null)
+                {
+                    GS2.Log($"{Name} initializing from base theme: " + BaseName);
+                
+
+                if (!GS2.ThemeLibrary.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
+            }
+            return BaseName != "" && BaseName != null
+                    ? (GS2.ThemeLibrary.ContainsKey(BaseName) ? GS2.ThemeLibrary[BaseName] : Themes.Mediterranean)
+                    : null;
+            }
             set => BaseName = value.Name;
         }
 

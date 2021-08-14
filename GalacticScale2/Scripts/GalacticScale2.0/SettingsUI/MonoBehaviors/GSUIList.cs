@@ -122,8 +122,15 @@ namespace GalacticScale
             var go = AddItem(templates.list);
             go.SetActive(true);
             return go.GetComponent<GSUIList>();
+        }        
+        internal GSUIToggleList AddToggleList()
+        {
+            if (templates.togglelist == null) GS2.Error("No ToggleList");
+            var go = AddItem(templates.togglelist);
+            go.SetActive(true);
+            return go.GetComponent<GSUIToggleList>();
         }
-        public void initialize(GSUI group)
+        public void Initialize(GSUI group)
         {
             var data = (GSUIGroupConfig)group.Data;
             Label = group.Label;

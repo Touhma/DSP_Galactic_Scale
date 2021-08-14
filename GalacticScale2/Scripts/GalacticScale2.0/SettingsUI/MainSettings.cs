@@ -23,7 +23,19 @@ namespace GalacticScale
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue");
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
-        public bool MinifyJson => Preferences.GetBool("Minify JSON");
+        public bool MinifyJson
+        {
+            get
+            {
+                return Preferences.GetBool("Minify JSON", false); 
+            }
+            set
+            {
+                Preferences.Set("Minify JSON", value);
+            }
+        }
+
+        
         public bool FixCopyPaste => true; //Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
@@ -161,6 +173,7 @@ namespace GalacticScale
                 }
                 else
                 {
+                    
                     var listoptions = new List<GSUI>();
                     foreach (var theme in Library)
                     {
@@ -184,7 +197,17 @@ namespace GalacticScale
                         if (!ThemeCheckboxes.ContainsKey(key)) ThemeCheckboxes.Add(key, checkbox);
                         listoptions.Add(checkbox);
                     }
-                    var FolderGroup = GSUI.Group(Folder, listoptions);
+
+
+                    var FolderGroup = GSUI.Group(Folder, listoptions, null, true, true, (Val o) =>
+                    {
+                        GS2.Warn(o);
+                        foreach (var option in listoptions)
+                        {
+                            option.Set(o);
+                            //option.RectTransform.GetComponent<GSUIToggle>().Value = o;
+                        }
+                    });
                     externalThemesGroupOptions.Add(FolderGroup);
                 }
             }
