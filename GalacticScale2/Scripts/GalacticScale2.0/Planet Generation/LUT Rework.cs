@@ -26,17 +26,40 @@ namespace GalacticScale
                 int[] classicLUT = new int[512];
                 classicLUT[0] = 1;
 
-                for (int cnt = 0; cnt < numSegments; cnt++)
-                {
+                for (int cnt = numSegments-1; cnt >= 0; cnt--)
+                // for (int cnt = 0; cnt < numSegments; cnt++)
+                {GS2.Log($"Checking Lattitude Segment {{cnt}} for planetRadius:{planetRadius}");
                     float ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
                     int classicIdx = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)((cnt + 1) / (segments / 4f) * Math.PI * 0.5))) * segments);
 
                     //If the new radius is smaller than 90% of the currently used radius, use it as the new segment count to avoid tile squishing
-                    if (ringradius < (0.9 * lastMajorRadius))
+                    // if (ringradius < (0.9 * lastMajorRadius))
+                    // {
+                    //     lastMajorRadius = ringradius;
+                    //     lastMajorRadiusCount = (int)(ringradius / 4.0) * 4;
+                    // }
+                    List<(int numerator, int denominator)> Ratios = new List<(int denominator, int numerator)>()
                     {
-                        lastMajorRadius = ringradius;
-                        lastMajorRadiusCount = (int)(ringradius / 4.0) * 4;
+                        //(5, 6), (4, 5), (3, 4), (2, 3), (5, 8), (1, 2)
+                        // (1, 2), (5, 8), (2, 3), (3, 4), (4, 5), (5, 6)
+                        (1, 2), (5, 8), (2, 3), (3, 4), (4, 5), (5, 6)
+                    };
+                    foreach (var ratio in Ratios)
+                    {
+                        GS2.Log($"Checking ratio:{ratio.numerator}:{ratio.denominator}");
+                        if (((int)ringradius / 4.0) >=
+                            lastMajorRadiusCount * ratio.numerator / ratio.denominator / 4 &&
+                            (lastMajorRadiusCount / 4) % ratio.denominator == 0)
+                        {
+                            // lastMajorRadius = ringradius;
+                            lastMajorRadiusCount = lastMajorRadiusCount * ratio.numerator / ratio.denominator;
+                            GS2.Log($"lastMajorRadiusCount:{lastMajorRadiusCount} ratio:{ratio.numerator}:{ratio.denominator}");
+                            break;
+                        }
                     }
+                    
+                        
+                        
                     lut[cnt] = lastMajorRadiusCount;
                     classicLUT[classicIdx] = lastMajorRadiusCount;
                 }
