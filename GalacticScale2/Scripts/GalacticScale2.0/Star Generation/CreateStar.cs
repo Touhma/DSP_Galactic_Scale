@@ -41,7 +41,7 @@ namespace GalacticScale
             starData.radius = star.radius;
             starData.acdiskRadius = star.acDiscRadius;
             starData.habitableRadius = star.habitableRadius;
-            starData.lightBalanceRadius = star.habitableRadius;
+            starData.lightBalanceRadius = star.lightBalanceRadius;
             starData.orbitScaler = star.orbitScaler;
             starData.dysonRadius = star.dysonRadius;
             starData.type = star.Type;
