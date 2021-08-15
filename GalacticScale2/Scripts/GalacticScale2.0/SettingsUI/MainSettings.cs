@@ -272,17 +272,18 @@ namespace GalacticScale
         private void ExportJsonGalaxy(Val o)
         {
             var outputDir = Path.Combine(GS2.DataDir, "CustomGalaxies");
-            var path = Path.Combine(outputDir, Preferences.GetString("Export Filename", "My First Galaxy".Translate()) + ".json");
+            var path = Path.Combine(outputDir, Preferences.GetString("Export Filename", "My First Galaxy") + ".json");
 
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             if (GameMain.isPaused)
             {
+                GS2.Log("Exporting Galaxy");
                 GS2.DumpObjectToJson(path, GSSettings.Instance);
+                GS2.Log("Exported");
                 UIMessageBox.Show("Success".Translate(),
                     "Galaxy Saved to ".Translate() + path,
                     "Woohoo!".Translate(), 1);
-                var JsonGenerator = (JsonImport) GS2.GetGeneratorByID("space.customizing.generators.customjson");
-                JsonGenerator.RefreshFileNames();
+                RefreshFileNames();
                 return;
             }
 
