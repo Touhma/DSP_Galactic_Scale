@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -183,6 +185,7 @@ namespace GalacticScale
 
         private static double DistanceTo(PlanetData planet)
         {
+            // GS2.Log((GameMain.mainPlayer.uPosition - planet.uPosition).magnitude.ToString());
             return (GameMain.mainPlayer.uPosition - planet.uPosition).magnitude - planet.realRadius;
         }
 
@@ -211,13 +214,35 @@ namespace GalacticScale
             if (gsPlanet.MoonsCount > 0)
             {
                 var moon = gsPlanet.Moons[0].planetData;
-                var distance = (moon.uPosition - planet.uPosition).magnitude - planet.realRadius -
-                               TransisionDistance(moon) - 100;
-                //GS2.Log($"Distance of {planet.name} is {distance}, transitionDistance is {transitionDistance}");
+                var distance = ((moon.uPosition - planet.uPosition).magnitude - planet.realRadius -
+                               moon.realRadius - 100)/2f;
+                distance = Math.Abs(distance);
+                               //TransisionDistance(moon) - 100;
+                               GS2.Log($"Magnitude:{(moon.uPosition - planet.uPosition).magnitude} Planet RealRadius:{planet.realRadius} Moon RealRadius:{moon.realRadius}");
+                GS2.Log($"Distance between {planet.name} and its moon is {distance}, transitionDistance is {transitionDistance}");
                 if (distance < transitionDistance)
                 {
                     LogStatus($"Transition Distance of {planet.name} reduced to {distance}");
                     TransitionRadii.Add(planet, distance);
+                    TransitionRadii.Add(moon, distance);
+                    return distance;
+                }
+            }
+            if (gsPlanet.planetData?.orbitAroundPlanet != null)
+            {
+                var host = gsPlanet.planetData.orbitAroundPlanet;
+                var distance = ((host.uPosition - planet.uPosition).magnitude - planet.realRadius -
+                                host.realRadius - 100)/2f;
+                distance = Math.Abs(distance);
+                //TransisionDistance(moon) - 100;
+                GS2.Log($"Magnitude:{(host.uPosition - planet.uPosition).magnitude} Planet RealRadius:{planet.realRadius} Host RealRadius:{host.realRadius}");
+                GS2.Log($"Distance between {planet.name} and its host is {distance}, transitionDistance is {transitionDistance}");
+                if (distance < transitionDistance)
+                {
+                    LogStatus($"Transition Distance of {planet.name} reduced to {distance}");
+                    TransitionRadii.Add(planet, distance);
+                    if (!TransitionRadii.ContainsKey(host)) TransitionRadii.Add(host, distance);
+                    else TransitionRadii[host] = distance;
                     return distance;
                 }
             }
