@@ -154,6 +154,9 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Editor\PlanetEditor.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Editor\StarEditor.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Editor\ThemeEditor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\InitializeAstroPoses.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Galaxy Generation\StarPositions.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Generators\GS2Dev\GS2Generator.cs" />
