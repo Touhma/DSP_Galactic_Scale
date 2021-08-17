@@ -244,9 +244,9 @@ namespace GalacticScale
 
         private static void GeneratorCallback(Val result)
         {
-            if (GameMain.isPaused)
+            if (GameMain.isPaused && GS2.ActiveGenerator != GS2.Generators[(int)result])
             {
-                UIMessageBox.Show("Error".Translate(),
+                UIMessageBox.Show("Note".Translate(),
                     "You cannot change the generator while in game."
                         .Translate(),
                     "Of course not!".Translate(), 2);

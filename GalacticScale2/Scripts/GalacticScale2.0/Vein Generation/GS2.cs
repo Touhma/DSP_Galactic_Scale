@@ -107,7 +107,7 @@ namespace GalacticScale
 
                     EraseVegetableAtPoint(veinPosition, planet);
                     veinPosition = Utils.PositionAtSurface(veinPosition, gsPlanet);
-                    if (!Utils.IsUnderWater(veinPosition, gsPlanet))
+                    //if (!Utils.IsUnderWater(veinPosition, gsPlanet))
                         AddVeinToPlanet(veinAmount, veinType, veinPosition, (short) i, planet);
                 }
             }
@@ -116,8 +116,9 @@ namespace GalacticScale
         }
 
 
-        private static List<GSVeinDescriptor> DistributeVeinTypes(List<GSVeinType> veinGroups)
+        private static List<GSVeinDescriptor> DistributeVeinTypes(GSPlanet gsPlanet)
         {
+            List<GSVeinType> veinGroups = gsPlanet.veinSettings.VeinTypes;
             var disabled = new bool[16];
             for (var i = 8; i < 16; i++)
             {
@@ -127,6 +128,7 @@ namespace GalacticScale
                     disabled[i] = false;
 
                 if (GS2.Config.ForceRare) disabled[i] = false;
+                if (random.NextPick(gsPlanet.rareChance)) disabled[i] = false;
             }
 
             var maxVeinGroupSize = MaxCount(veinGroups);
@@ -165,7 +167,7 @@ namespace GalacticScale
             var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.planetData.radius, 2);
             var birth = planet.id == GSSettings.BirthPlanetId;
             var groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
-            var veinGroups = DistributeVeinTypes(gsPlanet.veinSettings.VeinTypes);
+            var veinGroups = DistributeVeinTypes(gsPlanet);
             var veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
             {

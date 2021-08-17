@@ -333,6 +333,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Themes\VolcanicAsh.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Themes\Mediterranean.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2W.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\GS2R.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vein Generation\Vanilla.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetFactory\FlattenTerrain.cs" />
@@ -433,7 +434,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

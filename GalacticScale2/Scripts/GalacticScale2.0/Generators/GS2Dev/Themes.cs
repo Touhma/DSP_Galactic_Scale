@@ -43,6 +43,8 @@ namespace GalacticScale.Generators
                     var smolTheme = theme.Clone();
                     smolTheme.DisplayName = theme.DisplayName;
                     smolTheme.Name += "smol";
+                    smolTheme.VeinSettings.Algorithm = "GS2W";
+                    smolTheme.CustomGeneration = true;
                     smolLibrary.Add(smolTheme.Name, smolTheme);
                     smolTheme.MaxRadius = 40;
                     theme.MinRadius = 50;
@@ -145,6 +147,7 @@ namespace GalacticScale.Generators
                 BiomeHeightMulti = 2.0,
                 BiomeHeightModifier = 1.2
             };
+            moltenworld.VeinSettings.Algorithm = "GS2W";
             moltenworld.MinRadius = 20;
             moltenworld.MaxRadius = 510;
             moltenworld.ThemeType = EThemeType.Telluric;
