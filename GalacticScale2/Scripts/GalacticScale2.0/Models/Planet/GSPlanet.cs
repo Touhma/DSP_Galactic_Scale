@@ -32,6 +32,8 @@ namespace GalacticScale
         private float orbitInclination = -1;
         private float orbitPhase = -1;
         private float orbitRadius = -1;
+        private float orbitLongitude = -1;
+        public float rareChance = 0;
 
         [NonSerialized] public PlanetData planetData;
 
@@ -139,7 +141,12 @@ namespace GalacticScale
             get => orbitPhase < 0 ? InitOrbitPhase() : orbitPhase;
             set => orbitPhase = value;
         }
-
+        [SerializeField]
+        public float OrbitLongitude
+        {
+            get => orbitLongitude < 0 ? InitOrbitLongitude() : orbitLongitude;
+            set => orbitLongitude = value;
+        }
         [SerializeField]
         public float Obliquity
         {
@@ -331,6 +338,11 @@ namespace GalacticScale
         {
             orbitInclination = 0;
             return orbitInclination;
+        }
+        private float InitOrbitLongitude()
+        {
+            orbitLongitude = 0;
+            return orbitLongitude;
         }
 
         private float InitOrbitalPeriod()

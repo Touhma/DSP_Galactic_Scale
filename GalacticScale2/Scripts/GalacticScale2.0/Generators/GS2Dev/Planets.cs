@@ -168,6 +168,15 @@ namespace GalacticScale.Generators
                 body.OrbitPhase = random.Next(360);
                 body.Obliquity = random.NextFloat() * 20;
                 var starInc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}inclination", -1);
+                var starLong = preferences.GetFloat($"{GetTypeLetterFromStar(star)}orbitLongitude", 0);
+                if (starLong == -1)
+                {
+                    body.OrbitLongitude = random.NextFloat() * 360f;
+                }
+                else
+                {
+                    body.OrbitLongitude = random.NextFloat() * starLong;
+                }
                 // GS2.Log($"StarInc {starInc}");
                 if (IsPlanetOfStar(star, body) && starInc > -1)
                 {
@@ -189,7 +198,7 @@ namespace GalacticScale.Generators
                     // GS2.Warn("Setting Crazy Inclination for " + star.Name);
                     body.OrbitInclination = random.NextFloat(20f, 85f);
                 }
-
+                body.rareChance = preferences.GetFloat($"{GetTypeLetterFromStar(star)}rareChance", 0f);
                 // Force inclinations for testing
                 // body.OrbitInclination = 0f;
                 // body.OrbitPhase = 0f;

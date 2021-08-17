@@ -288,6 +288,7 @@ namespace GalacticScale
                     (float, float) ff = o;
                     RectTransform.GetComponent<GSUIRangeSlider>().LowValue = ff.Item1;
                     RectTransform.GetComponent<GSUIRangeSlider>().HighValue = ff.Item2;
+                    RectTransform.GetComponent<GSUIRangeSlider>().LowValue = ff.Item1;
                     // GS2.Warn($"{RectTransform.GetComponent<GSUIRangeSlider>().LowValue} {RectTransform.GetComponent<GSUIRangeSlider>().HighValue}");
                     return true;
                 case "Slider":
@@ -414,11 +415,11 @@ namespace GalacticScale
 
         //Slider with increment and preferences Key
         public static GSUI Slider(string label, float min, float val, float max, float increment, string key,
-            GSOptionCallback callback = null, string hint = "", bool negativeIsRandom = false)
+            GSOptionCallback callback = null, string hint = "", string negativeLabel = "")
         {
             var t = Utils.GetCallingType();
             var instance = new GSUI(Utils.GetConfigurableGeneratorInstance(t), key, label, "Slider",
-                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val, negativeIsRandom = negativeIsRandom}, null, null, hint);
+                new GSSliderConfig {minValue = min, maxValue = max, defaultValue = val, negativeLabel = negativeLabel}, null, null, hint);
             var defaultCallback = instance.CreateDefaultCallback(callback);
             var CB = defaultCallback;
             if (increment != 1f) CB = CreateIncrementCallback(increment, instance, defaultCallback);
@@ -712,14 +713,14 @@ public class GSUIGroupConfig
         public float minValue;
         public float maxValue;
         public float defaultValue;
-        public bool negativeIsRandom;
+        public string negativeLabel;
 
-        public GSSliderConfig(float minValue, float value, float maxValue, bool negativeIsRandom = false)
+        public GSSliderConfig(float minValue, float value, float maxValue, string negativeLabel = "")
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
             defaultValue = value;
-            this.negativeIsRandom = negativeIsRandom;
+            this.negativeLabel = negativeLabel;
         }
     }
     public struct GSRangeSliderConfig

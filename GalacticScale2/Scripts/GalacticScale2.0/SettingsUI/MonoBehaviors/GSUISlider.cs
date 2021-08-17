@@ -38,12 +38,12 @@ namespace GalacticScale
             set => _slider.maxValue = value;
         }
         public Text _valueText;
-        public bool negativeIsRandom = false;
+        public string negativeLabel = "";
         public void OnSliderValueChange(Slider slider)
         {
             float value = (int)(slider.value * 100) / 100f;
             _valueText.text = value.ToString();
-            if (negativeIsRandom && value < 0) _valueText.text = "Random".Translate();
+            if (negativeLabel != "" && value < 0) _valueText.text = negativeLabel;
             OnChange?.Invoke(value);
         }
         public void initialize(GSUI options)
@@ -57,7 +57,7 @@ namespace GalacticScale
             Hint = options.Hint;
             var wholenumbers = (options.increment %1f == 0);
             _slider.wholeNumbers = wholenumbers;
-            negativeIsRandom = sc.negativeIsRandom;
+            negativeLabel = sc.negativeLabel;
             minValue = sc.minValue;
             maxValue = sc.maxValue;
             OnChange = options.callback;

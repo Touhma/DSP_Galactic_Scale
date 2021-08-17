@@ -251,6 +251,7 @@ namespace GalacticScale.Generators
             preferences.Set("hz", (0.9f, 2));
             preferences.Set("orbits", (0.1f, 10));
             preferences.Set("inclination", -1);
+            preferences.Set("orbitLongitude", 0);
             // preferences.Set("systemDensity", 3);
             for (var i = 0; i < 14; i++)
             {
@@ -270,6 +271,7 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}orbits", (0.1f,10));
                 preferences.Set($"{typeLetter[i]}orbitOverride", false);
                 preferences.Set($"{typeLetter[i]}inclination", -1);
+                preferences.Set($"{typeLetter[i]}orbitLongitude", 0);
                 preferences.Set($"{typeLetter[i]}hzOverride", false);
             }
         }
@@ -375,7 +377,9 @@ namespace GalacticScale.Generators
 
             UI.Add($"orbitOverride", Options.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"orbitOverride", orbitOverrideCallback, "Enable the slider below".Translate())));
             UI.Add($"orbits", Options.Add(GSUI.RangeSlider($"Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, $"orbits", null, orbitLowCallback, orbitHighCallback, "Force the distances planets can spawn between".Translate())));
-            UI.Add($"inclination", Options.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/inclinationCallback, "Maximum angle of orbit".Translate(), true)));
+            UI.Add($"inclination", Options.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/inclinationCallback, "Maximum angle of orbit".Translate(), "Random".Translate())));
+            UI.Add($"orbitLongitude", Options.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, $"orbitLongitude", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/longitudeCallback, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
+            UI.Add($"rareChance", Options.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, $"rareChance", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/rareChanceCallback, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
 
             // UI.Add("systemDensity", Options.Add(GSUI.Slider("System Density".Translate(), 1, 3, 5, "systemDensity", SystemDensityCallback)));
             Options.Add(GSUI.Separator());
@@ -393,9 +397,11 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider($"Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider($"Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, $"{typeLetter[i]}orbits", null, null, null, "Force the distances planets can spawn between".Translate())));
-                UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"{typeLetter[i]}inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum angle of orbit".Translate(), true)));
+                UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"{typeLetter[i]}inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum angle of orbit".Translate(), "Random".Translate())));
+                UI.Add($"{typeLetter[i]}orbitLongitude", tOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, $"{typeLetter[i]}orbitLongitude", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
+                UI.Add($"{typeLetter[i]}rareChance", tOptions.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, $"{typeLetter[i]}rareChance", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
                 //UI[$"{typeLetter[i]}inclination"].Set(new GSSliderConfig(-1, -1, 90, true));
-          
+
                 // UI.Add($"{typeLetter[i]}systemDensity", tOptions.Add(GSUI.Slider($"{typeDesc[i]} Density".Translate(), 1, 3, 5, $"{typeLetter[i]}systemDensity", null, "Lower is less dense".Translate())));
                 Options.Add(GSUI.Group($"{typeDesc[i]} Overrides".Translate(), tOptions, $"Change Settings for Type {typeDesc[i]} stars".Translate()));
                 Options.Add(GSUI.Separator());
@@ -463,6 +469,14 @@ namespace GalacticScale.Generators
         private void inclinationCallback(Val o)
         {
             SetAllStarTypeOptions("inclination", o);
+        }
+        private void longitudeCallback(Val o)
+        {
+            SetAllStarTypeOptions("orbitLongitude", o);
+        }
+        private void rareChanceCallback(Val o)
+        {
+            SetAllStarTypeOptions("rareChance", o);
         }
         private void CountBiasCallback(Val o)
         {

@@ -71,7 +71,7 @@ namespace GalacticScale
                 planet.orbitRadius = random.NextFloat(1, 50);
             }
             planet.orbitInclination = gsPlanet.OrbitInclination;
-            //planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
+            planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
             planet.orbitalPeriod = gsPlanet.OrbitalPeriod;
             planet.orbitPhase = gsPlanet.OrbitPhase; //1+(index * (360/star.planetCount));
             planet.obliquity = gsPlanet.Obliquity;
