@@ -9,6 +9,7 @@ namespace GalacticScale
 {
     public class PatchOnWhatever
     {
+        // [HarmonyPrefix, HarmonyPatch(typeof(Logger), "LogException")]
         [HarmonyPostfix, HarmonyPatch(typeof(UIRoot), "ExitProgramSplash")]
         public static void ExitProgramSplash(UIRoot __instance)
         {

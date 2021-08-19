@@ -91,7 +91,7 @@ namespace GalacticScale
             RefreshFileNames();
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
-            Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Skip Tutorials", null, "Use the vanilla grid for 200 size planets".Translate()));
+            Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
             
 
             var DebugOptions = new GSOptions();
@@ -110,6 +110,15 @@ namespace GalacticScale
             
 
             Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
+        }
+
+        private void VanillaGridCheckboxCallback(Val o)
+        {
+            if (GS2.keyedLUTs.ContainsKey(200)) GS2.keyedLUTs.Remove(200);
+            if (PatchOnUIBuildingGrid.LUT512.ContainsKey(200))
+            {
+                PatchOnUIBuildingGrid.LUT512.Remove(200);
+            }
         }
 
         public void SetResourceMultiplier(float val)

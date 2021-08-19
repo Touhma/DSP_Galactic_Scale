@@ -17,7 +17,16 @@ namespace GalacticScale
             //GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
             var based = model.BaseName != null && model.BaseName != "";
             SerializeMember(serialized, null, "Name", model.Name);
-            var baseTheme = based ? GS2.ThemeLibrary[model.BaseName] : GS2.ThemeLibrary["Mediterranean"];
+            var baseTheme = GSSettings.ThemeLibrary["Mediterranean"];
+            if (based)
+            {
+                if (!GSSettings.ThemeLibrary.ContainsKey(model.BaseName))
+                {
+                    GS2.Error($"Theme Missing: {model.BaseName}");
+                    
+                } else baseTheme = GSSettings.ThemeLibrary[model.BaseName];
+            }
+            // var baseTheme = based ? GS2.ThemeLibrary[model.BaseName] : GS2.ThemeLibrary["Mediterranean"];
 
             // GS2.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
             if (GS2.Config.MinifyJson)
@@ -30,7 +39,7 @@ namespace GalacticScale
                 if (!based || model.StarTypes.Except(baseTheme.StarTypes).Count() != 0 ||
                     baseTheme.StarTypes.Except(model.StarTypes).Count() != 0)
                     SerializeMember(serialized, null, "StarTypes", model.StarTypes);
-                    if (!based || model.Algo != baseTheme.Algo) SerializeMember(serialized, null, "Algo", model.Algo);
+                if (!based || model.Algo != baseTheme.Algo) SerializeMember(serialized, null, "Algo", model.Algo);
 
                 if (!based || model.CustomGeneration != baseTheme.CustomGeneration)
                     SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
@@ -51,14 +60,11 @@ namespace GalacticScale
                     SerializeMember(serialized, null, "Distribute", model.Distribute);
 
                 if (!based || !model.TerrainSettings.Equals(baseTheme.TerrainSettings))
-                {
-
                     SerializeMember(serialized, null, "TerrainSettings", model.TerrainSettings);
-                }
                 if (!based || !model.VeinSettings.Equals(baseTheme.VeinSettings))
                     SerializeMember(serialized, null, "VeinSettings", model.VeinSettings);
                 if (!based || !model.VegeSettings.Equals(baseTheme.VegeSettings))
-                SerializeMember(serialized, null, "VegeSettings", model.VegeSettings);
+                    SerializeMember(serialized, null, "VegeSettings", model.VegeSettings);
                 //if ((!based || model.Vegetables0 != baseTheme.Vegetables0) && model.Vegetables0 != null && model.Vegetables0.Length > 0 && model.VegeSettings.Group1.Count == 0) SerializeMember(serialized, null, "Vegetables0", model.Vegetables0);
                 //if ((!based || model.Vegetables1 != baseTheme.Vegetables1) && model.Vegetables1 != null && model.Vegetables1.Length > 0 && model.VegeSettings.Group2.Count == 0) SerializeMember(serialized, null, "Vegetables1", model.Vegetables1);
                 //if ((!based || model.Vegetables2 != baseTheme.Vegetables2) && model.Vegetables2 != null && model.Vegetables2.Length > 0 && model.VegeSettings.Group3.Count == 0) SerializeMember(serialized, null, "Vegetables2", model.Vegetables2);
@@ -94,7 +100,8 @@ namespace GalacticScale
                 if (!based || model.MaterialPath != baseTheme.MaterialPath)
                     SerializeMember(serialized, null, "MaterialPath", model.MaterialPath);
 
-                if ((!based || !model.terrainMaterial.Equals(baseTheme.terrainMaterial)) && model.terrainMaterial != null)
+                if ((!based || !model.terrainMaterial.Equals(baseTheme.terrainMaterial)) &&
+                    model.terrainMaterial != null)
                     SerializeMember(serialized, null, "terrainMaterial", model.terrainMaterial);
                 //if ((!based || model.terrainTint != baseTheme.terrainTint) && model.terrainTint != new UnityEngine.Color()) SerializeMember(serialized, null, "terrainTint", model.terrainTint);
                 if ((!based || !model.oceanMaterial.Equals(baseTheme.oceanMaterial)) && model.oceanMaterial != null)
@@ -107,7 +114,8 @@ namespace GalacticScale
                 if ((!based || !model.thumbMaterial.Equals(baseTheme.thumbMaterial)) && model.thumbMaterial != null)
                     SerializeMember(serialized, null, "thumbMaterial", model.thumbMaterial);
                 //if ((!based || model.thumbTint != baseTheme.thumbTint) && model.thumbTint != new UnityEngine.Color()) SerializeMember(serialized, null, "thumbTint", model.thumbTint);
-                if ((!based || !model.minimapMaterial.Equals( baseTheme.minimapMaterial)) && model.minimapMaterial != null)
+                if ((!based || !model.minimapMaterial.Equals(baseTheme.minimapMaterial)) &&
+                    model.minimapMaterial != null)
                     SerializeMember(serialized, null, "minimapMaterial", model.minimapMaterial);
                 //if ((!based || model.minimapMaterial.Tint != baseTheme.minimapTint) && model.minimapTint != new UnityEngine.Color()) SerializeMember(serialized, null, "minimapTint", model.minimapTint);
                 //if ((!based || model.ambient != baseTheme.ambient) && model.ambient != null) SerializeMember(serialized, null, "ambient", model.ambient);
@@ -117,7 +125,6 @@ namespace GalacticScale
             }
             else
             {
-
                 SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 SerializeMember(serialized, null, "Algo", model.Algo);
                 SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
@@ -188,18 +195,12 @@ namespace GalacticScale
                 model.DisplayName = model.Name;
 
             if (data.ContainsKey("Temperature")) DeserializeMember(data, null, "Temperature", out model.Temperature);
-            EThemeType modelThemeType = EThemeType.Null;
+            var modelThemeType = EThemeType.Null;
             if (data.ContainsKey("ThemeType")) DeserializeMember(data, null, "ThemeType", out modelThemeType);
             model.ThemeType = modelThemeType;
-            if (data.ContainsKey("MaxRadius"))
-            {
-                DeserializeMember(data, null, "MaxRadius", out model.MaxRadius);
-            }
+            if (data.ContainsKey("MaxRadius")) DeserializeMember(data, null, "MaxRadius", out model.MaxRadius);
 
-            if (data.ContainsKey("MinRadius"))
-            {
-                DeserializeMember(data, null, "MinRadius", out model.MinRadius);
-            }
+            if (data.ContainsKey("MinRadius")) DeserializeMember(data, null, "MinRadius", out model.MinRadius);
 
             if (data.ContainsKey("Distribute")) DeserializeMember(data, null, "Distribute", out model.Distribute);
 
