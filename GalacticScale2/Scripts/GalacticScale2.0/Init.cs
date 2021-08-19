@@ -90,6 +90,7 @@ namespace GalacticScale
                 updateMessage +=
                     "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
                 File.Delete(Path.Combine(AssemblyPath, "icon.png"));
+                updateMessage += "\r\nPLEASE NOTE: The 2.1 update will include changes to the planet grid system to bring 200 radius planets in line with vanilla. THIS WILL BREAK SAVES. Do not update if you have a current game.";
             }
             Warn("Start");
             NebulaCompatibility.Init();
