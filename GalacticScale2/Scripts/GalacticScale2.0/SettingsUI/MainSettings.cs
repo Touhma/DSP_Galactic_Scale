@@ -23,6 +23,7 @@ namespace GalacticScale
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue");
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
+        public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
         public bool MinifyJson
         {
             get
@@ -90,7 +91,7 @@ namespace GalacticScale
             RefreshFileNames();
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
-            
+            Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Skip Tutorials", null, "Use the vanilla grid for 200 size planets".Translate()));
             
 
             var DebugOptions = new GSOptions();
