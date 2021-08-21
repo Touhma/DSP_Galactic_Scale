@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.0.87.1")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.1.3.0")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
@@ -23,7 +23,7 @@ namespace GalacticScale
         internal void Awake()
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
-            GS2.Version = $"2.0b{v.Build}.{v.Revision}";
+            GS2.Version = $"2.1b{v.Build}.{v.Revision}";
             BCE.Console.Init();
             var _ = new Harmony("dsp.galactic-scale.2");
             Logger = new ManualLogSource("GS2");

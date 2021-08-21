@@ -7,11 +7,12 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetGrid), "DetermineLongitudeSegmentCount")]
-        public static bool DetermineLongitudeSegmentCount(int latitudeIndex, int segment, ref int __result)
+        public static bool DetermineLongitudeSegmentCount(PlanetGrid __instance,  int latitudeIndex, int segment, ref int __result)
         {
             if (!DSPGame.IsMenuDemo)
                 if (!GS2.Vanilla)
                 {
+                    if (!GS2.keyedLUTs.ContainsKey(segment)) GS2.SetLuts(segment, segment);
                     if (GS2.keyedLUTs.ContainsKey(segment))
                     {
                         //GS2.Warn("Using DSLC");
@@ -21,8 +22,9 @@ namespace GalacticScale
                     }
                     else
                     {
+                        
                         //Original algorithm. Really shouldn't be used anymore... but just in case it's still here.
-                        //GS2.Warn("Using original algo");
+                        // GS2.Warn("Using original algo");
                         var index = Mathf.CeilToInt(
                             Mathf.Abs(Mathf.Cos((float) (latitudeIndex / (double) (segment / 4f) * 3.14159274101257 *
                                                          0.5))) * segment);

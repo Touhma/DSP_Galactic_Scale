@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,6 +81,8 @@ namespace GalacticScale
                 }
             }
 
+            var entrycounts = new Dictionary<ItemProto, int>();
+            var entries = new Dictionary<ItemProto, UIResAmountEntry>();
             if (_observed)
                 for (var index = 0; index < __instance.star.planetCount; ++index)
                 {
@@ -90,14 +93,32 @@ namespace GalacticScale
                         var itemProto = LDB.items.Select(waterItemId);
                         if (itemProto != null)
                         {
-                            var iconSprite = itemProto.iconSprite;
-                            var name = itemProto.name;
-                            var entry = getEntry.GetValue<UIResAmountEntry>();
-                            __instance.entries.Add(entry);
-                            entry.SetInfo(num, name, iconSprite, itemProto.description,
-                                itemProto != null && waterItemId != 1000, false, string.Empty);
-                            entry.valueString = "海洋".Translate();
-                            ++num;
+                            if (entrycounts.ContainsKey(itemProto))
+                            {
+                                entrycounts[itemProto]++;
+                                var entry = entries[itemProto];
+                                entry._label = entry.labelText.text =
+                                    $"{itemProto.name}{" x" + entrycounts[itemProto]}";
+                                // GS2.WarnJson(entry);
+                            }
+                            else
+                            {
+                                entrycounts.Add(itemProto, 1);
+                                var iconSprite = itemProto.iconSprite;
+                                var name = itemProto.name;
+                                var entry = getEntry.GetValue<UIResAmountEntry>();
+                                __instance.entries.Add(entry);
+                                // GS2.Log($"Num:{num}");
+                                entry.SetInfo(num, name, iconSprite, itemProto.description,
+                                    itemProto != null && waterItemId != 1000, false, string.Empty);
+                                entry.valueString = "海洋".Translate();
+                                entries.Add(itemProto, entry);
+
+                                ++num;
+                            }
+
+                            
+                            
                         }
                     }
                 }

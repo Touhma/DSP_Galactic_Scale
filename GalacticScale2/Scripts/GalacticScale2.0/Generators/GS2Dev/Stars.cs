@@ -20,8 +20,9 @@ namespace GalacticScale.Generators
                 if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
                 if (star.Type == EStarType.BlackHole && preferences.GetFloat("starSizeMulti", 10f) < 2.01f)
                     star.radius *= preferences.GetFloat("starSizeMulti", 2f);
-                star.dysonRadius =
-                    star.dysonRadius * Mathf.Clamp(preferences.GetFloat("starSizeMulti", 10f), 0.5f, 100f);
+                // star.dysonRadius =
+                //     star.dysonRadius * Mathf.Clamp(preferences.GetFloat("starSizeMulti", 10f), 0.5f, 100f);
+                star.dysonRadius = (float)((star.physicsRadius * 1.5f) / 40000.0);
                 //Warn($"Habitable zone for {star.Name} {Utils.CalculateHabitableZone(star.luminosity)}");
                 star.Seed = random.Next();
                 GSSettings.Stars.Add(star);

@@ -114,6 +114,7 @@ namespace GalacticScale
 
         private void VanillaGridCheckboxCallback(Val o)
         {
+            if (GameMain.isPaused) return;
             if (GS2.keyedLUTs.ContainsKey(200)) GS2.keyedLUTs.Remove(200);
             if (PatchOnUIBuildingGrid.LUT512.ContainsKey(200))
             {

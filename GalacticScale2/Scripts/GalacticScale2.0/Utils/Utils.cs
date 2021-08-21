@@ -24,6 +24,7 @@ namespace GalacticScale
 
             return fsJsonPrinter.PrettyJson(data);
         }
+
         public static VectorLF3 PolarToCartesian(double p, double theta, double phi)
         {
             var x = p * Math.Sin(phi) * Math.Cos(theta);
@@ -31,6 +32,7 @@ namespace GalacticScale
             var z = p * Math.Cos(phi);
             return new VectorLF3(z, y, z);
         }
+
         public static Vector3 PositionAtSurface(Vector3 position, GSPlanet planet)
         {
             return position.normalized * planet.planetData.data.QueryHeight(position);
@@ -48,9 +50,9 @@ namespace GalacticScale
             //random = new GS2.Random(GSSettings.Seed);
             var randomVector = Vector3.zero;
             randomVector.x =
-                (float) random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
-            randomVector.y = (float) random.NextDouble() * 2f - 1f;
-            randomVector.z = (float) random.NextDouble() * 2f - 1f;
+                (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
+            randomVector.y = (float)random.NextDouble() * 2f - 1f;
+            randomVector.z = (float)random.NextDouble() * 2f - 1f;
             return randomVector;
         }
 
@@ -104,12 +106,12 @@ namespace GalacticScale
             var radiusCubed = Math.Pow(orbitRadius, 3);
             var psquared = radiusCubed * (fourPIsquared / (G / massStar));
             var periodFactor = Math.Sqrt(psquared) / 365 / 24 / 3600 * 40;
-            return (float) (36000 * periodFactor);
+            return (float)(36000 * periodFactor);
         }
 
         public static (float min, float max) CalculateHabitableZone(float luminosity)
         {
-            return ((float) Math.Sqrt(luminosity / 1.1), (float) Math.Sqrt(luminosity / 0.53));
+            return ((float)Math.Sqrt(luminosity / 1.1), (float)Math.Sqrt(luminosity / 0.53));
         }
 
         public static Type GetCallingType()
@@ -157,6 +159,7 @@ namespace GalacticScale
         {
             return GS2.Bundle.LoadAsset<Sprite>(name);
         }
+
         public static Sprite GetSplashSprite()
         {
             var r = new System.Random();
@@ -174,65 +177,67 @@ namespace GalacticScale
             // }
             return GS2.Bundle.LoadAsset<Sprite>(spriteName);
         }
+
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
             // return input; //Kills performance too much to use!
             //GS2.Log("Tinting Cubemap");
-            var highStopwatch = new HighStopwatch();highStopwatch.Begin();
-            
+            var highStopwatch = new HighStopwatch();
+            highStopwatch.Begin();
+
             var output = Object.Instantiate(input);
-            
+
             var colors = output.GetPixels(CubemapFace.PositiveX);
             var tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-            
+
             output.SetPixels(tinted, CubemapFace.PositiveX);
-            
+
             colors = output.GetPixels(CubemapFace.PositiveY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-            
+
             output.SetPixels(tinted, CubemapFace.PositiveY);
-            
+
             colors = output.GetPixels(CubemapFace.PositiveZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-            
+
             output.SetPixels(tinted, CubemapFace.PositiveZ);
-            
+
             colors = output.GetPixels(CubemapFace.NegativeX);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-            
+
             output.SetPixels(tinted, CubemapFace.NegativeX);
-            
+
             colors = output.GetPixels(CubemapFace.NegativeY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-            
+
             output.SetPixels(tinted, CubemapFace.NegativeY);
-            
+
             colors = output.GetPixels(CubemapFace.NegativeZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
                 tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
                     new Color(color.r, color.g, color.b), color.a);
-            
+
             output.SetPixels(tinted, CubemapFace.NegativeZ);
-            
+
             //GS2.Log("End");
             GS2.Log($"TintCubeMap Took {highStopwatch.duration:F5}s");
-            
+
             return output;
         }
 
@@ -295,10 +300,77 @@ namespace GalacticScale
             radius = Mathf.Clamp(radius, 10, 510) / 10;
             radius = Mathf.RoundToInt(radius) * 10;
             //GS2.Warn(radius.ToString());
-            return (int) radius;
+            return (int)radius;
         }
 
-        public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
+        public static string GetStarDetail(StarData star)
+        {
+            var gsStar = GS2.GetGSStar(star);
+            var output = "";
+            
+            foreach (var planet in gsStar.Planets)
+            {
+                output += "\r\n" + GetGSPlanetDetail(planet, 1);
+            }
+
+            var sa = output.Split(new []{"\r\n"}, StringSplitOptions.None);
+            GS2.WarnJson(sa);
+            GS2.Warn(sa.Length.ToString());
+            if (sa.Length > 50)
+            {
+                output = "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
+                var sa1 = new string[50];
+                var sa2 = new string[sa.Length -50];
+                for (int i = 0; i < 50; i++)
+                {
+                    int j = i + 50;
+                    GS2.Warn(i + " " + (j) + " "+sa.Length);
+                    if (sa.Length > (j))
+                    {
+                        GS2.Log(i.ToString() + " " + j.ToString());
+                        var a = string.Format("{0,30}", sa[i]);
+                        var b = string.Format("{0,30}", sa[j]);
+                        output += $"\r\n{a} | {b}";
+                            
+                    }
+                    else
+                    {
+                        GS2.Warn(i.ToString());
+                        output += $"\r\n{string.Format("{0,30}", sa[i])}";
+                    }
+                }
+
+                GS2.Log(output);
+                return output;
+            }
+            var output2 = "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
+            output2 += output;
+            
+            
+            return output2;
+
+        }
+
+        public static string GetGSPlanetDetail(GSPlanet planet, int indentation = 1)
+        {
+            var ind = "";
+            for (var i = 0; i <= indentation; i++)
+            {
+                ind += "  ";
+            }
+
+            var output = "";
+            output += $"{ind}-{planet.Theme} ({planet.Radius * planet.Scale})";
+            foreach (var moon in planet.Moons)
+            {
+                output += $"\r\n{ind}{GetGSPlanetDetail(moon, indentation + 1)}";
+            }
+
+            return output;
+        }
+    
+
+    public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
         {
             var points = new List<VectorLF3>();
             if (count == 0) return points;
