@@ -20,7 +20,7 @@ namespace GalacticScale
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
         public bool DebugMode => Preferences.GetBool("Debug Log");
         public bool Dev => Preferences.GetBool("Dev");
-        public bool SkipPrologue => Preferences.GetBool("Skip Prologue");
+        public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
         public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
@@ -89,7 +89,7 @@ namespace GalacticScale
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator",
                 GeneratorCallback, "Try them all!".Translate()));
             RefreshFileNames();
-            Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), false, "Skip Prologue"));
+            Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
             Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
             

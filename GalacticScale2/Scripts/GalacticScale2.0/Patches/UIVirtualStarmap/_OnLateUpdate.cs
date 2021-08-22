@@ -56,16 +56,18 @@ namespace GalacticScale
             var flag1 = !string.IsNullOrEmpty(__instance.clickText);
             for (var index2 = 0; index2 < __instance.starPool.Count; ++index2)
             {
+                
                 var flag2 = __instance.starPool[index2].active && index2 == index1;
                 __instance.starPool[index2].nameText.gameObject.SetActive(flag2);
 
                 if (flag2 & flag1)
                 {
                     // GS2.Log("0");
-                    if (pressing)
+                    if (pressing && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) 
                     {
                         if (GS2.ActiveGenerator.Config.enableStarSelector)
                         {
+                            
                             GS2.ActiveGenerator.Generate(GSSettings.StarCount, __instance.starPool[index1].starData);
                             __instance.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
                             __instance.OnGalaxyDataReset();
@@ -82,13 +84,14 @@ namespace GalacticScale
                     //         __instance.starPool[index2].starData.name);
                     var sd = __instance.starPool[index2]?.starData;
                     // GS2.Log("1");
-                    if (__instance.starPool[index2]?.nameText?.text != null) __instance.starPool[index2].nameText.text = 
+                    if (__instance.starPool[index2]?.nameText?.text != null && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) __instance.starPool[index2].nameText.text = 
                         $"{__instance.starPool[index2].textContent}\r\n{Utils.GetStarDetail(sd)}";
 
                         // $"{__instance.starPool[index2].textContent}\r\n{"Gas Giants".Translate()}:{Utils.GetStarDataGasCount(sd)}\r\n{"Planets".Translate()}:{Utils.GetStarDataTelluricCount(sd)}\r\n{"Moons".Translate()}:{Utils.GetStarDataMoonCount(sd)}";
                     // GS2.Log("2");
                     // GS2.Log($"{sd?.planetCount}");
-                    __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
+                    if (GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) __instance.starPool[index2].nameText.rectTransform.gameObject.SetActive(false);
+                    else __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
                         __instance.starPool[index2].nameText.preferredWidth,
                         __instance.starPool[index2].nameText.preferredHeight);
                 }

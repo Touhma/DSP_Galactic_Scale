@@ -198,6 +198,7 @@ namespace GalacticScale.Generators
             var r = new GS2.Random(GSSettings.Seed);
             foreach (var star in GSSettings.Stars)
             {
+                if (star.Decorative) continue;
                 var orbits = starOrbits[star];
                 foreach (var orbit in orbits)
                 {

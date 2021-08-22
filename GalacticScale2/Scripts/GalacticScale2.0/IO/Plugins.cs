@@ -15,10 +15,21 @@ namespace GalacticScale
             foreach (var filePath in Directory.GetFiles(Path.Combine(DataDir, "Generators")))
             {
                 Log(filePath);
-                foreach (var type in Assembly.LoadFrom(filePath).GetTypes())
-                foreach (var t in type.GetInterfaces())
-                    if (t.Name == "iGenerator" && !type.IsAbstract && !type.IsInterface)
-                        Generators.Add((iGenerator) Activator.CreateInstance(type));
+                Assembly a;
+                try
+                {
+                    a = Assembly.LoadFrom(filePath);
+                    foreach (var type in a.GetTypes())
+                    foreach (var t in type.GetInterfaces())
+                        if (t.Name == "iGenerator" && !type.IsAbstract && !type.IsInterface)
+                            Generators.Add((iGenerator)Activator.CreateInstance(type));
+                }
+                catch (Exception e)
+                {
+                    GS2.Warn("Failed to load generator:" +e.Message);
+                    GS2.updateMessage +=
+                        $"Failed to load external generator:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the generator is available, or downgrade GS2 to continue using it";
+                }
             }
 
             foreach (var g in Generators)

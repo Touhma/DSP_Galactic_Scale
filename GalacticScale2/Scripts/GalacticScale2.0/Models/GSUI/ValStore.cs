@@ -15,7 +15,7 @@ namespace GalacticScale
         {
             if (!ContainsKey(key))
             {
-                GS2.Warn($"Trying to get missing value {key}");
+                // GS2.Warn($"Trying to get missing value {key}");
                 return def;
             }
 

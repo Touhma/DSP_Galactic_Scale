@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace GalacticScale
@@ -198,13 +199,17 @@ namespace GalacticScale
         [SerializeField]
         public VectorLF3 position
         {
-            get => _pos == new VectorLF3() && assignedIndex != 0 ? InitPos() : _pos;
+            get
+            {
+                if (_pos == new VectorLF3() && assignedIndex != 0) return InitPos(); else return _pos;
+            } 
             set => _pos = value;
         }
 
         public double magnitude => position.magnitude;
-        public float RadiusAU => radius / 50;
-
+        public float RadiusM => radius * 800f;
+        public float RadiusAU => RadiusM/40000f;
+        public float RadiusLY => RadiusAU / 60f;
         public override string ToString()
         {
             return Name;

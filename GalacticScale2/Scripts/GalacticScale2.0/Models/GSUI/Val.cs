@@ -1,7 +1,24 @@
 ﻿using System;
+using UnityEngine;
 
 namespace GalacticScale
 {
+    public struct FloatPair
+    {
+        public float low;
+        public float high;
+
+        public FloatPair(float low, float high)
+        {
+            this.low = low;
+            this.high = high;
+        }
+
+        public override string ToString()
+        {
+            return $"{low}:{high}";
+        }
+    }
     public class Val
     {
         public object val;
@@ -17,12 +34,13 @@ namespace GalacticScale
         {
             return val.ToString();
         }
-        public ValueTuple<float, float> FloatFloat()
+        public FloatPair FloatFloat()
         {
-            var v = val.ToString().Split('(', ',', ')');
-            float.TryParse(v[1], out float i);
-            float.TryParse(v[2], out float j);
-            return (i,j);
+            // GS2.Warn(val.ToString() + " " + GS2.GetCaller(0)+ GS2.GetCaller(1)+ GS2.GetCaller(2)+ GS2.GetCaller(3)+ GS2.GetCaller(4));
+            var v = val.ToString().Split(':');
+            float.TryParse(v[0], out float i);
+            float.TryParse(v[1], out float j);
+            return new FloatPair(i,j);
         }
         public int Int(int def = -1)
         {
@@ -90,8 +108,8 @@ namespace GalacticScale
         {
             return new Val(i);
         }
-        public static implicit operator Val(ValueTuple<float, float> i) => new Val(i);
-        public static implicit operator ValueTuple<float, float>(Val v) => v.FloatFloat();
+        public static implicit operator Val(FloatPair i) => new Val(i);
+        public static implicit operator FloatPair(Val v) => v.FloatFloat();
         public static implicit operator int(Val v)
         {
             return v.Int();

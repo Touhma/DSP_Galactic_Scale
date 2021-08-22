@@ -7,7 +7,13 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.1.3.0")]
+    public partial class GS2
+    {
+        public static int PreferencesVersion = 2104;
+    }
+    
+    
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.1.4.0")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
     {

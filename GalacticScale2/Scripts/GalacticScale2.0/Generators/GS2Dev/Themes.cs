@@ -412,13 +412,18 @@ namespace GalacticScale.Generators
             center.Process();
 
             var hotGas = new GSTheme("Inferno", "Infernal Gas Giant".Translate(), "GasGiant");
+            var stupid = new GSTheme("Lol", "Lol", "AridDesert");
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
             hotGas.MinRadius = 5;
             hotGas.MaxRadius = 510;
             hotGas.ThemeType = EThemeType.Gas;
 
-
+            stupid.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
+            stupid.Temperature = 4f;
+            stupid.MinRadius = 510;
+            stupid.MaxRadius = 510;
+            stupid.ThemeType = EThemeType.Planet;
             //hotGas.atmosMat = y;
             //GS2.Log("Creating oceanmat");
             hotGas.oceanMaterial.CopyFrom = "GasGiant.terrainMat";
@@ -450,7 +455,34 @@ namespace GalacticScale.Generators
             };
             hotGas.WaterItemId = 1000;
             hotGas.Process();
+            stupid.CustomGeneration = true;
+            stupid.TerrainSettings = new GSTerrainSettings
+            {
+                Algorithm = "GSTA00"
+            };
+            stupid.terrainMaterial.Path = "Universe/Materials/Stars/star-mass-o";
 
+            stupid.terrainMaterial.Colors = new Dictionary<string, Color>
+            {
+                ["_Color4"] = new Color {r = 0.0f, g = 0.0f, b = 0.0f, a = 1}, //Highlights?
+                ["_Color1"] = new Color {r = 0f, g = 0, b = 0f, a = 1}, //Base?
+                ["_Color2"] = new Color {r = 0, g = 0f, b = 0, a = 1}, //SunSpots
+                ["_Color3"] = new Color {r = 0, g = 0, b = 0f, a = 1}
+            }; //Fringe
+            stupid.terrainMaterial.Params = new Dictionary<string, float>
+            {
+                ["_SkyAtmosPower"] = 10,
+                ["_Intensity"] = 0.5f,
+                ["_Multiplier"] = 0.5f,
+                ["_AtmoThickness"] = 3
+            };
+            stupid.WaterItemId = 1000;
+            stupid.oceanMaterial.Path = "Universe/Materials/Stars/star-mass-o";
+            //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
+            //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
+            //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
+            stupid.oceanMaterial.Colors["_Color"] = new Color {r = 0.288f, g = 0.14f, b = 0.03f, a = 1};
+            stupid.Process();
             //hotGas.Process();
             //var x = Resources.FindObjectsOfTypeAll<Material>();
             //foreach (var y in x)

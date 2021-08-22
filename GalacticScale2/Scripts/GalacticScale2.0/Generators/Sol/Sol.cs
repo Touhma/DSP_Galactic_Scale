@@ -537,7 +537,7 @@ namespace GalacticScale.Generators
             int availMoons)
         {
             //GS2.Log($"Creating Random Planet for {star.Name}. Named: {name}. orbitIndex:{orbitIndex}/{orbitCount} moons:{moonCount}");
-            (float min, float max) hz = Utils.CalculateHabitableZone(star.luminosity);
+            var hz = Utils.CalculateHabitableZone(star.luminosity);
             //GS2.Warn($"Habitable Zone for Star with Luminosity {star.luminosity} is {hz.min} , {hz.max}");
             //float thisOrbitDistance;
             int radius;

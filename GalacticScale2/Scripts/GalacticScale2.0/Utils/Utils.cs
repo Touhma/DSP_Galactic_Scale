@@ -109,9 +109,9 @@ namespace GalacticScale
             return (float)(36000 * periodFactor);
         }
 
-        public static (float min, float max) CalculateHabitableZone(float luminosity)
+        public static FloatPair CalculateHabitableZone(float luminosity)
         {
-            return ((float)Math.Sqrt(luminosity / 1.1), (float)Math.Sqrt(luminosity / 0.53));
+            return new FloatPair((float)Math.Sqrt(luminosity / 1.1), (float)Math.Sqrt(luminosity / 0.53));
         }
 
         public static Type GetCallingType()
@@ -314,17 +314,19 @@ namespace GalacticScale
             }
 
             var sa = output.Split(new []{"\r\n"}, StringSplitOptions.None);
-            GS2.WarnJson(sa);
-            GS2.Warn(sa.Length.ToString());
+            // GS2.WarnJson(sa);
+            // GS2.Warn(sa.Length.ToString());
             if (sa.Length > 50)
             {
+                output = "";
+                if (gsStar.genData.Get("hasBinary", false)) output += "Binary Star\r\n";
                 output = "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
                 var sa1 = new string[50];
                 var sa2 = new string[sa.Length -50];
                 for (int i = 0; i < 50; i++)
                 {
                     int j = i + 50;
-                    GS2.Warn(i + " " + (j) + " "+sa.Length);
+                    // GS2.Warn(i + " " + (j) + " "+sa.Length);
                     if (sa.Length > (j))
                     {
                         GS2.Log(i.ToString() + " " + j.ToString());
@@ -340,10 +342,13 @@ namespace GalacticScale
                     }
                 }
 
-                GS2.Log(output);
+                // GS2.Log(output);
                 return output;
             }
-            var output2 = "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
+
+            var output2 = "";
+            if (gsStar.genData.Get("hasBinary", false)) output2 += "Binary Star\r\n";
+            output2 += "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
             output2 += output;
             
             

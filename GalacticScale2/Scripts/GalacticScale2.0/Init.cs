@@ -104,7 +104,6 @@ namespace GalacticScale
 
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             Config.Init();
-
             LoadPreferences(true);
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
             foreach (var t in themes) t.Process();

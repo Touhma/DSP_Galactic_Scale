@@ -114,12 +114,15 @@ namespace GalacticScale.Generators
         {
             foreach (var star in GSSettings.Stars)
                 //GS2.Warn($"DysonRadius for star {star.Name} is {star.dysonRadius}");
-            
-            foreach (var body in star.Bodies)
-            foreach (var m in body.Moons)
-                if (m.Radius > body.Radius && body.Scale != 10f)
-                    Warn(
-                        $"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
+            {
+                if (star.Decorative) continue;
+                
+                foreach (var body in star.Bodies)
+                foreach (var m in body.Moons)
+                    if (m.Radius > body.Radius && body.Scale != 10f)
+                        Warn(
+                            $"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
+            }
         }
 
         // private void SelectBirthPlanet()
@@ -158,6 +161,7 @@ namespace GalacticScale.Generators
         {
             if (!BirthSystemHasTi())
             {
+                GS2.Warn("Birth System Has No Ti!");
                 if (birthStar.TelluricBodyCount < 2)
                 {
                     // if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
@@ -171,6 +175,10 @@ namespace GalacticScale.Generators
                         }
                         // GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
                     // }
+                    GS2.Warn("Adding Moon");
+                    // var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "Lol",
+                    //     510, 0.13f, 66f, 900f, 0f,
+                    //     66f, 360f, 0f, -1f));
                     var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol",
                         GetStarPlanetSize(birthStar), 0.03f, 66f, 900f, 0f,
                         66f, 360f, 0f, -1f));
@@ -182,6 +190,7 @@ namespace GalacticScale.Generators
                 var p = birthPlanet;
                 while (p == birthPlanet) p = random.Item(birthStar.TelluricBodies);
                 p.Theme = "AshenGelisol";
+                // p.Theme = "Lol";
             }
         }
 

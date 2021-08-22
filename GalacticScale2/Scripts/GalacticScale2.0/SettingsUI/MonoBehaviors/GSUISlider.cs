@@ -41,6 +41,7 @@ namespace GalacticScale
         public string negativeLabel = "";
         public void OnSliderValueChange(Slider slider)
         {
+            // GS2.Warn("*");
             float value = (int)(slider.value * 100) / 100f;
             _valueText.text = value.ToString();
             if (negativeLabel != "" && value < 0) _valueText.text = negativeLabel;

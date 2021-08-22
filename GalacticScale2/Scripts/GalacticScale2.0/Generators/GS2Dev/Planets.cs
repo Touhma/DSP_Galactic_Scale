@@ -13,8 +13,8 @@ namespace GalacticScale.Generators
         {
             foreach (var star in GSSettings.Stars)
             {
-                GeneratePlanetsForStar(star);
-                NamePlanets(star);
+                if (!star.Decorative) GeneratePlanetsForStar(star);
+                if (!star.Decorative) NamePlanets(star);
             }
         }
 

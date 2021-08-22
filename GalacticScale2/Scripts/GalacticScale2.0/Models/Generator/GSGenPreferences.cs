@@ -70,7 +70,7 @@ namespace GalacticScale
             return ContainsKey(key) ? bool.TryParse(this[key], out parsedResult) ? parsedResult : Default : Default;
         }
 
-        public (float lowValue, float highValue) GetFloatFloat(string key, (float, float) Default = new ValueTuple<float, float>())
+        public FloatPair GetFloatFloat(string key, FloatPair Default = new FloatPair())
         {
             if (!ContainsKey(key)) return Default;
             Val o = this[key];
@@ -89,10 +89,12 @@ namespace GalacticScale
                 }
 
                 var stringResult = fsJsonPrinter.CompressedJson(data);
+                if (value is FloatPair) GS2.Warn(stringResult);
                 this[key] = stringResult;
             }
             else
             {
+                // GS2.Log($"Setting {key} to {value}");
                 this[key] = value.ToString();
             }
         }

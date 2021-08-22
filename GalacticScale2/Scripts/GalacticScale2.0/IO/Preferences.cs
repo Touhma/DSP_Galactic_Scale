@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using GSSerializer;
 
@@ -10,6 +11,7 @@ namespace GalacticScale
         {
             Log("Start");
             var preferences = new GSPreferences();
+            preferences.version = PreferencesVersion;
             preferences.MainSettings = GS2.Config.Export();
             // preferences.GeneratorID = generator.GUID;
             // preferences.debug = debugOn;
@@ -55,6 +57,15 @@ namespace GalacticScale
             var preferences = new GSPreferences();
             var data2 = fsJsonParser.Parse(json);
             serializer.TryDeserialize(data2, ref preferences);
+            if (preferences.version != PreferencesVersion)
+            {
+                Warn("Preferences.json Version Mismatch. Renaming to Preferences.Old");
+                var newName =  "Preferences.Old."+DateTime.Now.ToString("yyMMddHHmmss");
+                if (File.Exists(Path.Combine(DataDir,newName))) File.Delete(Path.Combine(DataDir,newName));
+                File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir,newName));
+                updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to "+newName+"\r\nPlease reconfigure GS2\r\n";
+                return;
+            }
             if (!debug)
                 ParsePreferences(preferences);
             else
@@ -103,6 +114,7 @@ namespace GalacticScale
             // public bool forceRare;
             // public string GeneratorID = "space.customizing.vanilla";
             // public bool noTutorials;
+            public int version;
             public GSGenPreferences MainSettings = new GSGenPreferences();
             public readonly Dictionary<string, GSGenPreferences> PluginOptions =
                 new Dictionary<string, GSGenPreferences>();
