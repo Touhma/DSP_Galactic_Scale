@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using static GalacticScale.GS2;
-using Random = UnityEngine.Random;
+using static UnityEngine.Mathf;
 
 namespace GalacticScale.Generators
 {
@@ -10,9 +11,17 @@ namespace GalacticScale.Generators
     {
         public void GenerateBinaryStar(GSStar star)
         {
-            var starType = random.Item(new List<EStar>()
-            { EStar.M, EStar.BlackHole, EStar.WhiteDwarf, EStar.G, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf,EStar.M,EStar.M,EStar.M
-            }).Convert();
+            
+            // { EStar.M, EStar.BlackHole, EStar.WhiteDwarf, EStar.G, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf,EStar.M,EStar.M,EStar.M
+            // }).Convert();
+            var availStarTypes = new List<(EStarType, ESpectrType)>();
+            for (var i = 0; i < 14; i++)
+            {
+                var enabled = preferences.GetBool($"{typeLetter[i]}binaryEnabled", false);
+                if (enabled) availStarTypes.Add(GetStarTypeSpectrFromLetter(typeLetter[i]));
+            }
+            if (availStarTypes.Count == 0) availStarTypes.Add((EStarType.MainSeqStar, ESpectrType.K));
+            var starType = random.Item(availStarTypes);
             var binary = GSSettings.Stars.Add(new GSStar(random.Next(), star.Name+ "-B", starType.Item2,  starType.Item1, new GSPlanets()));
             binary.genData.Add("binary", true);
             star.genData.Add("hasBinary", true);
@@ -55,6 +64,13 @@ namespace GalacticScale.Generators
                         GenerateBinaryStar(star);
                         i++;
                     }
+                }
+
+                if (GetLuminosityBoostForStar(star) > 0)
+                {
+                    var lum = Mathf.Round((float)Math.Pow((double)star.luminosity, 0.33000001311302185) * 1000f) / 1000f;
+                    lum += GetLuminosityBoostForStar(star);
+                    star.luminosity = (float)Math.Pow(lum, 3.0);
                 }
                 
             }
@@ -130,14 +146,50 @@ namespace GalacticScale.Generators
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
             //    size = Utils.ParsePlanetSize(hostRadius - 10);
             //}
-            return size;
+            return ParsePlanetSize(size);
+            // return size;
         }
         private int GetStarPlanetSize(GSStar star)
         {
             var min = GetMinPlanetSizeForStar(star);
             var max = GetMaxPlanetSizeForStar(star);
             var bias = GetSizeBiasForStar(star);
-            return ClampedNormalSize(random, min, max, bias);
+            var size = ClampedNormalSize(random, min, max, bias);
+            return ParsePlanetSize(size);
+        }
+
+        private int ParsePlanetSize(int size)
+        {
+            var sizes = new List<int>();
+            if (preferences.GetBool("limitPlanetSize20", false)) sizes.Add(20);
+            if (preferences.GetBool("limitPlanetSize50", false)) sizes.Add(50);
+            if (preferences.GetBool("limitPlanetSize100", false)) sizes.Add(100);
+            if (preferences.GetBool("limitPlanetSize200", false)) sizes.Add(200);
+            if (preferences.GetBool("limitPlanetSize300", false)) sizes.Add(300);
+            if (preferences.GetBool("limitPlanetSize400", false)) sizes.Add(400);
+            if (preferences.GetBool("limitPlanetSize500", false)) sizes.Add(500);
+            var count = sizes.Count;
+            var largest = sizes[sizes.Count - 1];
+            var smallest = sizes[0];
+            if (count == 0) return size;
+            if (size <= smallest) return smallest;
+            if (size >= largest) return largest;
+            if (count == 1) return smallest;
+            if (count == 2)
+            {
+                if (Abs(size - smallest) < Abs(largest - size)) return smallest;
+                return largest;
+            }
+            for (var i = 1; i < sizes.Count; i++)
+            {
+                var larger = sizes[i];
+                if (size > larger) continue;
+                var smaller = sizes[i - 1];
+                if (Abs(size - smaller) < Abs(larger - size)) return smaller;
+                return larger;
+            }
+
+            return largest;
         }
         private FloatPair CalculateHabitableZone(GSStar star)
         {

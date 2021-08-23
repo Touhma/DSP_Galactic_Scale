@@ -199,10 +199,15 @@ namespace GalacticScale.Generators
                     body.OrbitInclination = random.NextFloat(20f, 85f);
                 }
                 body.rareChance = preferences.GetFloat($"{GetTypeLetterFromStar(star)}rareChance", 0f);
+                
                 // Force inclinations for testing
                 // body.OrbitInclination = 0f;
                 // body.OrbitPhase = 0f;
                 // body.OrbitalPeriod = 10000000f;
+                if (body == birthPlanet) {
+                    if (preferences.GetBool("birthTidalLock", false)) body.RotationPeriod = body.OrbitalPeriod;
+                } 
+
             }
         }
 
@@ -252,9 +257,10 @@ namespace GalacticScale.Generators
             {
                 if (planet == birthPlanet)
                 {
-                    // var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
-                    // planet.Theme = habitableTheme;
-                    // planet.Scale = 1f;
+                    GS2.Warn("Setting Theme for BirthPlanet");
+                    var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
+                    planet.Theme = habitableTheme;
+                    planet.Scale = 1f;
                     continue;
                 }
                 var heat = CalculateThemeHeat(star, planet.OrbitRadius);

@@ -208,12 +208,15 @@ namespace GalacticScale.Generators
         private void AddUIElements()
         {
             Options.Add(GSUI.Group("Galaxy Settings".Translate(), CreateGalaxyOptions(), "Settings that control Galaxy formation".Translate()));
-            AddSpacedSeparator();
+            AddSpacer();
             Options.Add(GSUI.Group("Birth Planet Settings".Translate(), CreateBirthOptions(), "Settings that only affect the starting planet".Translate()));
-            AddSpacedSeparator();
-            Options.Add(GSUI.Group("System Settings".Translate(), CreateSystemOptions(), "Settings that control how planets are generated".Translate()));
-            AddSpacedSeparator();
-            AddStarOverrideOptions();
+            AddSpacer();
+            Options.Add(GSUI.Group("System Settings".Translate(), CreateSystemOptions(), "Settings that control how systems are generated".Translate()));
+            AddSpacer();
+            Options.Add(GSUI.Group("Planet Settings".Translate(), CreatePlanetOptions(), "Settings that control how planets are generated".Translate()));
+            AddSpacer();
+            Options.Add(GSUI.Group("Star Specific Overrides".Translate(), CreateStarOverrideOptions(), "Settings that are star specific".Translate()));
+            AddSpacer();
             Options.Add(GSUI.Button("Reset".Translate(), "Now".Translate(), Reset));
             loaded = true;
         }
@@ -221,34 +224,42 @@ namespace GalacticScale.Generators
         private GSOptions CreateSystemOptions()
         {
             var sOptions = new GSOptions();
-            UI.Add("hugeGasGiants", sOptions.Add(GSUI.Checkbox("Huge Gas Giants".Translate(), true, "hugeGasGiants", null, "Allow gas giants larger than 800 radius".Translate())));
-            UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets")));
+            AddSpacer(sOptions);
+            UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
             UI.Add("innerPlanetDistance", sOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
             UI.Add("allowResonances", sOptions.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
-            UI.Add("rotationMulti", sOptions.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 10, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
             UI.Add("moonsAreSmall", sOptions.Add(GSUI.Checkbox("Moons Are Small".Translate(), true, "moonsAreSmall", null, "Try to ensure moons are 1/2 their planets size or less".Translate())));
             UI.Add("moonBias", sOptions.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias", null, "Lower prefers telluric planets, higher gas giants".Translate())));
             UI.Add("secondarySatellites", sOptions.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
             UI.Add("chanceMoonMoon", sOptions.Add(GSUI.Slider("Secondary Satellite Chance".Translate(), 0, 5, 99, "chanceMoonMoon", null, "% Chance for a moon to have a moon".Translate())));
-            
-            sOptions.Add(GSUI.Header("Default Settings".Translate(), "Changing these will reset all star specific ooverrides".Translate()));
+            AddSpacer(sOptions);
+            sOptions.Add(GSUI.Header("Default Settings".Translate(), "Changing these will reset all star specific overrides".Translate()));
             UI.Add("planetCount", sOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, PlanetCountLow, PlanetCountHigh, "The amount of planets per star".Translate())));
-            UI.Add("countBias", sOptions.Add(GSUI.Slider("Planet Count Bias".Translate(), 0, 50, 100, "sizeBias", CountBiasCallback)));
-            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
-            UI.Add("sizeBias", sOptions.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback)));
-            UI.Add("chanceGas", sOptions.Add(GSUI.Slider("Chance Gas".Translate(), 0, 20, 99, "chanceGas", GasChanceCallback)));
-            UI.Add("chanceMoon", sOptions.Add(GSUI.Slider("Chance Moon".Translate(), 0, 20, 99, "chanceMoon", MoonChanceCallback)));
+            UI.Add("countBias", sOptions.Add(GSUI.Slider("Planet Count Bias".Translate(), 0, 50, 100, "sizeBias", CountBiasCallback, "Prefer Less (lower) or More (higher) Planets".Translate())));
+            UI.Add("hugeGasGiants", sOptions.Add(GSUI.Checkbox("Huge Gas Giants".Translate(), true, "hugeGasGiants", null, "Allow gas giants larger than 800 radius".Translate())));
+            UI.Add("chanceGas", sOptions.Add(GSUI.Slider("Chance Gas".Translate(), 0, 20, 99, "chanceGas", GasChanceCallback, "% Chance of a planet being a Gas Giant".Translate())));
+            UI.Add("chanceMoon", sOptions.Add(GSUI.Slider("Chance Moon".Translate(), 0, 20, 99, "chanceMoon", MoonChanceCallback, "% Chance of a rocky planet being a moon".Translate())));
             UI.Add("hzOverride", sOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, "hzOverride", HzOverrideCallback, "Enable the slider below".Translate())));
             UI.Add("hz", sOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat("hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat("hz", new FloatPair(0, 3)).high, 100, 0.01f, "hz", null, HzLowCallback, HzHighCallback, "Force habitable zone between these distances".Translate())));
             UI.Add("orbitOverride", sOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, "orbitOverride", OrbitOverrideCallback, "Enable the slider below".Translate())));
             UI.Add("orbits", sOptions.Add(GSUI.RangeSlider("Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, "orbits", null, OrbitLowCallback, OrbitHighCallback, "Force the distances planets can spawn between".Translate())));
-            UI.Add("inclination", sOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, "inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/InclinationCallback, "Maximum angle of orbit".Translate(), "Random".Translate())));
-            UI.Add("orbitLongitude", sOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, "orbitLongitude", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/LongitudeCallback, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
-            UI.Add("rareChance", sOptions.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, "rareChance", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/RareChanceCallback, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
-
+            AddSpacer(sOptions);
             return sOptions;
         }
-
+        private GSOptions CreatePlanetOptions()
+        {
+            var sOptions = new GSOptions();
+            AddSpacer(sOptions);
+            UI.Add("rotationMulti", sOptions.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 10, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
+            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
+            sOptions.Add(GSUI.Group("Limit Planet Sizes".Translate(), CreateLimitPlanetSizeOptions(), "Force Planets to these sizes".Translate()));
+            UI.Add("sizeBias", sOptions.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
+            UI.Add("inclination", sOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, "inclination", InclinationCallback, "Maximum angle of orbit".Translate(), "Random".Translate())));
+            UI.Add("orbitLongitude", sOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, "orbitLongitude", LongitudeCallback, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
+            UI.Add("rareChance", sOptions.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, "rareChance", RareChanceCallback, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
+            AddSpacer(sOptions);
+            return sOptions;
+        }
         private GSOptions CreateBirthOptions()
         {
             var bOptions = new GSOptions();
@@ -264,11 +275,13 @@ namespace GalacticScale.Generators
                 "RedGiant",
                 "Random"
             };
-            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize")));
+            AddSpacer(bOptions);
+            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for birth planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanius on the birth planet".Translate())));
             UI.Add("birthPlanetStar", bOptions.Add(GSUI.Combobox("BirthPlanet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock BirthPlanet".Translate(), false, "birthTidalLock", null, "Force the starter planet to be tidally locked".Translate())));
+            AddSpacer(bOptions);
             return bOptions;
         }
 
@@ -279,29 +292,51 @@ namespace GalacticScale.Generators
             for (var i = 0; i < 14; i++)
             {
                 if (i >= 8 && i <= 11) continue;
-                UI.Add($"{typeLetter[i]}binaryEnabled", bOptions.Add(GSUI.Checkbox($"{typeDesc[i]}", false, $"{typeLetter[i]}binaryEnabled", BinaryCallback, $"Allow {typeDesc[i]} to spawn as binary companions")));
+                UI.Add($"{typeLetter[i]}binaryEnabled", bOptions.Add(GSUI.Checkbox($"{typeDesc[i]}", i==0, $"{typeLetter[i]}binaryEnabled", BinaryCallback, $"Allow {typeDesc[i]} to spawn as binary companions".Translate())));
             }
+            AddSpacer(bOptions);
             return bOptions;
         }
 
         private GSOptions CreateGalaxyOptions()
         {
             var gOptions = new GSOptions();
+            AddSpacer(gOptions);
             UI.Add("galaxyDensity", gOptions.Add(GSUI.Slider("Galaxy Spread".Translate(), 1, 5, 9, "galaxyDensity", null, "Lower = Stars are closer to each other".Translate())));
             UI.Add("defaultStarCount", gOptions.Add(GSUI.Slider("Default StarCount".Translate(), 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback, "How many stars should the slider default to".Translate())));
             UI.Add("starSizeMulti", gOptions.Add(GSUI.Slider("Star Size Multiplier".Translate(), 0.5f, 5f, 20f, 0.1f, "starSizeMulti", null, "GS2 uses 10x as standard. They just look cooler.".Translate())));
-            AddSpacedSeparator(gOptions);
+            UI.Add("luminosityBoost", gOptions.Add(GSUI.Slider("Luminosity Boost".Translate(), 0, 0, 10, .25f, $"luminosityBoost", LuminosityBoostCallback, "Increase the luminosity of all stars by this amount".Translate(), "Default".Translate())));
+
+            AddSpacer(gOptions);
             gOptions.Add(GSUI.Group("Binary Star Settings".Translate(), CreateBinaryStarOptions(), "Settings that control Binary Star formation".Translate()));
-            AddSpacedSeparator(gOptions);
+            AddSpacer(gOptions);
             gOptions.Add(GSUI.Group("Star Relative Frequencies".Translate(), CreateFreqOptions(), "How often to select a star type".Translate()));
+            AddSpacer(gOptions);
+            return gOptions;
+        }        
+        private GSOptions CreateLimitPlanetSizeOptions()
+        {
+            var gOptions = new GSOptions();
+            AddSpacer(gOptions);
+            UI.Add("limitPlanetSize20", gOptions.Add(GSUI.Checkbox("20".Translate(), false, "limitPlanetSize20")));
+            UI.Add("limitPlanetSize50", gOptions.Add(GSUI.Checkbox("50".Translate(), false, "limitPlanetSize50")));
+            UI.Add("limitPlanetSize100", gOptions.Add(GSUI.Checkbox("100".Translate(), false, "limitPlanetSize100")));
+            UI.Add("limitPlanetSize200", gOptions.Add(GSUI.Checkbox("200".Translate(), false, "limitPlanetSize200")));
+            UI.Add("limitPlanetSize300", gOptions.Add(GSUI.Checkbox("300".Translate(), false, "limitPlanetSize300")));
+            UI.Add("limitPlanetSize400", gOptions.Add(GSUI.Checkbox("400".Translate(), false, "limitPlanetSize400")));
+            UI.Add("limitPlanetSize500", gOptions.Add(GSUI.Checkbox("500".Translate(), false, "limitPlanetSize500")));
+            AddSpacer(gOptions);
             return gOptions;
         }
 
-        private void AddStarOverrideOptions()
+        private GSOptions CreateStarOverrideOptions()
         {
+            GSOptions oOptions = new GSOptions();
+            AddSpacer(oOptions);
             for (var i = 0; i < 14; i++)
             {
                 var tOptions = new GSOptions();
+                AddSpacer(tOptions);
                 UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}countBias", tOptions.Add(GSUI.Slider("Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias", null, "Prefer Less (lower) or More (higher) Counts".Translate())));
                 UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider("Telluric Planet Size".Translate(), 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
@@ -312,25 +347,27 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider("Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider("Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, $"{typeLetter[i]}orbits", null, null, null, "Force the distances planets can spawn between".Translate())));
-                UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"{typeLetter[i]}inclination", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum angle of orbit".Translate(), "Random".Translate())));
-                UI.Add($"{typeLetter[i]}orbitLongitude", tOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, $"{typeLetter[i]}orbitLongitude", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
-                UI.Add($"{typeLetter[i]}rareChance", tOptions.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, $"{typeLetter[i]}rareChance", /*typeCallbacks[$"{typeLetter[i]}inclination"]*/null, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
-                Options.Add(GSUI.Group($"{typeDesc[i]} Overrides".Translate(), tOptions, $"Change Settings for Type {typeDesc[i]} stars".Translate()));
-                AddSpacedSeparator();
+                UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"{typeLetter[i]}inclination", null, "Maximum angle of orbit".Translate(), "Random".Translate())));
+                UI.Add($"{typeLetter[i]}orbitLongitude", tOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, $"{typeLetter[i]}orbitLongitude", null, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
+                UI.Add($"{typeLetter[i]}rareChance", tOptions.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, $"{typeLetter[i]}rareChance", null, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
+                UI.Add($"{typeLetter[i]}luminosityBoost", tOptions.Add(GSUI.Slider("Luminosity Boost".Translate(), 0, 0, 10, .25f, $"{typeLetter[i]}luminosityBoost", null, "Increase the luminosity of this star type by this amount".Translate(), "Default".Translate())));
+                AddSpacer(tOptions);
+                oOptions.Add(GSUI.Group($"{typeDesc[i]} Overrides".Translate(), tOptions, $"Change Settings for Type {typeDesc[i]} stars".Translate()));
             }
+            AddSpacer(oOptions);
+            return oOptions;
         }
 
-        private void AddSpacedSeparator(GSOptions options = null)
+        private void AddSpacer(GSOptions options = null)
         {
             var o = options ?? Options;
-            o.Add(GSUI.Spacer());
-            o.Add(GSUI.Separator());
             o.Add(GSUI.Spacer());
         }
 
         private GSOptions CreateFreqOptions()
         {
             var freqOptions = new GSOptions();
+            AddSpacer(freqOptions);
             UI.Add("freqK", freqOptions.Add(GSUI.Slider("Freq. Type K".Translate(), 0, 40, 100, "freqK")));
             UI.Add("KminStars", freqOptions.Add(GSUI.Slider("Minimum Type K".Translate(), 0, 0, 100, "KminStars")));
             UI.Add("freqM", freqOptions.Add(GSUI.Slider("Freq. Type M".Translate(), 0, 50, 100, "freqM")));
@@ -359,15 +396,16 @@ namespace GalacticScale.Generators
             UI.Add("WGminStars", freqOptions.Add(GSUI.Slider("Minimum White Giant".Translate(), 0, 0, 100, "WGminStars")));
             UI.Add("freqBG", freqOptions.Add(GSUI.Slider("Freq. Blue Giant".Translate(), 0, 1, 100, "freqBG")));
             UI.Add("BGminStars", freqOptions.Add(GSUI.Slider("Minimum Blue Giant".Translate(), 0, 0, 100, "BGminStars")));
+            AddSpacer(freqOptions);
             return freqOptions;
         }
 
         private void BinaryCallback(Val o)
         {
             for (var i = 0; i < 14; i++) if (preferences.GetBool($"{typeLetter[i]}binaryEnabled")) return;
-            UI["MbinaryEnabled"].Set(true);
+            UI["KbinaryEnabled"].Set(true);
         }
-
+        private void LuminosityBoostCallback(Val o) => SetAllStarTypeOptions("luminosityBoost", o);
         private void OrbitLowCallback(Val o) => SetAllStarTypeRangeSliderMin("orbits", o);
 
         private void OrbitHighCallback(Val o) => SetAllStarTypeRangeSliderMax("orbits", o);
@@ -511,6 +549,11 @@ namespace GalacticScale.Generators
                     }
             }
 
+            return GetStarTypeSpectrFromLetter(starType);
+        }
+
+        private static (EStarType type, ESpectrType spectr) GetStarTypeSpectrFromLetter(string starType)
+        {
             switch (starType)
             {
                 case "K": return (EStarType.MainSeqStar, ESpectrType.K);
@@ -550,7 +593,12 @@ namespace GalacticScale.Generators
             var t = preferences.GetFloatFloat($"{sl}planetSize", new FloatPair(30, 500));
             return (int)t.high;
         }
-
+        private float GetLuminosityBoostForStar(GSStar star)
+        {
+            var sl = GetTypeLetterFromStar(star);
+            var t = preferences.GetFloat($"{sl}luminosityBoost", -1);
+            return t;
+        }
         private int GetMinPlanetSizeForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);

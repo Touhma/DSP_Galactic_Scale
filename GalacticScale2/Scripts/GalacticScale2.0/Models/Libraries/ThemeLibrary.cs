@@ -201,6 +201,7 @@ EThemeDistribute distribute = EThemeDistribute.Default)
             if (habitable)
             {
                 results = (from theme in results where theme.Habitable == true select theme).ToList();
+                GS2.WarnJson(results.Select(o=>o.Name).ToList());
             }
             if (results.Count == 0)
             {
