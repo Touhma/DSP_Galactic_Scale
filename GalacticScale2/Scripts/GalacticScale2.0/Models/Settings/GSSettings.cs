@@ -224,7 +224,7 @@ namespace GalacticScale
         public double flatten = 0.18;
         public int graphDistance = 64;
         public int graphMaxStars = 64;
-        public bool ignoreSpecials = false; // allow special ores around regular stars
+        public bool forceSpecials = false; // allow special ores around regular stars
         public int iterations = 4;
         public double maxStepLength = 3.5;
         public double minDistance = 2;

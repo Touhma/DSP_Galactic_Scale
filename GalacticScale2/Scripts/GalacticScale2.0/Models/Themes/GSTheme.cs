@@ -667,7 +667,7 @@ namespace GalacticScale
                     ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
                 else
                     //GS2.Log("Loading AmbientDesc from base theme = "+ambient);
-                    ambientDesc = GS2.ThemeLibrary[ambient].ambientDesc;
+                    ambientDesc = GS2.ThemeLibrary.Find(ambient).ambientDesc;
                 ambientSfx = Resources.Load<AudioClip>(SFXPath);
             }
 
@@ -704,7 +704,7 @@ namespace GalacticScale
 
         public void SetMaterial(string material, string materialBase)
         {
-            var donorTheme = GS2.ThemeLibrary[materialBase];
+            var donorTheme = GS2.ThemeLibrary.Find(materialBase);
             switch (material)
             {
                 case "terrain":

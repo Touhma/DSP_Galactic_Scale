@@ -26,17 +26,6 @@ namespace GalacticScale
             //GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
             starData.seed = star.Seed;
             starData.position = star.position;
-            if (star.genData.Get("binary", false).Bool())
-            {
-                GS2.Warn("Setting Binary Star Position");
-                
-                starData.position = galaxy.stars[index - 1].position + starData.position;
-                GS2.Log($"{star.Name} position {galaxy.stars[index - 1].position } {starData.position}");
-            }
-            else
-            {
-                GS2.Warn("Not binary");
-            }
             starData.uPosition = starData.position * 2400000.0;
             starData.planetCount = star.bodyCount;
             starData.resourceCoef = star.resourceCoef;

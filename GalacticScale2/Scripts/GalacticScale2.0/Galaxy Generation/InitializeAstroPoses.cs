@@ -12,6 +12,26 @@ namespace GalacticScale
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i, random);
+
+            foreach (var star in GSSettings.Stars)
+            {
+                if (star.BinaryCompanion != null)
+                {
+                    Log("Setting Binary Star");
+                    var binary = GetGSStar(star.BinaryCompanion);
+                    if (binary == null)
+                    {
+                        Error($"Could not find Binary Companion:{star.BinaryCompanion}");
+                        continue;
+                    }
+                    // GS2.Warn("Setting Binary Star Position");
+                    galaxy.stars[binary.assignedIndex].position = star.position + binary.position;
+                    galaxy.stars[binary.assignedIndex].uPosition = galaxy.stars[binary.assignedIndex].position * 2400000.0;
+                    GS2.Log($"{star.Name} position {binary.position }");
+                }
+            }
+
+
             //for (var i = 0; i < galaxy.stars.Length; i++) GS2.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
             Log($"Stars Created in {highStopwatch.duration:F5}s");highStopwatch.Begin();
             Log("Creating Planets");

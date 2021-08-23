@@ -73,7 +73,7 @@ namespace GalacticScale
             return distributed;
         }
 
-        private static List<GSVeinDescriptor> CalculateVectorsGS2W(GSPlanet gsPlanet)
+        private static List<GSVeinDescriptor> CalculateVectorsGS2W(GSPlanet gsPlanet, bool sketchOnly = false)
         {
             //GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
             var randomFactor = 1.0;
@@ -82,7 +82,8 @@ namespace GalacticScale
             var planet = gsPlanet.planetData;
             var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.planetData.radius, 2);
             var birth = planet.id == GSSettings.BirthPlanetId;
-            var groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
+            Vector3 groupVector = new Vector3();
+            if (!sketchOnly) groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypesGS2R(gsPlanet.veinSettings.VeinTypes);
             var veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
@@ -96,7 +97,13 @@ namespace GalacticScale
                         random.NextDouble() * random.NextDouble())
                     //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;
-
+                if (sketchOnly)
+                {
+                    // GS2.Log("*");
+                    gsPlanet.planetData.veinSpotsSketch[(int)veinGroups[i].type]++;
+                    // GS2.Log("*");
+                    continue;
+                }
                 var v = veinGroups[i];
                 if (v.position != Vector3.zero) continue;
 
@@ -137,6 +144,7 @@ namespace GalacticScale
 
             //GS2.Log(gsPlanet.Name + " VeinTotals:");
             //GS2.LogJson(veinTotals);
+            if (sketchOnly) return null;
             if (!birth) return veinGroups;
             var gsVeinDescriptorList = new List<GSVeinDescriptor>();
             var ironCount = 6;

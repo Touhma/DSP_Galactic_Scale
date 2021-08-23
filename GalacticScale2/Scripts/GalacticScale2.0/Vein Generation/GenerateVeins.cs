@@ -177,6 +177,7 @@ namespace GalacticScale
                 productId = PlanetModelingManager.veinProducts[(int) veinType]
             };
             planet.veinAmounts[(int) veinType] += vein.amount;
+            planet.veinSpotsSketch[(int) veinType] ++;
             planet.veinGroups[groupIndex].count++;
             planet.veinGroups[groupIndex].amount += vein.amount;
             planet.data.AddVeinData(vein); //add to the planets rawdata veinpool

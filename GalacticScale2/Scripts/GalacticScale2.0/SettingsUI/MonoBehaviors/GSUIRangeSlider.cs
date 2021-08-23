@@ -57,7 +57,7 @@ namespace GalacticScale
         public Text _highValueText;
         public void OnSliderValueChange(float LowValue, float HighValue)
         {
-            GS2.Log($"SliderValChange(Range) { LowValue} {HighValue}");
+            // GS2.Log($"SliderValChange(Range) { LowValue} {HighValue}");
             float lowValue = (int)(LowValue * 100) / 100f;
             float highValue = (int)(HighValue * 100) / 100f;
             _lowValueText.text = lowValue.ToString();

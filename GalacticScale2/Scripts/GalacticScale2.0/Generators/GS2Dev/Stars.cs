@@ -16,6 +16,7 @@ namespace GalacticScale.Generators
             var binary = GSSettings.Stars.Add(new GSStar(random.Next(), star.Name+ "-B", starType.Item2,  starType.Item1, new GSPlanets()));
             binary.genData.Add("binary", true);
             star.genData.Add("hasBinary", true);
+            star.BinaryCompanion = binary.Name;
             var binaryRadius = StarDefaults.Radius(binary)* preferences.GetFloat("starSizeMulti", 2f);;
             binary.radius = Mathf.Clamp(star.radius * .6f, 0.01f, binaryRadius);
             binary.Decorative = true;
@@ -48,9 +49,9 @@ namespace GalacticScale.Generators
                 if (preferences.GetInt("binaryChance", -1) != -1)
                 {
                     var chance = preferences.GetInt("binaryChance") / 100.0;
-                    if (i < starCount - 1 && random.NextPick(chance))
+                    if (i < starCount - 1 && random.NextPick(chance) && birthIndex != i+1)
                     {
-                        GS2.Log($"Creating Binary Companion Star for {star.Name}");
+                        // GS2.Log($"Creating Binary Companion Star for {star.Name}");
                         GenerateBinaryStar(star);
                         i++;
                     }
@@ -66,7 +67,8 @@ namespace GalacticScale.Generators
                     where s.Spectr == birthStarDesc.Item2
                     where (s.Decorative == false)
                                        select s).ToList<GSStar>();
-                // GS2.WarnJson(availBirthStars);
+                GS2.Warn($"Stars that are {birthStarDesc.Item1} {birthStarDesc.Item2}");
+                GS2.WarnJson(availBirthStars);
                 // GS2.WarnJson(GSSettings.Stars);
                     birthStar = random.Item(availBirthStars);                   
             } else

@@ -12,6 +12,7 @@ namespace GalacticScale
             var random = new Random(GSSettings.Seed);
             try
             {
+                if (Config.ForceRare) GSSettings.GalaxyParams.forceSpecials = true;
                 var highStopwatch = new HighStopwatch();
                 highStopwatch.Begin();
                 gameDesc = desc;

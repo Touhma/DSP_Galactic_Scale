@@ -20,7 +20,6 @@ namespace GalacticScale
 
             gsPlanet.veinData.Clear();
             if (sketchOnly) return;
-
             if (birth) InitBirthVeinVectors(gsPlanet);
 
             CalculateVectorsVanilla(gsPlanet, planetRadiusFactor, veinSpots);

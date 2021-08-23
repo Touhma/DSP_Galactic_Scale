@@ -319,7 +319,11 @@ namespace GalacticScale
             if (sa.Length > 50)
             {
                 output = "";
-                if (gsStar.genData.Get("hasBinary", false)) output += "Binary Star\r\n";
+                if (gsStar.BinaryCompanion != null)
+                {
+                    var binary = GS2.GetGSStar(gsStar.BinaryCompanion);
+                    if ( binary != null) output += $"Binary Star ({binary.Type})\r\n";
+                }
                 output = "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
                 var sa1 = new string[50];
                 var sa2 = new string[sa.Length -50];
@@ -347,7 +351,11 @@ namespace GalacticScale
             }
 
             var output2 = "";
-            if (gsStar.genData.Get("hasBinary", false)) output2 += "Binary Star\r\n";
+            if (gsStar.BinaryCompanion != null)
+            {
+                var binary = GS2.GetGSStar(gsStar.BinaryCompanion);
+                output2 += $"Binary Star:{binary.displayType}\r\n";
+            }
             output2 += "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
             output2 += output;
             

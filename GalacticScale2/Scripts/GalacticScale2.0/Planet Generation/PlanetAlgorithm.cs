@@ -64,7 +64,7 @@
             //GS2.Log("GS2PlanetAlgorithm|Constructor|End");
         }
 
-        public GSTheme gsTheme => GS2.ThemeLibrary[gsPlanet.Theme];
+        public GSTheme gsTheme => GS2.ThemeLibrary.Find(gsPlanet.Theme);
 
         public override void GenerateTerrain(double modX, double modY)
         {

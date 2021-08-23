@@ -182,7 +182,12 @@ namespace GalacticScale
 
             __instance.SetResCount(num);
             __instance.RefreshDynamicProperties();
-
+            foreach (var p in ____star.planets)
+            {
+                GS2.Log($"{p.name}");
+                GS2.WarnJson(p.veinSpotsSketch);
+            }
+            
             return false;
         }
     }

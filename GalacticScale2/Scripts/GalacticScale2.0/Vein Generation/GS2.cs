@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using UnityEngine;
 
 namespace GalacticScale
@@ -20,9 +21,14 @@ namespace GalacticScale
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
             if (sketchOnly)
-                // GS2.Log("Returning (SketchOnly) Planet " + gsPlanet.Name);
+            {
+                gsPlanet.planetData.veinSpotsSketch = new int[PlanetModelingManager.veinProtos.Length];
+                CalculateVectorsGS2(gsPlanet, true);
                 return;
-
+            }
+                // GS2.Log("Returning (SketchOnly) Planet " + gsPlanet.Name);
+                // return;
+            
             if (GSSettings.BirthPlanet == gsPlanet)
                 // GS2.Log("Initializing Vein Vectors for Planet " + gsPlanet.Name);
                 InitBirthVeinVectors(gsPlanet);
@@ -44,7 +50,7 @@ namespace GalacticScale
                     GS2.Warn($"{gsPlanet.Theme} not found in themelibrary. ThemeLibrary Contents:");
                     GS2.WarnJson(GSSettings.ThemeLibrary.Keys.ToList());
                 }
-                gsPlanet.veinSettings = GSSettings.ThemeLibrary[gsPlanet.Theme].VeinSettings.Clone();
+                gsPlanet.veinSettings = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).VeinSettings.Clone();
             }
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
@@ -157,18 +163,20 @@ namespace GalacticScale
             return distributed;
         }
 
-        private static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet)
+        private static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet, bool sketchOnly = false)
         {
-            //GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
+            // GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
             var randomFactor = 1.0;
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + random.NextDouble() / 2;
 
             var planet = gsPlanet.planetData;
-            var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.planetData.radius, 2);
+            var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.Radius, 2);
             var birth = planet.id == GSSettings.BirthPlanetId;
-            var groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
+            Vector3 groupVector = new Vector3();
+               if (!sketchOnly) groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypes(gsPlanet);
             var veinTotals = new Dictionary<EVeinType, int>();
+            // GS2.Log("*");
             for (var i = 0; i < veinGroups.Count; i++)
             {
                 if (gsPlanet.randomizeVeinCounts && random.NextDouble() > randomFactor &&
@@ -180,7 +188,15 @@ namespace GalacticScale
                         random.NextDouble() * random.NextDouble())
                     //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;
-
+                // GS2.Log($"{sketchOnly}");
+                if (sketchOnly)
+                {
+                    // GS2.Log("*");
+                    gsPlanet.planetData.veinSpotsSketch[(int)veinGroups[i].type]++;
+                    // GS2.Log("*");
+                    continue;
+                }
+                // GS2.Log("**");
                 var v = veinGroups[i];
                 if (v.position != Vector3.zero) continue;
 
@@ -219,8 +235,9 @@ namespace GalacticScale
                 //else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
             }
 
+            if (sketchOnly) return null;
             //GS2.Log(gsPlanet.Name + " VeinTotals:");
-            //GS2.LogJson(veinTotals);
+            GS2.LogJson(veinTotals);
             if (!birth) return veinGroups;
             var gsVeinDescriptorList = new List<GSVeinDescriptor>();
             var ironCount = 6;
@@ -271,27 +288,43 @@ namespace GalacticScale
 
         private static void AddSpecialVeins(GSPlanet gsPlanet)
         {
-            double chanceOfSpecial = 0;
-            if (GSSettings.GalaxyParams.ignoreSpecials)
-                chanceOfSpecial = random.NextDouble() / 2 + gsPlanet.planetData.star.level / 2;
+            var isBlackHole = gsPlanet.planetData.star.type == EStarType.BlackHole ||
+                              gsPlanet.planetData.star.type == EStarType.NeutronStar;
+            var isWhiteDwarf = gsPlanet.planetData.star.type == EStarType.WhiteDwarf;
+            var star = GS2.GetGSStar(gsPlanet.planetData.star);
+            if (star.BinaryCompanion != null)
+            {
+                var BinaryCompanion = GS2.GetGSStar(star.BinaryCompanion);
+                if (BinaryCompanion != null)
+                {
+                    
+               
+                if (BinaryCompanion.Type == EStarType.BlackHole) isBlackHole = true;
+                if (BinaryCompanion.Type == EStarType.NeutronStar) isBlackHole = true;
+                if (BinaryCompanion.Type == EStarType.WhiteDwarf) isWhiteDwarf = true; 
+                }
+            }
+            // double chanceOfSpecial = 0;
+            // if (GSSettings.GalaxyParams.ignoreSpecials) chanceOfSpecial = 1;
+            var forceSpecials = GSSettings.GalaxyParams.forceSpecials || GS2.Config.ForceRare;
+                //chanceOfSpecial = random.NextDouble() / 2 + gsPlanet.planetData.star.level / 2;
 
-            if (gsPlanet.planetData.star.type == EStarType.BlackHole ||
-                gsPlanet.planetData.star.type == EStarType.NeutronStar || random.NextDouble() < chanceOfSpecial)
+            if (isBlackHole || forceSpecials)
                 AddVeinType(gsPlanet, EVeinType.Mag,
                     Mathf.RoundToInt(gsPlanet.planetData.star.level * 10 + 10 * (float) random.NextDouble()));
 
-            if (gsPlanet.planetData.star.type == EStarType.WhiteDwarf && random.NextDouble() >= 0.5 ||
-                random.NextDouble() < chanceOfSpecial)
+            if (isWhiteDwarf && random.NextDouble() >= 0.5 ||
+                forceSpecials)
                 AddVeinType(gsPlanet, EVeinType.Grat,
                     Mathf.RoundToInt(gsPlanet.planetData.star.level * 20 * (float) random.NextDouble()));
 
-            if (gsPlanet.planetData.star.type == EStarType.WhiteDwarf && random.NextDouble() >= 0.5 ||
-                random.NextDouble() < chanceOfSpecial)
+            if (isWhiteDwarf && random.NextDouble() >= 0.5 ||
+                forceSpecials)
                 AddVeinType(gsPlanet, EVeinType.Fireice,
                     Mathf.RoundToInt(gsPlanet.planetData.star.level * 20 * (float) random.NextDouble()));
 
-            if (gsPlanet.planetData.star.type == EStarType.WhiteDwarf && random.NextDouble() >= 0.5 ||
-                random.NextDouble() < chanceOfSpecial)
+            if (isWhiteDwarf && random.NextDouble() >= 0.5 ||
+                forceSpecials)
                 AddVeinType(gsPlanet, EVeinType.Diamond,
                     Mathf.RoundToInt(gsPlanet.planetData.star.level * 10 * (float) random.NextDouble()));
         }
