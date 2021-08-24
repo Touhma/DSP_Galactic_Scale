@@ -237,7 +237,7 @@ namespace GalacticScale
 
             if (sketchOnly) return null;
             //GS2.Log(gsPlanet.Name + " VeinTotals:");
-            GS2.LogJson(veinTotals);
+            // GS2.LogJson(veinTotals);
             if (!birth) return veinGroups;
             var gsVeinDescriptorList = new List<GSVeinDescriptor>();
             var ironCount = 6;

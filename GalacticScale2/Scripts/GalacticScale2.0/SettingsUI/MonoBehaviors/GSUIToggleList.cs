@@ -27,7 +27,7 @@ namespace GalacticScale
 
         public void _OnToggleChange(bool value)
         {
-            GS2.Log(value.ToString());
+            // GS2.Log(value.ToString());
             Value = value;
             OnChange?.Invoke(value);
         }

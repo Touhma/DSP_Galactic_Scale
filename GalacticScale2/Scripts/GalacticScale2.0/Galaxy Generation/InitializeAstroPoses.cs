@@ -17,17 +17,18 @@ namespace GalacticScale
             {
                 if (star.BinaryCompanion != null)
                 {
-                    Log("Setting Binary Star");
+                    
                     var binary = GetGSStar(star.BinaryCompanion);
                     if (binary == null)
                     {
                         Error($"Could not find Binary Companion:{star.BinaryCompanion}");
                         continue;
                     }
+                    Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
                     // GS2.Warn("Setting Binary Star Position");
-                    galaxy.stars[binary.assignedIndex].position = star.position + binary.position;
+                    galaxy.stars[binary.assignedIndex].position = binary.position = star.position + binary.position;
                     galaxy.stars[binary.assignedIndex].uPosition = galaxy.stars[binary.assignedIndex].position * 2400000.0;
-                    GS2.Log($"{star.Name} position {binary.position }");
+                    GS2.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
                 }
             }
 

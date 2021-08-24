@@ -53,6 +53,9 @@
     <Reference Include="GSUI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\GSUI.dll</HintPath>
     </Reference>
+    <Reference Include="NebulaAPI, Version=0.4.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\code\lib\NebulaAPI.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\netstandard.dll</HintPath>
     </Reference>
@@ -65,6 +68,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
@@ -154,6 +160,7 @@
     <Compile Include="Scripts\3rdParty\FullSerializer\Reflection\fsTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
+    <Compile Include="Scripts\NebulaCompatibility.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Editor\PlanetEditor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Editor\StarEditor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Editor\ThemeEditor.cs" />
@@ -221,6 +228,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameData\LeaveStar.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GameMain\End.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GraticulePoser\Calculate.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\CalculateCurve.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\GuideMissionStandardMode\Skip.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\PlanetDataExtension.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetData\realRadius.Getter.cs" />
@@ -307,7 +315,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Utils\BCE.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Random.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\HandleLocalStarPlanets.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Utils\NebulaCompatibility.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Queries.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Utils\Utils.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Vege Generation\GenerateVeges1.cs" />

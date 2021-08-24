@@ -29,9 +29,9 @@ namespace GalacticScale
                     gsStars.Clear();
 
                     //Warn("Cleared");
-                    Warn("Loading Data from Generator : " + ActiveGenerator.Name);
+                    Log("Loading Data from Generator : " + ActiveGenerator.Name);
                     ActiveGenerator.Generate(gameDesc.starCount);
-                    Warn("Final Seed = " + GSSettings.Seed);
+                    Log("Final Seed = " + GSSettings.Seed);
                     //Log("End");
                 }
                 else
@@ -110,6 +110,7 @@ namespace GalacticScale
                 //Log("End of galaxy generation");
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
+                Warn($"birthPlanet:{galaxy.PlanetById(galaxy.birthPlanetId).name}");
                 Log(
                     $"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
                 Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");

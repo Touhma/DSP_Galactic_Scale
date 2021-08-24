@@ -55,7 +55,7 @@ namespace GalacticScale
                 if (localPlanet != null) EnsurePlanetStillLocal();
                 if (localPlanet != null && closestPlanet == null)
                 {
-                    GS2.Log($"Leaving Planet {localPlanet.name} as it is not the closest planet");
+                    LogStatus($"Leaving Planet {localPlanet.name} as it is not the closest planet");
                     GameMain.data.LeavePlanet();
                 }
 
@@ -64,7 +64,7 @@ namespace GalacticScale
                     SearchPlanet();
                     if (closestPlanet != null && closestPlanet.loaded)
                     {
-                        GS2.Log($"Arriving at Planet {closestPlanet.name}");
+                        LogStatus($"Arriving at Planet {closestPlanet.name}");
                         GameMain.data.ArrivePlanet(closestPlanet);
                         return true;
                     }
@@ -108,27 +108,27 @@ namespace GalacticScale
                     if (localPlanet != closestPlanet)
                     {
                         resetCamera = true;
-                        GS2.Log($"Leaving Planet {localPlanet.name} as it is not closest");
+                        LogStatus($"Leaving Planet {localPlanet.name} as it is not closest");
                         GameMain.data.LeavePlanet();
                     }
                 }
                 else if (closestPlanet != null)
                 {
                     resetCamera = true;
-                    GS2.Log($"Arriving at Planet {closestPlanet.name}");
+                    LogStatus($"Arriving at Planet {closestPlanet.name}");
                     GameMain.data.ArrivePlanet(closestPlanet);
                 }
 
                 if (localStar == closestStar) return resetCamera;
 
                 resetCamera = true;
-                GS2.Log($"Leaving Star {localStar.name} as it is not closest");
+                LogStatus($"Leaving Star {localStar.name} as it is not closest");
                 GameMain.data.LeaveStar();
             }
             else if (closestStar != null)
             {
                 resetCamera = true;
-                GS2.Log($"Arriving at Star {closestStar.name}");
+                LogStatus($"Arriving at Star {closestStar.name}");
                 GameMain.data.ArriveStar(closestStar);
             }
 
@@ -139,8 +139,8 @@ namespace GalacticScale
         {
             LogStatus($"Ensure {closestStar.name} still local...");
             if (!(DistanceTo(closestStar) > TransisionDistance(closestStar))) return;
-            GS2.Log(
-                $"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransisionDistance(closestStar) / 40000}AU");
+            // GS2.Log(
+            //     $"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransisionDistance(closestStar) / 40000}AU");
             GameMain.data.LeaveStar();
             closestStar = null;
         }
@@ -148,7 +148,7 @@ namespace GalacticScale
         private static void EnsurePlanetStillLocal()
         {
             if (!(DistanceTo(closestPlanet) > TransisionDistance(closestPlanet))) return;
-            GS2.Log($"Leaving planet {closestPlanet.name} as its too far away");
+            // GS2.Log($"Leaving planet {closestPlanet.name} as its too far away");
             closestPlanet = null;
         }
 
@@ -217,21 +217,21 @@ namespace GalacticScale
             if (gsPlanet == null || gsPlanet.planetData != planet) gsPlanet = GS2.GetGSPlanet(planet);
             if (gsPlanet.MoonsCount > 0)
             {
-                GS2.Warn("----------------Its has a moon!------------------");
+                // GS2.Warn("----------------Its has a moon!------------------");
                 var moon = gsPlanet.Moons[0].planetData;
                 var msr = gsPlanet.Moons[0].SystemRadius * 40000f;
                 var distanceToMoonSystem = gsPlanet.Moons[0].OrbitRadius * 40000f - msr;
                 var distance = distanceToMoonSystem / 2f - 100f;
-                GS2.Log($"Planet:{planet.name} Moon:{moon.name} Magnitude:{(moon.uPosition - planet.uPosition).magnitude} Planet RealRadius:{planet.realRadius} Moon RealRadius:{moon.realRadius }");
-                GS2.Log($"Planet:{planet.name} Moon:{moon.name} Distance between is {distance}, transitionDistance for planet is is {transitionDistance}");
+                // GS2.Log($"Planet:{planet.name} Moon:{moon.name} Magnitude:{(moon.uPosition - planet.uPosition).magnitude} Planet RealRadius:{planet.realRadius} Moon RealRadius:{moon.realRadius }");
+                // GS2.Log($"Planet:{planet.name} Moon:{moon.name} Distance between is {distance}, transitionDistance for planet is is {transitionDistance}");
                 if (distance < transitionDistance)
                 {
-                    LogStatus($"Transition Distance of {planet.name} reduced to {distance}");
-                    LogStatus($"Transition Distance of moon {moon.name} reduced to {distance}");
+                    // LogStatus($"Transition Distance of {planet.name} reduced to {distance}");
+                    // LogStatus($"Transition Distance of moon {moon.name} reduced to {distance}");
                     TransitionRadii.Add(planet, distance );
                     transitionDistance = distance+ planet.realRadius;
                 }
-                GS2.Warn("----------------!!------------------");
+                // GS2.Warn("----------------!!------------------");
             }
 
             if (gsPlanet.planetData?.orbitAroundPlanet != null)
@@ -239,11 +239,11 @@ namespace GalacticScale
                 var host = gsPlanet.planetData.orbitAroundPlanet;
                 var distance = gsPlanet.OrbitRadius * 40000f /2f; //distance is halfway between planets, this one is between planet(as moon) and planet(as host)
                 var distanceToEdgeOfMoonSystemRadius = (gsPlanet.MoonCount>0)? gsPlanet.Moons[0].OrbitRadius *40000f - gsPlanet.Moons[0].SystemRadius : planet.realRadius *2;
-                GS2.Warn("----------------Its a moon!------------------");
-                GS2.Warn($"DTEOFSR = {distanceToEdgeOfMoonSystemRadius} Distance:{distance} Moon:{planet.name}");
-
-                GS2.Log($"Magnitude:{(host.uPosition - planet.uPosition).magnitude} Planet RealRadius:{planet.realRadius} Host RealRadius:{host.realRadius}");
-                GS2.Log($"Moon:{planet.name} Host:{host.name}  distance:{distance}, transitionDistance is {transitionDistance} orbitRadius:{planet.orbitRadius}({planet.orbitRadius*40000f})");
+                // GS2.Warn("----------------Its a moon!------------------");
+                // GS2.Warn($"DTEOFSR = {distanceToEdgeOfMoonSystemRadius} Distance:{distance} Moon:{planet.name}");
+                //
+                // GS2.Log($"Magnitude:{(host.uPosition - planet.uPosition).magnitude} Planet RealRadius:{planet.realRadius} Host RealRadius:{host.realRadius}");
+                // GS2.Log($"Moon:{planet.name} Host:{host.name}  distance:{distance}, transitionDistance is {transitionDistance} orbitRadius:{planet.orbitRadius}({planet.orbitRadius*40000f})");
                 if (distance < transitionDistance)
                 {
                     LogStatus($"Transition Distance of {planet.name} reduced to {distance}");
@@ -259,11 +259,11 @@ namespace GalacticScale
                     transitionDistance = distance+ planet.realRadius;
                     
                 }
-                GS2.Warn("----------------!------------------");
+                // GS2.Warn("----------------!------------------");
             }
 
             if (!TransitionRadii.ContainsKey(planet)) TransitionRadii.Add(planet, transitionDistance);
-            GS2.Warn($"Transition Radius Ended Up At : {transitionDistance} for {planet.name} with radius {planet.realRadius}");
+            // GS2.Warn($"Transition Radius Ended Up At : {transitionDistance} for {planet.name} with radius {planet.realRadius}");
             return transitionDistance;
         }
     }

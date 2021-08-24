@@ -57,7 +57,7 @@ namespace GalacticScale
                     }
                 }
 
-                if (segments == 200 && GS2.Config.VanillaGrid)
+                if (segments == 200)
                 {
                      lut = new[]
                     {

@@ -83,8 +83,8 @@ namespace GalacticScale.Generators
                     where s.Spectr == birthStarDesc.Item2
                     where (s.Decorative == false)
                                        select s).ToList<GSStar>();
-                GS2.Warn($"Stars that are {birthStarDesc.Item1} {birthStarDesc.Item2}");
-                GS2.WarnJson(availBirthStars);
+                // GS2.Warn($"Stars that are {birthStarDesc.Item1} {birthStarDesc.Item2}");
+                // GS2.WarnJson(availBirthStars);
                 // GS2.WarnJson(GSSettings.Stars);
                     birthStar = random.Item(availBirthStars);                   
             } else
@@ -95,7 +95,7 @@ namespace GalacticScale.Generators
                 birthStar = random.Item(availBirthStars);
             }
 
-            GS2.Warn(birthStar.Name + " is birthstar");
+            Log(birthStar.Name + " is birthstar");
             if (forcedBirthStar != null)
             {
                 // GS2.Warn("Forcing birthStar");
@@ -151,6 +151,7 @@ namespace GalacticScale.Generators
         }
         private int GetStarPlanetSize(GSStar star)
         {
+            // GS2.Warn("GetStarPlanetSize");
             var min = GetMinPlanetSizeForStar(star);
             var max = GetMaxPlanetSizeForStar(star);
             var bias = GetSizeBiasForStar(star);
@@ -161,6 +162,7 @@ namespace GalacticScale.Generators
         private int ParsePlanetSize(int size)
         {
             var sizes = new List<int>();
+            // GS2.Log("Getting List");
             if (preferences.GetBool("limitPlanetSize20", false)) sizes.Add(20);
             if (preferences.GetBool("limitPlanetSize50", false)) sizes.Add(50);
             if (preferences.GetBool("limitPlanetSize100", false)) sizes.Add(100);
@@ -168,10 +170,13 @@ namespace GalacticScale.Generators
             if (preferences.GetBool("limitPlanetSize300", false)) sizes.Add(300);
             if (preferences.GetBool("limitPlanetSize400", false)) sizes.Add(400);
             if (preferences.GetBool("limitPlanetSize500", false)) sizes.Add(500);
+            // GS2.Log("Got List");
             var count = sizes.Count;
+            if (count == 0) return size;
             var largest = sizes[sizes.Count - 1];
             var smallest = sizes[0];
-            if (count == 0) return size;
+            // GS2.Warn($"Size:{size} Count:{sizes.Count}");
+            
             if (size <= smallest) return smallest;
             if (size >= largest) return largest;
             if (count == 1) return smallest;

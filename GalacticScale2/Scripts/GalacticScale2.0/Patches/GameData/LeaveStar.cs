@@ -9,7 +9,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GameData), "LeaveStar")]
         public static bool LeaveStar()
         {
-            Warn($"LeaveStar {GameMain.localStar?.name}");
+            Log($"Leaving Star {GameMain.localStar?.name}");
 
             return true;
         }

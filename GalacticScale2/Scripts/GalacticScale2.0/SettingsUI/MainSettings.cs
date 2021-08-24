@@ -23,7 +23,7 @@ namespace GalacticScale
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
-        public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
+        // public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
         public bool MinifyJson
         {
             get
@@ -91,7 +91,7 @@ namespace GalacticScale
             RefreshFileNames();
             Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
             Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
-            Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
+            // Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
             
 
             var DebugOptions = new GSOptions();
@@ -113,15 +113,15 @@ namespace GalacticScale
             Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
         }
 
-        private void VanillaGridCheckboxCallback(Val o)
-        {
-            if (GameMain.isPaused) return;
-            if (GS2.keyedLUTs.ContainsKey(200)) GS2.keyedLUTs.Remove(200);
-            if (PatchOnUIBuildingGrid.LUT512.ContainsKey(200))
-            {
-                PatchOnUIBuildingGrid.LUT512.Remove(200);
-            }
-        }
+        // private void VanillaGridCheckboxCallback(Val o)
+        // {
+        //     if (GameMain.isPaused) return;
+        //     if (GS2.keyedLUTs.ContainsKey(200)) GS2.keyedLUTs.Remove(200);
+        //     if (PatchOnUIBuildingGrid.LUT512.ContainsKey(200))
+        //     {
+        //         PatchOnUIBuildingGrid.LUT512.Remove(200);
+        //     }
+        // }
 
         public void SetResourceMultiplier(float val)
         {

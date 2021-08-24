@@ -151,9 +151,19 @@ namespace GalacticScale.Generators
             preferences.Set("galaxyDensity", 5);
             preferences.Set("defaultStarCount", 64);
             preferences.Set("starSizeMulti", 10);
+            preferences.Set("binaryChance", 0);
             preferences.Set("birthPlanetSize", 200);
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
+            preferences.Set("birthTidalLock", false);
+            preferences.Set("birthPlanetStar", 7);
+            preferences.Set("limitPlanetSize20", false);
+            preferences.Set("limitPlanetSize50", false);
+            preferences.Set("limitPlanetSize100", false);
+            preferences.Set("limitPlanetSize200", false);
+            preferences.Set("limitPlanetSize300", false);
+            preferences.Set("limitPlanetSize400", false);
+            preferences.Set("limitPlanetSize500", false);
             preferences.Set("moonsAreSmall", true);
             preferences.Set("moonBias", 50);
             preferences.Set("hugeGasGiants", true);
@@ -187,6 +197,8 @@ namespace GalacticScale.Generators
             preferences.Set("orbits", new FloatPair(0.1f, 10));
             preferences.Set("inclination", -1);
             preferences.Set("orbitLongitude", -1);
+            preferences.Set("rareChance", -1);
+            preferences.Set("luminosityBoost", 0);
             for (var i = 0; i < 14; i++)
             {
                 preferences.Set($"{typeLetter[i]}minStars", 0);
@@ -202,7 +214,11 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}inclination", -1);
                 preferences.Set($"{typeLetter[i]}orbitLongitude", 0);
                 preferences.Set($"{typeLetter[i]}hzOverride", false);
+                preferences.Set($"{typeLetter[i]}rareChance", -1);
+                preferences.Set($"{typeLetter[i]}luminosityBoost", 0);
+                preferences.Set($"{typeLetter[i]}binaryEnabled", false);
             }
+            preferences.Set($"KbinaryEnabled", true);
         }
 
         private void AddUIElements()

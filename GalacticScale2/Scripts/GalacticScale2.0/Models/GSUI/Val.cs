@@ -38,6 +38,7 @@ namespace GalacticScale
         {
             // GS2.Warn(val.ToString() + " " + GS2.GetCaller(0)+ GS2.GetCaller(1)+ GS2.GetCaller(2)+ GS2.GetCaller(3)+ GS2.GetCaller(4));
             var v = val.ToString().Split(':');
+            if (v.Length < 2) return new FloatPair(-99, -99);
             float.TryParse(v[0], out float i);
             float.TryParse(v[1], out float j);
             return new FloatPair(i,j);

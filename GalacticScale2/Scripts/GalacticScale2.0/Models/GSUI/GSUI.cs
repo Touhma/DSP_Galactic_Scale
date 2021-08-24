@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,7 +95,7 @@ namespace GalacticScale
                     case "Input":
                         return Data.ToString();
                     case "Combobox":
-                        GS2.Warn($"Combo {Label} {Data}");
+                        // GS2.Warn($"Combo {Label} {Data}");
                         // var cbresult = GetInt(Data);
                         // if (cbresult.succeeded) return cbresult.value;
                         if (comboDefault >= 0) return comboDefault;
@@ -678,7 +679,15 @@ namespace GalacticScale
             }
 
             var p = Generator.Export();
-            p.Set(key, value);
+            try
+            {
+                p.Set(key, value);
+            }
+            catch (Exception e)
+            {
+                GS2.Warn($"Error:{Label}");
+                GS2.Warn(e.Message);
+            }
             Generator.Import(p);
         }
 

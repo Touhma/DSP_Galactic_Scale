@@ -39,7 +39,7 @@ namespace GalacticScale
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
 
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
-            GS2.Warn("Reloading External Themes");
+            GS2.Log("Reloading External Themes");
             ThemeLibrary = ThemeLibrary.Vanilla();
             ExternalThemeProcessor.LoadEnabledThemes();
             Log("End");

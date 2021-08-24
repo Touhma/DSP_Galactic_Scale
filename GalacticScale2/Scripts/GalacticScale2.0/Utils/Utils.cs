@@ -18,7 +18,7 @@ namespace GalacticScale
             serializer.TrySerialize(value, out var data);
             if (!pretty)
             {
-                GS2.Warn(fsJsonPrinter.CompressedJson(data));
+                // GS2.Warn(fsJsonPrinter.CompressedJson(data));
                 return fsJsonPrinter.CompressedJson(data);
             }
 
@@ -163,8 +163,8 @@ namespace GalacticScale
         public static Sprite GetSplashSprite()
         {
             var r = new System.Random();
-            var i = r.Next(8);
-            var spriteName = "splash";
+            var i = r.Next(15);
+            var spriteName = "s14";
             if (i > 0) spriteName = "s" + i;
             // switch (i)
             // {
@@ -236,7 +236,7 @@ namespace GalacticScale
             output.SetPixels(tinted, CubemapFace.NegativeZ);
 
             //GS2.Log("End");
-            GS2.Log($"TintCubeMap Took {highStopwatch.duration:F5}s");
+            // GS2.Log($"TintCubeMap Took {highStopwatch.duration:F5}s");
 
             return output;
         }
