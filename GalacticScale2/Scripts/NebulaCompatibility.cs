@@ -23,6 +23,7 @@ namespace GalacticScale
             BepInEx.Logging.Logger.Sources.Add(Logger);
             Logger.Log(LogLevel.Message, "Loaded");
             // Harmony.CreateAndPatchAll(typeof(NebulaCompatPatch));
+            
         }
 
         public string Verson => Bootstrap.VERSION;

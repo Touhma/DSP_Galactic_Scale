@@ -260,7 +260,8 @@ namespace GalacticScale.Generators
                 {
                     GS2.Warn("Setting Theme for BirthPlanet");
                     var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
-                    planet.Theme = habitableTheme;
+                    if (preferences.GetBool("birthPlanetUnlock", false)) planet.Theme = habitableTheme;
+                    else planet.Theme = "Mediterranean";
                     planet.Scale = 1f;
                     continue;
                 }

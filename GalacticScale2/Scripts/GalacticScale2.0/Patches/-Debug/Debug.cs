@@ -10,7 +10,7 @@ namespace GalacticScale
 {
     public class PatchOnWhatever
     {
-        
+
         // [HarmonyPostfix, HarmonyPatch(typeof(UIDysonBrush_Shell), "_OnInit")]
         // public static void _OnInit(UIDysonBrush_Shell __instance)
         // {

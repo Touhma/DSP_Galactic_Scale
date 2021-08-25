@@ -110,7 +110,7 @@ namespace GalacticScale
                         }
                         else
                         {
-                            //GS2.Log($"Found birth planet by name: {birthPlanet}");
+                            GS2.Log($"Found birth planet by name: {birthPlanet}");
                             birthPlanet = p;
                             return p;
                         }

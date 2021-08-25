@@ -31,7 +31,7 @@ namespace GalacticScale
         }
         public void OnButtonClick()
         {
-            if (OnClick != null) OnClick.Invoke(null);
+            if (OnClick != null) OnClick.Invoke("Click");
         }
         public void initialize(GSUI options)
         {

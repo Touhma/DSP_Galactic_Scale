@@ -85,7 +85,7 @@ namespace GalacticScale
         {
             var vt = new GSVeinType(type);
             vt.rare = rare;
-            var amount = Mathf.RoundToInt(Mathf.Clamp(random.Next(min, max + 1), 0, 99));
+            var amount = Mathf.RoundToInt(Mathf.Clamp(random.Next(min, max + 1), 0, 3000));
             for (var i = 0; i < amount; i++)
                 vt.veins.Add(new GSVein(random.Next(min_patchSize, max_patchSize + 1),
                     random.NextFloat(min_richness, max_richness)));

@@ -327,20 +327,28 @@ namespace GalacticScale
 
         public void LoadJsonGalaxy(Val o)
         {
+            
             var ImportFilename = Preferences.GetString("Import Filename", null);
+            if (o != "Click") ImportFilename = "Pasta";
             if (string.IsNullOrEmpty(ImportFilename))
             {
                 UIMessageBox.Show("Error", "To use the Custom JSON Generator you must select a file to load.", "Ok", 1);
                 RefreshFileNames();
             }
 
+            
             var path = Path.Combine(Path.Combine(GS2.DataDir, "CustomGalaxies"), ImportFilename + ".json");
+            GS2.ThemeLibrary = GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
+            GS2.Warn(GSSettings.StarCount.ToString());
             GS2.LoadSettingsFromJson(path);
             GS2.Log("Generator:Json|Generate|End");
             GSSettings.Instance.imported = true;
             // GS2.gameDesc.playerProto = 2;
+            GS2.WarnJson(GSSettings.GalaxyParams);
             GS2.gsStars.Clear();
             GS2.gsPlanets.Clear();
+            GS2.Warn(GSSettings.StarCount.ToString());
+
             // GS2.galaxy = new GalaxyData();
             var gameDesc = new GameDesc();
             gameDesc.SetForNewGame(UniverseGen.algoVersion, 1, 1, 1, 1f);
