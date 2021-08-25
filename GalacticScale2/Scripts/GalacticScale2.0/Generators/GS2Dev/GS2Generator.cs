@@ -344,9 +344,10 @@ namespace GalacticScale.Generators
                     minDistance = 3.0f;
                     break;
                 default:
-                    minStepLength = 2f;
-                    maxStepLength = 3.5f;
-                    minDistance = 2.3f;
+                    var multi = density - 9;
+                    minStepLength = 3f+0.3f*multi;
+                    maxStepLength = 7f+multi;
+                    minDistance = 3f+multi*0.2f;
                     break;
             }
 

@@ -181,7 +181,8 @@ namespace GalacticScale.Generators
                 if (IsPlanetOfStar(star, body) && starInc > -1)
                 {
                     // GS2.Warn($"SETTING starInc Orbit Inclination of {star.Name} to {starInc}");
-                    body.OrbitInclination = random.NextFloat(starInc);
+                    if (starInc > 0) body.OrbitInclination = random.NextFloat(starInc);
+                    else body.OrbitInclination = 0;
                 }
                 body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f) * random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
