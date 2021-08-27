@@ -1,7 +1,9 @@
 ﻿{
   "name": "Touhma_GalacticScale",
-  "version_number": "1.0.1",
-  "website_url": "https://github.com/Touhma/DSP_Plugins",
-  "description": "This mod allow for more than 64 stars map to enjoy.",
-  "dependencies": []
+  "version_number": "1.4.2",
+  "website_url": "https://customizing.space",
+  "description": "Old version of Galactic Scale for legacy support. Do not start new games using this version",
+  "dependencies": [
+    "xiaoye97-BepInEx-5.4.5"
+  ]
 }
