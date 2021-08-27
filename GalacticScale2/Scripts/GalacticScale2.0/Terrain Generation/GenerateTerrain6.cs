@@ -7,6 +7,7 @@ namespace GalacticScale
     {
         public static void GenerateTerrain6(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
+            if (gsPlanet == null) {GS2.Warn("gsPlanet Null");return;}
             random = new GS2.Random(gsPlanet.Seed);
             // GS2.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
@@ -26,6 +27,7 @@ namespace GalacticScale
             var seed2 = random.Next();
             var simplexNoise1 = new SimplexNoise(seed1);
             var simplexNoise2 = new SimplexNoise(seed2);
+            if (gsPlanet.planetData == null) {GS2.Warn("gsPlanet.planetData Null");return;}
             var data = gsPlanet.planetData.data;
             float radius = gsPlanet.Radius;
             var planet = gsPlanet.planetData;

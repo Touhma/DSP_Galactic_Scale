@@ -31,6 +31,7 @@ namespace GalacticScale
                     //Warn("Cleared");
                     Log("Loading Data from Generator : " + ActiveGenerator.Name);
                     ActiveGenerator.Generate(gameDesc.starCount);
+                    GSSettings.Instance.generatorGUID = ActiveGenerator.GUID;
                     Log("Final Seed = " + GSSettings.Seed);
                     //Log("End");
                 }

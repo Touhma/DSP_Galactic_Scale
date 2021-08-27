@@ -21,7 +21,7 @@ namespace GalacticScale
     // [BepInDependency("nebula.api", BepInDependency.DependencyFlags.HardDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
-        public const string VERSION = "2.1.9.0";
+        public const string VERSION = "2.1.10.0";
 
         public new static ManualLogSource Logger;
         
@@ -103,9 +103,10 @@ namespace GalacticScale
                     GameMain.Pause();
                     UIRoot.instance.uiGame.escMenu._Open();
                 }
-
+                GameMain.Pause();
                 UIRoot.instance.OpenOptionWindow();
-                GS2.Config.LoadJsonGalaxy("Pasta");
+                GS2.Warn($"********* Loading {GS2.Config.ImportFilename}");
+                GS2.Config.LoadJsonGalaxy(GS2.Config.ImportFilename);
                
             }
 

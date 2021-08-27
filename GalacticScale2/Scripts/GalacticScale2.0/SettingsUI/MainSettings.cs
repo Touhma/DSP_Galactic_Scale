@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 using GalacticScale.Generators;
 using GSSerializer;
-
+using ScenarioRTL;
+using static GalacticScale.GS2;
 namespace GalacticScale
 {
     public class GS2MainSettings : iConfigurableGenerator
@@ -20,6 +21,7 @@ namespace GalacticScale
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
         public bool DebugMode => Preferences.GetBool("Debug Log");
         public bool Dev => Preferences.GetBool("Dev");
+        public string ImportFilename => Preferences.GetString("Import Filename", "");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
@@ -40,6 +42,20 @@ namespace GalacticScale
         public bool FixCopyPaste => true; //Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
+
+        public Dictionary<int, bool> VeinTips
+        {
+            get
+            {
+                var veintips = new Dictionary<int, bool>();
+                for (var i = 1; i < 15; i++)
+                {
+                    veintips.Add(i, Preferences.GetBool($"veinTip{i}", true));
+                }
+                
+                return veintips;
+            }
+        }
         public float ResourceMultiplier => Preferences.GetFloat("Resource Multiplier", 1f);
         public float LogisticsShipMulti => Preferences.GetFloat("Logistics Ship Multi", 1f);
         public List<string> ExternalThemeNames => Preferences.GetStringList("External Themes", new List<string>());
@@ -89,41 +105,88 @@ namespace GalacticScale
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator",
                 GeneratorCallback, "Try them all!".Translate()));
             RefreshFileNames();
-            Options.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
-            Options.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
+
             // Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
             
-
+            var VeinOptions = new GSOptions();
+            VeinOptions.Add(GSUI.Spacer());
+            VeinOptions.Add(GSUI.Checkbox("Show Iron Vein Labels".Translate(), true, "veinTip1", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Copper Vein Labels".Translate(), true, "veinTip2", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Silicon Vein Labels".Translate(), true, "veinTip3", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Titanium Vein Labels".Translate(), true, "veinTip4", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Stone Vein Labels".Translate(), true, "veinTip5", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Coal Vein Labels".Translate(), true, "veinTip6", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Oil Vein Labels".Translate(), true, "veinTip7", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Fire Ice Vein Labels".Translate(), true, "veinTip8", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Kimberlite Labels".Translate(), true, "veinTip9", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Fractal Silicon Vein Labels".Translate(), true, "veinTip10", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Organic Crystal Vein Labels".Translate(), true, "veinTip11", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Optical Grating Vein Labels".Translate(), true, "veinTip12", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Spiriform Vein Labels".Translate(), true, "veinTip13", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Checkbox("Show Unipolar Vein Labels".Translate(), true, "veinTip14", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
+            VeinOptions.Add(GSUI.Spacer());
+            
+            var GameOptions = new GSOptions();
+            GameOptions.Add(GSUI.Spacer());
+            GameOptions.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
+            GameOptions.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
+            GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
+            GameOptions.Add(GSUI.Spacer());
+            Options.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
+            Options.Add(GSUI.Spacer());
+            
             var DebugOptions = new GSOptions();
             // DebugOptions.Add(GSUI.Button("Debug", "Go", (o) => { GS2.Warn(GameMain.localPlanet.runtimePosition + " " + GameMain.localStar.uPosition); }, null, null));
+            DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false,  "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode", null, "All Research, TP by ctrl-click nav arrow".Translate()));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
+            DebugOptions.Add(GSUI.Button("Fix Binary Star Position".Translate(), "Now", ResetBinaryStars, null, "Will need to be saved and loaded to apply".Translate()));
+            DebugOptions.Add(GSUI.Spacer());
             Options.Add(GSUI.Group("Debug Options".Translate(), DebugOptions, "Useful for testing galaxies/themes".Translate()));
             Options.Add(GSUI.Spacer());
+            
             var JsonOptions = new GSOptions();
+            DebugOptions.Add(GSUI.Spacer());
             JsonOptions.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename", null, "Excluding .json".Translate()));
             JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes".Translate()));
             _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File".Translate()));
             JsonGalaxies = JsonOptions.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
-            JsonOptions.Add(GSUI.Button("Load Custom Galaxy".Translate(), "Load", LoadJsonGalaxy, null,
-                "Will end current game".Translate()));
-            
+            JsonOptions.Add(GSUI.Button("Load Custom Galaxy".Translate(), "Load", LoadJsonGalaxy, null, "Will end current game".Translate()));
+            DebugOptions.Add(GSUI.Spacer());
 
             Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
         }
 
-        // private void VanillaGridCheckboxCallback(Val o)
-        // {
-        //     if (GameMain.isPaused) return;
-        //     if (GS2.keyedLUTs.ContainsKey(200)) GS2.keyedLUTs.Remove(200);
-        //     if (PatchOnUIBuildingGrid.LUT512.ContainsKey(200))
-        //     {
-        //         PatchOnUIBuildingGrid.LUT512.Remove(200);
-        //     }
-        // }
-
+        public void ResetBinaryStars(Val o)
+        {
+            var random = new GS2.Random(GSSettings.Seed);
+                foreach (var star in GSSettings.Stars)
+                {
+                    if (star.BinaryCompanion != null)
+                    {
+                    
+                        var binary = GS2.GetGSStar(star.BinaryCompanion);
+                        if (binary == null)
+                        {
+                            Error($"Could not find Binary Companion:{star.BinaryCompanion}");
+                            continue;
+                        }
+                        var offset = star.genData.Get("binaryOffset", (star.RadiusLY + binary.RadiusLY) * random.NextFloat(1.1f, 1.3f));
+                        binary.position = new VectorLF3(offset, 0, 0);
+                        Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
+                        // GS2.Warn("Setting Binary Star Position");
+                        galaxy.stars[binary.assignedIndex].position = binary.position = star.position + binary.position;
+                        galaxy.stars[binary.assignedIndex].uPosition = galaxy.stars[binary.assignedIndex].position * 2400000.0;
+                        GS2.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
+                    }
+                }
+        }
+        public void UpdateVeinDetail(Val o)
+        {
+            if (GameMain.isRunning && !DSPGame.IsMenuDemo && GameMain.localPlanet != null && UIRoot.instance?.uiGame?.veinDetail != null) UIRoot.instance.uiGame.veinDetail.SetInspectPlanet(GameMain.localPlanet);
+        }
         public void SetResourceMultiplier(float val)
         {
             Preferences.Set("Resource Multiplier", val);

@@ -49,6 +49,12 @@ namespace GalacticScale
 
             if (localStar != null && !localStar.loaded)
             {
+                EnsureStarStillLocal();
+                if (closestStar == null)
+                {
+                    LogStatus("Left Star...Searching");
+                    SearchStar();
+                }
                 //We assume the star is still loading, so wait.
                 LogStatus(
                     $"Star {localStar.name} loading {GetStarLoadingStatus(localStar)} localPlanet:{localPlanet?.name}");

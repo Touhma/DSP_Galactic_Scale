@@ -17,7 +17,7 @@ namespace GalacticScale
 
         private static int birthPlanetId = -1; // this is a vanilla id, not a GS Index!
         private static string birthPlanetName;
-
+        public string generatorGUID = null;
 
         [SerializeField] public GSGalaxyParams galaxyParams = new GSGalaxyParams();
 

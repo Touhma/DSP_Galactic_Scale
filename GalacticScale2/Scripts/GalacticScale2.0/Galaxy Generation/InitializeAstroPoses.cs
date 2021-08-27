@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -12,7 +13,7 @@ namespace GalacticScale
             galaxy.astroPoses = new AstroPose[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i, random);
-
+            if (!GSSettings.Instance.imported)
             foreach (var star in GSSettings.Stars)
             {
                 if (star.BinaryCompanion != null)

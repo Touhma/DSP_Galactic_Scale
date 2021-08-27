@@ -198,11 +198,14 @@ namespace GalacticScale
                 catch (Exception message)
                 {
                     Error(message.ToString());
-                    currentModelingPlanet.Unload();
-                    currentModelingPlanet.factoryLoaded = false;
-                    currentModelingPlanet = null;
-                    currentModelingStage = 0;
-                    currentModelingSeamNormal = 0;
+                    if (currentModelingPlanet != null)
+                    {
+                        currentModelingPlanet.Unload();
+                        currentModelingPlanet.factoryLoaded = false;
+                        currentModelingPlanet = null;
+                        currentModelingStage = 0;
+                        currentModelingSeamNormal = 0;
+                    }
                 }
         }
     }
