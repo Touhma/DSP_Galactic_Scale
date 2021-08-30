@@ -21,7 +21,7 @@ namespace GalacticScale
     // [BepInDependency("nebula.api", BepInDependency.DependencyFlags.HardDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
-        public const string VERSION = "2.1.10.0";
+        public const string VERSION = "2.1.13.0";
 
         public new static ManualLogSource Logger;
         
@@ -88,13 +88,19 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmap));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIStarmapPlanet));
             Harmony.CreateAndPatchAll(typeof(PatchOnUITutorialTip));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIVeinDetail));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVersionText));
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
+            Harmony.CreateAndPatchAll(typeof(PatchOnVFPreload));
         }
 
         private void FixedUpdate()
         {
+            // if (VFInput.alt)
+            // {
+            //     if (GameMain.localPlanet != null && GameMain.mainPlayer != null) GS2.Warn((GameMain.localPlanet.uPosition - GameMain.mainPlayer.uPosition).magnitude + " distance");
+            // }
             if (GS2.Config.Dev && VFInput.control && VFInput.shift && VFInput._rotate)
             {
                 if (!GameMain.isPaused && !DSPGame.IsMenuDemo)
@@ -103,11 +109,14 @@ namespace GalacticScale
                     GameMain.Pause();
                     UIRoot.instance.uiGame.escMenu._Open();
                 }
-                GameMain.Pause();
+                else if (!GameMain.isPaused)
+                {
+                    GameMain.Pause();
+
+                }
                 UIRoot.instance.OpenOptionWindow();
                 GS2.Warn($"********* Loading {GS2.Config.ImportFilename}");
                 GS2.Config.LoadJsonGalaxy(GS2.Config.ImportFilename);
-               
             }
 
             timer++;

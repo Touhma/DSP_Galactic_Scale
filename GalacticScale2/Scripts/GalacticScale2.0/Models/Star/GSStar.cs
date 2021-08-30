@@ -5,6 +5,7 @@ namespace GalacticScale
 {
     public class GSStar
     {
+        [NonSerialized]
         public readonly ValStore genData = new ValStore();
         private float _acdiscRadius = -1;
         private float _age = -1;
@@ -16,7 +17,7 @@ namespace GalacticScale
         private float _lightBalanceRadius = -1;
         private float _luminosity = -1;
         private float _mass = -1;
-        private float _physicsRadius = -1;
+        [NonSerialized] private float _physicsRadius = -1;
         private VectorLF3 _pos;
         private float _radius = -1;
         private float _resourceCoef = -1f;
@@ -212,6 +213,32 @@ namespace GalacticScale
         public float RadiusAU => RadiusM / 40000f;
         public float RadiusLY => RadiusAU / 60f;
 
+        public string displayType
+        {
+            get
+            {
+                if (Type == EStarType.BlackHole) return "Black Hole";
+                if (Type == EStarType.WhiteDwarf) return "White Dwarf";
+                if (Type == EStarType.NeutronStar) return "Neutron Star";
+                if (Type == EStarType.GiantStar)
+                {
+                    if (Spectr == ESpectrType.F || Spectr == ESpectrType.G) return "Yellow Giant";
+                    if (Spectr == ESpectrType.A) return "White Giant";
+                    if (Spectr == ESpectrType.B || Spectr == ESpectrType.O) return "Blue Giant";
+                    return "Red Giant";
+                }
+
+                if (Spectr == ESpectrType.A) return "Type A Star";
+                if (Spectr == ESpectrType.B) return "Type B Star";
+                if (Spectr == ESpectrType.F) return "Type F Star";
+                if (Spectr == ESpectrType.G) return "Type G Star";
+                if (Spectr == ESpectrType.M) return "Type M Star";
+                if (Spectr == ESpectrType.K) return "Type K Star";
+                if (Spectr == ESpectrType.O) return "Type O Star";
+                return "Unknown Star";
+            }
+        }
+
         public override string ToString()
         {
             return Name;
@@ -327,32 +354,6 @@ namespace GalacticScale
             clone = (GSStar)MemberwiseClone();
             clone.Planets = new GSPlanets(Planets);
             return clone;
-        }
-
-        public string displayType
-        {
-            get
-            {
-                if (Type == EStarType.BlackHole) return "Black Hole";
-                if (Type == EStarType.WhiteDwarf) return "White Dwarf";
-                if (Type == EStarType.NeutronStar) return "Neutron Star";
-                if (Type == EStarType.GiantStar)
-                {
-                    if (Spectr == ESpectrType.F || Spectr == ESpectrType.G) return "Yellow Giant";
-                    if (Spectr == ESpectrType.A) return "White Giant";
-                    if (Spectr == ESpectrType.B || Spectr == ESpectrType.O) return "Blue Giant";
-                    return "Red Giant";
-                }
-
-                if (Spectr == ESpectrType.A) return "Type A Star";
-                if (Spectr == ESpectrType.B) return "Type B Star";
-                if (Spectr == ESpectrType.F) return "Type F Star";
-                if (Spectr == ESpectrType.G) return "Type G Star";
-                if (Spectr == ESpectrType.M) return "Type M Star";
-                if (Spectr == ESpectrType.K) return "Type K Star";
-                if (Spectr == ESpectrType.O) return "Type O Star";
-                return "Unknown Star";
-            }
         }
         //public float SystemRadius => Planets[Planets.Count -1].SystemRadius;
     }

@@ -106,7 +106,7 @@ namespace GalacticScale
             LoadPreferences(true);
             var themes = ThemeLibrary.Select(t => t.Value).ToList();
             foreach (var t in themes) t.Process();
-            LoadPlugins();
+            LoadGenerators();
             LoadPreferences();
             Log("End");
         }

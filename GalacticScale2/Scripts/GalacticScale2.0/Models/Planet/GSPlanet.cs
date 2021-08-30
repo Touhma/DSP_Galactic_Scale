@@ -38,7 +38,7 @@ namespace GalacticScale
         [NonSerialized] public PlanetData planetData;
 
         private int radius = -1;
-        public GS2.Random random;
+        [NonSerialized]  public GS2.Random random;
         public bool randomizeVeinAmounts = true;
         public bool randomizeVeinCounts = true;
         private float rotationPeriod = -1;
@@ -284,6 +284,10 @@ namespace GalacticScale
             }
         }
 
+        public float OrbitOutermostSystemRadiusAU => orbitRadius + SystemRadius;
+        public float OrbitInnermostSystemRadiusAU => orbitRadius - SystemRadius;
+        public float OrbitOutermostSurfaceRadiusAU => orbitRadius + RadiusAU;
+        public float OrbitInnermostSurfaceRadiusAU => orbitRadius - RadiusAU;
         public float InitScale()
         {
             if (GsTheme == null) return -1;

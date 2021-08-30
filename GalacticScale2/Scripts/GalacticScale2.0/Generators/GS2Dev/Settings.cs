@@ -156,7 +156,6 @@ namespace GalacticScale.Generators
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
             preferences.Set("birthTidalLock", false);
-            preferences.Set("birthPlanetStar", 7);
             preferences.Set("limitPlanetSize20", false);
             preferences.Set("limitPlanetSize50", false);
             preferences.Set("limitPlanetSize100", false);

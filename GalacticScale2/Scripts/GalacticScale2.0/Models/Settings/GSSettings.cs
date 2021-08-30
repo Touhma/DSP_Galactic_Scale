@@ -229,5 +229,6 @@ namespace GalacticScale
         public double maxStepLength = 3.5;
         public double minDistance = 2;
         public double minStepLength = 2.3;
+        public float resourceMulti = 1.1f;
     }
 }

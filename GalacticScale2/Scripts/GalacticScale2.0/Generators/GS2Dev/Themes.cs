@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GalacticScale.Generators
@@ -66,9 +67,11 @@ namespace GalacticScale.Generators
             foreach (var s in smolLibrary)
                 if (!newLibrary.ContainsKey(s.Key)) newLibrary.Add(s.Key, s.Value);
                 else newLibrary[s.Key] = s.Value;
-            newLibrary.AddRange(GS2.externalThemes);
+            // GS2.WarnJson(GS2.externalThemes.Select(o=>o.Key).ToList());
+            // newLibrary.AddRange(GS2.externalThemes);
             GS2.ThemeLibrary = GSSettings.ThemeLibrary = newLibrary;
-            
+            // GS2.Warn("End of Themes.CS, ThemeLibrary Contents:");
+            // GS2.WarnJson(GSSettings.ThemeLibrary.Select(o=>o.Key).ToList());
         }
 
         public static void InitThemes()

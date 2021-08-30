@@ -10,7 +10,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
-
+using static GalacticScale.GS2;
 namespace GalacticScale
 {
 
@@ -20,9 +20,7 @@ namespace GalacticScale
         public static int MainTabIndex = 5;
         private static RectTransform tabLine;
         private static RectTransform galacticButton;
-        public static RectTransform seedInput;
         public static RectTransform details;
-        public static GSUIDropdown GeneratorDropdown;
         private static RectTransform GSSettingsPanel;
         private static GSUIPanel SettingsPanel;
         public static RectTransform comboTemplate;
@@ -131,6 +129,15 @@ namespace GalacticScale
             SettingsPanel = GSSettingsPanel.GetComponentInChildren<GSUIPanel>();
             options.AddRange(GS2.Config.Options);
 
+            for (var i=0;i < Plugins.Count;i++)
+            {
+                GS2.Warn($"Loading Plugin #{i}");
+                var group = GSUI.Group(Plugins[i].Name, Plugins[i].Options, Plugins[i].Description);
+                options.Add(GSUI.Spacer());
+                options.Add(group);
+                options.Add(GSUI.Spacer());
+            }
+            
             // var tsRect = themeselector.GetComponent<RectTransform>();
             // var offset = options.Count * -40;
             // tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x, tsRect.anchoredPosition.x + offset);
@@ -198,7 +205,7 @@ namespace GalacticScale
             {
                 case "Group":
                     if (option.callback == null){
-                        GS2.Log($"Adding normal list {option.Label}");
+                        // GS2.Log($"Adding normal list {option.Label}");
                         var newlist = list.AddList();
                     option.RectTransform = newlist.GetComponent<RectTransform>();
                     newlist.Initialize(option);
@@ -206,7 +213,7 @@ namespace GalacticScale
             }
                     else
                     {
-                        GS2.Log($"Adding toggle list {option.Label}");
+                        // GS2.Log($"Adding toggle list {option.Label}");
                         var newlist = list.AddToggleList();
                         option.RectTransform = newlist.GetComponent<RectTransform>();
                         newlist.Initialize(option);

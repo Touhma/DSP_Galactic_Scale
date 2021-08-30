@@ -50,7 +50,7 @@ namespace GalacticScale
             if (data.ContainsKey("galaxyParams")) DeserializeMember(data, null, "galaxyParams", out galaxyParams);
 
             if (data.ContainsKey("GalaxyParams")) DeserializeMember(data, null, "GalaxyParams", out galaxyParams);
-
+            model.galaxyParams = galaxyParams;
             GS2.Log("Deserializing Stars");
             GSStars stars = null;
             if (data.ContainsKey("stars")) DeserializeMember(data, null, "stars", out stars);

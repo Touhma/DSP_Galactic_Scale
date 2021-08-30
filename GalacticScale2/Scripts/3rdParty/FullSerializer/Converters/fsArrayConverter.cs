@@ -25,7 +25,7 @@ namespace GSSerializer.Internal
             // note: IList[index] is **significantly** faster than Array.Get, so
             //       make sure we use that instead.
 
-            IList arr = (Array) instance;
+            IList arr = (Array)instance;
             var elementType = storageType.GetElementType();
 
             var result = fsResult.Success;
@@ -107,7 +107,7 @@ namespace GSSerializer.Internal
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
         {
-            var asArray = (Array) instance;
+            var asArray = (Array)instance;
             IList asIList = asArray;
 
             var elementType = storageType.GetElementType();

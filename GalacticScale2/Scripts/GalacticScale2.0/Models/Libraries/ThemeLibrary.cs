@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GSSerializer;
-using ScenarioRTL;
 
 namespace GalacticScale
 {
@@ -25,30 +24,39 @@ namespace GalacticScale
 
         public new GSTheme Add(string name, GSTheme theme)
         {
-            // GS2.Warn($"Adding {name},{theme == null}");
+            // if (name == "BlueLava")
+            // {
+            // GS2.Warn($"Adding {name},{theme == null} {GS2.GetCaller()}");
+            // GS2.Warn(GS2.GetCaller(1));
+            // GS2.Warn(GS2.GetCaller(2));
+            // GS2.Warn(GS2.GetCaller(3));
+            // GS2.Warn(GS2.GetCaller(4));
+            // GS2.Warn(GS2.GetCaller(5));
+            // }
             if (theme == null) return null;
-            if (string.IsNullOrEmpty(name)) name = theme.Name??"Hmm";
+            if (string.IsNullOrEmpty(name)) name = theme.Name ?? "Hmm";
             if (ContainsKey(name))
             {
                 // GS2.Warn("Theme already exists. Updating.");
                 this[name] = theme;
                 return theme;
             }
+
             base.Add(name, theme);
             return theme;
         }
+
         public ThemeLibrary AddRange(ThemeLibrary values)
         {
+            // GS2.Warn("Adding Range " + GS2.GetCaller() + GS2.GetCaller(1) + GS2.GetCaller(2) + GS2.GetCaller(3));
+            // GS2.WarnJson(values.Select(p => p.Key).ToList());
             foreach (var theme in values)
-            {
-                if (ContainsKey(theme.Key)) {
-                    // GS2.Warn("Adding Duplicate Theme " + theme.Key);
-                    this[theme.Key] = theme.Value; 
-                }
+                if (ContainsKey(theme.Key)) // GS2.Warn("Adding Duplicate Theme " + theme.Key);
+                    this[theme.Key] = theme.Value;
                 else Add(theme.Key, theme.Value);
-            }
             return this;
         }
+
         public static ThemeLibrary Vanilla()
         {
             var t = new ThemeLibrary
@@ -108,14 +116,16 @@ namespace GalacticScale
             var themes = Query(type, heat, radius, distribute, habitable);
             return random.Item(themes);
         }
+
         public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius,
-    EThemeDistribute distribute = EThemeDistribute.Default)
+            EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = Query(starType, type, heat, radius, distribute);
             return random.Item(themes);
         }
+
         public string Query(GS2.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius,
-EThemeDistribute distribute = EThemeDistribute.Default)
+            EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = Query(starTypes, type, heat, radius, distribute);
             return random.Item(themes);
@@ -124,29 +134,31 @@ EThemeDistribute distribute = EThemeDistribute.Default)
         public List<string> Query(EThemeType type, EThemeHeat heat, int radius,
             EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
-            var allstars = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
+            var allstars = new List<EStar> { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
             var themes = QueryThemes(allstars, type, heat, radius, distribute, habitable);
             var results = from theme in themes
-                          select theme.Name;
+                select theme.Name;
             return results.ToList();
         }
+
         public List<string> Query(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = QueryThemes(starTypes, type, heat, radius, distribute);
             var results = from theme in themes
-                          select theme.Name;
+                select theme.Name;
             return results.ToList();
         }
+
         public List<string> Query(EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
-            var themes = QueryThemes(new List<EStar>() { starType }, type, heat, radius, distribute);
+            var themes = QueryThemes(new List<EStar> { starType }, type, heat, radius, distribute);
             var results = from theme in themes
-                          select theme.Name;
+                select theme.Name;
             return results.ToList();
         }
+
         public List<GSTheme> QueryThemes(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
-
             //List<GSTheme> list = new List<GSTheme>();
             var types = new List<EThemeType>();
             var distributes = new List<EThemeDistribute>();
@@ -189,20 +201,21 @@ EThemeDistribute distribute = EThemeDistribute.Default)
             if (heat == EThemeHeat.Frozen) temp = (-6, -3);
 
             var q = from theme in this
-                    where types.Contains(theme.Value.ThemeType)
-                    where distributes.Contains(theme.Value.Distribute)
-                    where theme.Value.StarTypes.Intersect<EStar>(starTypes).Count() > 1
-                    where theme.Value.Temperature < temp.max
-                    where theme.Value.Temperature >= temp.min
-                    where theme.Value.MaxRadius >= (radius > 0 ? radius : 0)
-                    where theme.Value.MinRadius <= (radius > 0 ? radius : 510)
-                    select theme.Value;
-            List<GalacticScale.GSTheme> results = q.ToList();
+                where types.Contains(theme.Value.ThemeType)
+                where distributes.Contains(theme.Value.Distribute)
+                where theme.Value.StarTypes.Intersect(starTypes).Count() > 1
+                where theme.Value.Temperature < temp.max
+                where theme.Value.Temperature >= temp.min
+                where theme.Value.MaxRadius >= (radius > 0 ? radius : 0)
+                where theme.Value.MinRadius <= (radius > 0 ? radius : 510)
+                select theme.Value;
+            var results = q.ToList();
             if (habitable)
             {
-                results = (from theme in results where theme.Habitable == true select theme).ToList();
-                GS2.WarnJson(results.Select(o=>o.Name).ToList());
+                results = (from theme in results where theme.Habitable select theme).ToList();
+                GS2.WarnJson(results.Select(o => o.Name).ToList());
             }
+
             if (results.Count == 0)
             {
                 GS2.Error(
@@ -211,41 +224,44 @@ EThemeDistribute distribute = EThemeDistribute.Default)
                     GS2.Warn(
                         $"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
                 if (type == EThemeType.Gas)
-                {
                     switch (heat)
                     {
-                        case EThemeHeat.Cold: results.Add(Themes.IceGiant);
+                        case EThemeHeat.Cold:
+                            results.Add(Themes.IceGiant);
                             break;
-                        case EThemeHeat.Temperate: results.Add(Themes.Gas2);
+                        case EThemeHeat.Temperate:
+                            results.Add(Themes.Gas2);
                             break;
-                        case EThemeHeat.Frozen: results.Add(Themes.IceGiant2);
+                        case EThemeHeat.Frozen:
+                            results.Add(Themes.IceGiant2);
                             break;
                         case EThemeHeat.Warm:
-                        case EThemeHeat.Hot: results.Add(Themes.Gas);
+                        case EThemeHeat.Hot:
+                            results.Add(Themes.Gas);
                             break;
                     }
-                }
                 else
-                {
                     switch (heat)
                     {
-                        case EThemeHeat.Temperate:results.Add(Themes.Mediterranean);
+                        case EThemeHeat.Temperate:
+                            results.Add(Themes.Mediterranean);
                             break;
                         case EThemeHeat.Cold:
-                        case EThemeHeat.Frozen:results.Add(Themes.AshenGelisol);
+                        case EThemeHeat.Frozen:
+                            results.Add(Themes.AshenGelisol);
                             break;
-                        case EThemeHeat.Warm:results.Add(Themes.Barren);
+                        case EThemeHeat.Warm:
+                            results.Add(Themes.Barren);
                             break;
-                        case EThemeHeat.Hot:results.Add(Themes.VolcanicAsh);
+                        case EThemeHeat.Hot:
+                            results.Add(Themes.VolcanicAsh);
                             break;
                     }
-                }
             }
 
             // GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
             // GS2.WarnJson((from result in results select result.Name).ToList());
             return results;
-            
         }
 
         public GSTheme Random()

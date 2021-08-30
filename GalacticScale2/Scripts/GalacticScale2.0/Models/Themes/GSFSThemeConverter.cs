@@ -262,7 +262,7 @@ namespace GalacticScale
             if (data.ContainsKey("AmbientSettings"))
                 DeserializeMember(data, null, "AmbientSettings", out model.AmbientSettings);
 
-            model.Process();
+            model.Init();
             //GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;
         }

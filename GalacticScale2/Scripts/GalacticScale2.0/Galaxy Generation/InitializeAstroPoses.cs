@@ -25,11 +25,11 @@ namespace GalacticScale
                         Error($"Could not find Binary Companion:{star.BinaryCompanion}");
                         continue;
                     }
-                    Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
+                    // Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
                     // GS2.Warn("Setting Binary Star Position");
                     galaxy.stars[binary.assignedIndex].position = binary.position = star.position + binary.position;
                     galaxy.stars[binary.assignedIndex].uPosition = galaxy.stars[binary.assignedIndex].position * 2400000.0;
-                    GS2.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
+                    // GS2.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
                 }
             }
 

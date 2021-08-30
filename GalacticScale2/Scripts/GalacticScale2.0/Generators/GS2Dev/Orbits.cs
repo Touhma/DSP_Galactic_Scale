@@ -207,7 +207,12 @@ namespace GalacticScale.Generators
                     if (pCount == 0) continue;
                     var basePhase = r.NextFloat() * 360;
                     planets[0].OrbitPhase = basePhase;
-                    for (var i = 1; i < pCount; i++) planets[i].OrbitPhase = planets[i - 1].OrbitPhase + 360f / pCount;
+                    for (var i = 1; i < pCount; i++)
+                    {
+                        planets[i].OrbitPhase = planets[i - 1].OrbitPhase + 360f / pCount;
+                        planets[i].OrbitLongitude = planets[0].OrbitLongitude;
+                        planets[i].OrbitInclination = planets[0].OrbitInclination;
+                    }
                 }
             }
         }

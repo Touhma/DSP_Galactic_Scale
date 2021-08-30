@@ -21,9 +21,12 @@ namespace GalacticScale
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported && sketchOnly)
                 {
-                    //Warn("Start");
+                    Warn("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
-
+                    
+                    // GS2.LogJson(gameDesc);
+                    // GS2.Warn(gameDesc.resourceMultiplier.ToString());
+                    // GS2.Warn(GSSettings.Instance.galaxyParams.resourceMulti.ToString());
                     Log("Seed From gameDesc = " + GSSettings.Seed);
                     gsPlanets.Clear();
                     gsStars.Clear();
@@ -31,6 +34,7 @@ namespace GalacticScale
                     //Warn("Cleared");
                     Log("Loading Data from Generator : " + ActiveGenerator.Name);
                     ActiveGenerator.Generate(gameDesc.starCount);
+                    GSSettings.Instance.galaxyParams.resourceMulti = gameDesc.resourceMultiplier;
                     GSSettings.Instance.generatorGUID = ActiveGenerator.GUID;
                     Log("Final Seed = " + GSSettings.Seed);
                     //Log("End");
@@ -38,6 +42,9 @@ namespace GalacticScale
                 else
                 {
                     Log("Settings Loaded From Save File");
+                    gameDesc.resourceMultiplier = GSSettings.Instance.galaxyParams.resourceMulti;
+                    GS2.Log($"RM1:{gameDesc.resourceMultiplier}");
+                    Warn(gameDesc.resourceMultiplier.ToString());
                 }
                 Log($"Galaxy Loaded: {highStopwatch.duration:F5}");highStopwatch.Begin();
                 Log(
@@ -123,6 +130,8 @@ namespace GalacticScale
                 //         GS2.Warn($"Theme used:{planet.GsTheme.Name}");
                 //     }
                 // }
+                Warn("RM:"+GSSettings.Instance.galaxyParams.resourceMulti);
+                Warn($"GUID:{GSSettings.Instance.generatorGUID}");
                 return galaxy;
             }
             catch (Exception e)

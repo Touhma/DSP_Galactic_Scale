@@ -32,14 +32,14 @@ namespace GalacticScale
 
         public void OnInputChange(string value)
         {
-            GS2.Log(value);
+            // GS2.Log(value);
             Value = value;
             OnChange?.Invoke(value);
         }
 
         public void OnInputEndEdit(string value)
         {
-            GS2.Log(value);
+            // GS2.Log(value);
             Value = value;
             OnEndEdit?.Invoke(value);
         }

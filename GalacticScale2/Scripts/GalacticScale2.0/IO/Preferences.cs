@@ -30,7 +30,16 @@ namespace GalacticScale
                     preferences.PluginOptions[gen.GUID] = prefs;
                     Log("Finished adding preferences for " + gen.Name);
                 }
-            
+            foreach (var g in Plugins)
+                if (g is iConfigurablePlugin)
+                {
+                    var plugin = g as iConfigurablePlugin;
+                    Log("Trying to get plugin preferences for " + plugin.Name);
+                    var prefs = plugin.Export();
+
+                    preferences.AddonOptions[plugin.GUID] = prefs;
+                    Log("Finished adding preferences for " + plugin.Name);
+                }
             var serializer = new fsSerializer();
             Log("Trying to serialize preferences object");
             serializer.TrySerialize(preferences, out var data);
@@ -103,7 +112,18 @@ namespace GalacticScale
                         gen.Import(pluginOptions.Value);
                     }
                 }
-
+            if (p.AddonOptions != null)
+                foreach (var pluginOptions in p.AddonOptions)
+                {
+                    Log("Plugin Options for " + pluginOptions.Key + "found");
+                    var plugin = GetPluginByID(pluginOptions.Key) as iConfigurablePlugin;
+                    if (plugin != null)
+                    {
+                        
+                        Log(plugin.Name + "'s plugin options exported");
+                        plugin.Import(pluginOptions.Value);
+                    }
+                }
             Log("End");
         }
 
@@ -116,9 +136,10 @@ namespace GalacticScale
             // public bool noTutorials;
             public int version;
             public GSGenPreferences MainSettings = new GSGenPreferences();
+            public readonly Dictionary<string, GSGenPreferences> AddonOptions =
+                new Dictionary<string, GSGenPreferences>();
             public readonly Dictionary<string, GSGenPreferences> PluginOptions =
                 new Dictionary<string, GSGenPreferences>();
-
             // public bool skipPrologue;
         }
     }

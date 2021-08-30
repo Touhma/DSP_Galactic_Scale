@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public static class PatchOnUIRoot
+    public static partial class PatchOnUIRoot
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIRoot), "OnGameBegin")]

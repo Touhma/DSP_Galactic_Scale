@@ -126,7 +126,6 @@ namespace GalacticScale
 
         public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t)
         {
-            //GS2.Warn("Getting iconfig instance");
             if (GS2.Config.GetType() == t) return GS2.Config;
             foreach (var g in GS2.Generators)
                 if (g.GetType() == t)
@@ -135,9 +134,16 @@ namespace GalacticScale
                         return g as iConfigurableGenerator;
                     GS2.Warn($"Generator {t} is not configurable");
                 }
-
-            //if (t.GetType() != typeof(SettingsUI)) GS2.Warn($"Could not find generator of type '{t}'");
-            //GS2.Warn("returning null");
+            return null;
+        }        
+        public static iConfigurablePlugin GetConfigurablePluginInstance(Type t)
+        {
+            foreach (var g in GS2.Plugins)
+                if (g.GetType() == t)
+                {
+                    if (g is iConfigurablePlugin)
+                        return g as iConfigurablePlugin;
+                }
             return null;
         }
 

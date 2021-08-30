@@ -13,6 +13,7 @@ namespace GalacticScale
         {
             // GS2.Log($"Loading External Themes from: {path}");
             ThemeLibrary tl = new ThemeLibrary();
+            availableExternalThemes.Clear();
             if (!Directory.Exists(path))
             {
                 GS2.Warn("External Theme Directory Not Found. Creating");
@@ -53,6 +54,8 @@ namespace GalacticScale
         public static ThemeLibrary LoadDirectoryJsonThemes(string path)
         {
             var tl = new ThemeLibrary();
+            // GS2.Log("Loading directory themes and created a new themelibrary with the following contents:");
+            // LogJson(tl.Select(o=>o.Key).ToList());
             var directories = Directory.GetDirectories(path);
             var files = Directory.GetFiles(path);
             foreach (var directory in directories)
@@ -104,6 +107,7 @@ namespace GalacticScale
             GSSettings.Stars.Clear();
             // Log("Initializing ThemeLibrary");
             GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
+            GSSettings.GalaxyParams = new GSGalaxyParams();
             // Log("Reading JSON");
             var json = File.ReadAllText(path);
             var result = GSSettings.Instance;
@@ -111,6 +115,7 @@ namespace GalacticScale
             var data = fsJsonParser.Parse(json);
             // Log("Trying To Deserialize JSON");
             serializer.TryDeserialize(data, ref result);
+            // LogJson(result.galaxyParams);
             // Log("End");
             return true;
         }
