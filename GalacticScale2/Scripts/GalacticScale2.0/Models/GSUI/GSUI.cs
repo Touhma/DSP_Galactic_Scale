@@ -132,6 +132,15 @@ namespace GalacticScale
                         if (comboDefault >= 0) return comboDefault;
                         GS2.Warn($"No default value found for Combobox {Label}");
                         return false;
+                    case "Selector":
+                        List<string> list = Data as List<string>;
+                        if (comboDefault >= 0)
+                        {
+                            if (list.Count > comboDefault)
+                            return list[comboDefault];
+                        }
+                        GS2.Warn($"No default value found for Combobox {Label}");
+                        return false;
                 }
 
                 GS2.Error($"Failed to return default value for {Type} {Label}");
@@ -522,7 +531,7 @@ namespace GalacticScale
                     // GS2.Log($"{key} Value:{value} is null?:{value == null}");
                     if (value == null)
                     {
-                        GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                        // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
                         value = DefaultValue;
                     }
 

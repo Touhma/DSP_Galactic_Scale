@@ -103,6 +103,11 @@ namespace GalacticScale
             var go = AddItem(templates.dropdown);
             go.SetActive(true);
             return go.GetComponent<GSUIDropdown>();
+        }        public GSUISelector AddSelector()
+        {
+            var go = AddItem(templates.selector);
+            go.SetActive(true);
+            return go.GetComponent<GSUISelector>();
         }
         public GSUIButton AddButton()
         {

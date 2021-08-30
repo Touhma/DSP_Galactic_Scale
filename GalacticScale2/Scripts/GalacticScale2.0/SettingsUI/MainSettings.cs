@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Schema;
@@ -103,7 +104,6 @@ namespace GalacticScale
             // GS2.Log("*");
         }
 
-        public static GSUI xx;
         public void Init()
         {
             // GS2.Warn("!");
@@ -114,11 +114,7 @@ namespace GalacticScale
             RefreshFileNames();
 
             // Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
-            var xOptions = new GSOptions();
-            xOptions.Add(GSUI.Checkbox("Show Iron Vein Labels".Translate(), true, "veinTip1", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
-            xOptions.Add(GSUI.Checkbox("Show Copper Vein Labels".Translate(), true, "veinTip2", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
 
-            xx = Options.Add(GSUI.Group("TEST", xOptions, "keyey", false, "Testy", true, (o)=>Warn(xx.DefaultValue)));
             var VeinOptions = new GSOptions();
             VeinOptions.Add(GSUI.Spacer());
             VeinOptions.Add(GSUI.Checkbox("Show Iron Vein Labels".Translate(), true, "veinTip1", UpdateVeinDetail, "When show vein markers is enabled".Translate()));
@@ -181,7 +177,7 @@ namespace GalacticScale
 
         public void ResetBinaryStars(Val o)
         {
-            var random = new Random(GSSettings.Seed);
+            var random = new GS2.Random(GSSettings.Seed);
             foreach (var star in GSSettings.Stars)
                 if (star.BinaryCompanion != null)
                 {
