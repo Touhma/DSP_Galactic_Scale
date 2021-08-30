@@ -134,7 +134,7 @@ namespace GalacticScale.Generators
                 randomMoon.Moons.Add(mm);
                 mm.genData.Add("hosttype", "moon");
                 mm.genData.Add("hostname", randomMoon.Name);
-                // GS2.Log($"Added {mm} to {randomMoon}");
+                // GS2.Log($"Added {mm} {mm.Radius} to {randomMoon.Name}");
             }
 
 

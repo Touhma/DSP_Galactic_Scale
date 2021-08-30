@@ -135,7 +135,7 @@ namespace GalacticScale.Generators
                 max = Utils.ParsePlanetSize(hostRadius - 10);
             }
 
-            if (max <= min) return min;
+            if (max <= min) return ParsePlanetSize(min);
             float average = (max - min) / 2 + min;
             var range = max - min;
             var sd = (float) range / 4;
@@ -146,7 +146,9 @@ namespace GalacticScale.Generators
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
             //    size = Utils.ParsePlanetSize(hostRadius - 10);
             //}
-            return ParsePlanetSize(size);
+            var result =ParsePlanetSize(size);
+            // Warn(result +$"is size for {star.Name} moon");
+            return result;
             // return size;
         }
         private int GetStarPlanetSize(GSStar star)
@@ -170,9 +172,10 @@ namespace GalacticScale.Generators
             if (preferences.GetBool("limitPlanetSize300", false)) sizes.Add(300);
             if (preferences.GetBool("limitPlanetSize400", false)) sizes.Add(400);
             if (preferences.GetBool("limitPlanetSize500", false)) sizes.Add(500);
-            // GS2.Log("Got List");
+            // GS2.Log("Got List "+sizes.Count);
             var count = sizes.Count;
             if (count == 0) return size;
+            // Log("Count wasnt 0");
             var largest = sizes[sizes.Count - 1];
             var smallest = sizes[0];
             // GS2.Warn($"Size:{size} Count:{sizes.Count}");
@@ -213,8 +216,12 @@ namespace GalacticScale.Generators
             }
             if (star.genData.Get("hasBinary", false))
             {
-                min += star.genData.Get("binaryOffset", 1);
-                max += star.genData.Get("binaryOffset", 1);
+                // GS2.Warn($"{star.Name} Binary offset : {star.genData.Get("binaryOffset", 1f)}");
+                // GS2.Warn($"Increasing by {star.genData.Get("binaryOffset", 1)*60f}");
+                // GS2.Warn($"Star RadiusAU:{star.RadiusAU}");
+                // GS2.WarnJson(GSSettings.Stars.Select(o=>(o.Name,o.RadiusAU)).ToList());
+                min += (star.genData.Get("binaryOffset", 1f)*60f);
+                max += (star.genData.Get("binaryOffset", 1f)*60f);
             }
             star.genData.Set("minHZ", min);
             star.genData.Set("maxHZ", max);
@@ -229,12 +236,13 @@ namespace GalacticScale.Generators
             var radius = star.RadiusAU;
             var lum = star.luminosity;
             var min = radius +( 0.2f * radius * Mathf.Sqrt(Mathf.Sqrt(lum)));
-            if (star.genData.Get("hasBinary", false)) min += star.genData.Get("binaryOffset", 1);
+            
             if (preferences.GetBool($"{sl}orbitOverride"))
             {
                 var fp = preferences.GetFloatFloat($"{sl}orbits", new FloatPair(0.02f,20f));
                 min = fp.low;
             }
+            if (star.genData.Get("hasBinary", false)) min += (star.genData.Get("binaryOffset", 1f)*60f);
             min = Mathf.Clamp(min , radius * 1.1f, 100f);
             star.genData.Set("minOrbit", min);
             // Warn($"Getting Min Orbit for Star {star.Name} Min:{min}");
@@ -261,7 +269,7 @@ namespace GalacticScale.Generators
                 max = fp.high;
             }
             // Warn($"Getting Max Orbit for Star {star.Name} HardCap:{star.MaxOrbit} MaxbyRadius({star.radius}):{maxOrbitByRadius} MaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} MaxbyLum({lum}):{maxOrbitByLuminosity} MaxByHZ({hzMax}):{maxOrbitByHabitableZone} Max({max}):{max} HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
-            if (star.genData.Get("hasBinary", false)) max += star.genData.Get("binaryOffset", 1);
+            if (star.genData.Get("hasBinary", false)) max += (star.genData.Get("binaryOffset", 1f)*60f);
             star.genData.Set("maxOrbit", max);
             return max;
         }

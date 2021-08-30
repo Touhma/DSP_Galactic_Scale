@@ -143,7 +143,7 @@ namespace GalacticScale
 
         private static void EnsureStarStillLocal()
         {
-            LogStatus($"Ensure {closestStar.name} still local...");
+            if (closestStar.loaded) LogStatus($"Ensure {closestStar.name} still local...");
             if (!(DistanceTo(closestStar) > TransisionDistance(closestStar))) return;
             // GS2.Log(
             //     $"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransisionDistance(closestStar) / 40000}AU");
