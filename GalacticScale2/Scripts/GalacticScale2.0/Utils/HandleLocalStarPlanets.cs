@@ -166,7 +166,7 @@ namespace GalacticScale
                 var planet = closestStar.planets[i];
                 if (DistanceTo(planet) < TransisionDistance(planet))
                 {
-                    GS2.Log($"Switching to {planet.name}");
+                    // GS2.Log($"Switching to {planet.name}");
                     closestPlanet = planet;
                     break;
                 }

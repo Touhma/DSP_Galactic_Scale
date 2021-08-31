@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using GSSerializer;
 using HarmonyLib;
 using UnityEngine;
 
 namespace GalacticScale
 {
-    
     public partial class GS2
     {
         public static int PreferencesVersion = 2104;
     }
-    
-    
+
+
     [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", VERSION)]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     // [BepInDependency("nebula.api", BepInDependency.DependencyFlags.HardDependency)]
@@ -24,14 +23,14 @@ namespace GalacticScale
         public const string VERSION = "2.1.13.0";
 
         public new static ManualLogSource Logger;
-        
+
         // Internal Variables
         public static Queue buffer = new Queue();
         public static PlanetData TeleportPlanet;
         public static StarData TeleportStar;
         public static bool TeleportEnabled;
         public static int timer;
-        
+
         internal void Awake()
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
@@ -101,22 +100,105 @@ namespace GalacticScale
             // {
             //     if (GameMain.localPlanet != null && GameMain.mainPlayer != null) GS2.Warn((GameMain.localPlanet.uPosition - GameMain.mainPlayer.uPosition).magnitude + " distance");
             // }
-            if (GS2.Config.Dev && VFInput.control && VFInput.shift && VFInput._rotate)
+            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight)
             {
-                if (!GameMain.isPaused && !DSPGame.IsMenuDemo)
+                GS2.Config.EnableDevMode();
+            }
+            if (GS2.Config.Dev && VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null)
+            {
+                var filename = Path.Combine(GS2.DataDir, "WorkingTheme.json");
+                if (!File.Exists(filename))
                 {
-                    
-                    GameMain.Pause();
-                    UIRoot.instance.uiGame.escMenu._Open();
+                    var oldTheme = GS2.GetGSPlanet(GameMain.localPlanet).GsTheme;
+                    var fs = new fsSerializer();
+                    fs.TrySerialize(oldTheme, out var data);
+                    var json = fsJsonPrinter.PrettyJson(data);
+                    File.WriteAllText(filename, json);
+                    GS2.ShowMessage("WorkingTheme.json has been exported. Use the same key combination to reload it");
+                    return;
                 }
-                else if (!GameMain.isPaused)
-                {
-                    GameMain.Pause();
+                GameMain.mainPlayer.controller.movementStateInFrame = EMovementState.Sail;
+                GameMain.mainPlayer.controller.actionSail.ResetSailState();
+                GameCamera.instance.SyncForSailMode();
+                // if (!GameMain.isPaused && !DSPGame.IsMenuDemo)
+                // {
+                //     
+                //     GameMain.Pause();
+                //     UIRoot.instance.uiGame.escMenu._Open();
+                // }
+                // else if (!GameMain.isPaused)
+                // {
+                //     GameMain.Pause();
+                //
+                // }
+                // UIRoot.instance.OpenOptionWindow();
+                // GS2.Warn($"********* Loading {GS2.Config.ImportFilename}");
+                // GS2.Config.LoadJsonGalaxy(GS2.Config.ImportFilename);
+                var p = GameMain.localStar.planets[GameMain.localPlanet.index];
+                var gsPlanet = GS2.GetGSPlanet(p);
+                GS2.GetGSStar(p.star).counter = p.index;
+                // GameMain.localPlanet.Unload();
+                // PlanetModelingManager.currentModelingStage = 0;
+                // PlanetModelingManager.currentModelingSeamNormal = 0;
+                // PlanetModelingManager.currentModelingPlanet = p;
+                var newTheme = GS2.LoadJsonTheme(filename);
+                GS2.Warn($"LOADED THEME {newTheme.Name} CustomGen:{newTheme.CustomGeneration} TA:{newTheme.TerrainSettings.Algorithm}");
+                newTheme.Process();
+                gsPlanet.Theme = newTheme.Name;
 
-                }
-                UIRoot.instance.OpenOptionWindow();
-                GS2.Warn($"********* Loading {GS2.Config.ImportFilename}");
-                GS2.Config.LoadJsonGalaxy(GS2.Config.ImportFilename);
+                // var t = GS2.GetGSPlanet(p).GsTheme;
+                // t.initialized = false;
+                //     t.terrainMaterial.Tint = Color.red;
+                //     t.oceanMaterial.Tint = Color.green;
+                //     t.terrainMaterial.CopyFrom = "GasGiant.terrainMat";
+                //     t.terrainMat = null;
+                //     t.oceanMat = null;
+                //     t.atmosMat = null;
+                //     t.minimapMat = null;
+                //     t.thumbMat = null;
+                //     
+                //     p.terrainMaterial = null;
+                //     p.oceanMaterial = null;
+                //     p.atmosMaterial = null;
+                //     p.minimapMaterial = null;
+                // t.Process();
+                // int themeId = newTheme.UpdateThemeProtoSet();
+                // p.star.planets[p.index] = GS2.CreatePlanet(ref p.star, GS2.GetGSPlanet(p), new GS2.Random(p.seed));
+                p.Free();
+                p.data = null;
+                p.factory = null;
+                p.terrainMaterial = null;
+                p.oceanMaterial = null;
+                p.atmosMaterial = null;
+                p.minimapMaterial = null;
+                // p.theme = themeId;
+                GS2.SetPlanetTheme(p, gsPlanet);
+                // p.data = new PlanetRawData((int)(p.radius/4)*4);
+                GameMain.localStar.planets[p.index] = p;
+                gsPlanet.planetData = p;
+                PlanetModelingManager.RequestLoadPlanet(p);
+                GameMain.data.LeavePlanet();
+                // GS2.Warn(t.terrainMaterial.Tint.ToString());
+                // p.Unload();
+                // UnityEngine.Object.Destroy(p.gameObject);
+                // // GameMain.data.ArrivePlanet(p);
+                // PlanetModelingManager.RequestLoadPlanet(p);
+                // if (PlanetModelingManager.currentModelingPlanet != null)
+                // {
+                //     try
+                //     {
+                //         PlanetModelingManager.ModelingPlanetMain(PlanetModelingManager.currentModelingPlanet);
+                //     }
+                //     catch (Exception message)
+                //     {
+                //         GS2.Warn(message.ToString());
+                //         PlanetModelingManager.currentModelingPlanet.Unload();
+                //         PlanetModelingManager.currentModelingPlanet.factoryLoaded = false;
+                //         PlanetModelingManager.currentModelingPlanet = null;
+                //         PlanetModelingManager.currentModelingStage = 0;
+                //         PlanetModelingManager.currentModelingSeamNormal = 0;
+                //     }
+                // }
             }
 
             timer++;
@@ -125,8 +207,7 @@ namespace GalacticScale
             //GS2.Warn("FixedUpdate");
             if (!GS2.Config.CheatMode) return;
             if (DSPGame.IsMenuDemo) return;
-            if (TeleportStar == null && TeleportPlanet == null || TeleportEnabled == false ||
-                !(GameMain.localStar != null && GameMain.localStar.loaded)) return;
+            if (TeleportStar == null && TeleportPlanet == null || TeleportEnabled == false || !(GameMain.localStar != null && GameMain.localStar.loaded)) return;
             if (TeleportPlanet != null)
             {
                 GS2.Warn($"TP to Planet {TeleportPlanet?.name} of star {TeleportPlanet?.star?.name}");
@@ -151,7 +232,7 @@ namespace GalacticScale
                     while (buffer.Count > 0)
                     {
                         var o = buffer.Dequeue();
-                        var l = ((object data, LogLevel loglevel, bool isActive)) o;
+                        var l = ((object data, LogLevel loglevel, bool isActive))o;
                         if (l.isActive) Logger.Log(l.loglevel, "Q:" + l.data);
                     }
 
@@ -191,7 +272,5 @@ namespace GalacticScale
             GameMain.mainPlayer.transform.localScale = Vector3.one;
             GameCamera.instance.FrameLogic();
         }
-
-
     }
 }

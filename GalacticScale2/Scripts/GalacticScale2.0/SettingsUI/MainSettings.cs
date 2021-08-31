@@ -38,6 +38,11 @@ namespace GalacticScale
             set => Preferences.Set("Minify JSON", value);
         }
 
+        public void EnableDevMode()
+        {
+            Preferences.Set("Dev", true);
+            GS2.SavePreferences();
+        }
 
         public bool FixCopyPaste => true; //Preferences.GetBool("Fix CopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
@@ -149,7 +154,13 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode", null, "All Research, TP by ctrl-click nav arrow".Translate()));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
-            // DebugOptions.Add(GSUI.Button("Fix Binary Star Position".Translate(), "Now", ResetBinaryStars, null, "Will need to be saved and loaded to apply".Translate()));
+            DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", (o)=>
+            {
+                // GS2.WarnJson(gameDesc);
+                gameDesc.resourceMultiplier = 100;
+                GSSettings.GalaxyParams.resourceMulti = 100;
+                GS2.WarnJson(gameDesc.resourceMultiplier);
+            }, null, "Will need to be saved and loaded to apply".Translate()));
             // DebugOptions.Add(GSUI.Button("Test", "Now", (o) =>
             // {
             //     Warn("ExternalThemes:");

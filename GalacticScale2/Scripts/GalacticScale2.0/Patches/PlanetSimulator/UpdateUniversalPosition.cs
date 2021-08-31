@@ -14,7 +14,7 @@ namespace GalacticScale
             Vector3 cameraPos)
         {
             if (__instance.planetData == null || __instance.planetData.loading ||
-                __instance.planetData.factoryLoading) return false;
+                __instance.planetData.factoryLoading || __instance.planetData == PlanetModelingManager.currentModelingPlanet) return false;
 
             __instance.SetLayers();
             var localPlanet = GameMain.localPlanet;

@@ -111,6 +111,10 @@ namespace GalacticScale
             Log("End");
         }
 
+        public static void ShowMessage(string message, string title = "Galactic Scale", string button = "OK")
+        {
+            UIMessageBox.Show(title.Translate(), message.Translate(), button.Translate(), 0);
+        }
         public static void OnMenuLoaded()
         {
             if (MenuHasLoaded) return;
