@@ -53,8 +53,8 @@
     <Reference Include="GSUI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\GSUI.dll</HintPath>
     </Reference>
-    <Reference Include="NebulaAPI">
-      <HintPath>..\..\..\Users\Tony\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\nebula-NebulaMultiplayerModApi\NebulaAPI.dll</HintPath>
+    <Reference Include="NebulaAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>C:\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\nebula-NebulaMultiplayerModApi\NebulaAPI.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\netstandard.dll</HintPath>
