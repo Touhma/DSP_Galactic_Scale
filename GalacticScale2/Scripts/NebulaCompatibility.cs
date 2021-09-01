@@ -4,6 +4,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using NebulaAPI;
+using UnityEngine.PostProcessing;
 
 namespace GalacticScale
 {
@@ -35,12 +36,14 @@ namespace GalacticScale
 
         public void Export(BinaryWriter w)
         {
-            GS2.Export(w);
+            var settings = GSSettings.Serialize();
+            w.Write(settings);
         }
 
         public void Import(BinaryReader r)
         {
-            GS2.Import(r);
+            var settings = r.ReadString();
+            GSSettings.DeSerialize(settings);
         }
         
     }
