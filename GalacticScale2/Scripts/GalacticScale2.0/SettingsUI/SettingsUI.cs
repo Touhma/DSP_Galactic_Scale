@@ -1,5 +1,6 @@
 ﻿//using System.Linq;
 //using UITools;
+
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -114,8 +115,6 @@ namespace GalacticScale
         private static void CreateOptionsUI()
         {
             Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
-            // var go = GS2.bundle.LoadAsset<GameObject>("ThemeSelector");
-            // themeselector = Object.Instantiate(go, details, false);
             var gsp = Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
             GSSettingsPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();
             GSSettingsPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;
@@ -124,28 +123,35 @@ namespace GalacticScale
             SettingsPanel = GSSettingsPanel.GetComponentInChildren<GSUIPanel>();
             options.AddRange(Config.Options);
 
+            // Add UI Elements for Plugins
             for (var i = 0; i < Plugins.Count; i++)
             {
                 Warn($"Loading Plugin #{i} {Plugins[i].Name}");
-                var group = GSUI.Group(Plugins[i].Name, Plugins[i].Options, Plugins[i].Description);
+                var plugin = Plugins[i];
+                var group = GSUI.Group(plugin.Name, plugin.Options, plugin.Description, true, true, o =>
+                {
+                    plugin.Enabled = !plugin.Enabled;
+                    Warn(plugin.Enabled.ToString());
+                });
+                UnityAction postfix = () =>
+                {
+                    Warn($"Setting {plugin.Enabled}");
+                    group.Set(plugin.Enabled);
+                };
+                OptionsUIPostfix.AddListener(postfix);
+
+
                 options.Add(GSUI.Spacer());
                 options.Add(group);
                 options.Add(GSUI.Spacer());
-                // Warn("Loaded");
             }
 
-            // var tsRect = themeselector.GetComponent<RectTransform>();
-            // var offset = options.Count * -40;
-            // tsRect.anchoredPosition = new Vector2(tsRect.anchoredPosition.x, tsRect.anchoredPosition.x + offset);
 
             var currentGenIndex = GetCurrentGeneratorIndex();
-            // GS2.Log("CreateGeneratorOptionsCanvases: currentGenIndex = " + currentGenIndex + " - " + GS2.Generators[currentGenIndex]?.Name);
-            // GS2.Warn(generatorPluginOptions.Count.ToString());
             var scrollContentRect = SettingsPanel.transform.parent.GetComponent<RectTransform>();
             for (var i = 0; i < generatorPluginOptions.Count; i++)
             {
                 //for each canvas
-                // GS2.Log("Creating Canvas " + i);
                 var canvas = Object.Instantiate(sp, scrollContentRect, false).GetComponent<RectTransform>();
 
                 canvas.anchoredPosition = new Vector2(anchorX + 750, anchorY);
@@ -168,10 +174,8 @@ namespace GalacticScale
 
             // Warn("Creating Main Settings");
             for (var i = 0; i < options.Count; i++) // Main Settings
-            {
                 // GS2.Warn($"Creating {options[i].Label}");
                 CreateUIElement(options[i], SettingsPanel.contents);
-            }
         }
 
         private static void ProcessListContents(GSUIList parentList, GSUI group)

@@ -17,6 +17,15 @@
 
         public GSOptions Options { get; } = new GSOptions();
 
+        public void Import(GSGenPreferences preferences)
+        {
+        }
+
+        public GSGenPreferences Export()
+        {
+            return new GSGenPreferences();
+        }
+
         public void Init()
         {
             //List<string> genList = new List<string>();
@@ -43,15 +52,6 @@
                 //GS2.Log("added star " + i + " with physics radius " + s.physicsRadius);
                 GSSettings.Stars.Add(s);
             }
-        }
-
-        public void Import(GSGenPreferences preferences)
-        {
-        }
-
-        public GSGenPreferences Export()
-        {
-            return new GSGenPreferences();
         }
     }
 }

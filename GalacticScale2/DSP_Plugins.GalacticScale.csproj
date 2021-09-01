@@ -161,6 +161,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Constructors.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Set.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Plugins\iConfigurablePlugin.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\ExitProgramSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVeinDetail\SetInspectPlanet.cs" />

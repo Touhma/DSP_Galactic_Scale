@@ -27,7 +27,11 @@ namespace GalacticScale
         }
 
         public string Version => Bootstrap.VERSION;
-        public bool CheckVersion => true;
+
+        bool IMultiplayerMod.CheckVersion(string hostVersion, string clientVersion)
+        {
+            return hostVersion.Equals(clientVersion);
+        }
 
         public void Export(BinaryWriter w)
         {
@@ -38,11 +42,7 @@ namespace GalacticScale
         {
             GS2.Import(r);
         }
-
-        bool IMultiplayerMod.CheckVersion(string hostVersion, string clientVersion)
-        {
-            throw new System.NotImplementedException();
-        }
+        
     }
 
     public static class NebulaCompatPatch
