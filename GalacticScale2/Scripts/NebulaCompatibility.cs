@@ -26,7 +26,7 @@ namespace GalacticScale
             
         }
 
-        public string Verson => Bootstrap.VERSION;
+        public string Version => Bootstrap.VERSION;
         public bool CheckVersion => true;
 
         public void Export(BinaryWriter w)
@@ -38,6 +38,11 @@ namespace GalacticScale
         {
             GS2.Import(r);
         }
+
+        bool IMultiplayerMod.CheckVersion(string hostVersion, string clientVersion)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     public static class NebulaCompatPatch
@@ -46,7 +51,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GameData), "SetForNewGame")]
         public static void NebulaCheck()
         {
-            if (NebulaModAPI.GetSimulatedWorld().Initialized && !NebulaModAPI.GetLocalPlayer().IsMasterClient) GS2.NebulaClient = true;
+            if (NebulaModAPI.IsMultiplayerActive && NebulaModAPI.MultiplayerSession.LocalPlayer.IsClient) GS2.NebulaClient = true;
             else GS2.NebulaClient = false;
         }
     }

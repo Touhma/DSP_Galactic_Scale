@@ -399,17 +399,28 @@ namespace GalacticScale.Generators
 
         private void AddSiTiToBirthPlanet()
         {
-            // Warn("Setting SI/TI");
+            Warn($"Adding SI/TI to birthPlanet {birthPlanet.Name}");
             birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
-            birthPlanet.veinSettings.Algorithm = "GS2";
+            if (birthPlanet.veinSettings.Algorithm == "Vanilla")
+                birthPlanet.veinSettings.Algorithm = "GS2";
             birthPlanet.GsTheme.CustomGeneration = true;
-            // Warn("2");
-            birthPlanet.veinSettings.VeinTypes.Add(GSVeinType.Generate(
-                EVeinType.Silicium,
-                1, 10, 0.6f, 0.6f, 5, 10, false));
-            birthPlanet.veinSettings.VeinTypes.Add(GSVeinType.Generate(
-                EVeinType.Titanium,
-                1, 10, 0.6f, 0.6f, 5, 10, false));
+            //Warn("2");
+            var s = GSVeinType.Generate(EVeinType.Silicium,1, 10, 0.6f, 0.6f, 5, 10, false);
+            var t = GSVeinType.Generate(EVeinType.Titanium,1, 10, 0.6f, 0.6f, 5, 10, false);
+            List<EVeinType> vts = new List<EVeinType>();
+            foreach (var vt in birthPlanet.veinSettings.VeinTypes)
+            {
+                vts.Add(vt.type);
+            }
+
+            if (!vts.Contains(EVeinType.Silicium)) birthPlanet.veinSettings.VeinTypes.Add(s);
+            if (!vts.Contains(EVeinType.Titanium)) birthPlanet.veinSettings.VeinTypes.Add(t);
+            foreach (var vt in birthPlanet.veinSettings.VeinTypes)
+            {
+                if (vt.type == EVeinType.Silicium || vt.type == EVeinType.Titanium) vt.rare = false;
+            }
+            
+            //WarnJson(birthPlanet.veinSettings);
         }
 
         private void PickNewBirthPlanet()

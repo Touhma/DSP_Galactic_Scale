@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             if (gsPlanet == null) {GS2.Warn("gsPlanet Null");return;}
             random = new GS2.Random(gsPlanet.Seed);
-            GS2.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            //GS2.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet?.GsTheme.TerrainSettings;
             //GS2.Log("Generate Terrain for " + gsPlanet.Name + " 3 ");
             var planet = gsPlanet.planetData;

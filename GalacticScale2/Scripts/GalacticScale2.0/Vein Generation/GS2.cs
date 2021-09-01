@@ -50,7 +50,7 @@ namespace GalacticScale
                     GS2.Warn($"{gsPlanet.Theme} not found in themelibrary. ThemeLibrary Contents:");
                     GS2.WarnJson(GSSettings.ThemeLibrary.Keys.ToList());
                 }
-                gsPlanet.veinSettings = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).VeinSettings.Clone();
+                if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings()) gsPlanet.veinSettings = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).VeinSettings.Clone();
             }
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];

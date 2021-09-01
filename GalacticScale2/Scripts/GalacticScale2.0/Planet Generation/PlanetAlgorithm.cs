@@ -10,8 +10,8 @@
 
         public GS2PlanetAlgorithm(GSPlanet gsPlanet)
         {
-            GS2.Log("GS2PlanetAlgorithm|Constructor|Begin");
-            GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
+            //GS2.Log("GS2PlanetAlgorithm|Constructor|Begin");
+            //GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Selecting Theme " + gsPlanet.Theme);
             var gSTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Selected Theme");
@@ -27,7 +27,7 @@
 
             if (gsTheme.TerrainSettings.Algorithm == "Vanilla")
             {
-                GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to Vanilla");
+                //GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to Vanilla");
                 terrainAlgo = (p, modX, modY) =>
                 {
                     //GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Terrain Algo Running");
@@ -36,7 +36,7 @@
             }
             else
             {
-                GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to " + gsTheme.TerrainSettings.Algorithm);
+                //GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to " + gsTheme.TerrainSettings.Algorithm);
                 terrainAlgo = GS2.TerrainAlgorithmLibrary.Find(gsTheme.TerrainSettings.Algorithm);
                 //this.}terrainAlgo = (gsTheme.TerrainSettings.Algorithm == "Vanilla") ? (GSPlanet p, double modX, double modY) => { baseAlgorithm.GenerateTerrain(modX, modY); } : 
             }
@@ -53,15 +53,15 @@
             if (gsTheme.VegeSettings.Algorithm == "Vanilla")
                 vegeAlgo = p =>
                 {
-                    GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vege Algo Running");
+                    //GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vege Algo Running");
                     baseAlgorithm.GenerateVegetables();
                 };
             else
             {
-                GS2.Log("GS2PlanetAlgorithm|Constructor|GS Vege Algo Running");
+                //GS2.Log("GS2PlanetAlgorithm|Constructor|GS Vege Algo Running");
 
                 vegeAlgo = GS2.VegeAlgorithmLibrary.Find(gsTheme.VegeSettings.Algorithm);
-                GS2.Warn("NonstandardVegealgo");
+                //GS2.Warn("NonstandardVegealgo");
             }
 
             //this.vegeAlgo = (gsTheme.VegeSettings.Algorithm == "Vanilla") ? (GSPlanet p) => { 

@@ -14,7 +14,7 @@ namespace GalacticScale
             if (GS2.Vanilla) return true;
             // GS2.Log("CHOOSING ALGORITHM FOR " + planet.displayName + " rawdata?"+(planet.data != null));
             var gsPlanet = GS2.GetGSPlanet(planet);
-            GS2.Warn(gsPlanet.Theme);
+            //GS2.Warn(gsPlanet.Theme);
             var gsTheme = GS2.ThemeLibrary.Find(gsPlanet.Theme);
             // GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
             if (!GS2.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration)
