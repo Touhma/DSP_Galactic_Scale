@@ -137,6 +137,7 @@ namespace GalacticScale
                 {
                     Warn($"Setting {plugin.Enabled}");
                     group.Set(plugin.Enabled);
+                    plugin.Enabled = plugin.Enabled;
                 };
                 OptionsUIPostfix.AddListener(postfix);
 

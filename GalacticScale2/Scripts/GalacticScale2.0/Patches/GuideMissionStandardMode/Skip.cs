@@ -52,11 +52,11 @@ namespace GalacticScale
             __instance.gameData.InitLandingPlace();
             __instance.player.controller.memCameraTargetRot = __instance.targetRot;
             __instance.player.cameraTarget.rotation = __instance.targetRot;
-            if (GS2.Config.CheatMode && !GS2.ResearchUnlocked)
-            {
-                GS2.Warn("Cheatmode Enabled. Unlocking Research");
-                GS2.UnlockTech(null);
-            }
+            // if (GS2.Config.CheatMode && !GS2.ResearchUnlocked)
+            // {
+            //     GS2.Warn("Cheatmode Enabled. Unlocking Research");
+            //     GS2.UnlockTech(null);
+            // }
 
             return false;
         }
