@@ -8,9 +8,11 @@
         string Version { get; }
         string GUID { get; }
         GSOptions Options { get; }
-
+        bool Enabled { get; set; }
         void Init();
         void Import(GSGenPreferences preferences);
+
+        
         GSGenPreferences Export();
     }
 
