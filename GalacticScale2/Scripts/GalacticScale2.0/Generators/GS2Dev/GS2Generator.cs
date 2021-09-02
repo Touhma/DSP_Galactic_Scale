@@ -76,6 +76,10 @@ namespace GalacticScale.Generators
             Log($"Orbits Phased: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             // SelectBirthPlanet();
+            birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
+            if (birthPlanet.veinSettings.Algorithm == "Vanilla")
+                birthPlanet.veinSettings.Algorithm = "GS2";
+            birthPlanet.GsTheme.CustomGeneration = true;
             if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
             Log($"BirthPlanet Selected: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
@@ -401,10 +405,7 @@ namespace GalacticScale.Generators
         private void AddSiTiToBirthPlanet()
         {
             Warn($"Adding SI/TI to birthPlanet {birthPlanet.Name}");
-            birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
-            if (birthPlanet.veinSettings.Algorithm == "Vanilla")
-                birthPlanet.veinSettings.Algorithm = "GS2";
-            birthPlanet.GsTheme.CustomGeneration = true;
+
             //Warn("2");
             var s = GSVeinType.Generate(EVeinType.Silicium,1, 10, 0.6f, 0.6f, 5, 10, false);
             var t = GSVeinType.Generate(EVeinType.Titanium,1, 10, 0.6f, 0.6f, 5, 10, false);
