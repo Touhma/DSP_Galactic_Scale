@@ -89,7 +89,7 @@ namespace GalacticScale
                 }
 
                 var stringResult = fsJsonPrinter.CompressedJson(data);
-                if (value is FloatPair) GS2.Warn(stringResult);
+                //if (value is FloatPair) GS2.Warn(stringResult);
                 this[key] = stringResult;
             }
             else

@@ -407,7 +407,7 @@ namespace GalacticScale
             GS2.Warn($"CurveLength:{__instance.curveLength} CurveDistance:{__instance.curveDistance} CurveSpeed:{__instance.curveSpeed}");
             GS2.Warn($"GSSettings BirthPlanet:{GSSettings.BirthPlanet.Name} Galaxy BirthPlanet:{GS2.galaxy.PlanetById(GS2.galaxy.birthPlanetId).name} LocalPlanet:{localPlanet.name}");
             // GS2.WarnJson(bezierPath);
-            GS2.Warn(localPlanet.uPosition.ToString());
+            //GS2.Warn(localPlanet.uPosition.ToString());
             return false;
         }
     }

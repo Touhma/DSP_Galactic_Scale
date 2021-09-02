@@ -132,9 +132,16 @@ namespace GalacticScale
                     disabled[i] = true;
                 else
                     disabled[i] = false;
-
-                if (GS2.Config.ForceRare) disabled[i] = false;
-                if (random.NextPick(gsPlanet.rareChance)) disabled[i] = false;
+                if (gsPlanet.rareChance < 0)
+                {
+                    disabled[i] = true;
+                }
+                else
+                {
+                    if (random.NextPick(gsPlanet.rareChance)) disabled[i] = false;
+                    if (GS2.Config.ForceRare) disabled[i] = false;
+                }
+                
             }
 
             var maxVeinGroupSize = MaxCount(veinGroups);

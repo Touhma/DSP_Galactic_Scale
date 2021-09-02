@@ -39,7 +39,7 @@ namespace GalacticScale
             //GS2.Log("Start " + (theme.ambientDesc == null));
             if (theme.ambientDesc == null)
             {
-                GS2.Warn(theme.Name + " has no AmbientDesc");
+                //GS2.Warn(theme.Name + " has no AmbientDesc");
                 return;
             }
 

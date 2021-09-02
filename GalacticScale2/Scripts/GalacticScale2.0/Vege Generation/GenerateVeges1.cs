@@ -9,8 +9,8 @@ namespace GalacticScale
 
         public static void GenerateVeges1(GSPlanet gsPlanet)
         {
-            GS2.Log("GenerateVeges1|" + gsPlanet.Name);
-            GS2.Warn($"USING GS2 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            //GS2.Log("GenerateVeges1|" + gsPlanet.Name);
+            //GS2.Warn($"USING GS2 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var planet = gsPlanet.planetData;
             var themeProto = LDB.themes.Select(planet.theme);
             if (themeProto == null) return;

@@ -106,6 +106,7 @@ namespace GalacticScale.Generators
             // }
             // Log("End");
             GSSettings.BirthPlanetName = birthPlanet.Name;
+            if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = -1;
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 
@@ -175,7 +176,7 @@ namespace GalacticScale.Generators
                         }
                         // GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
                     // }
-                    GS2.Warn("Adding Moon");
+                    //GS2.Warn("Adding Moon");
                     // var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "Lol",
                     //     510, 0.13f, 66f, 900f, 0f,
                     //     66f, 360f, 0f, -1f));
@@ -420,7 +421,7 @@ namespace GalacticScale.Generators
                 if (vt.type == EVeinType.Silicium || vt.type == EVeinType.Titanium) vt.rare = false;
             }
             
-            //WarnJson(birthPlanet.veinSettings);
+            WarnJson(birthPlanet.veinSettings);
         }
 
         private void PickNewBirthPlanet()

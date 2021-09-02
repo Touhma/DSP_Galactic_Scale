@@ -159,7 +159,7 @@ namespace GalacticScale
                 // GS2.WarnJson(gameDesc);
                 gameDesc.resourceMultiplier = 100;
                 GSSettings.GalaxyParams.resourceMulti = 100;
-                GS2.WarnJson(gameDesc.resourceMultiplier);
+                //GS2.WarnJson(gameDesc.resourceMultiplier);
             }, null, "Will need to be saved and loaded to apply".Translate()));
             // DebugOptions.Add(GSUI.Button("Test", "Now", (o) =>
             // {
@@ -308,7 +308,7 @@ namespace GalacticScale
 
                     var FolderGroup = GSUI.Group(Folder, listoptions, null, true, true, o =>
                     {
-                        Warn(o);
+                        //Warn(o);
                         foreach (var option in listoptions)
                             option.Set(o);
                         //option.RectTransform.GetComponent<GSUIToggle>().Value = o;
@@ -367,7 +367,7 @@ namespace GalacticScale
             foreach (var canvas in SettingsUI.GeneratorCanvases)
                 canvas.gameObject.SetActive(false);
             // GS2.Warn("They have been set inactive");
-            Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set " + (int)result);
+            //Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set " + (int)result);
             SettingsUI.GeneratorCanvases[(int)result].gameObject.SetActive(true);
             // GS2.Warn("Correct one set active");
             SettingsUI.GeneratorIndex = (int)result;
@@ -435,16 +435,16 @@ namespace GalacticScale
             GSSettings.Reset(GSSettings.Seed);
             var path = Path.Combine(Path.Combine(DataDir, "CustomGalaxies"), ImportFilename + ".json");
             GS2.ThemeLibrary = GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
-            Warn(GSSettings.StarCount.ToString());
+            //Warn(GSSettings.StarCount.ToString());
             LoadSettingsFromJson(path);
             Log("Generator:Json|Generate|End");
             GSSettings.Instance.imported = true;
             // GS2.gameDesc.playerProto = 2;
-            WarnJson(GSSettings.Instance.galaxyParams);
-            WarnJson(GSSettings.StarCount);
+            //WarnJson(GSSettings.Instance.galaxyParams);
+            //WarnJson(GSSettings.StarCount);
             gsStars.Clear();
             gsPlanets.Clear();
-            Warn(GSSettings.StarCount.ToString());
+            //Warn(GSSettings.StarCount.ToString());
 
             // GS2.galaxy = new GalaxyData();
             var gameDesc = new GameDesc();

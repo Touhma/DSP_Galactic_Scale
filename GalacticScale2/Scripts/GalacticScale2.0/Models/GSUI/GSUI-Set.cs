@@ -21,11 +21,11 @@ namespace GalacticScale
 
         public bool Set(Val o)
         {
-            GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
+            //GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
 
             if (RectTransform == null)
              {   
-                 GS2.Warn($"RectTransform for {Label} null");
+                 //GS2.Warn($"RectTransform for {Label} null");
             
                 return false;
             }

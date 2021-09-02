@@ -209,9 +209,9 @@ namespace GalacticScale
                     GS2.Warn("Disabling Checkbox");
 
                     RectTransform.GetComponent<Toggle>().interactable = false;
-                    GS2.Warn("!");
+                    //GS2.Warn("!");
                     Disabled = true;
-                    GS2.Warn("!!");
+                    //GS2.Warn("!!");
                     return true;
                 case "Combobox":
                     GS2.Warn("Disabling Combobox");

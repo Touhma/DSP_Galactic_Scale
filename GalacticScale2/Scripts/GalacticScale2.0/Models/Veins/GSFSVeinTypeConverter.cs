@@ -93,19 +93,19 @@ namespace GalacticScale
                 var numToGenerate = (int) generate.AsInt64;
                 if (numToGenerate < 0)
                 {
-                    GS2.Warn("generate number < 0");
+                    //GS2.Warn("generate number < 0");
                     numToGenerate = 0;
                 }
 
-                if (numToGenerate > 64)
+                if (numToGenerate > 564)
                 {
-                    GS2.Warn("generate number > 64");
-                    numToGenerate = 64;
+                    //GS2.Warn("generate number > 64");
+                    numToGenerate = 564;
                 }
 
                 if (numToGenerate < model.veins.Count)
                 {
-                    GS2.Warn("generate number < existing vein count");
+                    //GS2.Warn("generate number < existing vein count");
                     numToGenerate = 0;
                 }
 

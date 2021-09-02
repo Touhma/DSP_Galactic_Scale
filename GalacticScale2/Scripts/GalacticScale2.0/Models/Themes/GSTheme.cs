@@ -723,7 +723,7 @@ namespace GalacticScale
                     minimapMat = donorTheme.minimapMat;
                     break;
                 default:
-                    GS2.Warn("Error Setting Material: " + material + " does not exist");
+                    //GS2.Warn("Error Setting Material: " + material + " does not exist");
                     break;
             }
         }

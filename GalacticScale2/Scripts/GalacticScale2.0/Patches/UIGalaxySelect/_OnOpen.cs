@@ -13,10 +13,10 @@ namespace GalacticScale
         public static bool _OnOpen(UIGalaxySelect __instance , ref Slider ___starCountSlider, ref Slider ___resourceMultiplierSlider)
         {
             
-                GS2.Warn("Fix");
+                //GS2.Warn("Fix");
                 if (GS2.canvasOverlay)
                 {
-                    GS2.Warn("FIXING WITH GALAXYSELECT!");
+                    //GS2.Warn("FIXING WITH GALAXYSELECT!");
                     UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
                     GS2.canvasOverlay = false;
                 }
