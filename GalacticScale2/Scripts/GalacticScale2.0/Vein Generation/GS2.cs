@@ -128,19 +128,25 @@ namespace GalacticScale
             var disabled = new bool[16];
             for (var i = 8; i < 16; i++)
             {
-                if (random.NextDouble() < 0.87)
-                    disabled[i] = true;
-                else
-                    disabled[i] = false;
-                if (gsPlanet.rareChance < 0)
+                //if (random.NextDouble() < 0.87)
+                //    disabled[i] = true;
+                //else
+                //    disabled[i] = false;
+                switch (gsPlanet.rareChance)
                 {
-                    disabled[i] = true;
+                    case -2:disabled[i] = true; break;
+                    case -1: if (random.NextDouble() < 0.87) disabled[i] = true; else disabled[i] = false; break;
+                    default: if (random.NextPick(gsPlanet.rareChance)) disabled[i] = true; else disabled[i] = false; break;
                 }
-                else
-                {
-                    if (random.NextPick(gsPlanet.rareChance)) disabled[i] = false;
-                    if (GS2.Config.ForceRare) disabled[i] = false;
-                }
+                //if (gsPlanet.rareChance < -1)
+                //{
+                //    disabled[i] = true;
+                //}
+                //else
+                //{
+                    //if (random.NextPick(gsPlanet.rareChance)) disabled[i] = false;
+                if (GS2.Config.ForceRare) disabled[i] = false;
+                //}
                 
             }
 

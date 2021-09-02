@@ -33,7 +33,7 @@ namespace GalacticScale
         private float orbitPhase = -1;
         private float orbitRadius = -1;
         private float orbitLongitude = -1;
-        public float rareChance = 0;
+        public int rareChance = -1;
 
         [NonSerialized] public PlanetData planetData;
 
@@ -54,7 +54,7 @@ namespace GalacticScale
 
         public Dictionary<string, GSVein> veins = new Dictionary<string, GSVein>();
 
-        [NonSerialized] public GSVeinSettings veinSettings;
+        public GSVeinSettings veinSettings;
 
         public GSPlanet()
         {

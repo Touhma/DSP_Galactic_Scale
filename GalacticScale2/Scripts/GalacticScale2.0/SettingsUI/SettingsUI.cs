@@ -130,18 +130,16 @@ namespace GalacticScale
                 var plugin = Plugins[i];
                 var group = GSUI.Group(plugin.Name, plugin.Options, plugin.Description, true, true, o =>
                 {
-                    plugin.Enabled = !plugin.Enabled;
-                    Warn(plugin.Enabled.ToString());
+                    plugin.Enabled = o;
+                    //Warn(plugin.Enabled.ToString());
                 });
                 UnityAction postfix = () =>
                 {
-                    Warn($"Setting {plugin.Enabled}");
+                    //Warn($"Setting {plugin.Enabled}");
                     group.Set(plugin.Enabled);
                     plugin.Enabled = plugin.Enabled;
                 };
                 OptionsUIPostfix.AddListener(postfix);
-
-
                 options.Add(GSUI.Spacer());
                 options.Add(group);
                 options.Add(GSUI.Spacer());
