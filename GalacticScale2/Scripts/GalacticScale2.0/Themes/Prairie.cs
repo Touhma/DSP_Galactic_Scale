@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Prairie".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-
+            CustomGeneration = true,
             LDBThemeId = 15,
             Algo = 6,
             MinRadius = 5,
@@ -23,12 +23,13 @@ namespace GalacticScale
             Distribute = EThemeDistribute.Interstellar,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(1.0f, 1.0f),
-            VeinSettings = new GSVeinSettings {Algorithm = "Vanilla"},
+            VeinSettings = new GSVeinSettings {Algorithm = "GS2"},
             TerrainSettings = new GSTerrainSettings
             {
                 xFactor = 0.05,
                 yFactor = 0.05,
-                zFactor = 0.05
+                zFactor = 0.05,
+                Algorithm = "GSTA6"
             },
             AmbientSettings = new GSAmbientSettings
             {

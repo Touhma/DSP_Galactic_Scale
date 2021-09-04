@@ -199,8 +199,11 @@ namespace GalacticScale.Generators
                     // GS2.Warn("Setting Crazy Inclination for " + star.Name);
                     body.OrbitInclination = random.NextFloat(20f, 85f);
                 }
-                var rc = (int)(preferences.GetInt($"{GetTypeLetterFromStar(star)}rareChance", 0) / 100f);
-                body.rareChance = rc-1;
+
+                float rc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}rareChance", -1);
+                if (rc > 0f) body.rareChance = rc / 100f;
+                else body.rareChance = rc;
+
                 // Force inclinations for testing
                 // body.OrbitInclination = 0f;
                 // body.OrbitPhase = 0f;

@@ -242,5 +242,37 @@ namespace GalacticScale
 
             return groupVector;
         }
+
+        private static void CutTheVeinGroup(ref List<GSVeinType> veinGroups)
+        {
+            var newList = new List<GSVeinType>();
+            var r = random.Next(veinGroups.Count);
+            for (var x = r; x < veinGroups.Count; x++)
+            {
+                newList.Add(veinGroups[x]);
+            }
+            for (var x = 0; x < r; x++)
+            {
+                newList.Add(veinGroups[x]);
+            }
+            veinGroups = newList;
+        }
+        private static bool[] DisableVeins(ref GSPlanet gsPlanet)
+        {
+            var disabled = new bool[16];
+            for (var i = 8; i < 16; i++)
+            {
+                switch (gsPlanet.rareChance)
+                {
+                    case 0f:disabled[i] = true; break;
+                    case -1f: if (random.NextDouble() < 0.87) disabled[i] = true; else disabled[i] = false; break;
+                    default: if (random.NextPick(gsPlanet.rareChance)) disabled[i] = true; else disabled[i] = false; break;
+                }
+                if (GS2.Config.ForceRare) disabled[i] = false;
+                
+            }
+
+            return disabled;
+        }
     }
 }

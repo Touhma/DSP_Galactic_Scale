@@ -13,11 +13,7 @@ namespace GalacticScale
             random = new GS2.Random(gsPlanet.Seed);
             InitializeFromVeinSettings(gsPlanet);
             if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly)
-                // GS2.Log("Generating birth points for Planet " + gsPlanet.Name);
-                // gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next());
                 GenBirthPoints(gsPlanet);
-
-            // GS2.Log("Adding Special Veins to Planet " + gsPlanet.Name);
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
             if (sketchOnly)
@@ -26,18 +22,9 @@ namespace GalacticScale
                 CalculateVectorsGS2(gsPlanet, true);
                 return;
             }
-                // GS2.Log("Returning (SketchOnly) Planet " + gsPlanet.Name);
-                // return;
-            
-            if (GSSettings.BirthPlanet == gsPlanet)
-                // GS2.Log("Initializing Vein Vectors for Planet " + gsPlanet.Name);
-                InitBirthVeinVectors(gsPlanet);
-
-            // GS2.Log("Adding Veins to Planet " + gsPlanet.Name);
+            if (GSSettings.BirthPlanet == gsPlanet) InitBirthVeinVectors(gsPlanet);
             AddVeinsToPlanetGS2(gsPlanet, CalculateVectorsGS2(gsPlanet));
-            // GS2.Log($"{gsPlanet.Name} Vein Gen Complete");
         }
-
         private static void InitializeFromVeinSettings(GSPlanet gsPlanet)
         {
             // GS2.Warn($"Initializing Veins for Theme { gsPlanet.Theme}");
@@ -67,7 +54,7 @@ namespace GalacticScale
             InitializePlanetVeins(planet, veinData.Count);
             var nodeVectors = new List<Vector2>();
             var infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
-            //GS2.Warn($"Adding Veins to Planet {gsPlanet.Name} infinite:{infiniteResources} resourceMulti:{DSPGame.GameDesc.resourceMultiplier}");
+            GS2.Warn($"Adding Veins to Planet {gsPlanet.Name} infinite:{infiniteResources} resourceMulti:{DSPGame.GameDesc.resourceMultiplier}");
 
             for (var i = 0; i < veinData.Count; i++) // For each veingroup (patch of vein nodes)
             {
@@ -97,6 +84,7 @@ namespace GalacticScale
 
                 for (var k = 0; k < nodeVectors.Count; k++)
                 {
+                    if (gsPlanet.Theme == "MoltenWorld") GS2.Warn(veinType.ToString());
                     //GS2.Log(node_vectors[k] + " is the node_vector[k]");
                     var vector5 = (nodeVectors[k].x * vectorRight + nodeVectors[k].y * vectorForward) *
                                   (float) planetRadiusFactor;
@@ -125,33 +113,11 @@ namespace GalacticScale
         private static List<GSVeinDescriptor> DistributeVeinTypes(GSPlanet gsPlanet)
         {
             List<GSVeinType> veinGroups = gsPlanet.veinSettings.VeinTypes;
-            var disabled = new bool[16];
-            for (var i = 8; i < 16; i++)
-            {
-                //if (random.NextDouble() < 0.87)
-                //    disabled[i] = true;
-                //else
-                //    disabled[i] = false;
-                switch (gsPlanet.rareChance)
-                {
-                    case -2:disabled[i] = true; break;
-                    case -1: if (random.NextDouble() < 0.87) disabled[i] = true; else disabled[i] = false; break;
-                    default: if (random.NextPick(gsPlanet.rareChance)) disabled[i] = true; else disabled[i] = false; break;
-                }
-                //if (gsPlanet.rareChance < -1)
-                //{
-                //    disabled[i] = true;
-                //}
-                //else
-                //{
-                    //if (random.NextPick(gsPlanet.rareChance)) disabled[i] = false;
-                if (GS2.Config.ForceRare) disabled[i] = false;
-                //}
-                
-            }
-
+            CutTheVeinGroup(ref veinGroups);
+            bool[] disabled = DisableVeins(ref gsPlanet);
             var maxVeinGroupSize = MaxCount(veinGroups);
             var distributed = new List<GSVeinDescriptor>();
+            
             for (var i = 0; i < maxVeinGroupSize; i++)
             for (var j = 0; j < veinGroups.Count; j++)
             {
@@ -172,13 +138,12 @@ namespace GalacticScale
                     richness = veinGroups[j].veins[i].richness
                 });
             }
-
+            GS2.WarnJson(distributed);
             return distributed;
         }
 
-        private static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet, bool sketchOnly = false)
+        private static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet, bool sketchOnly = false, bool PreventUnderwater = true)
         {
-            // GS2.Log("Calculating Vein Vectors for " + gsPlanet.Name);
             var randomFactor = 1.0;
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + random.NextDouble() / 2;
 
@@ -186,10 +151,9 @@ namespace GalacticScale
             var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.Radius, 2);
             var birth = planet.id == GSSettings.BirthPlanetId;
             Vector3 groupVector = new Vector3();
-               if (!sketchOnly) groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
+            if (!sketchOnly) groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypes(gsPlanet);
             var veinTotals = new Dictionary<EVeinType, int>();
-            // GS2.Log("*");
             for (var i = 0; i < veinGroups.Count; i++)
             {
                 if (gsPlanet.randomizeVeinCounts && random.NextDouble() > randomFactor &&
@@ -201,15 +165,11 @@ namespace GalacticScale
                         random.NextDouble() * random.NextDouble())
                     //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;
-                // GS2.Log($"{sketchOnly}");
                 if (sketchOnly)
                 {
-                    // GS2.Log("*");
                     gsPlanet.planetData.veinSpotsSketch[(int)veinGroups[i].type]++;
-                    // GS2.Log("*");
                     continue;
                 }
-                // GS2.Log("**");
                 var v = veinGroups[i];
                 if (v.position != Vector3.zero) continue;
 
@@ -224,7 +184,7 @@ namespace GalacticScale
 
                     potentialVector.Normalize(); //make the length of the vector 1
                     var height = planet.data.QueryHeight(potentialVector);
-                    if (height < planet.radius || !oreVein && height < planet.radius + 0.5f)
+                    if (!PreventUnderwater && (height < planet.radius || !oreVein && height < planet.radius + 0.5f))
                         continue; // Check for spawn point in a hollow
 
                     var padding = (float) planetRadiusFactor *
@@ -247,10 +207,7 @@ namespace GalacticScale
                 }
                 //else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
             }
-
             if (sketchOnly) return null;
-            //GS2.Log(gsPlanet.Name + " VeinTotals:");
-            // GS2.LogJson(veinTotals);
             if (!birth) return veinGroups;
             var gsVeinDescriptorList = new List<GSVeinDescriptor>();
             var ironCount = 6;

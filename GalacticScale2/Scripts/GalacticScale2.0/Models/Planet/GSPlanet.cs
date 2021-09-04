@@ -33,7 +33,7 @@ namespace GalacticScale
         private float orbitPhase = -1;
         private float orbitRadius = -1;
         private float orbitLongitude = -1;
-        public int rareChance = -1;
+        public float rareChance = -1f;
 
         [NonSerialized] public PlanetData planetData;
 

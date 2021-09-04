@@ -110,7 +110,7 @@ namespace GalacticScale.Generators
             // }
             // Log("End");
             GSSettings.BirthPlanetName = birthPlanet.Name;
-            if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = -2;
+            if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 

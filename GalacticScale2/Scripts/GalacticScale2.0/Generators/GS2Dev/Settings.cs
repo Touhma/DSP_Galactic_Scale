@@ -197,7 +197,7 @@ namespace GalacticScale.Generators
             preferences.Set("orbits", new FloatPair(0.1f, 10));
             preferences.Set("inclination", -1);
             preferences.Set("orbitLongitude", -1);
-            preferences.Set("rareChance", -1);
+            preferences.Set("rareChance", -1f);
             preferences.Set("luminosityBoost", 0);
             for (var i = 0; i < 14; i++)
             {
@@ -214,7 +214,7 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}inclination", -1);
                 preferences.Set($"{typeLetter[i]}orbitLongitude", 0);
                 preferences.Set($"{typeLetter[i]}hzOverride", false);
-                preferences.Set($"{typeLetter[i]}rareChance", -1);
+                preferences.Set($"{typeLetter[i]}rareChance", -1f);
                 preferences.Set($"{typeLetter[i]}luminosityBoost", 0);
                 preferences.Set($"{typeLetter[i]}binaryEnabled", false);
             }
