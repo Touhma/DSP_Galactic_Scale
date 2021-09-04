@@ -6,7 +6,7 @@
   "DisplayName": "Obsidian",
   "BaseName": "IceGelisol",
   "MaxRadius": 510,
-  "MinRadius": 50,
+  "MinRadius": 5,
   "ThemeType": "Telluric",
   "StarTypes": [
     "A",
@@ -129,49 +129,33 @@
   "MaterialPath": "Universe/Materials/Planets/Ice 1/",
   "terrainMaterial": {
     "Colors": {
-      "_SpeclColor":{
-        "r":0.14,"g":0.14,"b":0.04,"a":1
+      "_SpeclColor": {
+        "r": 0.14,
+        "g": 0.14,
+        "b": 0.04,
+        "a": 1.0
       }
     },
     "CopyFrom": null,
     "Params": {
       "_AmbientInc": 0.0,
-      // "_BioFuzzMask": 100.0,
-      // "_BioFuzzStrength": 0.0,//x
-      // "_BumpScale": 110.0,//x
-      // "_Cutoff": 111.5,//x
-      // "_DetailNormalMapScale": 112.0,
-      // "_Distance": -1,//x
-      // "_DstBlend": -111.0,//x
-      // "_EmissionStrength": 0.0,
       "_GISaturate": 0.0,
       "_GIStrengthDay": 0.0505,
       "_GIStrengthNight": 0.03,
-      // "_GlossMapScale": 111.0,//x
-      // "_Glossiness": 21.5,//x
-      // "_GlossyReflections": 111.0,
-      // "_Metallic": 100.0,
-      // "_Mode": 11.0, //x
       "_Multiplier": 0.0018,
-      "_NormalStrength": 0.01010,//1.5,
-      // "_OcclusionStrength": 10.0,//x
-      // "_Parallax": 1.02,//x
-      // "_Radius": 10.0,//x
-      // "_SmoothnessTextureChannel": 1.0,//x
-      "_SpecularHighlights": 110.10,//x
-      // "_SrcBlend": 111.0,//x
-      // "_StepBlend": 11.0,//x
-      // "_UVSec": 11.0,//x
-      // "_ZWrite": 11.0//x
+      "_NormalStrength": 0.0101,
+      "_SpecularHighlights": 110.1
     },
     "Path": null,
     "Textures": {
 
     },
-    "Tint":{
-      "r":0.14,"g":0.14,"b":0.14,"a":1
+    "Tint": {
+      "r": 0.15,
+      "g": 0.15,
+      "b": 0.15,
+      "a": 1.0
     }
-
   },
   "oceanMaterial": {
     "Colors": {
@@ -843,18 +827,18 @@
   "AmbientSettings": {
     "BiomeColor1": {
       "r": 1.0,
-      "g": 0.0,
+      "g": 1.0,
       "b": 1.0,
       "a": 0.0
     },
     "BiomeColor2": {
       "r": 1.0,
       "g": 1.0,
-      "b": 0.0,
+      "b": 1.0,
       "a": 0.0
     },
     "BiomeColor3": {
-      "r": 0.0,
+      "r": 1.0,
       "g": 1.0,
       "b": 1.0,
       "a": 0.0
@@ -864,20 +848,20 @@
     "BiomeSound3": 0,
     "Color1": {
       "r": 0.0,
-      "g": 1.0,
+      "g": 0.0,
       "b": 0.0,
       "a": 1.0
     },
     "Color2": {
-      "r": 1.0,
+      "r": 0.0,
       "g": 0.0,
       "b": 0.0,
       "a": 1.0
     },
     "Color3": {
       "r": 0.0,
-      "g": 1.0,
-      "b": 1.0,
+      "g": 0.0,
+      "b": 0.0,
       "a": 1.0
     },
     "CubeMap": "Vanilla",
@@ -902,7 +886,7 @@
     "DustStrength1": 1.0,
     "DustStrength2": 1.0,
     "DustStrength3": 1.0,
-    "LutContribution": 1.0,
+    "LutContribution": 0.0,
     "Reflections": {
       "r": 1.0,
       "g": 0.0,
@@ -912,18 +896,18 @@
     "ResourcePath": null,
     "WaterColor1": {
       "r": 0.0,
-      "g": 1.0,
+      "g": 0.0,
       "b": 0.0,
       "a": 1.0
     },
     "WaterColor2": {
       "r": 0.0,
       "g": 0.0,
-      "b": 1.0,
+      "b": 0.0,
       "a": 1.0
     },
     "WaterColor3": {
-      "r": 1.0,
+      "r": 0.0,
       "g": 0.0,
       "b": 0.0,
       "a": 1.0

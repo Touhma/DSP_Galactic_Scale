@@ -258,7 +258,7 @@ namespace GalacticScale.Generators
 
             var obsidian = new GSTheme("Obsidian", "Obsidian".Translate(), "IceGelisol");
             
-            obsidian.oceanMaterial.Tint = new Color(0.005f, 0.005f, 0.005f, 1f);
+            // obsidian.oceanMaterial.Tint = new Color(0.005f, 0.005f, 0.005f, 1f);
             obsidian.atmosphereMaterial.Tint = Color.black;
             obsidian.TerrainSettings.Algorithm = "GSTA3";
             obsidian.TerrainSettings.BiomeHeightMulti = 0f;
@@ -266,7 +266,11 @@ namespace GalacticScale.Generators
             obsidian.TerrainSettings.HeightMulti = 0f;
             obsidian.TerrainSettings.RandomFactor = 1f;
             obsidian.CustomGeneration = true;
-            obsidian.AmbientSettings.CubeMap = "GS2";
+            // obsidian.AmbientSettings.CubeMap = "GS2";
+            obsidian.AmbientSettings.LutContribution = 0;
+            obsidian.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
+            obsidian.atmosphereMaterial.Colors["_Color"] = new Color(1, 1, 0, 1);
+            obsidian.oceanMaterial.Tint = new Color(0, 0, 0, 0.5f);
             obsidian.terrainMaterial.Tint = new Color(0.15f, 0.15f, 0.15f, 1f);
             // obsidian.Process();
             // obsidian.terrainMat.SetFloat("_HeightEmissionRadius", 0f);
