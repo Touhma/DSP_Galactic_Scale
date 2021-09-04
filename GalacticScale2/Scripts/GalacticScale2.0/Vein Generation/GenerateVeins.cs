@@ -181,6 +181,7 @@ namespace GalacticScale
             planet.veinGroups[groupIndex].count++;
             planet.veinGroups[groupIndex].amount += vein.amount;
             planet.data.AddVeinData(vein); //add to the planets rawdata veinpool
+            GS2.Warn("Added");
         }
 
         private static void EraseVegetableAtPoint(Vector3 position, PlanetData planet)

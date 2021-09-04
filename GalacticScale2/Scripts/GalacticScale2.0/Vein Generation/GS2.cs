@@ -58,6 +58,7 @@ namespace GalacticScale
 
             for (var i = 0; i < veinData.Count; i++) // For each veingroup (patch of vein nodes)
             {
+                GS2.Warn("Adding VeinGroup");
                 nodeVectors.Clear();
                 if (veinData[i].position == Vector3.zero) continue;
 
@@ -71,7 +72,7 @@ namespace GalacticScale
                 if (veinType == EVeinType.Oil) veinData[i].count = 1;
 
                 GenerateNodeVectors(nodeVectors, veinData[i].count);
-
+                GS2.Warn("Vectors generated");
                 var veinAmount = Mathf.RoundToInt(veinData[i].richness * 100000f * resourceCoef);
                 if (gsPlanet.randomizeVeinAmounts) veinAmount = (int) (veinAmount * (random.NextDouble() + 0.5));
 
@@ -81,7 +82,7 @@ namespace GalacticScale
 
                 if (planet.veinGroups[i].type != EVeinType.Oil)
                     veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
-
+                GS2.Warn($"NodeVectorCount:{nodeVectors.Count}");
                 for (var k = 0; k < nodeVectors.Count; k++)
                 {
                     if (gsPlanet.Theme == "MoltenWorld") GS2.Warn(veinType.ToString());
@@ -102,6 +103,7 @@ namespace GalacticScale
                     EraseVegetableAtPoint(veinPosition, planet);
                     veinPosition = Utils.PositionAtSurface(veinPosition, gsPlanet);
                     //if (!Utils.IsUnderWater(veinPosition, gsPlanet))
+                    GS2.Warn("Adding Vein To Planet");
                         AddVeinToPlanet(veinAmount, veinType, veinPosition, (short) i, planet);
                 }
             }
@@ -138,6 +140,7 @@ namespace GalacticScale
                     richness = veinGroups[j].veins[i].richness
                 });
             }
+            GS2.Warn($"Distributing veins for planet {gsPlanet.Name} {gsPlanet.Theme}");
             GS2.WarnJson(distributed);
             return distributed;
         }

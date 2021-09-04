@@ -54,7 +54,7 @@ namespace GalacticScale
 
         //[NonSerialized] public Dictionary<string, GSVein> veins = new Dictionary<string, GSVein>();
 
-        public GSVeinSettings veinSettings = new GSVeinSettings();
+        public GSVeinSettings veinSettings = null;
 
         public GSPlanet()
         {
