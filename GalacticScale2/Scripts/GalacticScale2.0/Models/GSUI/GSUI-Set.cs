@@ -104,8 +104,10 @@ namespace GalacticScale
                 return false;
             }
 
+            GS2.Warn("TEST");
+            GS2.Warn((items == null).ToString());
             Data = items;
-            if (RectTransform != null) RectTransform.GetComponentInChildren<UIComboBox>().Items = items;
+            if (RectTransform != null) RectTransform.GetComponent<GSUIDropdown>().Items = items;
             return true;
         }   
     }

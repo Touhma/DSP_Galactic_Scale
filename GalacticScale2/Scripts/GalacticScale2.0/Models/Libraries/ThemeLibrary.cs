@@ -99,6 +99,7 @@ namespace GalacticScale
             {
                 var s = GS2.GetCaller();
                 GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > " + s);
+                GS2.WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
                 return Themes.Mediterranean;
             }
 

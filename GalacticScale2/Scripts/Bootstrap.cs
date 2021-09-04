@@ -20,7 +20,7 @@ namespace GalacticScale
     // [BepInDependency("nebula.api", BepInDependency.DependencyFlags.HardDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
-        public const string VERSION = "2.1.16.0";
+        public const string VERSION = "2.1.17.0";
 
         public new static ManualLogSource Logger;
 
@@ -104,6 +104,7 @@ namespace GalacticScale
             {
                 GS2.Config.EnableDevMode();
             }
+
             if (GS2.Config.Dev && VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null)
             {
                 var filename = Path.Combine(GS2.DataDir, "WorkingTheme.json");

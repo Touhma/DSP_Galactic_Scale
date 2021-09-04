@@ -15,12 +15,12 @@ namespace GalacticScale
             // GS2.Log("CHOOSING ALGORITHM FOR " + planet.displayName + " rawdata?"+(planet.data != null));
             var gsPlanet = GS2.GetGSPlanet(planet);
             //GS2.Warn(gsPlanet.Theme);
-            var gsTheme = GS2.ThemeLibrary.Find(gsPlanet.Theme);
+            var gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             // GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
-            if (!GS2.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration)
+            if (!GSSettings.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration)
             {
                 // GS2.Log("CHOSE COMPLETELY VANILLA");
-                return true;
+                if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings()) return true;
             }
             // GS2.Log("USING CUSTOM GENERATION FOR PLANET " + planet.displayName);
             __result = new GS2PlanetAlgorithm(gsPlanet); //new GS2PlanetAlgorithm(gsPlanet);

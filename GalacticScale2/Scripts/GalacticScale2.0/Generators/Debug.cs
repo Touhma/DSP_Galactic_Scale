@@ -173,7 +173,7 @@ namespace GalacticScale.Generators
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
 
             var path = Path.Combine(outputDir, "ThemeLibrary.json");
-            GS2.DumpObjectToJson(path, GS2.ThemeLibrary);
+            // GS2.DumpObjectToJson(path, GS2.ThemeLibrary);
             foreach (var x in LDB._themes.dataArray)
                 GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, x.displayName), x.ambientDesc);
             //path = Path.Combine(outputDir, "LDBThemes.json");

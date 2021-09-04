@@ -31,7 +31,7 @@ namespace GalacticScale
         [HarmonyPrefix]
         public static bool OnPlusButtonClick(ref UIReplicatorWindow __instance, int whatever)
         {
-            GS2.Log("Test");
+            // GS2.Log("Test");
             if (__instance.selectedRecipe != null)
             {
                 if (!__instance.multipliers.ContainsKey(__instance.selectedRecipe.ID))
@@ -40,17 +40,44 @@ namespace GalacticScale
                 }
 
                 int num = __instance.multipliers[__instance.selectedRecipe.ID];
-                if (VFInput.shift) num += 10;
-                else if (VFInput.control) num += 100;
+                if (VFInput.control) num += 10;
+                else if (VFInput.shift) num += 100;
+                else if (VFInput.alt) num = 999;
                 else num++;
                 if (num > 999)
                 {
-                    num = 1000;
+                    num = 999;
                 }
 
                 __instance.multipliers[__instance.selectedRecipe.ID] = num;
                 __instance.multiValueText.text = num.ToString() + "x";
             }
+
+            return false;
+        }        
+        [HarmonyPatch(typeof(UIReplicatorWindow), "OnMinusButtonClick")]
+        [HarmonyPrefix]
+        public static bool OnMinusButtonClick(ref UIReplicatorWindow __instance, int whatever)
+        {
+            if (__instance.selectedRecipe != null)
+            {
+                if (!__instance.multipliers.ContainsKey(__instance.selectedRecipe.ID))
+                {
+                    __instance.multipliers[__instance.selectedRecipe.ID] = 1;
+                }
+                int num = __instance.multipliers[__instance.selectedRecipe.ID];
+                if (VFInput.control) num -= 10;
+                else if (VFInput.shift) num -= 100;
+                else if (VFInput.alt) num = 1;
+                else num--;
+                if (num < 1)
+                {
+                    num = 1;
+                }
+                __instance.multipliers[__instance.selectedRecipe.ID] = num;
+                __instance.multiValueText.text = num.ToString() + "x";
+            }
+            
 
             return false;
         }
@@ -59,7 +86,7 @@ namespace GalacticScale
         [HarmonyPrefix]
         public static bool OnOkButtonClick(ref UIReplicatorWindow __instance, int whatever, bool button_enable)
         {
-            GS2.Log("Test2");
+            // GS2.Log("Test2");
             if (__instance.selectedRecipe != null)
             {
                 if (!__instance.selectedRecipe.Handcraft)
@@ -90,8 +117,8 @@ namespace GalacticScale
                     num = 1000;
                 }
 
-                int num2 = __instance.mechaForge.PredictTaskCount(__instance.selectedRecipe.ID, 99);
-                GS2.Log($"{num} - {num2}");
+                int num2 = __instance.mechaForge.PredictTaskCount(__instance.selectedRecipe.ID, 999);
+                // GS2.Log($"{num} - {num2}");
                 if (num > num2)
                 {
                     num = num2;

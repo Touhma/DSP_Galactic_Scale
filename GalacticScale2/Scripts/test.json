@@ -1,0 +1,916 @@
+{
+  "Name": "Obsidian",
+  "PlanetType": "Ice",
+  "Algo": 3,
+  "CustomGeneration": true,
+  "DisplayName": "Obsidian",
+  "BaseName": "IceGelisol",
+  "MaxRadius": 510,
+  "MinRadius": 5,
+  "ThemeType": "Telluric",
+  "StarTypes": [
+    "A",
+    "B",
+    "BlackHole",
+    "BlueGiant",
+    "F",
+    "G",
+    "K",
+    "M",
+    "NeutronStar",
+    "O",
+    "RedGiant",
+    "WhiteDwarf",
+    "WhiteGiant",
+    "YellowGiant"
+  ],
+  "Temperature": 2.0,
+  "Distribute": "Default",
+  "TerrainSettings": {
+    "Algorithm": "GSTA3",
+    "BaseHeight": 0.0,
+    "BiomeHeightModifier": -111.0,
+    "BiomeHeightMulti": 0.0,
+    "BrightnessFix": false,
+    "HeightMulti": 0.0,
+    "LandModifier": 0.0,
+    "RandomFactor": 1.0
+  },
+  "VeinSettings": {
+    "Algorithm": "Vanilla",
+    "VeinPadding": 1.0,
+    "VeinTypes": [
+      {
+        "type": "Iron",
+        "veins": [
+          "5x15x1"
+        ],
+        "rare": false
+      },
+      {
+        "type": "Copper",
+        "veins": [
+          "1x5x0.5"
+        ],
+        "rare": false
+      },
+      {
+        "type": "Silicon",
+        "veins": [
+          "3x20x1"
+        ],
+        "rare": false
+      },
+      {
+        "type": "Titanium",
+        "veins": [
+          "10x25x1"
+        ],
+        "rare": false
+      },
+      {
+        "type": "Stone",
+        "veins": [
+          "2x20x1"
+        ],
+        "rare": false
+      },
+      {
+        "type": "Coal",
+        "veins": [
+          "1x5x0.3"
+        ],
+        "rare": false
+      },
+      {
+        "type": "Fireice",
+        "veins": [
+          "25x25x1"
+        ],
+        "rare": true
+      },
+      {
+        "type": "Fractal",
+        "veins": [
+          "10x10x0.4"
+        ],
+        "rare": true
+      },
+      {
+        "type": "Optical",
+        "veins": [
+          "10x10x0.4"
+        ],
+        "rare": true
+      }
+    ]
+  },
+  "VegeSettings": {
+    "Algorithm": "Vanilla",
+    "Group1": [],
+    "Group2": [],
+    "Group3": [],
+    "Group4": [],
+    "Group5": [],
+    "Group6": []
+  },
+  "GasItems": [],
+  "GasSpeeds": [],
+  "Wind": 0.7,
+  "IonHeight": 55.0,
+  "WaterHeight": 0.0,
+  "WaterItemId": 1000,
+  "Musics": [
+    4,
+    11
+  ],
+  "SFXPath": "SFX/sfx-amb-desert-2",
+  "SFXVolume": 0.3,
+  "MaterialPath": "Universe/Materials/Planets/Ice 1/",
+  "terrainMaterial": {
+    "Colors": {
+      "_SpeclColor": {
+        "r": 0.14,
+        "g": 0.14,
+        "b": 0.04,
+        "a": 1.0
+      }
+    },
+    "CopyFrom": null,
+    "Params": {
+      "_AmbientInc": 0.0,
+      "_GISaturate": 0.0,
+      "_GIStrengthDay": 0.0505,
+      "_GIStrengthNight": 0.03,
+      "_Multiplier": 0.0018,
+      "_NormalStrength": 0.0101,
+      "_SpecularHighlights": 110.1
+    },
+    "Path": null,
+    "Textures": {
+
+    },
+    "Tint": {
+      "r": 0.15,
+      "g": 0.15,
+      "b": 0.15,
+      "a": 1.0
+    }
+  },
+  "oceanMaterial": {
+    "Colors": {
+      "_BumpDirection": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": -1.0,
+        "a": 1.0
+      },
+      "_BumpTiling": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": -2.0,
+        "a": 3.0
+      },
+      "_CausticsColor": {
+        "r": 0.1704156,
+        "g": 0.4529853,
+        "b": 0.7607843,
+        "a": 1.0
+      },
+      "_Color": {
+        "r": 0.75,
+        "g": 0.8075757,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color0": {
+        "r": 0.0,
+        "g": 0.1574037,
+        "b": 0.2352941,
+        "a": 1.0
+      },
+      "_Color1": {
+        "r": 0.572549,
+        "g": 0.717065,
+        "b": 0.8980392,
+        "a": 1.0
+      },
+      "_Color2": {
+        "r": 0.2470588,
+        "g": 0.6364762,
+        "b": 0.8666667,
+        "a": 1.0
+      },
+      "_Color3": {
+        "r": 0.3135902,
+        "g": 0.4327468,
+        "b": 0.764151,
+        "a": 1.0
+      },
+      "_DensityParams": {
+        "r": 0.02,
+        "g": 0.1,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_DepthColor": {
+        "r": 0.0,
+        "g": 0.06095791,
+        "b": 0.1132075,
+        "a": 1.0
+      },
+      "_DepthFactor": {
+        "r": 0.4,
+        "g": 0.46,
+        "b": 0.5,
+        "a": 0.1
+      },
+      "_Foam": {
+        "r": 15.0,
+        "g": 1.0,
+        "b": 5.0,
+        "a": 1.5
+      },
+      "_FoamColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_FoamParams": {
+        "r": 12.0,
+        "g": 0.2,
+        "b": 0.15,
+        "a": 0.7
+      },
+      "_FresnelColor": {
+        "r": 0.2598789,
+        "g": 0.4030452,
+        "b": 0.7547169,
+        "a": 1.0
+      },
+      "_InvFadeParemeter": {
+        "r": 0.9,
+        "g": 0.25,
+        "b": 0.5,
+        "a": 0.08
+      },
+      "_PLColor1": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_PLColor2": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_PLColor3": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_PLParam1": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PLParam2": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PLPos1": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PLPos2": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PLPos3": {
+        "r": 0.0,
+        "g": 0.1,
+        "b": -0.5,
+        "a": 0.0
+      },
+      "_Paremeters1": {
+        "r": 0.02,
+        "g": 0.1,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PointAtten": {
+        "r": 0.0,
+        "g": 0.1,
+        "b": -0.5,
+        "a": 0.0
+      },
+      "_PointLightPos": {
+        "r": 0.0,
+        "g": 0.1,
+        "b": -0.5,
+        "a": 0.0
+      },
+      "_ReflectionColor": {
+        "r": 0.1933962,
+        "g": 0.5064065,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_SLColor1": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_SLDir1": {
+        "r": 0.0,
+        "g": 0.1,
+        "b": -0.5,
+        "a": 0.0
+      },
+      "_SLPos1": {
+        "r": 0.0,
+        "g": 0.1,
+        "b": -0.5,
+        "a": 0.0
+      },
+      "_SpecColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_SpeclColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_SpeclColor1": {
+        "r": 0.7764706,
+        "g": 0.7937432,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Specular": {
+        "r": 0.9573934,
+        "g": 0.8672858,
+        "b": 0.5744361,
+        "a": 0.9573934
+      },
+      "_SunDirection": {
+        "r": -0.6,
+        "g": 0.8,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_WorldLightDir": {
+        "r": -0.6525278,
+        "g": -0.6042119,
+        "b": -0.4573132,
+        "a": 0.0
+      }
+    },
+    "CopyFrom": null,
+    "Params": {
+      "_CausticsTiling": 0.08,
+      "_DistortionStrength": 1.0,
+      "_FoamInvThickness": 2.0,
+      "_FoamSpeed": 0.02,
+      "_FoamSync": 5.0,
+      "_NormalSpeed": 0.5,
+      "_NormalStrength": 0.3,
+      "_NormalTiling": 0.1,
+      "_PLEdgeAtten": 0.5,
+      "_PLIntensity2": 0.0,
+      "_PLIntensity3": 0.0,
+      "_PLRange2": 10.0,
+      "_PLRange3": 10.0,
+      "_PointLightK": 0.01,
+      "_PointLightRange": 10.0,
+      "_Radius": 200.0,
+      "_ReflectionBlend": 0.86,
+      "_ReflectionTint": 0.0,
+      "_RefractionAmt": 1000.0,
+      "_RefractionStrength": 0.4,
+      "_SLCosCutoff1": 0.3,
+      "_SLIntensity1": 1.0,
+      "_SLRange1": 10.0,
+      "_Shininess": 40.0,
+      "_ShoreIntens": 2.0,
+      "_SpeclColorDayStrength": 0.5,
+      "_SpotExp": 2.0,
+      "_Tile": 0.05
+    },
+    "Path": null,
+    "Textures": {
+
+    },
+    "Tint": {
+      "r": 0.005,
+      "g": 0.005,
+      "b": 0.005,
+      "a": 1.0
+    }
+  },
+  "atmosphereMaterial": {
+    "Colors": {
+      "_Color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color0": {
+        "r": 0.236027,
+        "g": 0.3353746,
+        "b": 0.9811321,
+        "a": 1.0
+      },
+      "_Color1": {
+        "r": 0.3537736,
+        "g": 0.5737655,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color2": {
+        "r": 0.4386792,
+        "g": 0.6454816,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color3": {
+        "r": 0.5990566,
+        "g": 0.743727,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color4": {
+        "r": 0.9778188,
+        "g": 0.7633963,
+        "b": 0.4335699,
+        "a": 1.0
+      },
+      "_Color5": {
+        "r": 0.2311321,
+        "g": 0.622728,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color6": {
+        "r": 0.4741487,
+        "g": 0.2688679,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_Color7": {
+        "r": 0.04841579,
+        "g": 0.1621637,
+        "b": 0.6037736,
+        "a": 1.0
+      },
+      "_Color8": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_ColorF": {
+        "r": 0.75,
+        "g": 0.75,
+        "b": 0.75,
+        "a": 1.0
+      },
+      "_EmissionColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_LocalPos": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PlanetPos": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+      },
+      "_PlanetRadius": {
+        "r": 200.0,
+        "g": 100.0,
+        "b": 255.0,
+        "a": 0.0
+      },
+      "_Sky0": {
+        "r": 0.3460751,
+        "g": 0.4696855,
+        "b": 0.7264151,
+        "a": 0.2039216
+      },
+      "_Sky1": {
+        "r": 0.02024743,
+        "g": 0.1816752,
+        "b": 0.3301886,
+        "a": 0.2784314
+      },
+      "_Sky2": {
+        "r": 0.6916608,
+        "g": 0.7837354,
+        "b": 0.9339623,
+        "a": 0.5529412
+      },
+      "_Sky3": {
+        "r": 0.2078431,
+        "g": 0.3593507,
+        "b": 0.6588235,
+        "a": 0.6
+      },
+      "_Sky4": {
+        "r": 0.991682,
+        "g": 0.7941809,
+        "b": 0.4115238,
+        "a": 1.0
+      }
+    },
+    "CopyFrom": null,
+    "Params": {
+      "_AtmoDensity": 1.0,
+      "_BumpScale": 1.0,
+      "_Cutoff": 0.5,
+      "_DetailNormalMapScale": 1.0,
+      "_DstBlend": 0.0,
+      "_FarFogDensity": 0.2,
+      "_FogDensity": 0.3,
+      "_FogSaturate": 1.2,
+      "_GlossMapScale": 1.0,
+      "_Glossiness": 0.5,
+      "_GlossyReflections": 1.0,
+      "_Intensity": 1.1,
+      "_IntensityControl": 1.0,
+      "_Metallic": 0.0,
+      "_Mode": 0.0,
+      "_OcclusionStrength": 1.0,
+      "_Parallax": 0.02,
+      "_RimFogExp": 1.3,
+      "_RimFogPower": 3.0,
+      "_SkyAtmosPower": 7.0,
+      "_SmoothnessTextureChannel": 0.0,
+      "_SpecularHighlights": 1.0,
+      "_SrcBlend": 1.0,
+      "_SunColorAdd": 5.0,
+      "_SunColorSkyUse": 0.05,
+      "_SunColorUse": 0.2,
+      "_SunRiseScatterPower": 60.0,
+      "_UVSec": 0.0,
+      "_ZWrite": 1.0
+    },
+    "Path": null,
+    "Textures": {
+
+    },
+    "Tint": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    }
+  },
+  "thumbMaterial": {
+    "Colors": {
+      "_AmbientColor": {
+        "r": 0.3018868,
+        "g": 0.3018868,
+        "b": 0.3018868,
+        "a": 1.0
+      },
+      "_Color": {
+        "r": 0.1735937,
+        "g": 0.3903478,
+        "b": 0.7830188,
+        "a": 1.0
+      },
+      "_ColorBio0": {
+        "r": 0.4772605,
+        "g": 0.5466523,
+        "b": 0.6132076,
+        "a": 1.0
+      },
+      "_ColorBio1": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "_ColorBio2": {
+        "r": 0.9292453,
+        "g": 0.9461915,
+        "b": 1.0,
+        "a": 0.5882353
+      },
+      "_EmissionColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_FlowColor": {
+        "r": 0.7924528,
+        "g": 0.7924528,
+        "b": 0.7924528,
+        "a": 0.7882353
+      },
+      "_HeightSettings": {
+        "r": 1.5,
+        "g": 2.3,
+        "b": 0.16,
+        "a": 0.05
+      },
+      "_HoloColor": {
+        "r": 0.3,
+        "g": 0.7,
+        "b": 0.25,
+        "a": 0.2
+      },
+      "_NotVisibleColor": {
+        "r": 0.0,
+        "g": 0.03,
+        "b": 0.07499998,
+        "a": 0.2
+      },
+      "_RimColor": {
+        "r": 0.2156015,
+        "g": 0.3932859,
+        "b": 0.8962264,
+        "a": 1.0
+      },
+      "_Rotation": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_ShoreLineColor": {
+        "r": 0.4362761,
+        "g": 0.4997399,
+        "b": 0.7169812,
+        "a": 0.0
+      },
+      "_SpecularColor": {
+        "r": 0.5188679,
+        "g": 0.3004048,
+        "b": 0.1737718,
+        "a": 1.0
+      },
+      "_Spot0": {
+        "r": 0.6,
+        "g": -0.3,
+        "b": -0.5,
+        "a": 1.0
+      },
+      "_SunDir": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 1.0,
+        "a": 0.0
+      }
+    },
+    "CopyFrom": null,
+    "Params": {
+      "_BioStrength": 0.59,
+      "_BodyIntensity": 0.27,
+      "_BumpScale": 1.0,
+      "_Cutoff": 0.5,
+      "_DetailNormalMapScale": 1.0,
+      "_Diameter": 0.1,
+      "_Distort": 0.01,
+      "_DstBlend": 0.0,
+      "_FarHeight": 1.0,
+      "_GlossMapScale": 1.0,
+      "_Glossiness": 0.15,
+      "_GlossyReflections": 1.0,
+      "_HoloIntensity": 0.8,
+      "_Metallic": 0.58,
+      "_Mode": 0.0,
+      "_Multiplier": 4.0,
+      "_NoiseIntensity": 0.15,
+      "_NoiseThres": 0.0,
+      "_OcclusionStrength": 1.0,
+      "_Parallax": 0.02,
+      "_PolarWhirl": -0.3,
+      "_PolarWhirlPower": 8.0,
+      "_ShoreHeight": 0.0,
+      "_ShoreInvThick": 6.0,
+      "_SmoothnessTextureChannel": 0.0,
+      "_SpecularHighlights": 1.0,
+      "_Speed": 2.0,
+      "_SrcBlend": 1.0,
+      "_Tile": 0.2,
+      "_TileX": 7.0,
+      "_TileY": 2.5,
+      "_TimeFactor": 0.0,
+      "_ToggleVerta": 0.0,
+      "_UVSec": 0.0,
+      "_WireIntens": 2.0,
+      "_ZWrite": 1.0
+    },
+    "Path": null,
+    "Textures": {
+
+    },
+    "Tint": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.0
+    }
+  },
+  "minimapMaterial": {
+    "Colors": {
+      "_Color": {
+        "r": 0.06763966,
+        "g": 0.408475,
+        "b": 0.7547169,
+        "a": 1.0
+      },
+      "_ColorBio0": {
+        "r": 0.5683072,
+        "g": 0.6747923,
+        "b": 0.9339623,
+        "a": 0.4470588
+      },
+      "_ColorBio1": {
+        "r": 0.8501246,
+        "g": 0.8656746,
+        "b": 0.9056604,
+        "a": 1.0
+      },
+      "_ColorBio2": {
+        "r": 0.7783019,
+        "g": 0.8196354,
+        "b": 1.0,
+        "a": 0.427451
+      },
+      "_EmissionColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+      },
+      "_HeightSettings": {
+        "r": -0.1,
+        "g": 0.1,
+        "b": 0.2,
+        "a": 0.18
+      },
+      "_RimColor": {
+        "r": 0.0600747,
+        "g": 0.2438102,
+        "b": 0.8490566,
+        "a": 1.0
+      },
+      "_ShoreLineColor": {
+        "r": 0.02398541,
+        "g": 0.2327791,
+        "b": 0.4622641,
+        "a": 0.0
+      }
+    },
+    "CopyFrom": null,
+    "Params": {
+      "_BioStrength": 0.5,
+      "_BumpScale": 1.0,
+      "_Cutoff": 0.5,
+      "_DetailNormalMapScale": 1.0,
+      "_DstBlend": 0.0,
+      "_GlossMapScale": 1.0,
+      "_Glossiness": 0.5,
+      "_GlossyReflections": 1.0,
+      "_Metallic": 0.0,
+      "_Mode": 0.0,
+      "_OcclusionStrength": 1.0,
+      "_Parallax": 0.02,
+      "_ShoreHeight": -4.0,
+      "_ShoreInvThick": 0.25,
+      "_SmoothnessTextureChannel": 0.0,
+      "_SpecularHighlights": 1.0,
+      "_SrcBlend": 1.0,
+      "_UVSec": 0.0,
+      "_WireIntens": 2.0,
+      "_ZWrite": 1.0
+    },
+    "Path": null,
+    "Textures": {
+
+    },
+    "Tint": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.0
+    }
+  },
+  "AmbientSettings": {
+    "BiomeColor1": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "BiomeColor2": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "BiomeColor3": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "BiomeSound1": 0,
+    "BiomeSound2": 0,
+    "BiomeSound3": 0,
+    "Color1": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "Color2": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "Color3": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "CubeMap": "GS2",
+    "DustColor1": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "DustColor2": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "DustColor3": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 0.0
+    },
+    "DustStrength1": 1.0,
+    "DustStrength2": 1.0,
+    "DustStrength3": 1.0,
+    "LutContribution": 0.0,
+    "Reflections": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.0
+    },
+    "ResourcePath": null,
+    "WaterColor1": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "WaterColor2": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    "WaterColor3": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    }
+  }
+}

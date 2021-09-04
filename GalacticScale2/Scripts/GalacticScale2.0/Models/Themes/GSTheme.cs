@@ -10,6 +10,7 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSThemeConverter))]
     public class GSTheme
     {
+        [NonSerialized] public static ThemeLibrary AllLoadedThemes = new ThemeLibrary();
         [NonSerialized] public bool added;
 
         public int Algo;
@@ -150,10 +151,10 @@ namespace GalacticScale
         {
             DisplayName = displayName;
             Name = name;
-            if (baseName != null && GS2.ThemeLibrary.ContainsKey(baseName))
+            if (baseName != null && GSSettings.ThemeLibrary.ContainsKey(baseName))
             {
                 BaseName = baseName;
-                //GS2.Log("About to Copy From");
+                // GS2.Log("About to Copy From");
                 CopyFrom(baseTheme);
             }
             else if (baseName != null)
@@ -172,10 +173,10 @@ namespace GalacticScale
                     GS2.Log($"{Name} initializing from base theme: " + BaseName);
                 
 
-                if (!GS2.ThemeLibrary.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
+                if (!AllLoadedThemes.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
             }
             return BaseName != "" && BaseName != null
-                    ? (GS2.ThemeLibrary.ContainsKey(BaseName) ? GS2.ThemeLibrary[BaseName] : Themes.Mediterranean)
+                    ? (AllLoadedThemes.ContainsKey(BaseName) ? AllLoadedThemes[BaseName] : Themes.Mediterranean)
                     : null;
             }
             set => BaseName = value.Name;
@@ -207,10 +208,10 @@ namespace GalacticScale
                 }
                 else
                 {
-                    //GS2.Log("Setting CubeMap for " + Name);
-                    //GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
+                    // GS2.Log("Setting CubeMap for " + Name);
+                    // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
                     AmbientSettings.ToTheme(this);
-                    //GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
+                    // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
                 }
                 //GS2.Log("Finished Processing Ambient Settings for " + Name);
             }
@@ -227,6 +228,7 @@ namespace GalacticScale
 
             ProcessTints();
             if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
+            AllLoadedThemes.Add(this.Name, this);
         }
 
         public void PopulateVegeData()
@@ -379,7 +381,7 @@ namespace GalacticScale
 
         public void AddToLibrary()
         {
-            GS2.ThemeLibrary[Name] = this;
+            GSSettings.ThemeLibrary.Add(this.Name, this);
         }
 
         public static int[] CloneIntegerArray(int[] source)
@@ -608,7 +610,7 @@ namespace GalacticScale
                 else
                 {
                     //GS2.Warn($"Copying {Name} {materialType} material from Theme {settings.CopyFrom}");
-                    var materialBaseTheme = GS2.ThemeLibrary.Find(copyFrom[0]);
+                    var materialBaseTheme = GSSettings.ThemeLibrary.Find(copyFrom[0]);
                     var materialName = copyFrom[1];
                     material = Object.Instantiate((Material) typeof(GSTheme).GetField(materialName)
                         .GetValue(materialBaseTheme));
@@ -667,7 +669,7 @@ namespace GalacticScale
                     ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
                 else
                     //GS2.Log("Loading AmbientDesc from base theme = "+ambient);
-                    ambientDesc = GS2.ThemeLibrary.Find(ambient).ambientDesc;
+                    ambientDesc = GSSettings.ThemeLibrary.Find(ambient).ambientDesc;
                 ambientSfx = Resources.Load<AudioClip>(SFXPath);
             }
 
@@ -704,7 +706,7 @@ namespace GalacticScale
 
         public void SetMaterial(string material, string materialBase)
         {
-            var donorTheme = GS2.ThemeLibrary.Find(materialBase);
+            var donorTheme = GSSettings.ThemeLibrary.Find(materialBase);
             switch (material)
             {
                 case "terrain":

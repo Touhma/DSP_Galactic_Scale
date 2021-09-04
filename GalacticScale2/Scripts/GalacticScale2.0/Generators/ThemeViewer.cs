@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GalacticScale.Generators
 {
@@ -7,23 +8,7 @@ namespace GalacticScale.Generators
         public ThemeLibrary ThemeTestLibrary = new ThemeLibrary();
         public GSUI uiList;
 
-        public List<string> themeNames
-        {
-            get
-            {
-                //GS2.Log("Start");
-                var list = new List<string>();
-                foreach (var kvp in ThemeTestLibrary)
-                {
-                    var theme = kvp.Value;
-                    list.Add(theme.DisplayName);
-                }
-
-                //GS2.LogJson(list);
-                //GS2.Log("End");
-                return list;
-            }
-        }
+        public static List<string> themeNames = new List<string>();
 
         public string Name => "ThemeViewer";
 
@@ -42,20 +27,27 @@ namespace GalacticScale.Generators
         public void Init()
         {
             Options.Add(GSUI.Button("Capture Themes", "Go", CaptureThemes));
-            uiList = Options.Add(GSUI.Combobox("Themes Captured", themeNames, null));
+            uiList = Options.Add(GSUI.Combobox("Themes Captured", themeNames, themeselect));
+        }
+
+        public static string themename;
+        private void themeselect(Val o)
+        {
+            GS2.Warn(o);
+            themename = themeNames[o];
         }
 
         public void Generate(int starCount, StarData birthStar = null)
         {
             var random = new GS2.Random(GSSettings.Seed);
             var p = new GSPlanets();
-            var i = 0;
-            foreach (var kvp in ThemeTestLibrary)
-            {
-                p.Add(new GSPlanet(kvp.Key, kvp.Key, 100, random.NextFloat() * 10 + 1, 0, 10000, random.Next(359), 0,
+            // var i = 0;
+            // foreach (var kvp in ThemeTestLibrary)
+            // {
+                p.Add(new GSPlanet(themename, themename, 200, random.NextFloat() * 10 + 1, 0, 10000, random.Next(359), 0,
                     10000, 0, -1));
-                i++;
-            }
+            //     i++;
+            // }
 
             var s = StarDefaults.Random(random);
             s.Name = "ThemeTest";
@@ -81,9 +73,15 @@ namespace GalacticScale.Generators
                 return;
             }
 
-            ThemeTestLibrary = GSSettings.ThemeLibrary.Clone();
-            GS2.Log("Updating");
+            ThemeTestLibrary = GSSettings.ThemeLibrary;
+            themeNames = ThemeTestLibrary.Select((x=>
+            {
+                return x.Key;
+            })).ToList();
+            GS2.Log("Updating"+(uiList == null));
+            GS2.Warn((uiList.RectTransform == null).ToString());
             uiList.SetItems(themeNames);
+            GS2.WarnJson(themeNames);
             GS2.Log("End");
         }
     }

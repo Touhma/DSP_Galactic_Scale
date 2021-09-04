@@ -17,6 +17,7 @@ namespace GalacticScale
             {
                 GS2.LogJson(Config.ExternalThemeNames);
                 externalThemes = new ThemeLibrary();
+                GS2.Warn(GSSettings.ThemeLibrary.Count.ToString());
                 foreach (string name in GS2.Config.ExternalThemeNames)
                 {
                     GS2.Log($"Loading {name}");

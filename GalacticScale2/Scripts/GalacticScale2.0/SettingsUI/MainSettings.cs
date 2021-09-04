@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Schema;
 using GSSerializer;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 using static GalacticScale.GS2;
 
 namespace GalacticScale
@@ -352,18 +355,22 @@ namespace GalacticScale
 
         private static void GeneratorCallback(Val result)
         {
-            if (GameMain.isPaused && ActiveGenerator != GS2.Generators[(int)result])
+            if (GameMain.isPaused && result == 0 )
             {
                 UIMessageBox.Show("Note".Translate(),
-                    "You cannot change the generator while in game."
+                    "You cannot change the generator to vanilla while in game."
                         .Translate(),
                     "Of course not!".Translate(), 2);
+                var genIndex = GS2.Generators.IndexOf(GS2.ActiveGenerator);
+                SettingsUI.GeneratorIndex = (int)result;
+                
                 return;
             }
-
-            // GS2.Warn($"Generator Callback:{(int)result}");
             ActiveGenerator = GS2.Generators[(int)result];
-            // GS2.Warn("Active Generator = " + GS2.ActiveGenerator.Name);
+            UpdateNebulaSettings();
+            
+
+            GS2.Warn("Active Generator = " + GS2.ActiveGenerator.Name);
             foreach (var canvas in SettingsUI.GeneratorCanvases)
                 canvas.gameObject.SetActive(false);
             // GS2.Warn("They have been set inactive");
@@ -434,7 +441,7 @@ namespace GalacticScale
 
             GSSettings.Reset(GSSettings.Seed);
             var path = Path.Combine(Path.Combine(DataDir, "CustomGalaxies"), ImportFilename + ".json");
-            GS2.ThemeLibrary = GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
+            GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
             //Warn(GSSettings.StarCount.ToString());
             LoadSettingsFromJson(path);
             Log("Generator:Json|Generate|End");

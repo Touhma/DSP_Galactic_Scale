@@ -49,7 +49,7 @@ namespace GalacticScale
 
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
             GS2.Log("Reloading External Themes");
-            ThemeLibrary = ThemeLibrary.Vanilla();
+            // GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
             ExternalThemeProcessor.LoadEnabledThemes();
             Log("End");
         }

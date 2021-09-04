@@ -27,7 +27,7 @@ namespace GalacticScale
 
         [SerializeField] public GSStars stars = new GSStars();
 
-        [SerializeField] public ThemeLibrary themeLibrary = GS2.ThemeLibrary;
+        [SerializeField] public ThemeLibrary themeLibrary = ThemeLibrary.Vanilla();
 
         public string version = "2.0";
 
@@ -205,8 +205,8 @@ namespace GalacticScale
             //birthStarId = -1;
             GS2.gsPlanets.Clear();
             GS2.gsStars.Clear();
-            GS2.ThemeLibrary = ThemeLibrary.Vanilla();
-            ThemeLibrary = GS2.ThemeLibrary;
+            ThemeLibrary = ThemeLibrary.Vanilla();
+            // ThemeLibrary = GS2.ThemeLibrary;
             //GS2.Log("End");
         }
 

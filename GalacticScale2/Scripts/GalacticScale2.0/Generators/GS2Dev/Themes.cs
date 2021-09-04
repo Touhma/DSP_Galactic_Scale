@@ -69,7 +69,7 @@ namespace GalacticScale.Generators
                 else newLibrary[s.Key] = s.Value;
             // GS2.WarnJson(GS2.externalThemes.Select(o=>o.Key).ToList());
             // newLibrary.AddRange(GS2.externalThemes);
-            GS2.ThemeLibrary = GSSettings.ThemeLibrary = newLibrary;
+            GSSettings.ThemeLibrary = newLibrary;
             // GS2.Warn("End of Themes.CS, ThemeLibrary Contents:");
             // GS2.WarnJson(GSSettings.ThemeLibrary.Select(o=>o.Key).ToList());
         }
@@ -257,17 +257,47 @@ namespace GalacticScale.Generators
             //GS2.Log("Oiler Processed");
 
             var obsidian = new GSTheme("Obsidian", "Obsidian".Translate(), "IceGelisol");
-            obsidian.terrainMaterial.Tint = new Color(0.05f, 0.05f, 0.05f, 1);
-            obsidian.oceanMaterial.Tint = new Color(0.0f, 0.0f, 0.0f, 0.5f);
+            
+            obsidian.oceanMaterial.Tint = new Color(0.005f, 0.005f, 0.005f, 1f);
             obsidian.atmosphereMaterial.Tint = Color.black;
             obsidian.TerrainSettings.Algorithm = "GSTA3";
-            obsidian.TerrainSettings.BiomeHeightMulti = -10f;
+            obsidian.TerrainSettings.BiomeHeightMulti = 0f;
+            obsidian.TerrainSettings.BiomeHeightModifier = -111f;
+            obsidian.TerrainSettings.HeightMulti = 0f;
+            obsidian.TerrainSettings.RandomFactor = 1f;
             obsidian.CustomGeneration = true;
             obsidian.AmbientSettings.CubeMap = "GS2";
-            obsidian.terrainMat.SetFloat("_HeightEmissionRadius", 0f);
-            obsidian.terrainMat.SetFloat("_EmissionStrength", 0f);
-            obsidian.terrainMat.SetFloat("_NormalStrength", 0.3f);
-            obsidian.terrainMat.SetFloat("_Distance", 0f);
+            obsidian.terrainMaterial.Tint = new Color(0.15f, 0.15f, 0.15f, 1f);
+            // obsidian.Process();
+            // obsidian.terrainMat.SetFloat("_HeightEmissionRadius", 0f);
+            // obsidian.terrainMat.SetFloat("_EmissionStrength", 0f);
+            // obsidian.terrainMat.SetFloat("_NormalStrength", 0.01f);
+            // obsidian.terrainMat.SetFloat("_Distance", 1f);
+            obsidian.terrainMaterial.Params = new Dictionary<string, float>()
+            {
+                ["_AmbientInc"] = 0f,
+                ["_GISaturate"]= 0.0f,
+                ["_GIStrengthDay"]= 0.0505f,
+                ["_GIStrengthNight"]= 0.03f,
+                ["_Multiplier"]= 0.0018f,
+                ["_NormalStrength"]= 0.01010f,//1.5,
+                ["_SpecularHighlights"]= 110.10f,//x
+            };
+            obsidian.terrainMaterial.Colors = new Dictionary<string, Color>()
+            {
+                ["_SpeclColor"] = new Color(0.14f, 0.14f, 0.04f, 1f)
+            };
+            // obsidian.terrainMat.SetFloat("_AmbientInc", 0);
+            // obsidian.terrainMat.SetFloat("_GISaturate", 0);
+            // obsidian.terrainMat.SetFloat("_GIStrengthDay", 0.05f);
+            // obsidian.terrainMat.SetFloat("_GIStrengthNight", 0.03f);
+            // obsidian.terrainMat.SetFloat("_SpecularHighlights", 10.0f);
+            
+            // obsidian.terrainMat.SetFloat("_GlossMapScale", 1.0f);
+            // obsidian.terrainMat.SetFloat("_GlossyReflections", 11.1f);
+            // obsidian.terrainMat.SetFloat("_Multiplier", 0.0018f);
+            // obsidian.terrainMat.SetColor("_SpeclColor", new Color(0.14f, 0.14f, 0.04f, 1f));
+            
             obsidian.Temperature = 2f;
             obsidian.Process();
 

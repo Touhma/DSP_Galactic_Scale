@@ -23,7 +23,7 @@ namespace GalacticScale
         public static Image splashImage;
         public static bool NebulaClient = false;
         // public static bool MinifyJson = false;
-        public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
+        // public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
@@ -52,7 +52,37 @@ namespace GalacticScale
                 return false;
             }
         }
-
+        private static Button.ButtonClickedEvent origHost;
+        private static Button.ButtonClickedEvent origLoad;
+        public static void UpdateNebulaSettings()
+        {
+            var hostButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-multiplayer/");
+            var loadButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-new/");
+            if (hostButton != null)
+            {
+            
+                if (ActiveGenerator.GUID == "space.customizing.generators.vanilla")
+                {
+                    var button = hostButton.GetComponent<Button>();
+                    var button2 = loadButton.GetComponent<Button>();
+                    // button.enabled = false;
+                    origHost = button.onClick;
+                    origLoad = button2.onClick;
+                    button.onClick = new Button.ButtonClickedEvent();
+                    button2.onClick = new Button.ButtonClickedEvent();
+                    button.onClick.AddListener(()=>ShowMessage( "Cannot Host a GS2 Game using Vanilla Generator".ToString(), "Warning".ToString(),"OK".Translate()));
+                    button2.onClick.AddListener(()=>ShowMessage( "Cannot Host a GS2 Game using Vanilla Generator".ToString(), "Warning".ToString(),"OK".Translate()));
+                }
+                else
+                {
+                    var button = hostButton.GetComponent<Button>();
+                    var button2 = loadButton.GetComponent<Button>();
+                    // button.enabled =  true;
+                    if (origHost != null) button.onClick = origHost;
+                    if (origLoad != null) button2.onClick = origLoad;
+                }
+            }
+        }
         public static bool Vanilla => ActiveGenerator.GUID == "space.customizing.generators.vanilla";
 
         public static AssetBundle Bundle
@@ -104,10 +134,11 @@ namespace GalacticScale
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             Config.Init();
             LoadPreferences(true);
-            var themes = ThemeLibrary.Select(t => t.Value).ToList();
+            var themes = GSSettings.ThemeLibrary.Select(t => t.Value).ToList();
             foreach (var t in themes) t.Process();
             LoadGenerators();
             LoadPreferences();
+            
             Log("End");
         }
 
@@ -144,6 +175,7 @@ namespace GalacticScale
                 UIMessageBox.Show("Update Information", updateMessage, "Noted!", 0);
                 updateMessage = "";
             }
+            UpdateNebulaSettings();
         }
     }
 }

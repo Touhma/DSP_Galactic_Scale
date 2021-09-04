@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace GalacticScale
@@ -38,6 +39,7 @@ namespace GalacticScale
                     GSSettings.Instance.generatorGUID = ActiveGenerator.GUID;
                     Log("Final Seed = " + GSSettings.Seed);
                     //Log("End");
+                    // WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
                 }
                 else
                 {
@@ -51,10 +53,10 @@ namespace GalacticScale
                     $"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
                 //Log("Processing ThemeLibrary");
-                if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary())
-                    GSSettings.ThemeLibrary = ThemeLibrary;
-                else
-                    ThemeLibrary = GSSettings.ThemeLibrary;
+                // if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary())
+                //     GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
+                // else
+                //     ThemeLibrary = GSSettings.ThemeLibrary;
 
                 Log("Generating TempPoses");
                 var tempPoses = StarPositions.GenerateTempPoses(
@@ -132,6 +134,7 @@ namespace GalacticScale
                 // }
                 Warn("RM:"+GSSettings.Instance.galaxyParams.resourceMulti);
                 Warn($"GUID:{GSSettings.Instance.generatorGUID}");
+                // WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
                 return galaxy;
             }
             catch (Exception e)

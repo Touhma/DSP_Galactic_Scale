@@ -105,7 +105,7 @@ namespace GalacticScale
             set => theme = value;
         }
 
-        public GSTheme GsTheme => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary[Theme];
+        public GSTheme GsTheme => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary.Find(Theme);
 
         [SerializeField]
         public int Radius
