@@ -267,7 +267,7 @@ namespace GalacticScale.Generators
             obsidian.TerrainSettings.RandomFactor = 1f;
             obsidian.CustomGeneration = true;
             // obsidian.AmbientSettings.CubeMap = "GS2";
-            obsidian.AmbientSettings.LutContribution = 0;
+            obsidian.AmbientSettings.LutContribution = 1;
             obsidian.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
             obsidian.atmosphereMaterial.Colors["_Color"] = new Color(1, 1, 0, 1);
             obsidian.oceanMaterial.Tint = new Color(0, 0, 0, 0.5f);

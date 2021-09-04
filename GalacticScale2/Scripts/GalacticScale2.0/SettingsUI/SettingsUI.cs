@@ -114,7 +114,13 @@ namespace GalacticScale
 
         private static void CreateOptionsUI()
         {
-            Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll"));
+            var gsuipath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll");
+            if (!File.Exists(gsuipath))
+            {
+                GS2.ShowMessage("Missing GSUI.DLL".Translate(), "Error".Translate(), "Ok".Translate());
+                return;
+            }
+            Assembly.LoadFrom(gsuipath);
             var gsp = Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
             GSSettingsPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();
             GSSettingsPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;

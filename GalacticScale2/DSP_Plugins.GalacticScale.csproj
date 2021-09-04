@@ -412,7 +412,6 @@
     <Content Include="README.md" />
     <Content Include="Scripts\3rdParty\FullSerializer\FullSerializerLicense.md" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\BlueprintUtils\GetNormalizedPos.cs" />
-    <Content Include="Scripts\test.json" />
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="Scripts\Assets\galacticbundle">
