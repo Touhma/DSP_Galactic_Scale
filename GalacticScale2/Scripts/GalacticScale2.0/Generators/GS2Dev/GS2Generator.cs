@@ -76,7 +76,7 @@ namespace GalacticScale.Generators
             Log($"Orbits Phased: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             // SelectBirthPlanet();
-            birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
+            if (birthPlanet.veinSettings == null) birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
             if (birthPlanet.veinSettings.Algorithm == "Vanilla")
                 birthPlanet.veinSettings.Algorithm = "GS2";
             birthPlanet.GsTheme.CustomGeneration = true;
