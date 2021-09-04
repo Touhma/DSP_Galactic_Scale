@@ -21,7 +21,7 @@ namespace GalacticScale.Generators
         private void GeneratePlanetsForStar(GSStar star)
         {
             star.Planets = new GSPlanets();
-            // GS2.Warn($"Creating Planets for {star.Name}");
+            // Warn($"Creating Planets for {star.Name}");
             var random = new GS2.Random(star.Seed);
             
             var starBodyCount = GetStarPlanetCount(star);
@@ -261,7 +261,7 @@ namespace GalacticScale.Generators
             {
                 if (planet == birthPlanet)
                 {
-                    GS2.Warn("Setting Theme for BirthPlanet");
+                    Warn("Setting Theme for BirthPlanet");
                     var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
                     if (preferences.GetBool("birthPlanetUnlock", false)) planet.Theme = habitableTheme;
                     else planet.Theme = "Mediterranean";

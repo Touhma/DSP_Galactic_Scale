@@ -181,7 +181,7 @@ namespace GalacticScale
             planet.veinGroups[groupIndex].count++;
             planet.veinGroups[groupIndex].amount += vein.amount;
             planet.data.AddVeinData(vein); //add to the planets rawdata veinpool
-            GS2.Warn("Added");
+            // GS2.Warn("Added");
         }
 
         private static void EraseVegetableAtPoint(Vector3 position, PlanetData planet)
@@ -246,6 +246,7 @@ namespace GalacticScale
 
         private static void CutTheVeinGroup(ref List<GSVeinType> veinGroups)
         {
+            if (veinGroups.Count < 1) return;
             var newList = new List<GSVeinType>();
             var r = random.Next(veinGroups.Count);
             for (var x = r; x < veinGroups.Count; x++)
@@ -267,12 +268,13 @@ namespace GalacticScale
                 {
                     case 0f:disabled[i] = true; break;
                     case -1f: if (random.NextDouble() < 0.87) disabled[i] = true; else disabled[i] = false; break;
-                    default: if (random.NextPick(gsPlanet.rareChance)) disabled[i] = true; else disabled[i] = false; break;
+                    default: if (random.NextPick((double)gsPlanet.rareChance)) disabled[i] = false; else disabled[i] = true; break;
                 }
                 if (GS2.Config.ForceRare) disabled[i] = false;
                 
             }
-
+            GS2.Warn($"{gsPlanet.Name} chance of rare = {gsPlanet.rareChance} where -1f is default (13% chance of rare) and 0 is 0% chance, 100 is 100% chance");
+            GS2.WarnJson(disabled);
             return disabled;
         }
     }
