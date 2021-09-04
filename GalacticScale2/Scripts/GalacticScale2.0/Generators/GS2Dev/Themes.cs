@@ -39,6 +39,7 @@ namespace GalacticScale.Generators
                 var theme = newLibrary[key];
                 theme.CustomGeneration = true;
                 theme.VeinSettings.Algorithm = "GS2";
+                if (theme.Algo == 7) theme.VeinSettings.Algorithm = "GS2W";
                 if (theme.PlanetType == EPlanetType.Ocean) theme.MinRadius = 50;
                 if (theme.PlanetType != EPlanetType.Gas && theme.PlanetType != EPlanetType.Ocean)
                 {

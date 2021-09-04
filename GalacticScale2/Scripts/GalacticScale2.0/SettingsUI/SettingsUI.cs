@@ -137,6 +137,7 @@ namespace GalacticScale
                 var group = GSUI.Group(plugin.Name, plugin.Options, plugin.Description, true, true, o =>
                 {
                     plugin.Enabled = o;
+                    // var x = plugin.Export();
                     //Warn(plugin.Enabled.ToString());
                 });
                 UnityAction postfix = () =>
