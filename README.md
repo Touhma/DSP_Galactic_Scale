@@ -1,6 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
 
-After a looooong time ... here it is. Galactic Scale 2.0 Beta! Thanks everyone for your patience!
+After a looooong time ... here it is. Galactic Scale 2.0 ! Thanks everyone for your patience!
 
 What Galactic Scale 2.0 is: A Framework for creating generator plugins that can completely customize everything to do with galaxy/planet generation in Dyson Sphere Program, with two different generators built in.
 
@@ -23,7 +23,7 @@ What can be customized?
 
 And so much more that I've forgotten. Documentation will be coming soon!
 
-[BETA] 2.0.0 :  Go to the discord for the changelogs , help and instructions about the mod :)
+2.2.0 :  Go to the discord for the changelogs , help and instructions about the mod :)
 
 /!\ READ THIS
 

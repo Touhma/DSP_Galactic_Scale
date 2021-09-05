@@ -14,18 +14,25 @@ namespace GalacticScale
 
         protected override fsResult DoSerialize(GSVeinType model, Dictionary<string, fsData> serialized)
         {
-            //GS2.Log("Start");
+            // GS2.Log("Start");
             var list = new List<fsData>();
             var dict = new Dictionary<string, int>();
-            for (var i = 0; i < model.veins.Count; i++)
+            if (model.veins.Count > 0)
             {
-                var s = model.veins[i].count + "x" + model.veins[i].richness;
-                if (!dict.ContainsKey(s))
-                    dict.Add(s, 1);
-                else
-                    dict[s]++;
+                for (var i = 0; i < model.veins.Count; i++)
+                {
+                    var s = model.veins[i].count + "x" + model.veins[i].richness;
+                    if (!dict.ContainsKey(s))
+                        dict.Add(s, 1);
+                    else
+                        dict[s]++;
+                }
             }
-
+            else
+            {
+                return fsResult.Success;
+                // GS2.WarnJson(model);
+            }
             foreach (var kvp in dict) list.Add(new fsData(kvp.Value + "x" + kvp.Key));
             //GS2.Warn("-----"+list.Count);
             //for (var i = 0; i < model.veins.Count; i++)
@@ -44,21 +51,26 @@ namespace GalacticScale
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSVeinType model)
         {
-            //GS2.Log("Start");
+            // GS2.Log("Start");
             var result = fsResult.Success;
             model = new GSVeinType();
             // Deserialize name mainly manually (helper methods CheckKey and CheckType)
             fsData veinData;
             if (CheckKey(data, "veins", out veinData).Succeeded)
             {
-                //GS2.Log("processing veins");
+                // GS2.Log("processing veins");
                 if ((result += CheckType(veinData, fsDataType.Array)).Failed) return result;
-                //GS2.Log("VeinData is Array");
+                // GS2.Log("VeinData is Array");
                 var veins = veinData.AsList;
                 model.veins = new List<GSVein>();
+                if (veins.Count == 0)
+                {
+                    GS2.WarnJson(data);
+                    return result;
+                }
                 if (veins[0].IsString)
                 {
-                    //GS2.Log("Veins[0] is string");
+                    // GS2.Log("Veins[0] is string");
                     //new method
                     for (var i = 0; i < veins.Count; i++)
                     {
@@ -78,7 +90,7 @@ namespace GalacticScale
                 } // end new method
                 else
                 {
-                    //GS2.Log("Veins[0] not string");
+                    GS2.Log("Veins[0] not string");
                     if ((result += DeserializeMember(data, null, "veins", out model.veins)).Failed) return result;
                 }
 
@@ -92,15 +104,15 @@ namespace GalacticScale
 
                 var numToGenerate = (int)generate.AsInt64;
                 if (numToGenerate < 0)
-                    //GS2.Warn("generate number < 0");
+                    GS2.Warn("generate number < 0");
                     numToGenerate = 0;
 
                 if (numToGenerate > 564)
-                    //GS2.Warn("generate number > 64");
+                    GS2.Warn("generate number > 64");
                     numToGenerate = 564;
 
                 if (numToGenerate < model.veins.Count)
-                    //GS2.Warn("generate number < existing vein count");
+                    GS2.Warn("generate number < existing vein count");
                     numToGenerate = 0;
 
                 numToGenerate -= model.veins.Count;

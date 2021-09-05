@@ -267,8 +267,8 @@ namespace GalacticScale
                 if (GS2.Config.ForceRare) disabled[i] = false;
             }
 
-            GS2.Warn($"{gsPlanet.Name} chance of rare = {gsPlanet.rareChance} where -1f is default (13% chance of rare) and 0 is 0% chance, 100 is 100% chance");
-            GS2.WarnJson(disabled);
+            // GS2.Warn($"{gsPlanet.Name} chance of rare = {gsPlanet.rareChance} where -1f is default (13% chance of rare) and 0 is 0% chance, 1 is 100% chance");
+            // GS2.WarnJson(disabled);
             return disabled;
         }
     }

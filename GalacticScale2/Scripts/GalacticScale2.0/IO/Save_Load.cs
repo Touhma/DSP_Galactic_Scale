@@ -35,6 +35,10 @@ namespace GalacticScale
                 return false;
             }
 
+            if (Config.Dev)
+            {
+                File.WriteAllText(Path.Combine(GS2.DataDir, "SaveContents.json"),json);
+            }
             var deserialize = serializer.TryDeserialize(data2, ref result);
             if (deserialize.Failed)
             {

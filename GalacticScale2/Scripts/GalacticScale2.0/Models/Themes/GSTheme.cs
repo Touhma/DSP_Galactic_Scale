@@ -17,16 +17,12 @@ namespace GalacticScale
 
         [NonSerialized] public string ambient;
 
-        //public string minimapMaterial;
-        //public Color minimapTint;
         [NonSerialized] public AmbientDesc ambientDesc = new AmbientDesc();
 
         public GSAmbientSettings AmbientSettings = new GSAmbientSettings();
 
         [NonSerialized] public AudioClip ambientSfx;
 
-        //public string oceanMaterial;
-        //public Color oceanTint;
         [NonSerialized] public Material atmosMat;
 
         public GSMaterialSettings atmosphereMaterial = new GSMaterialSettings();
@@ -42,12 +38,6 @@ namespace GalacticScale
 
         public float[] GasSpeeds = { };
 
-        //[NonSerialized]
-        //public bool Private = false;
-        //[NonSerialized]
-        //public bool MoonOnly = false;
-        //[NonSerialized]
-        //public bool PlanetOnly = false;
         [NonSerialized] public bool Habitable;
 
         public int IceFlag = 0;
