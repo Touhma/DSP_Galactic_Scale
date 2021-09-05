@@ -23,7 +23,7 @@ namespace GalacticScale
             Distribute = EThemeDistribute.Interstellar,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
-            VeinSettings = new GSVeinSettings {Algorithm = "GS2"},
+            VeinSettings = new GSVeinSettings { Algorithm = "GS2" },
             AmbientSettings = new GSAmbientSettings
             {
                 Color1 = new Color(0.1333333f, 0.07843138f, 0.08235294f, 1f),

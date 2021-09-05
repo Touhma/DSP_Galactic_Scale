@@ -1,5 +1,4 @@
 ﻿using System;
-
 #if !UNITY_EDITOR && UNITY_WSA
 // For System.Reflection.TypeExtensions
 using System.Reflection;
@@ -26,7 +25,7 @@ namespace GSSerializer.Internal
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
         {
-            var type = (Type) instance;
+            var type = (Type)instance;
             serialized = new fsData(type.FullName);
             return fsResult.Success;
         }

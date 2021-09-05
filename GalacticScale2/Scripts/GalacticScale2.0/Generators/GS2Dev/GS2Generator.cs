@@ -7,14 +7,16 @@ namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
     {
-        private readonly Dictionary<GSStar, List<Orbit>>
-            starOrbits = new Dictionary<GSStar, List<Orbit>>();
+        private readonly Dictionary<GSStar, List<Orbit>> starOrbits = new Dictionary<GSStar, List<Orbit>>();
 
         private GSPlanet birthPlanet;
         private GSPlanet birthPlanetHost;
+
         private int birthPlanetIndex = -1;
+
         //private bool birthPlanetIsMoon;
         private GSStar birthStar;
+        private string forcedBirthStar;
         private float maxStepLength = 3.5f;
         private float minDistance = 2f;
 
@@ -33,17 +35,15 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.gs2dev";
-        private string forcedBirthStar = null;
+
         public void Generate(int starCount, StarData forcedBirthStar = null)
         {
             if (forcedBirthStar != null)
-            {
                 this.forcedBirthStar = forcedBirthStar.name;
-                // GS2.Warn("Forcing BirthStar to "+this.forcedBirthStar);
-            }
+            // GS2.Warn("Forcing BirthStar to "+this.forcedBirthStar);
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
-            
+
 
             Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
@@ -59,7 +59,7 @@ namespace GalacticScale.Generators
             GSSettings.GalaxyParams.graphMaxStars = 512;
             //starCount = preferences.GetInt("defaultStarCount", 64);
             SetGalaxyDensity(preferences.GetInt("galaxyDensity", 5));
-            
+
             highStopwatch.Begin();
             CalculateFrequencies();
             Log($"Frequencies Caltulated: {highStopwatch.duration:F5}");
@@ -121,12 +121,11 @@ namespace GalacticScale.Generators
                 //GS2.Warn($"DysonRadius for star {star.Name} is {star.dysonRadius}");
             {
                 if (star.Decorative) continue;
-                
+
                 foreach (var body in star.Bodies)
                 foreach (var m in body.Moons)
                     if (m.Radius > body.Radius && body.Scale != 10f)
-                        Warn(
-                            $"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
+                        Warn($"RADIUS ERROR {m.Name} radius {m.Radius} greater than {body.Name} radius of {body.Radius} Theme:{body.Theme}");
             }
         }
 
@@ -166,29 +165,27 @@ namespace GalacticScale.Generators
         {
             if (!BirthSystemHasTi())
             {
-                GS2.Warn("Birth System Has No Ti!");
+                Warn("Birth System Has No Ti!");
                 if (birthStar.TelluricBodyCount < 2)
                 {
                     // if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
                     // {
+                    Themes.AshenGelisol.Process();
+                    if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
+                    {
+                        // Warn("Nope" + GS2.ThemeLibrary.Count);
+                        GSSettings.ThemeLibrary.Add("AshenGelisol", Themes.AshenGelisol);
                         Themes.AshenGelisol.Process();
-                        if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
-                        {
-                            // Warn("Nope" + GS2.ThemeLibrary.Count);
-                            GSSettings.ThemeLibrary.Add("AshenGelisol", Themes.AshenGelisol);
-                            Themes.AshenGelisol.Process();
-                        }
-                        // GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
+                    }
+
+                    // GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
                     // }
                     //GS2.Warn("Adding Moon");
                     // var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "Lol",
                     //     510, 0.13f, 66f, 900f, 0f,
                     //     66f, 360f, 0f, -1f));
-                    var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol",
-                        GetStarPlanetSize(birthStar), 0.03f, 66f, 900f, 0f,
-                        66f, 360f, 0f, -1f));
-                    tiPlanet.OrbitalPeriod =
-                        Utils.CalculateOrbitPeriodFromStarMass(tiPlanet.OrbitRadius, birthStar.mass);
+                    var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol", GetStarPlanetSize(birthStar), 0.03f, 66f, 900f, 0f, 66f, 360f, 0f, -1f));
+                    tiPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriodFromStarMass(tiPlanet.OrbitRadius, birthStar.mass);
                     return;
                 }
 
@@ -350,9 +347,9 @@ namespace GalacticScale.Generators
                     break;
                 default:
                     var multi = density - 9;
-                    minStepLength = 3f+0.3f*multi;
-                    maxStepLength = 7f+multi;
-                    minDistance = 3f+multi*0.2f;
+                    minStepLength = 3f + 0.3f * multi;
+                    maxStepLength = 7f + multi;
+                    minDistance = 3f + multi * 0.2f;
                     break;
             }
 
@@ -407,21 +404,17 @@ namespace GalacticScale.Generators
             Warn($"Adding SI/TI to birthPlanet {birthPlanet.Name}");
 
             //Warn("2");
-            var s = GSVeinType.Generate(EVeinType.Silicium,1, 10, 0.6f, 0.6f, 5, 10, false);
-            var t = GSVeinType.Generate(EVeinType.Titanium,1, 10, 0.6f, 0.6f, 5, 10, false);
-            List<EVeinType> vts = new List<EVeinType>();
-            foreach (var vt in birthPlanet.veinSettings.VeinTypes)
-            {
-                vts.Add(vt.type);
-            }
+            var s = GSVeinType.Generate(EVeinType.Silicium, 1, 10, 0.6f, 0.6f, 5, 10, false);
+            var t = GSVeinType.Generate(EVeinType.Titanium, 1, 10, 0.6f, 0.6f, 5, 10, false);
+            var vts = new List<EVeinType>();
+            foreach (var vt in birthPlanet.veinSettings.VeinTypes) vts.Add(vt.type);
 
             if (!vts.Contains(EVeinType.Silicium)) birthPlanet.veinSettings.VeinTypes.Add(s);
             if (!vts.Contains(EVeinType.Titanium)) birthPlanet.veinSettings.VeinTypes.Add(t);
             foreach (var vt in birthPlanet.veinSettings.VeinTypes)
-            {
-                if (vt.type == EVeinType.Silicium || vt.type == EVeinType.Titanium) vt.rare = false;
-            }
-            
+                if (vt.type == EVeinType.Silicium || vt.type == EVeinType.Titanium)
+                    vt.rare = false;
+
             WarnJson(birthPlanet.veinSettings);
         }
 
@@ -506,8 +499,7 @@ namespace GalacticScale.Generators
                             //birthPlanetIsMoon = true;
                             birthPlanetHost = birthStar.Planets[i];
                             birthPlanetIndex = j;
-                            Log(
-                                $"Selected {birthPlanet.Name} as birthPlanet (moon) index {j} of planet {birthPlanetHost.Name} ");
+                            Log($"Selected {birthPlanet.Name} as birthPlanet (moon) index {j} of planet {birthPlanetHost.Name} ");
                             return;
                         }
 
@@ -517,8 +509,7 @@ namespace GalacticScale.Generators
                                 //birthPlanetIsMoon = true;
                                 birthPlanetHost = birthStar.Planets[i].Moons[j];
                                 birthPlanetIndex = k;
-                                Log(
-                                    $"Selected {birthPlanet.Name} as birthPlanet (sub moon) index {k} of moon {birthPlanetHost.Name} ");
+                                Log($"Selected {birthPlanet.Name} as birthPlanet (sub moon) index {k} of moon {birthPlanetHost.Name} ");
                                 return;
                             }
                     }
@@ -528,7 +519,5 @@ namespace GalacticScale.Generators
                 Error($"Selected {birthPlanet.Name} but failed to find a birthStar or host!");
             }
         }
-
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,24 +9,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
-        private static bool OnStarDataSet(
-            StarData ____star,
-            InputField ___nameInput,
-            Text ___typeText,
-            RectTransform ___paramGroup,
-            Text ___massValueText,
-            Text ___spectrValueText,
-            Text ___radiusValueText,
-            Text ___luminoValueText,
-            Text ___temperatureValueText,
-            Text ___ageValueText,
-            Sprite ___unknownResIcon,
-            GameObject ___trslBg,
-            GameObject ___imgBg,
-            UIResAmountEntry ___tipEntry,
-            UIResAmountEntry ___entryPrafab,
-            ref UIStarDetail __instance
-        )
+        private static bool OnStarDataSet(StarData ____star, InputField ___nameInput, Text ___typeText, RectTransform ___paramGroup, Text ___massValueText, Text ___spectrValueText, Text ___radiusValueText, Text ___luminoValueText, Text ___temperatureValueText, Text ___ageValueText, Sprite ___unknownResIcon, GameObject ___trslBg, GameObject ___imgBg, UIResAmountEntry ___tipEntry, UIResAmountEntry ___entryPrafab, ref UIStarDetail __instance)
         {
             var getEntry = Traverse.Create(__instance).Method("GetEntry");
 
@@ -41,22 +23,18 @@ namespace GalacticScale
             __instance.entries.Clear();
             if (__instance.star == null) return false;
             var magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
-            var _observed = GameMain.history.universeObserveLevel >=
-                            (__instance.star != GameMain.localStar ? magnitude >= 14400000.0 ? 4 : 3 : 2);
+            var _observed = GameMain.history.universeObserveLevel >= (__instance.star != GameMain.localStar ? magnitude >= 14400000.0 ? 4 : 3 : 2);
             ___nameInput.text = __instance.star.displayName;
             ___typeText.text = __instance.star.typeString;
             ___massValueText.text = __instance.star.mass.ToString("0.000") + " M    ";
             ___spectrValueText.text = __instance.star.spectr.ToString();
             ___radiusValueText.text = __instance.star.radius.ToString("0.00") + " R    ";
-            ___luminoValueText.text = ((double) __instance.star.dysonLumino).ToString("0.000") + " L    ";
+            ___luminoValueText.text = ((double)__instance.star.dysonLumino).ToString("0.000") + " L    ";
             ___temperatureValueText.text = __instance.star.temperature.ToString("#,##0") + " K";
             if (Localization.isKMG)
-                ___ageValueText.text = (__instance.star.age * __instance.star.lifetime).ToString("#,##0 ") +
-                                       "百万亿年".Translate();
+                ___ageValueText.text = (__instance.star.age * __instance.star.lifetime).ToString("#,##0 ") + "百万亿年".Translate();
             else
-                ___ageValueText.text =
-                    ((float) (__instance.star.age * (double) __instance.star.lifetime * 0.00999999977648258)).ToString(
-                        "#,##0.00 ") + "百万亿年".Translate();
+                ___ageValueText.text = ((float)(__instance.star.age * (double)__instance.star.lifetime * 0.00999999977648258)).ToString("#,##0.00 ") + "百万亿年".Translate();
 
             var num = 0;
             for (var type = 1; type < 15; ++type)
@@ -66,15 +44,12 @@ namespace GalacticScale
                 var itemProto = LDB.items.Select(veinProto.MiningItem);
                 if (_observed || type < 7)
                 {
-                    var flag = (!__instance.star.loaded
-                        ? __instance.star.GetResourceSpots(type) > 0
-                        : __instance.star.GetResourceAmount(type) > 0L) || type < 7;
+                    var flag = (!__instance.star.loaded ? __instance.star.GetResourceSpots(type) > 0 : __instance.star.GetResourceAmount(type) > 0L) || type < 7;
                     if (veinProto != null && itemProto != null && flag)
                     {
                         var entry = getEntry.GetValue<UIResAmountEntry>();
                         __instance.entries.Add(entry);
-                        entry.SetInfo(num, itemProto.name, veinProto.iconSprite, veinProto.description, type >= 7,
-                            false, type != 7 ? "                " : "         /s");
+                        entry.SetInfo(num, itemProto.name, veinProto.iconSprite, veinProto.description, type >= 7, false, type != 7 ? "                " : "         /s");
                         entry.refId = id;
                         ++num;
                     }
@@ -97,8 +72,7 @@ namespace GalacticScale
                             {
                                 entrycounts[itemProto]++;
                                 var entry = entries[itemProto];
-                                entry._label = entry.labelText.text =
-                                    $"{itemProto.name}{" x" + entrycounts[itemProto]}";
+                                entry._label = entry.labelText.text = $"{itemProto.name}{" x" + entrycounts[itemProto]}";
                                 // GS2.WarnJson(entry);
                             }
                             else
@@ -109,16 +83,12 @@ namespace GalacticScale
                                 var entry = getEntry.GetValue<UIResAmountEntry>();
                                 __instance.entries.Add(entry);
                                 // GS2.Log($"Num:{num}");
-                                entry.SetInfo(num, name, iconSprite, itemProto.description,
-                                    itemProto != null && waterItemId != 1000, false, string.Empty);
+                                entry.SetInfo(num, name, iconSprite, itemProto.description, itemProto != null && waterItemId != 1000, false, string.Empty);
                                 entry.valueString = "海洋".Translate();
                                 entries.Add(itemProto, entry);
 
                                 ++num;
                             }
-
-                            
-                            
                         }
                     }
                 }
@@ -146,8 +116,7 @@ namespace GalacticScale
                 __instance.entries.Add(entry);
                 if (_observed)
                 {
-                    entry.SetInfo(num, itemProto.name, itemProto.iconSprite, itemProto.description, false, false,
-                        "        /s");
+                    entry.SetInfo(num, itemProto.name, itemProto.iconSprite, itemProto.description, false, false, "        /s");
                     if (__instance.star.loaded)
                     {
                         StringBuilderUtility.WritePositiveFloat(entry.sb, 0, 7, keyValuePair.Value);
@@ -187,7 +156,7 @@ namespace GalacticScale
             //     GS2.Log($"{p.name}");
             //     GS2.WarnJson(p.veinSpotsSketch);
             // }
-            
+
             return false;
         }
     }

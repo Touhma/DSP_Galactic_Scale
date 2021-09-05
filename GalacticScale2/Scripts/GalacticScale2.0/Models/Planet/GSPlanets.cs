@@ -17,9 +17,7 @@ namespace GalacticScale
         {
             get
             {
-                var h = from planet in this
-                    where planet.IsHabitable
-                    select planet;
+                var h = from planet in this where planet.IsHabitable select planet;
                 return new GSPlanets(h);
             }
         }

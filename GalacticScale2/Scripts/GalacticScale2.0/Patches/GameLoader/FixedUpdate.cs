@@ -68,8 +68,7 @@ namespace GalacticScale
                         str = str + "\r\n" + ("存档补丁提示" + index).Translate();
 
                     if (!string.IsNullOrEmpty(str))
-                        UIMessageBox.Show("存档修复标题".Translate(), "存档修复提示".Translate() + "\r\n" + str, "确定".Translate(),
-                            0);
+                        UIMessageBox.Show("存档修复标题".Translate(), "存档修复提示".Translate() + "\r\n" + str, "确定".Translate(), 0);
                 }
 
                 GameMain.data.patch = 2;

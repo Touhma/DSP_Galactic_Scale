@@ -38,10 +38,8 @@ namespace GalacticScale
                     {
                         active = false,
                         starData = null,
-                        pointRenderer = Object.Instantiate(__instance.starPointPrefab,
-                            __instance.starPointPrefab.transform.parent),
-                        nameText = Object.Instantiate(__instance.nameTextPrefab,
-                            __instance.nameTextPrefab.transform.parent)
+                        pointRenderer = Object.Instantiate(__instance.starPointPrefab, __instance.starPointPrefab.transform.parent),
+                        nameText = Object.Instantiate(__instance.nameTextPrefab, __instance.nameTextPrefab.transform.parent)
                     });
 
                 var star1 = __instance._galaxyData.stars[index2];
@@ -63,10 +61,7 @@ namespace GalacticScale
 
                 var str = star1.displayName + "  ";
                 if (star1.type == EStarType.GiantStar)
-                    str = star1.spectr > ESpectrType.K
-                        ? star1.spectr > ESpectrType.F ? star1.spectr != ESpectrType.A ? str + "蓝巨星".Translate() :
-                        str + "白巨星".Translate() : str + "黄巨星".Translate()
-                        : str + "红巨星".Translate();
+                    str = star1.spectr > ESpectrType.K ? star1.spectr > ESpectrType.F ? star1.spectr != ESpectrType.A ? str + "蓝巨星".Translate() : str + "白巨星".Translate() : str + "黄巨星".Translate() : str + "红巨星".Translate();
                 else if (star1.type == EStarType.WhiteDwarf)
                     str += "白矮星".Translate();
                 else if (star1.type == EStarType.NeutronStar)
@@ -86,9 +81,7 @@ namespace GalacticScale
                 __instance.starPool[index2].pointRenderer.gameObject.SetActive(true);
                 __instance.starPool[index2].nameText.text = str;
                 __instance.starPool[index2].nameText.color = Color.Lerp(a1, Color.white, 0.5f);
-                __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
-                    __instance.starPool[index2].nameText.preferredWidth,
-                    __instance.starPool[index2].nameText.preferredHeight);
+                __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(__instance.starPool[index2].nameText.preferredWidth, __instance.starPool[index2].nameText.preferredHeight);
                 __instance.starPool[index2].nameText.rectTransform.anchoredPosition = new Vector2(-2000f, -2000f);
                 __instance.starPool[index2].textContent = str;
                 if (star1.index == GSSettings.BirthPlanet.planetData.star.index)
@@ -108,8 +101,7 @@ namespace GalacticScale
                                 active = false,
                                 starA = null,
                                 starB = null,
-                                lineRenderer = Object.Instantiate(__instance.connLinePrefab,
-                                    __instance.connLinePrefab.transform.parent)
+                                lineRenderer = Object.Instantiate(__instance.connLinePrefab, __instance.connLinePrefab.transform.parent)
                             });
 
                         var star2 = __instance._galaxyData.stars[line.index];
@@ -132,17 +124,13 @@ namespace GalacticScale
                         __instance.connPool[index1].active = true;
                         __instance.connPool[index1].starA = star1;
                         __instance.connPool[index1].starB = star2;
-                        __instance.connPool[index1].lineRenderer.material
-                            .SetColor("_LineColorA", Color.Lerp(a1, Color.white, 0.65f));
-                        __instance.connPool[index1].lineRenderer.material
-                            .SetColor("_LineColorB", Color.Lerp(a2, Color.white, 0.65f));
+                        __instance.connPool[index1].lineRenderer.material.SetColor("_LineColorA", Color.Lerp(a1, Color.white, 0.65f));
+                        __instance.connPool[index1].lineRenderer.material.SetColor("_LineColorB", Color.Lerp(a2, Color.white, 0.65f));
                         var num3 = Vector3.Distance(star1.position, star2.position);
-                        var t1 = (float) (num1 * 0.25 + 0.349999994039536) / num3;
-                        var t2 = (float) (1.0 - (num2 * 0.25 + 0.349999994039536) / num3);
-                        __instance.connPool[index1].lineRenderer
-                            .SetPosition(0, Vector3.Lerp(star1.position, star2.position, t1));
-                        __instance.connPool[index1].lineRenderer
-                            .SetPosition(1, Vector3.Lerp(star1.position, star2.position, t2));
+                        var t1 = (float)(num1 * 0.25 + 0.349999994039536) / num3;
+                        var t2 = (float)(1.0 - (num2 * 0.25 + 0.349999994039536) / num3);
+                        __instance.connPool[index1].lineRenderer.SetPosition(0, Vector3.Lerp(star1.position, star2.position, t1));
+                        __instance.connPool[index1].lineRenderer.SetPosition(1, Vector3.Lerp(star1.position, star2.position, t2));
                         __instance.connPool[index1].lineRenderer.gameObject.SetActive(true);
                         ++index1;
                     }

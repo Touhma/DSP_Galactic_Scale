@@ -2,12 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
     //The Patches in this class Add a PreLoad Splash
 
     public partial class PatchOnVFPreload
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(VFPreload), "Start")]
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(VFPreload), "Start")]
         public static void Start()
         {
             var lg = GameObject.Find("UI Root/Overlay Canvas/Splash/");
@@ -21,7 +23,7 @@ namespace GalacticScale {
                     GS2.splashImage = image;
                     image.color = Color.white;
                 }
-                else if (image.name == "bg" || image.name == "logo" || image.name == "dsp" || image.name =="dots" || image.name == "health-advice")
+                else if (image.name == "bg" || image.name == "logo" || image.name == "dsp" || image.name == "dots" || image.name == "health-advice")
                 {
                     image.enabled = false;
                 }
@@ -29,7 +31,6 @@ namespace GalacticScale {
             foreach (var rimage in rimages)
                 if (rimage.name == "vignette" || rimage.name == "logo")
                     rimage.enabled = false;
-            
         }
     }
 }

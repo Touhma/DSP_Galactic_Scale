@@ -167,7 +167,7 @@ namespace GalacticScale
                         case ESpectrType.G: return random.NextFloat(6000f, 8000f);
                         case ESpectrType.B:
                         case ESpectrType.O: return random.NextFloat(25f, 30f);
-                        case ESpectrType.M: return random.NextFloat(9600 ,11300f);
+                        case ESpectrType.M: return random.NextFloat(9600, 11300f);
                     }
 
                     break;
@@ -431,7 +431,7 @@ namespace GalacticScale
             {
                 case EStarType.BlackHole: return 0f;
                 case EStarType.NeutronStar: return 0f;
-                case EStarType.WhiteDwarf: return 0.15f * (float) (random.NextFloat(0f, 1f) * 0.4 + 0.8);
+                case EStarType.WhiteDwarf: return 0.15f * (float)(random.NextFloat(0f, 1f) * 0.4 + 0.8);
                 case EStarType.GiantStar: return 9f * habitableRadius;
             }
 
@@ -446,12 +446,8 @@ namespace GalacticScale
             if (name == null) name = "Star-" + seed;
 
             var rand = random.Next(7);
-            var spectr = special ? ESpectrType.X : (ESpectrType) rand;
-            var type = special
-                ? random.Next(10) > 5 ? EStarType.GiantStar :
-                random.Next(10) <= 1 ? EStarType.WhiteDwarf :
-                random.Next(10) <= 5 ? EStarType.BlackHole : EStarType.NeutronStar
-                : EStarType.MainSeqStar;
+            var spectr = special ? ESpectrType.X : (ESpectrType)rand;
+            var type = special ? random.Next(10) > 5 ? EStarType.GiantStar : random.Next(10) <= 1 ? EStarType.WhiteDwarf : random.Next(10) <= 5 ? EStarType.BlackHole : EStarType.NeutronStar : EStarType.MainSeqStar;
             var star = new GSStar(seed, name, spectr, type, new GSPlanets());
             return star;
         }

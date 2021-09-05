@@ -18,10 +18,9 @@ namespace GalacticScale
             var gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             // GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
             if (!GSSettings.ThemeLibrary.Find(gsPlanet.Theme).CustomGeneration)
-            {
                 // GS2.Log("CHOSE COMPLETELY VANILLA");
-                if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings()) return true;
-            }
+                if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings())
+                    return true;
             // GS2.Log("USING CUSTOM GENERATION FOR PLANET " + planet.displayName);
             __result = new GS2PlanetAlgorithm(gsPlanet); //new GS2PlanetAlgorithm(gsPlanet);
             __result.Reset(5, planet);

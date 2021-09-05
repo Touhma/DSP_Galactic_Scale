@@ -7,8 +7,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetRawData), "QueryModifiedHeight")]
-        public static bool QueryModifiedHeight(ref PlanetRawData __instance,
-            ref float __result, Vector3 vpos)
+        public static bool QueryModifiedHeight(ref PlanetRawData __instance, ref float __result, Vector3 vpos)
         {
             //GS2.Warn((__instance == null).ToString());
             vpos.Normalize();
@@ -22,7 +21,7 @@ namespace GalacticScale
             for (var index3 = -1; index3 <= 3; index3++)
             {
                 var index4 = index1 + index2 + index3 * stride;
-                if ((ulong) index4 < (ulong) __instance.dataLength)
+                if ((ulong)index4 < (ulong)__instance.dataLength)
                 {
                     var sqrMagnitude = (__instance.vertices[index4] - vpos).sqrMagnitude;
                     if (sqrMagnitude <= radiusPrecisionSq)

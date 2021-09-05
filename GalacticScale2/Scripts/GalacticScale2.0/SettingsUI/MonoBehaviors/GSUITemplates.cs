@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace GalacticScale
 {
@@ -21,5 +17,4 @@ namespace GalacticScale
         public GSUITemplate input;
         public GSUITemplate selector;
     }
-
 }

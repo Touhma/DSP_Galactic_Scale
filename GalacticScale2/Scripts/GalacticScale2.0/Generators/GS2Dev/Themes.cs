@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace GalacticScale.Generators
@@ -103,7 +102,7 @@ namespace GalacticScale.Generators
             beach.TerrainSettings.Algorithm = "GSTA1";
             beach.CustomGeneration = true;
             //GS2.LogJson(beach, true);
-            giganticforest.StarTypes = new List<EStar>() { EStar.G, EStar.F, EStar.YellowGiant };
+            giganticforest.StarTypes = new List<EStar> { EStar.G, EStar.F, EStar.YellowGiant };
             giganticforest.VegeSettings.Group1.Clear();
             giganticforest.VegeSettings.Group2.Clear();
             giganticforest.VegeSettings.Group3.Clear();
@@ -117,10 +116,8 @@ namespace GalacticScale.Generators
                 602, 602, 602, 602, 603, 603, 603, 603, 603, 603, 604, 604, 604, 604, 604, 604, 605, 605, 605, 605, 605,
                 605
             }; // Medium density, Biome border only
-            giganticforest.Vegetables2 =
-                new[] {1001, 1002, 1003, 1005, 1006, 1007}; // Dense clumped ground scatter, everywhere
-            giganticforest.Vegetables3 =
-                new[] {43, 46, 47, 47, 101, 102, 103, 104, 106, 601, 602, 604}; // Sparse, lowland only
+            giganticforest.Vegetables2 = new[] { 1001, 1002, 1003, 1005, 1006, 1007 }; // Dense clumped ground scatter, everywhere
+            giganticforest.Vegetables3 = new[] { 43, 46, 47, 47, 101, 102, 103, 104, 106, 601, 602, 604 }; // Sparse, lowland only
             giganticforest.Vegetables4 = new int[] { }; // Unused
             giganticforest.Vegetables5 = new[]
             {
@@ -163,12 +160,12 @@ namespace GalacticScale.Generators
             redforest.VegeSettings.Group4.Clear();
             redforest.VegeSettings.Group5.Clear();
             redforest.VegeSettings.Group6.Clear();
-            redforest.Vegetables0 = new[] {26, 26, 45, 603, 604}; // lowlands
-            redforest.Vegetables1 = new[] {1001, 1001, 1001, 1001, 1001, 1001, 45, 26, 26}; // Ground scatter, highlands
-            redforest.Vegetables2 = new[] {1001}; // Grass ground scatter, highlands
-            redforest.Vegetables3 = new[] {26, 26, 26, 26, 45, 602, 603, 604}; // Ground
-            redforest.Vegetables4 = new[] {1001, 26, 602, 603, 604}; // Semi clumped shoreline
-            redforest.Vegetables5 = new[] {25, 32, 36, 37, 39, 41}; // Water
+            redforest.Vegetables0 = new[] { 26, 26, 45, 603, 604 }; // lowlands
+            redforest.Vegetables1 = new[] { 1001, 1001, 1001, 1001, 1001, 1001, 45, 26, 26 }; // Ground scatter, highlands
+            redforest.Vegetables2 = new[] { 1001 }; // Grass ground scatter, highlands
+            redforest.Vegetables3 = new[] { 26, 26, 26, 26, 45, 602, 603, 604 }; // Ground
+            redforest.Vegetables4 = new[] { 1001, 26, 602, 603, 604 }; // Semi clumped shoreline
+            redforest.Vegetables5 = new[] { 25, 32, 36, 37, 39, 41 }; // Water
             redforest.PopulateVegeData();
             redforest.VeinCount = Themes.RedStone.VeinCount;
             redforest.VeinSpot = Themes.RedStone.VeinSpot;
@@ -218,8 +215,8 @@ namespace GalacticScale.Generators
             sulfursea.Vegetables0 = new int[] { }; // lowlands
             sulfursea.Vegetables1 = new int[] { }; // Ground scatter, highlands
             sulfursea.Vegetables2 = new int[] { }; // Grass ground scatter, highlands
-            sulfursea.Vegetables3 = new[] {601, 602, 603, 604, 605}; // Ground
-            sulfursea.Vegetables4 = new[] {601, 602, 603, 604, 605}; // Semi clumped shoreline
+            sulfursea.Vegetables3 = new[] { 601, 602, 603, 604, 605 }; // Ground
+            sulfursea.Vegetables4 = new[] { 601, 602, 603, 604, 605 }; // Semi clumped shoreline
             sulfursea.Vegetables5 = new int[] { }; // Water
             sulfursea.terrainMaterial.CopyFrom = "Gobi.terrainMat";
             sulfursea.atmosphereMaterial.CopyFrom = "VolcanicAsh.atmosMat";
@@ -260,7 +257,7 @@ namespace GalacticScale.Generators
             //GS2.Log("Oiler Processed");
 
             var obsidian = new GSTheme("Obsidian", "Obsidian".Translate(), "IceGelisol");
-            
+
             // obsidian.oceanMaterial.Tint = new Color(0.005f, 0.005f, 0.005f, 1f);
             obsidian.atmosphereMaterial.Tint = Color.black;
             obsidian.TerrainSettings.Algorithm = "GSTA3";
@@ -280,17 +277,17 @@ namespace GalacticScale.Generators
             // obsidian.terrainMat.SetFloat("_EmissionStrength", 0f);
             // obsidian.terrainMat.SetFloat("_NormalStrength", 0.01f);
             // obsidian.terrainMat.SetFloat("_Distance", 1f);
-            obsidian.terrainMaterial.Params = new Dictionary<string, float>()
+            obsidian.terrainMaterial.Params = new Dictionary<string, float>
             {
                 ["_AmbientInc"] = 0f,
-                ["_GISaturate"]= 0.0f,
-                ["_GIStrengthDay"]= 0.0505f,
-                ["_GIStrengthNight"]= 0.03f,
-                ["_Multiplier"]= 0.0018f,
-                ["_NormalStrength"]= 0.01010f,//1.5,
-                ["_SpecularHighlights"]= 110.10f,//x
+                ["_GISaturate"] = 0.0f,
+                ["_GIStrengthDay"] = 0.0505f,
+                ["_GIStrengthNight"] = 0.03f,
+                ["_Multiplier"] = 0.0018f,
+                ["_NormalStrength"] = 0.01010f, //1.5,
+                ["_SpecularHighlights"] = 110.10f //x
             };
-            obsidian.terrainMaterial.Colors = new Dictionary<string, Color>()
+            obsidian.terrainMaterial.Colors = new Dictionary<string, Color>
             {
                 ["_SpeclColor"] = new Color(0.14f, 0.14f, 0.04f, 1f)
             };
@@ -299,12 +296,12 @@ namespace GalacticScale.Generators
             // obsidian.terrainMat.SetFloat("_GIStrengthDay", 0.05f);
             // obsidian.terrainMat.SetFloat("_GIStrengthNight", 0.03f);
             // obsidian.terrainMat.SetFloat("_SpecularHighlights", 10.0f);
-            
+
             // obsidian.terrainMat.SetFloat("_GlossMapScale", 1.0f);
             // obsidian.terrainMat.SetFloat("_GlossyReflections", 11.1f);
             // obsidian.terrainMat.SetFloat("_Multiplier", 0.0018f);
             // obsidian.terrainMat.SetColor("_SpeclColor", new Color(0.14f, 0.14f, 0.04f, 1f));
-            
+
             obsidian.Temperature = 2f;
             obsidian.Process();
 
@@ -363,8 +360,7 @@ namespace GalacticScale.Generators
             acidGreenhouse.AmbientSettings.DustStrength1 = 10;
             acidGreenhouse.AmbientSettings.DustStrength2 = 10;
             acidGreenhouse.AmbientSettings.DustStrength3 = 10;
-            acidGreenhouse.AmbientSettings.DustColor1 =
-                new Color(0.95f, 0.75f, 0.25f, 1f); //new Color(0.38f, 0.38f, 0f, 1f);
+            acidGreenhouse.AmbientSettings.DustColor1 = new Color(0.95f, 0.75f, 0.25f, 1f); //new Color(0.38f, 0.38f, 0f, 1f);
             acidGreenhouse.AmbientSettings.DustColor2 = new Color(0.95f, 0.75f, 0.25f, 1f);
             acidGreenhouse.AmbientSettings.DustColor3 = new Color(0.9f, 0.7f, 0.2f, 1f);
             acidGreenhouse.AmbientSettings.LutContribution = 0.8f;
@@ -401,7 +397,7 @@ namespace GalacticScale.Generators
             barrenSatellite.VegeSettings.Group4 = barrenSatellite.VegeSettings.Group1;
             barrenSatellite.VegeSettings.Group5 = barrenSatellite.VegeSettings.Group1;
             barrenSatellite.VegeSettings.Group6 = barrenSatellite.VegeSettings.Group1;
-            barrenSatellite.atmosphereMaterial.Params = new Dictionary<string, float> {["_AtmoDensity"] = 0f};
+            barrenSatellite.atmosphereMaterial.Params = new Dictionary<string, float> { ["_AtmoDensity"] = 0f };
             barrenSatellite.VeinSettings.VeinTypes = new GSVeinTypes
             {
                 GSVeinType.Generate(EVeinType.Titanium, 1, 10, 0.2f, 1.5f, 5, 15, false),
@@ -470,7 +466,7 @@ namespace GalacticScale.Generators
             //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
             //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
             //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
-            hotGas.oceanMaterial.Colors["_Color"] = new Color {r = 0.288f, g = 0.14f, b = 0.03f, a = 1};
+            hotGas.oceanMaterial.Colors["_Color"] = new Color { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 };
             //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.917f, g = 0.776f, b = 0.6f, a = 1 });
             hotGas.CustomGeneration = true;
             hotGas.TerrainSettings = new GSTerrainSettings
@@ -481,10 +477,10 @@ namespace GalacticScale.Generators
 
             hotGas.terrainMaterial.Colors = new Dictionary<string, Color>
             {
-                ["_Color4"] = new Color {r = 0.0f, g = 0.0f, b = 0.0f, a = 1}, //Highlights?
-                ["_Color1"] = new Color {r = 0f, g = 0, b = 0f, a = 1}, //Base?
-                ["_Color2"] = new Color {r = 0, g = 0f, b = 0, a = 1}, //SunSpots
-                ["_Color3"] = new Color {r = 0, g = 0, b = 0f, a = 1}
+                ["_Color4"] = new Color { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 }, //Highlights?
+                ["_Color1"] = new Color { r = 0f, g = 0, b = 0f, a = 1 }, //Base?
+                ["_Color2"] = new Color { r = 0, g = 0f, b = 0, a = 1 }, //SunSpots
+                ["_Color3"] = new Color { r = 0, g = 0, b = 0f, a = 1 }
             }; //Fringe
             hotGas.terrainMaterial.Params = new Dictionary<string, float>
             {
@@ -504,10 +500,10 @@ namespace GalacticScale.Generators
 
             stupid.terrainMaterial.Colors = new Dictionary<string, Color>
             {
-                ["_Color4"] = new Color {r = 0.0f, g = 0.0f, b = 0.0f, a = 1}, //Highlights?
-                ["_Color1"] = new Color {r = 0f, g = 0, b = 0f, a = 1}, //Base?
-                ["_Color2"] = new Color {r = 0, g = 0f, b = 0, a = 1}, //SunSpots
-                ["_Color3"] = new Color {r = 0, g = 0, b = 0f, a = 1}
+                ["_Color4"] = new Color { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 }, //Highlights?
+                ["_Color1"] = new Color { r = 0f, g = 0, b = 0f, a = 1 }, //Base?
+                ["_Color2"] = new Color { r = 0, g = 0f, b = 0, a = 1 }, //SunSpots
+                ["_Color3"] = new Color { r = 0, g = 0, b = 0f, a = 1 }
             }; //Fringe
             stupid.terrainMaterial.Params = new Dictionary<string, float>
             {
@@ -521,7 +517,7 @@ namespace GalacticScale.Generators
             //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
             //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
             //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
-            stupid.oceanMaterial.Colors["_Color"] = new Color {r = 0.288f, g = 0.14f, b = 0.03f, a = 1};
+            stupid.oceanMaterial.Colors["_Color"] = new Color { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 };
             stupid.Process();
             //hotGas.Process();
             //var x = Resources.FindObjectsOfTypeAll<Material>();

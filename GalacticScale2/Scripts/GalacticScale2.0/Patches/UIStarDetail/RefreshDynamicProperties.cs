@@ -18,15 +18,13 @@ namespace GalacticScale
                     {
                         if (flag)
                         {
-                            var num2 = __instance.star.loaded
-                                ? __instance.star.GetResourceAmount(uiresAmountEntry.refId)
-                                : __instance.star.GetResourceSpots(uiresAmountEntry.refId);
+                            var num2 = __instance.star.loaded ? __instance.star.GetResourceAmount(uiresAmountEntry.refId) : __instance.star.GetResourceSpots(uiresAmountEntry.refId);
                             if (uiresAmountEntry.refId == 7)
                             {
-                                var num3 = num2 * (double) VeinData.oilSpeedMultiplier;
+                                var num3 = num2 * (double)VeinData.oilSpeedMultiplier;
                                 if (__instance.star.loaded)
                                 {
-                                    StringBuilderUtility.WritePositiveFloat(uiresAmountEntry.sb, 0, 8, (float) num3);
+                                    StringBuilderUtility.WritePositiveFloat(uiresAmountEntry.sb, 0, 8, (float)num3);
                                     uiresAmountEntry.DisplayStringBuilder();
                                 }
                                 else
@@ -37,7 +35,7 @@ namespace GalacticScale
                             else if (__instance.star.loaded)
                             {
                                 if (num2 < 1000000000L)
-                                    StringBuilderUtility.WriteCommaULong(uiresAmountEntry.sb, 0, 16, (ulong) num2);
+                                    StringBuilderUtility.WriteCommaULong(uiresAmountEntry.sb, 0, 16, (ulong)num2);
                                 else
                                     StringBuilderUtility.WriteKMG(uiresAmountEntry.sb, 15, num2);
                                 uiresAmountEntry.DisplayStringBuilder();

@@ -25,7 +25,7 @@ namespace GSSerializer.Internal
 
         public override fsResult TrySerialize(object instance_, out fsData serialized, Type storageType)
         {
-            var instance = (IEnumerable) instance_;
+            var instance = (IEnumerable)instance_;
             var result = fsResult.Success;
 
             var elementType = GetElementType(storageType);
@@ -56,13 +56,12 @@ namespace GSSerializer.Internal
 
         private bool IsStack(Type type)
         {
-            return type.Resolve().IsGenericType &&
-                   type.Resolve().GetGenericTypeDefinition() == typeof(Stack<>);
+            return type.Resolve().IsGenericType && type.Resolve().GetGenericTypeDefinition() == typeof(Stack<>);
         }
 
         public override fsResult TryDeserialize(fsData data, ref object instance_, Type storageType)
         {
-            var instance = (IEnumerable) instance_;
+            var instance = (IEnumerable)instance_;
             var result = fsResult.Success;
 
             if ((result += CheckType(data, fsDataType.Array)).Failed) return result;
@@ -82,7 +81,7 @@ namespace GSSerializer.Internal
             {
                 var itemData = serializedList[i];
                 object itemInstance = null;
-                if (getMethod != null && i < existingSize) itemInstance = getMethod.Invoke(instance, new object[] {i});
+                if (getMethod != null && i < existingSize) itemInstance = getMethod.Invoke(instance, new object[] { i });
 
                 // note: We don't fail the entire deserialization even if the
                 //       item failed
@@ -91,9 +90,9 @@ namespace GSSerializer.Internal
                 if (itemResult.Failed) continue;
 
                 if (setMethod != null && i < existingSize)
-                    setMethod.Invoke(instance, new[] {i, itemInstance});
+                    setMethod.Invoke(instance, new[] { i, itemInstance });
                 else
-                    addMethod.Invoke(instance, new[] {itemInstance});
+                    addMethod.Invoke(instance, new[] { itemInstance });
             }
 
             return result;
@@ -101,7 +100,7 @@ namespace GSSerializer.Internal
 
         private static int HintSize(IEnumerable collection)
         {
-            if (collection is ICollection) return ((ICollection) collection).Count;
+            if (collection is ICollection) return ((ICollection)collection).Count;
             return 0;
         }
 
@@ -127,7 +126,7 @@ namespace GSSerializer.Internal
         private static int TryGetExistingSize(Type type, object instance)
         {
             var count = type.GetFlattenedProperty("Count");
-            if (count != null) return (int) count.GetGetMethod().Invoke(instance, null);
+            if (count != null) return (int)count.GetGetMethod().Invoke(instance, null);
             return 0;
         }
 
@@ -146,10 +145,7 @@ namespace GSSerializer.Internal
             }
 
             // Otherwise try and look up a general Add method.
-            return
-                type.GetFlattenedMethod("Add") ??
-                type.GetFlattenedMethod("Push") ??
-                type.GetFlattenedMethod("Enqueue");
+            return type.GetFlattenedMethod("Add") ?? type.GetFlattenedMethod("Push") ?? type.GetFlattenedMethod("Enqueue");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using HarmonyLib;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     //public partial class PatchOnGameData
     //{

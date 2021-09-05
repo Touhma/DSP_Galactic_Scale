@@ -13,15 +13,9 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlayerFootsteps), "PlayFootstepEffect")]
         public static bool PlayFootstepEffect(ref PlayerFootsteps __instance)
         {
-            if (__instance.player == null)
-            {
-                __instance.player = GameMain.mainPlayer;
-            }
+            if (__instance.player == null) __instance.player = GameMain.mainPlayer;
 
-            if (__instance.player.planetData == null)
-            {
-                __instance.player.planetData = GameMain.localPlanet;
-            }
+            if (__instance.player.planetData == null) __instance.player.planetData = GameMain.localPlanet;
 
             if (__instance.player.planetData.ambientDesc == null)
             {

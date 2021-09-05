@@ -7,8 +7,7 @@ namespace GalacticScale
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnInit")]
-        public static void Patch_OnInit(UIGalaxySelect __instance, ref Slider ___starCountSlider,
-            ref InputField ___seedInput)
+        public static void Patch_OnInit(UIGalaxySelect __instance, ref Slider ___starCountSlider, ref InputField ___seedInput)
         {
             ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;
             ___starCountSlider.minValue = GS2.ActiveGenerator.Config.MinStarCount;

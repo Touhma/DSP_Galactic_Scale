@@ -5,11 +5,8 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, Random random,
-            PlanetData host = null)
+        public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, Random random, PlanetData host = null)
         {
-            
-            
             if (GSSettings.Stars[star.index].counter > 99)
             {
                 Error($"Create Planet failed: Star '{star.name}' already has 99 bodies");
@@ -57,6 +54,7 @@ namespace GalacticScale
 
                 roman = RomanNumbers.roman[host.number + 1] + " - ";
             }
+
             // Log($"Start1 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
             if (RomanNumbers.roman.Length <= index + 1) Error($"Roman Number Conversion Error for {index + 1}");
@@ -67,11 +65,12 @@ namespace GalacticScale
             planet.orbitRadius = gsPlanet.OrbitRadius;
             if (planet.orbitRadius < 0)
             {
-                GS2.Warn($"Planet {planet.name} orbit broken. {star.type} {star.spectr}");
+                Warn($"Planet {planet.name} orbit broken. {star.type} {star.spectr}");
                 planet.orbitRadius = random.NextFloat(1, 50);
             }
+
             planet.orbitInclination = gsPlanet.OrbitInclination;
-            planet.orbitLongitude = gsPlanet.OrbitLongitude;// 1+(index * (360/8));//
+            planet.orbitLongitude = gsPlanet.OrbitLongitude; // 1+(index * (360/8));//
             planet.orbitalPeriod = gsPlanet.OrbitalPeriod;
             planet.orbitPhase = gsPlanet.OrbitPhase; //1+(index * (360/star.planetCount));
             planet.obliquity = gsPlanet.Obliquity;
@@ -82,17 +81,13 @@ namespace GalacticScale
 
             planet.radius = gsPlanet.Radius;
             planet.segment = 5;
-            var segments = (int) (planet.radius / 4f + 0.1f) * 4;
+            var segments = (int)(planet.radius / 4f + 0.1f) * 4;
             if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) SetLuts(segments, planet.radius);
             PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
             // Log($"Start2 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
-            planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) *
-                                          Quaternion.AngleAxis(planet.orbitInclination,
-                                              Vector3
-                                                  .forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
-            planet.runtimeSystemRotation =
-                planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
+            planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planet.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
+            planet.runtimeSystemRotation = planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
             //GS2.Log("Trying to apply theme " + gsPlanet.Theme);
             // Log($"OrbitRotation for {planet.name} took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();

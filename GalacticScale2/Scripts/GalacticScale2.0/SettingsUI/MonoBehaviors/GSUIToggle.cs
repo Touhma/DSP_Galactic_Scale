@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Steamworks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -11,6 +8,8 @@ namespace GalacticScale
         public Toggle _Toggle;
         public Text _labelText;
         public Text _hintText;
+
+        public GSOptionCallback OnChange;
 
         public string Hint
         {
@@ -27,14 +26,10 @@ namespace GalacticScale
         public bool Value
         {
             get => _Toggle.isOn;
-            set
-            {
+            set =>
                 // GS2.Warn($"Setting Value for {Label} to {value}"); 
                 _Toggle.isOn = value;
-            }
         }
-
-        public GSOptionCallback OnChange;
 
         public void _OnToggleChange(bool value)
         {

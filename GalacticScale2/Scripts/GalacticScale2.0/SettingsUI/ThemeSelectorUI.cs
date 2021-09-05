@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public static partial class GS2
     {

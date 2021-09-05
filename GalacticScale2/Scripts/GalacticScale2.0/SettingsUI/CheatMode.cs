@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public static partial class GS2
     {

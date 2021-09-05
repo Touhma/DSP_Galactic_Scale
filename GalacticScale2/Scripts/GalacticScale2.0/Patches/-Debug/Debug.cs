@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
-using Object = UnityEngine.Object;
-using static GalacticScale.GS2;
+﻿using HarmonyLib;
 
 namespace GalacticScale
 
@@ -34,50 +28,39 @@ namespace GalacticScale
             // GS2.Log("Test");
             if (__instance.selectedRecipe != null)
             {
-                if (!__instance.multipliers.ContainsKey(__instance.selectedRecipe.ID))
-                {
-                    __instance.multipliers[__instance.selectedRecipe.ID] = 1;
-                }
+                if (!__instance.multipliers.ContainsKey(__instance.selectedRecipe.ID)) __instance.multipliers[__instance.selectedRecipe.ID] = 1;
 
-                int num = __instance.multipliers[__instance.selectedRecipe.ID];
+                var num = __instance.multipliers[__instance.selectedRecipe.ID];
                 if (VFInput.control) num += 10;
                 else if (VFInput.shift) num += 100;
                 else if (VFInput.alt) num = 999;
                 else num++;
-                if (num > 999)
-                {
-                    num = 999;
-                }
+                if (num > 999) num = 999;
 
                 __instance.multipliers[__instance.selectedRecipe.ID] = num;
-                __instance.multiValueText.text = num.ToString() + "x";
+                __instance.multiValueText.text = num + "x";
             }
 
             return false;
-        }        
+        }
+
         [HarmonyPatch(typeof(UIReplicatorWindow), "OnMinusButtonClick")]
         [HarmonyPrefix]
         public static bool OnMinusButtonClick(ref UIReplicatorWindow __instance, int whatever)
         {
             if (__instance.selectedRecipe != null)
             {
-                if (!__instance.multipliers.ContainsKey(__instance.selectedRecipe.ID))
-                {
-                    __instance.multipliers[__instance.selectedRecipe.ID] = 1;
-                }
-                int num = __instance.multipliers[__instance.selectedRecipe.ID];
+                if (!__instance.multipliers.ContainsKey(__instance.selectedRecipe.ID)) __instance.multipliers[__instance.selectedRecipe.ID] = 1;
+                var num = __instance.multipliers[__instance.selectedRecipe.ID];
                 if (VFInput.control) num -= 10;
                 else if (VFInput.shift) num -= 100;
                 else if (VFInput.alt) num = 1;
                 else num--;
-                if (num < 1)
-                {
-                    num = 1;
-                }
+                if (num < 1) num = 1;
                 __instance.multipliers[__instance.selectedRecipe.ID] = num;
-                __instance.multiValueText.text = num.ToString() + "x";
+                __instance.multiValueText.text = num + "x";
             }
-            
+
 
             return false;
         }
@@ -91,61 +74,44 @@ namespace GalacticScale
             {
                 if (!__instance.selectedRecipe.Handcraft)
                 {
-                    UIRealtimeTip.Popup("该配方".Translate() + __instance.selectedRecipe.madeFromString + "生产".Translate(), true, 0);
+                    UIRealtimeTip.Popup("该配方".Translate() + __instance.selectedRecipe.madeFromString + "生产".Translate());
                     return false;
                 }
 
-                int id = __instance.selectedRecipe.ID;
+                var id = __instance.selectedRecipe.ID;
                 if (!GameMain.history.RecipeUnlocked(id))
                 {
-                    UIRealtimeTip.Popup("配方未解锁".Translate(), true, 0);
+                    UIRealtimeTip.Popup("配方未解锁".Translate());
                     return false;
                 }
 
-                int num = 1;
-                if (__instance.multipliers.ContainsKey(id))
-                {
-                    num = __instance.multipliers[id];
-                }
+                var num = 1;
+                if (__instance.multipliers.ContainsKey(id)) num = __instance.multipliers[id];
 
                 if (num < 1)
-                {
                     num = 1;
-                }
-                else if (num > 999)
-                {
-                    num = 1000;
-                }
+                else if (num > 999) num = 1000;
 
-                int num2 = __instance.mechaForge.PredictTaskCount(__instance.selectedRecipe.ID, 999);
+                var num2 = __instance.mechaForge.PredictTaskCount(__instance.selectedRecipe.ID, 999);
                 // GS2.Log($"{num} - {num2}");
-                if (num > num2)
-                {
-                    num = num2;
-                }
+                if (num > num2) num = num2;
 
                 if (num == 0)
                 {
-                    UIRealtimeTip.Popup("材料不足".Translate(), true, 0);
+                    UIRealtimeTip.Popup("材料不足".Translate());
                     return false;
                 }
 
                 if (__instance.mechaForge.AddTask(id, num) == null)
                 {
-                    UIRealtimeTip.Popup("材料不足".Translate(), true, 0);
+                    UIRealtimeTip.Popup("材料不足".Translate());
                     return false;
                 }
 
                 GameMain.history.RegFeatureKey(1000104);
-                
-            }return false;
+            }
+
+            return false;
         }
-
-
-
-
-
-
-
-}
+    }
 }

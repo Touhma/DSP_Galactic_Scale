@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using static GalacticScale.GS2;
+
 namespace GalacticScale
 {
     public static class HandleLocalStarPlanets
@@ -19,7 +19,7 @@ namespace GalacticScale
             if (status == lastStatus) return;
 
             lastStatus = status;
-            GS2.Log($"Current Status:{status}");
+            Log($"Current Status:{status}");
         }
 
         private static int GetLoadedPlanetCount(StarData star)
@@ -55,9 +55,9 @@ namespace GalacticScale
                     LogStatus("Left Star...Searching");
                     SearchStar();
                 }
+
                 //We assume the star is still loading, so wait.
-                LogStatus(
-                    $"Star {localStar.name} loading {GetStarLoadingStatus(localStar)} localPlanet:{localPlanet?.name}");
+                LogStatus($"Star {localStar.name} loading {GetStarLoadingStatus(localStar)} localPlanet:{localPlanet?.name}");
                 if (localPlanet != null) EnsurePlanetStillLocal();
                 if (localPlanet != null && closestPlanet == null)
                 {
@@ -80,8 +80,7 @@ namespace GalacticScale
                 return false;
             }
 
-            if (localStar != null && localPlanet != null &&
-                (!localPlanet.loaded || !localPlanet.factoryLoaded || localPlanet.loading))
+            if (localStar != null && localPlanet != null && (!localPlanet.loaded || !localPlanet.factoryLoaded || localPlanet.loading))
             {
                 //We assume the planet is still loading, so wait.
                 LogStatus($"Planet  {localPlanet.name} Loading");
@@ -155,7 +154,7 @@ namespace GalacticScale
         {
             // GS2.Log($"{DistanceTo(closestPlanet)} > {TransisionDistance(closestPlanet)}?");
             if (!(DistanceTo(closestPlanet) > TransisionDistance(closestPlanet))) return;
-            
+
             closestPlanet = null;
         }
 
@@ -180,11 +179,11 @@ namespace GalacticScale
                 var star = GameMain.galaxy.stars[i];
                 if (star.planetCount == 0) continue;
 
-                if (GS2.GetGSStar(star).Decorative) continue;
+                if (GetGSStar(star).Decorative) continue;
 
                 if (DistanceTo(star) < TransisionDistance(star))
                 {
-                    GS2.Log($"Found Star {star.name}");
+                    Log($"Found Star {star.name}");
                     closestStar = star;
                 }
 
@@ -212,21 +211,19 @@ namespace GalacticScale
 
         private static void CheckTransitionDistanceOfMoon(GSPlanet moon)
         {
-            GS2.Log($"Checking TransitionDistanceOfMoon {moon.Name}");
+            Log($"Checking TransitionDistanceOfMoon {moon.Name}");
             var currentDistance = TransitionRadii[moon.planetData];
             var host = moon.planetData.orbitAroundPlanet;
             if (host.orbitAroundPlanet == null) return; //If the host is the main planet return
-            GSPlanet gsHost = GS2.GetGSPlanet(host);
+            var gsHost = GetGSPlanet(host);
 
             //Ensure the transitiondistance doesn't interfere with the host planet
             var distanceBetweenMoonAndHost = moon.OrbitRadius * 40000f;
             // var distanceBetweenSurfaces = distanceBetweenMoonAndHost - host.realRadius - moon.planetData.realRadius;
             var calcDistanceForMoon = distanceBetweenMoonAndHost / 2 - 100f;
             if (calcDistanceForMoon < currentDistance)
-            {
                 //GS2.Log($"1 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
                 TransitionRadii[moon.planetData] = calcDistanceForMoon;
-            }
             if (gsHost.MoonCount > 1)
             {
                 //Ensure the transitiondistance doesn't interfere with the other moons
@@ -238,26 +235,22 @@ namespace GalacticScale
                     var differenceBetweenPreviousMoon = moon.OrbitRadius - prvMoonSystemOrbit;
                     calcDistanceForMoon = differenceBetweenPreviousMoon / 2 - 100f;
                     if (calcDistanceForMoon < currentDistance)
-                    {
                         //GS2.Log($"2 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
                         TransitionRadii[moon.planetData] = calcDistanceForMoon;
-                    }
                 }
-                if (index < gsHost.MoonCount -1)
+
+                if (index < gsHost.MoonCount - 1)
                 {
                     //I dont think this should ever be called? Maybe if I use this function for moons that aren't most distant satellite
                     var nextMoon = gsHost.Moons[index + 1];
                     var nextMoonSystemOrbit = (nextMoon.SystemRadius - nextMoon.OrbitRadius) * 40000f;
-                    var differenceBetweenNextMoon = nextMoonSystemOrbit-moon.OrbitRadius;
+                    var differenceBetweenNextMoon = nextMoonSystemOrbit - moon.OrbitRadius;
                     calcDistanceForMoon = differenceBetweenNextMoon / 2 - 100f;
                     if (calcDistanceForMoon < currentDistance)
-                    {
                         //GS2.Log($"3 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
                         TransitionRadii[moon.planetData] = calcDistanceForMoon;
-                    }
                 }
             }
-            
         }
 
         /// <summary>
@@ -303,10 +296,8 @@ namespace GalacticScale
                 var distanceAU = gsPlanet.Moons[0].OrbitInnermostSystemRadiusAU - gsPlanet.RadiusAU;
                 //Log($"Distance to first moons Last Satellite's Surface from {planet.name} surface is {distanceAU* 40000f}");
                 if (distanceAU * 20000f - 100f < transitionDistance)
-                {
                     //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU *20000f -100f}");
                     transitionDistance = distanceAU * 20000f - 100f;
-                }
             }
             else if (planet.orbitAroundPlanet != null) //If this is a moon
             {
@@ -319,10 +310,8 @@ namespace GalacticScale
                     var distanceAU = gsPlanet.OrbitInnermostSurfaceRadiusAU - PreviousSibling.OrbitOutermostSystemRadiusAU;
                     //Log($"Distance to previous siblings Last Satellite's Surface from {planet.name} surface is {distanceAU* 40000f}");
                     if (distanceAU * 20000f - 100f < transitionDistance)
-                    {
                         //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU *20000f -100f}");
                         transitionDistance = distanceAU * 20000f - 100f;
-                    }
                 }
                 else if (Host.MoonCount > 1)
                 {
@@ -330,23 +319,19 @@ namespace GalacticScale
                     var distanceAU = gsPlanet.OrbitInnermostSurfaceRadiusAU - Host.RadiusAU;
                     //Log($"Distance to hosts surface from {planet.name} surface is {distanceAU* 40000f}");
                     if (distanceAU * 20000f - 100f < transitionDistance)
-                    {
                         //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU *20000f -100f}");
                         transitionDistance = distanceAU * 20000f - 100f;
-                    }
                 }
 
-                if (Host.MoonCount > 1 && Host.Moons.IndexOf(gsPlanet) < Host.Moons.Count -1)
+                if (Host.MoonCount > 1 && Host.Moons.IndexOf(gsPlanet) < Host.Moons.Count - 1)
                 {
                     var index = Host.Moons.IndexOf(gsPlanet);
-                    var NextSibling  = Host.Moons[index + 1];
+                    var NextSibling = Host.Moons[index + 1];
                     var distanceAU = NextSibling.OrbitInnermostSystemRadiusAU - gsPlanet.OrbitOutermostSurfaceRadiusAU;
                     //Log($"Distance to Next Siblings Last Satellite's Surface from {planet.name} surface is {distanceAU* 40000f}");
                     if (distanceAU * 20000f - 100f < transitionDistance)
-                    {
                         //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU *20000f -100f}");
                         transitionDistance = distanceAU * 20000f - 100f;
-                    }
                     //NextSibling.OrbitInnermostSystemRadiusAU - OPrbitOutermostSurfaceRadiusAU
                 }
             }
@@ -363,46 +348,40 @@ namespace GalacticScale
                         var distanceAU = gsPlanet.OrbitInnermostSurfaceRadiusAU - PreviousSibling.OrbitOutermostSystemRadiusAU;
                         //Log($"Distance to previous siblings Last Satellite's Surface from {planet.name} surface is {distanceAU * 40000f}");
                         if (distanceAU * 20000f - 100f < transitionDistance)
-                        {
                             //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU * 20000f - 100f}");
                             transitionDistance = distanceAU * 20000f - 100f;
-                        }
                     }
                 }
                 else if (Host.PlanetCount > 1)
                 {
                     // Check Self.OrbitInnermostSurfaceRadiusAU - Host.RadiusAU
-                    
+
                     var distanceAU = gsPlanet.OrbitInnermostSurfaceRadiusAU - Host.RadiusAU;
                     //Log($"Distance to hosts surface from {planet.name} surface is {distanceAU* 40000f}");
                     if (distanceAU * 20000f - 100f < transitionDistance)
-                    {
                         //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU *20000f -100f}");
                         transitionDistance = distanceAU * 20000f - 100f;
-                    }
                 }
 
-                if (Host.PlanetCount > 1 && Host.Planets.IndexOf(gsPlanet) < Host.Planets.Count -1)
+                if (Host.PlanetCount > 1 && Host.Planets.IndexOf(gsPlanet) < Host.Planets.Count - 1)
                 {
                     var index = Host.Planets.IndexOf(gsPlanet);
-                    var NextSibling  = Host.Planets[index + 1];
+                    var NextSibling = Host.Planets[index + 1];
                     if (NextSibling.OrbitRadius != gsPlanet.OrbitRadius)
                     {
                         var distanceAU = NextSibling.OrbitInnermostSystemRadiusAU - gsPlanet.OrbitOutermostSurfaceRadiusAU;
                         //Log($"Distance to Next Siblings Last Satellite's Surface from {planet.name} surface is {distanceAU * 40000f}");
                         //NextSibling.OrbitInnermostSystemRadiusAU - OPrbitOutermostSurfaceRadiusAU
                         if (distanceAU * 20000f - 100f < transitionDistance)
-                        {
                             //Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU * 20000f - 100f}");
                             transitionDistance = distanceAU * 20000f - 100f;
-                        }
                     }
                 }
             }
-            
-            
+
+
             if (!TransitionRadii.ContainsKey(planet)) TransitionRadii.Add(planet, transitionDistance);
-            GS2.Log($"Transition Radius: {transitionDistance} for {planet.name} with radius {planet.realRadius}");
+            Log($"Transition Radius: {transitionDistance} for {planet.name} with radius {planet.realRadius}");
             return transitionDistance;
         }
     }

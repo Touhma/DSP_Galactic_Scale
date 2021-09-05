@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GSSerializer;
 
 namespace GalacticScale
@@ -10,13 +9,10 @@ namespace GalacticScale
         {
             return ContainsKey(key) ? this[key] : null;
         }
-        
+
         public string GetString(string key, string Default = "", bool forceToString = false)
         {
-            var parsedString = ContainsKey(key)
-                ? this[key] is string ? this[key] :
-                forceToString ? this[key] : Default
-                : Default;
+            var parsedString = ContainsKey(key) ? this[key] is string ? this[key] : forceToString ? this[key] : Default : Default;
             return parsedString;
         }
 
@@ -76,6 +72,7 @@ namespace GalacticScale
             Val o = this[key];
             return o;
         }
+
         public void Set(string key, object value)
         {
             if (value.GetType() == typeof(List<string>))

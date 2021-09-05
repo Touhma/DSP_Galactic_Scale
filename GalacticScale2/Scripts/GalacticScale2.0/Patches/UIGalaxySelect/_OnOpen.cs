@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +11,17 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
-        public static bool _OnOpen(UIGalaxySelect __instance , ref Slider ___starCountSlider, ref Slider ___resourceMultiplierSlider)
+        public static bool _OnOpen(UIGalaxySelect __instance, ref Slider ___starCountSlider, ref Slider ___resourceMultiplierSlider)
         {
-            
-                //GS2.Warn("Fix");
-                if (GS2.canvasOverlay)
-                {
-                    //GS2.Warn("FIXING WITH GALAXYSELECT!");
-                    UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-                    GS2.canvasOverlay = false;
-                }
+            //GS2.Warn("Fix");
+            if (GS2.canvasOverlay)
+            {
+                //GS2.Warn("FIXING WITH GALAXYSELECT!");
+                UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+                GS2.canvasOverlay = false;
+            }
 
-                if (GS2.ActiveGenerator == null) return true;
+            if (GS2.ActiveGenerator == null) return true;
             ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;
             ___starCountSlider.minValue = GS2.ActiveGenerator.Config.MinStarCount;
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null");
@@ -30,11 +30,10 @@ namespace GalacticScale
             StartButton?.SetActive(true);
             GS2.Log(StartButton?.name);
             __instance.random =
-               // new DotNet35Random(GSSettings.Seed); 
-            new DotNet35Random((int)(System.DateTime.Now.Ticks / 10000L));
+                // new DotNet35Random(GSSettings.Seed); 
+                new DotNet35Random((int)(DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
-            __instance.gameDesc?.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000),
-                GS2.ActiveGenerator.Config.DefaultStarCount,  1, GS2.Config.ResourceMultiplier);
+            __instance.gameDesc?.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.ActiveGenerator.Config.DefaultStarCount, 1, GS2.Config.ResourceMultiplier);
             GS2.gameDesc = __instance.gameDesc;
             if (__instance.starmapGroup == null) GS2.Warn("smg Null");
             __instance.starmapGroup?.gameObject?.SetActive(true);

@@ -7,22 +7,15 @@ namespace GalacticScale
 {
     public partial class PatchOnBuildTool_BlueprintPaste
     {
-        [HarmonyTranspiler, HarmonyPatch(typeof(BuildTool_BlueprintPaste),"CheckBuildConditions")]
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(BuildTool_BlueprintPaste), "CheckBuildConditions")]
         public static IEnumerable<CodeInstruction> CheckBuildConditions(IEnumerable<CodeInstruction> instructions)
         {
-            instructions = new CodeMatcher(instructions)
-                .MatchForward(true,
-                    
-                    new CodeMatch(OpCodes.Ldloc_S),
-                    new CodeMatch(OpCodes.Ldflda),
-                    new CodeMatch(OpCodes.Call),
-                    new CodeMatch(OpCodes.Ldc_R4, 200.2f))
-                .SetInstruction(HarmonyLib.Transpilers.EmitDelegate<Func<float>>(() =>
-                {
-                    PlanetData planet = GameMain.localPlanet;
-                    return (planet == null) ? 200.2f : planet.realRadius;
-                }))
-                .InstructionEnumeration();
+            instructions = new CodeMatcher(instructions).MatchForward(true, new CodeMatch(OpCodes.Ldloc_S), new CodeMatch(OpCodes.Ldflda), new CodeMatch(OpCodes.Call), new CodeMatch(OpCodes.Ldc_R4, 200.2f)).SetInstruction(Transpilers.EmitDelegate<Func<float>>(() =>
+            {
+                var planet = GameMain.localPlanet;
+                return planet == null ? 200.2f : planet.realRadius;
+            })).InstructionEnumeration();
 
             return instructions;
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-
 #if !UNITY_EDITOR && UNITY_WSA
 // For System.Reflection.TypeExtensions
 using System.Reflection;
@@ -12,8 +11,7 @@ namespace GSSerializer.Internal
     {
         public override bool CanProcess(Type type)
         {
-            if (type.Resolve().IsArray ||
-                typeof(ICollection).IsAssignableFrom(type))
+            if (type.Resolve().IsArray || typeof(ICollection).IsAssignableFrom(type))
                 return false;
 
             return true;
@@ -34,8 +32,7 @@ namespace GSSerializer.Internal
 
                 fsData serializedData;
 
-                var itemResult = Serializer.TrySerialize(property.StorageType, property.OverrideConverterType,
-                    property.Read(instance), out serializedData);
+                var itemResult = Serializer.TrySerialize(property.StorageType, property.OverrideConverterType, property.Read(instance), out serializedData);
                 result.AddMessages(itemResult);
                 if (itemResult.Failed) continue;
 
@@ -76,8 +73,7 @@ namespace GSSerializer.Internal
                     //       through CreateInstance unfortunately.
                     if (property.CanRead) deserializedValue = property.Read(instance);
 
-                    var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType,
-                        property.OverrideConverterType, ref deserializedValue);
+                    var itemResult = Serializer.TryDeserialize(propertyData, property.StorageType, property.OverrideConverterType, ref deserializedValue);
                     result.AddMessages(itemResult);
                     if (itemResult.Failed) continue;
 

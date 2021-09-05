@@ -180,8 +180,7 @@ namespace GSSerializer.Internal
                 {
                     // if both the direct and indirect type lookups fail, then
                     // throw an exception
-                    if (TryDirectTypeLookup(assemblyHint, name, out type) == false &&
-                        TryIndirectTypeLookup(name, out type) == false)
+                    if (TryDirectTypeLookup(assemblyHint, name, out type) == false && TryIndirectTypeLookup(name, out type) == false)
                     {
                     }
 

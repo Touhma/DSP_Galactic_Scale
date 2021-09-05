@@ -5,31 +5,26 @@ namespace GSSerializer.Internal
 {
     public static class fsVersionManager
     {
-        private static readonly Dictionary<Type, fsOption<fsVersionedType>> _cache =
-            new Dictionary<Type, fsOption<fsVersionedType>>();
+        private static readonly Dictionary<Type, fsOption<fsVersionedType>> _cache = new Dictionary<Type, fsOption<fsVersionedType>>();
 
-        public static fsResult GetVersionImportPath(string currentVersion, fsVersionedType targetVersion,
-            out List<fsVersionedType> path)
+        public static fsResult GetVersionImportPath(string currentVersion, fsVersionedType targetVersion, out List<fsVersionedType> path)
         {
             path = new List<fsVersionedType>();
 
             if (GetVersionImportPathRecursive(path, currentVersion, targetVersion) == false)
-                return fsResult.Fail("There is no migration path from \"" + currentVersion + "\" to \"" +
-                                     targetVersion.VersionString + "\"");
+                return fsResult.Fail("There is no migration path from \"" + currentVersion + "\" to \"" + targetVersion.VersionString + "\"");
 
             path.Add(targetVersion);
             return fsResult.Success;
         }
 
-        private static bool GetVersionImportPathRecursive(List<fsVersionedType> path, string currentVersion,
-            fsVersionedType current)
+        private static bool GetVersionImportPathRecursive(List<fsVersionedType> path, string currentVersion, fsVersionedType current)
         {
             for (var i = 0; i < current.Ancestors.Length; ++i)
             {
                 var ancestor = current.Ancestors[i];
 
-                if (ancestor.VersionString == currentVersion ||
-                    GetVersionImportPathRecursive(path, currentVersion, ancestor))
+                if (ancestor.VersionString == currentVersion || GetVersionImportPathRecursive(path, currentVersion, ancestor))
                 {
                     path.Add(ancestor);
                     return true;
@@ -52,18 +47,15 @@ namespace GSSerializer.Internal
                     {
                         // Version string must be provided
                         if (attr.PreviousModels != null && string.IsNullOrEmpty(attr.VersionString))
-                            throw new Exception("fsObject attribute on " + type +
-                                                " contains a PreviousModels specifier - it must also include a VersionString modifier");
+                            throw new Exception("fsObject attribute on " + type + " contains a PreviousModels specifier - it must also include a VersionString modifier");
 
                         // Map the ancestor types into versioned types
-                        var ancestors =
-                            new fsVersionedType[attr.PreviousModels != null ? attr.PreviousModels.Length : 0];
+                        var ancestors = new fsVersionedType[attr.PreviousModels != null ? attr.PreviousModels.Length : 0];
                         for (var i = 0; i < ancestors.Length; ++i)
                         {
                             var ancestorType = GetVersionedType(attr.PreviousModels[i]);
                             if (ancestorType.IsEmpty)
-                                throw new Exception("Unable to create versioned type for ancestor " + ancestorType +
-                                                    "; please add an [fsObject(VersionString=\"...\")] attribute");
+                                throw new Exception("Unable to create versioned type for ancestor " + ancestorType + "; please add an [fsObject(VersionString=\"...\")] attribute");
                             ancestors[i] = ancestorType.Value;
                         }
 
@@ -138,8 +130,7 @@ namespace GSSerializer.Internal
                 // since we can have a valid import graph that has the same model
                 // multiple times.
                 if (found.ContainsKey(item.VersionString) && found[item.VersionString] != item.ModelType)
-                    throw new fsDuplicateVersionNameException(found[item.VersionString], item.ModelType,
-                        item.VersionString);
+                    throw new fsDuplicateVersionNameException(found[item.VersionString], item.ModelType, item.VersionString);
                 found[item.VersionString] = item.ModelType;
 
                 // scan the ancestors as well

@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public struct FloatPair
     {
@@ -19,6 +16,7 @@ namespace GalacticScale
             return $"{low}:{high}";
         }
     }
+
     public class Val
     {
         public object val;
@@ -34,15 +32,17 @@ namespace GalacticScale
         {
             return val.ToString();
         }
+
         public FloatPair FloatFloat()
         {
             // GS2.Warn(val.ToString() + " " + GS2.GetCaller(0)+ GS2.GetCaller(1)+ GS2.GetCaller(2)+ GS2.GetCaller(3)+ GS2.GetCaller(4));
             var v = val.ToString().Split(':');
             if (v.Length < 2) return new FloatPair(-99, -99);
-            float.TryParse(v[0], out float i);
-            float.TryParse(v[1], out float j);
-            return new FloatPair(i,j);
+            float.TryParse(v[0], out var i);
+            float.TryParse(v[1], out var j);
+            return new FloatPair(i, j);
         }
+
         public int Int(int def = -1)
         {
             if (int.TryParse(ToString(), out var i)) return i;
@@ -53,7 +53,7 @@ namespace GalacticScale
         public float Float(float def = -1f)
         {
             if (float.TryParse(ToString(), out var f)) return f;
-            if (double.TryParse(ToString(), out var d)) return (float) d;
+            if (double.TryParse(ToString(), out var d)) return (float)d;
             if (int.TryParse(ToString(), out var i)) return i;
             GS2.Error("Failed to parse float " + val);
             return def;
@@ -75,7 +75,7 @@ namespace GalacticScale
 
         public GSSliderConfig GSSliderConfig(GSSliderConfig def = new GSSliderConfig())
         {
-            if (val is GSSliderConfig) return (GSSliderConfig) val;
+            if (val is GSSliderConfig) return (GSSliderConfig)val;
             GS2.Error("Failed to parse GSSliderConfig");
             return def;
         }
@@ -109,8 +109,17 @@ namespace GalacticScale
         {
             return new Val(i);
         }
-        public static implicit operator Val(FloatPair i) => new Val(i);
-        public static implicit operator FloatPair(Val v) => v.FloatFloat();
+
+        public static implicit operator Val(FloatPair i)
+        {
+            return new Val(i);
+        }
+
+        public static implicit operator FloatPair(Val v)
+        {
+            return v.FloatFloat();
+        }
+
         public static implicit operator int(Val v)
         {
             return v.Int();

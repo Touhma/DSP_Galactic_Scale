@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace GalacticScale
 {
@@ -10,10 +6,10 @@ namespace GalacticScale
     {
         public GSUIList contents;
         public GSUITemplates templates;
+
         public GameObject Add(GSUITemplate template)
         {
             return contents.AddItem(template);
         }
     }
-
 }

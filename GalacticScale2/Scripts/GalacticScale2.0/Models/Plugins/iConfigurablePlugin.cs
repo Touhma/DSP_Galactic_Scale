@@ -12,7 +12,7 @@
         void Init();
         void Import(GSGenPreferences preferences);
 
-        
+
         GSGenPreferences Export();
     }
 

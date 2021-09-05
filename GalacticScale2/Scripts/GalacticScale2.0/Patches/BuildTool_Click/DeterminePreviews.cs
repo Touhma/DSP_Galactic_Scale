@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public partial class PatchOnBuildTool_Click 
+    public partial class PatchOnBuildTool_Click
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(BuildTool_Click), "DeterminePreviews")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BuildTool_Click), "DeterminePreviews")]
         public static bool DeterminePreviews(ref BuildTool_Click __instance)
         {
             __instance.waitForConfirm = false;
@@ -135,9 +136,7 @@ namespace GalacticScale
                 Array.Clear(__instance.dotsSnapped, 0, __instance.dotsSnapped.Length);
                 var num = 1;
                 if (__instance.isDragging)
-                    num = __instance.planet.aux.SnapDotsNonAlloc(__instance.startGroundPosSnapped,
-                        __instance.castGroundPosSnapped, __instance.handPrefabDesc.dragBuildDist, __instance.yaw,
-                        __instance.gap, __instance.dotsSnapped);
+                    num = __instance.planet.aux.SnapDotsNonAlloc(__instance.startGroundPosSnapped, __instance.castGroundPosSnapped, __instance.handPrefabDesc.dragBuildDist, __instance.yaw, __instance.gap, __instance.dotsSnapped);
                 else
                     __instance.dotsSnapped[0] = __instance.cursorTarget;
                 var num2 = 1;
@@ -159,8 +158,7 @@ namespace GalacticScale
                             buildPreview.ResetAll();
                             buildPreview.item = __instance.handItem;
                             buildPreview.desc = __instance.handPrefabDesc;
-                            buildPreview.needModel = __instance.handPrefabDesc.lodCount > 0 &&
-                                                     __instance.handPrefabDesc.lodMeshes[0] != null;
+                            buildPreview.needModel = __instance.handPrefabDesc.lodCount > 0 && __instance.handPrefabDesc.lodMeshes[0] != null;
                         }
                         else
                         {
@@ -192,18 +190,14 @@ namespace GalacticScale
 
                             var objectPose = __instance.GetObjectPose(__instance.castObjectId);
                             vector = objectPose.position + objectPose.rotation * __instance.handPrefabDesc.lapJoint;
-                            quaternion = __instance.handPrefabDesc.multiLevelAllowRotate
-                                ? Maths.SphericalRotation(vector, __instance.yaw)
-                                : objectPose.rotation;
+                            quaternion = __instance.handPrefabDesc.multiLevelAllowRotate ? Maths.SphericalRotation(vector, __instance.yaw) : objectPose.rotation;
                         }
                         else
                         {
                             vector = __instance.dotsSnapped[i];
                             if (__instance.planet != null && __instance.planet.type == EPlanetType.Gas)
                             {
-                                var b = vector.normalized *
-                                        Mathf.Min(__instance.planet.realRadius * 0.025f,
-                                            20f); 
+                                var b = vector.normalized * Mathf.Min(__instance.planet.realRadius * 0.025f, 20f);
                                 vector += b;
                             }
 
@@ -216,21 +210,17 @@ namespace GalacticScale
                         buildPreview.lrot2 = quaternion * rhs2;
                         if (buildPreview.desc.isInserter)
                         {
-                            var num4 = buildPreview.output != null ? buildPreview.outputToSlot :
-                                buildPreview.input != null ? buildPreview.inputFromSlot : -1;
+                            var num4 = buildPreview.output != null ? buildPreview.outputToSlot : buildPreview.input != null ? buildPreview.inputFromSlot : -1;
                             if (num4 >= 0)
                             {
                                 var buildPreview3 = __instance.buildPreviews[i * num2];
                                 var vector2 = buildPreview.lpos2 - buildPreview.lpos;
                                 var num5 = vector2.magnitude;
                                 vector2.Normalize();
-                                var num6 = __instance.actionBuild.planetAux.activeGrid.CalcLocalGridSize(
-                                    buildPreview3.lpos, vector2);
+                                var num6 = __instance.actionBuild.planetAux.activeGrid.CalcLocalGridSize(buildPreview3.lpos, vector2);
                                 var pose = buildPreview3.desc.slotPoses[num4];
                                 var forward = pose.forward;
-                                var num7 = Mathf.Abs(forward.x) > Mathf.Abs(forward.z)
-                                    ? Mathf.Abs(pose.position.x)
-                                    : Mathf.Abs(pose.position.z);
+                                var num7 = Mathf.Abs(forward.x) > Mathf.Abs(forward.z) ? Mathf.Abs(pose.position.x) : Mathf.Abs(pose.position.z);
                                 num5 = Mathf.Round((num7 + num6 * (num5 + 0.0001f)) / num6) * num6 - num7;
                                 if (buildPreview.output != null)
                                     buildPreview.lpos = -vector2 * num5 + buildPreview.lpos2;
@@ -265,6 +255,5 @@ namespace GalacticScale
             __instance.buildPreviews.Clear();
             return false;
         }
-
     }
 }

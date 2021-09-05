@@ -16,16 +16,14 @@ namespace GalacticScale
                 var rect = template.GetComponent<RectTransform>();
                 if (rect == null) return null;
 
-            starCountText = Object.Instantiate(rect,
-                template.GetComponentInParent<RectTransform>().parent, false);
-            starCountText.anchoredPosition = new Vector2(starCountText.anchoredPosition.x + 140,
-                starCountSlider.GetComponentInParent<RectTransform>().anchoredPosition.y);
-            Object.DestroyImmediate(starCountText.GetComponent<Localizer>());
-            starCountText.name = "GS Star Count";
-            return starCountText.gameObject; }
+                starCountText = Object.Instantiate(rect, template.GetComponentInParent<RectTransform>().parent, false);
+                starCountText.anchoredPosition = new Vector2(starCountText.anchoredPosition.x + 140, starCountSlider.GetComponentInParent<RectTransform>().anchoredPosition.y);
+                Object.DestroyImmediate(starCountText.GetComponent<Localizer>());
+                starCountText.name = "GS Star Count";
+                return starCountText.gameObject;
+            }
 
             return null;
         }
-        
     }
-    }
+}

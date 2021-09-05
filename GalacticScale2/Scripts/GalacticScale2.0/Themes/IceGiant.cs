@@ -22,7 +22,7 @@ namespace GalacticScale
             Distribute = EThemeDistribute.Default,
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.0f, 0.0f),
-            VeinSettings = new GSVeinSettings {Algorithm = "Vanilla"},
+            VeinSettings = new GSVeinSettings { Algorithm = "Vanilla" },
             AmbientSettings = new GSAmbientSettings(),
             Vegetables0 = new int[] { },
             Vegetables1 = new int[] { },

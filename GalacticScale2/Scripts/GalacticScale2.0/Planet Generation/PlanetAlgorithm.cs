@@ -40,17 +40,19 @@
                 terrainAlgo = GS2.TerrainAlgorithmLibrary.Find(gsTheme.TerrainSettings.Algorithm);
                 //this.}terrainAlgo = (gsTheme.TerrainSettings.Algorithm == "Vanilla") ? (GSPlanet p, double modX, double modY) => { baseAlgorithm.GenerateTerrain(modX, modY); } : 
             }
+
             if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings())
             {
                 if (gsTheme.VeinSettings.Algorithm == "Vanilla")
                     veinAlgo = (p, sketchOnly) =>
                     {
-                    GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
-                    baseAlgorithm.GenerateVeins(sketchOnly);
+                        GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
+                        baseAlgorithm.GenerateVeins(sketchOnly);
                     };
                 else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
-            } else
+            }
+            else
             {
                 if (gsPlanet.veinSettings.Algorithm == "Vanilla")
                     veinAlgo = (p, sketchOnly) =>
@@ -63,13 +65,16 @@
                 else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsPlanet.veinSettings.Algorithm);
             }
+
             //this.veinAlgo = (gsTheme.VeinSettings.Algorithm == "Vanilla") ? (GSPlanet p, bool sketchOnly) => { baseAlgorithm.GenerateVeins(sketchOnly); } : GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
             if (gsTheme.VegeSettings.Algorithm == "Vanilla")
+            {
                 vegeAlgo = p =>
                 {
                     GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vege Algo Running");
                     baseAlgorithm.GenerateVegetables();
                 };
+            }
             else
             {
                 GS2.Log("GS2PlanetAlgorithm|Constructor|GS Vege Algo Running");

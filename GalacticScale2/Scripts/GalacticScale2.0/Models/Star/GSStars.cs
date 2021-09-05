@@ -20,9 +20,7 @@ namespace GalacticScale
         {
             get
             {
-                var h = from star in this
-                    from planet in star.Planets.Habitable
-                    select planet;
+                var h = from star in this from planet in star.Planets.Habitable select planet;
 
                 return new GSPlanets(h);
             }

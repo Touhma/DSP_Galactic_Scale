@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public static partial class VeinAlgorithms
     {
@@ -20,6 +15,5 @@ namespace GalacticScale
             if (GSSettings.BirthPlanet == gsPlanet) InitBirthVeinVectors(gsPlanet);
             AddVeinsToPlanetGS2(gsPlanet, CalculateVectorsGS2(gsPlanet, false, false));
         }
-
     }
 }

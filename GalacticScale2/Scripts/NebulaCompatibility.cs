@@ -4,7 +4,6 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using NebulaAPI;
-using UnityEngine.PostProcessing;
 
 namespace GalacticScale
 {
@@ -24,7 +23,6 @@ namespace GalacticScale
             BepInEx.Logging.Logger.Sources.Add(Logger);
             Logger.Log(LogLevel.Message, "Loaded");
             // Harmony.CreateAndPatchAll(typeof(NebulaCompatPatch));
-            
         }
 
         public string Version => Bootstrap.VERSION;
@@ -33,10 +31,11 @@ namespace GalacticScale
         {
             if (GS2.ActiveGenerator.GUID == "space.customizing.generators.vanilla")
             {
-                GS2.ShowMessage("Cannot Play Multiplayer using the Vanilla Generator".ToString(), "Warning".ToString(), "OK".Translate());
-                GS2.ShowMessage(GS2.ActiveGenerator.GUID.ToString(), "Warning".ToString(), "OK".Translate());
+                GS2.ShowMessage("Cannot Play Multiplayer using the Vanilla Generator", "Warning", "OK".Translate());
+                GS2.ShowMessage(GS2.ActiveGenerator.GUID, "Warning", "OK".Translate());
                 return false;
             }
+
             return hostVersion.Equals(clientVersion);
         }
 
@@ -52,7 +51,6 @@ namespace GalacticScale
             GSSettings.DeSerialize(settings);
             GS2.ActiveGenerator = GS2.GetGeneratorByID(GSSettings.Instance.generatorGUID);
         }
-        
     }
 
     public static class NebulaCompatPatch

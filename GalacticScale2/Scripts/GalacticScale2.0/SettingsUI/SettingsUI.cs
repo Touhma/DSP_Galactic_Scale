@@ -117,9 +117,10 @@ namespace GalacticScale
             var gsuipath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll");
             if (!File.Exists(gsuipath))
             {
-                GS2.ShowMessage("Missing GSUI.DLL".Translate(), "Error".Translate(), "Ok".Translate());
+                ShowMessage("Missing GSUI.DLL".Translate(), "Error".Translate(), "Ok".Translate());
                 return;
             }
+
             Assembly.LoadFrom(gsuipath);
             var gsp = Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
             GSSettingsPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();

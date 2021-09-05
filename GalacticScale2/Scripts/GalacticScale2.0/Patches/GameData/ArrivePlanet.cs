@@ -47,8 +47,7 @@ namespace GalacticScale
                 //__instance.localPlanet.onLoaded += __instance.OnActivePlanetLoaded;
                 //__instance.localPlanet.add_onLoaded(__instance.OnActivePlanetLoaded);
                 //__instance.localPlanet.onLoaded.add(__instance.OnActivePlanetLoaded);
-                AccessTools.Method(typeof(PlanetData), "add_onLoaded").Invoke(__instance.localPlanet,
-                    new object[] {(Action<PlanetData>) __instance.OnActivePlanetLoaded});
+                AccessTools.Method(typeof(PlanetData), "add_onLoaded").Invoke(__instance.localPlanet, new object[] { (Action<PlanetData>)__instance.OnActivePlanetLoaded });
             }
 
             return false;

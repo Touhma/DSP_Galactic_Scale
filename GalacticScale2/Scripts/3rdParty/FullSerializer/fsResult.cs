@@ -97,7 +97,7 @@ namespace GSSerializer
             return new fsResult
             {
                 _success = true,
-                _messages = new List<string> {warning}
+                _messages = new List<string> { warning }
             };
         }
 
@@ -109,7 +109,7 @@ namespace GSSerializer
             return new fsResult
             {
                 _success = false,
-                _messages = new List<string> {warning}
+                _messages = new List<string> { warning }
             };
         }
 

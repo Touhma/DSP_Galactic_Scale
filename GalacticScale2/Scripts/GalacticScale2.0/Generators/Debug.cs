@@ -163,8 +163,7 @@ namespace GalacticScale.Generators
             //string outputDir = Path.Combine(GS2.DataDir, "output");
             //if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
             //string path = Path.Combine(outputDir, "LocalPlanet-"+GameMain.localPlanet.name+".json");
-            GS2.LogJson(GS2.GetGSPlanet(GameMain.localPlanet)
-                .veinSettings); //path = Path.Combine(outputDir, "LDBThemes.json");//GS2.DumpObjectToJson(path, LDB.themes);
+            GS2.LogJson(GS2.GetGSPlanet(GameMain.localPlanet).veinSettings); //path = Path.Combine(outputDir, "LDBThemes.json");//GS2.DumpObjectToJson(path, LDB.themes);
         }
 
         private void OnDumpThemesDataClick(Val o)
@@ -207,12 +206,9 @@ namespace GalacticScale.Generators
             var path = Path.Combine(outputDir, "starData.json");
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
 
-            var starlist =
-                "ClassFactor,Type,Spectr,Age,Mass,Color,Luminosity,Lifetime,Radius,Dyson Radius,Temperature,Orbit Scaler,LightbalRadius\n";
+            var starlist = "ClassFactor,Type,Spectr,Age,Mass,Color,Luminosity,Lifetime,Radius,Dyson Radius,Temperature,Orbit Scaler,LightbalRadius\n";
             foreach (var s in GameMain.galaxy.stars)
-                starlist += s.classFactor + "," + s.type + "," + s.spectr + "," + s.age + "," + s.mass + "," + s.color +
-                            "," + s.luminosity + "," + s.lifetime + "," + s.radius + "," + s.dysonRadius + "," +
-                            s.temperature + "," + s.orbitScaler + "," + s.lightBalanceRadius + "\n";
+                starlist += s.classFactor + "," + s.type + "," + s.spectr + "," + s.age + "," + s.mass + "," + s.color + "," + s.luminosity + "," + s.lifetime + "," + s.radius + "," + s.dysonRadius + "," + s.temperature + "," + s.orbitScaler + "," + s.lightBalanceRadius + "\n";
             GS2.DumpObjectToJson(path, starlist);
         }
 

@@ -1,5 +1,5 @@
-﻿using GSSerializer;
-using System;
+﻿using System;
+using GSSerializer;
 
 namespace GalacticScale
 {
@@ -19,6 +19,7 @@ namespace GalacticScale
         [NonSerialized] public double yFactor = 0;
 
         [NonSerialized] public double zFactor = 0;
+
         public bool Equals(GSTerrainSettings other)
         {
             var serializer = new fsSerializer();
@@ -26,9 +27,10 @@ namespace GalacticScale
             serializer.TrySerialize(this, out var otherData).AssertSuccessWithoutWarnings();
             return thisData.Equals(otherData);
         }
+
         public GSTerrainSettings Clone()
         {
-            return (GSTerrainSettings) MemberwiseClone();
+            return (GSTerrainSettings)MemberwiseClone();
         }
     }
 }

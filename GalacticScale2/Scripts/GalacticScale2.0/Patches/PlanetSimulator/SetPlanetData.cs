@@ -8,8 +8,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetSimulator), "SetPlanetData")]
-        public static bool SetPlanetData(ref PlanetSimulator __instance, ref Transform ___lookCamera,
-            ref UniverseSimulator ___universe, ref StarSimulator ___star, PlanetData planet)
+        public static bool SetPlanetData(ref PlanetSimulator __instance, ref Transform ___lookCamera, ref UniverseSimulator ___universe, ref StarSimulator ___star, PlanetData planet)
         {
             __instance.planetData = planet;
             if (__instance.planetData.atmosMaterial != null)

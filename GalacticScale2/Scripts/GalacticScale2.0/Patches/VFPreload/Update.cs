@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
     //The Patches in this class Add a PreLoad Splash
     public partial class PatchOnVFPreload
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(VFPreload), "Update")]
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(VFPreload), "Update")]
         public static void Update(VFPreload __instance)
         {
             __instance.splashes[0].gameObject.SetActive(true);

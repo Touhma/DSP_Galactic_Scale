@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace GalacticScale.Editor
 {
     public class PlanetEditor : MonoBehaviour
     {
-        public GSPlanet planet;
         public string planetName;
         public int radius;
         public float scale;
@@ -20,7 +18,7 @@ namespace GalacticScale.Editor
         public float rotationPeriod;
         public float rotationPhase;
         public int seed;
-        
+
         public List<PlanetEditor> moons;
 
         public InputField planetNameInput;
@@ -34,8 +32,9 @@ namespace GalacticScale.Editor
         public Slider rotationPhaseSlider;
         public InputField seedInput;
         public RectTransform moonsRect;
+        public GSPlanet planet;
 
-        
+
         public void save()
         {
             planet.Name = planetName;
@@ -50,12 +49,8 @@ namespace GalacticScale.Editor
             planet.RotationPhase = rotationPhase;
             planet.Seed = seed;
             planet.Theme = theme;
-            
-            foreach (var moon in moons)
-            {
-                moon.save();
-                
-            }
+
+            foreach (var moon in moons) moon.save();
         }
 
         public void reset()

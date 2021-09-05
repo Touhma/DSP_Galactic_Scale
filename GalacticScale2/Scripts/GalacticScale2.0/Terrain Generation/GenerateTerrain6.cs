@@ -7,7 +7,12 @@ namespace GalacticScale
     {
         public static void GenerateTerrain6(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
-            if (gsPlanet == null) {GS2.Warn("gsPlanet Null");return;}
+            if (gsPlanet == null)
+            {
+                GS2.Warn("gsPlanet Null");
+                return;
+            }
+
             random = new GS2.Random(gsPlanet.Seed);
             //GS2.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
@@ -27,25 +32,27 @@ namespace GalacticScale
             var seed2 = random.Next();
             var simplexNoise1 = new SimplexNoise(seed1);
             var simplexNoise2 = new SimplexNoise(seed2);
-            if (gsPlanet.planetData == null) {GS2.Warn("gsPlanet.planetData Null");return;}
+            if (gsPlanet.planetData == null)
+            {
+                GS2.Warn("gsPlanet.planetData Null");
+                return;
+            }
+
             var data = gsPlanet.planetData.data;
             float radius = gsPlanet.Radius;
             var planet = gsPlanet.planetData;
             for (var i = 0; i < data.dataLength; ++i)
             {
-                var num1 = data.vertices[i].x * (double) radius;
-                var num2 = data.vertices[i].y * (double) radius;
-                var num3 = data.vertices[i].z * (double) radius;
+                var num1 = data.vertices[i].x * (double)radius;
+                var num2 = data.vertices[i].y * (double)radius;
+                var num3 = data.vertices[i].z * (double)radius;
                 var num4 = 0.0;
                 var num5 = Maths.Levelize(num1 * 0.007);
                 var num6 = Maths.Levelize(num2 * 0.007);
                 var num7 = Maths.Levelize(num3 * 0.007);
-                var xin = num5 + simplexNoise1.Noise(num1 * xPrecision, num2 * xPrecision, num3 * xPrecision) * 0.04 *
-                    t.RandomFactor;
-                var yin = num6 + simplexNoise1.Noise(num2 * yPrecision, num3 * yPrecision, num1 * yPrecision) * 0.04 *
-                    t.RandomFactor;
-                var zin = num7 + simplexNoise1.Noise(num3 * zPrecision, num1 * zPrecision, num2 * zPrecision) * 0.04 *
-                    t.RandomFactor;
+                var xin = num5 + simplexNoise1.Noise(num1 * xPrecision, num2 * xPrecision, num3 * xPrecision) * 0.04 * t.RandomFactor;
+                var yin = num6 + simplexNoise1.Noise(num2 * yPrecision, num3 * yPrecision, num1 * yPrecision) * 0.04 * t.RandomFactor;
+                var zin = num7 + simplexNoise1.Noise(num3 * zPrecision, num1 * zPrecision, num2 * zPrecision) * 0.04 * t.RandomFactor;
                 var num8 = Math.Abs(simplexNoise2.Noise(xin, yin, zin));
                 var num9 = (0.16 - num8) * 10.0 * (1 + t.LandModifier);
                 var num10 = num9 <= 0.0 ? 0.0 : num9 <= 1.0 ? num9 : 1.0;
@@ -68,12 +75,11 @@ namespace GalacticScale
                 var num20 = num16 <= -0.800000011920929 ? (-num19 - num8) * 0.899999976158142 : num16;
                 var hdEndValue = num20 <= -1.20000004768372 ? -1.20000004768372 : num20;
                 hdEndValue = hdEndValue * t.HeightMulti + t.BaseHeight;
-                var bEndValue = hdEndValue * num11 +
-                                (num8 * 2.1 * t.BiomeHeightMulti + 0.800000011920929 + t.BiomeHeightModifier);
+                var bEndValue = hdEndValue * num11 + (num8 * 2.1 * t.BiomeHeightMulti + 0.800000011920929 + t.BiomeHeightModifier);
                 if (bEndValue > 1.70000004768372 && bEndValue < 2.0) bEndValue = 2.0;
 
-                data.heightData[i] = (ushort) ((radius + hdEndValue + 0.2) * 100.0);
-                data.biomoData[i] = (byte) Mathf.Clamp((float) (bEndValue * 100.0), 0.0f, 200f);
+                data.heightData[i] = (ushort)((radius + hdEndValue + 0.2) * 100.0);
+                data.biomoData[i] = (byte)Mathf.Clamp((float)(bEndValue * 100.0), 0.0f, 200f);
                 //double num3 = data.vertices[i].x * planet.radius;
                 //double num4 = data.vertices[i].y * planet.radius;
                 //double num5 = data.vertices[i].z * planet.radius;

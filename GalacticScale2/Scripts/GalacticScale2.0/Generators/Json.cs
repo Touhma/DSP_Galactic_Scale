@@ -5,12 +5,13 @@ namespace GalacticScale.Generators
 {
     public class JsonImport : iConfigurableGenerator
     {
+        // private GSUI minifyCheckbox;
+        public readonly GSOptions options = new GSOptions();
+
+        private List<string> filenames = new List<string>();
         // private string dumpFilename = "_dump";
 
         private string ImportFilename = "";
-        private List<string> filenames = new List<string>();
-        // private GSUI minifyCheckbox;
-        public readonly GSOptions options = new GSOptions();
 
         public bool DisableStarCountSlider => true;
         public string Name => "Custom Json";
@@ -33,8 +34,7 @@ namespace GalacticScale.Generators
             GS2.Log("Generator:Json|Init");
             RefreshFileNames();
             GS2.Log("Generator:Json|Init|FileCount = " + filenames.Count);
-            options.Add(
-                GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            options.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
             // options.Add(GSUI.Input("Output File Name".Translate(), "Output", FilenameInputCallback, FilenameInputPostfix));
             // minifyCheckbox = options.Add(GSUI.Checkbox("Minify Output JSON".Translate(), false, MinifyCallback, MinifyPostfix));
             // options.Add(GSUI.Button("Export JSON".Translate(), "Export", DumpJSONCallback, () => { }));
@@ -73,7 +73,7 @@ namespace GalacticScale.Generators
             GS2.Log("Generator:Json|Export");
             return new GSGenPreferences
             {
-                {"Import Filename", ImportFilename},
+                { "Import Filename", ImportFilename }
                 // {"dumpFilename", dumpFilename},
                 // {"minify", GS2.MinifyJson.ToString()}
             };

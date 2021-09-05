@@ -7,21 +7,18 @@ namespace GalacticScale
     public static class PatchOnUIMainMenu
     {
         private static RectTransform mainMenuButtons;
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIMainMenu), "_OnOpen")]
         public static void _OnOpen(ref UIMainMenu __instance)
         {
-            GameObject overlayCanvas = GameObject.Find("Overlay Canvas");
+            var overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null)
-            {
                 // Log.Warn("'Overlay Canvas' not found!");
                 return;
-            }
             if (overlayCanvas.transform.Find("Main Menu") == null)
-            {
                 // Log.Warn("'Overlay Canvas/Main Menu' not found!");
                 return;
-            }
 
             if (mainMenuButtons != null) return;
             GS2.Log("Attempting to get exit button");
@@ -33,7 +30,7 @@ namespace GalacticScale
             buttonRectTransform.anchoredPosition = new Vector2(anchoredPosition.x, anchoredPosition.y - buttonRectTransform.sizeDelta.y - 10);
             var button = buttonRectTransform.GetComponentInChildren<Button>();
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => { Application.OpenURL("http://customizing.space/");});
+            button.onClick.AddListener(() => { Application.OpenURL("http://customizing.space/"); });
         }
     }
 }

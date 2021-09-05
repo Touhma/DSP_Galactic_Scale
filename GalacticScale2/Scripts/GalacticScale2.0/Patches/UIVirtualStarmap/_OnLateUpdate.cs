@@ -26,8 +26,7 @@ namespace GalacticScale
                 {
                     var starData = __instance.starPool[index2].starData;
                     var rectPoint = Vector2.zero;
-                    UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), __instance.textGroup,
-                        out rectPoint);
+                    UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), __instance.textGroup, out rectPoint);
                     rectPoint.x += 18f;
                     rectPoint.y += 6f;
                     __instance.starPool[index2].nameText.rectTransform.anchoredPosition = rectPoint;
@@ -36,9 +35,7 @@ namespace GalacticScale
                     var num3 = Vector3.Distance(ray.GetPoint(300f * num2), starData.position);
                     if (num3 < (double)num1)
                     {
-                        num1 = num3 >= __instance.starPool[index2].pointRenderer.transform.localScale.x * 0.25
-                            ? num3
-                            : 0.0f;
+                        num1 = num3 >= __instance.starPool[index2].pointRenderer.transform.localScale.x * 0.25 ? num3 : 0.0f;
                         index1 = index2;
                     }
 
@@ -56,51 +53,42 @@ namespace GalacticScale
             var flag1 = !string.IsNullOrEmpty(__instance.clickText);
             for (var index2 = 0; index2 < __instance.starPool.Count; ++index2)
             {
-                
                 var flag2 = __instance.starPool[index2].active && index2 == index1;
                 __instance.starPool[index2].nameText.gameObject.SetActive(flag2);
 
                 if (flag2 & flag1)
                 {
                     // GS2.Log("0");
-                    if (pressing && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) 
+                    if (pressing && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative)
                     {
                         if (GS2.ActiveGenerator.Config.enableStarSelector)
                         {
-                            
                             GS2.ActiveGenerator.Generate(GSSettings.StarCount, __instance.starPool[index1].starData);
                             __instance.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
                             __instance.OnGalaxyDataReset();
                         }
                         else
                         {
-                           __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" + __instance.clickText.Translate(); 
+                            __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent + "\r\n" + __instance.clickText.Translate();
                         }
-                        
-                        
                     }
 
                     // GS2.Log(__instance.starPool[index1].starData.name + " - " +
                     //         __instance.starPool[index2].starData.name);
                     var sd = __instance.starPool[index2]?.starData;
                     // GS2.Log("1");
-                    if (__instance.starPool[index2]?.nameText?.text != null && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) __instance.starPool[index2].nameText.text = 
-                        $"{__instance.starPool[index2].textContent}\r\n{Utils.GetStarDetail(sd)}";
+                    if (__instance.starPool[index2]?.nameText?.text != null && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) __instance.starPool[index2].nameText.text = $"{__instance.starPool[index2].textContent}\r\n{Utils.GetStarDetail(sd)}";
 
-                        // $"{__instance.starPool[index2].textContent}\r\n{"Gas Giants".Translate()}:{Utils.GetStarDataGasCount(sd)}\r\n{"Planets".Translate()}:{Utils.GetStarDataTelluricCount(sd)}\r\n{"Moons".Translate()}:{Utils.GetStarDataMoonCount(sd)}";
+                    // $"{__instance.starPool[index2].textContent}\r\n{"Gas Giants".Translate()}:{Utils.GetStarDataGasCount(sd)}\r\n{"Planets".Translate()}:{Utils.GetStarDataTelluricCount(sd)}\r\n{"Moons".Translate()}:{Utils.GetStarDataMoonCount(sd)}";
                     // GS2.Log("2");
                     // GS2.Log($"{sd?.planetCount}");
                     if (GS2.GetGSStar(__instance.starPool[index1].starData).Decorative) __instance.starPool[index2].nameText.rectTransform.gameObject.SetActive(false);
-                    else __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
-                        __instance.starPool[index2].nameText.preferredWidth,
-                        __instance.starPool[index2].nameText.preferredHeight);
+                    else __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(__instance.starPool[index2].nameText.preferredWidth, __instance.starPool[index2].nameText.preferredHeight);
                 }
                 else if (!flag2 & flag1)
                 {
                     __instance.starPool[index2].nameText.text = __instance.starPool[index2].textContent;
-                    __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(
-                        __instance.starPool[index2].nameText.preferredWidth,
-                        __instance.starPool[index2].nameText.preferredHeight);
+                    __instance.starPool[index2].nameText.rectTransform.sizeDelta = new Vector2(__instance.starPool[index2].nameText.preferredWidth, __instance.starPool[index2].nameText.preferredHeight);
                 }
             }
 
@@ -128,8 +116,7 @@ namespace GalacticScale
 
             __instance.starPointSelection.material.SetColor("_TintColor", color1);
             __instance.starPointSelection.transform.localPosition = starData1.position;
-            __instance.starPointSelection.transform.localScale =
-                Vector3.one * (float)(num4 * 0.600000023841858 + 0.600000023841858);
+            __instance.starPointSelection.transform.localScale = Vector3.one * (float)(num4 * 0.600000023841858 + 0.600000023841858);
             return false;
         }
     }

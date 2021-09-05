@@ -7,9 +7,7 @@ namespace GSSerializer.Internal
     {
         public override bool CanProcess(Type type)
         {
-            return
-                type.Resolve().IsGenericType &&
-                type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>);
+            return type.Resolve().IsGenericType && type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>);
         }
 
         public override bool RequestCycleSupport(Type storageType)

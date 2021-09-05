@@ -30,7 +30,7 @@ namespace GalacticScale
                 if (!initialized) Init();
 
                 if (!disabled)
-                    t.GetMethod("Write", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] {s, c});
+                    t.GetMethod("Write", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { s, c });
                 else
                     GS2.Log(s);
             }
@@ -41,7 +41,7 @@ namespace GalacticScale
 
                 if (disabled) return;
                 var m = t.GetMethod("WriteLine", BindingFlags.Public | BindingFlags.Static);
-                m?.Invoke(null, new object[] {s, c});
+                m?.Invoke(null, new object[] { s, c });
             }
         }
     }

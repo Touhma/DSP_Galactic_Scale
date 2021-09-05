@@ -21,7 +21,9 @@ namespace GalacticScale
         public static bool canvasOverlay = false;
         public static bool ResearchUnlocked = false;
         public static Image splashImage;
+
         public static bool NebulaClient = false;
+
         // public static bool MinifyJson = false;
         // public static ThemeLibrary ThemeLibrary = ThemeLibrary.Vanilla();
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
@@ -39,6 +41,9 @@ namespace GalacticScale
         private static AssetBundle bundle;
 
         public static bool MenuHasLoaded;
+        private static Button.ButtonClickedEvent origHost;
+
+        private static Button.ButtonClickedEvent origLoad;
         // public static AssetBundle bundle2;
 
         public static bool IsMenuDemo
@@ -52,37 +57,7 @@ namespace GalacticScale
                 return false;
             }
         }
-        private static Button.ButtonClickedEvent origHost;
-        private static Button.ButtonClickedEvent origLoad;
-        public static void UpdateNebulaSettings()
-        {
-            var hostButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-multiplayer/");
-            var loadButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-new/");
-            if (hostButton != null)
-            {
-            
-                if (ActiveGenerator.GUID == "space.customizing.generators.vanilla")
-                {
-                    var button = hostButton.GetComponent<Button>();
-                    var button2 = loadButton.GetComponent<Button>();
-                    // button.enabled = false;
-                    origHost = button.onClick;
-                    origLoad = button2.onClick;
-                    button.onClick = new Button.ButtonClickedEvent();
-                    button2.onClick = new Button.ButtonClickedEvent();
-                    button.onClick.AddListener(()=>ShowMessage( "Cannot Host a GS2 Game using Vanilla Generator".ToString(), "Warning".ToString(),"OK".Translate()));
-                    button2.onClick.AddListener(()=>ShowMessage( "Cannot Host a GS2 Game using Vanilla Generator".ToString(), "Warning".ToString(),"OK".Translate()));
-                }
-                else
-                {
-                    var button = hostButton.GetComponent<Button>();
-                    var button2 = loadButton.GetComponent<Button>();
-                    // button.enabled =  true;
-                    if (origHost != null) button.onClick = origHost;
-                    if (origLoad != null) button2.onClick = origLoad;
-                }
-            }
-        }
+
         public static bool Vanilla => ActiveGenerator.GUID == "space.customizing.generators.vanilla";
 
         public static AssetBundle Bundle
@@ -101,9 +76,7 @@ namespace GalacticScale
                 if (bundle == null)
                 {
                     Error("Failed to load AssetBundle!".Translate());
-                    UIMessageBox.Show("Error",
-                        "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory".Translate(),
-                        "Return".Translate(), 0);
+                    UIMessageBox.Show("Error", "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory".Translate(), "Return".Translate(), 0);
 
                     return null;
                 }
@@ -112,23 +85,51 @@ namespace GalacticScale
             }
         }
 
+        public static void UpdateNebulaSettings()
+        {
+            var hostButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-multiplayer/");
+            var loadButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-new/");
+            if (hostButton != null)
+            {
+                if (ActiveGenerator.GUID == "space.customizing.generators.vanilla")
+                {
+                    var button = hostButton.GetComponent<Button>();
+                    var button2 = loadButton.GetComponent<Button>();
+                    // button.enabled = false;
+                    origHost = button.onClick;
+                    origLoad = button2.onClick;
+                    button.onClick = new Button.ButtonClickedEvent();
+                    button2.onClick = new Button.ButtonClickedEvent();
+                    button.onClick.AddListener(() => ShowMessage("Cannot Host a GS2 Game using Vanilla Generator", "Warning", "OK".Translate()));
+                    button2.onClick.AddListener(() => ShowMessage("Cannot Host a GS2 Game using Vanilla Generator", "Warning", "OK".Translate()));
+                }
+                else
+                {
+                    var button = hostButton.GetComponent<Button>();
+                    var button2 = loadButton.GetComponent<Button>();
+                    // button.enabled =  true;
+                    if (origHost != null) button.onClick = origHost;
+                    if (origLoad != null) button2.onClick = origLoad;
+                }
+            }
+        }
+
         public static void Init()
 
         {
             if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
             {
-                updateMessage +=
-                    "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
+                updateMessage += "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease note the settings panel is under construction, and missing options will reappear in future updates\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
                 File.Delete(Path.Combine(AssemblyPath, "icon.png"));
                 updateMessage += "\r\nPLEASE NOTE: This update includes changes to the planet grid system to bring 200 radius planets in line with vanilla. THIS WILL BREAK 200 SIZED PLANETS. Roll back to the previous version if you have a current game.";
             }
+
             // Warn("Start");
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
                 Warn($"Moving Configs from {OldDataDir} to {DataDir}");
                 Directory.Move(OldDataDir, DataDir);
-                updateMessage +=
-                    "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
+                updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
 
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
@@ -138,7 +139,7 @@ namespace GalacticScale
             foreach (var t in themes) t.Process();
             LoadGenerators();
             LoadPreferences();
-            
+
             Log("End");
         }
 
@@ -146,6 +147,7 @@ namespace GalacticScale
         {
             UIMessageBox.Show(title.Translate(), message.Translate(), button.Translate(), 0);
         }
+
         public static void OnMenuLoaded()
         {
             if (MenuHasLoaded) return;
@@ -175,6 +177,7 @@ namespace GalacticScale
                 UIMessageBox.Show("Update Information", updateMessage, "Noted!", 0);
                 updateMessage = "";
             }
+
             UpdateNebulaSettings();
         }
     }

@@ -12,7 +12,7 @@ namespace GalacticScale
         public Text _hintText;
         public Text _itemText;
         public List<string> Items = new List<string> { "Test", "Test2", "test3!" };
-        private int _index = 0;
+        private int _index;
         public GSOptionCallback OnChange;
         public GSOptionCallback OnLeftClick;
         public GSOptionCallback OnRightClick;

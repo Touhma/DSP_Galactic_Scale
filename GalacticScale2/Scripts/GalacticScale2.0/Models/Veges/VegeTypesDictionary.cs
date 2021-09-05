@@ -165,10 +165,7 @@ namespace GalacticScale
         public static int Find(string s)
         {
             if (s == null) GS2.Warn("Vege code null");
-            if (Instance.ContainsKey(s))
-            {
-                return Instance[s];
-            }
+            if (Instance.ContainsKey(s)) return Instance[s];
 
             GS2.Warn("Vege ID for " + s + " not found");
             return 9999;
@@ -340,7 +337,7 @@ namespace GalacticScale
                 ["Seaweed7"] = 1031,
                 ["Seaweed8"] = 1032,
                 ["Seaweed9"] = 1033,
-                
+
                 ["DesertFragment10"] = 1041,
                 ["DesertFragment11"] = 1042,
                 ["DesertFragment12"] = 1043,

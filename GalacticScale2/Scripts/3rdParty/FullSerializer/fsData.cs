@@ -104,8 +104,7 @@ namespace GSSerializer
         /// </summary>
         public static fsData CreateDictionary()
         {
-            return new fsData(new Dictionary<string, fsData>(
-                fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase));
+            return new fsData(new Dictionary<string, fsData>(fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -263,10 +262,9 @@ namespace GSSerializer
         /// </summary>
         private T Cast<T>()
         {
-            if (_value is T) return (T) _value;
+            if (_value is T) return (T)_value;
 
-            throw new InvalidCastException("Unable to cast <" + this + "> (with type = " +
-                                           _value.GetType() + ") to type " + typeof(T));
+            throw new InvalidCastException("Unable to cast <" + this + "> (with type = " + _value.GetType() + ") to type " + typeof(T));
         }
 
         #endregion Casts
@@ -347,7 +345,7 @@ namespace GSSerializer
             if (ReferenceEquals(a, b)) return true;
 
             // If one is null, but not both, return false.
-            if ((object) a == null || (object) b == null) return false;
+            if ((object)a == null || (object)b == null) return false;
 
             if (a.IsDouble && b.IsDouble) return Math.Abs(a.AsDouble - b.AsDouble) < double.Epsilon;
 

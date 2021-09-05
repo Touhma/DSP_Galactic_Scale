@@ -11,8 +11,7 @@ namespace GSSerializer.Internal
         private Dictionary<int, object> _marked = new Dictionary<int, object>();
         private int _nextId;
 
-        private Dictionary<object, int> _objectIds =
-            new Dictionary<object, int>(ObjectReferenceEqualityComparator.Instance);
+        private Dictionary<object, int> _objectIds = new Dictionary<object, int>(ObjectReferenceEqualityComparator.Instance);
 
         public void Enter()
         {
@@ -33,8 +32,7 @@ namespace GSSerializer.Internal
             if (_depth < 0)
             {
                 _depth = 0;
-                throw new InvalidOperationException(
-                    "Internal Error - Mismatched Enter/Exit. Please report a bug at https://github.com/jacobdufault/fullserializer/issues with the serialization data.");
+                throw new InvalidOperationException("Internal Error - Mismatched Enter/Exit. Please report a bug at https://github.com/jacobdufault/fullserializer/issues with the serialization data.");
             }
 
             return _depth == 0;
@@ -43,11 +41,7 @@ namespace GSSerializer.Internal
         public object GetReferenceObject(int id)
         {
             if (_marked.ContainsKey(id) == false)
-                throw new InvalidOperationException("Internal Deserialization Error - Object " +
-                                                    "definition has not been encountered for object with id=" + id +
-                                                    "; have you reordered or modified the serialized data? If this is an issue " +
-                                                    "with an unmodified Full Serializer implementation and unmodified serialization " +
-                                                    "data, please report an issue with an included test case.");
+                throw new InvalidOperationException("Internal Deserialization Error - Object " + "definition has not been encountered for object with id=" + id + "; have you reordered or modified the serialized data? If this is an issue " + "with an unmodified Full Serializer implementation and unmodified serialization " + "data, please report an issue with an included test case.");
 
             return _marked[id];
         }
@@ -79,8 +73,7 @@ namespace GSSerializer.Internal
             var referenceId = GetReferenceId(item);
 
             if (_marked.ContainsKey(referenceId))
-                throw new InvalidOperationException("Internal Error - " + item +
-                                                    " has already been marked as serialized");
+                throw new InvalidOperationException("Internal Error - " + item + " has already been marked as serialized");
 
             _marked[referenceId] = item;
         }

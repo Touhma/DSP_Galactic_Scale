@@ -36,6 +36,7 @@ namespace GalacticScale
             instance.comboDefault = items.IndexOf(defaultValue);
             return instance;
         }
+
         // Group with Checkbox and Key
         public static GSUI Group(string label, List<GSUI> options, string key, bool defaultValue, string hint = "", bool collapsible = true, GSOptionCallback callback = null)
         {

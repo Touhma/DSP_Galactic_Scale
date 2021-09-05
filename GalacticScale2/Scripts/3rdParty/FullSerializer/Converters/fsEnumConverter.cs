@@ -29,7 +29,7 @@ namespace GSSerializer.Internal
             // In .NET compact, Enum.ToObject(Type, Object) is defined but the
             // overloads like Enum.ToObject(Type, int) are not -- so we get
             // around this by boxing the value.
-            return Enum.ToObject(storageType, (object) 0);
+            return Enum.ToObject(storageType, (object)0);
         }
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
@@ -72,7 +72,7 @@ namespace GSSerializer.Internal
         {
             if (data.IsString)
             {
-                var enumValues = data.AsString.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                var enumValues = data.AsString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 long instanceValue = 0;
                 for (var i = 0; i < enumValues.Length; ++i)
@@ -84,22 +84,22 @@ namespace GSSerializer.Internal
                     if (ArrayContains(Enum.GetNames(storageType), enumValue) == false)
                         return fsResult.Fail("Cannot find enum name " + enumValue + " on type " + storageType);
 
-                    var flagValue = (long) Convert.ChangeType(Enum.Parse(storageType, enumValue), typeof(long));
+                    var flagValue = (long)Convert.ChangeType(Enum.Parse(storageType, enumValue), typeof(long));
                     instanceValue |= flagValue;
                 }
 
-                instance = Enum.ToObject(storageType, (object) instanceValue);
+                instance = Enum.ToObject(storageType, (object)instanceValue);
                 return fsResult.Success;
             }
 
             if (data.IsInt64)
             {
-                var enumValue = (int) data.AsInt64;
+                var enumValue = (int)data.AsInt64;
 
                 // In .NET compact, Enum.ToObject(Type, Object) is defined but
                 // the overloads like Enum.ToObject(Type, int) are not -- so we
                 // get around this by boxing the value.
-                instance = Enum.ToObject(storageType, (object) enumValue);
+                instance = Enum.ToObject(storageType, (object)enumValue);
 
                 return fsResult.Success;
             }

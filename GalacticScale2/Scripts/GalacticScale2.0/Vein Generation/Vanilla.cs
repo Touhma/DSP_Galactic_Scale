@@ -26,12 +26,7 @@ namespace GalacticScale
             AddVeinsToPlanetVanilla(gsPlanet, planetRadiusFactor, veinCounts, veinOpacity, birth);
         }
 
-        private static void AddVeinsToPlanetVanilla(
-            GSPlanet gsPlanet,
-            float num2Point1Fdivbyplanetradius,
-            float[] veinCounts,
-            float[] veinOpacity,
-            bool birth)
+        private static void AddVeinsToPlanetVanilla(GSPlanet gsPlanet, float num2Point1Fdivbyplanetradius, float[] veinCounts, float[] veinOpacity, bool birth)
         {
             //random = new GS2.Random(GSSettings.Seed);
             var resourceCoef = gsPlanet.planetData.star.resourceCoef;
@@ -51,11 +46,9 @@ namespace GalacticScale
                 var vectorForward = quaternion * Vector3.forward;
                 InitializeVeinGroup(i, veinType, normalized, gsPlanet.planetData);
                 nodeVectors.Add(Vector2.zero); //Add a node at the centre of the patch/group
-                var maxCount =
-                    Mathf.RoundToInt(veinCounts[(int) veinType] *
-                                     random.Next(20, 25)); //change this to affect veingroup size.
+                var maxCount = Mathf.RoundToInt(veinCounts[(int)veinType] * random.Next(20, 25)); //change this to affect veingroup size.
                 if (veinType == EVeinType.Oil) maxCount = 1;
-                var opacity = veinOpacity[(int) veinType];
+                var opacity = veinOpacity[(int)veinType];
                 if (birth && i < 2)
                 {
                     maxCount = 6;
@@ -70,8 +63,7 @@ namespace GalacticScale
                 for (var k = 0; k < nodeVectors.Count; k++)
                 {
                     //GS2.Log(node_vectors[k] + " is the node_vector[k]");
-                    var vector5 = (nodeVectors[k].x * vectorRight + nodeVectors[k].y * vectorForward) *
-                                  num2Point1Fdivbyplanetradius;
+                    var vector5 = (nodeVectors[k].x * vectorRight + nodeVectors[k].y * vectorForward) * num2Point1Fdivbyplanetradius;
                     //GS2.Log("and its vector5 is " + vector5);
                     if (gsPlanet.planetData.veinGroups[i].type != EVeinType.Oil)
                         veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
@@ -87,7 +79,7 @@ namespace GalacticScale
                     EraseVegetableAtPoint(veinPosition, gsPlanet.planetData);
                     veinPosition = Utils.PositionAtSurface(veinPosition, gsPlanet);
                     if (!Utils.IsUnderWater(veinPosition, gsPlanet))
-                        AddVeinToPlanet(veinAmount, veinType, veinPosition, (short) i, gsPlanet.planetData);
+                        AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, gsPlanet.planetData);
                 }
             }
 
@@ -104,7 +96,7 @@ namespace GalacticScale
                 //GS2.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
                 if (gsPlanet.veinData.count >= gsPlanet.veinData.vectors.Length) break; //If Greater than 1024 quit
 
-                var eVeinType = (EVeinType) k;
+                var eVeinType = (EVeinType)k;
                 var spotsCount = veinSpots[k];
                 if (spotsCount > 1) spotsCount += random.Next(-1, 2); //randomly -1, 0, 1
                 for (var i = 0; i < spotsCount; i++)
@@ -116,22 +108,15 @@ namespace GalacticScale
                     {
                         potentialVector = Utils.RandomDirection(random);
                         if (eVeinType != EVeinType.Oil)
-                            potentialVector +=
-                                spawnVector; //if its not an oil vein, add the random spawn vector to this tiny vector..moving the location away from spawn?
+                            potentialVector += spawnVector; //if its not an oil vein, add the random spawn vector to this tiny vector..moving the location away from spawn?
                         potentialVector.Normalize(); //make the length of the vector 1
                         var height = gsPlanet.planetData.data.QueryHeight(potentialVector);
-                        if (height < gsPlanet.planetData.radius ||
-                            eVeinType == EVeinType.Oil &&
-                            height < gsPlanet.planetData.radius +
-                            0.5f) //if height is less than the planets radius, or its an oil vein and its less than slightly more than the planets radius...
+                        if (height < gsPlanet.planetData.radius || eVeinType == EVeinType.Oil && height < gsPlanet.planetData.radius + 0.5f) //if height is less than the planets radius, or its an oil vein and its less than slightly more than the planets radius...
                             continue; //find another potential vector, this one was underground?
                         var failed = false;
                         var veinGroupPadding = eVeinType != EVeinType.Oil ? 196f : 100f;
-                        for (var m = 0;
-                            m < gsPlanet.veinData.count;
-                            m++) //check each veinvector we have already calculated
-                            if ((gsPlanet.veinData.vectors[m] - potentialVector).sqrMagnitude <
-                                Mathf.Pow(planetRadiusFactor, 2) * veinGroupPadding)
+                        for (var m = 0; m < gsPlanet.veinData.count; m++) //check each veinvector we have already calculated
+                            if ((gsPlanet.veinData.vectors[m] - potentialVector).sqrMagnitude < Mathf.Pow(planetRadiusFactor, 2) * veinGroupPadding)
                             {
                                 //if the (vein vector less the potential vector (above ground)) length is less than (2.1/radius)^2 * 196
                                 //... in other words for a 200 planet 0.0196 or 0.01 vein/oil . 
@@ -265,16 +250,13 @@ namespace GalacticScale
             return p;
         }
 
-        private static void InitRares(GSPlanet gsPlanet, ThemeProto themeProto, int[] veinSpots, float[] veinCounts,
-            float[] veinOpacity, float p)
+        private static void InitRares(GSPlanet gsPlanet, ThemeProto themeProto, int[] veinSpots, float[] veinCounts, float[] veinOpacity, float p)
         {
             //random = new GS2.Random(GSSettings.Seed);
             for (var n = 0; n < themeProto.RareVeins.Length; n++)
             {
                 var rareVeinId = themeProto.RareVeins[n];
-                var chanceSpawnRareVein = gsPlanet.planetData.star.index != 0
-                    ? themeProto.RareSettings[n * 4 + 1]
-                    : themeProto.RareSettings[n * 4];
+                var chanceSpawnRareVein = gsPlanet.planetData.star.index != 0 ? themeProto.RareSettings[n * 4 + 1] : themeProto.RareSettings[n * 4];
                 var chanceforextrararespot = themeProto.RareSettings[n * 4 + 2];
                 var veincountandopacity = themeProto.RareSettings[n * 4 + 3];
 
@@ -293,22 +275,18 @@ namespace GalacticScale
             }
         }
 
-        private static void InitializeFromThemeProto(GSPlanet gsPlanet, ThemeProto themeProto, out int[] veinSpots,
-            out float[] veinCounts, out float[] veinOpacity)
+        private static void InitializeFromThemeProto(GSPlanet gsPlanet, ThemeProto themeProto, out int[] veinSpots, out float[] veinCounts, out float[] veinOpacity)
         {
             var len = PlanetModelingManager.veinProtos.Length;
             veinCounts = new float[len];
             veinOpacity = new float[len];
             veinSpots = new int[len];
             if (themeProto.VeinSpot != null)
-                Array.Copy(themeProto.VeinSpot, 0, veinSpots, 1,
-                    Math.Min(themeProto.VeinSpot.Length, veinSpots.Length - 1)); //How many Groups
+                Array.Copy(themeProto.VeinSpot, 0, veinSpots, 1, Math.Min(themeProto.VeinSpot.Length, veinSpots.Length - 1)); //How many Groups
             if (themeProto.VeinCount != null)
-                Array.Copy(themeProto.VeinCount, 0, veinCounts, 1,
-                    Math.Min(themeProto.VeinCount.Length, veinCounts.Length - 1)); //How many veins per group
+                Array.Copy(themeProto.VeinCount, 0, veinCounts, 1, Math.Min(themeProto.VeinCount.Length, veinCounts.Length - 1)); //How many veins per group
             if (themeProto.VeinOpacity != null)
-                Array.Copy(themeProto.VeinOpacity, 0, veinOpacity, 1,
-                    Math.Min(themeProto.VeinOpacity.Length, veinOpacity.Length - 1)); //How Rich the veins are
+                Array.Copy(themeProto.VeinOpacity, 0, veinOpacity, 1, Math.Min(themeProto.VeinOpacity.Length, veinOpacity.Length - 1)); //How Rich the veins are
             gsPlanet.planetData.veinSpotsSketch = veinSpots;
             var p = InitSpecials(gsPlanet, veinSpots, veinCounts, veinOpacity);
             InitRares(gsPlanet, themeProto, veinSpots, veinCounts, veinOpacity, p);

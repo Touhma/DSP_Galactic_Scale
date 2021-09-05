@@ -62,7 +62,7 @@ namespace GalacticScale
                     //new method
                     for (var i = 0; i < veins.Count; i++)
                     {
-                        var d = veins[i].AsString.Split(new[] {'x'}, StringSplitOptions.RemoveEmptyEntries);
+                        var d = veins[i].AsString.Split(new[] { 'x' }, StringSplitOptions.RemoveEmptyEntries);
                         int groupCount;
                         float richness;
                         int count;
@@ -90,24 +90,18 @@ namespace GalacticScale
             {
                 if (!generate.IsInt64) return fsResult.Fail("generate number not an integer");
 
-                var numToGenerate = (int) generate.AsInt64;
+                var numToGenerate = (int)generate.AsInt64;
                 if (numToGenerate < 0)
-                {
                     //GS2.Warn("generate number < 0");
                     numToGenerate = 0;
-                }
 
                 if (numToGenerate > 564)
-                {
                     //GS2.Warn("generate number > 64");
                     numToGenerate = 564;
-                }
 
                 if (numToGenerate < model.veins.Count)
-                {
                     //GS2.Warn("generate number < existing vein count");
                     numToGenerate = 0;
-                }
 
                 numToGenerate -= model.veins.Count;
                 for (var i = 0; i < numToGenerate; i++) model.veins.Add(new GSVein());

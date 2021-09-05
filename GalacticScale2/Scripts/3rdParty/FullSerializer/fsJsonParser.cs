@@ -27,8 +27,7 @@ namespace GSSerializer
             var start = Math.Max(0, _start - 20);
             var length = Math.Min(50, _input.Length - start);
 
-            var error = "Error while parsing: " + message + "; context = <" +
-                        _input.Substring(start, length) + ">";
+            var error = "Error while parsing: " + message + "; context = <" + _input.Substring(start, length) + ">";
             return fsResult.Fail(error);
         }
 
@@ -182,8 +181,7 @@ namespace GSSerializer
             var start = _start;
 
             // read until we get to a separator
-            while (
-                TryMoveNext() && HasValue() && IsSeparator(Character()) == false)
+            while (TryMoveNext() && HasValue() && IsSeparator(Character()) == false)
             {
             }
 
@@ -191,12 +189,10 @@ namespace GSSerializer
             var numberString = _input.Substring(start, _start - start);
 
             // double -- includes a .
-            if (numberString.Contains(".") || numberString.Contains("e") || numberString.Contains("E") ||
-                numberString == "Infinity" || numberString == "-Infinity" || numberString == "NaN")
+            if (numberString.Contains(".") || numberString.Contains("e") || numberString.Contains("E") || numberString == "Infinity" || numberString == "-Infinity" || numberString == "NaN")
             {
                 double doubleValue;
-                if (double.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture, out doubleValue) ==
-                    false)
+                if (double.TryParse(numberString, NumberStyles.Any, CultureInfo.InvariantCulture, out doubleValue) == false)
                 {
                     data = null;
                     return MakeFailure("Bad double format with " + numberString);
@@ -348,8 +344,7 @@ namespace GSSerializer
 
             SkipSpace();
 
-            var result = new Dictionary<string, fsData>(
-                fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            var result = new Dictionary<string, fsData>(fsGlobalConfig.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
 
             while (HasValue() && Character() != '}')
             {
@@ -495,19 +490,17 @@ namespace GSSerializer
 
         private bool IsHex(char c)
         {
-            return c >= '0' && c <= '9' ||
-                   c >= 'a' && c <= 'f' ||
-                   c >= 'A' && c <= 'F';
+            return c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F';
         }
 
         private uint ParseSingleChar(char c1, uint multipliyer)
         {
             uint p1 = 0;
             if (c1 >= '0' && c1 <= '9')
-                p1 = (uint) (c1 - '0') * multipliyer;
+                p1 = (uint)(c1 - '0') * multipliyer;
             else if (c1 >= 'A' && c1 <= 'F')
-                p1 = (uint) (c1 - 'A' + 10) * multipliyer;
-            else if (c1 >= 'a' && c1 <= 'f') p1 = (uint) (c1 - 'a' + 10) * multipliyer;
+                p1 = (uint)(c1 - 'A' + 10) * multipliyer;
+            else if (c1 >= 'a' && c1 <= 'f') p1 = (uint)(c1 - 'a' + 10) * multipliyer;
 
             return p1;
         }
@@ -576,10 +569,7 @@ namespace GSSerializer
                     return fsResult.Success;
                 case 'u':
                     TryMoveNext();
-                    if (IsHex(Character(0))
-                        && IsHex(Character(1))
-                        && IsHex(Character(2))
-                        && IsHex(Character(3)))
+                    if (IsHex(Character(0)) && IsHex(Character(1)) && IsHex(Character(2)) && IsHex(Character(3)))
                     {
                         var codePoint = ParseUnicode(Character(0), Character(1), Character(2), Character(3));
 
@@ -588,20 +578,15 @@ namespace GSSerializer
                         TryMoveNext();
                         TryMoveNext();
 
-                        escaped = (char) codePoint;
+                        escaped = (char)codePoint;
                         return fsResult.Success;
                     }
 
                     // invalid escape sequence
-                    escaped = (char) 0;
-                    return MakeFailure(
-                        string.Format("invalid escape sequence '\\u{0}{1}{2}{3}'\n",
-                            Character(0),
-                            Character(1),
-                            Character(2),
-                            Character(3)));
+                    escaped = (char)0;
+                    return MakeFailure(string.Format("invalid escape sequence '\\u{0}{1}{2}{3}'\n", Character(0), Character(1), Character(2), Character(3)));
                 default:
-                    escaped = (char) 0;
+                    escaped = (char)0;
                     return MakeFailure(string.Format("Invalid escape sequence \\{0}", Character()));
             }
         }

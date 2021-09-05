@@ -9,13 +9,12 @@ namespace GalacticScale
 
         public static List<iGenerator> Generators = new List<iGenerator>
         {
-
             new Vanilla(),
             //new GS2Generator(),
             new GS2Generator2(),
             //new Generators.SizeTest(),
             //new Generators.TintTest(),
-            new Sol(),
+            new Sol()
             // new JsonImport(),
             // new Generators.ThemeViewer(),
             //new Generators.Spiral(),

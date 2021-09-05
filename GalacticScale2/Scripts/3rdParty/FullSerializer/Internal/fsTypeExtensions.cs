@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 #if !UNITY_EDITOR && UNITY_WSA
 // For System.Reflection.TypeExtensions
 using System.Reflection;
@@ -59,7 +58,7 @@ namespace GSSerializer
 
             var name = "";
 
-            var genericArguments = (IEnumerable<Type>) type.GetGenericArguments();
+            var genericArguments = (IEnumerable<Type>)type.GetGenericArguments();
             if (type.IsNested)
             {
                 name += type.DeclaringType.CSharpName() + ".";
@@ -84,8 +83,7 @@ namespace GSSerializer
             {
                 var genericsTic = type.Name.IndexOf('`');
                 if (genericsTic > 0) name += type.Name.Substring(0, genericsTic);
-                name += "<" +
-                        string.Join(",", genericArguments.Select(t => CSharpName(t, includeNamespace)).ToArray()) + ">";
+                name += "<" + string.Join(",", genericArguments.Select(t => CSharpName(t, includeNamespace)).ToArray()) + ">";
             }
 
             if (includeNamespace && type.Namespace != null) name = type.Namespace + "." + name;

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using GSSerializer;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = System.Random;
 
 namespace GalacticScale
 {
@@ -17,10 +18,8 @@ namespace GalacticScale
             var serializer = new fsSerializer();
             serializer.TrySerialize(value, out var data);
             if (!pretty)
-            {
                 // GS2.Warn(fsJsonPrinter.CompressedJson(data));
                 return fsJsonPrinter.CompressedJson(data);
-            }
 
             return fsJsonPrinter.PrettyJson(data);
         }
@@ -49,8 +48,7 @@ namespace GalacticScale
         {
             //random = new GS2.Random(GSSettings.Seed);
             var randomVector = Vector3.zero;
-            randomVector.x =
-                (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
+            randomVector.x = (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
             randomVector.y = (float)random.NextDouble() * 2f - 1f;
             randomVector.z = (float)random.NextDouble() * 2f - 1f;
             return randomVector;
@@ -134,16 +132,16 @@ namespace GalacticScale
                         return g as iConfigurableGenerator;
                     GS2.Warn($"Generator {t} is not configurable");
                 }
+
             return null;
-        }        
+        }
+
         public static iConfigurablePlugin GetConfigurablePluginInstance(Type t)
         {
             foreach (var g in GS2.Plugins)
                 if (g.GetType() == t)
-                {
                     if (g is iConfigurablePlugin)
-                        return g as iConfigurablePlugin;
-                }
+                        return g;
             return null;
         }
 
@@ -168,7 +166,7 @@ namespace GalacticScale
 
         public static Sprite GetSplashSprite()
         {
-            var r = new System.Random();
+            var r = new Random();
             var i = r.Next(15);
             var spriteName = "s14";
             if (i > 0) spriteName = "s" + i;
@@ -196,48 +194,42 @@ namespace GalacticScale
             var colors = output.GetPixels(CubemapFace.PositiveX);
             var tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
-                    new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.PositiveX);
 
             colors = output.GetPixels(CubemapFace.PositiveY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
-                    new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.PositiveY);
 
             colors = output.GetPixels(CubemapFace.PositiveZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
-                    new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.PositiveZ);
 
             colors = output.GetPixels(CubemapFace.NegativeX);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
-                    new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.NegativeX);
 
             colors = output.GetPixels(CubemapFace.NegativeY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
-                    new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.NegativeY);
 
             colors = output.GetPixels(CubemapFace.NegativeZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
-                    new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.NegativeZ);
 
@@ -313,13 +305,10 @@ namespace GalacticScale
         {
             var gsStar = GS2.GetGSStar(star);
             var output = "";
-            
-            foreach (var planet in gsStar.Planets)
-            {
-                output += "\r\n" + GetGSPlanetDetail(planet, 1);
-            }
 
-            var sa = output.Split(new []{"\r\n"}, StringSplitOptions.None);
+            foreach (var planet in gsStar.Planets) output += "\r\n" + GetGSPlanetDetail(planet);
+
+            var sa = output.Split(new[] { "\r\n" }, StringSplitOptions.None);
             // GS2.WarnJson(sa);
             // GS2.Warn(sa.Length.ToString());
             if (sa.Length > 50)
@@ -330,21 +319,21 @@ namespace GalacticScale
                 if (gsStar.BinaryCompanion != null)
                 {
                     var binary = GS2.GetGSStar(gsStar.BinaryCompanion);
-                    if ( binary != null) output += $"Binary Star ({binary.Type})\r\n";
+                    if (binary != null) output += $"Binary Star ({binary.Type})\r\n";
                 }
+
                 var sa1 = new string[50];
-                var sa2 = new string[sa.Length -50];
-                for (int i = 0; i < 50; i++)
+                var sa2 = new string[sa.Length - 50];
+                for (var i = 0; i < 50; i++)
                 {
-                    int j = i + 50;
+                    var j = i + 50;
                     // GS2.Warn(i + " " + (j) + " "+sa.Length);
-                    if (sa.Length > (j))
+                    if (sa.Length > j)
                     {
                         // GS2.Log(i.ToString() + " " + j.ToString());
                         var a = string.Format("{0,30}", sa[i]);
                         var b = string.Format("{0,-30}", sa[j]);
                         output += $"\r\n{a}  {b}";
-                            
                     }
                     else
                     {
@@ -363,47 +352,41 @@ namespace GalacticScale
                 var binary = GS2.GetGSStar(gsStar.BinaryCompanion);
                 output2 += $"Binary Star:{binary.displayType}\r\n";
             }
+
             output2 += "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
             output2 += output;
-            
-            
-            return output2;
 
+
+            return output2;
         }
 
         public static string GetGSPlanetDetail(GSPlanet planet, int indentation = 1)
         {
             var ind = "";
-            for (var i = 0; i <= indentation; i++)
-            {
-                ind += "  ";
-            }
+            for (var i = 0; i <= indentation; i++) ind += "  ";
 
             var output = "";
             output += $"{ind}-{planet.Theme} ({planet.Radius * planet.Scale})";
-            foreach (var moon in planet.Moons)
-            {
-                output += $"\r\n{ind}{GetGSPlanetDetail(moon, indentation + 1)}";
-            }
+            foreach (var moon in planet.Moons) output += $"\r\n{ind}{GetGSPlanetDetail(moon, indentation + 1)}";
 
             return output;
         }
-    
 
-    public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
+
+        public static List<VectorLF3> RegularPointsOnSphere(float radius, int count)
         {
             var points = new List<VectorLF3>();
             if (count == 0) return points;
 
             var a = 4.0 * Math.PI * (Math.Pow(radius, 2) / count);
             var d = Math.Sqrt(a);
-            var m_theta = (int) Math.Round(Math.PI / d);
+            var m_theta = (int)Math.Round(Math.PI / d);
             var d_theta = Math.PI / m_theta;
             var d_phi = a / d_theta;
             for (var m = 0; m < m_theta; m++)
             {
                 var theta = Math.PI * (m + 0.5) / m_theta;
-                var m_phi = (int) Math.Round(2.0 * Math.PI * Math.Sin(theta) / d_phi);
+                var m_phi = (int)Math.Round(2.0 * Math.PI * Math.Sin(theta) / d_phi);
                 for (var n = 0; n < m_phi; n++)
                 {
                     var phi = 2.0 * Math.PI * n / m_phi;
@@ -415,6 +398,38 @@ namespace GalacticScale
             }
 
             return points;
+        }
+
+        public static int GetStarDataGasCount(StarData sd)
+        {
+            if (sd == null) return -1;
+            var count = 0;
+            foreach (var planet in sd.planets)
+                if (planet.type == EPlanetType.Gas)
+                    count++;
+
+            return count;
+        }
+
+        public static int GetStarDataTelluricCount(StarData sd)
+        {
+            if (sd == null) return -1;
+            var count = 0;
+            foreach (var planet in sd.planets)
+                if (planet.type != EPlanetType.Gas && planet.orbitAroundPlanet == null)
+                    count++;
+
+            return count;
+        }
+
+        public static int GetStarDataMoonCount(StarData sd)
+        {
+            if (sd == null) return -1;
+            var count = 0;
+            foreach (var planet in sd.planets)
+                if (planet.orbitAroundPlanet != null)
+                    count++;
+            return count;
         }
 
         public static class AddressHelper
@@ -445,7 +460,7 @@ namespace GalacticScale
                 lock (mutualObject)
                 {
                     reinterpreter.AsIntPtr.Value = address;
-                    return (T) reinterpreter.AsObject.Object;
+                    return (T)reinterpreter.AsObject.Object;
                 }
             }
 
@@ -466,39 +481,6 @@ namespace GalacticScale
             {
                 public IntPtr Value;
             }
-        }
-
-        public static int GetStarDataGasCount(StarData sd)
-        {
-            if (sd == null) return -1;
-            int count = 0;
-            foreach (var planet in sd.planets)
-            {
-                if (planet.type == EPlanetType.Gas) count++;
-            }
-
-            return count;
-        }
-        public static int GetStarDataTelluricCount(StarData sd)
-        {
-            if (sd == null) return -1;
-            int count = 0;
-            foreach (var planet in sd.planets)
-            {
-                if (planet.type != EPlanetType.Gas && planet.orbitAroundPlanet == null) count++;
-            }
-
-            return count;
-        }
-        public static int GetStarDataMoonCount(StarData sd)
-        {
-            if (sd == null) return -1;
-            int count = 0;
-            foreach (var planet in sd.planets)
-            {
-                if (planet.orbitAroundPlanet != null) count++;
-            }
-            return count;
         }
     }
 }

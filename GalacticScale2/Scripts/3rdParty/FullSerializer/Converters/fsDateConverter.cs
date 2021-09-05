@@ -18,10 +18,7 @@ namespace GSSerializer.Internal
 
         public override bool CanProcess(Type type)
         {
-            return
-                type == typeof(DateTime) ||
-                type == typeof(DateTimeOffset) ||
-                type == typeof(TimeSpan);
+            return type == typeof(DateTime) || type == typeof(DateTimeOffset) || type == typeof(TimeSpan);
         }
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
@@ -74,8 +71,7 @@ namespace GSSerializer.Internal
                     }
                     catch (Exception e)
                     {
-                        return fsResult.Fail(
-                            "Unable to parse " + data.AsString + " into a DateTime; got exception " + e);
+                        return fsResult.Fail("Unable to parse " + data.AsString + " into a DateTime; got exception " + e);
                     }
 
                 return fsResult.Fail("Unable to parse " + data.AsString + " into a DateTime");

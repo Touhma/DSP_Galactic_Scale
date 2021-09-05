@@ -7,47 +7,45 @@ namespace GalacticScale
     public static partial class GS2
     {
         public static Dictionary<int, int[]> keyedLUTs = new Dictionary<int, int[]>();
+
         public static void SetLuts(int segments, float planetRadius)
         {
+            if (!DSPGame.IsMenuDemo && !Vanilla)
+            {
+                // Prevent special LUT's being created in main menu
+                if (keyedLUTs.ContainsKey(segments) && keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
+                var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
+                var lut = new int[numSegments];
+                var segmentAngle = Mathf.PI / 2f / numSegments; //quarter circle divided by num segments is the angle per segment
 
-            if (!DSPGame.IsMenuDemo && (!Vanilla))
-            { // Prevent special LUT's being created in main menu
-                if (keyedLUTs.ContainsKey(segments) && keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
-                {
-                    return;
-                }
-                int numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
-                int[] lut = new int[numSegments];
-                float segmentAngle = (Mathf.PI / 2f) / numSegments; //quarter circle divided by num segments is the angle per segment
+                var lastMajorRadius = planetRadius;
+                var lastMajorRadiusCount = numSegments * 4;
 
-                float lastMajorRadius = planetRadius;
-                int lastMajorRadiusCount = numSegments * 4;
-
-                int[] classicLUT = new int[512];
+                var classicLUT = new int[512];
                 classicLUT[0] = 1;
 
-                for (int cnt = 0; cnt < numSegments; cnt++)
+                for (var cnt = 0; cnt < numSegments; cnt++)
                 {
-                    float ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
-                    int classicIdx = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)((cnt + 1) / (segments / 4f) * Math.PI * 0.5))) * segments);
+                    var ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
+                    var classicIdx = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)((cnt + 1) / (segments / 4f) * Math.PI * 0.5))) * segments);
 
                     //If the new radius is smaller than 90% of the currently used radius, use it as the new segment count to avoid tile squishing
-                    if (ringradius < (0.9 * lastMajorRadius))
+                    if (ringradius < 0.9 * lastMajorRadius)
                     {
                         lastMajorRadius = ringradius;
                         lastMajorRadiusCount = (int)(ringradius / 4.0) * 4;
                     }
+
                     lut[cnt] = lastMajorRadiusCount;
                     classicLUT[classicIdx] = lastMajorRadiusCount;
                 }
 
-                int last = 1;
-                for (int oldlLutIdx = 1; oldlLutIdx < 512; oldlLutIdx++)
-                {
+                var last = 1;
+                for (var oldlLutIdx = 1; oldlLutIdx < 512; oldlLutIdx++)
                     if (classicLUT[oldlLutIdx] > last)
                     {
                         //Offset of 1 is required to avoid mismatch of some longitude circles
-                        int temp = classicLUT[oldlLutIdx];
+                        var temp = classicLUT[oldlLutIdx];
                         classicLUT[oldlLutIdx] = last;
                         last = temp;
                     }
@@ -55,19 +53,18 @@ namespace GalacticScale
                     {
                         classicLUT[oldlLutIdx] = last;
                     }
-                }
 
                 if (segments == 200)
                 {
-                     lut = new[]
+                    lut = new[]
                     {
                         // 4, 8, 16, 20, 32, 32, 40, 40, 60, 60, 60, 80, 80, 80, 100, 100, 100, 100, 100, 120, 120, 120,
                         // 120, 120, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 200, 200, 200, 200, 200, 200, 200,
                         // 200, 200, 200, 200, 200, 200, 200, 200, 200
-                        
+
                         200, 200, 200, 200, 200, 200, 200,
-                        200, 200, 200, 200, 200, 200, 200, 200, 200, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160,120, 120,
-                        120, 120,120, 100, 100, 100, 100, 100, 80, 80, 80,60, 60, 60,40, 40,32, 32, 20, 16, 8, 4
+                        200, 200, 200, 200, 200, 200, 200, 200, 200, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 120, 120,
+                        120, 120, 120, 100, 100, 100, 100, 100, 80, 80, 80, 60, 60, 60, 40, 40, 32, 32, 20, 16, 8, 4
                     };
                     classicLUT = new int[512]
                     {
@@ -585,15 +582,10 @@ namespace GalacticScale
                         500
                     };
                 }
+
                 //Fill all Look Up Tables (Dictionaries really)
-                if (!keyedLUTs.ContainsKey(segments))
-                {
-                    keyedLUTs.Add(segments, lut);
-                }
-                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
-                {
-                    PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
-                }
+                if (!keyedLUTs.ContainsKey(segments)) keyedLUTs.Add(segments, lut);
+                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
             }
         }
     }

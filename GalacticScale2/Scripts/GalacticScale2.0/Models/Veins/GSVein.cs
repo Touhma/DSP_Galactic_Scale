@@ -25,7 +25,7 @@
             if (seed < 0) seed = GSSettings.Seed;
 
             var random = new GS2.Random(seed);
-            richness = (float) random.NextDouble() * gsPlanet.planetData.star.resourceCoef;
+            richness = (float)random.NextDouble() * gsPlanet.planetData.star.resourceCoef;
             count = random.Next(1, 30);
             //position = Vector3.zero;
         }
@@ -39,7 +39,7 @@
 
         public GSVein Clone()
         {
-            return (GSVein) MemberwiseClone();
+            return (GSVein)MemberwiseClone();
         }
     }
 }

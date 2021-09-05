@@ -23,7 +23,7 @@ namespace GSSerializer.Internal
 
         public override fsResult TryDeserialize(fsData data, ref object instance_, Type storageType)
         {
-            var instance = (IDictionary) instance_;
+            var instance = (IDictionary)instance_;
             var result = fsResult.Success;
 
             Type keyStorageType, valueStorageType;
@@ -85,7 +85,7 @@ namespace GSSerializer.Internal
 
             var result = fsResult.Success;
 
-            var instance = (IDictionary) instance_;
+            var instance = (IDictionary)instance_;
 
             Type keyStorageType, valueStorageType;
             GetKeyValueTypes(instance.GetType(), out keyStorageType, out valueStorageType);
@@ -176,7 +176,7 @@ namespace GSSerializer.Internal
                 var keyValuePairType = collectionType.GetGenericArguments()[0];
                 var keyValueInstance = Activator.CreateInstance(keyValuePairType, key, value);
                 var add = collectionType.GetFlattenedMethod("Add");
-                add.Invoke(dictionary, new[] {keyValueInstance});
+                add.Invoke(dictionary, new[] { keyValueInstance });
                 return fsResult.Success;
             }
 

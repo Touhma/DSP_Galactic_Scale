@@ -12,8 +12,7 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetRawData), "CalcVerts")]
-        public static bool CalcVerts(ref PlanetRawData __instance, ref int[] ___indexMap80, ref int[] ___indexMap200,
-            ref Vector3[] ___verts80, ref Vector3[] ___verts200)
+        public static bool CalcVerts(ref PlanetRawData __instance, ref int[] ___indexMap80, ref int[] ___indexMap200, ref Vector3[] ___verts80, ref Vector3[] ___verts200)
         {
             if (verDict.ContainsKey(__instance.precision))
             {
@@ -32,8 +31,7 @@ namespace GalacticScale
                 var num4 = j / stride;
                 var num5 = num3 % substride;
                 var num6 = num4 % substride;
-                var num7 = ((num3 >= substride ? 1 : 0) + (num4 >= substride ? 1 : 0) * 2) * 2 +
-                           (num5 < num6 ? 1 : 0); //
+                var num7 = ((num3 >= substride ? 1 : 0) + (num4 >= substride ? 1 : 0) * 2) * 2 + (num5 < num6 ? 1 : 0); //
                 float num8 = num5 < num6 ? num5 : __instance.precision - num5;
                 float num9 = num5 < num6 ? __instance.precision - num6 : num6;
                 var num10 = __instance.precision - num9;

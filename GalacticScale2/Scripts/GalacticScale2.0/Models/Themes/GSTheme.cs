@@ -74,7 +74,7 @@ namespace GalacticScale
 
         [NonSerialized] public Vector2 ModY = new Vector2(0.0f, 0.0f);
 
-        public int[] Musics = {9};
+        public int[] Musics = { 9 };
 
         public string Name;
 
@@ -88,26 +88,18 @@ namespace GalacticScale
         public int[] RareVeins = { };
         public string SFXPath = "SFX/sfx-amb-ocean-1";
         public float SFXVolume = 0.53f;
+
+        [SerializeField] public List<EStar> StarTypes = new List<EStar> { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
+
         public float Temperature;
 
         [NonSerialized] public Material terrainMat;
-        [SerializeField]
-        public List<EStar> StarTypes = new List<EStar>() { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
 
         public GSMaterialSettings terrainMaterial = new GSMaterialSettings();
         public GSTerrainSettings TerrainSettings = new GSTerrainSettings();
 
-        public EThemeType ThemeType { get { return (themeType != EThemeType.Null) ? themeType : GetThemeType(); } set { themeType = value; } }
         private EThemeType themeType = EThemeType.Null;
-        private EThemeType GetThemeType()
-        {
-            if (PlanetType == EPlanetType.Gas)
-            {
-                themeType = EThemeType.Gas;
-            }
-            else themeType = EThemeType.Telluric;
-            return themeType;
-        }
+
         //public string atmosphereMaterial;
         //public Color atmosphereTint;
         [NonSerialized] public Material thumbMat;
@@ -159,9 +151,14 @@ namespace GalacticScale
             }
             else if (baseName != null)
             {
-                GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName +
-                          "' not found in theme library");
+                GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
             }
+        }
+
+        public EThemeType ThemeType
+        {
+            get => themeType != EThemeType.Null ? themeType : GetThemeType();
+            set => themeType = value;
         }
 
         public GSTheme baseTheme
@@ -171,15 +168,22 @@ namespace GalacticScale
                 if (BaseName != "" && BaseName != null)
                 {
                     GS2.Log($"{Name} initializing from base theme: " + BaseName);
-                
 
-                if (!AllLoadedThemes.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
-            }
-            return BaseName != "" && BaseName != null
-                    ? (AllLoadedThemes.ContainsKey(BaseName) ? AllLoadedThemes[BaseName] : Themes.Mediterranean)
-                    : null;
+
+                    if (!AllLoadedThemes.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
+                }
+
+                return BaseName != "" && BaseName != null ? AllLoadedThemes.ContainsKey(BaseName) ? AllLoadedThemes[BaseName] : Themes.Mediterranean : null;
             }
             set => BaseName = value.Name;
+        }
+
+        private EThemeType GetThemeType()
+        {
+            if (PlanetType == EPlanetType.Gas)
+                themeType = EThemeType.Gas;
+            else themeType = EThemeType.Telluric;
+            return themeType;
         }
 
         public void Process()
@@ -228,7 +232,7 @@ namespace GalacticScale
 
             ProcessTints();
             if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
-            AllLoadedThemes.Add(this.Name, this);
+            AllLoadedThemes.Add(Name, this);
         }
 
         public void PopulateVegeData()
@@ -299,23 +303,22 @@ namespace GalacticScale
                     //var specialNumber = count / veinCount;
                     //var specialIndex = RareVeins.Length;
                     //var specialSettingsIndex = specialIndex * 4;
-                    _rareVeins.Add((int) type);
+                    _rareVeins.Add((int)type);
                     if (GS2.Config.ForceRare)
                         _rareSettings.Add(1);
                     else
                         _rareSettings.Add(0); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
 
-                    _rareSettings
-                        .Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
+                    _rareSettings.Add(1); //Chance to spawn on non birth star planet (Could take into account the vanilla rare spawning factors)
                     _rareSettings.Add(specialCount / 25); //Chance for extra vein to spawn
                     _rareSettings.Add(specialOpacity); //Stupidly combined count and opacity
                 }
                 else
                 {
                     //GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)=" + (int)type);
-                    VeinOpacity[(int) type - 1] = opacity / veinCount;
-                    VeinCount[(int) type - 1] = count / 25 / veinCount;
-                    VeinSpot[(int) type - 1] = veinCount;
+                    VeinOpacity[(int)type - 1] = opacity / veinCount;
+                    VeinCount[(int)type - 1] = count / 25 / veinCount;
+                    VeinSpot[(int)type - 1] = veinCount;
                     //GS2.Log(type.ToString() + "| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
                 }
             }
@@ -343,17 +346,15 @@ namespace GalacticScale
 
                 var tempVeinGroup = new GSVeinType
                 {
-                    type = (EVeinType) (vType + 1),
+                    type = (EVeinType)(vType + 1),
                     veins = new List<GSVein>()
                 };
                 for (var vCount = 0; vCount < VeinSpot[vType]; vCount++)
-                    tempVeinGroup.veins.Add(
-                        new GSVein
-                        {
-                            count = (int) (VeinCount[vType] * 25),
-                            richness = VeinOpacity[vType]
-                        }
-                    );
+                    tempVeinGroup.veins.Add(new GSVein
+                    {
+                        count = (int)(VeinCount[vType] * 25),
+                        richness = VeinOpacity[vType]
+                    });
                 VeinSettings.VeinTypes.Add(tempVeinGroup);
             }
 
@@ -362,10 +363,10 @@ namespace GalacticScale
             for (var i = 0; i < RareVeins.Length; i++)
             {
                 var richness = RareSettings[i * 4 + 3];
-                var count = (int) (richness * 25);
+                var count = (int)(richness * 25);
                 var tempVeinGroup = new GSVeinType
                 {
-                    type = (EVeinType) RareVeins[i],
+                    type = (EVeinType)RareVeins[i],
                     veins = new List<GSVein>(),
                     rare = true
                 };
@@ -381,7 +382,7 @@ namespace GalacticScale
 
         public void AddToLibrary()
         {
-            GSSettings.ThemeLibrary.Add(this.Name, this);
+            GSSettings.ThemeLibrary.Add(Name, this);
         }
 
         public static int[] CloneIntegerArray(int[] source)
@@ -414,12 +415,12 @@ namespace GalacticScale
             Habitable = baseTheme.Habitable;
             ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
             ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
-            Vegetables0 = (int[]) baseTheme.Vegetables0.Clone();
-            Vegetables1 = (int[]) baseTheme.Vegetables1.Clone();
-            Vegetables2 = (int[]) baseTheme.Vegetables2.Clone();
-            Vegetables3 = (int[]) baseTheme.Vegetables3.Clone();
-            Vegetables4 = (int[]) baseTheme.Vegetables4.Clone();
-            Vegetables5 = (int[]) baseTheme.Vegetables5.Clone();
+            Vegetables0 = (int[])baseTheme.Vegetables0.Clone();
+            Vegetables1 = (int[])baseTheme.Vegetables1.Clone();
+            Vegetables2 = (int[])baseTheme.Vegetables2.Clone();
+            Vegetables3 = (int[])baseTheme.Vegetables3.Clone();
+            Vegetables4 = (int[])baseTheme.Vegetables4.Clone();
+            Vegetables5 = (int[])baseTheme.Vegetables5.Clone();
             VeinSettings = baseTheme.VeinSettings.Clone();
             TerrainSettings = baseTheme.TerrainSettings.Clone();
             VegeSettings = baseTheme.VegeSettings.Clone();
@@ -428,19 +429,19 @@ namespace GalacticScale
             minimapMaterial = baseTheme.minimapMaterial.Clone();
             thumbMaterial = baseTheme.thumbMaterial.Clone();
             oceanMaterial = baseTheme.oceanMaterial.Clone();
-            VeinSpot = (int[]) baseTheme.VeinSpot.Clone();
-            VeinCount = (float[]) baseTheme.VeinCount.Clone();
-            VeinOpacity = (float[]) baseTheme.VeinOpacity.Clone();
-            RareVeins = (int[]) baseTheme.RareVeins.Clone();
-            RareSettings = (float[]) baseTheme.RareSettings.Clone();
-            GasItems = (int[]) baseTheme.GasItems.Clone();
-            GasSpeeds = (float[]) baseTheme.GasSpeeds.Clone();
+            VeinSpot = (int[])baseTheme.VeinSpot.Clone();
+            VeinCount = (float[])baseTheme.VeinCount.Clone();
+            VeinOpacity = (float[])baseTheme.VeinOpacity.Clone();
+            RareVeins = (int[])baseTheme.RareVeins.Clone();
+            RareSettings = (float[])baseTheme.RareSettings.Clone();
+            GasItems = (int[])baseTheme.GasItems.Clone();
+            GasSpeeds = (float[])baseTheme.GasSpeeds.Clone();
             UseHeightForBuild = baseTheme.UseHeightForBuild;
             Wind = baseTheme.Wind;
             IonHeight = baseTheme.IonHeight;
             WaterHeight = baseTheme.WaterHeight;
             WaterItemId = baseTheme.WaterItemId;
-            Musics = (int[]) baseTheme.Musics.Clone();
+            Musics = (int[])baseTheme.Musics.Clone();
             SFXPath = baseTheme.SFXPath;
             SFXVolume = baseTheme.SFXVolume;
             CullingRadius = baseTheme.CullingRadius;
@@ -485,7 +486,6 @@ namespace GalacticScale
         /// <returns></returns>
         public ThemeProto ToProto()
         {
-            
             if (PlanetType != EPlanetType.Gas) AmbientSettings.ToTheme(this);
             return new ThemeProto
             {
@@ -496,7 +496,7 @@ namespace GalacticScale
                 PlanetType = PlanetType,
                 DisplayName = DisplayName,
                 displayName = DisplayName,
-                Algos = new[] {Algo},
+                Algos = new[] { Algo },
                 MaterialPath = MaterialPath,
                 Temperature = Temperature,
                 Distribute = Distribute,
@@ -553,9 +553,9 @@ namespace GalacticScale
 
         public int UpdateThemeProtoSet()
         {
-            
             if (!added) return AddToThemeProtoSet();
-            var highStopwatch = new HighStopwatch();highStopwatch.Begin();
+            var highStopwatch = new HighStopwatch();
+            highStopwatch.Begin();
             // GS2.Log($"Adding {Name}");
             // terrainMat.SetFloat("_Radius", 100f); //TODO:see if this did anything
             LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
@@ -586,25 +586,19 @@ namespace GalacticScale
                     //GS2.Log("Creating Material from Settings Defined Resource @ " + settings.Path);
                     tempMat = Resources.Load<Material>(settings.Path);
                 if (tempMat != null)
-                {
                     //GS2.Log("Creating Material");
                     material = Object.Instantiate(tempMat);
-                }
                 else
-                {
                     // GS2.Log("Failed to Create Material|" + Name);
                     material = Resources.Load<Material>(MaterialPath + materialType);
-                }
             }
             else
             {
                 //GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
                 var copyFrom = settings.CopyFrom.Split('.');
-                if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null ||
-                    copyFrom[1] == "")
+                if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null || copyFrom[1] == "")
                 {
-                    GS2.Error(
-                        "Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
+                    GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
                     material = Resources.Load<Material>(MaterialPath + materialType);
                 }
                 else
@@ -612,8 +606,7 @@ namespace GalacticScale
                     //GS2.Warn($"Copying {Name} {materialType} material from Theme {settings.CopyFrom}");
                     var materialBaseTheme = GSSettings.ThemeLibrary.Find(copyFrom[0]);
                     var materialName = copyFrom[1];
-                    material = Object.Instantiate((Material) typeof(GSTheme).GetField(materialName)
-                        .GetValue(materialBaseTheme));
+                    material = Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
                 }
             }
 
@@ -723,9 +716,6 @@ namespace GalacticScale
                     break;
                 case "minimap":
                     minimapMat = donorTheme.minimapMat;
-                    break;
-                default:
-                    //GS2.Warn("Error Setting Material: " + material + " does not exist");
                     break;
             }
         }
@@ -846,10 +836,8 @@ namespace GalacticScale
         {
             //GS2.Log("Start");
             if (oceanMat == null)
-            {
                 // GS2.Warn("oceanMat Null for " + Name);
                 return;
-            }
 
             SetColor(oceanMat, "_CausticsColor", c); //Highlights
             SetColor(oceanMat, "_Color", c); //Shore

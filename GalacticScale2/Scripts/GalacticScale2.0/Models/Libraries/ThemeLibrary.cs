@@ -99,7 +99,7 @@ namespace GalacticScale
             {
                 var s = GS2.GetCaller();
                 GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > " + s);
-                GS2.WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
+                GS2.WarnJson(GSSettings.ThemeLibrary.Select(x => x.Key).ToList());
                 return Themes.Mediterranean;
             }
 
@@ -111,50 +111,43 @@ namespace GalacticScale
             return this["Mediterranean"];
         }
 
-        public string Query(GS2.Random random, EThemeType type, EThemeHeat heat, int radius,
-            EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
+        public string Query(GS2.Random random, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
             var themes = Query(type, heat, radius, distribute, habitable);
             return random.Item(themes);
         }
 
-        public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius,
-            EThemeDistribute distribute = EThemeDistribute.Default)
+        public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = Query(starType, type, heat, radius, distribute);
             return random.Item(themes);
         }
 
-        public string Query(GS2.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius,
-            EThemeDistribute distribute = EThemeDistribute.Default)
+        public string Query(GS2.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = Query(starTypes, type, heat, radius, distribute);
             return random.Item(themes);
         }
 
-        public List<string> Query(EThemeType type, EThemeHeat heat, int radius,
-            EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
+        public List<string> Query(EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
             var allstars = new List<EStar> { EStar.A, EStar.B, EStar.BlackHole, EStar.BlueGiant, EStar.F, EStar.G, EStar.K, EStar.M, EStar.NeutronStar, EStar.O, EStar.RedGiant, EStar.WhiteDwarf, EStar.WhiteGiant, EStar.YellowGiant };
             var themes = QueryThemes(allstars, type, heat, radius, distribute, habitable);
-            var results = from theme in themes
-                select theme.Name;
+            var results = from theme in themes select theme.Name;
             return results.ToList();
         }
 
         public List<string> Query(List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = QueryThemes(starTypes, type, heat, radius, distribute);
-            var results = from theme in themes
-                select theme.Name;
+            var results = from theme in themes select theme.Name;
             return results.ToList();
         }
 
         public List<string> Query(EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = QueryThemes(new List<EStar> { starType }, type, heat, radius, distribute);
-            var results = from theme in themes
-                select theme.Name;
+            var results = from theme in themes select theme.Name;
             return results.ToList();
         }
 
@@ -201,29 +194,17 @@ namespace GalacticScale
             if (heat == EThemeHeat.Cold) temp = (-3, 0);
             if (heat == EThemeHeat.Frozen) temp = (-6, -3);
 
-            var q = from theme in this
-                where types.Contains(theme.Value.ThemeType)
-                where distributes.Contains(theme.Value.Distribute)
-                where theme.Value.StarTypes.Intersect(starTypes).Count() > 1
-                where theme.Value.Temperature < temp.max
-                where theme.Value.Temperature >= temp.min
-                where theme.Value.MaxRadius >= (radius > 0 ? radius : 0)
-                where theme.Value.MinRadius <= (radius > 0 ? radius : 510)
-                select theme.Value;
+            var q = from theme in this where types.Contains(theme.Value.ThemeType) where distributes.Contains(theme.Value.Distribute) where theme.Value.StarTypes.Intersect(starTypes).Count() > 1 where theme.Value.Temperature < temp.max where theme.Value.Temperature >= temp.min where theme.Value.MaxRadius >= (radius > 0 ? radius : 0) where theme.Value.MinRadius <= (radius > 0 ? radius : 510) select theme.Value;
             var results = q.ToList();
             if (habitable)
-            {
                 results = (from theme in results where theme.Habitable select theme).ToList();
-                //GS2.WarnJson(results.Select(o => o.Name).ToList());
-            }
+            //GS2.WarnJson(results.Select(o => o.Name).ToList());
 
             if (results.Count == 0)
             {
-                GS2.Error(
-                    $"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
                 foreach (var k in this)
-                    GS2.Warn(
-                        $"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
+                    GS2.Warn($"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
                 if (type == EThemeType.Gas)
                     switch (heat)
                     {

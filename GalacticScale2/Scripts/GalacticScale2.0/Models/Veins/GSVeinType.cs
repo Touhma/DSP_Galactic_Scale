@@ -73,22 +73,20 @@ namespace GalacticScale
 
         public GSVeinType Clone()
         {
-            var clone = (GSVeinType) MemberwiseClone();
+            var clone = (GSVeinType)MemberwiseClone();
             clone.veins = new List<GSVein>();
             for (var i = 0; i < veins.Count; i++) clone.veins.Add(veins[i].Clone());
 
             return clone;
         }
 
-        public static GSVeinType Generate(EVeinType type, int min, int max, float min_richness, float max_richness,
-            int min_patchSize, int max_patchSize, bool rare)
+        public static GSVeinType Generate(EVeinType type, int min, int max, float min_richness, float max_richness, int min_patchSize, int max_patchSize, bool rare)
         {
             var vt = new GSVeinType(type);
             vt.rare = rare;
             var amount = Mathf.RoundToInt(Mathf.Clamp(random.Next(min, max + 1), 0, 3000));
             for (var i = 0; i < amount; i++)
-                vt.veins.Add(new GSVein(random.Next(min_patchSize, max_patchSize + 1),
-                    random.NextFloat(min_richness, max_richness)));
+                vt.veins.Add(new GSVein(random.Next(min_patchSize, max_patchSize + 1), random.NextFloat(min_richness, max_richness)));
 
             return vt;
         }

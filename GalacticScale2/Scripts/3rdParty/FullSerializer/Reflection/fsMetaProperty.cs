@@ -32,8 +32,7 @@ namespace GSSerializer.Internal
             _memberInfo = property;
             StorageType = property.PropertyType;
             MemberName = property.Name;
-            IsPublic = property.GetGetMethod() != null && property.GetGetMethod().IsPublic &&
-                       property.GetSetMethod() != null && property.GetSetMethod().IsPublic;
+            IsPublic = property.GetGetMethod() != null && property.GetGetMethod().IsPublic && property.GetSetMethod() != null && property.GetSetMethod().IsPublic;
             IsReadOnly = false;
             CanRead = property.CanRead;
             CanWrite = property.CanWrite;
@@ -114,7 +113,7 @@ namespace GSSerializer.Internal
             else if (property != null)
             {
                 var setMethod = property.GetSetMethod( /*nonPublic:*/ true);
-                if (setMethod != null) setMethod.Invoke(context, new[] {value});
+                if (setMethod != null) setMethod.Invoke(context, new[] { value });
             }
         }
 
@@ -125,8 +124,8 @@ namespace GSSerializer.Internal
         public object Read(object context)
         {
             if (_memberInfo is PropertyInfo)
-                return ((PropertyInfo) _memberInfo).GetValue(context, new object[] { });
-            return ((FieldInfo) _memberInfo).GetValue(context);
+                return ((PropertyInfo)_memberInfo).GetValue(context, new object[] { });
+            return ((FieldInfo)_memberInfo).GetValue(context);
         }
     }
 }

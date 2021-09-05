@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 #if USE_TYPEINFO
 namespace System {
     public static class AssemblyExtensions {
@@ -120,7 +119,7 @@ namespace GSSerializer.Internal
             if (_cachedAttributeQueries.TryGetValue(query, out attribute) == false)
             {
                 var attributes = element.GetCustomAttributes(attributeType, /*inherit:*/ true);
-                if (attributes.Any()) attribute = (Attribute) attributes.First();
+                if (attributes.Any()) attribute = (Attribute)attributes.First();
 
                 if (shouldCache) _cachedAttributeQueries[query] = attribute;
             }
@@ -142,14 +141,12 @@ namespace GSSerializer.Internal
         ///     ever be done, don't bother caching.
         /// </param>
         /// <returns>The attribute or null.</returns>
-        public static TAttribute GetAttribute<TAttribute>(MemberInfo element, bool shouldCache)
-            where TAttribute : Attribute
+        public static TAttribute GetAttribute<TAttribute>(MemberInfo element, bool shouldCache) where TAttribute : Attribute
         {
-            return (TAttribute) GetAttribute(element, typeof(TAttribute), shouldCache);
+            return (TAttribute)GetAttribute(element, typeof(TAttribute), shouldCache);
         }
 
-        public static TAttribute GetAttribute<TAttribute>(MemberInfo element)
-            where TAttribute : Attribute
+        public static TAttribute GetAttribute<TAttribute>(MemberInfo element) where TAttribute : Attribute
         {
             return GetAttribute<TAttribute>(element, /*shouldCache:*/true);
         }
@@ -160,35 +157,25 @@ namespace GSSerializer.Internal
             public Type AttributeType;
         }
 
-        private static readonly IDictionary<AttributeQuery, Attribute> _cachedAttributeQueries =
-            new Dictionary<AttributeQuery, Attribute>(new AttributeQueryComparator());
+        private static readonly IDictionary<AttributeQuery, Attribute> _cachedAttributeQueries = new Dictionary<AttributeQuery, Attribute>(new AttributeQueryComparator());
 
         private class AttributeQueryComparator : IEqualityComparer<AttributeQuery>
         {
             public bool Equals(AttributeQuery x, AttributeQuery y)
             {
-                return
-                    x.MemberInfo == y.MemberInfo &&
-                    x.AttributeType == y.AttributeType;
+                return x.MemberInfo == y.MemberInfo && x.AttributeType == y.AttributeType;
             }
 
             public int GetHashCode(AttributeQuery obj)
             {
-                return
-                    obj.MemberInfo.GetHashCode() +
-                    17 * obj.AttributeType.GetHashCode();
+                return obj.MemberInfo.GetHashCode() + 17 * obj.AttributeType.GetHashCode();
             }
         }
 
         #endregion Attribute Queries
 
 #if !USE_TYPEINFO
-        private static readonly BindingFlags DeclaredFlags =
-            BindingFlags.NonPublic |
-            BindingFlags.Public |
-            BindingFlags.Instance |
-            BindingFlags.Static |
-            BindingFlags.DeclaredOnly;
+        private static readonly BindingFlags DeclaredFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
 #endif
 
         public static PropertyInfo GetDeclaredProperty(this Type type, string propertyName)
@@ -373,7 +360,7 @@ namespace GSSerializer.Internal
 #if USE_TYPEINFO
             return ((TypeInfo)member).AsType();
 #else
-            (Type) member;
+            (Type)member;
 #endif
 
 

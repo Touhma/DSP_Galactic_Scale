@@ -22,7 +22,7 @@ namespace GalacticScale
             Distribute = EThemeDistribute.Interstellar,
             ModX = new Vector2(1.5f, 1.5f),
             ModY = new Vector2(-5f, -5f),
-            VeinSettings = new GSVeinSettings {Algorithm = "Vanilla"},
+            VeinSettings = new GSVeinSettings { Algorithm = "Vanilla" },
             AmbientSettings = new GSAmbientSettings //NEED CHANGING on sakura, and other themes imported
             {
                 Color1 = new Color(0.1783553f, 0.1903702f, 0.2264151f, 1.0f),

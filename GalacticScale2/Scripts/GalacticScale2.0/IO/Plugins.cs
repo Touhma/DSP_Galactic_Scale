@@ -26,7 +26,7 @@ namespace GalacticScale
                     foreach (var t in type.GetInterfaces())
                         if (t.Name == "iConfigurablePlugin" && !type.IsAbstract && !type.IsInterface)
                         {
-                            GS2.Warn($"Loading Plugin: {a.GetName().Name}");
+                            Warn($"Loading Plugin: {a.GetName().Name}");
                             var plugin = (iConfigurablePlugin)Activator.CreateInstance(type);
                             Plugins.Add(plugin);
                             plugin.Init();
@@ -34,9 +34,8 @@ namespace GalacticScale
                 }
                 catch (Exception e)
                 {
-                    GS2.Warn("Failed to load plugin:" +e.Message);
-                    GS2.updateMessage +=
-                        $"Failed to load plugin:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the plugin is available, or downgrade GS2 to continue using it";
+                    Warn("Failed to load plugin:" + e.Message);
+                    updateMessage += $"Failed to load plugin:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the plugin is available, or downgrade GS2 to continue using it";
                 }
             }
 
@@ -48,9 +47,8 @@ namespace GalacticScale
 
             Log("End");
         }
-        
-        
-        
+
+
         public static void LoadGenerators()
         {
             Log("Start");
@@ -71,9 +69,8 @@ namespace GalacticScale
                 }
                 catch (Exception e)
                 {
-                    GS2.Warn("Failed to load generator:" +e.Message);
-                    GS2.updateMessage +=
-                        $"Failed to load external generator:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the generator is available, or downgrade GS2 to continue using it";
+                    Warn("Failed to load generator:" + e.Message);
+                    updateMessage += $"Failed to load external generator:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the generator is available, or downgrade GS2 to continue using it";
                 }
             }
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
 
 namespace GalacticScale
 {
@@ -16,33 +13,49 @@ namespace GalacticScale
         public GameObject ListExpandButton;
         public GameObject ListContents;
         public GSUITemplates templates;
-        public bool Collapsible = false;
+        public bool Collapsible;
         public bool ShowHeader = true;
         public Text _labelText;
         public Text _hintText;
+
         public bool interactable
         {
-            get
-            {
-                return ListCollapseButton.GetComponent<Button>().interactable;
-            }
+            get => ListCollapseButton.GetComponent<Button>().interactable;
             set
             {
                 ListCollapseButton.GetComponent<Button>().interactable = value;
                 ListContents.SetActive(value);
-               
             }
         }
+
         public string Hint
         {
             get => _hintText.text;
             set => _hintText.text = value;
         }
+
         public string Label
         {
             get => _labelText.text;
             set => _labelText.text = value;
         }
+
+        public void Start()
+        {
+            if (!ShowHeader)
+            {
+                Collapsible = false;
+                ListHeading.SetActive(false);
+            }
+
+            if (!Collapsible)
+            {
+                ListExpandButton.SetActive(false);
+                ListCollapseButton.SetActive(false);
+                ListContents.SetActive(true);
+            }
+        }
+
         public GameObject AddItem(GSUITemplate template)
         {
             // GS2.Log($"Adding Item Template Null?:{template == null} ListContents Null?{ListContents == null}");
@@ -58,33 +71,18 @@ namespace GalacticScale
             return go.GetComponent<GSUIHeader>();
         }
 
-        public void Start()
-        {
-            if (!ShowHeader)
-            {
-                Collapsible = false;
-                ListHeading.SetActive(false);
-            }
-            if (!Collapsible)
-            {
-                ListExpandButton.SetActive(false);
-                ListCollapseButton.SetActive(false);
-                ListContents.SetActive(true);
-            }
-
-
-        }
-
         public void ForceLayoutRebuild(RectTransform transform)
         {
             LayoutRebuilder.MarkLayoutForRebuild(transform);
         }
+
         public GSUIRangeSlider AddRangeSlider()
         {
             var go = AddItem(templates.rangeslider);
             go.SetActive(true);
             return go.GetComponent<GSUIRangeSlider>();
         }
+
         public GSUISlider AddSlider()
         {
             var go = AddItem(templates.slider);
@@ -98,23 +96,28 @@ namespace GalacticScale
             go.SetActive(true);
             return go.GetComponent<GSUIToggle>();
         }
+
         public GSUIDropdown AddDropdown()
         {
             var go = AddItem(templates.dropdown);
             go.SetActive(true);
             return go.GetComponent<GSUIDropdown>();
-        }        public GSUISelector AddSelector()
+        }
+
+        public GSUISelector AddSelector()
         {
             var go = AddItem(templates.selector);
             go.SetActive(true);
             return go.GetComponent<GSUISelector>();
         }
+
         public GSUIButton AddButton()
         {
             var go = AddItem(templates.button);
             go.SetActive(true);
             return go.GetComponent<GSUIButton>();
         }
+
         public GSUIInput AddInput()
         {
             var go = AddItem(templates.input);
@@ -127,7 +130,8 @@ namespace GalacticScale
             var go = AddItem(templates.list);
             go.SetActive(true);
             return go.GetComponent<GSUIList>();
-        }        
+        }
+
         internal GSUIToggleList AddToggleList()
         {
             if (templates.togglelist == null) GS2.Error("No ToggleList");
@@ -135,6 +139,7 @@ namespace GalacticScale
             go.SetActive(true);
             return go.GetComponent<GSUIToggleList>();
         }
+
         public void Initialize(GSUI group)
         {
             var data = (GSUIGroupConfig)group.Data;
@@ -142,7 +147,6 @@ namespace GalacticScale
             Hint = group.Hint;
             Collapsible = data.collapsible;
             ShowHeader = data.header;
-
         }
 
         public RectTransform AddSpacer()
@@ -150,7 +154,8 @@ namespace GalacticScale
             var go = AddItem(templates.spacer);
             go.SetActive(true);
             return go.GetComponent<RectTransform>();
-        }        
+        }
+
         public RectTransform AddSeparator()
         {
             var go = AddItem(templates.separator);
@@ -158,7 +163,4 @@ namespace GalacticScale
             return go.GetComponent<RectTransform>();
         }
     }
-
-
-
 }

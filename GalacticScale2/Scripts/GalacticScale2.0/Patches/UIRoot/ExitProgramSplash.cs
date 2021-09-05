@@ -2,12 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GalacticScale {
+namespace GalacticScale
+{
     //The following patch adds our splash to exitgame
 
     public static partial class PatchOnUIRoot
     {
-        [HarmonyPostfix, HarmonyPatch(typeof(UIRoot), "ExitProgramSplash")]
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIRoot), "ExitProgramSplash")]
         public static void ExitProgramSplash(UIRoot __instance)
         {
             var lg = GameObject.Find("UI Root/Overlay Canvas/Splash/");
@@ -23,7 +25,7 @@ namespace GalacticScale {
                     GS2.splashImage = image;
                     image.color = Color.white;
                 }
-                else if (image.name == "bg" || image.name == "logo" || image.name == "dsp" || image.name =="dots" || image.name == "health-advice")
+                else if (image.name == "bg" || image.name == "logo" || image.name == "dsp" || image.name == "dots" || image.name == "health-advice")
                 {
                     image.enabled = false;
                 }

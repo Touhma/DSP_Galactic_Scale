@@ -74,10 +74,8 @@ namespace GalacticScale.Generators
                 602, 602, 602, 602, 603, 603, 603, 603, 603, 603, 604, 604, 604, 604, 604, 604, 605, 605, 605, 605, 605,
                 605
             }; // Medium density, Biome border only
-            giganticforest.Vegetables2 =
-                new[] {1001, 1002, 1003, 1005, 1006, 1007}; // Dense clumped ground scatter, everywhere
-            giganticforest.Vegetables3 =
-                new[] {43, 46, 47, 47, 101, 102, 103, 104, 106, 601, 602, 604}; // Sparse, lowland only
+            giganticforest.Vegetables2 = new[] { 1001, 1002, 1003, 1005, 1006, 1007 }; // Dense clumped ground scatter, everywhere
+            giganticforest.Vegetables3 = new[] { 43, 46, 47, 47, 101, 102, 103, 104, 106, 601, 602, 604 }; // Sparse, lowland only
             giganticforest.Vegetables4 = new int[] { }; // Unused
             giganticforest.Vegetables5 = new[]
             {
@@ -118,12 +116,12 @@ namespace GalacticScale.Generators
             redforest.VegeSettings.Group4.Clear();
             redforest.VegeSettings.Group5.Clear();
             redforest.VegeSettings.Group6.Clear();
-            redforest.Vegetables0 = new[] {26, 26, 45, 603, 604}; // lowlands
-            redforest.Vegetables1 = new[] {1001, 1001, 1001, 1001, 1001, 1001, 45, 26, 26}; // Ground scatter, highlands
-            redforest.Vegetables2 = new[] {1001}; // Grass ground scatter, highlands
-            redforest.Vegetables3 = new[] {26, 26, 26, 26, 45, 602, 603, 604}; // Ground
-            redforest.Vegetables4 = new[] {1001, 26, 602, 603, 604}; // Semi clumped shoreline
-            redforest.Vegetables5 = new[] {25, 32, 36, 37, 39, 41}; // Water
+            redforest.Vegetables0 = new[] { 26, 26, 45, 603, 604 }; // lowlands
+            redforest.Vegetables1 = new[] { 1001, 1001, 1001, 1001, 1001, 1001, 45, 26, 26 }; // Ground scatter, highlands
+            redforest.Vegetables2 = new[] { 1001 }; // Grass ground scatter, highlands
+            redforest.Vegetables3 = new[] { 26, 26, 26, 26, 45, 602, 603, 604 }; // Ground
+            redforest.Vegetables4 = new[] { 1001, 26, 602, 603, 604 }; // Semi clumped shoreline
+            redforest.Vegetables5 = new[] { 25, 32, 36, 37, 39, 41 }; // Water
             redforest.PopulateVegeData();
             redforest.VeinCount = Themes.RedStone.VeinCount;
             redforest.VeinSpot = Themes.RedStone.VeinSpot;
@@ -169,8 +167,8 @@ namespace GalacticScale.Generators
             sulfursea.Vegetables0 = new int[] { }; // lowlands
             sulfursea.Vegetables1 = new int[] { }; // Ground scatter, highlands
             sulfursea.Vegetables2 = new int[] { }; // Grass ground scatter, highlands
-            sulfursea.Vegetables3 = new[] {601, 602, 603, 604, 605}; // Ground
-            sulfursea.Vegetables4 = new[] {601, 602, 603, 604, 605}; // Semi clumped shoreline
+            sulfursea.Vegetables3 = new[] { 601, 602, 603, 604, 605 }; // Ground
+            sulfursea.Vegetables4 = new[] { 601, 602, 603, 604, 605 }; // Semi clumped shoreline
             sulfursea.Vegetables5 = new int[] { }; // Water
             sulfursea.terrainMaterial.CopyFrom = "Gobi.terrainMat";
             sulfursea.atmosphereMaterial.CopyFrom = "VolcanicAsh.atmosMat";

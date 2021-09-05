@@ -71,7 +71,7 @@ namespace PCGSharp
 
         private ulong _state;
 
-        public Pcg(int seed) : this((ulong) seed)
+        public Pcg(int seed) : this((ulong)seed)
         {
         }
 
@@ -83,20 +83,20 @@ namespace PCGSharp
         public int Next()
         {
             var result = NextUInt();
-            return (int) (result >> 1);
+            return (int)(result >> 1);
         }
 
         public int Next(int maxExclusive)
         {
             if (maxExclusive <= 0)
                 throw new ArgumentException("Max Exclusive must be positive");
-            var uMaxExclusive = (uint) maxExclusive;
-            var threshold = (uint) -uMaxExclusive % uMaxExclusive;
+            var uMaxExclusive = (uint)maxExclusive;
+            var threshold = (uint)-uMaxExclusive % uMaxExclusive;
             while (true)
             {
                 var result = NextUInt();
                 if (result >= threshold)
-                    return (int) (result % uMaxExclusive);
+                    return (int)(result % uMaxExclusive);
             }
         }
 
@@ -104,14 +104,14 @@ namespace PCGSharp
         {
             if (maxExclusive <= minInclusive)
                 throw new ArgumentException("MaxExclusive must be larger than MinInclusive");
-            var uMaxExclusive = unchecked((uint) (maxExclusive - minInclusive));
-            var threshold = (uint) -uMaxExclusive % uMaxExclusive;
+            var uMaxExclusive = unchecked((uint)(maxExclusive - minInclusive));
+            var threshold = (uint)-uMaxExclusive % uMaxExclusive;
 
             while (true)
             {
                 var result = NextUInt();
                 if (result >= threshold)
-                    return (int) unchecked(result % uMaxExclusive + minInclusive);
+                    return (int)unchecked(result % uMaxExclusive + minInclusive);
             }
         }
 
@@ -119,15 +119,15 @@ namespace PCGSharp
         {
             var oldState = _state;
             _state = unchecked(oldState * Multiplier + _increment);
-            var xorShifted = (uint) (((oldState >> 18) ^ oldState) >> 27);
-            var rot = (int) (oldState >> 59);
+            var xorShifted = (uint)(((oldState >> 18) ^ oldState) >> 27);
+            var rot = (int)(oldState >> 59);
             var result = (xorShifted >> rot) | (xorShifted << (-rot & 31));
             return result;
         }
 
         public uint NextUInt(uint maxExclusive)
         {
-            var threshold = (uint) -maxExclusive % maxExclusive;
+            var threshold = (uint)-maxExclusive % maxExclusive;
 
             while (true)
             {
@@ -143,7 +143,7 @@ namespace PCGSharp
                 throw new ArgumentException();
 
             var diff = maxExclusive - minInclusive;
-            var threshold = (uint) -diff % diff;
+            var threshold = (uint)-diff % diff;
 
             while (true)
             {
@@ -155,7 +155,7 @@ namespace PCGSharp
 
         public float NextFloat()
         {
-            return (float) (NextUInt() * ToDouble01);
+            return (float)(NextUInt() * ToDouble01);
         }
 
         public float NextFloat(float maxInclusive)
@@ -163,7 +163,7 @@ namespace PCGSharp
             if (maxInclusive <= 0)
                 throw new ArgumentException("MaxInclusive must be larger than 0");
 
-            return (float) (NextUInt() * ToDouble01) * maxInclusive;
+            return (float)(NextUInt() * ToDouble01) * maxInclusive;
         }
 
         public float NextFloat(float minInclusive, float maxInclusive)
@@ -171,7 +171,7 @@ namespace PCGSharp
             if (maxInclusive < minInclusive)
                 throw new ArgumentException("Max must be larger than min");
 
-            return (float) (NextUInt() * ToDouble01) * (maxInclusive - minInclusive) + minInclusive;
+            return (float)(NextUInt() * ToDouble01) * (maxInclusive - minInclusive) + minInclusive;
         }
 
         public double NextDouble()
@@ -208,7 +208,7 @@ namespace PCGSharp
 
         protected void reseed(int seed)
         {
-            Initialize((ulong) seed, ShiftedIncrement);
+            Initialize((ulong)seed, ShiftedIncrement);
         }
 
         protected void Initialize(ulong seed, ulong initseq)

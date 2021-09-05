@@ -5,8 +5,8 @@ namespace GalacticScale
 {
     public class GSStar
     {
-        [NonSerialized]
-        public readonly ValStore genData = new ValStore();
+        [NonSerialized] public readonly ValStore genData = new ValStore();
+
         private float _acdiscRadius = -1;
         private float _age = -1;
         private float _classfactor = 3;

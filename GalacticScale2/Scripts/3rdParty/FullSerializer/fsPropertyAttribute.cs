@@ -20,8 +20,7 @@ namespace GSSerializer
         /// </summary>
         public string Name;
 
-        public fsPropertyAttribute()
-            : this(string.Empty)
+        public fsPropertyAttribute() : this(string.Empty)
         {
         }
 

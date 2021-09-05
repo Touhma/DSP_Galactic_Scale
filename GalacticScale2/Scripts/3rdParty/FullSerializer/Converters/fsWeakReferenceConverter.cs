@@ -24,7 +24,7 @@ namespace GSSerializer.Internal
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)
         {
-            var weakRef = (WeakReference) instance;
+            var weakRef = (WeakReference)instance;
 
             var result = fsResult.Success;
             serialized = fsData.CreateDictionary();

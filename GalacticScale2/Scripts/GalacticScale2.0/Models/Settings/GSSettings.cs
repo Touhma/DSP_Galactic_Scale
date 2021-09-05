@@ -17,9 +17,9 @@ namespace GalacticScale
 
         private static int birthPlanetId = -1; // this is a vanilla id, not a GS Index!
         private static string birthPlanetName;
-        public string generatorGUID = null;
 
         [SerializeField] public GSGalaxyParams galaxyParams = new GSGalaxyParams();
+        public string generatorGUID = null;
 
         [NonSerialized] public bool imported;
 
@@ -119,7 +119,7 @@ namespace GalacticScale
 
                 GS2.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
                 GS2.Log($"BirthPlanetName:{birthPlanetName}");
-                
+
                 if (Stars.HabitablePlanets.Count > 0)
                 {
                     GS2.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");
@@ -222,9 +222,9 @@ namespace GalacticScale
     public class GSGalaxyParams
     {
         public double flatten = 0.18;
+        public bool forceSpecials = false; // allow special ores around regular stars
         public int graphDistance = 64;
         public int graphMaxStars = 64;
-        public bool forceSpecials = false; // allow special ores around regular stars
         public int iterations = 4;
         public double maxStepLength = 3.5;
         public double minDistance = 2;

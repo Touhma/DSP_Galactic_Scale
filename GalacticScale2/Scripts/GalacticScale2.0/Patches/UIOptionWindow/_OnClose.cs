@@ -1,5 +1,4 @@
-﻿using System.IO;
-using HarmonyLib;
+﻿using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +8,7 @@ namespace GalacticScale
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIOptionWindow), "_OnClose")]
-        public static void _OnClose(ref UIOptionWindow __instance, ref UIButton[] ___tabButtons,
-            ref Text[] ___tabTexts)
+        public static void _OnClose(ref UIOptionWindow __instance, ref UIButton[] ___tabButtons, ref Text[] ___tabTexts)
         {
             var overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null || overlayCanvas.transform.Find("Top Windows") == null) return;

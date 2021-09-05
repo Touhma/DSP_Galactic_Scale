@@ -75,13 +75,13 @@ namespace GSSerializer
         ///     The attributes that will force a field or property to *not* be
         ///     serialized.
         /// </summary>
-        public Type[] IgnoreSerializeAttributes = {typeof(NonSerializedAttribute), typeof(fsIgnoreAttribute)};
+        public Type[] IgnoreSerializeAttributes = { typeof(NonSerializedAttribute), typeof(fsIgnoreAttribute) };
 
         /// <summary>
         ///     The attributes on a type that will force any fields or properties
         ///     of that type to *not* be serialized.
         /// </summary>
-        public Type[] IgnoreSerializeTypeAttributes = {typeof(fsIgnoreAttribute)};
+        public Type[] IgnoreSerializeTypeAttributes = { typeof(fsIgnoreAttribute) };
 
         /// <summary>
         ///     Int64 and UInt64 will be serialized and deserialized as string for

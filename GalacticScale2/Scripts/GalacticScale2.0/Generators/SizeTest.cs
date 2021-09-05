@@ -67,7 +67,7 @@ namespace GalacticScale.Generators
         public double getZ(Vector2 xy)
         {
             var dist = Vector2.SqrMagnitude(xy);
-            return 1 + 5 * (float) Math.Exp(-1 * (dist * dist / 500f));
+            return 1 + 5 * (float)Math.Exp(-1 * (dist * dist / 500f));
         }
 
         public void generate(int starCount)
@@ -193,18 +193,15 @@ namespace GalacticScale.Generators
             //}
         }
 
-        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread,
-            double starsAtCenterRatio)
+        public List<Vector2> GenerateGalaxy(int numOfStars, int numOfArms, float spin, double armSpread, double starsAtCenterRatio)
         {
             var result = new List<Vector2>();
             for (var i = 0; i < numOfArms; i++)
-                result.AddRange(GenerateArm(numOfStars / numOfArms, i / (float) numOfArms, spin, armSpread,
-                    starsAtCenterRatio));
+                result.AddRange(GenerateArm(numOfStars / numOfArms, i / (float)numOfArms, spin, armSpread, starsAtCenterRatio));
             return result;
         }
 
-        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread,
-            double starsAtCenterRatio)
+        public List<Vector2> GenerateArm(int numOfStars, float rotation, float spin, double armSpread, double starsAtCenterRatio)
         {
             var result = new List<Vector2>();
             var random = new GS2.Random(GSSettings.Seed);
@@ -212,19 +209,17 @@ namespace GalacticScale.Generators
             for (var i = 0; i < numOfStars; i++)
             {
                 //GS2.Log(i + " / " + numOfStars);
-                var part = i / (double) numOfStars;
+                var part = i / (double)numOfStars;
                 part = Math.Pow(part, starsAtCenterRatio);
 
-                var distanceFromCenter = (float) part;
+                var distanceFromCenter = (float)part;
                 var position = (part * spin + rotation) * Math.PI * 2;
 
-                var xFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) *
-                                   armSpread;
-                var yFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) *
-                                   armSpread;
+                var xFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) * armSpread;
+                var yFluctuation = (Pow3Constrained(random.NextDouble()) - Pow3Constrained(random.NextDouble())) * armSpread;
 
-                var resultX = (float) Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float) xFluctuation;
-                var resultY = (float) Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float) yFluctuation;
+                var resultX = (float)Math.Cos(position) * distanceFromCenter / 2 + 0.5f + (float)xFluctuation;
+                var resultY = (float)Math.Sin(position) * distanceFromCenter / 2 + 0.5f + (float)yFluctuation;
 
                 result.Add(new Vector2(resultX, resultY));
             }

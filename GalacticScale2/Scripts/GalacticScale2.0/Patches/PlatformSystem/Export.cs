@@ -7,14 +7,13 @@ namespace GalacticScale
     public partial class PatchOnPlatformSystem
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlatformSystem),
-            "Export")] //Increase the size of the array to prevent the game only saving part of it
+        [HarmonyPatch(typeof(PlatformSystem), "Export")] //Increase the size of the array to prevent the game only saving part of it
         public static bool Export(BinaryWriter w, ref PlatformSystem __instance)
         {
             if (__instance.reformData != null)
             {
                 var len = __instance.reformData.Length;
-                __instance.ComputeMaxReformCount((int) (__instance.planet.radius / 4f + 0.01f) * 4);
+                __instance.ComputeMaxReformCount((int)(__instance.planet.radius / 4f + 0.01f) * 4);
                 if (__instance.maxReformCount > len - 1)
                 {
                     var tempArray = new byte[__instance.maxReformCount];

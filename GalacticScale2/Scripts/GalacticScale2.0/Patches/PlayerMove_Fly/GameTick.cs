@@ -11,33 +11,21 @@ namespace GalacticScale
         {
             var num = 0.0166666675f;
             if (__instance.player == null) //
-            {
                 __instance.player = GameMain.mainPlayer;
-            }
 
-            if (__instance.controller == null)
-            {
-                __instance.controller = GameMain.mainPlayer.controller;
-            }
+            if (__instance.controller == null) __instance.controller = GameMain.mainPlayer.controller;
 
             if (__instance.player.movementState != EMovementState.Fly) return false;
-            if (__instance.navigation == null)
-            {
-                __instance.navigation = GameMain.mainPlayer.navigation;
-            }
+            if (__instance.navigation == null) __instance.navigation = GameMain.mainPlayer.navigation;
 
-            if (__instance.mecha == null)
-            {
-                __instance.mecha = GameMain.mainPlayer.mecha;
-            }
+            if (__instance.mecha == null) __instance.mecha = GameMain.mainPlayer.mecha;
 
             var forward = __instance.controller.mainCamera.transform.forward;
             var normalized = __instance.player.position.normalized;
             var normalized2 = Vector3.Cross(normalized, forward).normalized;
             forward = Vector3.Cross(normalized2, normalized);
             var vector = forward * __instance.controller.input0.y + normalized2 * __instance.controller.input0.x;
-            if (__instance.controller.cmd.type == ECommand.Build && !VFInput._godModeMechaMove &&
-                !PlayerController.operationWhenBuild || __instance.navigation.navigating) vector = Vector3.zero;
+            if (__instance.controller.cmd.type == ECommand.Build && !VFInput._godModeMechaMove && !PlayerController.operationWhenBuild || __instance.navigation.navigating) vector = Vector3.zero;
             if (GameMain.localPlanet == null) //
             {
                 GS2.Error("Error: Local planet does not exist.");
@@ -51,8 +39,7 @@ namespace GalacticScale
             var num3 = 0.022f * softLandingRecover;
             var num4 = __instance.player.mecha.walkSpeed * 2.5f;
             var num5 = __instance.controller.input1.y;
-            if (__instance.controller.cmd.type == ECommand.Build && !VFInput._godModeMechaMove &&
-                !PlayerController.operationWhenBuild || __instance.navigation.navigating) num5 = 0f;
+            if (__instance.controller.cmd.type == ECommand.Build && !VFInput._godModeMechaMove && !PlayerController.operationWhenBuild || __instance.navigation.navigating) num5 = 0f;
             if (__instance.navigation.navigating)
             {
                 var lift = false;
@@ -64,8 +51,7 @@ namespace GalacticScale
             }
 
             __instance.targetAltitude += num5 * num * 20f;
-            if (__instance.controller.cmd.type == ECommand.Build && !PlayerController.operationWhenBuild &&
-                __instance.targetAltitude > 40f) __instance.targetAltitude = 40f;
+            if (__instance.controller.cmd.type == ECommand.Build && !PlayerController.operationWhenBuild && __instance.targetAltitude > 40f) __instance.targetAltitude = 40f;
             if (num5 == 0f && __instance.targetAltitude > 15f)
             {
                 __instance.targetAltitude -= num * 20f * 0.3f;
@@ -73,8 +59,7 @@ namespace GalacticScale
             }
             else if (__instance.targetAltitude >= 50f)
             {
-                if (__instance.currentAltitude > 49f && __instance.controller.horzSpeed > 12.5f &&
-                    __instance.mecha.thrusterLevel >= 2)
+                if (__instance.currentAltitude > 49f && __instance.controller.horzSpeed > 12.5f && __instance.mecha.thrusterLevel >= 2)
                 {
                     if (__instance.controller.cmd.type == ECommand.Build) __instance.controller.cmd.SetNoneCommand();
                     __instance.controller.movementStateInFrame = EMovementState.Sail;
@@ -111,25 +96,19 @@ namespace GalacticScale
             __instance.currentAltitude = num6 - realRadius;
             var num7 = __instance.targetAltitude - __instance.currentAltitude;
             __instance.verticalThrusterForce = 0f;
-            var b = Mathf.Clamp(num7 * 0.5f, -10f, 10f) * 100f +
-                    (float) __instance.controller.universalGravity.magnitude;
+            var b = Mathf.Clamp(num7 * 0.5f, -10f, 10f) * 100f + (float)__instance.controller.universalGravity.magnitude;
             b = Mathf.Max(0f, b);
             __instance.verticalThrusterForce += b;
-            __instance.UseThrustEnergy(ref __instance.verticalThrusterForce, __instance.controller.vertSpeed,
-                0.016666666666666666);
+            __instance.UseThrustEnergy(ref __instance.verticalThrusterForce, __instance.controller.vertSpeed, 0.016666666666666666);
             var num8 = Mathf.Sin(Time.time * 2f) * 0.1f + 1f;
             if (Mathf.Abs(__instance.verticalThrusterForce) > 0.001f)
                 __instance.controller.AddLocalForce(normalized * (__instance.verticalThrusterForce * num8));
             var currentOrder = __instance.player.currentOrder;
             if (currentOrder != null && !currentOrder.targetReached)
             {
-                var rhs = currentOrder.target.normalized * localPlanet.realRadius -
-                          __instance.player.position.normalized * localPlanet.realRadius;
+                var rhs = currentOrder.target.normalized * localPlanet.realRadius - __instance.player.position.normalized * localPlanet.realRadius;
                 _ = rhs.magnitude;
-                __instance.rtsVelocity =
-                    Vector3.Slerp(
-                        b: Vector3.Cross(Vector3.Cross(normalized, rhs).normalized, normalized).normalized * num4,
-                        a: __instance.rtsVelocity, t: num3);
+                __instance.rtsVelocity = Vector3.Slerp(b: Vector3.Cross(Vector3.Cross(normalized, rhs).normalized, normalized).normalized * num4, a: __instance.rtsVelocity, t: num3);
             }
             else
             {
@@ -142,8 +121,7 @@ namespace GalacticScale
                 __instance.moveVelocity = Vector3.Slerp(__instance.moveVelocity, vector * num4, num3);
             var vel = __instance.moveVelocity + __instance.rtsVelocity;
             if (softLandingRecover > 0.9) vel = Vector3.ClampMagnitude(vel, num4);
-            __instance.UseFlyEnergy(ref vel,
-                __instance.mecha.walkPower * num * __instance.controller.softLandingRecover);
+            __instance.UseFlyEnergy(ref vel, __instance.mecha.walkPower * num * __instance.controller.softLandingRecover);
             var vector2 = Vector3.Dot(vel, normalized) * normalized;
             vel -= vector2;
             var num9 = __instance.controller.vertSpeed;
@@ -152,9 +130,7 @@ namespace GalacticScale
             num10 = Mathf.Lerp(0.95f, 0.8f, Mathf.Abs(num7) * 0.3f);
             num11 = num10;
             num10 = Mathf.Lerp(1f, num10, Mathf.Clamp01(__instance.verticalThrusterForce));
-            num11 = Mathf.Lerp(1f, num11,
-                Mathf.Clamp01(__instance.verticalThrusterForce) *
-                Mathf.Clamp01((float) (__instance.mecha.coreEnergy - 5000.0) * 0.0001f));
+            num11 = Mathf.Lerp(1f, num11, Mathf.Clamp01(__instance.verticalThrusterForce) * Mathf.Clamp01((float)(__instance.mecha.coreEnergy - 5000.0) * 0.0001f));
             if (num9 > 0f)
                 num9 *= num10;
             else if (num9 < 0f) num9 *= num11;

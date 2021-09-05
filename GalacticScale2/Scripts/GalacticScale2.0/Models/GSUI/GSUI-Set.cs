@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public partial class GSUI
     {
-     public bool Set(GSSliderConfig cfg)
+        public bool Set(GSSliderConfig cfg)
         {
             //GS2.Warn("Setting Slider? : " + label);
             if (RectTransform == null) return false;
@@ -24,11 +24,9 @@ namespace GalacticScale
             //GS2.Log($"Set called by {GS2.GetCaller()} to set {o} for {Label}");
 
             if (RectTransform == null)
-             {   
-                 //GS2.Warn($"RectTransform for {Label} null");
-            
+                //GS2.Warn($"RectTransform for {Label} null");
+
                 return false;
-            }
             switch (Type)
             {
                 case "Selector":
@@ -43,7 +41,7 @@ namespace GalacticScale
                     // GS2.Warn($"{RectTransform.GetComponent<GSUIRangeSlider>().LowValue} {RectTransform.GetComponent<GSUIRangeSlider>().HighValue}");
                     return true;
                 case "Slider":
-                    RectTransform.GetComponentInChildren<Slider>().value = o; 
+                    RectTransform.GetComponentInChildren<Slider>().value = o;
                     return true;
                 case "Input":
                     if (o == null)
@@ -61,9 +59,10 @@ namespace GalacticScale
                         GS2.Error($"Failed to find Toggle for {Label}");
                         return false;
                     }
+
                     // GS2.Log($"Found toggle for {Label} setting isOn:{o}");
-                    toggle.Value = o; 
-                    return true;                
+                    toggle.Value = o;
+                    return true;
                 case "Group":
                     var gtoggle = RectTransform.GetComponent<GSUIToggleList>();
                     if (gtoggle is null)
@@ -71,8 +70,9 @@ namespace GalacticScale
                         GS2.Error($"Failed to find Toggle for {Label}");
                         return false;
                     }
+
                     GS2.Log($"Found togglelist for {Label} setting isOn:{o}");
-                    gtoggle.Value = o; 
+                    gtoggle.Value = o;
                     return true;
                 case "Combobox":
                     var cb = RectTransform.GetComponentInChildren<Dropdown>();
@@ -109,6 +109,6 @@ namespace GalacticScale
             Data = items;
             if (RectTransform != null) RectTransform.GetComponent<GSUIDropdown>().Items = items;
             return true;
-        }   
+        }
     }
 }

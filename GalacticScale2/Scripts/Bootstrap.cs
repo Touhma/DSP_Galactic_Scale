@@ -100,10 +100,7 @@ namespace GalacticScale
             // {
             //     if (GameMain.localPlanet != null && GameMain.mainPlayer != null) GS2.Warn((GameMain.localPlanet.uPosition - GameMain.mainPlayer.uPosition).magnitude + " distance");
             // }
-            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight)
-            {
-                GS2.Config.EnableDevMode();
-            }
+            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode();
 
             if (GS2.Config.Dev && VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null)
             {
@@ -118,6 +115,7 @@ namespace GalacticScale
                     GS2.ShowMessage("WorkingTheme.json has been exported. Use the same key combination to reload it");
                     return;
                 }
+
                 GameMain.mainPlayer.controller.movementStateInFrame = EMovementState.Sail;
                 GameMain.mainPlayer.controller.actionSail.ResetSailState();
                 GameCamera.instance.SyncForSailMode();

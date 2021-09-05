@@ -37,8 +37,7 @@ namespace GalacticScale
                 {
                     // We instead call PlanetRawDataExtension.GetModPlaneInt (which returns an int)
                     // All existing calls to GetModPlane cast the result to a float, anyway...
-                    codes[i] = new CodeInstruction(OpCodes.Call,
-                        typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
+                    codes[i] = new CodeInstruction(OpCodes.Call, typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
                 }
 
             return codes.AsEnumerable();

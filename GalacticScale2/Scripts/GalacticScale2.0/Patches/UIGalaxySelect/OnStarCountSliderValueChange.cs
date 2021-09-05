@@ -5,18 +5,17 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIGalaxySelect 
+    public partial class PatchOnUIGalaxySelect
     {
         public static Delayer delayer;
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIGalaxySelect), "OnStarCountSliderValueChange")]
-        public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider,
-            ref GameDesc ___gameDesc, float val)
+        public static bool OnStarCountSliderValueChange(UIGalaxySelect __instance, ref Slider ___starCountSlider, ref GameDesc ___gameDesc, float val)
         {
             if (delayer == null) delayer = ___starCountSlider.gameObject.AddComponent<Delayer>();
             delayer.Wait();
-            var num = (int) (val + 0.1f);
+            var num = (int)(val + 0.1f);
             if (num == ___gameDesc.starCount) return false;
             __instance.starCountText.text = num.ToString();
             num = Mathf.Clamp(num, GS2.ActiveGenerator.Config.MinStarCount, GS2.ActiveGenerator.Config.MaxStarCount);

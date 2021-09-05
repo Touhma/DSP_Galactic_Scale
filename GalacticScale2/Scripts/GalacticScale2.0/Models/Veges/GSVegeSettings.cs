@@ -1,5 +1,5 @@
-﻿using GSSerializer;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GSSerializer;
 
 namespace GalacticScale
 {
@@ -15,6 +15,7 @@ namespace GalacticScale
 
         public bool Empty =>
             Group1.Count + Group2.Count + Group3.Count + Group4.Count + Group5.Count + Group6.Count == 0;
+
         public bool Equals(GSVegeSettings other)
         {
             var serializer = new fsSerializer();
@@ -23,6 +24,7 @@ namespace GalacticScale
 
             return thisData.Equals(otherData);
         }
+
         public static List<string> FromIDArray(int[] a)
         {
             var l = new List<string>();
@@ -49,7 +51,7 @@ namespace GalacticScale
 
         public GSVegeSettings Clone()
         {
-            var clone = (GSVegeSettings) MemberwiseClone();
+            var clone = (GSVegeSettings)MemberwiseClone();
             clone.Group1 = new List<string>(Group1);
             clone.Group2 = new List<string>(Group2);
             clone.Group3 = new List<string>(Group3);

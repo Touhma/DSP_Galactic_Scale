@@ -21,10 +21,8 @@ namespace GalacticScale
             if (based)
             {
                 if (!GSSettings.ThemeLibrary.ContainsKey(model.BaseName))
-                {
                     GS2.Error($"Theme Missing: {model.BaseName}");
-                    
-                } else baseTheme = GSSettings.ThemeLibrary[model.BaseName];
+                else baseTheme = GSSettings.ThemeLibrary[model.BaseName];
             }
             // var baseTheme = based ? GS2.ThemeLibrary[model.BaseName] : GS2.ThemeLibrary["Mediterranean"];
 
@@ -36,8 +34,7 @@ namespace GalacticScale
                     SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 if (!based || model.ThemeType != baseTheme.ThemeType)
                     SerializeMember(serialized, null, "ThemeType", model.ThemeType);
-                if (!based || model.StarTypes.Except(baseTheme.StarTypes).Count() != 0 ||
-                    baseTheme.StarTypes.Except(model.StarTypes).Count() != 0)
+                if (!based || model.StarTypes.Except(baseTheme.StarTypes).Count() != 0 || baseTheme.StarTypes.Except(model.StarTypes).Count() != 0)
                     SerializeMember(serialized, null, "StarTypes", model.StarTypes);
                 if (!based || model.Algo != baseTheme.Algo) SerializeMember(serialized, null, "Algo", model.Algo);
 
@@ -71,11 +68,9 @@ namespace GalacticScale
                 //if ((!based || model.Vegetables3 != baseTheme.Vegetables3) && model.Vegetables3 != null && model.Vegetables3.Length > 0 && model.VegeSettings.Group4.Count == 0) SerializeMember(serialized, null, "Vegetables3", model.Vegetables3);
                 //if ((!based || model.Vegetables4 != baseTheme.Vegetables4) && model.Vegetables4 != null && model.Vegetables4.Length > 0 && model.VegeSettings.Group5.Count == 0) SerializeMember(serialized, null, "Vegetables4", model.Vegetables4);
                 //if ((!based || model.Vegetables5 != baseTheme.Vegetables5) && model.Vegetables5 != null && model.Vegetables5.Length > 0 && model.VegeSettings.Group6.Count == 0) SerializeMember(serialized, null, "Vegetables5", model.Vegetables5);
-                if ((!based || model.GasItems != baseTheme.GasItems) && model.GasItems != null &&
-                    model.GasItems.Length > 0) SerializeMember(serialized, null, "GasItems", model.GasItems);
+                if ((!based || model.GasItems != baseTheme.GasItems) && model.GasItems != null && model.GasItems.Length > 0) SerializeMember(serialized, null, "GasItems", model.GasItems);
 
-                if ((!based || model.GasSpeeds != baseTheme.GasSpeeds) && model.GasSpeeds != null &&
-                    model.GasSpeeds.Length > 0) SerializeMember(serialized, null, "GasSpeeds", model.GasSpeeds);
+                if ((!based || model.GasSpeeds != baseTheme.GasSpeeds) && model.GasSpeeds != null && model.GasSpeeds.Length > 0) SerializeMember(serialized, null, "GasSpeeds", model.GasSpeeds);
 
                 if (!based || model.Wind != baseTheme.Wind) SerializeMember(serialized, null, "Wind", model.Wind);
 
@@ -88,8 +83,7 @@ namespace GalacticScale
                 if (!based || model.WaterItemId != baseTheme.WaterItemId)
                     SerializeMember(serialized, null, "WaterItemId", model.WaterItemId);
 
-                if ((!based || !Utils.ArrayCompare(model.Musics, baseTheme.Musics)) && model.Musics != null &&
-                    model.Musics.Length > 0) SerializeMember(serialized, null, "Musics", model.Musics);
+                if ((!based || !Utils.ArrayCompare(model.Musics, baseTheme.Musics)) && model.Musics != null && model.Musics.Length > 0) SerializeMember(serialized, null, "Musics", model.Musics);
 
                 if (!based || model.SFXPath != baseTheme.SFXPath)
                     SerializeMember(serialized, null, "SFXPath", model.SFXPath);
@@ -100,27 +94,23 @@ namespace GalacticScale
                 if (!based || model.MaterialPath != baseTheme.MaterialPath)
                     SerializeMember(serialized, null, "MaterialPath", model.MaterialPath);
 
-                if ((!based || !model.terrainMaterial.Equals(baseTheme.terrainMaterial)) &&
-                    model.terrainMaterial != null)
+                if ((!based || !model.terrainMaterial.Equals(baseTheme.terrainMaterial)) && model.terrainMaterial != null)
                     SerializeMember(serialized, null, "terrainMaterial", model.terrainMaterial);
                 //if ((!based || model.terrainTint != baseTheme.terrainTint) && model.terrainTint != new UnityEngine.Color()) SerializeMember(serialized, null, "terrainTint", model.terrainTint);
                 if ((!based || !model.oceanMaterial.Equals(baseTheme.oceanMaterial)) && model.oceanMaterial != null)
                     SerializeMember(serialized, null, "oceanMaterial", model.oceanMaterial);
                 //if ((!based || model.oceanTint != baseTheme.oceanTint) && model.oceanTint != new UnityEngine.Color()) SerializeMember(serialized, null, "oceanTint", model.oceanTint);
-                if ((!based || !model.atmosphereMaterial.Equals(baseTheme.atmosphereMaterial)) &&
-                    model.atmosphereMaterial != null)
+                if ((!based || !model.atmosphereMaterial.Equals(baseTheme.atmosphereMaterial)) && model.atmosphereMaterial != null)
                     SerializeMember(serialized, null, "atmosphereMaterial", model.atmosphereMaterial);
                 //if ((!based || model.atmosphereTint != baseTheme.atmosphereTint) && model.atmosphereTint != new UnityEngine.Color()) SerializeMember(serialized, null, "atmosphereTint", model.atmosphereTint);
                 if ((!based || !model.thumbMaterial.Equals(baseTheme.thumbMaterial)) && model.thumbMaterial != null)
                     SerializeMember(serialized, null, "thumbMaterial", model.thumbMaterial);
                 //if ((!based || model.thumbTint != baseTheme.thumbTint) && model.thumbTint != new UnityEngine.Color()) SerializeMember(serialized, null, "thumbTint", model.thumbTint);
-                if ((!based || !model.minimapMaterial.Equals(baseTheme.minimapMaterial)) &&
-                    model.minimapMaterial != null)
+                if ((!based || !model.minimapMaterial.Equals(baseTheme.minimapMaterial)) && model.minimapMaterial != null)
                     SerializeMember(serialized, null, "minimapMaterial", model.minimapMaterial);
                 //if ((!based || model.minimapMaterial.Tint != baseTheme.minimapTint) && model.minimapTint != new UnityEngine.Color()) SerializeMember(serialized, null, "minimapTint", model.minimapTint);
                 //if ((!based || model.ambient != baseTheme.ambient) && model.ambient != null) SerializeMember(serialized, null, "ambient", model.ambient);
-                if ((!based || model.AmbientSettings.ToString() != baseTheme.AmbientSettings.ToString()) &&
-                    model.AmbientSettings != null)
+                if ((!based || model.AmbientSettings.ToString() != baseTheme.AmbientSettings.ToString()) && model.AmbientSettings != null)
                     SerializeMember(serialized, null, "AmbientSettings", model.AmbientSettings);
             }
             else

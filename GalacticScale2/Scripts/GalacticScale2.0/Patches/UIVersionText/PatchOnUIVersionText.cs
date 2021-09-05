@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -17,16 +17,11 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
         public static IEnumerable<CodeInstruction> Refresh_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            instructions = new CodeMatcher(instructions)
-                    .MatchForward(true,
-                        new CodeMatch(i => i.opcode == OpCodes.Ldfld && ((FieldInfo)i.operand).Name == "userName"))
-                    .Advance(1)
-                    .InsertAndAdvance(HarmonyLib.Transpilers.EmitDelegate<Func<string, string>>((text) =>
-                    {
-                        text = $"Galactic Scale v {GS2.Version}\r\n{text}";
-                        return text;
-                    }))
-                .InstructionEnumeration();
+            instructions = new CodeMatcher(instructions).MatchForward(true, new CodeMatch(i => i.opcode == OpCodes.Ldfld && ((FieldInfo)i.operand).Name == "userName")).Advance(1).InsertAndAdvance(Transpilers.EmitDelegate<Func<string, string>>(text =>
+            {
+                text = $"Galactic Scale v {GS2.Version}\r\n{text}";
+                return text;
+            })).InstructionEnumeration();
             return instructions;
         }
 
@@ -40,8 +35,7 @@ namespace GalacticScale
             {
                 oldLoadingText = loadingText;
                 if (GameMain.localStar != null && !GameMain.localStar.loaded)
-                    loadingText = "\r\nLoading Planets:" +
-                                  HandleLocalStarPlanets.GetStarLoadingStatus(GameMain.localStar);
+                    loadingText = "\r\nLoading Planets:" + HandleLocalStarPlanets.GetStarLoadingStatus(GameMain.localStar);
                 else loadingText = "";
                 if (GameMain.localStar != null && GameMain.localStar.loaded) loadingText = "";
                 if (GameMain.localStar == null) loadingText = "";

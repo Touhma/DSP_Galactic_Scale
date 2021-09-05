@@ -15,8 +15,7 @@ namespace GSSerializer
     /// </summary>
     public class fsMetaType
     {
-        private static Dictionary<fsConfig, Dictionary<Type, fsMetaType>> _configMetaTypes =
-            new Dictionary<fsConfig, Dictionary<Type, fsMetaType>>();
+        private static Dictionary<fsConfig, Dictionary<Type, fsMetaType>> _configMetaTypes = new Dictionary<fsConfig, Dictionary<Type, fsMetaType>>();
 
         private bool? _hasDefaultConstructorCache;
         private bool? _isDefaultConstructorPublicCache;
@@ -148,14 +147,12 @@ namespace GSSerializer
 
                 // If an opt-in annotation is required, then skip the property if
                 // it doesn't have one of the serialize attributes
-                if (requireOptIn &&
-                    !config.SerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t)))
+                if (requireOptIn && !config.SerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t)))
                     continue;
 
                 // If an opt-out annotation is required, then skip the property
                 // *only if* it has one of the not serialize attributes
-                if (requireOptOut &&
-                    config.IgnoreSerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t)))
+                if (requireOptOut && config.IgnoreSerializeAttributes.Any(t => fsPortableReflection.HasAttribute(member, t)))
                     continue;
 
                 if (property != null)
@@ -176,10 +173,7 @@ namespace GSSerializer
 
         private static bool IsAutoProperty(PropertyInfo property, MemberInfo[] members)
         {
-            return
-                property.CanWrite && property.CanRead &&
-                fsPortableReflection.HasAttribute(
-                    property.GetGetMethod(), typeof(CompilerGeneratedAttribute), /*shouldCache:*/false);
+            return property.CanWrite && property.CanRead && fsPortableReflection.HasAttribute(property.GetGetMethod(), typeof(CompilerGeneratedAttribute), /*shouldCache:*/false);
         }
 
         /// <summary>
@@ -188,8 +182,7 @@ namespace GSSerializer
         /// <param name="annotationFreeValue">
         ///     Should a property without any annotations be serialized?
         /// </param>
-        private static bool CanSerializeProperty(fsConfig config, PropertyInfo property, MemberInfo[] members,
-            bool annotationFreeValue)
+        private static bool CanSerializeProperty(fsConfig config, PropertyInfo property, MemberInfo[] members, bool annotationFreeValue)
         {
             // We don't serialize delegates
             if (typeof(Delegate).IsAssignableFrom(property.PropertyType)) return false;
@@ -198,8 +191,7 @@ namespace GSSerializer
             var publicSetMethod = property.GetSetMethod( /*nonPublic:*/ false);
 
             // We do not bother to serialize static fields.
-            if (publicGetMethod != null && publicGetMethod.IsStatic ||
-                publicSetMethod != null && publicSetMethod.IsStatic)
+            if (publicGetMethod != null && publicGetMethod.IsStatic || publicSetMethod != null && publicSetMethod.IsStatic)
                 return false;
 
             // Never serialize indexers. I can't think of a sane way to
@@ -208,8 +200,7 @@ namespace GSSerializer
             if (property.GetIndexParameters().Length > 0) return false;
 
             // Don't serialize members of types that themselves aren't to be serialized.
-            if (config.IgnoreSerializeTypeAttributes.Any(t =>
-                fsPortableReflection.HasAttribute(property.PropertyType, t))) return false;
+            if (config.IgnoreSerializeTypeAttributes.Any(t => fsPortableReflection.HasAttribute(property.PropertyType, t))) return false;
 
             // If a property is annotated with one of the serializable
             // attributes, then it should it should definitely be serialized.
@@ -225,8 +216,7 @@ namespace GSSerializer
             // Depending on the configuration options, check whether the property
             // is automatic and if it has a public setter to determine whether it
             // should be serialized
-            if (publicGetMethod != null && (config.SerializeNonPublicSetProperties || publicSetMethod != null) &&
-                (config.SerializeNonAutoProperties || IsAutoProperty(property, members)))
+            if (publicGetMethod != null && (config.SerializeNonPublicSetProperties || publicSetMethod != null) && (config.SerializeNonAutoProperties || IsAutoProperty(property, members)))
                 return true;
 
             // Otherwise, we don't bother with serialization
@@ -281,13 +271,11 @@ namespace GSSerializer
             {
                 // Cannot AOT compile since we need to public member access.
                 if (Properties[i].IsPublic == false)
-                    throw new AotFailureException(ReflectedType.CSharpName(true) + "::" + Properties[i].MemberName +
-                                                  " is not public");
+                    throw new AotFailureException(ReflectedType.CSharpName(true) + "::" + Properties[i].MemberName + " is not public");
                 // Cannot AOT compile since readonly members can only be
                 // modified using reflection.
                 if (Properties[i].IsReadOnly)
-                    throw new AotFailureException(ReflectedType.CSharpName(true) + "::" + Properties[i].MemberName +
-                                                  " is readonly");
+                    throw new AotFailureException(ReflectedType.CSharpName(true) + "::" + Properties[i].MemberName + " is readonly");
             }
 
             // Cannot AOT compile since we need a default ctor.
@@ -347,14 +335,12 @@ namespace GSSerializer
 #if (!UNITY_EDITOR && (UNITY_METRO)) == false
             catch (MissingMethodException e)
             {
-                throw new InvalidOperationException(
-                    "Unable to create instance of " + ReflectedType + "; there is no default constructor", e);
+                throw new InvalidOperationException("Unable to create instance of " + ReflectedType + "; there is no default constructor", e);
             }
 #endif
             catch (TargetInvocationException e)
             {
-                throw new InvalidOperationException(
-                    "Constructor of " + ReflectedType + " threw an exception when creating an instance", e);
+                throw new InvalidOperationException("Constructor of " + ReflectedType + " threw an exception when creating an instance", e);
             }
             catch (MemberAccessException e)
             {

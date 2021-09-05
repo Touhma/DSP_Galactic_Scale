@@ -1,29 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
+﻿using UnityEngine.UI;
 
 namespace GalacticScale
 {
     public class GSUIToggleList : GSUIList
     {
-
         public Toggle toggle;
-       
+
+        public GSOptionCallback OnChange;
+
 
         public bool Value
         {
             get => toggle.isOn;
-            set
-            {
+            set =>
                 // GS2.Warn($"Setting Value for {Label} to {value}"); 
                 toggle.isOn = value;
-            }
         }
-
-        public GSOptionCallback OnChange;
 
         public void _OnToggleChange(bool value)
         {
@@ -31,7 +23,7 @@ namespace GalacticScale
             Value = value;
             OnChange?.Invoke(value);
         }
-        
+
         public new void Initialize(GSUI group)
         {
             var data = (GSUIGroupConfig)group.Data;
@@ -40,12 +32,6 @@ namespace GalacticScale
             Collapsible = data.collapsible;
             ShowHeader = data.header;
             OnChange = group.callback;
-
         }
-
-        
     }
-
-
-
 }

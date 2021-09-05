@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
-using UnityEngine;
 
 namespace GalacticScale
 {
-    public partial class PatchOnPlanetModelingManager 
+    public partial class PatchOnPlanetModelingManager
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
@@ -467,23 +466,16 @@ namespace GalacticScale
         //}
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
-        public static IEnumerable<CodeInstruction> ModelingPlanetMainTranspiler(
-            IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> ModelingPlanetMainTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionList = new List<CodeInstruction>(instructions);
 
             //Patch.Debug("ModelingPlanetMain Transpiler.", LogLevel.Debug, Patch.DebugPlanetModelingManagerDeep);
             for (var instructionCounter = 0; instructionCounter < instructionList.Count; instructionCounter++)
-                if (instructionList[instructionCounter]
-                    .Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
+                if (instructionList[instructionCounter].Calls(typeof(PlanetData).GetProperty("realRadius").GetGetMethod()))
                 {
                     //Patch.Debug("Found realRadius Property getter call.", LogLevel.Debug, Patch.DebugPlanetModelingManagerDeep);
-                    if (instructionCounter + 4 < instructionList.Count &&
-                        instructionList[instructionCounter + 1].opcode == OpCodes.Ldc_R4 &&
-                        instructionList[instructionCounter + 1].OperandIs(0.2f) &&
-                        instructionList[instructionCounter + 2].opcode == OpCodes.Add &&
-                        instructionList[instructionCounter + 3].opcode == OpCodes.Ldc_R4 &&
-                        instructionList[instructionCounter + 3].OperandIs(0.025f))
+                    if (instructionCounter + 4 < instructionList.Count && instructionList[instructionCounter + 1].opcode == OpCodes.Ldc_R4 && instructionList[instructionCounter + 1].OperandIs(0.2f) && instructionList[instructionCounter + 2].opcode == OpCodes.Add && instructionList[instructionCounter + 3].opcode == OpCodes.Ldc_R4 && instructionList[instructionCounter + 3].OperandIs(0.025f))
                     {
                         //Patch.Debug("Found THE CORRECT realRadius Property getter call.", LogLevel.Debug, Patch.DebugPlanetModelingManagerDeep);
                         //+1 = ldc.r4 0.2
@@ -503,8 +495,7 @@ namespace GalacticScale
                 else if (instructionList[instructionCounter].Calls(typeof(PlanetRawData).GetMethod("GetModPlane")))
                 {
                     //GS2.Log("Found GetModPlane callvirt. Replacing with GetModPlaneInt call.");
-                    instructionList[instructionCounter] = new CodeInstruction(OpCodes.Call,
-                        typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
+                    instructionList[instructionCounter] = new CodeInstruction(OpCodes.Call, typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
                 }
 
             return instructionList.AsEnumerable();

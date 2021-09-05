@@ -8,8 +8,7 @@ namespace GalacticScale
         public static List<VectorLF3> tmp_poses;
         public static List<VectorLF3> tmp_drunk;
 
-        public static int GenerateTempPoses(int seed, int targetCount, int iterCount, double minDist, double minStepLen,
-            double maxStepLen, double flatten)
+        public static int GenerateTempPoses(int seed, int targetCount, int iterCount, double minDist, double minStepLen, double maxStepLen, double flatten)
         {
             if (tmp_poses == null)
             {
@@ -37,8 +36,7 @@ namespace GalacticScale
             return tmp_poses.Count;
         }
 
-        private static void RandomPoses(int seed, int maxCount, double minDist, double minStepLen, double maxStepLen,
-            double flatten)
+        private static void RandomPoses(int seed, int maxCount, double minDist, double minStepLen, double maxStepLen, double flatten)
         {
             var random = new GS2.Random(GSSettings.Seed);
             var num1 = random.NextDouble();
@@ -49,7 +47,7 @@ namespace GalacticScale
 
             if (num3 < 1) num3 = 1;
 
-            var num4 = (int) (num1 * (num3 - num2) + num2);
+            var num4 = (int)(num1 * (num3 - num2) + num2);
             var max = 256;
             //if (GS2.gameDesc.starCount > 512) max = 512;
             if (GS2.gameDesc.starCount > 1024) max = 1024;
@@ -101,8 +99,7 @@ namespace GalacticScale
                             {
                                 var num10 = Math.Sqrt(d);
                                 var num11 = (num9 * (maxStepLen - minStepLen) + minDist) / num10;
-                                var pt = new VectorLF3(tmp_drunk[index].x + num6 * num11,
-                                    tmp_drunk[index].y + num7 * num11, tmp_drunk[index].z + num8 * num11);
+                                var pt = new VectorLF3(tmp_drunk[index].x + num6 * num11, tmp_drunk[index].y + num7 * num11, tmp_drunk[index].z + num8 * num11);
                                 if (!Utils.CheckStarCollision(tmp_poses, pt, minDist))
                                 {
                                     tmp_drunk[index] = pt;

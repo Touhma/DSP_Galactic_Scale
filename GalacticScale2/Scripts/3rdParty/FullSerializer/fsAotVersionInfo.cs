@@ -29,24 +29,17 @@ namespace GSSerializer
             {
                 if (obj is Member == false) return false;
 
-                return this == (Member) obj;
+                return this == (Member)obj;
             }
 
             public override int GetHashCode()
             {
-                return
-                    MemberName.GetHashCode() +
-                    17 * JsonName.GetHashCode() +
-                    17 * StorageType.GetHashCode() +
-                    (string.IsNullOrEmpty(OverrideConverterType) ? 0 : 17 * OverrideConverterType.GetHashCode());
+                return MemberName.GetHashCode() + 17 * JsonName.GetHashCode() + 17 * StorageType.GetHashCode() + (string.IsNullOrEmpty(OverrideConverterType) ? 0 : 17 * OverrideConverterType.GetHashCode());
             }
 
             public static bool operator ==(Member a, Member b)
             {
-                return a.MemberName == b.MemberName &&
-                       a.JsonName == b.JsonName &&
-                       a.StorageType == b.StorageType &&
-                       a.OverrideConverterType == b.OverrideConverterType;
+                return a.MemberName == b.MemberName && a.JsonName == b.JsonName && a.StorageType == b.StorageType && a.OverrideConverterType == b.OverrideConverterType;
             }
 
             public static bool operator !=(Member a, Member b)

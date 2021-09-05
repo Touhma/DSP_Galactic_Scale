@@ -1,29 +1,31 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
 {
     public class GSUIInput : MonoBehaviour
     {
-        public Input input;
-
-        public GSOptionCallback OnChange;
-        public GSOptionCallback OnEndEdit;
         public InputField _input;
         public Text _textText;
         public Text _labelText;
         public Text _hintText;
+        public Input input;
+
+        public GSOptionCallback OnChange;
+        public GSOptionCallback OnEndEdit;
+
         public string Hint
         {
             get => _hintText.text;
             set => _hintText.text = value;
         }
+
         public string Label
         {
             get => _labelText.text;
             set => _labelText.text = value;
         }
+
         public string Value
         {
             get => _textText.text;
@@ -43,6 +45,7 @@ namespace GalacticScale
             Value = value;
             OnEndEdit?.Invoke(value);
         }
+
         public void initialize(GSUI options)
         {
             //GS2.Log("Initializing");
@@ -51,8 +54,6 @@ namespace GalacticScale
             // Value = (string)options.Data;
             OnChange = options.callback;
             //options.postfix?.Invoke();
-
         }
     }
-
 }

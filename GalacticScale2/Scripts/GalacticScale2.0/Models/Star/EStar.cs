@@ -5,14 +5,21 @@
         BlackHole,
         WhiteDwarf,
         NeutronStar,
-        O,B,A,F,G,M,K,
+        O,
+        B,
+        A,
+        F,
+        G,
+        M,
+        K,
         BlueGiant,
         WhiteGiant,
         YellowGiant,
         RedGiant
     }
-    static class EStarMethods
-    { 
+
+    internal static class EStarMethods
+    {
         public static (EStarType, ESpectrType) Convert(this EStar star)
         {
             switch (star)
@@ -32,9 +39,9 @@
                 case EStar.NeutronStar: return (EStarType.NeutronStar, ESpectrType.X);
                 case EStar.WhiteDwarf: return (EStarType.WhiteDwarf, ESpectrType.X);
             }
+
             GS2.Warn($"Failed to convert EStar {star}");
             return (EStarType.WhiteDwarf, ESpectrType.X);
         }
     }
-
 }

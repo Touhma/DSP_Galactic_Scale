@@ -66,7 +66,7 @@ namespace GalacticScale.Generators
 
                 if (maxSize < o.Int()) o = maxSize;
 
-                preferences.Set("minPlanetSize", (float) o);
+                preferences.Set("minPlanetSize", (float)o);
                 UI_minPlanetSize.Set(preferences.GetFloat("minPlanetSize", 30));
             }, () => UI_minPlanetSize.Set(preferences.GetInt("minPlanetSize", 30))));
 
@@ -75,8 +75,8 @@ namespace GalacticScale.Generators
             {
                 var minSize = preferences.GetFloat("minPlanetSize", 30);
                 if (minSize == -1f) minSize = 5;
-                if (minSize > (float) o) o = minSize;
-                preferences.Set("maxPlanetSize", (float) o);
+                if (minSize > (float)o) o = minSize;
+                preferences.Set("maxPlanetSize", (float)o);
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }, () => UI_maxPlanetSize.Set(preferences.GetInt("maxPlanetSize", 300))));
             //UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
@@ -164,7 +164,7 @@ namespace GalacticScale.Generators
                 {
                     var planetMoonCount = 0;
                     for (var m = 0; m < 6; m++)
-                        if (moonCount > 0 && random.NextFloat() < 2 * ((j + 1) / (float) planetCount))
+                        if (moonCount > 0 && random.NextFloat() < 2 * ((j + 1) / (float)planetCount))
                         {
                             planetMoonCount++;
                             moonCount--;
@@ -198,12 +198,8 @@ namespace GalacticScale.Generators
                 //GS2.Warn("Setting SI/TI");
                 birthPlanet.GsTheme.VeinSettings.Algorithm = "GS2";
                 birthPlanet.GsTheme.CustomGeneration = true;
-                birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
-                    EVeinType.Silicium,
-                    1, 10, 0.6f, 0.6f, 5, 10, false));
-                birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(
-                    EVeinType.Titanium,
-                    1, 10, 0.6f, 0.6f, 5, 10, false));
+                birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(EVeinType.Silicium, 1, 10, 0.6f, 0.6f, 5, 10, false));
+                birthPlanet.GsTheme.VeinSettings.VeinTypes.Add(GSVeinType.Generate(EVeinType.Titanium, 1, 10, 0.6f, 0.6f, 5, 10, false));
             }
 
             if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
@@ -278,8 +274,7 @@ namespace GalacticScale.Generators
             //var all = assembly.GetManifestResourceNames();
             //GS2.LogJson(all, true);
 
-            var reader =
-                new StreamReader(assembly.GetManifestResourceStream("GalacticScale.Scripts.Assets.galaxy.json"));
+            var reader = new StreamReader(assembly.GetManifestResourceStream("GalacticScale.Scripts.Assets.galaxy.json"));
             var json = reader.ReadToEnd();
             var data2 = fsJsonParser.Parse(json);
             var localStars = new List<ExternalStarData>();
@@ -342,15 +337,15 @@ namespace GalacticScale.Generators
                     if (d2 < 3 && !s1.Decorative && !s2.Decorative)
                     {
                         //GS2.Warn($"Proximity Alert: {s1.Name} vs {s2.Name} Making OrbitRadius Smaller:{d2 * 20f}");
-                        s1.MaxOrbit = Mathf.Min(s1.MaxOrbit, (float) d2 * 20f);
-                        s2.MaxOrbit = Mathf.Min(s2.MaxOrbit, (float) d2 * 20f);
+                        s1.MaxOrbit = Mathf.Min(s1.MaxOrbit, (float)d2 * 20f);
+                        s2.MaxOrbit = Mathf.Min(s2.MaxOrbit, (float)d2 * 20f);
                     }
 
                     if (d3 < 3 && !s1.Decorative && !s3.Decorative)
                     {
                         //GS2.Warn($"Proximity Alert: {s1.Name} vs {s3.Name} Making OrbitRadius Smaller:{d3 * 20f}");
-                        s1.MaxOrbit = Mathf.Min(s1.MaxOrbit, (float) d3 * 20f);
-                        s3.MaxOrbit = Mathf.Min(s3.MaxOrbit, (float) d3 * 20f);
+                        s1.MaxOrbit = Mathf.Min(s1.MaxOrbit, (float)d3 * 20f);
+                        s3.MaxOrbit = Mathf.Min(s3.MaxOrbit, (float)d3 * 20f);
                     }
                 }
             }
@@ -501,8 +496,7 @@ namespace GalacticScale.Generators
             var orbitPhase = random.NextFloat(360);
             var orbitObliquity = random.NextFloat(0f, 90f);
             var rotationPhase = 0f;
-            var moon = new GSPlanet(name, theme, radius, -1, orbitInclination, -1, orbitPhase, orbitObliquity,
-                rotationPeriod, rotationPhase, luminosity);
+            var moon = new GSPlanet(name, theme, radius, -1, orbitInclination, -1, orbitPhase, orbitObliquity, rotationPeriod, rotationPhase, luminosity);
             moon.Scale = 1f;
             moon.OrbitRadius = CalculateNextAvailableOrbit(host, moon);
             moon.OrbitalPeriod = CalculateOrbitPeriod(moon.OrbitRadius);
@@ -519,22 +513,19 @@ namespace GalacticScale.Generators
             var avgPlanetSize = (maxPlanetSize - minPlanetSize) / 2 + minPlanetSize;
             if (!tiny && !huge)
                 //average
-                radius = random.Next(Mathf.Min(minPlanetSize + 100, avgPlanetSize),
-                    Mathf.Max(maxPlanetSize - 100, avgPlanetSize));
+                radius = random.Next(Mathf.Min(minPlanetSize + 100, avgPlanetSize), Mathf.Max(maxPlanetSize - 100, avgPlanetSize));
             else if (tiny && !huge)
                 //tiny
                 radius = random.Next(Mathf.Max(minPlanetSize, 30), Mathf.Min(70, maxPlanetSize));
             else if (huge && !tiny)
                 //huge
-                radius = random.Next(Mathf.Min(avgPlanetSize, maxPlanetSize - 100),
-                    Mathf.Min(maxPlanetSize, 510)); //needs more limits, but I got bored
+                radius = random.Next(Mathf.Min(avgPlanetSize, maxPlanetSize - 100), Mathf.Min(maxPlanetSize, 510)); //needs more limits, but I got bored
             else
                 radius = random.Next(minPlanetSize, maxPlanetSize);
             return radius;
         }
 
-        public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount,
-            int availMoons)
+        public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount, int availMoons)
         {
             //GS2.Log($"Creating Random Planet for {star.Name}. Named: {name}. orbitIndex:{orbitIndex}/{orbitCount} moons:{moonCount}");
             var hz = Utils.CalculateHabitableZone(star.luminosity);
@@ -547,7 +538,7 @@ namespace GalacticScale.Generators
             var frozenOrbitMax = orbitCount - hotOrbitMax;
             var warmOrbitMax = hotOrbitMax * 2;
             var coldOrbitMax = frozenOrbitMax - hotOrbitMax;
-            var temperateOrbitMax = Mathf.RoundToInt((float) ((coldOrbitMax - warmOrbitMax) / 2) + warmOrbitMax);
+            var temperateOrbitMax = Mathf.RoundToInt((float)((coldOrbitMax - warmOrbitMax) / 2) + warmOrbitMax);
             //float maxOrbitDistance = 5f * star.orbitScaler;
 
             //float thisOrbitDistanceMax = (((float)orbitIndex + 1f) / (float)orbitCount) * maxOrbitDistance;
@@ -668,10 +659,7 @@ namespace GalacticScale.Generators
             radius = Utils.ParsePlanetSize(radius);
             float rotationalPeriod = random.Next(60, 3600);
 
-            var g = new GSPlanet(
-                name,
-                themeName,
-                Utils.ParsePlanetSize(radius), // Radius
+            var g = new GSPlanet(name, themeName, Utils.ParsePlanetSize(radius), // Radius
                 -1, // Orbit Radius
                 random.NextFloat() * 4 + random.NextFloat() * 5, // Orbit Inclination
                 -1, // Orbit Period
@@ -721,18 +709,15 @@ namespace GalacticScale.Generators
             //GS2.Log("Generating the Sol System");
             GS2Generator2.SetupBaseThemes();
             GS2Generator2.InitThemes();
-            
-            var luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f, 3278f, 0, 6.68f, 3278f, 0,
-                1.36f);
+
+            var luna = new GSPlanet("The Moon", "BarrenSatellite", 110, 0.045f, 5.145f, 3278f, 0, 6.68f, 3278f, 0, 1.36f);
             ref var planets = ref sol.Planets;
             planets.Add(new GSPlanet("Mercury", "Barren", 150, 0.39f, 7.005f, 10556.28f, 0, 0.034f, 7038f, 0, 9.0827f));
             var oily = planets.Add(new GSPlanet(" ", "OilGiant", 5, 0.39f, 7f, 10556f, 355, 0.034f, 7038, 0, 9f));
             planets.Add(new GSPlanet("Venus", "AcidGreenhouse", 320, 0.72f, 3.39f, 26964f, 0, 177.4f, -1000, 0, 2.6f));
-            var Earth = planets.Add(new GSPlanet("Earth", "Mediterranean", 400, 1.0f, 0.0005f, 43830f, 0, 23.44f,
-                119.67f, 0f, 1.36f, new GSPlanets {luna}));
+            var Earth = planets.Add(new GSPlanet("Earth", "Mediterranean", 400, 1.0f, 0.0005f, 43830f, 0, 23.44f, 119.67f, 0f, 1.36f, new GSPlanets { luna }));
             planets.Add(new GSPlanet("Mars", "AridDesert", 210, 1.52f, 1.85f, 82437f, 0f, 25.19f, 123.11f, 0, 0.58f));
-            planets.Add(new GSPlanet("Ceres", "DwarfPlanet", 30, 2.77f, 10.6f, 82437.6f, 120.6f, 0.034f, 45.5f, 31.7f,
-                0.2926f));
+            planets.Add(new GSPlanet("Ceres", "DwarfPlanet", 30, 2.77f, 10.6f, 82437.6f, 120.6f, 0.034f, 45.5f, 31.7f, 0.2926f));
             var jovianMoons = new GSPlanets
             {
                 new GSPlanet("Io", "IceGelisol", 110, 0.2f, 0.04f, 216f, 0, 0, 212.5f, 0, 0.05f),
@@ -740,28 +725,23 @@ namespace GalacticScale.Generators
                 new GSPlanet("Ganymede", "IceGelisol", 160, 0.3f, 0.18f, 864f, 0, 0, 858.5f, 0, 0.0526f),
                 new GSPlanet("Callisto", "IceGelisol", 150, 0.35f, 0.19f, 2004f, 0, 0, 2002.5f, 0, 0.05f)
             };
-            planets.Add(new GSPlanet("Jupiter", "GasGiant", 450, 5.2f, 1.3053f, 519670f, 0f, 3.13f, 49.63f, 0, 0.05026f,
-                jovianMoons));
-            var g = planets.Add(new GSPlanet("Saturn", "GasGiant2", 380, 9.58f, 2.48446f, 1291106f, 0f, 26.73f, 53.28f,
-                0, 0.01482f, new GSPlanets
-                {
-                    new GSPlanet("Titan", "AshenGelisol", 160, 0.2f, 0.33f, 1908f, 0f, 0f, 1913.5f, 0f, 0.01482f)
-                }));
+            planets.Add(new GSPlanet("Jupiter", "GasGiant", 450, 5.2f, 1.3053f, 519670f, 0f, 3.13f, 49.63f, 0, 0.05026f, jovianMoons));
+            var g = planets.Add(new GSPlanet("Saturn", "GasGiant2", 380, 9.58f, 2.48446f, 1291106f, 0f, 26.73f, 53.28f, 0, 0.01482f, new GSPlanets
+            {
+                new GSPlanet("Titan", "AshenGelisol", 160, 0.2f, 0.33f, 1908f, 0f, 0f, 1913.5f, 0f, 0.01482f)
+            }));
             //GS2.Warn($"Periods for {g.Name} : Current:{g.OrbitalPeriod} Kepler:{Utils.CalculateOrbitPeriodFromStarMass(g.OrbitRadius, sol.mass)}");
             planets.Add(new GSPlanet("Uranus", "IceGiant", 160, 19.2f, 0.8f, 3682248f, 0f, 97.77f, 1000f, 0, 0.00369f));
-            planets.Add(new GSPlanet("Neptune", "IceGiant2", 155, 30.05f, 1.769f, 72142680f, 0f, 28.3f, 80.55f, 0f,
-                0.001508f, new GSPlanets
-                {
-                    new GSPlanet("Triton", "AshenGelisol", 80, 0.2f, 157.3f, 708f, 0f, 0f, 1000f, 0f, 0.001508f)
-                }));
-            var PlutoCharon = planets.Add(new GSPlanet(" ", "Center", 10, 39.48f, 17.16f, 10867200.0f, 0, 122.53f,
-                1000f, 0f, 0.000873f));
+            planets.Add(new GSPlanet("Neptune", "IceGiant2", 155, 30.05f, 1.769f, 72142680f, 0f, 28.3f, 80.55f, 0f, 0.001508f, new GSPlanets
+            {
+                new GSPlanet("Triton", "AshenGelisol", 80, 0.2f, 157.3f, 708f, 0f, 0f, 1000f, 0f, 0.001508f)
+            }));
+            var PlutoCharon = planets.Add(new GSPlanet(" ", "Center", 10, 39.48f, 17.16f, 10867200.0f, 0, 122.53f, 1000f, 0f, 0.000873f));
             PlutoCharon.Scale = 0.0001f;
             PlutoCharon.Moons = new GSPlanets
             {
                 new GSPlanet("Pluto", "AshenGelisol", 70, .002f, 17.16f, 108.0f, 0, 122.53f, 1000f, 0f, 0.000873f),
-                new GSPlanet("Charon", "BarrenSatellite", 30, .015f, 17.16f, 108.0f, 180.03f, 122.53f, 1000f, 0f,
-                    0.000873f)
+                new GSPlanet("Charon", "BarrenSatellite", 30, .015f, 17.16f, 108.0f, 180.03f, 122.53f, 1000f, 0f, 0.000873f)
             };
             oily.Scale = 1f;
             if (preferences.GetBool("startInSol", true))

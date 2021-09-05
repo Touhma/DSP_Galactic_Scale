@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace GalacticScale
+﻿namespace GalacticScale
 {
     public static partial class GS2
     {
@@ -21,7 +19,7 @@ namespace GalacticScale
             else gsStars[id] = star;
             starData.galaxy = galaxy;
             starData.index = index;
-            starData.level = galaxy.starCount > 1 ? starData.index / (float) (galaxy.starCount - 1) : 0.0f;
+            starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
             starData.id = id;
             //GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
             starData.seed = star.Seed;

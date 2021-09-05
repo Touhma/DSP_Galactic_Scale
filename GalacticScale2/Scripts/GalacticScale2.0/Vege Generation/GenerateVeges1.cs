@@ -100,12 +100,12 @@ namespace GalacticScale
                 var num29 = random.NextDouble();
                 num29 *= num29;
                 var num30 = random.NextDouble();
-                var num31 = (float) random.NextDouble() - 0.5f;
-                var num32 = (float) random.NextDouble() - 0.5f;
-                var num33 = (float) Math.Sqrt(random.NextDouble());
-                var angle = (float) random.NextDouble() * 360f;
-                var num34 = (float) random.NextDouble();
-                var num35 = (float) random.NextDouble();
+                var num31 = (float)random.NextDouble() - 0.5f;
+                var num32 = (float)random.NextDouble() - 0.5f;
+                var num33 = (float)Math.Sqrt(random.NextDouble());
+                var angle = (float)random.NextDouble() * 360f;
+                var num34 = (float)random.NextDouble();
+                var num35 = (float)random.NextDouble();
                 var num36 = 1f;
                 var num37 = 0.5f;
                 var num38 = 1f;
@@ -176,7 +176,7 @@ namespace GalacticScale
 
                 if (flag2 && num30 < num39 && array != null && array.Length > 0)
                 {
-                    vege.protoId = (short) array[(int) (num29 * array.Length)];
+                    vege.protoId = (short)array[(int)(num29 * array.Length)];
                     var quaternion = Quaternion.FromToRotation(Vector3.up, vector);
                     var vector2 = quaternion * Vector3.forward;
                     var vector3 = quaternion * Vector3.right;
@@ -190,30 +190,29 @@ namespace GalacticScale
                     vege.pos = (vector5 + vector6).normalized;
                     num18 = data.QueryHeight(vege.pos);
                     vege.pos *= num18;
-                    vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) *
-                               Quaternion.AngleAxis(angle, Vector3.up);
+                    vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) * Quaternion.AngleAxis(angle, Vector3.up);
                     vege.scl = new Vector3(num47, num46, num47);
-                    vege.modelIndex = (short) vegeProtos[vege.protoId].ModelIndex;
+                    vege.modelIndex = (short)vegeProtos[vege.protoId].ModelIndex;
                     vege.hp = vegeHps[vege.protoId];
                     var num48 = data.AddVegeData(vege);
-                    data.vegeIds[i] = (ushort) num48;
+                    data.vegeIds[i] = (ushort)num48;
                 }
 
                 if (num30 < num43 && array2 != null && array2.Length > 0)
                 {
-                    vege.protoId = (short) array2[(int) (num29 * array2.Length)];
+                    vege.protoId = (short)array2[(int)(num29 * array2.Length)];
                     var quaternion2 = Quaternion.FromToRotation(Vector3.up, vector);
                     var vector7 = quaternion2 * Vector3.forward;
                     var vector8 = quaternion2 * Vector3.right;
                     var vector9 = vegeScaleRanges[vege.protoId];
                     for (var j = 0; j < num44; j++)
                     {
-                        var num49 = (float) random.NextDouble() - 0.5f;
-                        var num50 = (float) random.NextDouble() - 0.5f;
-                        var num51 = (float) Math.Sqrt(random.NextDouble());
-                        var angle2 = (float) random.NextDouble() * 360f;
-                        var num52 = (float) random.NextDouble();
-                        var num53 = (float) random.NextDouble();
+                        var num49 = (float)random.NextDouble() - 0.5f;
+                        var num50 = (float)random.NextDouble() - 0.5f;
+                        var num51 = (float)Math.Sqrt(random.NextDouble());
+                        var angle2 = (float)random.NextDouble() * 360f;
+                        var num52 = (float)random.NextDouble();
+                        var num53 = (float)random.NextDouble();
                         var vector10 = vector * num18;
                         var normalized2 = (vector8 * num49 + vector7 * num50).normalized;
                         var num54 = num51 * num9;
@@ -223,13 +222,12 @@ namespace GalacticScale
                         vege.pos = (vector10 + vector11).normalized;
                         num18 = !flag ? data.QueryHeight(vege.pos) : num28;
                         vege.pos *= num18;
-                        vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) *
-                                   Quaternion.AngleAxis(angle2, Vector3.up);
+                        vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) * Quaternion.AngleAxis(angle2, Vector3.up);
                         vege.scl = new Vector3(num56, num55, num56);
-                        vege.modelIndex = (short) vegeProtos[vege.protoId].ModelIndex;
+                        vege.modelIndex = (short)vegeProtos[vege.protoId].ModelIndex;
                         vege.hp = 1;
                         var num57 = data.AddVegeData(vege);
-                        data.vegeIds[i] = (ushort) num57;
+                        data.vegeIds[i] = (ushort)num57;
                     }
                 }
             }

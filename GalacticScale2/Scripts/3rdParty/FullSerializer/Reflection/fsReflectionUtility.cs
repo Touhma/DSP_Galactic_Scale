@@ -1,5 +1,4 @@
 ﻿using System;
-
 #if !UNITY_EDITOR && UNITY_WSA
 // For System.Reflection.TypeExtensions
 using System.Reflection;
@@ -25,11 +24,8 @@ namespace GSSerializer.Internal
         /// </returns>
         public static Type GetInterface(Type type, Type interfaceType)
         {
-            if (interfaceType.Resolve().IsGenericType &&
-                interfaceType.Resolve().IsGenericTypeDefinition == false)
-                throw new ArgumentException("GetInterface requires that if the interface " +
-                                            "type is generic, then it must be the generic type definition, not a " +
-                                            "specific generic type instantiation");
+            if (interfaceType.Resolve().IsGenericType && interfaceType.Resolve().IsGenericTypeDefinition == false)
+                throw new ArgumentException("GetInterface requires that if the interface " + "type is generic, then it must be the generic type definition, not a " + "specific generic type instantiation");
             ;
 
             while (type != null)

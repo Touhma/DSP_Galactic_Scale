@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -9,15 +6,17 @@ namespace GalacticScale
     public class GSUIButton : MonoBehaviour
     {
         public Button _button;
-        public GSOptionCallback OnClick;
         public Text _labelText;
         public Text _hintText;
         public Text _buttonText;
+        public GSOptionCallback OnClick;
+
         public string Hint
         {
             get => _hintText.text;
             set => _hintText.text = value;
         }
+
         public string Label
         {
             get => _labelText.text;
@@ -29,10 +28,12 @@ namespace GalacticScale
             get => _buttonText.text;
             set => _buttonText.text = value;
         }
+
         public void OnButtonClick()
         {
             if (OnClick != null) OnClick.Invoke("Click");
         }
+
         public void initialize(GSUI options)
         {
             // GS2.Log("Initializing");
@@ -43,8 +44,6 @@ namespace GalacticScale
             Hint = options.Hint;
             OnClick = options.callback;
             //options.postfix?.Invoke();
-
         }
     }
-
 }

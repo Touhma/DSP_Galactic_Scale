@@ -6,49 +6,32 @@ namespace GalacticScale
 {
     public class GSPlanet
     {
-        public string _type
-        {
-            get
-            {
-                if (scale == 10f) return "Gas";
-                return "Telluric";
-            }
-        }
-        public string details
-        {
-            get
-            {
-                return $"Name:{Name} Theme:{Theme} Radius:{Radius} Type:{_type}";
-            }
-        }
-        [NonSerialized]
-        public Dictionary<string, string>
-            fields = new Dictionary<string, string>(); // Temporary string store for generator use, not saved
+        [NonSerialized] public readonly ValStore genData = new ValStore();
+
+        [NonSerialized] public Dictionary<string, string> fields = new Dictionary<string, string>(); // Temporary string store for generator use, not saved
 
         private float luminosity = -1;
 
         private float obliquity = -1;
         private float orbitalPeriod = -1;
         private float orbitInclination = -1;
+        private float orbitLongitude = -1;
         private float orbitPhase = -1;
         private float orbitRadius = -1;
-        private float orbitLongitude = -1;
-        public float rareChance = -1f;
 
         [NonSerialized] public PlanetData planetData;
 
         private int radius = -1;
-        [NonSerialized]  public GS2.Random random;
+        [NonSerialized] public GS2.Random random;
         public bool randomizeVeinAmounts = true;
         public bool randomizeVeinCounts = true;
+        public float rareChance = -1f;
         private float rotationPeriod = -1;
         private float rotationPhase = -1;
 
         [SerializeField] private float scale = -1;
 
         private string theme;
-        [NonSerialized]
-        public readonly ValStore genData = new ValStore();
 
         [NonSerialized] public GSPlanetVeins veinData = new GSPlanetVeins();
 
@@ -65,18 +48,7 @@ namespace GalacticScale
             Name = name;
         }
 
-        public GSPlanet(string name,
-            string theme,
-            int radius,
-            float orbitRadius,
-            float orbitInclination,
-            float orbitalPeriod,
-            float orbitPhase,
-            float obliquity,
-            float rotationPeriod,
-            float rotationPhase,
-            float luminosity,
-            GSPlanets moons = null)
+        public GSPlanet(string name, string theme, int radius, float orbitRadius, float orbitInclination, float orbitalPeriod, float orbitPhase, float obliquity, float rotationPeriod, float rotationPhase, float luminosity, GSPlanets moons = null)
         {
             Name = name;
             Theme = theme;
@@ -91,6 +63,17 @@ namespace GalacticScale
             Luminosity = luminosity;
             Moons = moons == null ? new GSPlanets() : moons;
         }
+
+        public string _type
+        {
+            get
+            {
+                if (scale == 10f) return "Gas";
+                return "Telluric";
+            }
+        }
+
+        public string details => $"Name:{Name} Theme:{Theme} Radius:{Radius} Type:{_type}";
 
         [SerializeField] public int Seed { get; set; } = -1;
 
@@ -141,12 +124,14 @@ namespace GalacticScale
             get => orbitPhase < 0 ? InitOrbitPhase() : orbitPhase;
             set => orbitPhase = value;
         }
+
         [SerializeField]
         public float OrbitLongitude
         {
             get => orbitLongitude < 0 ? InitOrbitLongitude() : orbitLongitude;
             set => orbitLongitude = value;
         }
+
         [SerializeField]
         public float Obliquity
         {
@@ -237,7 +222,7 @@ namespace GalacticScale
         {
             get
             {
-                var b = new GSPlanets {this};
+                var b = new GSPlanets { this };
                 if (Moons == null) return b;
 
                 foreach (var moon in Moons) b.AddRange(moon.Bodies);
@@ -288,6 +273,7 @@ namespace GalacticScale
         public float OrbitInnermostSystemRadiusAU => orbitRadius - SystemRadius;
         public float OrbitOutermostSurfaceRadiusAU => orbitRadius + RadiusAU;
         public float OrbitInnermostSurfaceRadiusAU => orbitRadius - RadiusAU;
+
         public float InitScale()
         {
             if (GsTheme == null) return -1;
@@ -309,9 +295,7 @@ namespace GalacticScale
         {
             if (planetData == null) return -1f;
 
-            var sunDistance = planetData.orbitAround != 0
-                ? planetData.orbitAroundPlanet.orbitRadius
-                : planetData.orbitRadius;
+            var sunDistance = planetData.orbitAround != 0 ? planetData.orbitAroundPlanet.orbitRadius : planetData.orbitRadius;
             var luminosity = Mathf.Pow(planetData.star.lightBalanceRadius / (sunDistance + 0.01f), 0.6f);
             if (luminosity > 1f)
             {
@@ -343,6 +327,7 @@ namespace GalacticScale
             orbitInclination = 0;
             return orbitInclination;
         }
+
         private float InitOrbitLongitude()
         {
             orbitLongitude = 0;

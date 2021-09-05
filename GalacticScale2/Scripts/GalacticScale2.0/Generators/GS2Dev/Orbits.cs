@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using static GalacticScale.GS2;
 
 namespace GalacticScale.Generators
 {
@@ -14,7 +12,8 @@ namespace GalacticScale.Generators
             {
                 planet.Name = $"{star.Name} - {RomanNumbers.roman[i]}";
                 var j = 1;
-                foreach (var moon in planet.Moons) {
+                foreach (var moon in planet.Moons)
+                {
                     moon.Name = $"{planet.Name} - {RomanNumbers.roman[j]}";
                     var h = 1;
                     foreach (var moon2 in moon.Moons)
@@ -22,18 +21,21 @@ namespace GalacticScale.Generators
                         moon2.Name = $"{moon.Name} - {RomanNumbers.roman[h]}";
                         h++;
                     }
+
                     j++;
                 }
+
                 i++;
             }
         }
+
         private void AssignPlanetOrbits(GSStar star)
         {
             // GS2.Warn("Start:"+star.Planets.Count);
             var r = new GS2.Random(star.Seed);
             var orbits = new List<Orbit>();
             ref var planets = ref star.Planets;
-            GSPlanets brokenPlanets = new GSPlanets();
+            var brokenPlanets = new GSPlanets();
             planets.Sort(PlanetSortBySystemRadius);
             // GS2.WarnJson((from s in planets select s.details).ToList());
             CalculateHabitableZone(star);
@@ -44,11 +46,9 @@ namespace GalacticScale.Generators
             //Warn("Orbit Count 0");
             if (star == birthStar)
             {
-                var birthRadius =
-                    Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)),
-                        star.RadiusAU * 1.5f, 100f);
+                var birthRadius = Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)), star.RadiusAU * 1.5f, 100f);
                 //Warn(
-                    //$"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
+                //$"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(birthPlanet);
                 birthPlanet.OrbitRadius = birthRadius;
@@ -56,14 +56,15 @@ namespace GalacticScale.Generators
                 orbits.Add(orbit);
                 freeOrbitRanges.Clear();
 
-                freeOrbitRanges.Add((minimumOrbit, birthRadius - birthPlanet.SystemRadius*2));
-                freeOrbitRanges.Add((birthRadius + birthPlanet.SystemRadius*2, maximumOrbit));
+                freeOrbitRanges.Add((minimumOrbit, birthRadius - birthPlanet.SystemRadius * 2));
+                freeOrbitRanges.Add((birthRadius + birthPlanet.SystemRadius * 2, maximumOrbit));
             }
             else
             {
                 freeOrbitRanges.Clear();
                 freeOrbitRanges.Add((minimumOrbit, maximumOrbit));
             }
+
             // GS2.Warn("Begin Loop:" + star.Planets.Count);
             for (var i = 0; i < planets.Count; i++)
             {
@@ -71,10 +72,8 @@ namespace GalacticScale.Generators
                 var planet = planets[i];
                 // GS2.Log($"Finding Orbit for planet index {i} - {planet.Name}");
                 if (planet == birthPlanet)
-                {
                     // planet.Name += " BIRTH";
                     continue;
-                }
 
                 // Log(planet.SystemRadius.ToString());
                 //planet.OrbitInclination = 0f;
@@ -83,15 +82,11 @@ namespace GalacticScale.Generators
                 // Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
-                {
                     // GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {(0.05f+ 2 * planet.SystemRadius)}");
-                    if (range.outer - range.inner > (0.05f+ 2 * planet.SystemRadius))
-                    //(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
-                    {
+                    if (range.outer - range.inner > 0.05f + 2 * planet.SystemRadius)
+                        //(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
                         // Log($"Adding {range}");
                         availableOrbits.Add(range);
-                    }
-                }
 
                 if (availableOrbits.Count == 0)
                 {
@@ -109,26 +104,25 @@ namespace GalacticScale.Generators
                             success = true;
                             break;
                         }
+
                     // GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
                     if (success) continue;
 
-                    Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
+                    GS2.Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
 
-                    brokenPlanets.Add(planet);     
-                    
-                    
+                    brokenPlanets.Add(planet);
+
+
                     continue;
                 }
+
                 if (availableOrbits.Count == 0)
 
-                {
                     // GS2.Log($"No Available Orbits Found for Planet {planet.Name}");    
                     continue;
-                }
                 var selectedRange = r.Item(availableOrbits);
                 // GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
-                var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius,
-                    selectedRange.outer - planet.SystemRadius);
+                var radius = r.NextFloat(selectedRange.inner + planet.SystemRadius, selectedRange.outer - planet.SystemRadius);
                 freeOrbitRanges.Remove(selectedRange);
                 orbit = new Orbit(radius);
                 orbit.planets.Add(planet);
@@ -138,19 +132,21 @@ namespace GalacticScale.Generators
                 planet.OrbitalPeriod = Utils.CalculateOrbitPeriod(planet.OrbitRadius);
                 // Log(
                 // $"selected orbit({radius}) for {planet.Name}({planet.SystemRadius}) SelectedRange:{selectedRange.inner}, {selectedRange.outer} New Ranges: {selectedRange.inner},{radius - planet.SystemRadius}({radius - planet.SystemRadius - selectedRange.inner}) | {radius + planet.SystemRadius}, {selectedRange.outer}({selectedRange.outer - radius - planet.SystemRadius})");
-            orbits.Add(orbit);
+                orbits.Add(orbit);
                 var minGap = 0.1f;
 
-                if (radius - planet.SystemRadius*2 - selectedRange.inner > minGap)
-                    freeOrbitRanges.Add((selectedRange.inner, radius - planet.SystemRadius*2));
-                if (selectedRange.outer - radius - planet.SystemRadius*2 > minGap)
-                    freeOrbitRanges.Add((radius + planet.SystemRadius*2, selectedRange.outer));
+                if (radius - planet.SystemRadius * 2 - selectedRange.inner > minGap)
+                    freeOrbitRanges.Add((selectedRange.inner, radius - planet.SystemRadius * 2));
+                if (selectedRange.outer - radius - planet.SystemRadius * 2 > minGap)
+                    freeOrbitRanges.Add((radius + planet.SystemRadius * 2, selectedRange.outer));
             }
+
             foreach (var brokenPlanet in brokenPlanets)
             {
                 GS2.Warn($"Removing Planet {brokenPlanet}");
                 star.Planets.Remove(brokenPlanet);
             }
+
             brokenPlanets = null;
             starOrbits[star] = orbits;
             star.Planets.Sort(PlanetSortByOrbit);
@@ -164,7 +160,7 @@ namespace GalacticScale.Generators
 
                     {
                         var planet = planets2[j];
-                        planet.Name += $" {i}{(EAlphabet) j}";
+                        planet.Name += $" {i}{(EAlphabet)j}";
                     }
                 // else planets2[0].Name += $" {i}";
             }
@@ -233,15 +229,14 @@ namespace GalacticScale.Generators
             {
                 get
                 {
-                    float largestRadius = 0f;
+                    var largestRadius = 0f;
                     foreach (var planet in planets)
-                    {
-                        if (planet.SystemRadius > largestRadius) largestRadius = planet.SystemRadius;
-                    }
+                        if (planet.SystemRadius > largestRadius)
+                            largestRadius = planet.SystemRadius;
                     largestRadius += 0.05f;
                     var circumference = radius * 2 * Mathf.PI;
                     // GS2.Log($"HasRoom Circumference = {circumference} largestRadius = {largestRadius} Planet Count = {planets.Count}");
-                    if (largestRadius*2 * planets.Count < circumference) return true;
+                    if (largestRadius * 2 * planets.Count < circumference) return true;
                     //if (planets.Count < 10) return true;
                     return false;
                 }
@@ -266,8 +261,7 @@ namespace GalacticScale.Generators
             {
                 if (next == null) return radius - previous.radius - previous.SystemRadius;
                 if (previous == null) return next.radius - next.SystemRadius - radius;
-                return Mathf.Min(next.radius - next.SystemRadius - radius,
-                    radius - previous.radius - previous.SystemRadius);
+                return Mathf.Min(next.radius - next.SystemRadius - radius, radius - previous.radius - previous.SystemRadius);
             }
         }
     }
@@ -303,49 +297,39 @@ namespace GalacticScale.Generators
     }
 
 
-
     public static class NameGen
     {
         private static GS2.Random r;
 
-        private static string[] cone = new[]
+        private static readonly string[] cone =
         {
-
             "rn", "st", "ll", "r", "rl", "gh", "l", "t", "d", "s"
-
         };
 
-        private static string[] conb = new[]
+        private static readonly string[] conb =
         {
-
             "c", "pl", "s", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
-
         };
 
-        private static string[] conm = new[]
+        private static readonly string[] conm =
         {
             "sc", "c", "cc", "s", "ss", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
         };
 
-        private static string[] vowel = new[]
-
-            {"o", "y", "u", "e", "ae", "i", "a"};
+        private static readonly string[] vowel = { "o", "y", "u", "e", "ae", "i", "a" };
 
 
         public static string New(GSPlanet planet)
         {
             if (r is null) r = new GS2.Random(planet.Seed);
 
-            int c = r.Next(1, 2);
+            var c = r.Next(1, 2);
 
-            string output = (r.NextBool()) ? r.Item(conb) : "";
-            for (var i = 0; i < c; i++)
-            {
-                output += r.Item(vowel) + r.Item(conm);
-            }
+            var output = r.NextBool() ? r.Item(conb) : "";
+            for (var i = 0; i < c; i++) output += r.Item(vowel) + r.Item(conm);
 
             output += r.Item(vowel);
-            output += (r.NextBool() ? "" : r.Item(cone));
+            output += r.NextBool() ? "" : r.Item(cone);
 
             return output;
         }
@@ -882,6 +866,5 @@ namespace GalacticScale.Generators
 // Aeëtes
 // Talos
 // Aella
-
     }
 }

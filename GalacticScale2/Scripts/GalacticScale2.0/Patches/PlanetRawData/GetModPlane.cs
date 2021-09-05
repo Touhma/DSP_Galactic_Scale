@@ -12,8 +12,7 @@ namespace GalacticScale
 
             baseHeight += __instance.GetFactoredScale() * 200 * 100;
 
-            __result = (short) (((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 +
-                                baseHeight);
+            __result = (short)(((__instance.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 + baseHeight);
             return false;
         }
     }

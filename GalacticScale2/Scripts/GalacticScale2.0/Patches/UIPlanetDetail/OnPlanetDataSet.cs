@@ -8,8 +8,7 @@ namespace GalacticScale
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
-        public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText,
-            ref PlanetData ____planet)
+        public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText, ref PlanetData ____planet)
         {
             // Add the planets radius to the Planet Detail UI
             if (___obliquityValueText.transform.parent.transform.parent.childCount == 6)
@@ -48,21 +47,9 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
-        public static bool OnPlanetDataSet(ref UIPlanetDetail __instance,
-            ref UIResAmountEntry ___tipEntry,
+        public static bool OnPlanetDataSet(ref UIPlanetDetail __instance, ref UIResAmountEntry ___tipEntry,
             // ref Text ___nameText,
-            ref InputField ___nameInput,
-            ref Text ___typeText,
-            ref Text ___orbitRadiusValueText,
-            ref Text ___orbitRadiusValueTextEx,
-            ref Text ___orbitPeriodValueText,
-            ref Text ___rotationPeriodValueText,
-            ref Text ___inclinationValueText,
-            ref Text ___obliquityValueText,
-            ref Sprite ___unknownResIcon,
-            ref Sprite ___sprite6,
-            ref Sprite ___sprite8,
-            ref Sprite ___sprite9)
+            ref InputField ___nameInput, ref Text ___typeText, ref Text ___orbitRadiusValueText, ref Text ___orbitRadiusValueTextEx, ref Text ___orbitPeriodValueText, ref Text ___rotationPeriodValueText, ref Text ___inclinationValueText, ref Text ___obliquityValueText, ref Sprite ___unknownResIcon, ref Sprite ___sprite6, ref Sprite ___sprite8, ref Sprite ___sprite9)
         {
             var getEntry = Traverse.Create(__instance).Method("GetEntry");
 
@@ -78,26 +65,22 @@ namespace GalacticScale
             ___tipEntry = null;
             if (__instance.planet == null) return false;
 
-            var _observed = GameMain.history.universeObserveLevel >=
-                            (__instance.planet != GameMain.localPlanet ? 2 : 1);
+            var _observed = GameMain.history.universeObserveLevel >= (__instance.planet != GameMain.localPlanet ? 2 : 1);
             ___nameInput.text = __instance.planet.displayName;
             var empty = string.Empty;
-            ___typeText.text = string.Format("{0} {1}", __instance.planet.typeString,
-                "<color=\"#FD965EC0\">" + __instance.planet.singularityString + "</color>");
+            ___typeText.text = string.Format("{0} {1}", __instance.planet.typeString, "<color=\"#FD965EC0\">" + __instance.planet.singularityString + "</color>");
             ___orbitRadiusValueText.text = __instance.planet.orbitRadius.ToString("0.00#") + " AU";
             ___orbitRadiusValueTextEx.text = __instance.planet.name;
-            ___orbitPeriodValueText.text =
-                __instance.planet.orbitalPeriod.ToString("#,##0") + "空格秒".Translate();
-            ___rotationPeriodValueText.text =
-                __instance.planet.rotationPeriod.ToString("#,##0") + "空格秒".Translate();
+            ___orbitPeriodValueText.text = __instance.planet.orbitalPeriod.ToString("#,##0") + "空格秒".Translate();
+            ___rotationPeriodValueText.text = __instance.planet.rotationPeriod.ToString("#,##0") + "空格秒".Translate();
             var num1 = Mathf.Abs(__instance.planet.orbitInclination);
-            var num2 = (int) num1;
-            var num3 = (int) ((num1 - (double) num2) * 60.0);
+            var num2 = (int)num1;
+            var num3 = (int)((num1 - (double)num2) * 60.0);
             if (__instance.planet.orbitInclination < 0.0) num2 = -num2;
 
             var num4 = Mathf.Abs(__instance.planet.obliquity);
-            var num5 = (int) num4;
-            var num6 = (int) ((num4 - (double) num5) * 60.0);
+            var num5 = (int)num4;
+            var num6 = (int)((num4 - (double)num5) * 60.0);
             if (__instance.planet.obliquity < 0.0) num5 = -num5;
 
             ___inclinationValueText.text = string.Format("{0}° {1}′", num2, num3);
@@ -116,8 +99,7 @@ namespace GalacticScale
                         var entry = getEntry.GetValue<UIResAmountEntry>();
                         ;
                         __instance.entries.Add(entry);
-                        entry.SetInfo(num7, itemProto.name, veinProto.iconSprite, veinProto.description, false, false,
-                            "                ");
+                        entry.SetInfo(num7, itemProto.name, veinProto.iconSprite, veinProto.description, false, false, "                ");
                         entry.refId = id;
                         ++num7;
                     }
@@ -138,9 +120,7 @@ namespace GalacticScale
                 var entry1 = getEntry.GetValue<UIResAmountEntry>();
                 ;
                 __instance.entries.Add(entry1);
-                entry1.SetInfo(num7, "海洋类型".Translate(), icon,
-                    itemProto1 == null ? string.Empty : itemProto1.description, false,
-                    itemProto1 != null && waterItemId != 1000, string.Empty);
+                entry1.SetInfo(num7, "海洋类型".Translate(), icon, itemProto1 == null ? string.Empty : itemProto1.description, false, itemProto1 != null && waterItemId != 1000, string.Empty);
                 entry1.valueString = str;
                 var index1 = num7 + 1;
                 var entry2 = getEntry.GetValue<UIResAmountEntry>();
@@ -159,19 +139,15 @@ namespace GalacticScale
                 var entry3 = getEntry.GetValue<UIResAmountEntry>();
                 ;
                 __instance.entries.Add(entry3);
-                entry3.SetInfo(index2, "风能利用率".Translate(), ___sprite8, string.Empty, false,
-                    __instance.planet.windStrength > 1.49899995326996, "      %");
-                StringBuilderUtility.WriteUInt(entry3.sb, 0, 5,
-                    (uint) (__instance.planet.windStrength * 100.0 + 0.499900013208389));
+                entry3.SetInfo(index2, "风能利用率".Translate(), ___sprite8, string.Empty, false, __instance.planet.windStrength > 1.49899995326996, "      %");
+                StringBuilderUtility.WriteUInt(entry3.sb, 0, 5, (uint)(__instance.planet.windStrength * 100.0 + 0.499900013208389));
                 entry3.DisplayStringBuilder();
                 var index3 = index2 + 1;
                 var entry4 = getEntry.GetValue<UIResAmountEntry>();
                 ;
                 __instance.entries.Add(entry4);
-                entry4.SetInfo(index3, "光能利用率".Translate(), ___sprite9, string.Empty, false,
-                    __instance.planet.luminosity > 1.49899995326996, "      %");
-                StringBuilderUtility.WriteUInt(entry4.sb, 0, 5,
-                    (uint) (__instance.planet.luminosity * 100.0 + 0.499900013208389));
+                entry4.SetInfo(index3, "光能利用率".Translate(), ___sprite9, string.Empty, false, __instance.planet.luminosity > 1.49899995326996, "      %");
+                StringBuilderUtility.WriteUInt(entry4.sb, 0, 5, (uint)(__instance.planet.luminosity * 100.0 + 0.499900013208389));
                 entry4.DisplayStringBuilder();
                 num7 = index3 + 1;
                 for (var index4 = 7; index4 < 15; ++index4)
@@ -184,8 +160,7 @@ namespace GalacticScale
                         var entry5 = getEntry.GetValue<UIResAmountEntry>();
                         ;
                         __instance.entries.Add(entry5);
-                        entry5.SetInfo(num7, itemProto2.name, veinProto.iconSprite, veinProto.description, true, false,
-                            index4 != 7 ? "                " : "         /s");
+                        entry5.SetInfo(num7, itemProto2.name, veinProto.iconSprite, veinProto.description, true, false, index4 != 7 ? "                " : "         /s");
                         entry5.refId = id;
                         ++num7;
                     }
@@ -213,15 +188,13 @@ namespace GalacticScale
                         __instance.entries.Add(entry);
                         if (_observed)
                         {
-                            entry.SetInfo(num7, "可采集".Translate() + itemProto.name, itemProto.iconSprite,
-                                "环绕行星手动采集".Translate(), false, false, "        /s");
+                            entry.SetInfo(num7, "可采集".Translate() + itemProto.name, itemProto.iconSprite, "环绕行星手动采集".Translate(), false, false, "        /s");
                             StringBuilderUtility.WritePositiveFloat(entry.sb, 0, 7, __instance.planet.gasSpeeds[index]);
                             entry.DisplayStringBuilder();
                         }
                         else
                         {
-                            entry.SetInfo(num7, "未知".Translate(), ___unknownResIcon, "环绕行星手动采集".Translate(),
-                                false, false, "        /s");
+                            entry.SetInfo(num7, "未知".Translate(), ___unknownResIcon, "环绕行星手动采集".Translate(), false, false, "        /s");
                             entry.valueString = "未知".Translate();
                         }
 

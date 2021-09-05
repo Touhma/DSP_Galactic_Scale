@@ -20,10 +20,8 @@ namespace GalacticScale
         public GSVeinAlgorithm Find(string name)
         {
             if (!ContainsKey(name))
-            {
                 // GS2.Warn("VeinAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
                 return VeinAlgorithms.GenerateVeinsGS2;
-            }
 
             return this[name];
         }

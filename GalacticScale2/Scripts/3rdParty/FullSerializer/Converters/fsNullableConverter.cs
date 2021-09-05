@@ -10,9 +10,7 @@ namespace GSSerializer.Internal
     {
         public override bool CanProcess(Type type)
         {
-            return
-                type.Resolve().IsGenericType &&
-                type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.Resolve().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         public override fsResult TrySerialize(object instance, out fsData serialized, Type storageType)

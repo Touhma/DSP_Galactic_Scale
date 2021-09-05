@@ -45,8 +45,7 @@ namespace GalacticScale
 
             public float Normal(float averageValue, float standardDeviation)
             {
-                return averageValue + standardDeviation * (float) (Math.Sqrt(-2.0 * Math.Log(1.0 - NextDouble())) *
-                                                                   Math.Sin(2.0 * Math.PI * NextDouble()));
+                return averageValue + standardDeviation * (float)(Math.Sqrt(-2.0 * Math.Log(1.0 - NextDouble())) * Math.Sin(2.0 * Math.PI * NextDouble()));
             }
 
             //public float RangePlusMinusOne() => UnityEngine.Mathf.Sin((float)(NextDouble() * (2 * UnityEngine.Mathf.PI)));
@@ -80,8 +79,8 @@ namespace GalacticScale
                     Error($"Max {maxExclusive} < 0");
                     return maxExclusive;
                 }
-            
-            return base.Next(minInclusive, maxExclusive);
+
+                return base.Next(minInclusive, maxExclusive);
             }
 
             public int NextInclusive(int minInclusive, int maxInclusive)
@@ -110,20 +109,24 @@ namespace GalacticScale
             {
                 return items[Next(items.Count)];
             }
+
             public (int, T) ItemWithIndex<T>(List<T> items)
             {
-                int n = Next(items.Count);
+                var n = Next(items.Count);
                 return (n, items[n]);
             }
+
             public T Item<T>(T[] items)
             {
                 return items[Next(items.Length)];
             }
+
             public (int, T) ItemWithIndex<T>(T[] items)
             {
-                int n = Next(items.Length);
+                var n = Next(items.Length);
                 return (n, items[n]);
             }
+
             public KeyValuePair<W, X> Item<W, X>(Dictionary<W, X> items)
             {
                 W[] keys = { };

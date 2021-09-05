@@ -12,7 +12,7 @@ namespace GalacticScale
             Log("Start");
             var preferences = new GSPreferences();
             preferences.version = PreferencesVersion;
-            preferences.MainSettings = GS2.Config.Export();
+            preferences.MainSettings = Config.Export();
             // preferences.GeneratorID = generator.GUID;
             // preferences.debug = debugOn;
             // preferences.forceRare = GS2.mainSettings.ForceRare;
@@ -30,16 +30,18 @@ namespace GalacticScale
                     preferences.PluginOptions[gen.GUID] = prefs;
                     Log("Finished adding preferences for " + gen.Name);
                 }
+
             foreach (var g in Plugins)
                 if (g is iConfigurablePlugin)
                 {
-                    var plugin = g as iConfigurablePlugin;
+                    var plugin = g;
                     Log("Trying to get plugin preferences for " + plugin.Name);
                     var prefs = plugin.Export();
 
                     preferences.AddonOptions[plugin.GUID] = prefs;
                     Log("Finished adding preferences for " + plugin.Name);
                 }
+
             var serializer = new fsSerializer();
             Log("Trying to serialize preferences object");
             serializer.TrySerialize(preferences, out var data);
@@ -48,7 +50,7 @@ namespace GalacticScale
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
 
             File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
-            GS2.Log("Reloading External Themes");
+            Log("Reloading External Themes");
             // GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
             ExternalThemeProcessor.LoadEnabledThemes();
             Log("End");
@@ -69,19 +71,18 @@ namespace GalacticScale
             if (preferences.version != PreferencesVersion)
             {
                 Warn("Preferences.json Version Mismatch. Renaming to Preferences.Old");
-                var newName =  "Preferences.Old."+DateTime.Now.ToString("yyMMddHHmmss");
-                if (File.Exists(Path.Combine(DataDir,newName))) File.Delete(Path.Combine(DataDir,newName));
-                File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir,newName));
-                updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to "+newName+"\r\nPlease reconfigure GS2\r\n";
+                var newName = "Preferences.Old." + DateTime.Now.ToString("yyMMddHHmmss");
+                if (File.Exists(Path.Combine(DataDir, newName))) File.Delete(Path.Combine(DataDir, newName));
+                File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir, newName));
+                updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
                 return;
             }
+
             if (!debug)
                 ParsePreferences(preferences);
             else
-            {
                 Config.Import(preferences.MainSettings);
-                // debugOn = preferences.debug;
-            }
+            // debugOn = preferences.debug;
             Log("Preferences loaded");
             Log("End");
         }
@@ -112,34 +113,36 @@ namespace GalacticScale
                         gen.Import(pluginOptions.Value);
                     }
                 }
+
             if (p.AddonOptions != null)
                 foreach (var pluginOptions in p.AddonOptions)
                 {
                     Log("Plugin Options for " + pluginOptions.Key + "found");
-                    var plugin = GetPluginByID(pluginOptions.Key) as iConfigurablePlugin;
+                    var plugin = GetPluginByID(pluginOptions.Key);
                     if (plugin != null)
                     {
-                        
                         Log(plugin.Name + "'s plugin options exported");
                         plugin.Import(pluginOptions.Value);
                     }
                 }
+
             Log("End");
         }
 
         private class GSPreferences
         {
+            public readonly Dictionary<string, GSGenPreferences> AddonOptions = new Dictionary<string, GSGenPreferences>();
+
+            public readonly Dictionary<string, GSGenPreferences> PluginOptions = new Dictionary<string, GSGenPreferences>();
+
+            public GSGenPreferences MainSettings = new GSGenPreferences();
+
             // public bool cheatMode;
             // public bool debug;
             // public bool forceRare;
             // public string GeneratorID = "space.customizing.vanilla";
             // public bool noTutorials;
             public int version;
-            public GSGenPreferences MainSettings = new GSGenPreferences();
-            public readonly Dictionary<string, GSGenPreferences> AddonOptions =
-                new Dictionary<string, GSGenPreferences>();
-            public readonly Dictionary<string, GSGenPreferences> PluginOptions =
-                new Dictionary<string, GSGenPreferences>();
             // public bool skipPrologue;
         }
     }

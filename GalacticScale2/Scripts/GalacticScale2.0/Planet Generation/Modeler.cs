@@ -26,10 +26,9 @@ namespace GalacticScale
             return (GameMain.mainPlayer.uPosition - planet.uPosition).magnitude;
         }
 
-        public static bool Compute(ref ThreadFlag ___planetComputeThreadFlag,
-            ref ThreadFlagLock ___planetComputeThreadFlagLock, ref Thread ___planetComputeThread)
+        public static bool Compute(ref ThreadFlag ___planetComputeThreadFlag, ref ThreadFlagLock ___planetComputeThreadFlagLock, ref Thread ___planetComputeThread)
         {
-            GS2.Log("Compute");
+            Log("Compute");
             object obj = null;
             lock (planetComputeThreadFlagLock)
             {
@@ -95,13 +94,13 @@ namespace GalacticScale
                             var num4 = 0.0;
                             if (planetData.data == null)
                             {
-                                GS2.Log($"Creating Planet {planetData.name}");
+                                Log($"Creating Planet {planetData.name}");
                                 highStopwatch.Begin();
                                 planetData.data = new PlanetRawData(planetData.precision);
                                 planetData.modData = planetData.data.InitModData(planetData.modData);
                                 planetData.data.CalcVerts();
                                 planetData.aux = new PlanetAuxData(planetData);
-                                GS2.Log("Generating Terrain");
+                                Log("Generating Terrain");
                                 planetAlgorithm.GenerateTerrain(planetData.mod_x, planetData.mod_y);
                                 planetAlgorithm.CalcWaterPercent();
                                 num2 = highStopwatch.duration;
@@ -109,7 +108,7 @@ namespace GalacticScale
 
                             if (planetData.factory == null)
                             {
-                                GS2.Log("Creating Factory");
+                                Log("Creating Factory");
                                 highStopwatch.Begin();
                                 if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVegetables();
                                 num3 = highStopwatch.duration;
@@ -121,10 +120,8 @@ namespace GalacticScale
                             if (planetComputeThreadLogs != null)
                                 lock (planetComputeThreadLogs)
                                 {
-                                    planetComputeThreadLogs.Add(
-                                        $"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
-                                    Log(
-                                        $"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                    planetComputeThreadLogs.Add($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                    Log($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                 }
                         }
                     }
