@@ -34,7 +34,7 @@ namespace GalacticScale
         internal void Awake()
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
-            GS2.Version = $"2.1b{v.Build}.{v.Revision}";
+            GS2.Version = $"{v.Major}.{v.Minor}.{v.Build}.{v.Revision}";
             BCE.Console.Init();
             var _ = new Harmony("dsp.galactic-scale.2");
             Logger = new ManualLogSource("GS2");
@@ -96,10 +96,10 @@ namespace GalacticScale
 
         private void FixedUpdate()
         {
-            // if (VFInput.alt)
-            // {
-            //     if (GameMain.localPlanet != null && GameMain.mainPlayer != null) GS2.Warn((GameMain.localPlanet.uPosition - GameMain.mainPlayer.uPosition).magnitude + " distance");
-            // }
+            if (VFInput.alt && VFInput.control && VFInput._openMechLight)
+            {
+                GS2.WarnJson(HandleLocalStarPlanets.TransitionRadii);
+            }
             if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode();
 
             if (GS2.Config.Dev && VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null)

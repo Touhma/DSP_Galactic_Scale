@@ -57,8 +57,8 @@
                 if (gsPlanet.veinSettings.Algorithm == "Vanilla")
                     veinAlgo = (p, sketchOnly) =>
                     {
-                        GS2.WarnJson(gsPlanet);
-                        GS2.WarnJson(gsPlanet.GsTheme);
+                        // GS2.WarnJson(gsPlanet);
+                        // GS2.WarnJson(gsPlanet.GsTheme);
                         // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
                         baseAlgorithm.GenerateVeins(sketchOnly);
                     };
@@ -108,7 +108,7 @@
 
         public override void GenerateVeins(bool sketchOnly)
         {
-            GS2.Log($"PlanetAlgorithm|GenerateVeins() for {gsPlanet.Name} {gsPlanet.Theme}");
+            // GS2.Log($"PlanetAlgorithm|GenerateVeins() for {gsPlanet.Name} {gsPlanet.Theme}");
             veinAlgo(gsPlanet, sketchOnly);
         }
 

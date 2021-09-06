@@ -10,7 +10,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        public static string Version = "2.0.0a50";
+        public static string Version = "2.2.1";
         private static readonly string AssemblyPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location);
         private static readonly string OldDataDir = Path.Combine(AssemblyPath, "config");
         public static readonly string DataDir = Path.Combine(Paths.ConfigPath, "GalacticScale2");
