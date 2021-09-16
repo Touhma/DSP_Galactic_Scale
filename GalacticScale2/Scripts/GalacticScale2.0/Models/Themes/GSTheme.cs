@@ -514,13 +514,13 @@ namespace GalacticScale
                 SFXPath = SFXPath,
                 SFXVolume = SFXVolume,
                 CullingRadius = CullingRadius,
-                terrainMat = terrainMat,
-                oceanMat = oceanMat,
-                atmosMat = atmosMat,
-                thumbMat = thumbMat,
-                minimapMat = minimapMat,
-                ambientDesc = ambientDesc,
-                ambientSfx = ambientSfx,
+                terrainMat = new Material[] {terrainMat},
+                oceanMat = new Material[] {oceanMat},
+                atmosMat = new Material[] {atmosMat},
+                thumbMat = new Material[] {thumbMat},
+                minimapMat = new Material[] {minimapMat},
+                ambientDesc = new AmbientDesc[] {ambientDesc},
+                ambientSfx = new AudioClip[] {ambientSfx},
                 ID = LDBThemeId
             };
         }
