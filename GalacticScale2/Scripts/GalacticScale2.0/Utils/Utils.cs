@@ -468,6 +468,181 @@ namespace GalacticScale
             return count;
         }
 
+        public static void DumpProtosToCSharp()
+        {
+            foreach (var t in LDB._themes.dataArray)
+            {
+                var themeName = string.Concat(t.displayName.Split(' '));
+                GS2.Warn($"Dumping {t.name}");
+                var lines = new List<string>();
+                lines.Add("using System.Collections.Generic;");
+                lines.Add("using UnityEngine;");
+                lines.Add(" ");
+                lines.Add("namespace GalacticScale");
+                lines.Add("{");
+                lines.Add("  public static partial class Themes");
+                lines.Add("  {");
+                lines.Add($"      public static GSTheme {themeName} = new GSTheme");
+                lines.Add("      {");
+                lines.Add($"         Name = \"{t.displayName}\",");
+                lines.Add("         Base = true,");
+                lines.Add($"         DisplayName = \"{t.displayName}\".Translate(),");
+                lines.Add($"         PlanetType = EPlanetType.{t.PlanetType},");
+                lines.Add($"         ThemeType = EThemeType.{(t.PlanetType == EPlanetType.Gas ? "Gas" : "Telluric")},");
+                lines.Add(" ");
+                lines.Add($"         LDBThemeId = {t.ID},");
+                lines.Add($"         Algo = {t.Algos[0]},");
+                lines.Add("         MinRadius = 5,");
+                lines.Add("         MaxRadius = 510,");
+                lines.Add($"         MaterialPath = \"{t.MaterialPath}\",");
+                lines.Add($"         Temperature = {t.Temperature}f,");
+                lines.Add($"         Distribute = EThemeDistribute.{t.Distribute},");
+                lines.Add($"         Habitable = {(t.PlanetType == EPlanetType.Ocean ? "true" : "false")},");
+                lines.Add($"         ModX = new Vector2({t.ModX.x}f, {t.ModX.y}f),");
+                lines.Add($"         ModY = new Vector2({t.ModY.x}f, {t.ModY.y}f),");
+                lines.Add("         CustomGeneration = false,");
+                lines.Add("          TerrainSettings = new GSTerrainSettings");
+                lines.Add("         {");
+                lines.Add("             Algorithm = \"Vanilla\"");
+                lines.Add("         },");
+                lines.Add("         VeinSettings = new GSVeinSettings");
+                lines.Add("         {");
+                lines.Add("              Algorithm = \"Vanilla\",");
+                lines.Add("             VeinTypes = new GSVeinTypes()");
+                lines.Add("  },");
+                int ambientCount = 1;
+                if (t.ambientDesc != null)
+                    foreach (var a in t.ambientDesc)
+                    {
+                        lines.Add($"//AmbientSettings {ambientCount}");
+                        if (ambientCount > 1) lines.Add("Please duplicate theme for this variant, and delete the others.");
+                        lines.Add("AmbientSettings = new GSAmbientSettings");
+                        lines.Add("{");
+                        lines.Add($"    Color1 = new Color({a.ambientColor0.r}f, {a.ambientColor0.g}f, {a.ambientColor0.b}f, {a.ambientColor0.a}f),");
+                        lines.Add($"    Color2 = new Color({a.ambientColor1.r}f, {a.ambientColor1.g}f, {a.ambientColor1.b}f, {a.ambientColor1.a}f),");
+                        lines.Add($"    Color3 = new Color({a.ambientColor2.r}f, {a.ambientColor2.g}f, {a.ambientColor2.b}f, {a.ambientColor2.a}f),");
+                        lines.Add($"    WaterColor1 = new Color({a.waterAmbientColor0.r}f, {a.waterAmbientColor0.g}f, {a.waterAmbientColor0.b}f, {a.waterAmbientColor0.a}f),");
+                        lines.Add($"    WaterColor2 = new Color({a.waterAmbientColor1.r}f, {a.waterAmbientColor1.g}f, {a.waterAmbientColor1.b}f, {a.waterAmbientColor1.a}f),");
+                        lines.Add($"    WaterColor3 = new Color({a.waterAmbientColor2.r}f, {a.waterAmbientColor2.g}f, {a.waterAmbientColor2.b}f, {a.waterAmbientColor2.a}f),");
+                        lines.Add($"    BiomeColor1 = new Color({a.biomoColor0.r}f, {a.biomoColor0.g}f, {a.biomoColor0.b}f, {a.biomoColor0.a}f),");
+                        lines.Add($"    BiomeColor2 = new Color({a.biomoColor1.r}f, {a.biomoColor1.g}f, {a.biomoColor1.b}f, {a.biomoColor1.a}f),");
+                        lines.Add($"    BiomeColor3 = new Color({a.biomoColor2.r}f, {a.biomoColor2.g}f, {a.biomoColor2.b}f, {a.biomoColor2.a}f),");
+                        lines.Add($"    DustColor1 = new Color({a.biomoDustColor0.r}f, {a.biomoDustColor0.g}f, {a.biomoDustColor0.b}f, {a.biomoDustColor0.a}f),");
+                        lines.Add($"    DustColor2 = new Color({a.biomoDustColor1.r}f, {a.biomoDustColor1.g}f, {a.biomoDustColor1.b}f, {a.biomoDustColor1.a}f),");
+                        lines.Add($"    DustColor3 = new Color({a.biomoDustColor2.r}f, {a.biomoDustColor2.g}f, {a.biomoDustColor2.b}f, {a.biomoDustColor2.a}f),");
+                        lines.Add($"    DustStrength1 = {a.biomoDustStrength0}f,");
+                        lines.Add($"    DustStrength2 = {a.biomoDustStrength1}f,");
+                        lines.Add($"    DustStrength3 = {a.biomoDustStrength2}f,");
+                        lines.Add($"    BiomeSound1 = {a.biomoSound0},");
+                        lines.Add($"    BiomeSound2 = {a.biomoSound1},");
+                        lines.Add($"    BiomeSound3 = {a.biomoSound2},");
+                        lines.Add("    CubeMap = \"Vanilla\",");
+                        lines.Add("    Reflections = new Color(),");
+                        lines.Add($"    LutContribution = {a.lutContribution}f,");
+                        lines.Add("},");
+                        ambientCount++;
+                    }
+
+                lines.Add("Vegetables0 = new int[]");
+                lines.Add("{");
+                foreach (var v0 in t.Vegetables0) lines.Add($"{v0},");
+                lines.Add("},");
+                lines.Add("Vegetables1 = new int[]");
+                lines.Add("{");
+                foreach (var v1 in t.Vegetables1) lines.Add($"{v1},");
+                lines.Add("},");
+                lines.Add("Vegetables2 = new int[]");
+                lines.Add("{");
+                foreach (var v2 in t.Vegetables2) lines.Add($"{v2},");
+                lines.Add("},");
+                lines.Add("Vegetables3 = new int[]");
+                lines.Add("{");
+                foreach (var v3 in t.Vegetables3) lines.Add($"{v3},");
+                lines.Add("},");
+                lines.Add("Vegetables4 = new int[]");
+                lines.Add("{");
+                foreach (var v4 in t.Vegetables4) lines.Add($"{v4},");
+                lines.Add("},");
+                lines.Add("Vegetables5 = new int[]");
+                lines.Add("{");
+                foreach (var v5 in t.Vegetables5) lines.Add($"{v5},");
+                lines.Add("},");
+                lines.Add("VeinSpot = new int[]");
+                lines.Add("{");
+                foreach (var x in t.VeinSpot) lines.Add($"{x},");
+                lines.Add("},");
+                lines.Add("VeinCount = new float[]");
+                lines.Add("{");
+                foreach (var x in t.VeinCount) lines.Add($"{x}f,");
+                lines.Add("},");
+                lines.Add("VeinOpacity = new float[]");
+
+                lines.Add("{");
+                foreach (var x in t.VeinOpacity) lines.Add($"{x}f,");
+                lines.Add("},");
+
+                lines.Add("RareVeins = new int[]");
+
+                lines.Add("{");
+                foreach (var x in t.RareVeins) lines.Add($"{x},");
+                lines.Add("},");
+
+                lines.Add("RareSettings = new float[]");
+                lines.Add("{");
+                foreach (var x in t.RareSettings) lines.Add($"{x}f,");
+                lines.Add("},");
+                lines.Add("GasItems = new int[]");
+                lines.Add("{");
+                foreach (var x in t.GasItems) lines.Add($"{x},");
+                lines.Add("},");
+                lines.Add("GasSpeeds = new float[]");
+                lines.Add("{");
+                foreach (var x in t.GasSpeeds) lines.Add($"{x}f,");
+                lines.Add("},");
+                lines.Add($"UseHeightForBuild = {(t.UseHeightForBuild?"true":"false")},");
+                lines.Add($"Wind = {t.Wind}f,");
+                lines.Add($"IonHeight = {t.IonHeight}f,");
+                lines.Add($"WaterHeight = {t.WaterHeight}f,");
+                lines.Add($"WaterItemId = {t.WaterItemId},");
+                lines.Add("Musics = new int[]");
+                lines.Add("{");
+                foreach (var x in t.Musics) lines.Add($"{x},");
+                lines.Add("},");
+                lines.Add($"SFXPath = \"{t.SFXPath}\",");
+                lines.Add($"SFXVolume = {t.SFXVolume}f,");
+                lines.Add($"CullingRadius = {t.CullingRadius}f,");
+                lines.Add("terrainMaterial = new GSMaterialSettings");
+                lines.Add("{");
+                lines.Add("    Colors = new Dictionary<string, Color>{},");
+                lines.Add("    Params = new Dictionary<string, float>{}");
+                lines.Add("},");
+                lines.Add("oceanMaterial = new GSMaterialSettings");
+                lines.Add("{");
+                lines.Add("    Colors = new Dictionary<string, Color>{},");
+                lines.Add("    Params = new Dictionary<string, float>{}");
+                lines.Add("},");
+                lines.Add("atmosphereMaterial = new GSMaterialSettings");
+                lines.Add("{");
+                lines.Add("    Colors = new Dictionary<string, Color>{},");
+                lines.Add("    Params = new Dictionary<string, float>{}");
+                lines.Add("},");
+                lines.Add("minimapMaterial = new GSMaterialSettings");
+                lines.Add("{");
+                lines.Add("    Colors = new Dictionary<string, Color>{},");
+                lines.Add("    Params = new Dictionary<string, float>{}");
+                lines.Add("},");
+                lines.Add("thumbMaterial = new GSMaterialSettings");
+                lines.Add("{");
+                lines.Add("    Colors = new Dictionary<string, Color>{},");
+                lines.Add("    Params = new Dictionary<string, float>{}");
+                lines.Add("},");
+                lines.Add("        };");
+                lines.Add("    }");
+                lines.Add("}");
+                File.WriteAllLines(Path.Combine(GS2.DataDir, $"{themeName}.cs"), lines);
+            }
+        }
+
         public static class AddressHelper
         {
             private static readonly object mutualObject;

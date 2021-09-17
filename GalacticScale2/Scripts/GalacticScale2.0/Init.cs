@@ -157,6 +157,9 @@ namespace GalacticScale
             ExternalThemeProcessor.LoadEnabledThemes();
             Config.InitThemePanel();
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
+            LDB._themes.Select(1);
+            if (Config.Dev) Utils.DumpProtosToCSharp();
+
             if (Config.Dev)
             {
                 var da = LDB._veges.dataArray;

@@ -80,7 +80,13 @@ namespace GalacticScale
                 ["IceLake"] = Themes.IceLake,
                 ["Hurricane"] = Themes.Hurricane,
                 ["SaltLake"] = Themes.SaltLake,
-                ["Sakura"] = Themes.Sakura
+                ["Sakura"] = Themes.Sakura,
+                ["GasGiant3"] = Themes.GasII,
+                ["GasGiant4"] = Themes.Gas2B,
+                ["IceGiant3"] = Themes.IceGiant3,
+               ["IceGiant4"] = Themes.IceGiant4,
+               ["GasGiant5"] = Themes.GasGiant5,
+               ["AridDesert2"] = Themes.AridDesert2
             };
 
             return t;

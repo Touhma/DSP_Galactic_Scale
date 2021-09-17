@@ -12,9 +12,7 @@ namespace GalacticScale
     {
         [NonSerialized] public static ThemeLibrary AllLoadedThemes = new ThemeLibrary();
         [NonSerialized] public bool added;
-
         public int Algo;
-
         [NonSerialized] public string ambient;
 
         [NonSerialized] public AmbientDesc ambientDesc = new AmbientDesc();
@@ -96,6 +94,7 @@ namespace GalacticScale
 
         public GSMaterialSettings thumbMaterial = new GSMaterialSettings();
         public bool UseHeightForBuild;
+        public int Variant = 0;
 
         public GSVegeSettings VegeSettings = new GSVegeSettings
         {
@@ -281,18 +280,10 @@ namespace GalacticScale
                     count += v.count;
                     opacity += v.richness;
                 }
-
-                //GS2.Log("Count:" + count + " Opacity:" + opacity);
-                //if ((int)type < 8)
                 if (vt.rare)
                 {
-                    //Special
-                    //GS2.Log("Rare");
                     var specialOpacity = opacity / veinCount;
                     var specialCount = veinCount;
-                    //var specialNumber = count / veinCount;
-                    //var specialIndex = RareVeins.Length;
-                    //var specialSettingsIndex = specialIndex * 4;
                     _rareVeins.Add((int)type);
                     if (GS2.Config.ForceRare)
                         _rareSettings.Add(1);
@@ -315,17 +306,7 @@ namespace GalacticScale
 
             RareSettings = _rareSettings.ToArray();
             RareVeins = _rareVeins.ToArray();
-            //GS2.Log("VeinSpot");
-            //GS2.LogJson(VeinSpot);
-            //GS2.Log("VeinCount");
-            //GS2.LogJson(VeinCount);
-            //GS2.Log("VeinOpacity");
-            //GS2.LogJson(VeinOpacity);
-            //GS2.Log("RareSettings");
-            //GS2.LogJson(RareSettings);
-            //GS2.Log("RareVeins");
-            //GS2.LogJson(RareVeins);
-            //GS2.Log("End " + Name);
+
         }
 
         public void PopulateVeinData()
@@ -514,17 +495,16 @@ namespace GalacticScale
                 SFXPath = SFXPath,
                 SFXVolume = SFXVolume,
                 CullingRadius = CullingRadius,
-
                 ID = LDBThemeId
             };
-            if (terrainMat != null) tp.terrainMat = new Material[] { terrainMat };
-                if (oceanMat != null) tp.oceanMat = new Material[] { oceanMat };
-                if (atmosMat != null) tp.atmosMat = new Material[] { atmosMat };
-                if (thumbMat != null) tp.thumbMat = new Material[] { thumbMat };
-                if (minimapMat != null) tp.minimapMat = new Material[] { minimapMat };
-                if (ambientDesc != null) tp.ambientDesc = new AmbientDesc[] { ambientDesc };
-                if (ambientSfx != null) tp.ambientSfx = new AudioClip[] { ambientSfx };
-                return tp;
+            if (terrainMat != null) tp.terrainMat = new[] { terrainMat };
+            if (oceanMat != null) tp.oceanMat = new[] { oceanMat };
+            if (atmosMat != null) tp.atmosMat = new[] { atmosMat };
+            if (thumbMat != null) tp.thumbMat = new[] { thumbMat };
+            if (minimapMat != null) tp.minimapMat = new[] { minimapMat };
+            if (ambientDesc != null) tp.ambientDesc = new[] { ambientDesc };
+            if (ambientSfx != null) tp.ambientSfx = new[] { ambientSfx };
+            return tp;
         }
 
         public int AddToThemeProtoSet()
@@ -575,7 +555,7 @@ namespace GalacticScale
                 {
                     //GS2.Log("Creating Material from MaterialPath Resource @ " + MaterialPath + materialType);
                     //tempMat = Resources.Load<Material>(MaterialPath + materialType);
-                    var matArray = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true);
+                    var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) tempMat = matArray[0];
                     else tempMat = null;
                     GS2.Log((tempMat == null).ToString());
@@ -589,6 +569,7 @@ namespace GalacticScale
                     else tempMat = null;
                     GS2.Log((tempMat == null).ToString());
                 }
+
                 if (tempMat != null)
                 {
                     //GS2.Log("Creating Material");
@@ -598,7 +579,7 @@ namespace GalacticScale
                 {
                     //GS2.Log("Failed to Create Material|" + Name);
                     //material = Resources.Load<Material>(MaterialPath + materialType);
-                    var matArray = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true);
+                    var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) material = matArray[0];
                     else material = null;
                 }
@@ -611,7 +592,7 @@ namespace GalacticScale
                 {
                     GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
                     // material = Resources.Load<Material>(MaterialPath + materialType);
-                    var matArray = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true);
+                    var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) material = matArray[0];
                     else material = null;
                 }
@@ -648,6 +629,7 @@ namespace GalacticScale
                     GS2.Log("Assigning Texture");
                 material.SetTexture(name, tex);
             }
+
             //GS2.Warn($"Material null? {material == null}");
             return false;
         }
@@ -676,14 +658,14 @@ namespace GalacticScale
                 else if (ambient == null)
                     //GS2.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
                     //ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
-                    ambientDesc = Utils.ResourcesLoadArray<AmbientDesc>(this.MaterialPath + "ambient", "{0}-{1}", true)[0];
+                    ambientDesc = Utils.ResourcesLoadArray<AmbientDesc>(MaterialPath + "ambient", "{0}-{1}", true)[0];
 
 
                 else
                     //GS2.Log("Loading AmbientDesc from base theme = "+ambient);
                     ambientDesc = GSSettings.ThemeLibrary.Find(ambient).ambientDesc;
                 //ambientSfx = Resources.Load<AudioClip>(SFXPath);
-                ambientSfx = Utils.ResourcesLoadArray<AudioClip>(this.SFXPath, "{0}-{1}", true)[0];
+                ambientSfx = Utils.ResourcesLoadArray<AudioClip>(SFXPath, "{0}-{1}", true)[0];
             }
 
             initialized = true;

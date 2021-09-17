@@ -66,9 +66,7 @@ namespace GalacticScale
                 4,
                 5
             },
-            Vegetables2 = new int[]
-            {
-            },
+            Vegetables2 = new int[] { },
             Vegetables3 = new int[]
             {
             },
