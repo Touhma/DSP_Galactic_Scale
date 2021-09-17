@@ -27,7 +27,7 @@ namespace GalacticScale
                 Bootstrap.Debug("┌─────────────────────────────────────────────────────────────────────────┐"); // Failsafe if BCE not present
                 Bootstrap.Debug("│  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                │");
                 Bootstrap.Debug("│  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤                                 │");
-                Bootstrap.Debug("│  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ Version " + Version + " Initializing   │");
+                Bootstrap.Debug("│  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ Version " + Version + " Initializing    │");
                 Bootstrap.Debug("└─────────────────────────────────────────────────────────────────────────┘");
             }
         }

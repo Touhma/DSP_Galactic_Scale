@@ -477,7 +477,7 @@ namespace GalacticScale
         public ThemeProto ToProto()
         {
             if (PlanetType != EPlanetType.Gas) AmbientSettings.ToTheme(this);
-            return new ThemeProto
+            var tp = new ThemeProto
             {
                 name = Name,
                 Name = Name,
@@ -514,15 +514,17 @@ namespace GalacticScale
                 SFXPath = SFXPath,
                 SFXVolume = SFXVolume,
                 CullingRadius = CullingRadius,
-                terrainMat = new Material[] {terrainMat},
-                oceanMat = new Material[] {oceanMat},
-                atmosMat = new Material[] {atmosMat},
-                thumbMat = new Material[] {thumbMat},
-                minimapMat = new Material[] {minimapMat},
-                ambientDesc = new AmbientDesc[] {ambientDesc},
-                ambientSfx = new AudioClip[] {ambientSfx},
+
                 ID = LDBThemeId
             };
+            if (terrainMat != null) tp.terrainMat = new Material[] { terrainMat };
+                if (oceanMat != null) tp.oceanMat = new Material[] { oceanMat };
+                if (atmosMat != null) tp.atmosMat = new Material[] { atmosMat };
+                if (thumbMat != null) tp.thumbMat = new Material[] { thumbMat };
+                if (minimapMat != null) tp.minimapMat = new Material[] { minimapMat };
+                if (ambientDesc != null) tp.ambientDesc = new AmbientDesc[] { ambientDesc };
+                if (ambientSfx != null) tp.ambientSfx = new AudioClip[] { ambientSfx };
+                return tp;
         }
 
         public int AddToThemeProtoSet()
@@ -555,7 +557,7 @@ namespace GalacticScale
 
         private bool CreateMaterial(GSMaterialSettings settings, out Material material)
         {
-            //GS2.Log("Start|" + Name);
+            GS2.Log("Start|" + Name);
             var materialType = "terrain";
             if (settings == oceanMaterial) materialType = "ocean";
 
@@ -570,26 +572,48 @@ namespace GalacticScale
                 //GS2.Log("Not Copying From Another Theme");
                 Material tempMat;
                 if (settings.Path == null)
+                {
                     //GS2.Log("Creating Material from MaterialPath Resource @ " + MaterialPath + materialType);
-                    tempMat = Resources.Load<Material>(MaterialPath + materialType);
+                    //tempMat = Resources.Load<Material>(MaterialPath + materialType);
+                    var matArray = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true);
+                    if (matArray != null) tempMat = matArray[0];
+                    else tempMat = null;
+                    GS2.Log((tempMat == null).ToString());
+                }
                 else
+                {
                     //GS2.Log("Creating Material from Settings Defined Resource @ " + settings.Path);
-                    tempMat = Resources.Load<Material>(settings.Path);
+                    //tempMat = Resources.Load<Material>(settings.Path);
+                    var matArray = Utils.ResourcesLoadArray<Material>(settings.Path, "{0}-{1}", true);
+                    if (matArray != null) tempMat = matArray[0];
+                    else tempMat = null;
+                    GS2.Log((tempMat == null).ToString());
+                }
                 if (tempMat != null)
+                {
                     //GS2.Log("Creating Material");
                     material = Object.Instantiate(tempMat);
+                }
                 else
-                    // GS2.Log("Failed to Create Material|" + Name);
-                    material = Resources.Load<Material>(MaterialPath + materialType);
+                {
+                    //GS2.Log("Failed to Create Material|" + Name);
+                    //material = Resources.Load<Material>(MaterialPath + materialType);
+                    var matArray = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true);
+                    if (matArray != null) material = matArray[0];
+                    else material = null;
+                }
             }
             else
             {
-                //GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
+                GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
                 var copyFrom = settings.CopyFrom.Split('.');
                 if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null || copyFrom[1] == "")
                 {
                     GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
-                    material = Resources.Load<Material>(MaterialPath + materialType);
+                    // material = Resources.Load<Material>(MaterialPath + materialType);
+                    var matArray = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true);
+                    if (matArray != null) material = matArray[0];
+                    else material = null;
                 }
                 else
                 {
@@ -597,6 +621,7 @@ namespace GalacticScale
                     var materialBaseTheme = GSSettings.ThemeLibrary.Find(copyFrom[0]);
                     var materialName = copyFrom[1];
                     material = Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
+                    //material = Utils.ResourcesLoadArray<Material>(this.MaterialPath + materialType, "{0}-{1}", true)[0];
                 }
             }
 
@@ -607,7 +632,7 @@ namespace GalacticScale
                 var location = value[0];
                 var path = value[1];
                 var name = kvp.Key;
-                //GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
+                GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
                 Texture tex = null;
                 if (location == "GS2") tex = Utils.GetTextureFromBundle(path);
 
@@ -618,12 +643,12 @@ namespace GalacticScale
                 if (location == "BUNDLE") tex = Utils.GetTextureFromExternalBundle(path);
 
                 if (tex == null)
-                    GS2.Error("Texture not found");
+                    GS2.Error("Texture not found, or method not implemented");
                 else
-                    //GS2.Log("Assigning Texture");
-                    material.SetTexture(name, tex);
+                    GS2.Log("Assigning Texture");
+                material.SetTexture(name, tex);
             }
-
+            //GS2.Warn($"Material null? {material == null}");
             return false;
         }
 
@@ -646,14 +671,19 @@ namespace GalacticScale
             {
                 if (AmbientSettings.ResourcePath != null && AmbientSettings.ResourcePath != "")
                     //GS2.Log("Loading AmbientDesc from AmbientSettings.ResourcePath" + AmbientSettings.ResourcePath);
-                    Resources.Load<AmbientDesc>(AmbientSettings.ResourcePath);
+                    //Resources.Load<AmbientDesc>(AmbientSettings.ResourcePath);
+                    ambientDesc = Utils.ResourcesLoadArray<AmbientDesc>(AmbientSettings.ResourcePath, "{0}-{1}", true)[0];
                 else if (ambient == null)
                     //GS2.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
-                    ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
+                    //ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
+                    ambientDesc = Utils.ResourcesLoadArray<AmbientDesc>(this.MaterialPath + "ambient", "{0}-{1}", true)[0];
+
+
                 else
                     //GS2.Log("Loading AmbientDesc from base theme = "+ambient);
                     ambientDesc = GSSettings.ThemeLibrary.Find(ambient).ambientDesc;
-                ambientSfx = Resources.Load<AudioClip>(SFXPath);
+                //ambientSfx = Resources.Load<AudioClip>(SFXPath);
+                ambientSfx = Utils.ResourcesLoadArray<AudioClip>(this.SFXPath, "{0}-{1}", true)[0];
             }
 
             initialized = true;

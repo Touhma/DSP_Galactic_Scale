@@ -24,6 +24,42 @@ namespace GalacticScale
             return fsJsonPrinter.PrettyJson(data);
         }
 
+        public static T[] ResourcesLoadArray<T>(string path, string format, bool emptyNull) where T : UnityEngine.Object
+        {
+
+            List<T> list = new List<T>();
+
+            T t = Resources.Load<T>(path);
+            if (t == null)
+            {
+                //GS2.Log("Resource returned null, exiting");
+                return null;
+            }
+            //GS2.Log("Resource loaded");
+            int num = 0;
+            if (t != null)
+            {
+                list.Add(t);
+                num = 1;
+            }
+            do
+            {
+                t = Resources.Load<T>(string.Format(format, path, num));
+                if (t == null || ((num == 1 || num == 2) && list.Contains(t)))
+                {
+                    break;
+                }
+                list.Add(t);
+                num++;
+            }
+            while (num < 1024);
+            if (emptyNull && list.Count == 0)
+            {
+                return null;
+            }
+            return list.ToArray();
+        }
+
         public static VectorLF3 PolarToCartesian(double p, double theta, double phi)
         {
             var x = p * Math.Sin(phi) * Math.Cos(theta);
