@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public static partial class Themes
     {
-        public static GSTheme GasII = new GSTheme
+        public static GSTheme Gas3 = new GSTheme
         {
             Name = "GasGiant3",
             Base = true,

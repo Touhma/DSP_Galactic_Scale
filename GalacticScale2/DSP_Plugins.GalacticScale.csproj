@@ -164,14 +164,15 @@
         <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Constructors.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Set.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Models\Plugins\iConfigurablePlugin.cs" />
+        <Compile Include="Scripts\GalacticScale2.0\Patches\-Debug\ColorFloat4.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\ExitProgramSplash.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Patches\UIVeinDetail\SetInspectPlanet.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Start.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Update.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Restart.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Themes\AridDesert2.cs" />
-        <Compile Include="Scripts\GalacticScale2.0\Themes\Gas2B.cs" />
-        <Compile Include="Scripts\GalacticScale2.0\Themes\GasB.cs" />
+        <Compile Include="Scripts\GalacticScale2.0\Themes\Gas4.cs" />
+        <Compile Include="Scripts\GalacticScale2.0\Themes\Gas3.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Themes\GasGiant5.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Themes\IceGiant3.cs" />
         <Compile Include="Scripts\GalacticScale2.0\Themes\IceGiant4.cs" />

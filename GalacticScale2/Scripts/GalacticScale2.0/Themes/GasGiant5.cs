@@ -5,9 +5,9 @@ namespace GalacticScale
 {
   public static partial class Themes
   {
-      public static GSTheme GasGiant5 = new GSTheme
+      public static GSTheme Gas5 = new GSTheme
       {
-         Name = "Gas Giant V",
+         Name = "GasGiant5",
          Base = true,
          DisplayName = "Gas Giant V".Translate(),
          PlanetType = EPlanetType.Gas,

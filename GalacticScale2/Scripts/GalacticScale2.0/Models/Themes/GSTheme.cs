@@ -537,7 +537,7 @@ namespace GalacticScale
 
         private bool CreateMaterial(GSMaterialSettings settings, out Material material)
         {
-            GS2.Log("Start|" + Name);
+            // GS2.Log("Start|" + Name);
             var materialType = "terrain";
             if (settings == oceanMaterial) materialType = "ocean";
 
@@ -558,7 +558,7 @@ namespace GalacticScale
                     var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) tempMat = matArray[0];
                     else tempMat = null;
-                    GS2.Log((tempMat == null).ToString());
+                    // GS2.Log((tempMat == null).ToString());
                 }
                 else
                 {
@@ -567,7 +567,7 @@ namespace GalacticScale
                     var matArray = Utils.ResourcesLoadArray<Material>(settings.Path, "{0}-{1}", true);
                     if (matArray != null) tempMat = matArray[0];
                     else tempMat = null;
-                    GS2.Log((tempMat == null).ToString());
+                    // GS2.Log((tempMat == null).ToString());
                 }
 
                 if (tempMat != null)
@@ -586,7 +586,7 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
+                // GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
                 var copyFrom = settings.CopyFrom.Split('.');
                 if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null || copyFrom[1] == "")
                 {
@@ -613,7 +613,7 @@ namespace GalacticScale
                 var location = value[0];
                 var path = value[1];
                 var name = kvp.Key;
-                GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
+                // GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
                 Texture tex = null;
                 if (location == "GS2") tex = Utils.GetTextureFromBundle(path);
 
@@ -626,7 +626,7 @@ namespace GalacticScale
                 if (tex == null)
                     GS2.Error("Texture not found, or method not implemented");
                 else
-                    GS2.Log("Assigning Texture");
+                    // GS2.Log("Assigning Texture");
                 material.SetTexture(name, tex);
             }
 
@@ -636,40 +636,51 @@ namespace GalacticScale
 
         public void InitMaterials()
         {
-            //GS2.Log("Start");
+            // GS2.Log("Start");
             if (initialized) return;
-            //GS2.Log("Creating Terrain Material");
+            // GS2.Log("Creating Terrain Material");
             CreateMaterial(terrainMaterial, out terrainMat);
-            //GS2.Log("Creating Ocean Material");
+            // GS2.Log("Creating Ocean Material");
             CreateMaterial(oceanMaterial, out oceanMat);
-            //GS2.Log("Creating Atmosphere Material");
+            // GS2.Log("Creating Atmosphere Material");
             CreateMaterial(atmosphereMaterial, out atmosMat);
-            //GS2.Log("Creating Minimap Material");
+            // GS2.Log("Creating Minimap Material");
             CreateMaterial(minimapMaterial, out minimapMat);
-            //GS2.Log("Creating Thumb Material");
+            // GS2.Log("Creating Thumb Material");
             CreateMaterial(thumbMaterial, out thumbMat);
-            //GS2.Log("Initializing AmbientDesc");
+            // GS2.Log("Initializing AmbientDesc");
             if (PlanetType != EPlanetType.Gas)
             {
                 if (AmbientSettings.ResourcePath != null && AmbientSettings.ResourcePath != "")
-                    //GS2.Log("Loading AmbientDesc from AmbientSettings.ResourcePath" + AmbientSettings.ResourcePath);
+                {
+                    // GS2.Log("Loading AmbientDesc from AmbientSettings.ResourcePath" + AmbientSettings.ResourcePath);
                     //Resources.Load<AmbientDesc>(AmbientSettings.ResourcePath);
-                    ambientDesc = Utils.ResourcesLoadArray<AmbientDesc>(AmbientSettings.ResourcePath, "{0}-{1}", true)[0];
+                   var ambientDescArray = Utils.ResourcesLoadArray<AmbientDesc>(AmbientSettings.ResourcePath, "{0}-{1}", true);
+                   if (ambientDescArray != null) ambientDesc = ambientDescArray[0];
+                }
                 else if (ambient == null)
-                    //GS2.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
+                {
+                    // GS2.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
                     //ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
-                    ambientDesc = Utils.ResourcesLoadArray<AmbientDesc>(MaterialPath + "ambient", "{0}-{1}", true)[0];
+                    var ambientDescArray = Utils.ResourcesLoadArray<AmbientDesc>(MaterialPath + "ambient", "{0}-{1}", true);
+                    if (ambientDescArray != null) ambientDesc = ambientDescArray[0];
+                }
 
 
                 else
-                    //GS2.Log("Loading AmbientDesc from base theme = "+ambient);
+                {
+                    // GS2.Log("Loading AmbientDesc from base theme = "+ambient);
                     ambientDesc = GSSettings.ThemeLibrary.Find(ambient).ambientDesc;
-                //ambientSfx = Resources.Load<AudioClip>(SFXPath);
-                ambientSfx = Utils.ResourcesLoadArray<AudioClip>(SFXPath, "{0}-{1}", true)[0];
+                    
+                    //ambientSfx = Resources.Load<AudioClip>(SFXPath);
+                    // ambientSfx = Utils.ResourcesLoadArray<AudioClip>(SFXPath, "{0}-{1}", true)[0];
+                    var ambientSfxArray = Utils.ResourcesLoadArray<AudioClip>(SFXPath, "{0}-{1}", true);
+                    if (ambientSfxArray != null) ambientSfx = ambientSfxArray[0];
+                }
             }
 
             initialized = true;
-            //GS2.Log("About to process tints for "+Name);
+            // GS2.Log("About to process tints for "+Name);
             ProcessTints();
             ProcessMaterialSettings();
         }

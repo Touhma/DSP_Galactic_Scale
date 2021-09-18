@@ -70,7 +70,7 @@ namespace GalacticScale.Generators
                 if (!newLibrary.ContainsKey(s.Key)) newLibrary.Add(s.Key, s.Value);
                 else newLibrary[s.Key] = s.Value;
             // GS2.WarnJson(GS2.externalThemes.Select(o=>o.Key).ToList());
-            // newLibrary.AddRange(GS2.externalThemes);
+            newLibrary.AddRange(GS2.externalThemes);
             GSSettings.ThemeLibrary = newLibrary;
             // GS2.Warn("End of Themes.CS, ThemeLibrary Contents:");
             // GS2.WarnJson(GSSettings.ThemeLibrary.Select(o=>o.Key).ToList());

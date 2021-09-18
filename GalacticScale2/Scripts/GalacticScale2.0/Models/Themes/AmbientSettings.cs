@@ -85,8 +85,8 @@ namespace GalacticScale
             } //////////// FIX RARE SPAWNING IN THEME
             else
             {
-                GS2.Log(CubeMap);
-                GS2.Log(Reflections.ToString());
+                // GS2.Log(CubeMap);
+                // GS2.Log(Reflections.ToString());
                 //Should move this out of here
                 //AssetBundle bundle = GS2.bundle;
                 //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
@@ -96,7 +96,7 @@ namespace GalacticScale
                     if (Reflections.a != 0)
                     {
                         ReflectionMap = Utils.TintCubeMap(x, Reflections);
-                        GS2.Log("Set Reflection Map to Tinted One");
+                        // GS2.Log("Set Reflection Map to Tinted One");
                     }
                     else
                     {

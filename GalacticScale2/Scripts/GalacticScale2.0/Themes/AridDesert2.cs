@@ -7,7 +7,7 @@ namespace GalacticScale
   {
       public static GSTheme AridDesert2 = new GSTheme
       {
-         Name = "Arid Desert",
+         Name = "AridDesert",
          Base = true,
          DisplayName = "Arid Desert".Translate(),
          PlanetType = EPlanetType.Desert,
