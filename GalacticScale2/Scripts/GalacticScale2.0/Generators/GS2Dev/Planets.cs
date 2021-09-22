@@ -242,20 +242,21 @@ namespace GalacticScale.Generators
         {
             foreach (var planet in star.Planets)
             {
-                if (planet == birthPlanet)
+                var heat = CalculateThemeHeat(star, planet.OrbitRadius);
+                var type = EThemeType.Planet;
+                if (planet != birthPlanet)
+                {
+                    if (planet.Scale == 10f) type = EThemeType.Gas;
+                    planet.Theme = GSSettings.ThemeLibrary.Query(random, type, heat, planet.Radius);
+                }
+                else
                 {
                     GS2.Warn("Setting Theme for BirthPlanet");
                     var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
                     if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
                     else planet.Theme = "Mediterranean";
                     planet.Scale = 1f;
-                    continue;
                 }
-
-                var heat = CalculateThemeHeat(star, planet.OrbitRadius);
-                var type = EThemeType.Planet;
-                if (planet.Scale == 10f) type = EThemeType.Gas;
-                planet.Theme = GSSettings.ThemeLibrary.Query(random, type, heat, planet.Radius);
                 //Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
                 foreach (var body in planet.Bodies)
                     if (body != planet)
