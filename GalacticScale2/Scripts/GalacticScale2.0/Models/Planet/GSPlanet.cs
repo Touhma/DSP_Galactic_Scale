@@ -114,7 +114,7 @@ namespace GalacticScale
         [SerializeField]
         public float OrbitalPeriod
         {
-            get => orbitalPeriod < 0 ? InitOrbitalPeriod() : orbitalPeriod;
+            get => orbitalPeriod == -1 ? InitOrbitalPeriod() : orbitalPeriod;
             set => orbitalPeriod = value;
         }
 
@@ -142,7 +142,7 @@ namespace GalacticScale
         [SerializeField]
         public float RotationPeriod
         {
-            get => rotationPeriod < 0 ? InitRotationPeriod() : rotationPeriod;
+            get => rotationPeriod == -1 ? InitRotationPeriod() : rotationPeriod;
             set => rotationPeriod = value;
         }
 
