@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 using BepInEx;
@@ -20,7 +21,7 @@ namespace GalacticScale
     // [BepInDependency("nebula.api", BepInDependency.DependencyFlags.HardDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
-        public const string VERSION = "2.2.0.5";
+        public const string VERSION = "2.2.0.6";
 
         public new static ManualLogSource Logger;
 
@@ -40,6 +41,8 @@ namespace GalacticScale
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
+            Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
+            Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
             Harmony.CreateAndPatchAll(typeof(PatchOnWhatever));
             Harmony.CreateAndPatchAll(typeof(PatchOnBlueprintUtils));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));
