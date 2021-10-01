@@ -41,8 +41,8 @@ namespace GalacticScale
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
-            Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
-            Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
+            //Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
+            //Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
             Harmony.CreateAndPatchAll(typeof(PatchOnWhatever));
             Harmony.CreateAndPatchAll(typeof(PatchOnBlueprintUtils));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildingGizmo));

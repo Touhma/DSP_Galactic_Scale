@@ -117,6 +117,7 @@ namespace GalacticScale
         public static void Init()
 
         {
+            Warn("Start");
             if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
             {
                 updateMessage += "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
@@ -124,22 +125,27 @@ namespace GalacticScale
                 updateMessage += "The latest DSP update has added additional planet themes which are yet to be included in GS2. \r\nI'm working on getting them added to the GS2 themeset, as well as implementing their new subtheme system";
                 }
 
-            // Warn("Start");
+            Warn("Step2");
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
                 Warn($"Moving Configs from {OldDataDir} to {DataDir}");
                 Directory.Move(OldDataDir, DataDir);
                 updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
-
+            Warn("Step3");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
+            Warn("Step4");
             Config.Init();
+            Warn("Step5");
             LoadPreferences(true);
+            Warn("Step6");
             var themes = GSSettings.ThemeLibrary.Select(t => t.Value).ToList();
+            Warn("Step7");
             foreach (var t in themes) t.Process();
+            Warn("Step8");
             LoadGenerators();
+            Warn("Step9");
             LoadPreferences();
-
             Log("End");
         }
 
@@ -150,16 +156,22 @@ namespace GalacticScale
 
         public static void OnMenuLoaded()
         {
+            Warn("Start");
             if (MenuHasLoaded) return;
             MenuHasLoaded = true;
             Log("Loading External Themes");
             LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
+            Warn("Step1");
             ExternalThemeProcessor.LoadEnabledThemes();
+            Warn("Step2");
             Config.InitThemePanel();
+            Warn("Step3");
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
+            Warn("Step4");
             LDB._themes.Select(1);
+            Warn("Step5");
             if (Config.Dev) Utils.DumpProtosToCSharp();
-
+            Warn("Step6");
             if (Config.Dev)
             {
                 var da = LDB._veges.dataArray;
@@ -174,14 +186,15 @@ namespace GalacticScale
 
                 DumpObjectToJson(Path.Combine(DataDir, "ldbvege.json"), vegeDict);
             }
-
+            Warn("Step7");
             if (updateMessage != "")
             {
                 UIMessageBox.Show("Update Information", updateMessage, "Noted!", 0);
                 updateMessage = "";
             }
-
+            Warn("Step8");
             UpdateNebulaSettings();
+            Warn("Step9");
         }
     }
 }
