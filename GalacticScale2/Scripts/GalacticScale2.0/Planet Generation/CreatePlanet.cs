@@ -159,7 +159,7 @@ namespace GalacticScale
                 planet.singularity |= EPlanetSingularity.ClockwiseRotate;
             }
             
-            GS2.Warn(planet.singularityString + " " + planet.singularity);
+            // GS2.Warn(planet.singularityString + " " + planet.singularity);
             // Log($"{planet.name} created in {highStopwatch.duration:F5} s\r\n");
             return planet;
         }

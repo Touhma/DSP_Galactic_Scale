@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using DSPScenario;
+using ScenarioRTL;
 using UnityEngine;
 
 namespace GalacticScale
@@ -26,7 +28,57 @@ namespace GalacticScale
             }
             return false;
         }
+        // [HarmonyPrefix, HarmonyPatch(typeof(LandPlanetCountCondition), "Check")]
+        // public static bool Check(ref LandPlanetCountCondition __instance, ref bool __result)
+        // {
+        //     int num = 0;
+        //     int num2 = 0;
+        //     for (int i = 0; i < __instance.landTypeArr.Length; i++)
+        //     {
+        //         __instance.landTypeArr[i] = 0;
+        //     }
+        //     StarData[] stars = __instance.gameData.galaxy.stars;
+        //     for (int j = 0; j < stars.Length; j++)
+        //     {
+        //         if (stars[j] != null)
+        //         {
+        //             PlanetData[] planets = stars[j].planets;
+        //             for (int k = 0; k < planets.Length; k++)
+        //             {
+        //                 GS2.Log($"Checking Planet {k} {planets[k].name} with theme {planets[k].theme}");
+        //                 if (planets[k] != null && planets[k].factory != null && planets[k].factory.landed)
+        //                 {
+        //                     num++;
+        //                     if (__instance.landTypeArr[planets[k].theme] == 0)
+        //                     {
+        //                         GS2.Log($"theme == 0");
+        //                         __instance.landTypeArr[planets[k].theme] = 1;
+        //                         num2++;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     GS2.Log($"Finshed That part. Setting Refarances");
+        //     __instance.trigger.SetReferances(num, num2);
+        //     GS2.Log("Returning");
+        //     __result = Utility.Compare(num, __instance.count1, __instance.c1) && Utility.Compare(num2, __instance.count2, __instance.c2);
+        //     return false;
+        // }
+        [HarmonyPrefix, HarmonyPatch(typeof(LandPlanetCountCondition), "OnCreate")]
+        public static bool OnCreate(ref LandPlanetCountCondition __instance)
+        {
+            __instance.c1 = Utility.ToCompare(__instance.parameters["c1"]);
+            __instance.count1 = Utility.ToInt(__instance.parameters["count1"]);
+            __instance.c2 = Utility.ToCompare(__instance.parameters["c2"]);
+            __instance.count2 = Utility.ToInt(__instance.parameters["count2"]);
+            if (__instance.landTypeArr == null)
+            {
+                __instance.landTypeArr = new byte[512]; //Also in galaxy generation the LDB.themes array is truncated to 128, leaving 384 theme slots avail. if DSP adds more themes this will need to be tweaked
+            }
 
+            return false;
+        }
         //[HarmonyPrefix, HarmonyPatch(typeof(CommonUtils), "ResourcesLoadArray")]
         //public static bool ResourcesLoadArray<T>(ref T[] __result, string path, string format, bool emptyNull) where T : UnityEngine.Object
         //{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
@@ -20,9 +21,11 @@ namespace GalacticScale
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported && sketchOnly)
                 {
-                    Warn("Start");
+                    Log("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
-
+                    Warn(LDB._themes.dataArray.Length.ToString());
+                    if (LDB._themes.dataArray != null && LDB._themes.dataArray.Length > 128) Array.Resize(ref LDB._themes.dataArray, 128);
+                    Warn(LDB._themes.dataArray.Length.ToString());
                     // GS2.LogJson(gameDesc);
                     // GS2.Warn(gameDesc.resourceMultiplier.ToString());
                     // GS2.Warn(GSSettings.Instance.galaxyParams.resourceMulti.ToString());
@@ -43,8 +46,8 @@ namespace GalacticScale
                 {
                     Log("Settings Loaded From Save File");
                     gameDesc.resourceMultiplier = GSSettings.Instance.galaxyParams.resourceMulti;
-                    Log($"RM1:{gameDesc.resourceMultiplier}");
-                    Warn(gameDesc.resourceMultiplier.ToString());
+                    // Log($"RM1:{gameDesc.resourceMultiplier}");
+                    // Log(gameDesc.resourceMultiplier.ToString());
                 }
 
                 Log($"Galaxy Loaded: {highStopwatch.duration:F5}");
