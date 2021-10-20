@@ -41,8 +41,8 @@ namespace GalacticScale
 
         public static bool Update()
         {
-            var localStar = GameMain.localStar;
-            var localPlanet = GameMain.localPlanet;
+            var localStar = GameMain.data.localStar;
+            var localPlanet = GameMain.data.localPlanet;
             closestStar = localStar;
             closestPlanet = localPlanet;
             var warping = GameMain.mainPlayer.warping;
@@ -128,7 +128,7 @@ namespace GalacticScale
 
                 resetCamera = true;
                 LogStatus($"Leaving Star {localStar.name} as it is not closest");
-                GameMain.data.LeaveStar();
+                if (GameMain.data.localStar != null )GameMain.data.LeaveStar();
             }
             else if (closestStar != null)
             {
