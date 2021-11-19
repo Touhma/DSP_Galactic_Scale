@@ -9,7 +9,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GameMain), "OnMainCameraPostRender")]
         private static bool PatchOnMainCameraPostRender(Camera cam)
         {
-            if (GameMain.data != null) GameMain.data.OnPostDraw();
+            if (!GameMain.isPaused && GameMain.data != null) GameMain.data.OnPostDraw();
 
             return false;
         }
