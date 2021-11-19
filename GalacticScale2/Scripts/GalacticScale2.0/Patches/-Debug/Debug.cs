@@ -1,8 +1,6 @@
 ﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using DSPScenario;
-using ScenarioRTL;
 using UnityEngine;
 
 namespace GalacticScale
@@ -65,20 +63,20 @@ namespace GalacticScale
         //     __result = Utility.Compare(num, __instance.count1, __instance.c1) && Utility.Compare(num2, __instance.count2, __instance.c2);
         //     return false;
         // }
-        [HarmonyPrefix, HarmonyPatch(typeof(LandPlanetCountCondition), "OnCreate")]
-        public static bool OnCreate(ref LandPlanetCountCondition __instance)
-        {
-            __instance.c1 = Utility.ToCompare(__instance.parameters["c1"]);
-            __instance.count1 = Utility.ToInt(__instance.parameters["count1"]);
-            __instance.c2 = Utility.ToCompare(__instance.parameters["c2"]);
-            __instance.count2 = Utility.ToInt(__instance.parameters["count2"]);
-            if (__instance.landTypeArr == null)
-            {
-                __instance.landTypeArr = new byte[512]; //Also in galaxy generation the LDB.themes array is truncated to 128, leaving 384 theme slots avail. if DSP adds more themes this will need to be tweaked
-            }
+        //[HarmonyPrefix, HarmonyPatch(typeof(LandPlanetCountCondition), "OnCreate")]
+        //public static bool OnCreate(ref LandPlanetCountCondition __instance)
+        //{
+        //    __instance.c1 = Utility.ToCompare(__instance.parameters["c1"]);
+        //    __instance.count1 = Utility.ToInt(__instance.parameters["count1"]);
+        //    __instance.c2 = Utility.ToCompare(__instance.parameters["c2"]);
+        //    __instance.count2 = Utility.ToInt(__instance.parameters["count2"]);
+        //    if (__instance.landTypeArr == null)
+        //    {
+        //        __instance.landTypeArr = new byte[512]; //Also in galaxy generation the LDB.themes array is truncated to 128, leaving 384 theme slots avail. if DSP adds more themes this will need to be tweaked
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
         //[HarmonyPrefix, HarmonyPatch(typeof(CommonUtils), "ResourcesLoadArray")]
         //public static bool ResourcesLoadArray<T>(ref T[] __result, string path, string format, bool emptyNull) where T : UnityEngine.Object
         //{
