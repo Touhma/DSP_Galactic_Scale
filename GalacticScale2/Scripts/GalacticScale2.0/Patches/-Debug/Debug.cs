@@ -11,11 +11,11 @@ namespace GalacticScale
         [HarmonyPostfix, HarmonyPatch(typeof(WarningSystem), "Init")]
         public static void Init(ref WarningSystem __instance)
         {
-            __instance.warningCounts = new int[65536000];
-            __instance.warningSignals = new int[2048000];
-            __instance.focusDetailCounts = new int[65536000];
-            __instance.focusDetailSignals = new int[2048000];
-            var l = GS2.galaxy.astroPoses.Length;
+            //__instance.warningCounts = new int[65536000];
+            //__instance.warningSignals = new int[2048000];
+            //__instance.focusDetailCounts = new int[65536000];
+            //__instance.focusDetailSignals = new int[2048000];
+            var l = GameMain.galaxy.starCount * 1024;
             __instance.astroArr = new AstroPoseR[l];
             __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default);
         }
