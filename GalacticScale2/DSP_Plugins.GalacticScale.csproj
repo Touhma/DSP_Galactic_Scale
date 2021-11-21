@@ -41,8 +41,8 @@
     <Reference Include="0Harmony">
       <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\Assembly-CSharp_publicized_0_8_23_9808.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>

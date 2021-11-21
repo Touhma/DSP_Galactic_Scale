@@ -8,6 +8,61 @@ namespace GalacticScale
 {
     public class PatchOnWhatever
     {
+        [HarmonyPrefix, HarmonyPatch(typeof(UIAchievementPanel), "LoadData")]
+        public static bool LoadData(UIAchievementPanel __instance)
+        {
+            // __instance.unlockedEntries.Clear();
+            // __instance.lockedEntries.Clear();
+            // __instance.inProgressEntries.Clear();
+            __instance.uiEntries.Clear();
+            // foreach (KeyValuePair<int, AchievementState> keyValuePair in DSPGame.achievementSystem.achievements)
+            // {
+            //     if (keyValuePair.Value.unlocked)
+            //     {
+            //         UIAchievementEntry uiachievementEntry = UnityEngine.Object.Instantiate<UIAchievementEntry>(__instance.entryPrefab, __instance.unlockedContainerRect);
+            //         uiachievementEntry._Create();
+            //         uiachievementEntry._Init(null);
+            //         uiachievementEntry.SetAchievementData(keyValuePair.Value.id);
+            //         if (!__instance.unlockedEntries.Contains(uiachievementEntry)) __instance.unlockedEntries.Add(uiachievementEntry);
+            //         uiachievementEntry.index = __instance.unlockedEntries.IndexOf(uiachievementEntry);
+            //         __instance.uiEntries.Add(keyValuePair.Key, uiachievementEntry);
+            //         uiachievementEntry._Open();
+            //     }
+            //     else if (keyValuePair.Value.targetValue > 1L && keyValuePair.Value.progressValue > 0L)
+            //     {
+            //         UIAchievementEntry uiachievementEntry2 = UnityEngine.Object.Instantiate<UIAchievementEntry>(__instance.entryPrefab, __instance.inProgressContainerRect);
+            //         uiachievementEntry2._Create();
+            //         uiachievementEntry2._Init(null);
+            //         uiachievementEntry2.SetAchievementData(keyValuePair.Value.id);
+            //         __instance.inProgressEntries.Add(uiachievementEntry2);
+            //         uiachievementEntry2.index = __instance.inProgressEntries.IndexOf(uiachievementEntry2);
+            //         __instance.uiEntries.Add(keyValuePair.Key, uiachievementEntry2);
+            //         uiachievementEntry2._Open();
+            //     }
+            //     else
+            //     {
+            //         UIAchievementEntry uiachievementEntry3 = UnityEngine.Object.Instantiate<UIAchievementEntry>(__instance.entryPrefab, __instance.lockedContainerRect);
+            //         uiachievementEntry3._Create();
+            //         uiachievementEntry3._Init(null);
+            //         uiachievementEntry3.SetAchievementData(keyValuePair.Value.id);
+            //         __instance.lockedEntries.Add(uiachievementEntry3);
+            //         uiachievementEntry3.index = __instance.lockedEntries.IndexOf(uiachievementEntry3);
+            //         __instance.uiEntries.Add(keyValuePair.Key, uiachievementEntry3);
+            //         uiachievementEntry3._Open();
+            //     }
+            // }
+            // __instance.inProgressEntries.Sort(new AchievementProgressComparer());
+            // foreach (UIAchievementEntry uiachievementEntry4 in __instance.inProgressEntries)
+            // {
+            //     uiachievementEntry4.index = __instance.inProgressEntries.IndexOf(uiachievementEntry4);
+            // }
+
+            return true;
+        }
+
+        
+        
+        
         [HarmonyPostfix, HarmonyPatch(typeof(WarningSystem), "Init")]
         public static void Init(ref WarningSystem __instance)
         {
