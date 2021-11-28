@@ -49,7 +49,7 @@ Have fun with it and good testing !
 ## How to Install :
 
 First Install Bepinex in your game
-folder : https://bepinex.github.io/bepinex_docs/master/articles/user_guide/installation/index.html?tabs=tabid-win
+folder : https://docs.bepinex.dev/articles/user_guide/installation/index.html
 
 Then Download the latest release of the mod : http://customizing.space/release or https://github.com/Touhma/DSP_Plugins/releases
 
