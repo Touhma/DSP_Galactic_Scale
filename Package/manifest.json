@@ -1,0 +1,9 @@
+{
+  "name": "GalacticScale",
+  "version_number": "2.2.13",
+  "website_url": "https://github.com/Touhma/DSP_Plugins",
+  "description": "v2.2.0.13. Fixed Compatibility with DSP Update (Even more compatible now!)",
+  "dependencies": [
+    "xiaoye97-BepInEx-5.4.11", "nebula-NebulaMultiplayerModApi-1.1.1"
+  ]
+}

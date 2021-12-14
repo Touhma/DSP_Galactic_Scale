@@ -42,7 +42,7 @@
       <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\Assembly-CSharp_publicized_0_8_23_9808.dll</HintPath>
+      <HintPath>..\..\Assembly-CSharp_publicized_0_8_23_9989 .dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
