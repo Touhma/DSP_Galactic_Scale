@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Reflection;
 using BepInEx;
@@ -95,6 +94,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnUIVirtualStarmap));
             Harmony.CreateAndPatchAll(typeof(PatchOnUniverseGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnVFPreload));
+            Harmony.CreateAndPatchAll(typeof(PatchOnUIAchievementPanel));
         }
 
         private void FixedUpdate()

@@ -340,6 +340,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Constructors.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Set.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Plugins\iConfigurablePlugin.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIAchievementPanel\LoadData_Transpiler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\ExitProgramSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVeinDetail\SetInspectPlanet.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Start.cs" />
@@ -471,7 +472,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\OnGameBegin.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\_OnInit.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVirtualStarmap\OnGalaxyDataReset.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIVirtualStarmap\_OnLateUpdate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />

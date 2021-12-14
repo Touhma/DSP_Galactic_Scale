@@ -6,4 +6,5 @@ GalacticScale.sln.DotSettings.user
 DSP_Plugins.GalacticScale/Directory.Build.props
 DSP_Plugins.GalacticScale/lib/**
 GalacticScale2/Directory.Build.props
+GalacticScale2/obj/
 packages
