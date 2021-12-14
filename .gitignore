@@ -8,3 +8,4 @@ DSP_Plugins.GalacticScale/lib/**
 GalacticScale2/Directory.Build.props
 GalacticScale2/obj/
 packages
+UpgradeLog*

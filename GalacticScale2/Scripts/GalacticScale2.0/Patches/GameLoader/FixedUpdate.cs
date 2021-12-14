@@ -52,8 +52,9 @@ namespace GalacticScale
 
                 GameMain.data.SetReady();
                 if (GameCamera.instance == null) return false;
-
+                GameMain.preferences.LateRestore();
                 GameCamera.instance.SetReady();
+                
             }
 
             if (__instance.frame == 10)
@@ -71,7 +72,7 @@ namespace GalacticScale
                         UIMessageBox.Show("存档修复标题".Translate(), "存档修复提示".Translate() + "\r\n" + str, "确定".Translate(), 0);
                 }
 
-                GameMain.data.patch = 2;
+                GameMain.data.patch = 3;
             }
 
             ++__instance.frame;
