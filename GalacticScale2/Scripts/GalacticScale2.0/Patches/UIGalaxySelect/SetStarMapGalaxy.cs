@@ -11,14 +11,12 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect), "SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
-            GS2.Warn("IM HERE");
             if (NebulaModAPI.MultiplayerSession != null && NebulaModAPI.MultiplayerSession.LocalPlayer.IsClient && !GSSettings.lobbyReceivedUpdateValues)
             {
                 NebulaModAPI.MultiplayerSession.Network.SendPacket(new LobbyRequestUpdateSolarSystems());
                 return false;
             }
             GSSettings.lobbyReceivedUpdateValues = false;
-            GS2.Warn("DONE");
 
             GS2.Log("Start");
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null 3");
@@ -39,8 +37,7 @@ namespace GalacticScale
             if (galaxy == null) GS2.Warn("galaxy Null");
             //else GS2.Warn("Galaxy not null");
             __instance.starmap.galaxyData = galaxy;
-
-            GS2.Warn("SEED: " + __instance.starmap.galaxyData.seed + " " + GSSettings.Seed);
+            GameMain.data.galaxy = galaxy; // this line is important to let the client load into the correct galaxy lol
 
             __instance.UpdateUIDisplay(__instance.starmap.galaxyData);
             __instance.UpdateParametersUIDisplay();

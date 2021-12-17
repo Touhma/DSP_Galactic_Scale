@@ -21,7 +21,6 @@ namespace GalacticScale
                     w.Write(data);
                     w.Close();
                     byte[] output = ms.ToArray();
-                    GS2.Warn(output.Length.ToString());
                     conn.SendPacket(new LobbyResponseUpdateSolarSystems(output));
                 }
             }

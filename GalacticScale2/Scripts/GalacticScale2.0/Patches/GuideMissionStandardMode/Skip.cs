@@ -33,7 +33,14 @@ namespace GalacticScale
             {
                 if (GameMain.localPlanet != null)
                     __instance.gameData.localPlanet = GameMain.localPlanet;
-                else return GS2.AbortGameStart("Unable to find a habitable starting planet. If loading from a custon JSON, please check it for errors with an online tool.");
+                else
+                {
+                    __instance.gameData.ArrivePlanet(__instance.gameData.galaxy.PlanetById(__instance.gameData.galaxy.birthPlanetId));
+                    if(__instance.gameData.localPlanet == null)
+                    {
+                        return GS2.AbortGameStart("Unable to find a habitable starting planet. If loading from a custon JSON, please check it for errors with an online tool.");
+                    }
+                }
             }
 
             __instance.localPlanet = __instance.gameData.localPlanet;
