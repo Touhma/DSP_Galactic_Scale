@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using NebulaAPI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,15 +11,27 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect), "SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
+            GS2.Warn("IM HERE");
+            if (NebulaModAPI.MultiplayerSession != null && NebulaModAPI.MultiplayerSession.LocalPlayer.IsClient && !GSSettings.lobbyReceivedUpdateValues)
+            {
+                NebulaModAPI.MultiplayerSession.Network.SendPacket(new LobbyRequestUpdateSolarSystems());
+                return false;
+            }
+            GSSettings.lobbyReceivedUpdateValues = false;
+            GS2.Warn("DONE");
+
             GS2.Log("Start");
-            GalaxyData galaxy;
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null 3");
             if (__instance.gameDesc.starCount <= 0) __instance.gameDesc.starCount = 1;
+
+            GalaxyData galaxy = __instance.starmap.galaxyData;
+
             if (GS2.Vanilla)
                 galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             else
                 //GS2.Warn("Processing Galaxy");
                 galaxy = GS2.ProcessGalaxy(__instance.gameDesc, true);
+
             //GS2.Warn("Done");
             if (__instance.starmap == null) GS2.Warn("Starmap Null");
             if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
@@ -26,7 +39,10 @@ namespace GalacticScale
             if (galaxy == null) GS2.Warn("galaxy Null");
             //else GS2.Warn("Galaxy not null");
             __instance.starmap.galaxyData = galaxy;
-            __instance.UpdateUIDisplay(galaxy);
+
+            GS2.Warn("SEED: " + __instance.starmap.galaxyData.seed + " " + GSSettings.Seed);
+
+            __instance.UpdateUIDisplay(__instance.starmap.galaxyData);
             __instance.UpdateParametersUIDisplay();
             __instance.autoCameraYaw = true;
             __instance.lastCameraYaw = __instance.cameraPoser.yawWanted;
@@ -38,7 +54,7 @@ namespace GalacticScale
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText == null) GS2.Warn("starcounttext null");
                 if (starCountText == null) starCountText = CreateStarCountText(__instance.starCountSlider);
-                starCountText.GetComponent<Text>().text = galaxy.starCount + "   (" + GS2.ActiveGenerator.Name + ")";
+                starCountText.GetComponent<Text>().text = __instance.starmap.galaxyData.starCount + "   (" + GS2.ActiveGenerator.Name + ")";
             }
             else
             {

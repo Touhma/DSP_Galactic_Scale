@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NebulaAPI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,6 +67,7 @@ namespace GalacticScale
                 highStopwatch.Begin();
 
                 Log("Creating new GalaxyData");
+                GS2.Warn("SEEEEED: " + GSSettings.Seed);
                 galaxy = new GalaxyData();
                 galaxy.seed = GSSettings.Seed;
                 galaxy.starCount = GSSettings.StarCount;

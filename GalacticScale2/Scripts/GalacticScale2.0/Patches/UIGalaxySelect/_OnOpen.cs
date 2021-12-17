@@ -30,8 +30,8 @@ namespace GalacticScale
             StartButton?.SetActive(true);
             GS2.Log(StartButton?.name);
             __instance.random =
-                // new DotNet35Random(GSSettings.Seed); 
-                new DotNet35Random((int)(DateTime.Now.Ticks / 10000L));
+                 new DotNet35Random(GSSettings.Seed); // better for multiplayer so only seed needs to be in sync
+                //new DotNet35Random((int)(DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
             __instance.gameDesc?.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.ActiveGenerator.Config.DefaultStarCount, 1, GS2.Config.ResourceMultiplier);
             GS2.gameDesc = __instance.gameDesc;
