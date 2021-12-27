@@ -82,5 +82,37 @@ namespace GalacticScale
             GS2.Log("End");
             return false;
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UIGalaxySelect), "SetStarmapGalaxy")]
+        public static void SetStarmapGalaxy_Postfix(UIGalaxySelect __instance)
+        {
+            // this is needed at least in the nebula lobby, throws index out of bounds if not done.
+            if(GS2.galaxy == null)
+            {
+                return;
+            }
+            if(GameMain.universeSimulator == null)
+            {
+                GameMain.universeSimulator = UnityEngine.Object.Instantiate<UniverseSimulator>(Configs.builtin.universeSimulatorPrefab);
+                GameMain.universeSimulator.gameObject.name = "Universe";
+                GameMain.universeSimulator.galaxyData = GS2.galaxy;
+            }
+            GameMain.universeSimulator.starSimulators = new StarSimulator[GS2.galaxy.starCount];
+            for (int i = 0; i < GS2.galaxy.starCount; i++)
+            {
+                StarData star = GS2.galaxy.stars[i];
+                if(star == null)
+                {
+                    continue;
+                }
+                GameMain.universeSimulator.starSimulators[i] = UnityEngine.Object.Instantiate<StarSimulator>(GameMain.universeSimulator.starPrefab, GameMain.universeSimulator.transform);
+                GameMain.universeSimulator.starSimulators[i].universeSimulator = GameMain.universeSimulator;
+                GameMain.universeSimulator.starSimulators[i].SetStarData(star);
+                GameMain.universeSimulator.starSimulators[i].gameObject.name = star.displayName;
+                GameMain.universeSimulator.starSimulators[i].gameObject.layer = 24;
+                GameMain.universeSimulator.starSimulators[i].gameObject.SetActive(true);
+            }
+        }
     }
 }
