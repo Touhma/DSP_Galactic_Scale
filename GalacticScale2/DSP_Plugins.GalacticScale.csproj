@@ -347,6 +347,7 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIAchievementPanel\LoadData_Transpiler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\ExitProgramSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVeinDetail\SetInspectPlanet.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIVirtualStarmap\_OnLateUpdate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Start.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Restart.cs" />
@@ -648,7 +649,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2000/1/1" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\BepInEx.Core.5.4.16\build\BepInEx.Core.targets" Condition="Exists('..\packages\BepInEx.Core.5.4.16\build\BepInEx.Core.targets')" />
