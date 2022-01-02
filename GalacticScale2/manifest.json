@@ -4,6 +4,7 @@
   "website_url": "https://github.com/Touhma/DSP_Plugins",
   "description": "Custom Galaxy Generation, Planet Sizes, New Planet Themes & More!",
   "dependencies": [
-    "xiaoye97-BepInEx-5.4.5"
+    "xiaoye97-BepInEx-5.4.5",
+    "nebula-NebulaMultiplayerModApi-1.1.2"
   ]
 }

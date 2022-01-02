@@ -14,12 +14,12 @@ namespace GalacticScale
         // __instance.OnGalaxyDataReset();
 
 
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(UIVirtualStarmap), "_OnLateUpdate")]
-        public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)
+        public static void _OnLateUpdate(ref UIVirtualStarmap __instance)
         {
-            if (GS2.Vanilla) return true;
-            if (NebulaModAPI.MultiplayerSession != null) return true; // use new lobby feature in multiplayer but preserve existing functionality in single player
+            if (GS2.Vanilla) return;
+            if (NebulaModAPI.MultiplayerSession != null) return; // use new lobby feature in multiplayer but preserve existing functionality in single player
 
             var index1 = -1;
             var num1 = 1.7f;
@@ -58,7 +58,7 @@ namespace GalacticScale
                 var flag2 = __instance.starPool[index2].active && index2 == index1;
                 __instance.starPool[index2].nameText.gameObject.SetActive(flag2);
 
-                if (flag2 & flag1)
+                if (flag2)
                 {
                     // GS2.Log("0");
                     if (pressing && !GS2.GetGSStar(__instance.starPool[index1].starData).Decorative)
@@ -97,7 +97,7 @@ namespace GalacticScale
             var flag3 = index1 >= 0 && __instance.starPool[index1].active;
             __instance.starPointSelection.gameObject.SetActive(flag3);
             __instance.starPool[GSSettings.BirthPlanet.planetData.star.index].nameText.gameObject.SetActive(true);
-            if (!flag3) return false;
+            if (!flag3) return;
 
             var starData1 = __instance.starPool[index1].starData;
             var color1 = __instance.starColors.Evaluate(starData1.color);
@@ -119,7 +119,7 @@ namespace GalacticScale
             __instance.starPointSelection.material.SetColor("_TintColor", color1);
             __instance.starPointSelection.transform.localPosition = starData1.position;
             __instance.starPointSelection.transform.localScale = Vector3.one * (float)(num4 * 0.600000023841858 + 0.600000023841858);
-            return false;
+            return;
         }
     }
 }
