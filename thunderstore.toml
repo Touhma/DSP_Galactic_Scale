@@ -1,0 +1,35 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "Galactic_Scale"
+name = "GalacticScale"
+versionNumber = "2.2.13"
+description = "v2.2.0.13. Fixed Compatibility with DSP Update (Even more compatible now!)"
+websiteUrl = "https://github.com/Touhma/DSP_Plugins"
+containsNsfwContent = false
+
+[package.dependencies]
+"xiaoye97-BepInEx-5.4.17"= "5.4.17"
+
+[build]
+icon = "./Package/icon.png"
+readme = "./Package/README.md"
+outdir = "./"
+
+[[build.copy]]
+source = "./GalacticScale2/bin/Debug/GalacticScale.dll"
+target = "./GalacticScale.dll"
+[[build.copy]]
+source = "./GalacticScale2/bin/Debug/GSUI.dll"
+target = "./GSUI.dll"
+[[build.copy]]
+source = "./Package/3rdPartyLicenses.md"
+target = "./3rdPartyLicenses.md"
+[[build.copy]]
+source = "./Package/galacticbundle"
+target = "./galacticbundle"
+[publish]
+repository = "https://thunderstore.io"
+communities = ["dyson-sphere-program"]
+categories = []

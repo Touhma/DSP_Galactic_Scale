@@ -20,7 +20,7 @@ namespace GalacticScale
     // [BepInDependency("nebula.api", BepInDependency.DependencyFlags.HardDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
-        public const string VERSION = "2.2.0.12";
+        public const string VERSION = "2.2.0.13";
 
         public new static ManualLogSource Logger;
 
