@@ -23,6 +23,10 @@ namespace GalacticScale
             var position = r.BaseStream.Position;
             var version = r.ReadString();
             var json = r.ReadString();
+            if (Config.Dev)
+            {
+                File.WriteAllText(Path.Combine(GS2.DataDir, "SaveContentsRaw.txt"),json);
+            }
             var result = GSSettings.Instance;
             fsData data2;
             var parseResult = fsJsonParser.Parse(json, out data2);

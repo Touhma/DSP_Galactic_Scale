@@ -354,7 +354,7 @@ namespace GalacticScale
                     if (PreviousSibling.OrbitRadius != gsPlanet.OrbitRadius)
                     {
                         var distanceAU = gsPlanet.OrbitInnermostSurfaceRadiusAU - PreviousSibling.OrbitOutermostSystemRadiusAU;
-                        Log($"Distance to previous siblings Last Satellite's Surface from {planet.name} surface is {distanceAU * 40000f}");
+                        Log($"Distance to previous siblings Last Satellite's Surface from {planet.name} surface is {distanceAU * 40000f} where PreviousSibling is {PreviousSibling.Name} and OrbitOutermostSystemRadiusAU is {PreviousSibling.OrbitOutermostSystemRadiusAU}");
                         if (distanceAU * 20000f - 100f < transitionDistance)
                         {
                             Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU * 20000f - 100f}");
@@ -393,7 +393,7 @@ namespace GalacticScale
                 }
             }
 
-
+            if (transitionDistance < (planet.realRadius + 100)) transitionDistance = planet.realRadius + 100;
             if (!TransitionRadii.ContainsKey(planet)) TransitionRadii.Add(planet, transitionDistance);
             Log($"Transition Radius: {transitionDistance} for {planet.name} with radius {planet.realRadius}");
             return transitionDistance;
