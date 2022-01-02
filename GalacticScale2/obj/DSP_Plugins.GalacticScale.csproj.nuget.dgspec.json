@@ -1,0 +1,76 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\code\\GalacticScale2\\GalacticScale2\\DSP_Plugins.GalacticScale.csproj": {}
+  },
+  "projects": {
+    "E:\\code\\GalacticScale2\\GalacticScale2\\DSP_Plugins.GalacticScale.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\code\\GalacticScale2\\GalacticScale2\\DSP_Plugins.GalacticScale.csproj",
+        "projectName": "DSP_Plugins.GalacticScale",
+        "projectPath": "E:\\code\\GalacticScale2\\GalacticScale2\\DSP_Plugins.GalacticScale.csproj",
+        "packagesPath": "C:\\Users\\inno\\.nuget\\packages\\",
+        "outputPath": "E:\\code\\GalacticScale2\\GalacticScale2\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "E:\\code\\GalacticScale2\\NuGet.Config",
+          "C:\\Users\\inno\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "BepInEx.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.*, )"
+            },
+            "BepInEx.Core": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.*, )"
+            },
+            "DysonSphereProgram.GameLibs": {
+              "include": "Compile",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[*-*, )"
+            },
+            "UnityEngine.Modules": {
+              "include": "Compile",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2018.4.12, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

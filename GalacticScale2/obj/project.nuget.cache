@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "dgSpecHash": "87R0C2+7Eu8cB94TkLGVePZwbROVK+YuXmNQeP0FyqE9y5wyb4Irs63D8crMv/gOf7q+14koy7iItFlZXtIBrw==",
+  "success": false,
+  "projectFilePath": "E:\\code\\GalacticScale2\\GalacticScale2\\DSP_Plugins.GalacticScale.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\inno\\.nuget\\packages\\dysonsphereprogram.gamelibs\\0.8.23.9989-r.0\\dysonsphereprogram.gamelibs.0.8.23.9989-r.0.nupkg.sha512",
+    "C:\\Users\\inno\\.nuget\\packages\\unityengine.modules\\2018.4.12\\unityengine.modules.2018.4.12.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package BepInEx.Analyzers. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages, nuget.org",
+      "libraryId": "BepInEx.Analyzers",
+      "targetGraphs": [
+        ".NETFramework,Version=v4.8",
+        ".NETFramework,Version=v4.8/win",
+        ".NETFramework,Version=v4.8/win-x64",
+        ".NETFramework,Version=v4.8/win-x86"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package BepInEx.Core. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages, nuget.org",
+      "libraryId": "BepInEx.Core",
+      "targetGraphs": [
+        ".NETFramework,Version=v4.8",
+        ".NETFramework,Version=v4.8/win",
+        ".NETFramework,Version=v4.8/win-x64",
+        ".NETFramework,Version=v4.8/win-x86"
+      ]
+    }
+  ]
+}

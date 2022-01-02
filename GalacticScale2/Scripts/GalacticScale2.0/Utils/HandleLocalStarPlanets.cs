@@ -2,6 +2,7 @@
 using UnityEngine;
 using static GalacticScale.GS2;
 
+
 namespace GalacticScale
 {
     public static class HandleLocalStarPlanets
@@ -298,7 +299,7 @@ namespace GalacticScale
                 if (distanceAU * 20000f - 100f < transitionDistance)
                 {
                     Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU * 20000f - 100f}");
-                    transitionDistance = distanceAU * 20000f - 100f;
+                    transitionDistance = (int)distanceAU * 20000 - 100;
                 }
             }
             else if (planet.orbitAroundPlanet != null) //If this is a moon
