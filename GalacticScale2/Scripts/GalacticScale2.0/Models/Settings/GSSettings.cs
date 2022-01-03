@@ -21,6 +21,8 @@ namespace GalacticScale
         [SerializeField] public GSGalaxyParams galaxyParams = new GSGalaxyParams();
         public string generatorGUID = null;
 
+        public static bool lobbyReceivedUpdateValues = false;
+
         [NonSerialized] public bool imported;
 
         [SerializeField] public int seed = 1;

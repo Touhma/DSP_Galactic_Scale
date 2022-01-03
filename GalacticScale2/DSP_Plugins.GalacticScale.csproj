@@ -14,6 +14,8 @@
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
     <AssemblyVersion>2.0.55.2</AssemblyVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,23 +50,38 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>$(BepInExCore_Dir)\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.5.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HarmonyX.2.5.5\lib\net45\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\Assembly-CSharp_publicized_0_8_23_9989 .dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>$(BepInExCore_Dir)\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Harmony">
-      <HintPath>$(BepInExCore_Dir)\BepInEx.Harmony.dll</HintPath>
+    <Reference Include="BepInEx, Version=5.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BepInEx.BaseLib.5.4.16\lib\net35\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="GSUI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\GSUI.dll</HintPath>
     </Reference>
-    <Reference Include="NebulaAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\nebula-NebulaMultiplayerModApi\NebulaAPI.dll</HintPath>
+    <Reference Include="Mono.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour, Version=21.8.19.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoMod.RuntimeDetour.21.8.19.1\lib\net40\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils, Version=21.8.19.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoMod.Utils.21.8.19.1\lib\net40\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="NebulaAPI, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.Modding.NebulaMultiplayerModApi.1.1.2\lib\net472\NebulaAPI.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\netstandard.dll</HintPath>
@@ -76,40 +93,200 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\Unity.TextMeshPro.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    <Reference Include="UnityEngine.AccessibilityModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.AIModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.BaselibModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.BaselibModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.FileSystemHttpModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.FileSystemHttpModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    <Reference Include="UnityEngine.InputModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.InputModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
+    <Reference Include="UnityEngine.LocalizationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(DSP_Dir)\DSPGAME_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    <Reference Include="UnityEngine.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StyleSheetsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.StyleSheetsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TextCoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TimelineModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TimelineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.Modules.2018.4.12\lib\net45\UnityEngine.XRModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -172,9 +349,15 @@
     <Compile Include="Scripts\3rdParty\PCGSharp\Pcg.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Constructors.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\GSUI\GSUI-Set.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Packets\LobbyRequestUpdateSolarSystemsProcessor.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Packets\LobbyRequestUpdateSolarSystems.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Packets\LobbyResponseUpdateSolarSystems.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Models\Packets\LobbyResponseUpdateSolarSystemsProcessor.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Plugins\iConfigurablePlugin.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIAchievementPanel\LoadData_Transpiler.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\ExitProgramSplash.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVeinDetail\SetInspectPlanet.cs" />
+    <Compile Include="Scripts\GalacticScale2.0\Patches\UIVirtualStarmap\_OnLateUpdate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Start.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Update.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\VFPreload\Restart.cs" />
@@ -304,7 +487,6 @@
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIRoot\OnGameBegin.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIStarmapPlanet\_OnInit.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\UIVirtualStarmap\OnGalaxyDataReset.cs" />
-    <Compile Include="Scripts\GalacticScale2.0\Patches\UIVirtualStarmap\_OnLateUpdate.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Planet Generation\PlanetAlgorithm.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Models\Libraries\TerrainAlgorithmLibrary.cs" />
     <Compile Include="Scripts\GalacticScale2.0\Patches\PlanetRawData\PlanetRawDataExtension.cs" />
@@ -440,6 +622,16 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Directory.Build.props" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Error Text="Please specify a Plugins_Dir environment variable, which goes to your BepInEx Plugins folder. See Directory.Build.props.example for a simple way to define this variable." Condition="$(Plugins_Dir) == ''" />
@@ -470,4 +662,11 @@
       <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\BepInEx.Core.5.4.16\build\BepInEx.Core.targets" Condition="Exists('..\packages\BepInEx.Core.5.4.16\build\BepInEx.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BepInEx.Core.5.4.16\build\BepInEx.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BepInEx.Core.5.4.16\build\BepInEx.Core.targets'))" />
+  </Target>
 </Project>
