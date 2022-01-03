@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.2.13"
-description = "v2.2.0.13. Fixed Compatibility with DSP Update (Even more compatible now!)"
+versionNumber = "2.2.14"
+description = "v2.2.0.14. Fixed Compatibility with Nebula (Even more compatible now!)"
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 
