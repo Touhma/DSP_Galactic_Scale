@@ -24,7 +24,9 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.bepinex.dev/v3/index.json": {},
+          "https://nuget.bepinex.dev/v3/index.json": {}
         },
         "frameworks": {
           "net48": {
@@ -52,7 +54,7 @@
               "version": "[*-*, )"
             },
             "UnityEngine.Modules": {
-              "include": "Compile",
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
               "version": "[2018.4.12, )"

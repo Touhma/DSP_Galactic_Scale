@@ -10,7 +10,7 @@ websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 
 [package.dependencies]
-"xiaoye97-BepInEx-5.4.17"= "5.4.17"
+"xiaoye97-BepInEx" = "5.4.17"
 
 [build]
 icon = "./Package/icon.png"
