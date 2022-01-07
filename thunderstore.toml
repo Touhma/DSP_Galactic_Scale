@@ -11,6 +11,7 @@ containsNsfwContent = false
 
 [package.dependencies]
 "xiaoye97-BepInEx" = "5.4.17"
+"nebula-NebulaMultiplayerModApi" = "1.1.2"
 
 [build]
 icon = "./Package/icon.png"
