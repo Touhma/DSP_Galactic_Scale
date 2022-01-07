@@ -60,12 +60,24 @@ namespace GalacticScale
             return true;
         }
 
-        
-        
+        // [HarmonyPrefix, HarmonyPatch(typeof(VegeRenderer), "AddInst")]
+        // public static bool AddInst(VegeRenderer __instance, int __result, int objId, Vector3 pos, Quaternion rot, bool setBuffer = true)
+        // {
+        //     return false;
+        // }
         
         [HarmonyPostfix, HarmonyPatch(typeof(WarningSystem), "Init")]
         public static void Init(ref WarningSystem __instance)
         {
+            GS2.Warn("Warning System Initializing");
+            GS2.Warn($"Star Count: {GSSettings.StarCount}");
+            var planetCount = GSSettings.PlanetCount;
+            GS2.Warn($"Planet Count: {planetCount}");
+            GS2.Warn($"Factory Length: {__instance.gameData.factories.Length}");
+            if (__instance.gameData.factories.Length > planetCount) planetCount = __instance.gameData.factories.Length;
+            __instance.tmpEntityPools = new EntityData[planetCount][];
+            __instance.tmpPrebuildPools = new PrebuildData[planetCount][];
+            __instance.tmpSignPools = new SignData[planetCount][];
             __instance.warningCounts = new int[GameMain.galaxy.starCount * 1024];
             __instance.warningSignals = new int[GameMain.galaxy.starCount * 32];
             __instance.focusDetailCounts = new int[GameMain.galaxy.starCount * 1024];
@@ -73,6 +85,7 @@ namespace GalacticScale
             var l = GameMain.galaxy.starCount * 400;
             __instance.astroArr = new AstroPoseR[l];
             __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default);
+            GS2.Warn($"Pool Length: {__instance.tmpEntityPools.Length}");
         }
             [HarmonyPrefix, HarmonyPatch(typeof(ThemeProto), "Preload")]
         public static bool Preload(ref ThemeProto __instance)

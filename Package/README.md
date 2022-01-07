@@ -1,28 +1,34 @@
 # DSP Galactic Scale 2.0 Mod
 
- - Version 2.2.0.13 - Updated game version
+- Version 2.2.0.16 - 2.2.0.14 Save Compatibility Fix
+
+- Version 2.2.0.15 - Fix for Blueprint bug caused by latest DSP update. Thanks to Tartarus Music & Raptor for diagnosing this issue.
  
- - Version 2.2.0.12 - Fixed bug with Achievement Panel causing error on game start
+- Version 2.2.0.14 - Updated game version 0.8.23.9989
 
- - Version 2.2.0.11 - Fixed compatibility with game update
+- Version 2.2.0.13 - Updated game version
 
- - Version 2.2.0.10 - Fixed client bug when host warps using Nebula Multiplayer
+- Version 2.2.0.12 - Fixed bug with Achievement Panel causing error on game start
 
- - Version 2.2.0.9 - Fixed bug caused by 2.2.0.8
- 
- - Version 2.2.0.8 - Fixed error caused by DSP Update's achievement code, that would occur after a few galaxy generations. Bumped NebulaAPI Version requirement.
+- Version 2.2.0.11 - Fixed compatibility with game update
 
- - Version 2.2.0.7 - Fixed loading times caused by 2.2.0.6
+- Version 2.2.0.10 - Fixed client bug when host warps using Nebula Multiplayer
 
- - Version 2.2.0.5 - Fixed planets with reverse rotation/orbit. Fixed orbital resonance text.
+- Version 2.2.0.9 - Fixed bug caused by 2.2.0.8
 
- - Version 2.2.0.4 - Fixed birth planet moon theme selection
+- Version 2.2.0.8 - Fixed error caused by DSP Update's achievement code, that would occur after a few galaxy generations. Bumped NebulaAPI Version requirement.
 
- - Version 2.2.0.3 - External themes fixed
+- Version 2.2.0.7 - Fixed loading times caused by 2.2.0.6
 
- - Version 2.2.0.2 - Updated for DSP ver 8.21.8562. All new themes added.
+- Version 2.2.0.5 - Fixed planets with reverse rotation/orbit. Fixed orbital resonance text.
 
- - Version 2.2.0.1 - Fix for new version of DSP. Not all new planet themes have been added, working on getting them in ASAP
+- Version 2.2.0.4 - Fixed birth planet moon theme selection
+
+- Version 2.2.0.3 - External themes fixed
+
+- Version 2.2.0.2 - Updated for DSP ver 8.21.8562. All new themes added.
+
+- Version 2.2.0.1 - Fix for new version of DSP. Not all new planet themes have been added, working on getting them in ASAP
 
 Version 2.2 - Out of Beta and considered complete. :)
 

@@ -2,6 +2,34 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.8": {
+      "BepInEx.Analyzers/1.0.7": {
+        "type": "package"
+      },
+      "BepInEx.BaseLib/5.4.17": {
+        "type": "package",
+        "compile": {
+          "lib/net35/BepInEx.dll": {}
+        },
+        "runtime": {
+          "lib/net35/BepInEx.dll": {}
+        }
+      },
+      "BepInEx.Core/5.4.17": {
+        "type": "package",
+        "dependencies": {
+          "BepInEx.BaseLib": "5.4.17",
+          "HarmonyX": "2.5.5"
+        },
+        "compile": {
+          "lib/net35/_._": {}
+        },
+        "runtime": {
+          "lib/net35/_._": {}
+        },
+        "build": {
+          "build/BepInEx.Core.targets": {}
+        }
+      },
       "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
         "type": "package",
         "compile": {
@@ -16,9 +44,70 @@
           "lib/net45/_._": {}
         }
       },
+      "HarmonyX/2.5.5": {
+        "type": "package",
+        "dependencies": {
+          "MonoMod.RuntimeDetour": "21.8.19.1"
+        },
+        "compile": {
+          "lib/net45/0Harmony.dll": {}
+        },
+        "runtime": {
+          "lib/net45/0Harmony.dll": {}
+        }
+      },
+      "Mono.Cecil/0.11.4": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        }
+      },
+      "MonoMod.RuntimeDetour/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4",
+          "MonoMod.Utils": "21.8.19.1"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        }
+      },
+      "MonoMod.Utils/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        }
+      },
       "UnityEngine.Modules/2018.4.12": {
         "type": "package",
         "compile": {
+          "lib/net45/_._": {}
+        },
+        "runtime": {
           "lib/net45/UnityEngine.AIModule.dll": {},
           "lib/net45/UnityEngine.ARModule.dll": {},
           "lib/net45/UnityEngine.AccessibilityModule.dll": {},
@@ -79,13 +168,38 @@
           "lib/net45/UnityEngine.WindModule.dll": {},
           "lib/net45/UnityEngine.XRModule.dll": {},
           "lib/net45/UnityEngine.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       }
     },
     ".NETFramework,Version=v4.8/win": {
+      "BepInEx.Analyzers/1.0.7": {
+        "type": "package"
+      },
+      "BepInEx.BaseLib/5.4.17": {
+        "type": "package",
+        "compile": {
+          "lib/net35/BepInEx.dll": {}
+        },
+        "runtime": {
+          "lib/net35/BepInEx.dll": {}
+        }
+      },
+      "BepInEx.Core/5.4.17": {
+        "type": "package",
+        "dependencies": {
+          "BepInEx.BaseLib": "5.4.17",
+          "HarmonyX": "2.5.5"
+        },
+        "compile": {
+          "lib/net35/_._": {}
+        },
+        "runtime": {
+          "lib/net35/_._": {}
+        },
+        "build": {
+          "build/BepInEx.Core.targets": {}
+        }
+      },
       "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
         "type": "package",
         "compile": {
@@ -100,9 +214,70 @@
           "lib/net45/_._": {}
         }
       },
+      "HarmonyX/2.5.5": {
+        "type": "package",
+        "dependencies": {
+          "MonoMod.RuntimeDetour": "21.8.19.1"
+        },
+        "compile": {
+          "lib/net45/0Harmony.dll": {}
+        },
+        "runtime": {
+          "lib/net45/0Harmony.dll": {}
+        }
+      },
+      "Mono.Cecil/0.11.4": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        }
+      },
+      "MonoMod.RuntimeDetour/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4",
+          "MonoMod.Utils": "21.8.19.1"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        }
+      },
+      "MonoMod.Utils/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        }
+      },
       "UnityEngine.Modules/2018.4.12": {
         "type": "package",
         "compile": {
+          "lib/net45/_._": {}
+        },
+        "runtime": {
           "lib/net45/UnityEngine.AIModule.dll": {},
           "lib/net45/UnityEngine.ARModule.dll": {},
           "lib/net45/UnityEngine.AccessibilityModule.dll": {},
@@ -163,13 +338,38 @@
           "lib/net45/UnityEngine.WindModule.dll": {},
           "lib/net45/UnityEngine.XRModule.dll": {},
           "lib/net45/UnityEngine.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       }
     },
     ".NETFramework,Version=v4.8/win-x64": {
+      "BepInEx.Analyzers/1.0.7": {
+        "type": "package"
+      },
+      "BepInEx.BaseLib/5.4.17": {
+        "type": "package",
+        "compile": {
+          "lib/net35/BepInEx.dll": {}
+        },
+        "runtime": {
+          "lib/net35/BepInEx.dll": {}
+        }
+      },
+      "BepInEx.Core/5.4.17": {
+        "type": "package",
+        "dependencies": {
+          "BepInEx.BaseLib": "5.4.17",
+          "HarmonyX": "2.5.5"
+        },
+        "compile": {
+          "lib/net35/_._": {}
+        },
+        "runtime": {
+          "lib/net35/_._": {}
+        },
+        "build": {
+          "build/BepInEx.Core.targets": {}
+        }
+      },
       "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
         "type": "package",
         "compile": {
@@ -184,9 +384,70 @@
           "lib/net45/_._": {}
         }
       },
+      "HarmonyX/2.5.5": {
+        "type": "package",
+        "dependencies": {
+          "MonoMod.RuntimeDetour": "21.8.19.1"
+        },
+        "compile": {
+          "lib/net45/0Harmony.dll": {}
+        },
+        "runtime": {
+          "lib/net45/0Harmony.dll": {}
+        }
+      },
+      "Mono.Cecil/0.11.4": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        }
+      },
+      "MonoMod.RuntimeDetour/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4",
+          "MonoMod.Utils": "21.8.19.1"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        }
+      },
+      "MonoMod.Utils/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        }
+      },
       "UnityEngine.Modules/2018.4.12": {
         "type": "package",
         "compile": {
+          "lib/net45/_._": {}
+        },
+        "runtime": {
           "lib/net45/UnityEngine.AIModule.dll": {},
           "lib/net45/UnityEngine.ARModule.dll": {},
           "lib/net45/UnityEngine.AccessibilityModule.dll": {},
@@ -247,13 +508,38 @@
           "lib/net45/UnityEngine.WindModule.dll": {},
           "lib/net45/UnityEngine.XRModule.dll": {},
           "lib/net45/UnityEngine.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       }
     },
     ".NETFramework,Version=v4.8/win-x86": {
+      "BepInEx.Analyzers/1.0.7": {
+        "type": "package"
+      },
+      "BepInEx.BaseLib/5.4.17": {
+        "type": "package",
+        "compile": {
+          "lib/net35/BepInEx.dll": {}
+        },
+        "runtime": {
+          "lib/net35/BepInEx.dll": {}
+        }
+      },
+      "BepInEx.Core/5.4.17": {
+        "type": "package",
+        "dependencies": {
+          "BepInEx.BaseLib": "5.4.17",
+          "HarmonyX": "2.5.5"
+        },
+        "compile": {
+          "lib/net35/_._": {}
+        },
+        "runtime": {
+          "lib/net35/_._": {}
+        },
+        "build": {
+          "build/BepInEx.Core.targets": {}
+        }
+      },
       "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
         "type": "package",
         "compile": {
@@ -268,9 +554,70 @@
           "lib/net45/_._": {}
         }
       },
+      "HarmonyX/2.5.5": {
+        "type": "package",
+        "dependencies": {
+          "MonoMod.RuntimeDetour": "21.8.19.1"
+        },
+        "compile": {
+          "lib/net45/0Harmony.dll": {}
+        },
+        "runtime": {
+          "lib/net45/0Harmony.dll": {}
+        }
+      },
+      "Mono.Cecil/0.11.4": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        }
+      },
+      "MonoMod.RuntimeDetour/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4",
+          "MonoMod.Utils": "21.8.19.1"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.RuntimeDetour.dll": {}
+        }
+      },
+      "MonoMod.Utils/21.8.19.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.11.4"
+        },
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        },
+        "runtime": {
+          "lib/net40/MonoMod.Utils.dll": {}
+        }
+      },
       "UnityEngine.Modules/2018.4.12": {
         "type": "package",
         "compile": {
+          "lib/net45/_._": {}
+        },
+        "runtime": {
           "lib/net45/UnityEngine.AIModule.dll": {},
           "lib/net45/UnityEngine.ARModule.dll": {},
           "lib/net45/UnityEngine.AccessibilityModule.dll": {},
@@ -331,14 +678,55 @@
           "lib/net45/UnityEngine.WindModule.dll": {},
           "lib/net45/UnityEngine.XRModule.dll": {},
           "lib/net45/UnityEngine.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       }
     }
   },
   "libraries": {
+    "BepInEx.Analyzers/1.0.7": {
+      "sha512": "/RZ1GzpvD9Va5/pW+2Kce5rcaIX5mXiTvzwMqjgPGxsVzNGxt6wulw3zCS6jZYJWA1j4D5YQQ2jVbcz/Dkpjdg==",
+      "type": "package",
+      "path": "bepinex.analyzers/1.0.7",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        "analyzers/dotnet/cs/BepInEx.Analyzers.CodeFixes.dll",
+        "analyzers/dotnet/cs/BepInEx.Analyzers.dll",
+        "bepinex.analyzers.1.0.7.nupkg.sha512",
+        "bepinex.analyzers.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
+    "BepInEx.BaseLib/5.4.17": {
+      "sha512": "92N4BKDiF9KO8kXbY2+zp7dHNXZP3WBKhzw7U8orcYncutD7peHtuLfUdMW4PGY/d0SsoA5eOcBeklFuh7OS8A==",
+      "type": "package",
+      "path": "bepinex.baselib/5.4.17",
+      "files": [
+        ".nupkg.metadata",
+        "bepinex.baselib.5.4.17.nupkg.sha512",
+        "bepinex.baselib.nuspec",
+        "images/icon.png",
+        "lib/net35/BepInEx.dll",
+        "lib/netstandard2.0/BepInEx.dll"
+      ]
+    },
+    "BepInEx.Core/5.4.17": {
+      "sha512": "f0UCf6tZxdhPrcHAgj/wQNz5V9RAAV0elgvgaFl8wFjaEdiKLxepkxdV0Y8Xuprm+AVrQUGcaSIhTBQvpRzk+g==",
+      "type": "package",
+      "path": "bepinex.core/5.4.17",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        "bepinex.core.5.4.17.nupkg.sha512",
+        "bepinex.core.nuspec",
+        "build/BepInEx.Core.targets",
+        "images/icon.png",
+        "lib/net35/_._",
+        "lib/netstandard2.0/_._",
+        "tools/Install.ps1"
+      ]
+    },
     "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
       "sha512": "h1d5AdYdDEIcdUay9MV2uGosGW8mKKd2CyxC3t/CMX4gr41Wq/N3O2HJvG7mSTr8PQNEItwwRGX7ioeBKixpHA==",
       "type": "package",
@@ -359,6 +747,90 @@
         "lib/netstandard2.0/UnityEngine.SpatialTracking.dll",
         "lib/netstandard2.0/UnityEngine.Timeline.dll",
         "lib/netstandard2.0/UnityEngine.UI.dll"
+      ]
+    },
+    "HarmonyX/2.5.5": {
+      "sha512": "sQTQhNCwbob8JnnLsJibcorfjQGi2ziseb8uIOtyWrIv/RrbH1bJiwwX6hyLHCrgLMbzBd5Z15SukTXlmfcYLQ==",
+      "type": "package",
+      "path": "harmonyx/2.5.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "harmonyx.2.5.5.nupkg.sha512",
+        "harmonyx.nuspec",
+        "lib/net35/0Harmony.dll",
+        "lib/net35/0Harmony.xml",
+        "lib/net45/0Harmony.dll",
+        "lib/net45/0Harmony.xml",
+        "lib/netstandard2.0/0Harmony.dll",
+        "lib/netstandard2.0/0Harmony.xml",
+        "logo_mini.png"
+      ]
+    },
+    "Mono.Cecil/0.11.4": {
+      "sha512": "IC1h5g0NeJGHIUgzM1P82ld57knhP0IcQfrYITDPXlNpMYGUrsG5TxuaWTjaeqDNQMBDNZkB8L0rBnwsY6JHuQ==",
+      "type": "package",
+      "path": "mono.cecil/0.11.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/Mono.Cecil.Mdb.dll",
+        "lib/net40/Mono.Cecil.Mdb.pdb",
+        "lib/net40/Mono.Cecil.Pdb.dll",
+        "lib/net40/Mono.Cecil.Pdb.pdb",
+        "lib/net40/Mono.Cecil.Rocks.dll",
+        "lib/net40/Mono.Cecil.Rocks.pdb",
+        "lib/net40/Mono.Cecil.dll",
+        "lib/net40/Mono.Cecil.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Mdb.dll",
+        "lib/netstandard2.0/Mono.Cecil.Mdb.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Pdb.dll",
+        "lib/netstandard2.0/Mono.Cecil.Pdb.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Rocks.dll",
+        "lib/netstandard2.0/Mono.Cecil.Rocks.pdb",
+        "lib/netstandard2.0/Mono.Cecil.dll",
+        "lib/netstandard2.0/Mono.Cecil.pdb",
+        "mono.cecil.0.11.4.nupkg.sha512",
+        "mono.cecil.nuspec"
+      ]
+    },
+    "MonoMod.RuntimeDetour/21.8.19.1": {
+      "sha512": "fUEvDK4q9n+GAAB29vFKAsUIwhKAvZTVbn2WJemzLxbiTElutZ55ytUQxSSv6XhiRaJXrl5bSArO54PY0QNplw==",
+      "type": "package",
+      "path": "monomod.runtimedetour/21.8.19.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/MonoMod.RuntimeDetour.dll",
+        "lib/net35/MonoMod.RuntimeDetour.xml",
+        "lib/net40/MonoMod.RuntimeDetour.dll",
+        "lib/net40/MonoMod.RuntimeDetour.xml",
+        "lib/net5.0/MonoMod.RuntimeDetour.dll",
+        "lib/net5.0/MonoMod.RuntimeDetour.xml",
+        "lib/netstandard2.0/MonoMod.RuntimeDetour.dll",
+        "lib/netstandard2.0/MonoMod.RuntimeDetour.xml",
+        "monomod.runtimedetour.21.8.19.1.nupkg.sha512",
+        "monomod.runtimedetour.nuspec"
+      ]
+    },
+    "MonoMod.Utils/21.8.19.1": {
+      "sha512": "HsH5TBMUdJmQtdINdYFG5a3BvCeGPezDX42qgv+h539drpNdD+qE7/NT6BtcmDI+y6VSVClFdnzcVNrOvTSfWQ==",
+      "type": "package",
+      "path": "monomod.utils/21.8.19.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/MonoMod.Utils.dll",
+        "lib/net35/MonoMod.Utils.xml",
+        "lib/net40/MonoMod.Utils.dll",
+        "lib/net40/MonoMod.Utils.xml",
+        "lib/net5.0/MonoMod.Utils.dll",
+        "lib/net5.0/MonoMod.Utils.xml",
+        "lib/netstandard2.0/MonoMod.Utils.dll",
+        "lib/netstandard2.0/MonoMod.Utils.xml",
+        "monomod.utils.21.8.19.1.nupkg.sha512",
+        "monomod.utils.nuspec"
       ]
     },
     "UnityEngine.Modules/2018.4.12": {
@@ -583,7 +1055,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.bepinex.dev/v3/index.json": {}
       },
       "frameworks": {
         "net48": {
@@ -611,7 +1084,7 @@
             "version": "[*-*, )"
           },
           "UnityEngine.Modules": {
-            "include": "Compile",
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
             "target": "Package",
             "version": "[2018.4.12, )"
@@ -630,31 +1103,5 @@
         "#import": []
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1101",
-      "level": "Error",
-      "message": "Unable to find package BepInEx.Analyzers. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages, nuget.org",
-      "libraryId": "BepInEx.Analyzers",
-      "targetGraphs": [
-        ".NETFramework,Version=v4.8",
-        ".NETFramework,Version=v4.8/win",
-        ".NETFramework,Version=v4.8/win-x64",
-        ".NETFramework,Version=v4.8/win-x86"
-      ]
-    },
-    {
-      "code": "NU1101",
-      "level": "Error",
-      "message": "Unable to find package BepInEx.Core. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages, nuget.org",
-      "libraryId": "BepInEx.Core",
-      "targetGraphs": [
-        ".NETFramework,Version=v4.8",
-        ".NETFramework,Version=v4.8/win",
-        ".NETFramework,Version=v4.8/win-x64",
-        ".NETFramework,Version=v4.8/win-x86"
-      ]
-    }
-  ]
+  }
 }
