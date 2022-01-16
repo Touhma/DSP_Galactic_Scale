@@ -394,7 +394,7 @@ namespace GalacticScale
                 }
             }
 
-            if (transitionDistance < (planet.realRadius + 100)) transitionDistance = planet.realRadius + 100;
+            //if (transitionDistance < (planet.realRadius + 100)) transitionDistance = planet.realRadius + 100;
             if (!TransitionRadii.ContainsKey(planet)) TransitionRadii.Add(planet, transitionDistance);
             Log($"Transition Radius: {transitionDistance} for {planet.name} with radius {planet.realRadius}");
             return transitionDistance;
