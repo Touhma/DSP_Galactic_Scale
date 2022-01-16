@@ -8,7 +8,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NearColliderLogic), "GetVeinsInAreaNonAlloc")]
-        public static bool GetVeinsInAreaNonAlloc(ref NearColliderLogic __instance, ref int __result,ref Vector3 center,ref float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
+        public static bool GetVeinsInAreaNonAlloc(ref NearColliderLogic __instance, ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)
         {
             if (veinIds == null) return true;
 
