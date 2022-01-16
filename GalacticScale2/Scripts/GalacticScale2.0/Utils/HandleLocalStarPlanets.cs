@@ -164,11 +164,19 @@ namespace GalacticScale
             for (var i = 0; closestStar != null && closestPlanet == null && i < closestStar.planetCount; i++)
             {
                 var planet = closestStar.planets[i];
+                double dist = 1000f;
+                /*
                 if (DistanceTo(planet) < TransisionDistance(planet))
                 {
                     // GS2.Log($"Switching to {planet.name}");
                     closestPlanet = planet;
                     break;
+                }
+                */
+                if(DistanceTo(planet) < dist)
+                {
+                    closestPlanet = planet;
+                    dist = DistanceTo(planet);
                 }
             }
         }
