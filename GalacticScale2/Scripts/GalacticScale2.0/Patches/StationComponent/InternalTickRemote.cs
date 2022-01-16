@@ -84,17 +84,17 @@ namespace GalacticScale
         private delegate int Del(int bodyID);
               [HarmonyPrefix, HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
               public static bool InternalTickRemote( ref StationComponent __instance,
-          int timeGene,
-          double dt,
-          float shipSailSpeed,
-          float shipWarpSpeed,
-          int shipCarries,
-          StationComponent[] gStationPool,
-          AstroPose[] astroPoses,
-          VectorLF3 relativePos,
-          Quaternion relativeRot,
-          bool starmap,
-          int[] consumeRegister)
+         ref int timeGene,
+         ref double dt,
+         ref float shipSailSpeed,
+         ref float shipWarpSpeed,
+         ref int shipCarries,
+         ref StationComponent[] gStationPool,
+         ref AstroPose[] astroPoses,
+         ref VectorLF3 relativePos,
+         ref Quaternion relativeRot,
+         ref bool starmap,
+         ref int[] consumeRegister)
         {
          bool canWarp = (double) shipWarpSpeed > (double) shipSailSpeed + 1.0;
     __instance.warperFree = DSPGame.IsMenuDemo;

@@ -40,7 +40,7 @@ namespace GalacticScale
         // }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetFactory), "FlattenTerrain")]
-        public static bool FlattenTerrain(ref int __result, ref PlanetFactory __instance, Vector3 pos, Quaternion rot, Bounds bound, float fade0 = 6f, float fade1 = 1f, bool removeVein = false, bool lift = false)
+        public static bool FlattenTerrain(ref int __result, ref PlanetFactory __instance, ref Vector3 pos, ref Quaternion rot,ref Bounds bound, float fade0 = 6f, float fade1 = 1f, bool removeVein = false, bool lift = false)
         {
             if (__instance.tmp_levelChanges == null) __instance.tmp_levelChanges = new Dictionary<int, int>();
             if (__instance.tmp_ids == null) __instance.tmp_ids = new int[4096];

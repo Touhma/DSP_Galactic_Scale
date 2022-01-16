@@ -15,7 +15,7 @@ namespace GalacticScale
 
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
-        public static IEnumerable<CodeInstruction> Refresh_Transpiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> Refresh_Transpiler(ref IEnumerable<CodeInstruction> instructions)
         {
             instructions = new CodeMatcher(instructions).MatchForward(true, new CodeMatch(i => i.opcode == OpCodes.Ldfld && ((FieldInfo)i.operand).Name == "userName")).Advance(1).InsertAndAdvance(Transpilers.EmitDelegate<Func<string, string>>(text =>
             {

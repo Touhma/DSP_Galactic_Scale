@@ -7,7 +7,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetRawData), "QueryModifiedHeight")]
-        public static bool QueryModifiedHeight(ref PlanetRawData __instance, ref float __result, Vector3 vpos)
+        public static bool QueryModifiedHeight(ref PlanetRawData __instance, ref float __result, ref Vector3 vpos)
         {
             //GS2.Warn((__instance == null).ToString());
             vpos.Normalize();
