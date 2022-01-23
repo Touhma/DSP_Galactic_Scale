@@ -10,13 +10,16 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
         public static void OnPlanetDataSet(ref UIPlanetDetail __instance, Text ___obliquityValueText, ref PlanetData ____planet)
         {
+            GS2.Warn("Dataset");
+            GS2.Warn(___obliquityValueText.transform.parent.transform.parent.childCount.ToString());
             // Add the planets radius to the Planet Detail UI
-            if (___obliquityValueText.transform.parent.transform.parent.childCount == 6)
+            if (___obliquityValueText.transform.parent.transform.parent.childCount == 7)
             {
                 GameObject radiusLabel;
                 var obliquityLabel = ___obliquityValueText.transform.parent.gameObject;
                 radiusLabel = Object.Instantiate(obliquityLabel, obliquityLabel.transform.parent.transform);
-
+                var parentRect = obliquityLabel.transform.parent.transform.GetComponent<RectTransform>();
+                parentRect.sizeDelta = new Vector2(0,40);
                 radiusLabel.transform.localPosition += Vector3.down * 20;
                 var radiusLabelText = radiusLabel.GetComponent<Text>();
                 radiusLabelText.GetComponent<Localizer>().enabled = false;
@@ -36,7 +39,7 @@ namespace GalacticScale
                 radiusValueText.text = __instance.planet.realRadius.ToString();
             }
 
-            if (___obliquityValueText.transform.parent.transform.parent.childCount == 7)
+            if (___obliquityValueText.transform.parent.transform.parent.childCount == 8)
             {
                 var p = ___obliquityValueText.transform.parent.parent;
                 var radiusLabel = p.GetChild(p.childCount - 1).gameObject;

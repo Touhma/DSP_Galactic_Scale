@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using GSSerializer;
 
 namespace GalacticScale
@@ -15,53 +16,85 @@ namespace GalacticScale
             w.Write(json);
         }
 
-        public static bool Import(BinaryReader r) // Load Settings from Save Game
+        public static bool Import(BinaryReader r, string Force = "") // Load Settings from Save Game
         {
+
             Log("Importing from Save");
-            GSSettings.Reset(0);
+            if (!GS2.SaveOrLoadWindowOpen) GSSettings.Reset(0);
             var serializer = new fsSerializer();
             var position = r.BaseStream.Position;
-            var version = r.ReadString();
-            var json = r.ReadString();
+            var version = "2";
+            var json = "";
+            if (Force == "")
+            {
+                version = r.ReadString();
+                json = r.ReadString();
+            }
+            else
+            {
+                LoadSettingsFromJson(Force);
+            }
+
+            if (GS2.SaveOrLoadWindowOpen) return true;
             if (Config.Dev)
             {
-                File.WriteAllText(Path.Combine(GS2.DataDir, "SaveContentsRaw.txt"),json);
+                File.WriteAllText(Path.Combine(GS2.DataDir, "SaveContentsRaw.txt"), json);
             }
-            var result = GSSettings.Instance;
+
+            GSSettings result = new GSSettings(0);
+            if (Force == "" && !SaveOrLoadWindowOpen) result = GSSettings.Instance;
             fsData data2;
             var parseResult = fsJsonParser.Parse(json, out data2);
-
-            if (parseResult.Failed)
-            {
-                Warn("Parse Failed");
-                r.BaseStream.Position = position;
-                ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
-                return false;
-            }
-
+            // if (Force == "")
+            // {
+                if (parseResult.Failed)
+                {
+                    Warn("Parse Failed");
+                    if (Force == "") r.BaseStream.Position = position;
+                    if (Force == "") ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
+                    if (Force == "") return false;
+                }
+            // }
+            
             if (Config.Dev)
             {
                 File.WriteAllText(Path.Combine(GS2.DataDir, "SaveContents.json"),json);
             }
-            var deserialize = serializer.TryDeserialize(data2, ref result);
-            if (deserialize.Failed)
+
+            try
             {
-                Warn("Deserialize Failed");
-                r.BaseStream.Position = position;
-                ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
-                return false;
+                var deserialize = serializer.TryDeserialize(data2, ref result);
+                // if (Force == "")
+                // {
+                    if (deserialize.Failed)
+                    {
+                        Warn("Deserialize Failed");
+                        if (Force == "")r.BaseStream.Position = position;
+                        if (Force == "")ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
+                        if (Force == "")return false;
+                    }
+                // }
+                // else
+                // {
+                //     Warn("Loading Forced Json Settings");
+                //     LoadSettingsFromJson(Force);
+                // }
+            }
+            catch (Exception e)
+            {
+                GS2.Warn($"{e.Message}");
             }
 
             if (version != GSSettings.Instance.version)
             {
                 Warn("Version mismatch: " + GSSettings.Instance.version + " trying to load " + version + " savedata");
-                r.BaseStream.Position = position;
-                ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
-                return false;
+                if (Force == "") r.BaseStream.Position = position;
+                if (Force == "" && !SaveOrLoadWindowOpen)ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
+                if (Force == "")return false;
             }
 
             if (Vanilla) ActiveGenerator = GetGeneratorByID("space.customizing.generators.gs2dev");
-            GSSettings.Instance = result;
+            if (Force == "" && !SaveOrLoadWindowOpen) GSSettings.Instance = result;
             GSSettings.Instance.imported = true;
             return true;
         }

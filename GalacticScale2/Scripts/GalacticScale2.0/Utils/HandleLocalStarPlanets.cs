@@ -46,6 +46,12 @@ namespace GalacticScale
             var localPlanet = GameMain.data.localPlanet;
             closestStar = localStar;
             closestPlanet = localPlanet;
+            if (localPlanet != null && VFInput.shift && VFInput.alt)
+            {
+                var radii = TransitionRadii.ContainsKey(localPlanet) ? TransitionRadii[localPlanet].ToString() : "N/A";
+                
+                Warn($"DistanceTo: {DistanceTo(localPlanet)} / {radii}");
+            }
             var warping = GameMain.mainPlayer.warping;
 
             if (localStar != null && !localStar.loaded)
@@ -299,7 +305,7 @@ namespace GalacticScale
                 if (distanceAU * 20000f - 100f < transitionDistance)
                 {
                     Log($"Changed Transition Distance for {planet.name} from {transitionDistance} to {distanceAU * 20000f - 100f}");
-                    transitionDistance = (int)distanceAU * 20000 - 100;
+                    transitionDistance = distanceAU * 20000f - 100f;
                 }
             }
             else if (planet.orbitAroundPlanet != null) //If this is a moon
@@ -394,8 +400,16 @@ namespace GalacticScale
                 }
             }
 
-            //if (transitionDistance < (planet.realRadius + 100)) transitionDistance = planet.realRadius + 100;
+            if (transitionDistance < 0)//(planet.realRadius + 10))
+            {
+                Warn($"changing {planet.name} transition distance from {transitionDistance} to {planet.realRadius + 10}");
+                transitionDistance = planet.realRadius + 10;
+            }
             if (!TransitionRadii.ContainsKey(planet)) TransitionRadii.Add(planet, transitionDistance);
+            else
+            {
+                Warn("ALREADY CONTAINS DISTANCE");
+            }
             Log($"Transition Radius: {transitionDistance} for {planet.name} with radius {planet.realRadius}");
             return transitionDistance;
         }

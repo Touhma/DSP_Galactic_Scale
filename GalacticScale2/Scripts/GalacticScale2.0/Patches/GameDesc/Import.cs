@@ -11,8 +11,14 @@ namespace GalacticScale
         {
             if (!GS2.IsMenuDemo)
             {
+                var ForceFile = Path.Combine(GS2.DataDir, "ForceImport.json");
                 GS2.Log("Not Menu Demo. Importing");
-                GS2.Import(r);
+                if (VFInput.shift && File.Exists(ForceFile))
+                {
+                    GS2.Warn("LOADING GALAXY DESC FROM ForceImport.json");
+                    GS2.Import(r, ForceFile);
+                }
+                else GS2.Import(r);
                 GS2.Log("Unsetting Cheatmode");
                 GS2.Log("Setting option");
                 if (GS2.Config?.CheatMode != null) GS2.Config.DisableCheatMode();

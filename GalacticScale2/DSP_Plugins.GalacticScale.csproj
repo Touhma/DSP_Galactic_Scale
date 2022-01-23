@@ -42,7 +42,6 @@
   <ItemGroup Label="Core">
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all" />
-    <PackageReference Include="DysonSphereProgram.GameLibs" Version="*-*" IncludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="UnityEngine.Modules">
       <Version>2018.4.12</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,8 +52,8 @@
     <Reference Include="0Harmony, Version=2.5.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HarmonyX.2.5.5\lib\net45\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DysonSphereProgram.GameLibs.0.8.23.9989-r.0\lib\net45\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx, Version=5.4.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BepInEx.BaseLib.5.4.16\lib\net35\BepInEx.dll</HintPath>
