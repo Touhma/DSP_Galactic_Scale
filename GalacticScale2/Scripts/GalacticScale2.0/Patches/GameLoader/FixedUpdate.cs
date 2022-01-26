@@ -65,7 +65,7 @@ namespace GalacticScale
                 if (!GameMain.instance.isMenuDemo)
                 {
                     var str = "";
-                    for (var index = GameMain.data.patch + 1; index <= 2; ++index)
+                    for (var index = GameMain.data.patch + 1; index <= 3; ++index)
                         str = str + "\r\n" + ("存档补丁提示" + index).Translate();
 
                     if (!string.IsNullOrEmpty(str))

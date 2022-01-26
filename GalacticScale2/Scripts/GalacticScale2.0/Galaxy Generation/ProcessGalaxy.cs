@@ -9,7 +9,7 @@ namespace GalacticScale
     {
         public static GalaxyData ProcessGalaxy(GameDesc desc, bool sketchOnly = false)
         {
-            Log($"Start ProcessGalaxy:{sketchOnly} StarCount:{gameDesc.starCount} Seed:{gameDesc.galaxySeed} Called By{GetCaller()}");
+            Log($"Start ProcessGalaxy:{sketchOnly} StarCount:{gameDesc.starCount} Seed:{gameDesc.galaxySeed} Called By{GetCaller()}. Galaxy StarCount : {galaxy?.stars?.Length}");
             var random = new Random(GSSettings.Seed);
             try
             {

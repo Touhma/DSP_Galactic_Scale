@@ -21,7 +21,7 @@ namespace GalacticScale
         public static bool canvasOverlay = false;
         public static bool ResearchUnlocked = false;
         public static Image splashImage;
-
+        public static bool SaveOrLoadWindowOpen = false;
         public static bool NebulaClient = false;
 
         // public static bool MinifyJson = false;

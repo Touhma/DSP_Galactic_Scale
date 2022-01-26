@@ -1,5 +1,19 @@
 # DSP Galactic Scale 2.0 Mod
 
+- Version 2.2.0.23 - Fixed Planet Detail Panel. Fixed Ghost Planets. Broke Nebula compatibility. (Nebula isn't updated yet afaik so no big deal here)
+
+- Version 2.2.0.22 - Actually fix landing on planets for real maybe. Readd Radius Text to Planet Detail (not perfect yet)
+
+- Version 2.2.0.21 - Fix save corruption after clicking a different galaxy's save
+
+- Version 2.2.0.20 - Actually fix landing on planets 
+
+- Version 2.2.0.19 - (Unreleased) Fix broken stations from DSP Icarus Evolution Update
+
+- Version 2.2.0.18 - Fix landing on planets
+
+- Version 2.2.0.17 - Fix Nebula API Dependency
+
 - Version 2.2.0.16 - 2.2.0.14 Save Compatibility Fix
 
 - Version 2.2.0.15 - Fix for Blueprint bug caused by latest DSP update. Thanks to Tartarus Music & Raptor for diagnosing this issue.

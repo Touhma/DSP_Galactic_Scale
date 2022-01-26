@@ -104,24 +104,24 @@ namespace GalacticScale
 
         public static bool LoadSettingsFromJson(string path)
         {
-            // Log("Start");
+            Log("Start");
             if (!CheckJsonFileExists(path)) return false;
 
-            // Log("Path = " + path);
+            Log("Path = " + path);
             var serializer = new fsSerializer();
             GSSettings.Stars.Clear();
-            // Log("Initializing ThemeLibrary");
+            Log("Initializing ThemeLibrary");
             GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
             GSSettings.GalaxyParams = new GSGalaxyParams();
-            // Log("Reading JSON");
+            Log("Reading JSON");
             var json = File.ReadAllText(path);
             var result = GSSettings.Instance;
-            // Log("Parsing JSON");
+            Log("Parsing JSON");
             var data = fsJsonParser.Parse(json);
-            // Log("Trying To Deserialize JSON");
+            Log("Trying To Deserialize JSON");
             serializer.TryDeserialize(data, ref result);
-            // LogJson(result.galaxyParams);
-            // Log("End");
+            LogJson(result.galaxyParams);
+            Log("End");
             return true;
         }
 

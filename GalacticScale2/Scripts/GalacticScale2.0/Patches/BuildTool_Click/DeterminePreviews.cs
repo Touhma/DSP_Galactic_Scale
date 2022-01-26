@@ -60,6 +60,8 @@ namespace GalacticScale
                 }
 
                 var flag = !__instance.multiLevelCovering && __instance.handPrefabDesc.dragBuild;
+                if (__instance.handPrefabDesc.geothermal && VFInput._ignoreGrid)
+                    flag = false;
                 if (VFInput._buildConfirm.onDown && __instance.controller.cmd.stage != 1)
                 {
                     __instance.controller.cmd.stage = 1;
@@ -99,7 +101,7 @@ namespace GalacticScale
                     }
                 }
 
-                if (VFInput._ignoreGrid && __instance.handPrefabDesc.minerType == EMinerType.Vein)
+                if (VFInput._ignoreGrid && __instance.handPrefabDesc.minerType == EMinerType.Vein|| __instance.handPrefabDesc.geothermal)
                 {
                     if (VFInput._rotate)
                     {

@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "8IJAu+EzQ6jCExViT/LFA2kSWI1kk0f3keBGkqIYUctOmBDjMRZC2cCqV/Q6c8fpfDhjZONGrAsG9I5KRvM5aw==",
+  "dgSpecHash": "RoHie/7+NOgRgxEfvbBXNGMgZGZeReJOhNGJJGmaYItHHFoi9H5b1QBvbIej62zrRI9GhupvkHfVX6r0TFw/5A==",
   "success": true,
   "projectFilePath": "E:\\code\\GalacticScale2\\GalacticScale2\\DSP_Plugins.GalacticScale.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\inno\\.nuget\\packages\\bepinex.analyzers\\1.0.7\\bepinex.analyzers.1.0.7.nupkg.sha512",
     "C:\\Users\\inno\\.nuget\\packages\\bepinex.baselib\\5.4.17\\bepinex.baselib.5.4.17.nupkg.sha512",
     "C:\\Users\\inno\\.nuget\\packages\\bepinex.core\\5.4.17\\bepinex.core.5.4.17.nupkg.sha512",
-    "C:\\Users\\inno\\.nuget\\packages\\dysonsphereprogram.gamelibs\\0.8.23.9989-r.0\\dysonsphereprogram.gamelibs.0.8.23.9989-r.0.nupkg.sha512",
     "C:\\Users\\inno\\.nuget\\packages\\harmonyx\\2.5.5\\harmonyx.2.5.5.nupkg.sha512",
     "C:\\Users\\inno\\.nuget\\packages\\mono.cecil\\0.11.4\\mono.cecil.0.11.4.nupkg.sha512",
     "C:\\Users\\inno\\.nuget\\packages\\monomod.runtimedetour\\21.8.19.1\\monomod.runtimedetour.21.8.19.1.nupkg.sha512",

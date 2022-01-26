@@ -30,20 +30,6 @@
           "build/BepInEx.Core.targets": {}
         }
       },
-      "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Assembly-CSharp.dll": {},
-          "lib/net45/Unity.TextMeshPro.dll": {},
-          "lib/net45/UnityEngine.Networking.dll": {},
-          "lib/net45/UnityEngine.SpatialTracking.dll": {},
-          "lib/net45/UnityEngine.Timeline.dll": {},
-          "lib/net45/UnityEngine.UI.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
       "HarmonyX/2.5.5": {
         "type": "package",
         "dependencies": {
@@ -198,20 +184,6 @@
         },
         "build": {
           "build/BepInEx.Core.targets": {}
-        }
-      },
-      "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Assembly-CSharp.dll": {},
-          "lib/net45/Unity.TextMeshPro.dll": {},
-          "lib/net45/UnityEngine.Networking.dll": {},
-          "lib/net45/UnityEngine.SpatialTracking.dll": {},
-          "lib/net45/UnityEngine.Timeline.dll": {},
-          "lib/net45/UnityEngine.UI.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "HarmonyX/2.5.5": {
@@ -370,20 +342,6 @@
           "build/BepInEx.Core.targets": {}
         }
       },
-      "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Assembly-CSharp.dll": {},
-          "lib/net45/Unity.TextMeshPro.dll": {},
-          "lib/net45/UnityEngine.Networking.dll": {},
-          "lib/net45/UnityEngine.SpatialTracking.dll": {},
-          "lib/net45/UnityEngine.Timeline.dll": {},
-          "lib/net45/UnityEngine.UI.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
       "HarmonyX/2.5.5": {
         "type": "package",
         "dependencies": {
@@ -538,20 +496,6 @@
         },
         "build": {
           "build/BepInEx.Core.targets": {}
-        }
-      },
-      "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Assembly-CSharp.dll": {},
-          "lib/net45/Unity.TextMeshPro.dll": {},
-          "lib/net45/UnityEngine.Networking.dll": {},
-          "lib/net45/UnityEngine.SpatialTracking.dll": {},
-          "lib/net45/UnityEngine.Timeline.dll": {},
-          "lib/net45/UnityEngine.UI.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "HarmonyX/2.5.5": {
@@ -725,28 +669,6 @@
         "lib/net35/_._",
         "lib/netstandard2.0/_._",
         "tools/Install.ps1"
-      ]
-    },
-    "DysonSphereProgram.GameLibs/0.8.23.9989-r.0": {
-      "sha512": "h1d5AdYdDEIcdUay9MV2uGosGW8mKKd2CyxC3t/CMX4gr41Wq/N3O2HJvG7mSTr8PQNEItwwRGX7ioeBKixpHA==",
-      "type": "package",
-      "path": "dysonsphereprogram.gamelibs/0.8.23.9989-r.0",
-      "files": [
-        ".nupkg.metadata",
-        "dysonsphereprogram.gamelibs.0.8.23.9989-r.0.nupkg.sha512",
-        "dysonsphereprogram.gamelibs.nuspec",
-        "lib/net45/Assembly-CSharp.dll",
-        "lib/net45/Unity.TextMeshPro.dll",
-        "lib/net45/UnityEngine.Networking.dll",
-        "lib/net45/UnityEngine.SpatialTracking.dll",
-        "lib/net45/UnityEngine.Timeline.dll",
-        "lib/net45/UnityEngine.UI.dll",
-        "lib/netstandard2.0/Assembly-CSharp.dll",
-        "lib/netstandard2.0/Unity.TextMeshPro.dll",
-        "lib/netstandard2.0/UnityEngine.Networking.dll",
-        "lib/netstandard2.0/UnityEngine.SpatialTracking.dll",
-        "lib/netstandard2.0/UnityEngine.Timeline.dll",
-        "lib/netstandard2.0/UnityEngine.UI.dll"
       ]
     },
     "HarmonyX/2.5.5": {
@@ -1028,7 +950,6 @@
     ".NETFramework,Version=v4.8": [
       "BepInEx.Analyzers >= 1.*",
       "BepInEx.Core >= 5.*",
-      "DysonSphereProgram.GameLibs >= *-*",
       "UnityEngine.Modules >= 2018.4.12"
     ]
   },
@@ -1076,12 +997,6 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[5.*, )"
-          },
-          "DysonSphereProgram.GameLibs": {
-            "include": "Compile",
-            "suppressParent": "All",
-            "target": "Package",
-            "version": "[*-*, )"
           },
           "UnityEngine.Modules": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

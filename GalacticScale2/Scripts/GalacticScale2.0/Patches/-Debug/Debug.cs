@@ -8,6 +8,51 @@ namespace GalacticScale
 {
     public class PatchOnWhatever
     {
+        [HarmonyPrefix, HarmonyPatch(typeof(UILoadGameWindow), "_OnOpen")]
+        public static bool UILoadGameWindow_OnOpen()
+        {
+            GS2.Warn("Disabled Import");
+            GS2.SaveOrLoadWindowOpen = true;
+            return true;
+
+        }
+
+        [HarmonyPrefix, HarmonyPatch(typeof(UILoadGameWindow), "LoadSelectedGame")]
+        public static bool UILoadGameWindow_LoadSelectedGame()
+        {
+            GS2.Warn("Enabled Import");
+            GS2.SaveOrLoadWindowOpen = false;
+            return true;
+
+        }
+
+        [HarmonyPrefix, HarmonyPatch(typeof(UILoadGameWindow), "_OnClose")]
+        public static bool UILoadGameWindow_OnClose()
+        {
+            GS2.Warn("Enabled Import");
+
+            GS2.SaveOrLoadWindowOpen = false;
+            return true;
+        }
+        [HarmonyPrefix, HarmonyPatch(typeof(UISaveGameWindow), "_OnOpen")]
+        public static bool UISaveGameWindow_OnOpen()
+        {
+            GS2.Warn("Disabled Import");
+
+            GS2.SaveOrLoadWindowOpen = true;
+            return true;
+
+        }
+
+
+        [HarmonyPrefix, HarmonyPatch(typeof(UISaveGameWindow), "_OnClose")]
+        public static bool UISaveGameWindow_OnClose()
+        {
+            GS2.Warn("Enabled Import");
+
+            GS2.SaveOrLoadWindowOpen = false;
+            return true;
+        }
         [HarmonyPrefix, HarmonyPatch(typeof(UIAchievementPanel), "LoadData")]
         public static bool LoadData(UIAchievementPanel __instance)
         {
