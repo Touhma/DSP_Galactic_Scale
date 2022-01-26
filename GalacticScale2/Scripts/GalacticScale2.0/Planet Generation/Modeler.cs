@@ -13,6 +13,13 @@ namespace GalacticScale
         public static List<PlanetData> planetQueue = new List<PlanetData>();
         public static bool planetQueueSorted;
 
+        public static void Reset()
+        {
+        planetModQueue = new List<PlanetData>();
+        planetModQueueSorted = false;
+        planetQueue = new List<PlanetData>();
+        planetQueueSorted = false;
+        }
         public static int DistanceComparison(PlanetData p1, PlanetData p2)
         {
             var d1 = distanceTo(p1);
@@ -194,6 +201,7 @@ namespace GalacticScale
             if (currentModelingPlanet != null)
                 try
                 {
+                    // GS2.Warn($"Modelling {currentModelingPlanet.name}");
                     ModelingPlanetMain(currentModelingPlanet);
                 }
                 catch (Exception message)

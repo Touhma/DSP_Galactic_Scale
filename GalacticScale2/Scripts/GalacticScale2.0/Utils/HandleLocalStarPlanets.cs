@@ -59,6 +59,7 @@ namespace GalacticScale
                 EnsureStarStillLocal();
                 if (closestStar == null)
                 {
+                    localStar.Unload();
                     LogStatus("Left Star...Searching");
                     SearchStar();
                 }
@@ -122,6 +123,7 @@ namespace GalacticScale
                         resetCamera = true;
                         LogStatus($"Leaving Planet {localPlanet.name} as it is not closest");
                         GameMain.data.LeavePlanet();
+                        GameMain.mainPlayer.NotifyLocalAstroChange();
                     }
                 }
                 else if (closestPlanet != null)

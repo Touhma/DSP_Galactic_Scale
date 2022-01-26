@@ -14,6 +14,7 @@ namespace GalacticScale
             if (NebulaModAPI.MultiplayerSession != null && NebulaModAPI.MultiplayerSession.LocalPlayer.IsClient && !GSSettings.lobbyReceivedUpdateValues)
             {
                 NebulaModAPI.MultiplayerSession.Network.SendPacket(new LobbyRequestUpdateSolarSystems());
+                GS2.Warn("Nebula Requested Update");
                 return false;
             }
             GSSettings.lobbyReceivedUpdateValues = false;
@@ -22,24 +23,29 @@ namespace GalacticScale
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null 3");
             if (__instance.gameDesc.starCount <= 0) __instance.gameDesc.starCount = 1;
 
-            GalaxyData galaxy = __instance.starmap.galaxyData;
+            GalaxyData galaxy;// = __instance.starmap.galaxyData;
 
             if (GS2.Vanilla)
                 galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             else
                 //GS2.Warn("Processing Galaxy");
-                galaxy = GS2.ProcessGalaxy(__instance.gameDesc, true);
+                galaxy = GS2.ProcessGalaxy(__instance.gameDesc, true); //sp00ktober you probably want to alter this instead
 
             //GS2.Warn("Done");
             if (__instance.starmap == null) GS2.Warn("Starmap Null");
             if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
-            if (__instance.starmap.galaxyData != null) __instance.starmap.galaxyData.Free();
+            if (__instance.starmap.galaxyData != null)
+            {
+                GS2.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
+                __instance.starmap.galaxyData.Free();
+            }
             if (galaxy == null) GS2.Warn("galaxy Null");
             //else GS2.Warn("Galaxy not null");
             __instance.starmap.galaxyData = galaxy;
-            GameMain.data.galaxy = galaxy; // this line is important to let the client load into the correct galaxy lol
+            // GameMain.data.galaxy = galaxy; // this line is important to let the client load into the correct galaxy lol
 
-            __instance.UpdateUIDisplay(__instance.starmap.galaxyData);
+            // __instance.UpdateUIDisplay(__instance.starmap.galaxyData);
+            __instance.UpdateUIDisplay(galaxy);
             __instance.UpdateParametersUIDisplay();
             __instance.autoCameraYaw = true;
             __instance.lastCameraYaw = __instance.cameraPoser.yawWanted;
@@ -51,7 +57,8 @@ namespace GalacticScale
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText == null) GS2.Warn("starcounttext null");
                 if (starCountText == null) starCountText = CreateStarCountText(__instance.starCountSlider);
-                starCountText.GetComponent<Text>().text = __instance.starmap.galaxyData.starCount + "   (" + GS2.ActiveGenerator.Name + ")";
+                //starCountText.GetComponent<Text>().text = __instance.starmap.galaxyData.starCount + "   (" + GS2.ActiveGenerator.Name + ")";
+                starCountText.GetComponent<Text>().text = galaxy.starCount + "   (" + GS2.ActiveGenerator.Name + ")";
             }
             else
             {
@@ -90,6 +97,13 @@ namespace GalacticScale
             // this is needed at least in the nebula lobby, throws index out of bounds if not done.
             if(GS2.galaxy == null)
             {
+                GS2.Log("Galaxy Null, Returning from Postfix");
+                return;
+            }
+            if (NebulaModAPI.MultiplayerSession == null)
+            {
+                GS2.Log("Nebula Null, Returning from Postfix");
+
                 return;
             }
             if(GameMain.universeSimulator == null)

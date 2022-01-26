@@ -76,6 +76,13 @@ namespace GalacticScale
             ___orbitRadiusValueTextEx.text = __instance.planet.name;
             ___orbitPeriodValueText.text = __instance.planet.orbitalPeriod.ToString("#,##0") + "空格秒".Translate();
             ___rotationPeriodValueText.text = __instance.planet.rotationPeriod.ToString("#,##0") + "空格秒".Translate();
+            float f = __instance.planet.orbitInclination;
+            float t = 180f - __instance.planet.orbitLongitude;
+            if ((double) f < 0.0)
+            {
+                f = -f;
+                t = 180f + t;
+            }
             var num1 = Mathf.Abs(__instance.planet.orbitInclination);
             var num2 = (int)num1;
             var num3 = (int)((num1 - (double)num2) * 60.0);
@@ -84,10 +91,13 @@ namespace GalacticScale
             var num4 = Mathf.Abs(__instance.planet.obliquity);
             var num5 = (int)num4;
             var num6 = (int)((num4 - (double)num5) * 60.0);
+            int numa;
+            int numb = (int) (((double) (numa = (int) Mathf.Repeat(t, 360f)) - (double) numa) * 60.0);
             if (__instance.planet.obliquity < 0.0) num5 = -num5;
 
             ___inclinationValueText.text = string.Format("{0}° {1}′", num2, num3);
             ___obliquityValueText.text = string.Format("{0}° {1}′", num5, num6);
+            __instance.longiAscValueText.text = string.Format("{0}° {1}′", (object) numa, (object) numb);
             var num7 = 0;
             if (__instance.planet.type != EPlanetType.Gas)
             {
