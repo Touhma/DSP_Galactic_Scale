@@ -25,7 +25,7 @@ namespace GalacticScale
         public string ImportFilename => Preferences.GetString("Import Filename");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
-
+        public bool ScarletRevert => Preferences.GetBool("RevertScarlet", false);
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
 
         // public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
@@ -142,7 +142,7 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
-            _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Cheat Mode".Translate(), false, "Cheat Mode", null, "All Research, TP by ctrl-click nav arrow".Translate()));
+            _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
             DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", o =>
             {
@@ -151,6 +151,7 @@ namespace GalacticScale
                 GSSettings.GalaxyParams.resourceMulti = 100;
                 //GS2.WarnJson(gameDesc.resourceMultiplier);
             }, null, "Will need to be saved and loaded to apply".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("Revert Scarlet Ice Lake".Translate(), false, "RevertScarlet", null, "2.2.0.23 Had a bug where Ice Lake had no terrain. Enable this to fix issues with saves started prior to .24".Translate()));
             // DebugOptions.Add(GSUI.Button("Test", "Now", (o) =>
             // {
             //     Warn("ExternalThemes:");

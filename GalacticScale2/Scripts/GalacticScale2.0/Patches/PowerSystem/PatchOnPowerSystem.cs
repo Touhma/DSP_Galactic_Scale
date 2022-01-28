@@ -19,6 +19,7 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(PowerSystem), "NewGeneratorComponent")]
 		public static bool NewGeneratorComponent(int entityId, PrefabDesc desc, ref int __result, PowerSystem __instance)
 		{
+			if (GS2.Vanilla) return true;
 			//GS2.Warn("New Generator Component!");
 			int num2;
 			if (__instance.genRecycleCursor > 0)
@@ -94,12 +95,12 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(PowerSystem), "CalculateGeothermalStrenth")]
 		public static bool CalculateGeothermalStrenth(Vector3 pos, Quaternion rot, ref float __result, PowerSystem __instance)
 		{
-			
+			if (GS2.Vanilla) return true;
 			float num = 0f;
 			float rr = __instance.planet.realRadius;
 			if (VFInput.alt) rr -= 4f;
-			//GS2.Warn("CalcGeoStrenth " + rr);
-			if (__instance.planet.waterItemId == -1)
+            GS2.Warn("CalcGeoStrenth " + rr);
+            if (__instance.planet.waterItemId == -1)
 			{
 				for (int i = 0; i < PowerSystem.gthDetectionPos.Length; i++)
 				{
@@ -119,8 +120,8 @@ namespace GalacticScale
 				}
 				num += 1f;
 			}
-            //GS2.Warn($"***GeoStrenth:{num}");
-			float modifier = 1;
+            GS2.Warn($"***GeoStrenth:{num}");
+            float modifier = 1;
 			if (__instance.planet.orbitAround == null) {
 				modifier -= __instance.planet.orbitRadius;
 			}
