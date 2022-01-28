@@ -5,18 +5,18 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\inno\.nuget\packages\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Tony\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.10.0</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.9.1</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\Users\inno\.nuget\packages\" />
+    <SourceRoot Include="C:\Users\Tony\.nuget\packages\" />
   </ItemGroup>
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgBepInEx_Core Condition=" '$(PkgBepInEx_Core)' == '' ">C:\Users\inno\.nuget\packages\bepinex.core\5.4.17</PkgBepInEx_Core>
-    <PkgBepInEx_Analyzers Condition=" '$(PkgBepInEx_Analyzers)' == '' ">C:\Users\inno\.nuget\packages\bepinex.analyzers\1.0.7</PkgBepInEx_Analyzers>
+    <PkgBepInEx_Core Condition=" '$(PkgBepInEx_Core)' == '' ">C:\Users\Tony\.nuget\packages\bepinex.core\5.4.17</PkgBepInEx_Core>
+    <PkgBepInEx_Analyzers Condition=" '$(PkgBepInEx_Analyzers)' == '' ">C:\Users\Tony\.nuget\packages\bepinex.analyzers\1.0.8</PkgBepInEx_Analyzers>
   </PropertyGroup>
 </Project>
