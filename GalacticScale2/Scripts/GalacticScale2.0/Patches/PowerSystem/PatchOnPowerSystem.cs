@@ -99,7 +99,7 @@ namespace GalacticScale
 			float rr = __instance.planet.realRadius;
 			if (VFInput.alt) rr -= 4f;
 			//GS2.Warn("CalcGeoStrenth " + rr);
-			if (__instance.planet.waterItemId < 0)
+			if (__instance.planet.waterItemId == -1)
 			{
 				for (int i = 0; i < PowerSystem.gthDetectionPos.Length; i++)
 				{
@@ -119,8 +119,21 @@ namespace GalacticScale
 				}
 				num += 1f;
 			}
-			//GS2.Warn($"***GeoStrenth:{num}");
-			__result = num;
+            //GS2.Warn($"***GeoStrenth:{num}");
+			float modifier = 1;
+			if (__instance.planet.orbitAround == null) {
+				modifier -= __instance.planet.orbitRadius;
+			}
+			else if (__instance.planet.orbitAroundPlanet.orbitAroundPlanet == null) {
+				modifier -= __instance.planet.orbitAroundPlanet.orbitRadius;
+			}
+			else if (__instance.planet.orbitAroundPlanet.orbitAroundPlanet.orbitAroundPlanet == null)
+			{
+				modifier -= __instance.planet.orbitAroundPlanet.orbitAroundPlanet.orbitRadius;
+			}
+			if (modifier < 0) modifier = 0;
+			num *= (modifier + 1f);
+            __result = num;
 			return false;
 		}
 	}

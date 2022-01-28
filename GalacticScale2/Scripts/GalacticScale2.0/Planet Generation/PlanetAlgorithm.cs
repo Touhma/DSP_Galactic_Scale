@@ -11,7 +11,7 @@
         public GS2PlanetAlgorithm(GSPlanet gsPlanet)
         {
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Begin");
-            // GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
+            GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
             // GS2.Log("GS2PlanetAlgorithm|Constructor|Selecting Theme " + gsPlanet.Theme);
             var gSTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             // GS2.Log("GS2PlanetAlgorithm|Constructor|Selected Theme");
@@ -123,6 +123,8 @@
                 case 5: return new PlanetAlgorithm5();
                 case 6: return new PlanetAlgorithm6();
                 case 7: return new PlanetAlgorithm7();
+                case 8: return new PlanetAlgorithm8();
+                case 9: return new PlanetAlgorithm9();
             }
 
             return new PlanetAlgorithm0();

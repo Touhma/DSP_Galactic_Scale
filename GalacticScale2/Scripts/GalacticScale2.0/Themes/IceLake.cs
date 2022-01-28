@@ -138,7 +138,7 @@ namespace GalacticScale
             Wind = 0.7f,
             IonHeight = 55f,
             WaterHeight = 0f,
-            WaterItemId = -1,
+            WaterItemId = -2,
             Musics = new[]
             {
                 4,

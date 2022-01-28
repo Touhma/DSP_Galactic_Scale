@@ -23,7 +23,7 @@ namespace GalacticScale
             Log($"Current Status:{status}");
         }
 
-        private static int GetLoadedPlanetCount(StarData star)
+        public static int GetLoadedPlanetCount(StarData star)
         {
             var planetsLoaded = 0;
             for (var i = 0; i < star?.planetCount; i++)
