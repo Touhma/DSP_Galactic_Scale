@@ -10,6 +10,7 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(PowerSystem), "line_arragement_for_add_node")]
 		public static bool line_arrangement_for_add_node(Node node, ref int[] ___tmp_state)
 		{
+			//GS2.Warn("laan");
 			if (___tmp_state == null) ___tmp_state = new int[2048];
 			return true;
 		}
@@ -18,6 +19,7 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(PowerSystem), "NewGeneratorComponent")]
 		public static bool NewGeneratorComponent(int entityId, PrefabDesc desc, ref int __result, PowerSystem __instance)
 		{
+			//GS2.Warn("New Generator Component!");
 			int num2;
 			if (__instance.genRecycleCursor > 0)
 			{
@@ -61,11 +63,14 @@ namespace GalacticScale
 			Quaternion rot = __instance.factory.entityPool[entityId].rot;
 			if (desc.geothermal)
 			{
-				float num4 = __instance.planet.realRadius -4f - __instance.planet.data.QueryModifiedHeight(pos);
+				//GS2.Warn($"GEO RealRadius:{__instance.planet.realRadius } QModHeight:{__instance.planet.data.QueryModifiedHeight(pos)}");
+				float num4 = __instance.planet.realRadius - 4f - __instance.planet.data.QueryModifiedHeight(pos);
 				float num5 = Mathf.Clamp(num4 * ((num4 > 0f) ? 0.3f : 0.9f), -0.9f, 0.3f) * 0.05f;
 				for (int i = 0; i < PowerSystem.gthDetectionPos.Length; i++)
 				{
 					num4 = __instance.planet.realRadius - 4f - __instance.planet.data.QueryModifiedHeight(pos + rot * PowerSystem.gthDetectionPos[i]);
+					//GS2.Warn($"num4: { num4} i:{i} QMODTHING:{__instance.planet.data.QueryModifiedHeight(pos + rot * PowerSystem.gthDetectionPos[i])} PowerSystem.gthDetectionPos:{PowerSystem.gthDetectionPos[i]}");
+
 					if (num4 > 0f && i > 0)
 					{
 						float num6 = __instance.planet.realRadius - 4f - __instance.planet.data.QueryModifiedHeight(pos + rot * (PowerSystem.gthDetectionPos[i] * 1.2f));
@@ -89,12 +94,16 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(PowerSystem), "CalculateGeothermalStrenth")]
 		public static bool CalculateGeothermalStrenth(Vector3 pos, Quaternion rot, ref float __result, PowerSystem __instance)
 		{
+			
 			float num = 0f;
-			if (__instance.planet.theme == 9)
+			float rr = __instance.planet.realRadius;
+			if (VFInput.alt) rr -= 4f;
+			//GS2.Warn("CalcGeoStrenth " + rr);
+			if (__instance.planet.waterItemId < 0)
 			{
 				for (int i = 0; i < PowerSystem.gthDetectionPos.Length; i++)
 				{
-					float num2 = __instance.planet.realRadius - 4f - __instance.planet.data.QueryModifiedHeight(pos);
+					float num2 = __instance.planet.realRadius -4f - __instance.planet.data.QueryModifiedHeight(pos);
 					if (i < 2)
 					{
 						num += Mathf.Clamp(num2 * ((num2 > 0f) ? 0.8f : 0.9f), -0.9f, 0.3f) * 0.1f;
@@ -103,12 +112,14 @@ namespace GalacticScale
 					{
 						num2 = __instance.planet.realRadius - 4f - __instance.planet.data.QueryModifiedHeight(pos + rot * PowerSystem.gthDetectionPos[i]);
 						num += Mathf.Clamp(num2 * ((num2 > 0f) ? 0.8f : 0.9f), -0.9f, 0.3f) * 0.08f;
+						
 						num2 = __instance.planet.realRadius - 4f - __instance.planet.data.QueryModifiedHeight(pos + rot * PowerSystem.gthDetectionPos[i] * 2f);
 						num += Mathf.Clamp(num2 * ((num2 > 0f) ? 0.8f : 0.9f), -0.9f, 0.3f) * 0.02f;
 					}
 				}
 				num += 1f;
 			}
+			//GS2.Warn($"***GeoStrenth:{num}");
 			__result = num;
 			return false;
 		}
