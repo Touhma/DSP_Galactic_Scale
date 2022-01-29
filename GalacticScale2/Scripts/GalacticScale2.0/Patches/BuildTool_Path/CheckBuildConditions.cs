@@ -8,11 +8,14 @@ namespace GalacticScale
         [HarmonyPatch(typeof(BuildTool_Path), "CheckBuildConditions")]
         public static bool CheckBuildConditions(bool __result, BuildTool_Path __instance, ref bool ___cursorValid)
         {
+            // GS2.Warn(__instance.buildPreviews[0].condition.ToString());
             var count = __instance.buildPreviews.Count;
             if (count < 2) return __result; // Check we are building
 
             var preview = __instance.buildPreviews[0];
+            
             var preview2 = __instance.buildPreviews[count - 1];
+            
             var objId = preview.inputObjId;
             var objId2 = preview2.outputObjId;
             //GS2.Warn(objId.ToString());

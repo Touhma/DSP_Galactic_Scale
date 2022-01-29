@@ -122,7 +122,7 @@ namespace GalacticScale
 			}
             GS2.Warn($"***GeoStrenth:{num}");
             float modifier = 1;
-			if (__instance.planet.orbitAround == null) {
+			if (__instance.planet.orbitAroundPlanet == null) {
 				modifier -= __instance.planet.orbitRadius;
 			}
 			else if (__instance.planet.orbitAroundPlanet.orbitAroundPlanet == null) {
@@ -133,6 +133,12 @@ namespace GalacticScale
 				modifier -= __instance.planet.orbitAroundPlanet.orbitAroundPlanet.orbitRadius;
 			}
 			if (modifier < 0) modifier = 0;
+			if (__instance.planet.realRadius > 200)
+			{
+				var diff = __instance.planet.realRadius - 200;
+				var mod = diff / 300f;
+				modifier *= (1 + mod);
+			}
 			num *= (modifier + 1f);
             __result = num;
 			return false;

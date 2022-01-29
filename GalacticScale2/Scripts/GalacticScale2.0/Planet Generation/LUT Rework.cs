@@ -13,7 +13,7 @@ namespace GalacticScale
             if (!DSPGame.IsMenuDemo && !Vanilla)
             {
                 // Prevent special LUT's being created in main menu
-                if (keyedLUTs.ContainsKey(segments) && keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
+                if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
                 var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 var lut = new int[numSegments];
                 var segmentAngle = Mathf.PI / 2f / numSegments; //quarter circle divided by num segments is the angle per segment

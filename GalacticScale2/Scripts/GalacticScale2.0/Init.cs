@@ -121,6 +121,7 @@ namespace GalacticScale
             
             if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
             {
+                if (ActiveGenerator != null && ActiveGenerator.GUID == "space.customizing.generators.vanilla") updateMessage += "Note: Settings for this mod are in the settings menu. Make sure to change the Generator to get the full Galactic Scale experience.\r\n";
                 updateMessage += "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
                 File.Delete(Path.Combine(AssemblyPath, "icon.png"));
                 updateMessage += "The latest DSP update has added additional planet themes which are yet to be included in GS2. \r\nI'm working on getting them added to the GS2 themeset, as well as implementing their new subtheme system";

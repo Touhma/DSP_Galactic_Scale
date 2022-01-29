@@ -12,14 +12,20 @@ namespace GalacticScale
             var status = "WARNING - Galactic Scale savegames can be broken by updates.Read the FAQ @ http://customizing.space\r\n".Translate();
             if (GameMain.localStar != null && !GameMain.localStar.loaded)
                 status += "Loading Planets: ".Translate();
+            // GS2.Warn("A");
             status += $"{HandleLocalStarPlanets.GetStarLoadingStatus(GameMain.localStar)}";
-            if (HandleLocalStarPlanets.GetLoadedPlanetCount(GameMain.localStar) >= GameMain.localStar.planets.Length || GS2.Vanilla) return;
-            var loadingPlanet = GameMain.localStar.planets[HandleLocalStarPlanets.GetLoadedPlanetCount(GameMain.localStar)];
-            status += $"  {loadingPlanet.name} a {loadingPlanet.realRadius} Radius {GS2.GetGSPlanet(loadingPlanet).GsTheme.Name} ";
-            if (loadingPlanet.orbitAroundPlanet != null) status += "Moon " ;
+            // GS2.Warn("B");
+            if (GameMain.localStar != null && HandleLocalStarPlanets.GetLoadedPlanetCount(GameMain.localStar) >= GameMain.localStar.planets.Length || GS2.Vanilla) return;
+            // GS2.Warn("C");
+            var loadingPlanet = GameMain.localStar?.planets[HandleLocalStarPlanets.GetLoadedPlanetCount(GameMain.localStar)];
+            // GS2.Warn("D");
+            status += $"  {loadingPlanet?.name}, a size {loadingPlanet?.realRadius} {GS2.GetGSPlanet(loadingPlanet)?.GsTheme?.DisplayName} ";
+            // GS2.Warn("E");
+            if (loadingPlanet?.orbitAroundPlanet != null) status += "Moon " ;
             else status += "Planet ";
             //status += $"with a {loadingPlanet.orbitRadius}AU Orbit";
-            ___promptText.text = status;
+            // GS2.Warn("F");
+            if (___promptText != null) ___promptText.text = status;
         }
     }
 }

@@ -1,4 +1,9 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.2.0.26 - Hopefully Geothermal is working on every planet now :)
+
+- Version 2.2.0.25 - Fixed Geothermal for Vanilla, Fixed Error on New Game. Added Debug Option to revert Scarlet Ice Lake
+
+- Version 2.2.0.24 - Fixed Geothermal. Fixed Scarlet Ice Lake. Added some planet info to loading screen.
 
 - Version 2.2.0.23 - Fixed Planet Detail Panel. Fixed Ghost Planets. Broke Nebula compatibility. (Nebula isn't updated yet afaik so no big deal here)
 

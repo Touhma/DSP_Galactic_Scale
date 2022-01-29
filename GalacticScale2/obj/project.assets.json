@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.8": {
-      "BepInEx.Analyzers/1.0.7": {
+      "BepInEx.Analyzers/1.0.8": {
         "type": "package"
       },
       "BepInEx.BaseLib/5.4.17": {
@@ -158,7 +158,7 @@
       }
     },
     ".NETFramework,Version=v4.8/win": {
-      "BepInEx.Analyzers/1.0.7": {
+      "BepInEx.Analyzers/1.0.8": {
         "type": "package"
       },
       "BepInEx.BaseLib/5.4.17": {
@@ -314,7 +314,7 @@
       }
     },
     ".NETFramework,Version=v4.8/win-x64": {
-      "BepInEx.Analyzers/1.0.7": {
+      "BepInEx.Analyzers/1.0.8": {
         "type": "package"
       },
       "BepInEx.BaseLib/5.4.17": {
@@ -470,7 +470,7 @@
       }
     },
     ".NETFramework,Version=v4.8/win-x86": {
-      "BepInEx.Analyzers/1.0.7": {
+      "BepInEx.Analyzers/1.0.8": {
         "type": "package"
       },
       "BepInEx.BaseLib/5.4.17": {
@@ -627,16 +627,16 @@
     }
   },
   "libraries": {
-    "BepInEx.Analyzers/1.0.7": {
-      "sha512": "/RZ1GzpvD9Va5/pW+2Kce5rcaIX5mXiTvzwMqjgPGxsVzNGxt6wulw3zCS6jZYJWA1j4D5YQQ2jVbcz/Dkpjdg==",
+    "BepInEx.Analyzers/1.0.8": {
+      "sha512": "xrfNmunsPhBx+vStTxLonq/aHkRrDH77c9tG/x3m5eejrKe5B0nf7cJPRRt6x330sGI0bLaPTtygdeHUgvI3wQ==",
       "type": "package",
-      "path": "bepinex.analyzers/1.0.7",
+      "path": "bepinex.analyzers/1.0.8",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         "analyzers/dotnet/cs/BepInEx.Analyzers.CodeFixes.dll",
         "analyzers/dotnet/cs/BepInEx.Analyzers.dll",
-        "bepinex.analyzers.1.0.7.nupkg.sha512",
+        "bepinex.analyzers.1.0.8.nupkg.sha512",
         "bepinex.analyzers.nuspec",
         "tools/install.ps1",
         "tools/uninstall.ps1"

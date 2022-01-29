@@ -6,8 +6,76 @@ using UnityEngine;
 namespace GalacticScale
 
 {
+
     public class PatchOnWhatever
     {
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), "AddHeightMapModLevel")]
+        public static bool AddHeightMapModLevel(int index, int level, PlanetData __instance)
+        {
+            if (__instance.data.AddModLevel(index, level))
+            {
+                int num = __instance.precision / __instance.segment;
+                int num2 = index % __instance.data.stride;
+                int num3 = index / __instance.data.stride;
+                int num4 = ((num2 < __instance.data.substride) ? 0 : 1) + ((num3 < __instance.data.substride) ? 0 : 2);
+                int num5 = num2 % __instance.data.substride;
+                int num6 = num3 % __instance.data.substride;
+                int num7 = (num5 - 1) / num;
+                int num8 = (num6 - 1) / num;
+                int num9 = num5 / num;
+                int num10 = num6 / num;
+                if (num9 >= __instance.segment)
+                {
+                    num9 = __instance.segment - 1;
+                }
+                if (num10 >= __instance.segment)
+                {
+                    num10 = __instance.segment - 1;
+                }
+                int num11 = num4 * __instance.segment * __instance.segment;
+                int num12 = num7 + num8 * __instance.segment + num11;
+                int num13 = num9 + num8 * __instance.segment + num11;
+                int num14 = num7 + num10 * __instance.segment + num11;
+                int num15 = num9 + num10 * __instance.segment + num11;
+                num12 = Mathf.Clamp(num12, 0, 99);
+                num13 = Mathf.Clamp(num13, 0, 99);
+                num14 = Mathf.Clamp(num14, 0, 99);
+                num15 = Mathf.Clamp(num15, 0, 99);
+                __instance.dirtyFlags[num12] = true;
+                __instance.dirtyFlags[num13] = true;
+                __instance.dirtyFlags[num14] = true;
+                __instance.dirtyFlags[num15] = true;
+            }
+
+            return false;
+        }
+        
+        [HarmonyPostfix, HarmonyPatch(typeof(BuildTool_Inserter), "CheckBuildConditions")]
+        public static void BuildToolInserter(BuildTool_Inserter __instance, ref bool __result)
+        {
+            if (__instance.buildPreviews.Count == 0)
+            {
+                return;
+            }
+            // if (__instance.buildPreviews == null) return;
+            var preview = __instance.buildPreviews[0];
+            // GS2.Warn(preview?.condition.ToString());
+            
+            if (__instance.planet.realRadius < 20)
+            {
+                if (preview.condition == EBuildCondition.TooSkew)
+                {
+                    preview.condition = EBuildCondition.Ok;
+                    // GS2.Warn("TooSkew");
+                    __instance.cursorValid = true; // Prevent red text
+                    __result = true; // Override the build condition check
+                    UICursor.SetCursor(ECursor.Default); // Get rid of that ban cursor
+                    __instance.actionBuild.model.cursorText = "Click to build";
+                    __instance.actionBuild.model.cursorState = 0;
+                }
+            } 
+        }
+        
         [HarmonyPrefix, HarmonyPatch(typeof(UILoadGameWindow), "_OnOpen")]
         public static bool UILoadGameWindow_OnOpen()
         {
