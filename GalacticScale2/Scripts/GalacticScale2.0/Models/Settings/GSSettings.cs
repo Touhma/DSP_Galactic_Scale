@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GSSerializer;
 using UnityEngine;
 
@@ -74,6 +75,20 @@ namespace GalacticScale
 
         public static int StarCount => Stars.Count;
 
+        public static int PrimaryStarCount()
+        {
+            int count = 0;
+            // var companions = new List<
+            for (int i = 0; i < Stars.Count; i++)
+            {
+                // var companion = Stars[i].BinaryCompanion;
+                if (!Stars[i].genData.ContainsKey("binary") || !Stars[i].genData["binary"]) count++;
+                // if (companion == string.Empty || companion == null) count++;
+            }
+
+            return count;
+        }
+        
         public static GSPlanet BirthPlanet
         {
             get

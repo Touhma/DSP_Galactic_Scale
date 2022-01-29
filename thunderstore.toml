@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.2.26"
-description = "v2.2.0.26 Geothermal Fix (Hopefully the last one)"
+versionNumber = "2.2.27"
+description = "v2.2.0.27 Loading Fix (Hopefully)"
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 

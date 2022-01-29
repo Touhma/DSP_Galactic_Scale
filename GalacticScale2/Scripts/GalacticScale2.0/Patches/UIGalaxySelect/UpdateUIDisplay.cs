@@ -22,8 +22,17 @@ namespace GalacticScale
             if (galaxy.stars == null) return false;
 
             __instance.seedInput.text = galaxy.seed.ToString("0000 0000");
-            __instance.starCountSlider.value = galaxy.starCount;
-            __instance.starCountText.text = galaxy.starCount.ToString();
+            if (GS2.Vanilla)
+            {
+                __instance.starCountSlider.value = galaxy.starCount;
+                __instance.starCountText.text = galaxy.starCount.ToString();
+            }
+            else
+            {
+                __instance.starCountSlider.value = GSSettings.PrimaryStarCount();
+                __instance.starCountText.text = GSSettings.PrimaryStarCount().ToString();
+            }
+
             var M = 0;
             var K = 0;
             var G = 0;
