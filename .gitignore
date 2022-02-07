@@ -1,6 +1,7 @@
 
 .idea*
 .vs*
+.vscode*
 **/Debug/**
 GalacticScale.sln.DotSettings.user
 DSP_Plugins.GalacticScale/Directory.Build.props
