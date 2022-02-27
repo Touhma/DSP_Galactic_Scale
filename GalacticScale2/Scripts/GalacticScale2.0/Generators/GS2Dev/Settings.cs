@@ -38,20 +38,26 @@ namespace GalacticScale.Generators
 
         public void Import(GSGenPreferences importedPreferences)
         {
+            Warn("Importing Preferences");
             for (var i = 0; i < importedPreferences.Count; i++)
             {
                 var key = importedPreferences.Keys.ElementAt(i);
+                Warn($"Setting:{key} to {importedPreferences[key]}");
                 preferences.Set(key, importedPreferences[key]);
-                if (loaded && UI.ContainsKey(key)) UI[key].Set(importedPreferences[key]);
+                if (loaded && UI.ContainsKey(key)) {
+                    Warn("UI Loaded, setting UI Element to match");
+                    UI[key].Set(importedPreferences[key]); 
+                }
             }
 
             if (loaded) loaded = false;
             Config.DefaultStarCount = importedPreferences.GetInt("defaultStarCount");
-            if (!importedPreferences.GetBool("ludicrousMode")) Config.MaxStarCount = 1024;
+            //if (!importedPreferences.GetBool("ludicrousMode")) Config.MaxStarCount = 1024;
         }
 
         public GSGenPreferences Export()
         {
+            Warn("Exporting Preferences");
             return preferences;
         }
 
