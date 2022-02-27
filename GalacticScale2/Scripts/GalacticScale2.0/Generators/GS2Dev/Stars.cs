@@ -68,8 +68,8 @@ namespace GalacticScale.Generators
 
                 if (GetLuminosityBoostForStar(star) > 0)
                 {
-                    var lum = Round((float)Math.Pow(star.luminosity, 0.33000001311302185) * 1000f) / 1000f;
-                    lum += GetLuminosityBoostForStar(star);
+                    var lum = Round((float)Math.Pow(star.luminosity, 0.33f) * 1000f) / 1000f;
+                    lum *= GetLuminosityBoostForStar(star);
                     star.luminosity = (float)Math.Pow(lum, 3.0);
                 }
             }

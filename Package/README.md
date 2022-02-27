@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.2.0.28 - Possible Nebula Fix. Requires prerelease version of nebula from github.
+
 - Version 2.2.0.27 - Hotfix for rare loading issue
 
 - Version 2.2.0.26 - Hopefully Geothermal is working on every planet now :)

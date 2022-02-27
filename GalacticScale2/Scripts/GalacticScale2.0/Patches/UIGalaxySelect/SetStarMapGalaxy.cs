@@ -113,6 +113,7 @@ namespace GalacticScale
                 GameMain.universeSimulator.galaxyData = GS2.galaxy;
             }
             GameMain.universeSimulator.starSimulators = new StarSimulator[GS2.galaxy.starCount];
+            
             for (int i = 0; i < GS2.galaxy.starCount; i++)
             {
                 StarData star = GS2.galaxy.stars[i];
@@ -126,6 +127,26 @@ namespace GalacticScale
                 GameMain.universeSimulator.starSimulators[i].gameObject.name = star.displayName;
                 GameMain.universeSimulator.starSimulators[i].gameObject.layer = 24;
                 GameMain.universeSimulator.starSimulators[i].gameObject.SetActive(true);
+            }
+            var starmap = __instance.starmap;
+            while (starmap.starPool.Count <= 100)
+            {
+                UIVirtualStarmap.StarNode starNode2 = new UIVirtualStarmap.StarNode();
+                starNode2.active = false;
+                starNode2.starData = null;
+                starNode2.pointRenderer = Object.Instantiate<MeshRenderer>(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
+                starNode2.nameText = Object.Instantiate<Text>(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent);
+                starmap.starPool.Add(starNode2);
+            }
+            while (starmap.connPool.Count <= 100)
+            {
+                starmap.connPool.Add(new UIVirtualStarmap.ConnNode
+                {
+                    active = false,
+                    starA = null,
+                    starB = null,
+                    lineRenderer = Object.Instantiate(starmap.connLinePrefab, starmap.connLinePrefab.transform.parent)
+                });
             }
         }
     }
