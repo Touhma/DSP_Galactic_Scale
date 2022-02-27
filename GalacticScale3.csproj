@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
+  </PropertyGroup>
+  <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<AssemblyName>GalacticScale</AssemblyName>
+		<Description>Galaxy Customization for Dyson Sphere Program</Description>
+		<Version>2.3.13</Version>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>9.0</LangVersion>
+		<OutDir>bin/$(Configuration)</OutDir>
+		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale_GalacticScale\</OutDir>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.Core" Version="5.*" />
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+		<PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
+		<PackageReference Include="DysonSphereProgram.GameLibs" Version="*-*" IncludeAssets="compile" />
+		<PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="GSUI">
+	    <HintPath>Package\GSUI.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="LICENSE">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Package\galacticbundle">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>galacticbundle</TargetPath>
+		</None>
+	</ItemGroup>
+</Project>

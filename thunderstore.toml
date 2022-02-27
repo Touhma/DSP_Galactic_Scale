@@ -1,0 +1,36 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "Galactic_Scale"
+name = "GalacticScale_Experimental"
+versionNumber = "2.3.12"
+description = "v2.3.12 Fixed log spam while placing blueprints that caused terrible performance"
+websiteUrl = "https://github.com/innominata/GalacticScale3"
+containsNsfwContent = false
+
+[package.dependencies]
+"xiaoye97-BepInEx" = "5.4.17"
+"crecheng-CloseError" = "1.0.0"
+
+[build]
+icon = "./Package/icon.png"
+readme = "./Package/README.md"
+outdir = "./"
+
+[[build.copy]]
+source = "./obj/Debug/net472/GalacticScale.dll"
+target = "./GalacticScale.dll"
+[[build.copy]]
+source = "./Package/GSUI.dll"
+target = "./GSUI.dll"
+[[build.copy]]
+source = "./Package/3rdPartyLicenses.md"
+target = "./3rdPartyLicenses.md"
+[[build.copy]]
+source = "./Package/galacticbundle"
+target = "./galacticbundle"
+[publish]
+repository = "https://thunderstore.io"
+communities = ["dyson-sphere-program"]
+categories = []
