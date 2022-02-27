@@ -1,5 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
+- Version 2.3.13 - Fixed issues in galaxy select. Fixed loading game when in space. Fixed loading game putting player inside planet. Fixed Obsidian theme for new games.
+
 - Version 2.3.12 - Removed a lot of logspam. Fixed error on quit while planets loading
 
 - Version 2.3.11 - Fixed version
