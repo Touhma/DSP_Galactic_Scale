@@ -43,8 +43,8 @@ namespace GalacticScale
                     GS2.Warn("MainPlayer null or existing game");
                     
                 }
-                GameMain.localPlanet.Load();
-                GameMain.localStar.Load();
+                GameMain.localPlanet?.Load();
+                GameMain.localStar?.Load();
                 
             }
 
