@@ -122,6 +122,8 @@ namespace GalacticScale
             // Warn("Step3");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             // Warn("Step4");
+            CleanErrorLogs();
+
             Config.Init();
             // Warn("Step5");
             LoadPreferences(true);
