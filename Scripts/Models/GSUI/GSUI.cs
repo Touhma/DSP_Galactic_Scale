@@ -191,7 +191,14 @@ namespace GalacticScale
         {
             Set(DefaultValue);
         }
-
+        public void Show()
+        {
+            RectTransform?.gameObject.SetActive(true);
+        }
+        public void Hide()
+        {
+            RectTransform?.gameObject.SetActive(false);
+        }
         public bool Disable()
         {
             //GS2.Warn("Disabling element" + label);
