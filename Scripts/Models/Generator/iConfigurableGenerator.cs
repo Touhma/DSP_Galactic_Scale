@@ -2,8 +2,13 @@
 {
     public interface iConfigurableGenerator : iGenerator
     {
-        GSOptions Options { get; }
-        void Import(GSGenPreferences preferences);
-        GSGenPreferences Export();
+        public GSOptions Options { get; }
+        public void Import(GSGenPreferences preferences);
+        public GSGenPreferences Export();
+
+        public void OnOpen();
+        public void OnCancel();
+        public void OnApply();
     }
+    
 }

@@ -35,7 +35,7 @@ namespace GalacticScale
                 catch (Exception e)
                 {
                     Warn("Failed to load plugin:" + e.Message);
-                    updateMessage += $"Failed to load plugin:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the plugin is available, or downgrade GS2 to continue using it";
+                    updateMessage += $"Failed to load plugin:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the plugin is available, or downgrade GS2 to continue using it\r\n";
                 }
             }
 
@@ -70,7 +70,7 @@ namespace GalacticScale
                 catch (Exception e)
                 {
                     Warn("Failed to load generator:" + e.Message);
-                    updateMessage += $"Failed to load external generator:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the generator is available, or downgrade GS2 to continue using it";
+                    updateMessage += $"Failed to load external generator:{filePath}\r\nIf you have recently upgraded GS2, Please check to see if an updated build of the generator is available, or downgrade GS2 to continue using it\r\n";
                 }
             }
 

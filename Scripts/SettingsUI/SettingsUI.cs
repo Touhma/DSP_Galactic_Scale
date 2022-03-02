@@ -70,7 +70,7 @@ namespace GalacticScale
             ImportCustomGeneratorOptions();
             CreateOptionsUI();
             CreateGeneratorTabs();
-            LoadPreferences();
+            // LoadPreferences();
             OptionsUIPostfix.Invoke();
         }
 

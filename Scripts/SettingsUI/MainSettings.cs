@@ -71,7 +71,17 @@ namespace GalacticScale
         public GSOptions Options { get; } = new();
         //public bool Test => Preferences.GetBool("Test", false);
         //public float TestNum => Preferences.GetFloat("TestNum", 0f);
+        public void OnOpen()
+        {
+        }
 
+        public void OnCancel()
+        {
+        }
+
+        public void OnApply()
+        {
+        }
         public GSGenPreferences Export()
         {
             Preferences.Set("Generator ID", ActiveGenerator.GUID);
@@ -186,7 +196,7 @@ namespace GalacticScale
         public void EnableDevMode()
         {
             Preferences.Set("Dev", true);
-            SavePreferences();
+            // SavePreferences();
         }
 
         public void ResetBinaryStars(Val o)
@@ -220,7 +230,7 @@ namespace GalacticScale
         public void SetResourceMultiplier(float val)
         {
             Preferences.Set("Resource Multiplier", val);
-            SavePreferences();
+            // SavePreferences();
         }
 
         public void SetExternalTheme(string folder, string name, bool value)
@@ -369,7 +379,7 @@ namespace GalacticScale
             // GS2.Warn("Gen Index Set");
             //SettingsUI.UpdateContentRect();
             // GS2.Warn("Updated ContentRect");
-            SavePreferences();
+            // SavePreferences();
             // GS2.Warn("Preferences Saved");
         }
 

@@ -7,15 +7,15 @@ namespace GalacticScale
     {
         public bool Set(GSSliderConfig cfg)
         {
-            GS2.Warn("Setting Slider? : ");
+            // GS2.Warn("Setting Slider? : ");
             if (RectTransform == null) return false;
             var slider = RectTransform.GetComponent<Slider>();
             if (slider == null) return false;
-            GS2.Warn($"{Label} Slider Setting...({slider.value}) {DefaultValue} -> {cfg.defaultValue} {cfg.minValue}:{cfg.maxValue}");
+            // GS2.Warn($"{Label} Slider Setting...({slider.value}) {DefaultValue} -> {cfg.defaultValue} {cfg.minValue}:{cfg.maxValue}");
             slider.minValue = cfg.minValue >= 0 ? cfg.minValue : slider.minValue;
             slider.maxValue = cfg.maxValue >= 0 ? cfg.maxValue : slider.maxValue;
             slider.value = cfg.defaultValue >= 0 ? cfg.defaultValue : slider.value;
-            GS2.Warn("Slider Set.");
+            // GS2.Warn("Slider Set.");
             return true;
         }
 
@@ -71,7 +71,7 @@ namespace GalacticScale
                         return false;
                     }
 
-                    GS2.Log($"Found togglelist for {Label} setting isOn:{o}");
+                    // GS2.Log($"Found togglelist for {Label} setting isOn:{o}");
                     gtoggle.Value = o;
                     return true;
                 case "Combobox":
@@ -104,8 +104,8 @@ namespace GalacticScale
                 return false;
             }
 
-            GS2.Warn("TEST");
-            GS2.Warn((items == null).ToString());
+            // GS2.Warn("TEST");
+            // GS2.Warn((items == null).ToString());
             Data = items;
             if (RectTransform != null) RectTransform.GetComponent<GSUIDropdown>().Items = items;
             return true;

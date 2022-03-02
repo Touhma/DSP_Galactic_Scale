@@ -57,6 +57,18 @@ namespace GalacticScale.Generators
             return new GSGenPreferences();
         }
 
+        public void OnOpen()
+        {
+        }
+
+        public void OnCancel()
+        {
+        }
+
+        public void OnApply()
+        {
+        }
+
         private void themeselect(Val o)
         {
             GS2.Warn(o);

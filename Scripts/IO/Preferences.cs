@@ -12,6 +12,7 @@ namespace GalacticScale
         static GSPreferences Preferences = new GSPreferences();
         public static void SavePreferences()
         {
+            GS2.Warn("SavePreferences");
             Preferences.version = PreferencesVersion;
             Preferences.MainSettings = Config.Export();
 
@@ -59,7 +60,7 @@ namespace GalacticScale
 
         public static void LoadPreferences(bool debug = false)
         {
-            Log("Start");
+            Log("LoadPreferences");
             //var path = Path.Combine(DataDir, "Preferences.json");
             //if (!CheckJsonFileExists(path)) return;
 
@@ -78,11 +79,11 @@ namespace GalacticScale
             //    updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
             //    return;
             //}
-            var preferences = GSPreferences.ReadFromDisk();
+            Preferences = GSPreferences.ReadFromDisk();
             if (!debug)
-                ParsePreferences(preferences);
+                ParsePreferences(Preferences);
             else
-                Config.Import(preferences.MainSettings);
+                Config.Import(Preferences.MainSettings);
             // debugOn = preferences.debug;
             Log("Preferences loaded");
             Log("End");
@@ -131,6 +132,8 @@ namespace GalacticScale
 
             public static bool WriteToDisk(GSPreferences preferences)
             {
+                GS2.Warn("WriteToDisk");
+
                 var serializer = new fsSerializer();
                 var fsResult = serializer.TrySerialize(Preferences, out var data);
                 if (fsResult.Failed)
@@ -154,6 +157,7 @@ namespace GalacticScale
             }
             public static GSPreferences ReadFromDisk()
             {
+                Log("ReadFromDisk");
                 var path = Path.Combine(DataDir, "Preferences.json");
                 if (!CheckJsonFileExists(path))
                 {
@@ -189,6 +193,7 @@ namespace GalacticScale
             }
             public bool Save(iConfigurableGenerator generator)
             {
+                Log($"Save (Generator) {generator.GUID}");
                 var generatorPreferences = generator.Export();
                 this.GeneratorPreferences[generator.GUID] = generatorPreferences;
                 return WriteToDisk(this);

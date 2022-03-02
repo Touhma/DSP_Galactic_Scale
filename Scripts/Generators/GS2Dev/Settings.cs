@@ -153,7 +153,7 @@ namespace GalacticScale.Generators
             Log("InitPreferences");
             GetHz();
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
-            preferences.Set("birthPlanetStar", 14);
+            preferences.Set("birthStar", 14);
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("allowResonances", true);
@@ -307,7 +307,7 @@ namespace GalacticScale.Generators
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
-            UI.Add("birthPlanetStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
+            UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
             AddSpacer(bOptions);
@@ -317,6 +317,7 @@ namespace GalacticScale.Generators
         private GSOptions CreateBinaryStarOptions()
         {
             var bOptions = new GSOptions();
+            UI.Add("binaryDistanceMulti", bOptions.Add(GSUI.Slider("Binary Distance Multi", 0.5f, 1f, 5f, 0.1f, "binaryDistanceMulti", null, "How close secondary stars should be to primaries")));
             UI.Add("binaryChance", bOptions.Add(GSUI.Slider("Binary Star Chance %".Translate(), 0, 0, 100, 1f, "binaryChance", null, "% Chance of a star having a binary companion".Translate())));
             for (var i = 0; i < 14; i++)
             {

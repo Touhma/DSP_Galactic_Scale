@@ -8,10 +8,10 @@ namespace GalacticScale
 {
     public class InputComponent : MonoBehaviour
     {
-        public void Awake()
-        {
-            GS2.Warn("Input component Awake");
-        }
+        // public void Awake()
+        // {
+        //     GS2.Warn("Input component Awake");
+        // }
 
         public void FixedUpdate()
         {

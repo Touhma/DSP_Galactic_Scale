@@ -216,6 +216,18 @@ namespace GalacticScale.Generators
             return preferences;
         }
 
+        public void OnOpen()
+        {
+        }
+
+        public void OnCancel()
+        {
+        }
+
+        public void OnApply()
+        {
+        }
+
         public ESpectrType getSpectrType(ExternalStarData s)
         {
             switch (s.spect[0])

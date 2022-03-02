@@ -104,6 +104,15 @@ namespace GalacticScale
             gsPlanet.planetData = planet;
             //GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
             planet.luminosity = gsPlanet.Luminosity;
+            
+            var hostPlanet = planet;
+            while (hostPlanet.orbitAroundPlanet != null)
+            {
+                hostPlanet = hostPlanet.orbitAroundPlanet;
+            }
+            var oRadius = hostPlanet.orbitRadius;
+            var lum = planet.star.luminosity / (oRadius * oRadius);
+            GS2.Warn($"Luminosity for {planet.name, 30}:{planet.luminosity, 10}:{lum} Star Luminosity:{planet.star.luminosity,10} LBR:{planet.star.lightBalanceRadius} ");
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
             //Log("Setting Theme|"+gsPlanet.Name);

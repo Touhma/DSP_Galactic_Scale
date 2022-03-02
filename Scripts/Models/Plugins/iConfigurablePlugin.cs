@@ -2,18 +2,20 @@
 {
     public interface iConfigurablePlugin
     {
-        string Name { get; }
-        string Author { get; }
-        string Description { get; }
-        string Version { get; }
-        string GUID { get; }
-        GSOptions Options { get; }
-        bool Enabled { get; set; }
-        void Init();
-        void Import(GSGenPreferences preferences);
+        public string Name { get; }
+        public string Author { get; }
+        public string Description { get; }
+        public string Version { get; }
+        public string GUID { get; }
+        public GSOptions Options { get; }
+        public bool Enabled { get; set; }
+        public void Init();
+        public void Import(GSGenPreferences preferences);
+        public void OnOpen();
+        public void OnCancel();
+        public void OnApply();
 
-
-        GSGenPreferences Export();
+        public GSGenPreferences Export();
     }
 
     public static partial class GS2

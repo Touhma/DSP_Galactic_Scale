@@ -55,7 +55,7 @@ namespace GalacticScale
 
         public void OnSliderValueChange(Slider slider)
         {
-            GS2.Warn($"{slider.value} -> {Mathf.RoundToInt(slider.value * 100f)}");
+            // GS2.Warn($"{slider.value} -> {Mathf.RoundToInt(slider.value * 100f)}");
             var value = Mathf.RoundToInt(slider.value * 100f) / 100f;
             _valueText.text = value.ToString();
             if (negativeLabel != "" && value < 0) _valueText.text = negativeLabel;

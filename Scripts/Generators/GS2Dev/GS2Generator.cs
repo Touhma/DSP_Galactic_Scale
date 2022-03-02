@@ -35,7 +35,17 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.gs2dev";
+        public void OnOpen()
+        {
+        }
 
+        public void OnCancel()
+        {
+        }
+
+        public void OnApply()
+        {
+        }
         public void Generate(int starCount, StarData forcedBirthStar = null)
         {
             if (forcedBirthStar != null)
