@@ -82,6 +82,12 @@ namespace GalacticScale
         public void OnApply()
         {
         }
+
+        public void Update(string key, Val val)
+        {
+            Preferences.Set(key, val);
+        }
+
         public GSGenPreferences Export()
         {
             Preferences.Set("Generator ID", ActiveGenerator.GUID);

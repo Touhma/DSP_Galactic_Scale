@@ -16,6 +16,7 @@
         public void OnApply();
 
         public GSGenPreferences Export();
+        public void Update(string key, Val val);
     }
 
     public static partial class GS2

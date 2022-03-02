@@ -228,6 +228,11 @@ namespace GalacticScale.Generators
         {
         }
 
+        public void Update(string key, Val val)
+        {
+            preferences.Set(key, val);
+        }
+
         public ESpectrType getSpectrType(ExternalStarData s)
         {
             switch (s.spect[0])

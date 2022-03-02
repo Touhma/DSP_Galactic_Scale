@@ -415,20 +415,22 @@ namespace GalacticScale
 
                 if (generator != null)
                 {
-                    var p = generator.Export();
-
-                    p.Set(key, o);
-                    generator.Import(p);
+                    // var p = generator.Export();
+                    //
+                    // p.Set(key, o);
+                    // generator.Import(p);
+                    generator.Update(key, o);
                     // GS2.Warn($"Test setting {key} to {o}");
                     if (callback is GSOptionCallback) callback(o);
                 }
                 else
                 {
-                    var p = plugin.Export();
-
-                    p.Set(key, o);
-                    // GS2.Log($"Callback for {Label} exporting etc");
-                    plugin.Import(p);
+                    // var p = plugin.Export();
+                    //
+                    // p.Set(key, o);
+                    // // GS2.Log($"Callback for {Label} exporting etc");
+                    // plugin.Import(p);
+                    plugin.Update(key, o);
                     // GS2.Warn($"Test setting {key} to {o}");
                     if (callback is GSOptionCallback) callback(o);
                 }
@@ -476,28 +478,6 @@ namespace GalacticScale
                     else GS2.Log($"Caution: Preference value for {Label} not found.");
                 }
             };
-        }
-
-        private void SetPreference(object value)
-        {
-            if (generator is null)
-            {
-                GS2.Error($"{Label} Trying to set preference '{key}' when Generator = null");
-                return;
-            }
-
-            var p = Generator.Export();
-            try
-            {
-                p.Set(key, value);
-            }
-            catch (Exception e)
-            {
-                GS2.Warn($"Error:{Label}");
-                GS2.Warn(e.Message);
-            }
-
-            Generator.Import(p);
         }
 
         public static GSUI Separator()

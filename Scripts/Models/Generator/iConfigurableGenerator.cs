@@ -9,6 +9,13 @@
         public void OnOpen();
         public void OnCancel();
         public void OnApply();
+        public void Update(string key, Val val);
+        // Usual Implementation:
+        //-----------------------
+        // public void Update(string key, Val val)
+        // {
+        //     Preferences.Set(key, val);
+        // }
     }
     
 }

@@ -46,6 +46,12 @@ namespace GalacticScale.Generators
         public void OnApply()
         {
         }
+
+        public void Update(string key, Val val)
+        {
+            preferences.Set(key, val);
+        }
+
         public void Generate(int starCount, StarData forcedBirthStar = null)
         {
             if (forcedBirthStar != null)

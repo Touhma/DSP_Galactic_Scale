@@ -69,6 +69,11 @@ namespace GalacticScale.Generators
         {
         }
 
+        public void Update(string key, Val val)
+        {
+     
+        }
+
         private void themeselect(Val o)
         {
             GS2.Warn(o);
