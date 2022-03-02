@@ -1,6 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
 
-- Version 2.3.15 - Settings update. Will require generator recompile. 
+- Version 2.3.15 - Test GS2 More realistic solar power. Settings update. Will require generator recompile. 
 
 - Version 2.3.14 - Fixed blueprints at poles. Now deletes logs older than a week
 

@@ -196,6 +196,28 @@ namespace GalacticScale.Generators
                 if (body == birthPlanet)
                     if (preferences.GetBool("birthTidalLock"))
                         body.RotationPeriod = body.OrbitalPeriod;
+                var oRadius = 1f;
+                if (GS2.IsPlanetOfStar(star, body))
+                {
+                    oRadius = body.OrbitRadius;
+                }
+                else
+                {
+                    foreach (var p in star.Planets)
+                    {
+                        if (GS2.IsMoonOfPlanet(p, body, true))
+                        {
+                            oRadius = p.OrbitRadius;
+                        }
+
+                    }
+                }
+                var starLum = Mathf.Pow(star.luminosity, 0.3333f);
+                var lum = star.luminosity / (oRadius * oRadius);
+                var lum2 = Mathf.Log(lum);
+                GS2.Warn($"Luminosity for {body.Name, 30}:{body.Luminosity, 10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
+                body.Luminosity = lum;
+
             }
         }
 

@@ -17,7 +17,16 @@
                     return true;
             return false;
         }
-
+        public static bool IsMoonOfPlanet(GSPlanet planet, GSPlanet moon, bool deep)
+        {
+            if (!deep) return IsMoonOfPlanet(planet, moon);
+            foreach (var m in planet.Moons)
+            {
+                if (moon == m) return true;
+                if (IsMoonOfPlanet(m, moon, true)) return true;
+            }
+            return false;
+        }
         public static GSStar GetGSStar(StarData star)
         {
             return GetGSStar(star.id);

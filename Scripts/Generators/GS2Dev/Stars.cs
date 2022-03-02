@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using static GalacticScale.GS2;
 using static UnityEngine.Mathf;
 
@@ -198,7 +199,7 @@ namespace GalacticScale.Generators
         private FloatPair CalculateHabitableZone(GSStar star)
         {
             // Warn($"Calculating Habitable Zone for {star.Name}");
-            var lum = star.luminosity;
+            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
             var flp = Utils.CalculateHabitableZone(lum);
             var min = flp.low;
             var max = flp.high;
@@ -234,8 +235,8 @@ namespace GalacticScale.Generators
             var sl = GetTypeLetterFromStar(star);
 
             var radius = star.RadiusAU;
-            var lum = star.luminosity;
-            var min = radius + 0.2f * radius * Sqrt(Sqrt(lum));
+            var lum = star.luminosity/preferences.GetFloat("luminosityBoost");
+            var min = radius + 0.2f * radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
 
             if (preferences.GetBool($"{sl}orbitOverride"))
             {
@@ -261,10 +262,10 @@ namespace GalacticScale.Generators
             var sl = GetTypeLetterFromStar(star);
             // Warn($"Calculating Maximum Orbit for {star.Name}");
             var minMaxOrbit = 5f;
-            var lum = star.luminosity;
+            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
             var hzMax = star.genData.Get("maxHZ");
             var maxOrbitByLuminosity = lum * 4f;
-            var maxOrbitByRadius = Pow(star.radius, 0.75f);
+            var maxOrbitByRadius = Pow(star.radius/preferences.GetFloat("starSizeMulti"), 0.75f);
             var maxOrbitByHabitableZone = 2f * hzMax;
             var maxByPlanetCount = star.bodyCount * 0.3f;
             // float density = (2f*GetSystemDensityBiasForStar(star))/100f;
@@ -277,7 +278,7 @@ namespace GalacticScale.Generators
                 // Warn($"Using Star Type Override {fp.high} from {fp} in {sl}orbits");
             }
 
-            // Warn($"Getting Max Orbit for Star {star.Name}\r\n HardCap:{star.MaxOrbit} \r\nMaxbyRadius({star.radius}):{maxOrbitByRadius} \r\nMaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} \r\nMaxbyLum({lum}):{maxOrbitByLuminosity} \r\nMaxByHZ({hzMax}):{maxOrbitByHabitableZone} \r\n HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
+            Warn($"Getting Max Orbit for Star {star.Name}\r\n HardCap:{star.MaxOrbit} \r\nMaxbyRadius({star.radius}):{maxOrbitByRadius} \r\nMaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} \r\nMaxbyLum({lum}):{maxOrbitByLuminosity} \r\nMaxByHZ({hzMax}):{maxOrbitByHabitableZone} \r\n HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             // Warn($"Final Max({max}):{max}");
             if (star.genData.Get("hasBinary", false))
             {
