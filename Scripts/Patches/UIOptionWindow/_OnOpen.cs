@@ -20,7 +20,7 @@ namespace GalacticScale
             if (contentGS == null)
             {
                 __instance.applyButton.button.onClick.AddListener(GS2.SavePreferences);
-                __instance.cancelButton.button.onClick.AddListener(() => { GS2.LoadPreferences(); });
+                //__instance.cancelButton.button.onClick.AddListener(() => { GS2.LoadPreferences(); });
                 SettingsUI.CreateGalacticScaleSettingsPage(___tabButtons, ___tabTexts);
             }
 
