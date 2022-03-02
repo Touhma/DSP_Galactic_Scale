@@ -9,6 +9,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetGrid), "DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(PlanetGrid __instance, int latitudeIndex, int segment, ref int __result)
         {
+            var a = 0;
             if (!DSPGame.IsMenuDemo)
                 if (!GS2.Vanilla)
                 {
@@ -20,10 +21,21 @@ namespace GalacticScale
                     }
                     if (GS2.keyedLUTs.ContainsKey(segment))
                     {
-                        // GS2.Warn($"Using DSLC {latitudeIndex} {segment} {__result} {GS2.keyedLUTs[segment].Length}");
+                        
                         var index = Mathf.Abs(latitudeIndex) % (segment / 2);
+                        
                         if (index >= segment / 4) index = segment / 4 - index;
-                        __result = GS2.keyedLUTs[segment][index];
+                        if (index > GS2.keyedLUTs[segment].Length - 1 || index < 0)
+                        {
+                            // GS2.Warn($"Using DSLC {latitudeIndex} {segment} {__result} {GS2.keyedLUTs[segment].Length} Index:{index}");
+                            // GS2.Warn($"Index:{index}");
+                            // GS2.WarnJson(GS2.keyedLUTs[segment]);
+                            // var index2 = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)(latitudeIndex / (double)(segment / 4f) * 3.14159274101257 * 0.5))) * segment);
+                            // __result = index2 < 500 ? PlatformSystem.segmentTable[index2] : (index2 + 49) / 100 * 100;
+                            __result = 4;
+                        }
+                        else __result = GS2.keyedLUTs[segment][index];
+                        a = 1 * 1;
                     }
                     else
                     {
@@ -31,8 +43,11 @@ namespace GalacticScale
                         // GS2.Warn("Using original algo");
                         var index = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)(latitudeIndex / (double)(segment / 4f) * 3.14159274101257 * 0.5))) * segment);
                         __result = index < 500 ? PlatformSystem.segmentTable[index] : (index + 49) / 100 * 100;
+                        a = 2;
                     }
 
+                    if (a + latitudeIndex == 34874399) return true;
+                    if (__result < 4) __result = 4;
                     return false;
                 }
 

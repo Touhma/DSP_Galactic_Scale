@@ -85,6 +85,115 @@ namespace GalacticScale
 	__instance.localStationExtraStorage = 0;
 	return false;
 }
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(BuildTool_BlueprintPaste), "OperatingPrestage")]
+        // public static bool OperatingPrestage(BuildTool_BlueprintPaste __instance)
+        // {
+	       //  GS2.Warn($"{__instance.castGroundPosSnapped}");
+	       //  return true;
+        // }
+
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(BlueprintUtils), "GetSnappedLatitudeGridIdx", typeof(float), typeof(int))]
+        // public static bool GetSnappedLatitudeGridIdx(ref int __result, float _latitudeRad, int _segmentCnt = 200)
+        // {
+	       //  GS2.Warn($"_latitudeRad:{_latitudeRad} radperGrid:{BlueprintUtils.GetLatitudeRadPerGrid(_segmentCnt)}");
+	       //  __result = BlueprintUtils._round2int(_latitudeRad / BlueprintUtils.GetLatitudeRadPerGrid(_segmentCnt));
+	       //  return false;
+        // }
+        
+        
+//         [HarmonyPrefix]
+//         [HarmonyPatch(typeof(BlueprintUtils), "SnapTropic")]
+//         public static bool SnapTropic(PlayerAction_Build _actionBuild, BlueprintData _blueprintData, Vector3[] _dots, int _dotsCursor, float _yaw, int _segmentCnt = 200)
+// {
+// 	if (_blueprintData.areas.Length <= 1)
+// 	{
+// 		return false;
+// 	}
+// 	int num = Mathf.FloorToInt(_yaw / 89.9f);
+// 	int num2 = (num == 2 || num == 3) ? -1 : 1;
+// 	BlueprintArea blueprintArea = _blueprintData.areas[_blueprintData.primaryAreaIdx];
+// 	BlueprintArea blueprintArea2 = (_blueprintData.primaryAreaIdx == _blueprintData.areas.Length - 1) ? _blueprintData.areas[_blueprintData.primaryAreaIdx - 1] : _blueprintData.areas[_blueprintData.primaryAreaIdx + 1];
+// 	Vector3 vector = _dots[0];
+// 	Vector3 normalized = vector.normalized;
+// 	float num3 = BlueprintUtils.GetLongitudeRad(normalized);
+// 	float latitudeRad = BlueprintUtils.GetLatitudeRad(normalized);
+// 	int snappedLatitudeGridIdx = BlueprintUtils.GetSnappedLatitudeGridIdx(latitudeRad, _segmentCnt);
+// 	int num4 = (_blueprintData.primaryAreaIdx == _blueprintData.areas.Length - 1) ? (snappedLatitudeGridIdx - blueprintArea.height * num2) : (snappedLatitudeGridIdx + blueprintArea.height * num2);
+// 	int num5 = 0;
+// 	bool flag = false;
+// 	int longitudeSegCnt = 0;
+// 	int num6 = 0;
+// 	for (int i = 0; i < _blueprintData.areas.Length; i++)
+// 	{
+// 		num6 += _blueprintData.areas[i].height;
+// 	}
+// 	int num7 = -Math.Max(num6 / 2, 6);
+// 	int num8 = Math.Max(num6 / 2, 6);
+// 	for (int j = num7; j <= num8; j++)
+// 	{
+// 		int num9 = (_blueprintData.primaryAreaIdx == _blueprintData.areas.Length - 1) ? (snappedLatitudeGridIdx + j) : (num4 + j);
+// 		int latitudeGridIdx = (snappedLatitudeGridIdx > num4) ? (num9 + 1) : (num9 - 1);
+// 		if (num9 > 50)
+// 		{
+// 			GS2.Warn($"_dots[0]:{_dots[0]} _dotscursor:{_dotsCursor}SnapTropic num9:{num9} lattitudeGridIdx:{latitudeGridIdx} snappedLatitudeGridIdx:{snappedLatitudeGridIdx} num4:{num4} primaryAreaIdx:{_blueprintData.primaryAreaIdx} _blueprintData.areas.Length:{_blueprintData.areas.Length}" + 
+// 			         $"height:{blueprintArea.height} num2:{num2} num:{num} _yaw:{_yaw} _segmentCnt:{_segmentCnt}");
+// 		}
+// 		int longitudeSegmentCount = BlueprintUtils.GetLongitudeSegmentCount(num9, _segmentCnt);
+// 		int longitudeSegmentCount2 = BlueprintUtils.GetLongitudeSegmentCount(latitudeGridIdx, _segmentCnt);
+// 		if (longitudeSegmentCount != longitudeSegmentCount2)
+// 		{
+// 			if (_blueprintData.areas.Length == 2 && blueprintArea2.areaSegments > 4)
+// 			{
+// 				if (Mathf.Abs((float)blueprintArea.areaSegments / (float)blueprintArea2.areaSegments - (float)longitudeSegmentCount2 / (float)longitudeSegmentCount) > 0.0001f)
+// 				{
+// 					goto IL_1D2;
+// 				}
+// 			}
+// 			else if (blueprintArea.areaSegments != longitudeSegmentCount2 || blueprintArea2.areaSegments != longitudeSegmentCount)
+// 			{
+// 				goto IL_1D2;
+// 			}
+// 			longitudeSegCnt = longitudeSegmentCount2;
+// 			num5 = ((_blueprintData.primaryAreaIdx == _blueprintData.areas.Length - 1) ? (j + num2) : j);
+// 			flag = true;
+// 			break;
+// 		}
+// 		IL_1D2:;
+// 	}
+// 	if (flag)
+// 	{
+// 		float latitudeRadPerGrid = BlueprintUtils.GetLatitudeRadPerGrid(_segmentCnt);
+// 		float magnitude = vector.magnitude;
+// 		int num10 = 0;
+// 		float longitudeRadPerGrid = BlueprintUtils.GetLongitudeRadPerGrid(longitudeSegCnt, _segmentCnt);
+// 		float longitudeRadPerGrid2 = BlueprintUtils.GetLongitudeRadPerGrid(latitudeRad + (float)num5 * latitudeRadPerGrid, _segmentCnt);
+// 		num3 = (float)Mathf.RoundToInt(num3 / longitudeRadPerGrid2) * longitudeRadPerGrid2;
+// 		BlueprintUtils.SnapLongitude(_blueprintData, BlueprintUtils.GetDir(num3, latitudeRad + (float)num5 * latitudeRadPerGrid), _yaw, ref num10, _segmentCnt);
+// 		float num11 = num3;
+// 		float num12 = latitudeRad;
+// 		num11 += (float)num10 * longitudeRadPerGrid;
+// 		num12 += (float)num5 * latitudeRadPerGrid;
+// 		vector = _actionBuild.planetAux.Snap(BlueprintUtils.GetDir(num11, num12) * magnitude, true);
+// 		Vector3 normalized2 = vector.normalized;
+// 		float num13 = BlueprintUtils.GetLongitudeRad(normalized2) - num11;
+// 		float num14 = BlueprintUtils.GetLatitudeRad(normalized2) - num12;
+// 		_dots[0] = vector;
+// 		for (int k = 1; k < _dotsCursor; k++)
+// 		{
+// 			float num15 = 0f;
+// 			float num16 = 0f;
+// 			BlueprintUtils.GetLongitudeLatitudeRad(_dots[k].normalized, ref num15, ref num16);
+// 			num15 += num13;
+// 			num16 += num14;
+// 			_dots[k] = BlueprintUtils.GetDir(num11, num12) * magnitude;
+// 		}
+// 	}
+//
+// 	return false;
+// }
+
         // [HarmonyPostfix]
         // [HarmonyPatch(typeof(GameLoader), "CreateLoader")]
         // public static void CreateLoader()
@@ -97,8 +206,8 @@ namespace GalacticScale
         public static void _OnUpdate_Postfix()
         {
             // as we need to load and generate planets for the detail view in the lobby, update the loading process here
-            PlanetModelingManager.ModelingPlanetCoroutine();
-            UIRoot.instance.uiGame.planetDetail._OnUpdate();
+            // PlanetModelingManager.ModelingPlanetCoroutine();
+            // UIRoot.instance.uiGame.planetDetail._OnUpdate();
         }
 
 

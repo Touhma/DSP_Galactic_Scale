@@ -90,6 +90,7 @@
         {
             //GS2.Log("PlanetAlgorithm|GenerateTerrain|" + gsPlanet.Name);
             if (gsPlanet != null) if (!UIRoot.instance.backToMainMenu) terrainAlgo(gsPlanet, modX, modY); //GS2.Log("PlanetAlgorithm|GenerateTerrain|End");
+            
         }
 
         public override void GenerateVegetables()
