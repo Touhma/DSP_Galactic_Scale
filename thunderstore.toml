@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale_Experimental"
-versionNumber = "2.3.14"
-description = "v2.3.14 (Fingers Crossed) Fixed Blueprints at poles, log spam on disk"
+versionNumber = "2.3.15"
+description = "v2.3.15 Settings Update."
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 
