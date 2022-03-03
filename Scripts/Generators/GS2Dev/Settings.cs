@@ -157,6 +157,8 @@ namespace GalacticScale.Generators
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("allowResonances", true);
+            preferences.Set("cometsEnabled", false);
+            preferences.Set("cometChance", 0);
             preferences.Set("galaxyDensity", 5);
             preferences.Set("defaultStarCount", 64);
             preferences.Set("starSizeMulti", 10);
@@ -265,6 +267,8 @@ namespace GalacticScale.Generators
             UI.Add("hugeGasGiants", sOptions.Add(GSUI.Checkbox("Huge Gas Giants".Translate(), true, "hugeGasGiants", null, "Allow gas giants larger than 800 radius".Translate())));
             UI.Add("chanceGas", sOptions.Add(GSUI.Slider("Chance Gas".Translate(), 0, 20, 99, "chanceGas", GasChanceCallback, "% Chance of a planet being a Gas Giant".Translate())));
             UI.Add("chanceMoon", sOptions.Add(GSUI.Slider("Chance Moon".Translate(), 0, 20, 99, "chanceMoon", MoonChanceCallback, "% Chance of a rocky planet being a moon".Translate())));
+            UI.Add("cometsEnabled", sOptions.Add(GSUI.Checkbox("Enable Comets", false, "cometsEnabled", null, "Star has a small planetoid with a random rare resource")));
+            UI.Add("cometChance", sOptions.Add(GSUI.Slider("Comet Chance".Translate(), 0, 0, 100, "cometChance", null, "% Chance of a star spawning a comet".Translate())));
             UI.Add("hzOverride", sOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, "hzOverride", HzOverrideCallback, "Enable the slider below".Translate())));
             UI.Add("hz", sOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat("hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat("hz", new FloatPair(0, 3)).high, 100, 0.01f, "hz", null, HzLowCallback, HzHighCallback, "Force habitable zone between these distances".Translate())));
             UI.Add("orbitOverride", sOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, "orbitOverride", OrbitOverrideCallback, "Enable the slider below".Translate())));

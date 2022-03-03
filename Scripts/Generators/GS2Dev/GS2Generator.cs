@@ -127,6 +127,8 @@ namespace GalacticScale.Generators
             // Log("End");
             GSSettings.BirthPlanetName = birthPlanet.Name;
             if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
+            foreach (var star in GSSettings.Stars)
+                if (preferences.GetBool("cometsEnabled", false) && random.NextPick(preferences.GetFloat("cometChance", 0)) && star.PlanetCount < 100) CreateComet(star);
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 

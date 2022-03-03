@@ -287,8 +287,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UILoadGameWindow), "_OnOpen")]
         public static bool UILoadGameWindow_OnOpen()
         {
-            GS2.Warn("Disabled Import");
-            GS2.SaveOrLoadWindowOpen = true;
+            //GS2.Warn("Disabled Import");
+            GS2.SaveOrLoadWindowOpen = true; // Prevents GSSettings getting overwritten when loading a save for purposes of displaying thumbnail
             return true;
         }
 
@@ -296,7 +296,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UILoadGameWindow), "LoadSelectedGame")]
         public static bool UILoadGameWindow_LoadSelectedGame()
         {
-            GS2.Warn("Enabled Import");
+            //GS2.Warn("Enabled Import");
             GS2.SaveOrLoadWindowOpen = false;
             return true;
         }
@@ -305,7 +305,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UILoadGameWindow), "_OnClose")]
         public static bool UILoadGameWindow_OnClose()
         {
-            GS2.Warn("Enabled Import");
+            //GS2.Warn("Enabled Import");
 
             GS2.SaveOrLoadWindowOpen = false;
             return true;
@@ -315,7 +315,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UISaveGameWindow), "_OnOpen")]
         public static bool UISaveGameWindow_OnOpen()
         {
-            GS2.Warn("Disabled Import");
+            //GS2.Warn("Disabled Import");
 
             GS2.SaveOrLoadWindowOpen = true;
             return true;
@@ -326,7 +326,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UISaveGameWindow), "_OnClose")]
         public static bool UISaveGameWindow_OnClose()
         {
-            GS2.Warn("Enabled Import");
+            //GS2.Warn("Enabled Import");
 
             GS2.SaveOrLoadWindowOpen = false;
             return true;
@@ -336,7 +336,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIAchievementPanel), "LoadData")]
         public static bool LoadData(UIAchievementPanel __instance)
         {
-            __instance.uiEntries.Clear();
+            __instance.uiEntries.Clear(); //Is this necessary?
             return true;
         }
 
@@ -344,11 +344,11 @@ namespace GalacticScale
         [HarmonyPatch(typeof(WarningSystem), "Init")]
         public static void Init(ref WarningSystem __instance)
         {
-            GS2.Warn("Warning System Initializing");
-            GS2.Warn($"Star Count: {GSSettings.StarCount}");
+            //GS2.Warn("Warning System Initializing");
+            //GS2.Warn($"Star Count: {GSSettings.StarCount}");
             var planetCount = GSSettings.PlanetCount;
-            GS2.Warn($"Planet Count: {planetCount}");
-            GS2.Warn($"Factory Length: {__instance.gameData.factories.Length}");
+            //GS2.Warn($"Planet Count: {planetCount}");
+            //GS2.Warn($"Factory Length: {__instance.gameData.factories.Length}");
             if (__instance.gameData.factories.Length > planetCount) planetCount = __instance.gameData.factories.Length;
             __instance.tmpEntityPools = new EntityData[planetCount][];
             __instance.tmpPrebuildPools = new PrebuildData[planetCount][];
@@ -360,7 +360,7 @@ namespace GalacticScale
             var l = GameMain.galaxy.starCount * 400;
             __instance.astroArr = new AstroPoseR[l];
             __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default);
-            GS2.Warn($"Pool Length: {__instance.tmpEntityPools.Length}");
+            //GS2.Warn($"Pool Length: {__instance.tmpEntityPools.Length}");
         }
 
         [HarmonyPrefix]

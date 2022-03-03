@@ -6,7 +6,7 @@ namespace GalacticScale.Generators
     public partial class GS2Generator2 : iConfigurableGenerator
     {
         public static string[] baseKeys;
-
+        public static List<GSTheme> cometThemes = new();
         public static void SetupBaseThemes()
         {
             var newLibrary = new ThemeLibrary();
@@ -368,7 +368,7 @@ namespace GalacticScale.Generators
             acidGreenhouse.TerrainSettings.BrightnessFix = true;
             acidGreenhouse.TerrainSettings.Algorithm = "GSTA3";
             acidGreenhouse.TerrainSettings.LandModifier = 1;
-            acidGreenhouse.TerrainSettings.HeightMulti = 2;
+            acidGreenhouse.TerrainSettings.HeightMulti = 1.8f;
             acidGreenhouse.VeinSettings.VeinTypes = new GSVeinTypes
             {
                 GSVeinType.Generate(EVeinType.Iron, 1, 10, 0.5f, 1.5f, 5, 15, false),
@@ -439,7 +439,33 @@ namespace GalacticScale.Generators
             dwarf.Wind = 0f;
             dwarf.ThemeType = EThemeType.Planet;
             dwarf.Process();
-
+            var comet = new GSTheme("Comet", "Comet".Translate(), "IceGelisol");
+            comet.Algo = 2;
+            comet.CustomGeneration = true;
+            comet.MinRadius = 5;
+            comet.MaxRadius = 50;
+            comet.Temperature = -6;
+            comet.ThemeType = EThemeType.Private;
+            comet.TerrainSettings = new();
+            comet.TerrainSettings.Algorithm = "GSTA1";
+            comet.TerrainSettings.BaseHeight = -10.13f;
+            comet.TerrainSettings.BiomeHeightModifier = 1;
+            comet.TerrainSettings.HeightMulti = 2f;
+            comet.TerrainSettings.LandModifier = 4f;
+            comet.TerrainSettings.RandomFactor = 4f;
+            comet.VeinSettings = new GSVeinSettings();
+            comet.VeinSettings.Algorithm = "GS2";
+            comet.VeinSettings.VeinPadding = 0.5f;
+            comet.Wind = 0f;
+            comet.IonHeight = 180f;
+            comet.WaterItemId = 0;
+            comet.terrainMaterial.Tint = new Color(0.8f, 0.8f, 0.8f, 0.4f);
+            comet.Process();
+            for (var c=11; c<=14; c++)
+            {
+                var cometVariant = new GSTheme($"Comet{c}", "Comet", "Comet");
+                comet.VeinSettings.VeinTypes.Add(GSVeinType.Generate((EVeinType)c, 2, 8, 2, 10, 10, 20, false));
+            }
             var center = new GSTheme("Center", " ", "Barren");
             center.PlanetType = EPlanetType.Gas;
             center.atmosphereMaterial.Tint = Color.black;
@@ -448,18 +474,19 @@ namespace GalacticScale.Generators
             center.Process();
 
             var hotGas = new GSTheme("Inferno", "Infernal Gas Giant".Translate(), "GasGiant");
-            var stupid = new GSTheme("Lol", "Lol", "AridDesert");
+            
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
             hotGas.MinRadius = 5;
             hotGas.MaxRadius = 510;
             hotGas.ThemeType = EThemeType.Gas;
 
-            stupid.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
-            stupid.Temperature = 4f;
-            stupid.MinRadius = 510;
-            stupid.MaxRadius = 510;
-            stupid.ThemeType = EThemeType.Planet;
+//var stupid = new GSTheme("Lol", "Lol", "AridDesert");
+//            stupid.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
+//            stupid.Temperature = 4f;
+//            stupid.MinRadius = 510;
+//            stupid.MaxRadius = 510;
+//            stupid.ThemeType = EThemeType.Planet;
             //hotGas.atmosMat = y;
             //GS2.Log("Creating oceanmat");
             hotGas.oceanMaterial.CopyFrom = "GasGiant.terrainMat";
@@ -491,34 +518,34 @@ namespace GalacticScale.Generators
             };
             hotGas.WaterItemId = 1000;
             hotGas.Process();
-            stupid.CustomGeneration = true;
-            stupid.TerrainSettings = new GSTerrainSettings
-            {
-                Algorithm = "GSTA00"
-            };
-            stupid.terrainMaterial.Path = "Universe/Materials/Stars/star-mass-o";
+            //stupid.CustomGeneration = true;
+            //stupid.TerrainSettings = new GSTerrainSettings
+            //{
+            //    Algorithm = "GSTA00"
+            //};
+            //stupid.terrainMaterial.Path = "Universe/Materials/Stars/star-mass-o";
 
-            stupid.terrainMaterial.Colors = new Dictionary<string, Color>
-            {
-                ["_Color4"] = new() { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 }, //Highlights?
-                ["_Color1"] = new() { r = 0f, g = 0, b = 0f, a = 1 }, //Base?
-                ["_Color2"] = new() { r = 0, g = 0f, b = 0, a = 1 }, //SunSpots
-                ["_Color3"] = new() { r = 0, g = 0, b = 0f, a = 1 }
-            }; //Fringe
-            stupid.terrainMaterial.Params = new Dictionary<string, float>
-            {
-                ["_SkyAtmosPower"] = 10,
-                ["_Intensity"] = 0.5f,
-                ["_Multiplier"] = 0.5f,
-                ["_AtmoThickness"] = 3
-            };
-            stupid.WaterItemId = 1000;
-            stupid.oceanMaterial.Path = "Universe/Materials/Stars/star-mass-o";
-            //hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
-            //hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
-            //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
-            stupid.oceanMaterial.Colors["_Color"] = new Color { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 };
-            stupid.Process();
+            //stupid.terrainMaterial.Colors = new Dictionary<string, Color>
+            //{
+            //    ["_Color4"] = new() { r = 0.0f, g = 0.0f, b = 0.0f, a = 1 }, //Highlights?
+            //    ["_Color1"] = new() { r = 0f, g = 0, b = 0f, a = 1 }, //Base?
+            //    ["_Color2"] = new() { r = 0, g = 0f, b = 0, a = 1 }, //SunSpots
+            //    ["_Color3"] = new() { r = 0, g = 0, b = 0f, a = 1 }
+            //}; //Fringe
+            //stupid.terrainMaterial.Params = new Dictionary<string, float>
+            //{
+            //    ["_SkyAtmosPower"] = 10,
+            //    ["_Intensity"] = 0.5f,
+            //    ["_Multiplier"] = 0.5f,
+            //    ["_AtmoThickness"] = 3
+            //};
+            //stupid.WaterItemId = 1000;
+            //stupid.oceanMaterial.Path = "Universe/Materials/Stars/star-mass-o";
+            ////hotGas.oceanMat.SetColor("_Color1", new Color() { r = 0.866f, g = 0.407f, b = 0.172f, a = 1 }); 
+            ////hotGas.oceanMat.SetColor("_Color2", new Color() { r = 0.717f, g = 0.349f, b = 0.164f, a = 1 });
+            ////hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
+            //stupid.oceanMaterial.Colors["_Color"] = new Color { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 };
+            //stupid.Process();
             //hotGas.Process();
             //var x = Resources.FindObjectsOfTypeAll<Material>();
             //foreach (var y in x)
