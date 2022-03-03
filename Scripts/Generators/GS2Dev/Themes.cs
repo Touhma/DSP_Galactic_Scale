@@ -464,7 +464,9 @@ namespace GalacticScale.Generators
             for (var c=11; c<=14; c++)
             {
                 var cometVariant = new GSTheme($"Comet{c}", "Comet", "Comet");
-                comet.VeinSettings.VeinTypes.Add(GSVeinType.Generate((EVeinType)c, 2, 8, 2, 10, 10, 20, false));
+                cometVariant.VeinSettings.VeinTypes.Add(GSVeinType.Generate((EVeinType)c, 2, 8, 2, 10, 10, 20, false));
+                cometThemes.Add(cometVariant);
+                cometVariant.Process();
             }
             var center = new GSTheme("Center", " ", "Barren");
             center.PlanetType = EPlanetType.Gas;

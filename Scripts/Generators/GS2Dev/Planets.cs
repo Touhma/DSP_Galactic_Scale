@@ -20,7 +20,7 @@ namespace GalacticScale.Generators
             comet.Radius = Utils.ParsePlanetSize(random.NextFloat(9, 41));
             comet.Theme = random.Item(cometThemes).Name;
             comet.OrbitInclination = 66f;
-            comet.OrbitRadius = star.genData.Get("MaxOrbit") -0.1f;
+            comet.OrbitRadius = star.genData.Get("maxOrbit", 50f) - 0.1f;
             comet.Luminosity = 0f;
             comet.OrbitalPeriod = Utils.CalculateOrbitPeriod(comet.OrbitRadius);
             star.Planets.Add(comet);
