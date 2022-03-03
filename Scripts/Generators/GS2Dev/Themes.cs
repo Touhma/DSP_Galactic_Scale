@@ -442,13 +442,13 @@ namespace GalacticScale.Generators
             var comet = new GSTheme("Comet", "Comet".Translate(), "IceGelisol");
             comet.Algo = 2;
             comet.CustomGeneration = true;
-            comet.MinRadius = 5;
+            comet.MinRadius = 20;
             comet.MaxRadius = 50;
             comet.Temperature = -6;
             comet.ThemeType = EThemeType.Private;
             comet.TerrainSettings = new();
             comet.TerrainSettings.Algorithm = "GSTA1";
-            comet.TerrainSettings.BaseHeight = -10.13f;
+            comet.TerrainSettings.BaseHeight = -7.13f;
             comet.TerrainSettings.BiomeHeightModifier = 1;
             comet.TerrainSettings.HeightMulti = 2f;
             comet.TerrainSettings.LandModifier = 4f;
@@ -460,10 +460,12 @@ namespace GalacticScale.Generators
             comet.IonHeight = 180f;
             comet.WaterItemId = 0;
             comet.terrainMaterial.Tint = new Color(0.8f, 0.8f, 0.8f, 0.4f);
+            comet.atmosphereMaterial.Params["_Intensity"] = 0f;
             comet.Process();
             for (var c=11; c<=14; c++)
             {
                 var cometVariant = new GSTheme($"Comet{c}", "Comet", "Comet");
+                cometVariant.VeinSettings.VeinTypes.Clear();
                 cometVariant.VeinSettings.VeinTypes.Add(GSVeinType.Generate((EVeinType)c, 2, 8, 2, 10, 10, 20, false));
                 cometThemes.Add(cometVariant);
                 cometVariant.Process();
