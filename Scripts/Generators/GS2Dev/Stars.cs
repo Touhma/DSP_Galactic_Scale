@@ -27,7 +27,7 @@ namespace GalacticScale.Generators
             star.genData.Add("hasBinary", true);
             star.BinaryCompanion = binary.Name;
             var binaryRadius = StarDefaults.Radius(binary) * preferences.GetFloat("starSizeMulti", 2f);
-            ;
+            
             binary.radius = Clamp(star.radius * .6f, 0.01f, binaryRadius);
             binary.Decorative = true;
             var offset = (star.RadiusLY + binary.RadiusLY) * preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f);

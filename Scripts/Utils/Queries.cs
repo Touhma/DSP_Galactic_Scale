@@ -27,6 +27,19 @@
             }
             return false;
         }
+
+        public static GSStar GetBinaryStarHost(GSStar star)
+        {
+            if (star.Decorative)
+            {
+                foreach (var s in GSSettings.Stars)
+                {
+                    if (s.BinaryCompanion == star.Name) return s;
+                }
+            }
+
+            return null;
+        }
         public static GSStar GetGSStar(StarData star)
         {
             return GetGSStar(star.id);
