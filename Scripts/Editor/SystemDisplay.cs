@@ -33,12 +33,13 @@ namespace GalacticScale
         }
         public static void OnUpdate(UIVirtualStarmap starmap)
         {
-            if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += 0.1f;
-            if (Input.mouseScrollDelta.y > 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio -= 0.1f;
-            if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * (0.1f * Vector3.right);
-            if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * (0.1f * Vector3.left);
-            if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * (0.1f * Vector3.up);
-            if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * (0.1f * Vector3.down);
+            if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += VFInput.shift?1f:.1f;
+            if (Input.mouseScrollDelta.y > 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio -= VFInput.shift?1f:0.1f;
+            if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.right);
+            if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.left);
+            if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.up);
+            if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.down);
+            if (VFInput._jump) GameCamera.instance.transform.localPosition = Vector3.zero;
             int targetIndex = -1;
             for (var i = 0; i < starmap.starPool.Count; ++i)
             {
@@ -396,10 +397,13 @@ namespace GalacticScale
                 var gsTheme = gsPlanet.GsTheme;
                 var orbitColor = PlanetTemperatureToStarColor(gsTheme.Temperature);
                 var planetColor = (gsTheme.minimapMaterial.Colors.ContainsKey("_Color"))? gsTheme.minimapMaterial.Colors["_Color"]:Color.magenta;
+                if (pData.type == EPlanetType.Gas) planetColor = new Color(planetColor.r, planetColor.g, planetColor.b, 0.2f);
                 // GS2.Log($"Color of {starData.name} a {starData.typeString} star is {starData.color}");
                 dummyStarData.id = pData.id;
-
-                Vector3 scale = Vector3.one * GS2.Config.VirtualStarmapScaleFactor * (pData.realRadius / 1000);
+                var realRadius = Mathf.Clamp( pData.realRadius, 100, 800);
+                
+                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius / 1000);
+                Vector3 planetScale = Vector3.one * pScale;
                 // if (scale.x > 3 || scale.y > 3 || scale.z > 3)
                 // {
                 //     scale = new Vector3(3, 3, 3);
@@ -421,11 +425,11 @@ namespace GalacticScale
                 starmap.starPool[i + 1].active = true;
 
                 // GS2.Warn("ShowSolarSystem4a");
-
+                
                 starmap.starPool[i + 1].starData = dummyStarData;
                 starmap.starPool[i + 1].pointRenderer.material.SetColor("_TintColor", planetColor);
                 starmap.starPool[i + 1].pointRenderer.transform.localPosition = pPos;
-                starmap.starPool[i + 1].pointRenderer.transform.localScale = (pData.type == EPlanetType.Gas )? scale/2:scale;
+                starmap.starPool[i + 1].pointRenderer.transform.localScale = planetScale;
                 starmap.starPool[i + 1].pointRenderer.gameObject.SetActive(true);
                 starmap.starPool[i + 1].nameText.text = pData.displayName + " (" + pData.typeString + ")";
                 starmap.starPool[i + 1].nameText.color = Color.Lerp(planetColor, Color.white, 0.5f);

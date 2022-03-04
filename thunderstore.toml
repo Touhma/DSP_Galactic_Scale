@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale_Experimental"
-versionNumber = "2.3.16"
-description = "v2.3.16 Comets."
+versionNumber = "2.4.0"
+description = "v2.4.0. Experiment Complete"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

@@ -1,5 +1,8 @@
 # DSP Galactic Scale 2.0 Mod
 
+- Version 2.4 - Merge Experimental and Main Branches
+              - Fix a bunch of bugs
+
 - Version 2.3.16 - Comets added to GS2 Generator
 
 - Version 2.3.15 - Test GS2 More realistic solar power. Settings update. Will require generator recompile. 
