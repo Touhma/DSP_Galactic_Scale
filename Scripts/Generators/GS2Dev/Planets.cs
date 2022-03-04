@@ -17,10 +17,10 @@ namespace GalacticScale.Generators
         {
             GSPlanet comet = new GSPlanet();
             comet.Name = random.Item(PlanetNames);
-            comet.Radius = Utils.ParsePlanetSize(random.NextFloat(9, 41));
+            comet.Radius = Utils.ParsePlanetSize(random.NextFloat(29, 41));
             comet.Theme = random.Item(cometThemes).Name;
             comet.OrbitInclination = 66f;
-            comet.OrbitRadius = star.genData.Get("maxOrbit", 50f) - 0.1f;
+            comet.OrbitRadius = star.Planets[star.Planets.Count-1].OrbitRadius + 0.5f;
             comet.Luminosity = 0f;
             comet.OrbitalPeriod = Utils.CalculateOrbitPeriod(comet.OrbitRadius);
             star.Planets.Add(comet);
@@ -227,7 +227,7 @@ namespace GalacticScale.Generators
                 var starLum = Mathf.Pow(star.luminosity, 0.3333f);
                 var lum = star.luminosity / (oRadius * oRadius);
                 var lum2 = Mathf.Log(lum);
-                GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
+                // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
                 body.Luminosity = lum;
 
             }

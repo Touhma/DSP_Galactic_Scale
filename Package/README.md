@@ -1,5 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
+- Version 2.3.16 - Comets added to GS2 Generator
+
 - Version 2.3.15 - Test GS2 More realistic solar power. Settings update. Will require generator recompile. 
 
 - Version 2.3.14 - Fixed blueprints at poles. Now deletes logs older than a week
@@ -133,14 +135,24 @@ If you really want to support us, there's a donation link at the bottom of the a
 
 Credits:
 
-innominata - GS1/GS2/GS3 Code/Art
-Touhma - GS1 Mod Developer / Advisor
-Shad0wlife - GS1/GS2 Code / Advisor
-GlitchHound - GS1 Code / Advisor
-sp00ktober - GS2/GS3 Code /Advisor
-tyukara - GS2 Japanese Translation
-Mushroom - GS1 Dev Env
-PhantomGamers - GS2 Dev Env / Advisor
-starfish - GS3 Code / Advisor
-Kremnev8 - GS2 Code / Advisor
-NHunter - GS2 Code / Advisor
+- innominata - GS1/GS2/GS3 Code/Art
+- 
+- Touhma - GS1 Mod Developer / Advisor
+- 
+- Shad0wlife - GS1/GS2 Code / Advisor
+- 
+- GlitchHound - GS1 Code / Advisor
+- 
+- sp00ktober - GS2/GS3 Code /Advisor
+- 
+- tyukara - GS2 Japanese Translation
+- 
+- Mushroom - GS1 Dev Env
+- 
+- PhantomGamers - GS2 Dev Env / Advisor
+- 
+- starfish - GS3 Code / Advisor
+- 
+- Kremnev8 - GS2 Code / Advisor
+- 
+- NHunter - GS2 Code / Advisor
