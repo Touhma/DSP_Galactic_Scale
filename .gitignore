@@ -1,7 +1,6 @@
 
 .idea*
 .vs*
-.vscode*
 **/Debug/**
 GalacticScale.sln.DotSettings.user
 DSP_Plugins.GalacticScale/Directory.Build.props
@@ -14,5 +13,7 @@ UpgradeLog*
 
 TCLI.bat
 
-Galactic_Scale-GalacticScale-2.2.16.zip
-Galactic_Scale-GalacticScale-2.2.15.zip
+*.zip
+**/obj/*
+DevEnv.targets
+GalacticScale2.sln.DotSettings.user

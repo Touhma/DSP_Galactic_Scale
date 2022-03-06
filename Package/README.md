@@ -1,59 +1,51 @@
 # DSP Galactic Scale 2.0 Mod
-- Version 2.2.0.28 - Possible Nebula Fix. Requires prerelease version of nebula from github.
 
-- Version 2.2.0.27 - Hotfix for rare loading issue
+- Version 2.4.4 - Fixed error in console code. Will require generator recompile.
+- 
+- Version 2.4.3 - Fixed space capsule doubleup on non skip gamestart
 
-- Version 2.2.0.26 - Hopefully Geothermal is working on every planet now :)
+- Version 2.4.2 - Fixed Vanilla and Sol Generators
 
-- Version 2.2.0.25 - Fixed Geothermal for Vanilla, Fixed Error on New Game. Added Debug Option to revert Scarlet Ice Lake
+- Version 2.4.1 - Fix the icon :)
 
-- Version 2.2.0.24 - Fixed Geothermal. Fixed Scarlet Ice Lake. Added some planet info to loading screen.
+- Version 2.4 - Merge Experimental and Main Branches
+              - Fix a bunch of bugs
 
-- Version 2.2.0.23 - Fixed Planet Detail Panel. Fixed Ghost Planets. Broke Nebula compatibility. (Nebula isn't updated yet afaik so no big deal here)
+- Version 2.3.16 - Comets added to GS2 Generator
 
-- Version 2.2.0.22 - Actually fix landing on planets for real maybe. Readd Radius Text to Planet Detail (not perfect yet)
+- Version 2.3.15 - Test GS2 More realistic solar power. Settings update. Will require generator recompile. 
 
-- Version 2.2.0.21 - Fix save corruption after clicking a different galaxy's save
+- Version 2.3.14 - Fixed blueprints at poles. Now deletes logs older than a week
 
-- Version 2.2.0.20 - Actually fix landing on planets 
+- Version 2.3.13 - Fixed issues in galaxy select. Fixed loading game when in space. Fixed loading game putting player inside planet. Fixed Obsidian theme for new games.
 
-- Version 2.2.0.19 - (Unreleased) Fix broken stations from DSP Icarus Evolution Update
+- Version 2.3.12 - Removed a lot of logspam. Fixed error on quit while planets loading
 
-- Version 2.2.0.18 - Fix landing on planets
+- Version 2.3.11 - Fixed version
 
-- Version 2.2.0.17 - Fix Nebula API Dependency
+- Version 2.3.10 - Fixed the galaxy select star/planet labels. Hit alt to get them all to show
 
-- Version 2.2.0.16 - 2.2.0.14 Save Compatibility Fix
+- Version 2.3.9 - @starfi5h 's super fast start implemented. No more waiting for every planet to load! Fixed bug when quitting before all planets are generated.
 
-- Version 2.2.0.15 - Fix for Blueprint bug caused by latest DSP update. Thanks to Tartarus Music & Raptor for diagnosing this issue.
- 
-- Version 2.2.0.14 - Updated game version 0.8.23.9989
+- Version 2.3.8 - Fix gamestart - Nebula tested and working at least as far as new game is concerned
 
-- Version 2.2.0.13 - Updated game version
+- Version 2.3.7 - SystemDisplay updates, Nebula Fixes. Maybe nebula works, maybe it doesn't :)
 
-- Version 2.2.0.12 - Fixed bug with Achievement Panel causing error on game start
+- Version 2.3.6 - Maybe nebula works, maybe it doesn't :)
 
-- Version 2.2.0.11 - Fixed compatibility with game update
+- Version 2.3.5 - Fixed cargo ships not docking on outer planets in large systems
 
-- Version 2.2.0.10 - Fixed client bug when host warps using Nebula Multiplayer
+- Version 2.3.4 - Further refinement of system view
 
-- Version 2.2.0.9 - Fixed bug caused by 2.2.0.8
+- Version 2.3.3 - Implemented System View in Galaxy Select Screen. Click a star to view the system. Currently testing scale of planets etc, help by trying new values under Debug Options in settings. Post screenshots to our discord if you find a combination that works well. I'm thinking we might need to apply some sort of logarithmic compression to boost tiny planets and shrink huge gas giants. 
+- Added CloseError as a dependency. You're probably going to get errors, why look at the red box of annoyance if you don't have to?
 
-- Version 2.2.0.8 - Fixed error caused by DSP Update's achievement code, that would occur after a few galaxy generations. Bumped NebulaAPI Version requirement.
+- Version 2.3.2 - Finally fixed North/South Pole markers on non standard planet sizes :)
 
-- Version 2.2.0.7 - Fixed loading times caused by 2.2.0.6
+- Version 2.3.1 - Changed Luminosity Boost. Fixed Slider rounding error. Fixed Moon size for Starter Planet.
 
-- Version 2.2.0.5 - Fixed planets with reverse rotation/orbit. Fixed orbital resonance text.
+- Version 2.3 - Experimental UI Changes to sliders. Includes button to switch between slider and text entry. Floating point bug not fixed. :(
 
-- Version 2.2.0.4 - Fixed birth planet moon theme selection
-
-- Version 2.2.0.3 - External themes fixed
-
-- Version 2.2.0.2 - Updated for DSP ver 8.21.8562. All new themes added.
-
-- Version 2.2.0.1 - Fix for new version of DSP. Not all new planet themes have been added, working on getting them in ASAP
-
-Version 2.2 - Out of Beta and considered complete. :)
 
 [![Galactic Scale Trailer](https://github.com/Touhma/DSP_Plugins/blob/main/thumb.png?raw=true)](https://www.youtube.com/watch?v=JpdW3S73hYw "Galactic Scale Trailer - Click to Watch!")
 
@@ -84,22 +76,27 @@ What can be customized?
 - Planet shader configuration. Change ocean and atmosphere params.
 - Binary Planets.
 
-And so much more that I've forgotten. Documentation will be coming soon!
+And so much more that I've forgotten. Documentation might be coming soon! (If enough people bug me about writing it)
 
 /!\ READ THIS
 
 # Discord for Galactic Scale's team work
+
 https://discord.gg/NbpBn6gM6d To talk about the mod and ask me questions directly :)
 
 # Patch notes & releases :
+
 You can find all the releases and patch notes on the discord server or https://github.com/Touhma/DSP_Plugins/releases
 
 # Bug report :
+
 Go on the discord or post a ticket here :
 https://github.com/Touhma/DSP_Plugins/issues
 
 ## Disclaimer
-This mod is pretty much incompatible with anything touching on any part of the generation, though we try and work with other mod creators to address compatibility issues.
+
+This mod is pretty much incompatible with anything touching on any part of the generation, though we try and work with
+other mod creators to address compatibility issues.
 
 We need feedback, bug reports, and ideas. Plus we are always looking for dev help!.
 
@@ -120,25 +117,53 @@ Launch the game and you should be all set !
 
 ## How to use galactic-scale ?
 
-All settings are in the in game settings menu
-There are 2 generators in the beta release:
+All settings are in the in game settings menu There are 2 generators in the beta release:
+
 - Sol: An accurate rendition of our solar system and neighboring stars.
 - GalacticScale: Customize everything!
 
-Additional generators are available in discord, and can be created by the community! Documentation on this feature will be written soon.
+Additional generators are available in discord, and can be created by the community! Documentation on this feature will
+be written soon.
 
 ## For modders :
 
 We spent a lot of time working on that mod so please ... don't be a thiefy mcThieferson.
 
-If you have some features or ideas that would need our code to work, talk to the main dev first ( innominata#0454 ) on Discord about it. GS2 is very expandable, and you can probably do it easily with a generator or other plugin.
+If you have some features or ideas that would need our code to work, talk to the main dev first ( innominata#0454 ) on
+Discord about it. GS2 is very expandable, and you can probably do it easily with a generator or other plugin.
 
 If you wanna fix something, please go ahead and do a pull request, we'll happily credit you for your work.
 
-Do NOT make a mod just to change the default configuration or a few parameters, create your own generator instead :) if it's good it can make it to the official release of the mod.
+Do NOT make a mod just to change the default configuration or a few parameters, create your own generator instead :) if
+it's good it can make it to the official release of the mod.
 
-We would love that mod to be a framework for community created plugins concerning everything around the generation of the moons, planets, stars, etc
+We would love that mod to be a framework for community created plugins concerning everything around the generation of
+the moons, planets, stars, etc
 
 This mod is and will always be free of charge for everyone.
 
-We'll see in the future if people wanna give us a pint of beer if they wanna support us, but again : it will stay open & free of charge for everyone.
+If you really want to support us, there's a donation link at the bottom of the about page on our website http://customizing.space
+
+Credits:
+
+- innominata - GS1/GS2/GS3 Code/Art
+- 
+- Touhma - GS1 Mod Developer / Advisor
+- 
+- Shad0wlife - GS1/GS2 Code / Advisor
+- 
+- GlitchHound - GS1 Code / Advisor
+- 
+- sp00ktober - GS2/GS3 Code /Advisor
+- 
+- tyukara - GS2 Japanese Translation
+- 
+- Mushroom - GS1 Dev Env
+- 
+- PhantomGamers - GS2 Dev Env / Advisor
+- 
+- starfish - GS3 Code / Advisor
+- 
+- Kremnev8 - GS2 Code / Advisor
+- 
+- NHunter - GS2 Code / Advisor
