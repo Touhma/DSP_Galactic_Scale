@@ -419,7 +419,7 @@ namespace GalacticScale
                     //
                     // p.Set(key, o);
                     // generator.Import(p);
-                    generator.Update(key, o);
+                    generator.OnUpdate(key, o);
                     // GS2.Warn($"Test setting {key} to {o}");
                     if (callback is GSOptionCallback) callback(o);
                 }
@@ -430,7 +430,7 @@ namespace GalacticScale
                     // p.Set(key, o);
                     // // GS2.Log($"Callback for {Label} exporting etc");
                     // plugin.Import(p);
-                    plugin.Update(key, o);
+                    plugin.OnUpdate(key, o);
                     // GS2.Warn($"Test setting {key} to {o}");
                     if (callback is GSOptionCallback) callback(o);
                 }

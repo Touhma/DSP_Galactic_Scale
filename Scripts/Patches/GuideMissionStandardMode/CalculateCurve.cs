@@ -219,6 +219,7 @@ namespace GalacticScale
                 __instance.player.controller.memCameraTargetRot = __instance.targetRot;
                 __instance.player.cameraTarget.rotation = __instance.targetRot;
                 __instance.spaceCapsule.animTime = 4f + __instance.arriveLandTime;
+                GS2.Warn("Unhiding player model");
                 __instance.gameData.hidePlayerModel = false;
                 if (__instance.arriveLandTime > 1f)
                 {
@@ -230,7 +231,8 @@ namespace GalacticScale
                 if (__instance.arriveLandTime >= 5f)
                 {
                     __instance.arriveLandTime = 5f;
-                    __instance.gameData.EndStandardModeGuide();
+                    __instance.gameData.EndStandardModeGuide(true);
+                    GS2.Warn("StandardModeGuide Ended");
                     if (GameMain.gameScenario != null) GameMain.gameScenario.NotifyOnGameStart();
                 }
             }

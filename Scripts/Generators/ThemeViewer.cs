@@ -57,19 +57,7 @@ namespace GalacticScale.Generators
             return new GSGenPreferences();
         }
 
-        public void OnOpen()
-        {
-        }
-
-        public void OnCancel()
-        {
-        }
-
-        public void OnApply()
-        {
-        }
-
-        public void Update(string key, Val val)
+        public void OnUpdate(string key, Val val)
         {
      
         }

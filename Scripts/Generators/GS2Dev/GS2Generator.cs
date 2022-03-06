@@ -35,19 +35,8 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.gs2dev";
-        public void OnOpen()
-        {
-        }
 
-        public void OnCancel()
-        {
-        }
-
-        public void OnApply()
-        {
-        }
-
-        public void Update(string key, Val val)
+        public void OnUpdate(string key, Val val)
         {
             preferences.Set(key, val);
         }
@@ -128,7 +117,11 @@ namespace GalacticScale.Generators
             GSSettings.BirthPlanetName = birthPlanet.Name;
             if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
             foreach (var star in GSSettings.Stars)
-                if (preferences.GetBool("cometsEnabled", false) && random.NextPick(preferences.GetFloat("cometChance", 0)) && star.PlanetCount < 100) CreateComet(star);
+                if (!star.Decorative && preferences.GetBool("cometsEnabled", false) && random.NextPick(preferences.GetFloat("cometChance", 0) / 100f) && star.PlanetCount < 100)
+                {
+                    // GS2.Warn($"{preferences.GetFloat("cometChance", 0) / 100f} {random.NextPick(preferences.GetFloat("cometChance", 0) / 100f)}");
+                    CreateComet(star);
+                }
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 

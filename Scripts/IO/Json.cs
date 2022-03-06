@@ -35,15 +35,11 @@ namespace GalacticScale
 
             foreach (var filename in files)
             {
-                // Log($"Found file:{filename}");
-                // Warn(new FileInfo(filename).Extension);
                 if (new FileInfo(filename).Extension != ".json") continue;
                 var theme = LoadJsonTheme(filename);
-                if (theme != null)
-                {
-                    if (tl.ContainsKey(theme.Name)) tl[theme.Name] = theme;
-                    else tl.Add(theme.Name, theme);
-                }
+                if (theme == null) continue;
+                if (tl.ContainsKey(theme.Name)) tl[theme.Name] = theme;
+                else tl.Add(theme.Name, theme);
             }
 
             //LogJson(tl.Keys.ToList());

@@ -11,12 +11,9 @@
         public bool Enabled { get; set; }
         public void Init();
         public void Import(GSGenPreferences preferences);
-        public void OnOpen();
-        public void OnCancel();
-        public void OnApply();
 
         public GSGenPreferences Export();
-        public void Update(string key, Val val);
+        public void OnUpdate(string key, Val val);
     }
 
     public static partial class GS2

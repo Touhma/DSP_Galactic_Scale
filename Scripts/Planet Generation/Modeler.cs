@@ -206,7 +206,7 @@ namespace GalacticScale
                 {
                     planetData = planetModQueue[0];
                     planetModQueue.RemoveAt(0);
-                    Log($"Modelling {planetData.name} - {GetGSPlanet(planetData).Theme}");
+                    Log($"Modelling {planetData?.name} - {GetGSPlanet(planetData)?.Theme}");
                 }
 
                 if (planetData != null)

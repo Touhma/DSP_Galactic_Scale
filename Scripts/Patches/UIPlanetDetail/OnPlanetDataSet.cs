@@ -13,6 +13,7 @@ namespace GalacticScale
             // GS2.Warn("Dataset");
             // GS2.Warn(__instance.obliquityValueText.transform.parent.transform.parent.childCount.ToString());
             // Add the planets radius to the Planet Detail UI
+            // if (GS2.GetGSPlanet( __instance.planet).GsTheme.DisplayName == "Comet") __instance.
             if (__instance.obliquityValueText.transform.parent.transform.parent.childCount == 7)
             {
                 GameObject radiusLabel;

@@ -3,9 +3,9 @@ schemaVersion = "0.0.1"
 
 [package]
 namespace = "Galactic_Scale"
-name = "GalacticScale_Experimental"
-versionNumber = "2.3.15"
-description = "v2.3.15 Settings Update."
+name = "GalacticScale"
+versionNumber = "2.4.5"
+description = "v2.4.5. Fix Error in modeller"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 
@@ -31,6 +31,6 @@ target = "./3rdPartyLicenses.md"
 source = "./Package/galacticbundle"
 target = "./galacticbundle"
 [publish]
-repository = "https://thunderstore.io"
+repository = "https://dsp.thunderstore.io"
 communities = ["dyson-sphere-program"]
 categories = []

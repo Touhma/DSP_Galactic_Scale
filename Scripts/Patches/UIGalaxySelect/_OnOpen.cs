@@ -33,6 +33,7 @@ namespace GalacticScale
             }
             SystemDisplay.inSystemDisplay = false;
             UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1;
+            SystemDisplay.ShowStarCount();
             if (GS2.ActiveGenerator == null) return true;
             // SystemDisplay.backButton = __instance.find
             ___starCountSlider.maxValue = GS2.ActiveGenerator.Config.MaxStarCount;

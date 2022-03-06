@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.3.14")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.4.5")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -33,6 +33,8 @@ namespace GalacticScale
         private void InitializeLogger()
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
+            Assembly a = Assembly.GetAssembly(typeof(GSStar));
+            GS2.Warn(a.GetName().Version.ToString());
             GS2.Version = $"{v.Major}.{v.Minor}.{v.Build}";
             BCE.Console.Init();
             Logger = new ManualLogSource("GS2");

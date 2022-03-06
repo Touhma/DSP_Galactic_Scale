@@ -167,6 +167,7 @@ namespace GalacticScale
 
         public static GSPlanet FindPlanet(string name)
         {
+            if (string.IsNullOrEmpty(name)) return null;
             var i = 0;
             foreach (var star in Stars)
             {
