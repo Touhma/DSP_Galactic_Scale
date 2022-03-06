@@ -315,6 +315,7 @@ namespace GalacticScale.Generators
 
             //GS2.Log("About to Process redIce");
             var iceMalusol = new GSTheme("IceMalusol", "Ice Malusol".Translate(), "IceGelisol");
+            iceMalusol.Temperature = -3;
             iceMalusol.terrainMaterial.Textures.Add("_BioTex0A", "GS2|red-ice");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex1A", "GS2|grey-rock");
             iceMalusol.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");

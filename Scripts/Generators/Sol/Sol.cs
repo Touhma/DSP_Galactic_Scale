@@ -216,19 +216,7 @@ namespace GalacticScale.Generators
             return preferences;
         }
 
-        public void OnOpen()
-        {
-        }
-
-        public void OnCancel()
-        {
-        }
-
-        public void OnApply()
-        {
-        }
-
-        public void Update(string key, Val val)
+        public void OnUpdate(string key, Val val)
         {
             preferences.Set(key, val);
         }
@@ -283,7 +271,7 @@ namespace GalacticScale.Generators
         public void ReadStarData()
         {
             stars.Clear();
-
+            // GS2.Error("Test");
             //string path = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Paths.BepInExRootPath, "plugins"), "GalacticScale"), "data"), "galaxy.json");
             var serializer = new fsSerializer();
             //string json = File.ReadAllText(path);
@@ -291,7 +279,7 @@ namespace GalacticScale.Generators
             // var all = assembly.GetManifestResourceNames();
             // GS2.LogJson(all, true);
 
-            var reader = new StreamReader(assembly.GetManifestResourceStream("GalacticScale2.Assets.galaxy.json"));
+            var reader = new StreamReader(assembly.GetManifestResourceStream("GalacticScale.Assets.galaxy.json"));
             var json = reader.ReadToEnd();
             var data2 = fsJsonParser.Parse(json);
             var localStars = new List<ExternalStarData>();
@@ -476,7 +464,7 @@ namespace GalacticScale.Generators
             string theme;
             List<string> themeNames;
 
-            var radius = random.Next(30, Mathf.Clamp(host.Radius - 10, 30, 510));
+            var radius = Utils.ParsePlanetSize( random.Next(30, Mathf.Clamp(host.Radius - 10, 30, 510)));
             if (preferences.GetBool("moonsAreSmall", true) && radius > 200) radius = random.Next(30, 190);
             //switch (heat)
             //{
@@ -539,7 +527,7 @@ namespace GalacticScale.Generators
                 radius = random.Next(Mathf.Min(avgPlanetSize, maxPlanetSize - 100), Mathf.Min(maxPlanetSize, 510)); //needs more limits, but I got bored
             else
                 radius = random.Next(minPlanetSize, maxPlanetSize);
-            return radius;
+            return Utils.ParsePlanetSize( radius);
         }
 
         public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount, int availMoons)
@@ -662,13 +650,15 @@ namespace GalacticScale.Generators
                 //} else {
                 //    themeNames = GSSettings.ThemeLibrary.IceGiant;
                 //}
+                radius = Utils.ParsePlanetSize(radius);
                 themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Gas, ThemeHeat, radius);
                 themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             }
             else
             {
                 scale = 1f;
-                radius = ChooseRadius(tiny, huge);
+                radius = Utils.ParsePlanetSize( ChooseRadius(tiny, huge));
+                
                 themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Planet, ThemeHeat, radius);
                 themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             }

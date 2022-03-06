@@ -71,19 +71,8 @@ namespace GalacticScale
         public GSOptions Options { get; } = new();
         //public bool Test => Preferences.GetBool("Test", false);
         //public float TestNum => Preferences.GetFloat("TestNum", 0f);
-        public void OnOpen()
-        {
-        }
 
-        public void OnCancel()
-        {
-        }
-
-        public void OnApply()
-        {
-        }
-
-        public void Update(string key, Val val)
+        public void OnUpdate(string key, Val val)
         {
             Preferences.Set(key, val);
         }
@@ -371,6 +360,7 @@ namespace GalacticScale
             }
 
             ActiveGenerator = GS2.Generators[(int)result];
+            GSEvents.GeneratorChange(ActiveGenerator);
             UpdateNebulaSettings();
 
 

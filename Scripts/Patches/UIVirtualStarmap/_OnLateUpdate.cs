@@ -19,6 +19,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIVirtualStarmap), "_OnLateUpdate")]
         public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)
         {
+            if (GS2.Vanilla) return true;
            SystemDisplay.OnUpdate(__instance);
            return false;
         }

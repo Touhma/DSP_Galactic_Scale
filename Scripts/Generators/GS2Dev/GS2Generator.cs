@@ -35,19 +35,8 @@ namespace GalacticScale.Generators
         public string Version => "0.0";
 
         public string GUID => "space.customizing.generators.gs2dev";
-        public void OnOpen()
-        {
-        }
 
-        public void OnCancel()
-        {
-        }
-
-        public void OnApply()
-        {
-        }
-
-        public void Update(string key, Val val)
+        public void OnUpdate(string key, Val val)
         {
             preferences.Set(key, val);
         }

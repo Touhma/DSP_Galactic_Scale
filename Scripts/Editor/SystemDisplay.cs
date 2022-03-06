@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using NGPT;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,9 +27,9 @@ namespace GalacticScale
 
         public static void initializeButtons(UIGalaxySelect instance)
         {
-            backButton.onClick.RemoveAllListeners();
+            // backButton.onClick.RemoveAllListeners();
             randomButton.onClick.RemoveAllListeners();
-            backButton.onClick.AddListener(() => OnBackClick(instance));
+            // backButton.onClick.AddListener(() => OnBackClick(instance));
             randomButton.onClick.AddListener(() => OnRandomClick(instance));
         }
         public static void OnUpdate(UIVirtualStarmap starmap)
@@ -39,7 +40,11 @@ namespace GalacticScale
             if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.left);
             if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.up);
             if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.down);
-            if (VFInput._jump) GameCamera.instance.transform.localPosition = Vector3.zero;
+            if (VFInput._jump)
+            {
+                GameCamera.instance.transform.localPosition = Vector3.zero;
+                UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1f;
+            }
             int targetIndex = -1;
             for (var i = 0; i < starmap.starPool.Count; ++i)
             {
@@ -81,6 +86,11 @@ namespace GalacticScale
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
                     starmap.starPool[i].nameText.text = starmap.starPool[i].textContent;
+                    // if (!inSystemDisplay)
+                    // {
+                    //     GS2.Warn("Setting StarText");
+                    //     starmap.starPool[i].nameText.text = Utils.GetStarDetail(starmap.starPool[i].starData);
+                    // }
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
                     
@@ -146,7 +156,11 @@ namespace GalacticScale
         public static void OnBackClick(UIGalaxySelect instance)
         {
             GS2.Warn("BackClick");
-            if (!inSystemDisplay) instance.CancelSelect();
+            if (!inSystemDisplay)
+            {
+                instance._Close();
+                UIRoot.instance.OpenMainMenuUI();
+            }
             else ShowStarMap(instance.starmap);
         }
 
@@ -263,9 +277,13 @@ namespace GalacticScale
             GSStar star = GS2.GetGSStar(viewStar);
             if (star.Decorative)
             {
-                var primaryIndex = GS2.GetBinaryStarHost(star).assignedIndex;
-                viewStar = starmap.starPool[primaryIndex].starData;
-                starIndex = primaryIndex;
+                var primaryStar = GS2.GetBinaryStarHost(star);
+                if (primaryStar != null)
+                {
+                    var primaryIndex = primaryStar.assignedIndex;
+                    viewStar = starmap.starPool[primaryIndex].starData;
+                    starIndex = primaryIndex;
+                }
             }
             // UIRoot.instance.galaxySelect.resourceMultiplierSlider.gameObject.SetActive(false);
             ClearStarmap(starmap);

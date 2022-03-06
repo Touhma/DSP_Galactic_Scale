@@ -2,12 +2,13 @@
   <PropertyGroup>
     <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
     <TargetFramework>net472</TargetFramework>
+    <RootNamespace>GalacticScale</RootNamespace>
   </PropertyGroup>
   <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
 	<PropertyGroup>
 		<AssemblyName>GalacticScale</AssemblyName>
 		<Description>Galaxy Customization for Dyson Sphere Program</Description>
-		<Version>2.4.06</Version>
+		<Version>2.4.5</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
 		<OutDir>bin/$(Configuration)</OutDir>
@@ -41,5 +42,10 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>galacticbundle</TargetPath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Assets\galaxy.json" />
+	  <EmbeddedResource Include="Assets\galaxy.json" />
 	</ItemGroup>
 </Project>

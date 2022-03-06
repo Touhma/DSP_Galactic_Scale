@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public partial class PatchOnGameData
+    public partial class FPatchOnGameData
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GameData), "ArrivePlanet")]

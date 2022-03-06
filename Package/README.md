@@ -1,5 +1,13 @@
 # DSP Galactic Scale 2.0 Mod
 
+- Version 2.4.4 - Fixed error in console code. Will require generator recompile.
+- 
+- Version 2.4.3 - Fixed space capsule doubleup on non skip gamestart
+
+- Version 2.4.2 - Fixed Vanilla and Sol Generators
+
+- Version 2.4.1 - Fix the icon :)
+
 - Version 2.4 - Merge Experimental and Main Branches
               - Fix a bunch of bugs
 
