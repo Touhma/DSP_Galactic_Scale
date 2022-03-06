@@ -13,8 +13,8 @@ namespace GalacticScale
             var path = Path.Combine(GS2.DataDir, "GalaxyBackups");
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             path = Path.Combine(path, saveName);
-            path = path+ "-" + DateTime.Now.ToString("yyMMddHHmmss") + ".json";
-            GS2.SaveSettingsToJson(path);
+            path = path+ "-" + DateTime.Now.ToString("dd") + ".json";
+            if (saveName.Substring(1,8) != "autosave" && saveName.Substring(1,8) != "lastexit") GS2.SaveSettingsToJson(path);
         }
     }
 

@@ -591,10 +591,10 @@ namespace GalacticScale
             __instance.tmpEntityPools = new EntityData[planetCount][];
             __instance.tmpPrebuildPools = new PrebuildData[planetCount][];
             __instance.tmpSignPools = new SignData[planetCount][];
-            __instance.warningCounts = new int[GameMain.galaxy.starCount * 1024];
-            __instance.warningSignals = new int[GameMain.galaxy.starCount * 32];
-            __instance.focusDetailCounts = new int[GameMain.galaxy.starCount * 1024];
-            __instance.focusDetailSignals = new int[GameMain.galaxy.starCount * 32];
+            //__instance.warningCounts = new int[GameMain.galaxy.starCount * 1024];
+            //__instance.warningSignals = new int[GameMain.galaxy.starCount * 32];
+            //__instance.focusDetailCounts = new int[GameMain.galaxy.starCount * 1024];
+            //__instance.focusDetailSignals = new int[GameMain.galaxy.starCount * 32];
             var l = GameMain.galaxy.starCount * 400;
             __instance.astroArr = new AstroPoseR[l];
             __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default);

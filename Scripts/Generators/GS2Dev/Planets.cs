@@ -17,6 +17,7 @@ namespace GalacticScale.Generators
         {
             GSPlanet comet = new GSPlanet();
             comet.Name = random.Item(PlanetNames);
+
             comet.Radius = Utils.ParsePlanetSize(random.NextFloat(29, 41));
             comet.Theme = random.Item(cometThemes).Name;
             comet.OrbitInclination = 66f;
@@ -292,7 +293,7 @@ namespace GalacticScale.Generators
                     planet.Scale = 1f;
                 }
 
-                GS2.Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
+                //GS2.Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
                 foreach (var body in planet.Bodies)
                     if (body != planet)
                         body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
