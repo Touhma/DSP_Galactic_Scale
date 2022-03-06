@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.4.5"
-description = "v2.4.5. Fix Error in modeller"
+versionNumber = "2.4.6"
+description = "v2.4.6. Fix Quickstart Bug"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 
