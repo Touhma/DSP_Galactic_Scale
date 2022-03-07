@@ -21,7 +21,7 @@ namespace GalacticScale
             {
                 __instance.applyButton.button.onClick.AddListener(GS2.SavePreferences);
                 //__instance.cancelButton.button.onClick.AddListener(() => { GS2.LoadPreferences(); });
-                SettingsUI.CreateGalacticScaleSettingsPage(___tabButtons, ___tabTexts);
+                SettingsUI.CreateGalacticScaleSettingsPage(__instance, ___tabButtons, ___tabTexts);
             }
 
             UIRoot.instance.optionWindow.SetTabIndex(SettingsUI.MainTabIndex, false);

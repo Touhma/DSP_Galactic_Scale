@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HarmonyLib;
+using NGPT;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using static GalacticScale.GS2;
+using Path = System.IO.Path;
 
 namespace GalacticScale
 {
@@ -36,7 +38,7 @@ namespace GalacticScale
 
         public static UnityEvent OptionsUIPostfix = new();
 
-        public static void CreateGalacticScaleSettingsPage(UIButton[] _tabButtons, Text[] _tabTexts)
+        public static void CreateGalacticScaleSettingsPage(UIOptionWindow __instance, UIButton[] _tabButtons, Text[] _tabTexts)
         {
             tabLine = GameObject.Find("Top Windows/Option Window/tab-line").GetComponent<RectTransform>();
 
@@ -51,8 +53,7 @@ namespace GalacticScale
             galacticButton.GetComponent<Button>().onClick.RemoveAllListeners();
             galacticButton.GetComponentInChildren<Text>().text = "Galactic Scale";
             galacticButton.GetComponent<Button>().onClick.AddListener(GalacticScaleTabClick);
-            _tabButtons.AddItem(galacticButton.GetComponent<UIButton>());
-            _tabTexts.AddItem(galacticButton.GetComponentInChildren<Text>());
+
 
             var detailsTemplate = GameObject.Find("Option Window/details/content-5").GetComponent<RectTransform>();
             details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
@@ -60,7 +61,20 @@ namespace GalacticScale
 
             details.gameObject.SetActive(true);
             details.gameObject.name = "content-gs";
-
+            
+            // __instance.tabTweeners.AddItem(details.GetComponent<Tweener>());  
+            Tweener[] tabTweeners = __instance.tabTweeners;
+            __instance.tabTweeners = tabTweeners.AddToArray(details.GetComponent<Tweener>());
+            
+            // _tabButtons.AddItem(galacticButton.GetComponent<UIButton>());
+            UIButton[] newTabButtons = __instance.tabButtons.AddToArray(galacticButton.GetComponent<UIButton>());
+            __instance.tabButtons = newTabButtons;
+            
+            // _tabTexts.AddItem(galacticButton.GetComponentInChildren<Text>());
+            Text[] newTabTexts = __instance.tabTexts.AddToArray(galacticButton.GetComponentInChildren<Text>());
+            __instance.tabTexts = newTabTexts;
+            
+                
             var languageCombo = details.Find("language").GetComponent<RectTransform>();
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;
