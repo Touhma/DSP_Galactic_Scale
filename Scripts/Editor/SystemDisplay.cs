@@ -120,16 +120,17 @@ namespace GalacticScale
                 if (starmap.starPool[i].active)
                 {
                     var starData = starmap.starPool[i].starData;
-                    var rectPoint = Vector2.zero;
-                    UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out _);
-                    rectPoint.x += 18f;
-                    rectPoint.y += 6f;
-                    starmap.starPool[i].nameText.rectTransform.anchoredPosition = rectPoint;
+                    // var rectPoint = Vector2.zero;
+                    // UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out _);
+                    // rectPoint.x += 18f;
+                    // rectPoint.y += 6f;
+                    // starmap.starPool[i].nameText.rectTransform.anchoredPosition = rectPoint;
                     var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     var num2 = Kit.ClosestPoint2Straight(ray.origin, ray.GetPoint(300f), starData.position);
                     var distanceFromClickToStar = Vector3.Distance(ray.GetPoint(300f * num2), starData.position);
                     if (distanceFromClickToStar < (double)clickTolerance)
                     {
+                        if (GS2.GetGSStar(starData).Decorative) continue;
                         clickTolerance = distanceFromClickToStar >= starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25 ? distanceFromClickToStar : 0.0f;
                         starIndex = i;
                     }
