@@ -14,6 +14,7 @@ namespace GalacticScale
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             path = Path.Combine(path, saveName);
             path = path+ "-" + DateTime.Now.ToString("dd") + ".json";
+            if (saveName.Length < 10) return;
             if (saveName.Substring(1,8) != "autosave" && saveName.Substring(1,8) != "lastexit") GS2.SaveSettingsToJson(path);
         }
     }
