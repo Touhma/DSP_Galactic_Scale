@@ -42,11 +42,11 @@ namespace GalacticScale
 
         public static int GetModPlaneInt(this PlanetRawData planetRawData, int index)
         {
-            float baseHeight = 20;
+            // float baseHeight = 20;
 
-            baseHeight += planetRawData.GetFactoredScale() * 20000;
+            // baseHeight += planetRawData.GetFactoredScale() * 20000;
 
-            return (int)(((planetRawData.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 + baseHeight);
+            return (int)(((planetRawData.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 + (planetRawData.precision * 100f) + 20f);
         }
     }
 }

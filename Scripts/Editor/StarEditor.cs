@@ -89,7 +89,7 @@ namespace GalacticScale.Editor
         public static GSStar editStar;
         public void Awake()
         {
-            GS2.Warn("Awake");
+            // GS2.Warn("Awake");
             instance = this;
 
         }
@@ -106,22 +106,26 @@ namespace GalacticScale.Editor
                 foreach (var s in GSSettings.Stars) GS2.Warn(s.Name);
                 
                 editStar.Name = o;
+                var bc = editStar.GetBinaryCompanion();
+                if (bc != null) bc.Name = o + " B";
+                
                 GSSettings.Instance.imported = true;
                 if (o != null && o != "") foreach (var b in editStar.Bodies)
                 {
-                    b.Name = b.Name.Replace(origName, o);
+                    b.Name = b.Name.Replace(origName+" - ", o + " - ");
                 }
                 foreach (var s in GSSettings.Stars) GS2.Warn("GSSettings.Stars " + s.Name);
                 foreach (var s in GS2.galaxy.stars) GS2.Warn("galaxy " + s.name);
                 foreach (var s in GS2.gsStars) GS2.Warn("gsStars " + s.Value.Name);
                 GS2.ProcessGalaxy(GS2.gameDesc, true);
+                UIRoot.instance.galaxySelect.starmap.galaxyData = GS2.galaxy;
                 foreach (var s in GSSettings.Stars) GS2.Warn("GSSettings.Stars > " + s.Name);
                 foreach (var s in GS2.galaxy.stars) GS2.Warn("galaxy > " + s.name);
                 foreach (var s in GS2.gsStars) GS2.Warn("gsStars >" + s.Value.Name);
-                foreach (var s in UIRoot.instance.galaxySelect.starmap.starPool)
-                {
-                    if (s.starData?.index == editStar.assignedIndex) s.starData.name = o;
-                }
+                // foreach (var s in UIRoot.instance.galaxySelect.starmap.starPool)
+                // {
+                //     if (s.starData?.index == editStar.assignedIndex) s.starData.name = o;
+                // }
                 SystemDisplay.ShowStarMap(UIRoot.instance.galaxySelect.starmap);
             }
         }

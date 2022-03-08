@@ -40,6 +40,16 @@
 
             return null;
         }
+
+        public static GSStar GetBinaryCompanion(this GSStar star)
+        {
+            if (!string.IsNullOrEmpty(star.BinaryCompanion))
+            {
+                return GetGSStar(star.BinaryCompanion);
+            }
+
+            return null;
+        }
         public static GSStar GetGSStar(StarData star)
         {
             return GetGSStar(star.id);
@@ -66,7 +76,7 @@
                 if (s.Name == name) return s;
             }
 
-            Error("Star not found");
+            Error("Star \"{name}\" not found");
             return null;
         }
 
