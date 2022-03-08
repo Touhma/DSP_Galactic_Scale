@@ -167,13 +167,13 @@ namespace GalacticScale
 
         public static iConfigurablePlugin GetConfigurablePluginInstance(Type t)
         {
-            GS2.Warn($"Type: {t}");
+            // GS2.Warn($"Type: {t}");
             if (StarEditor.instance != null)
             {
-                GS2.Warn($"StarEditor instance not null {StarEditor.instance.GetType()}");
+                // GS2.Warn($"StarEditor instance not null {StarEditor.instance.GetType()}");
                 if (StarEditor.instance.GetType() == t)
                 {
-                    GS2.Warn("StarEditor!");
+                    // GS2.Warn("StarEditor!");
                     return StarEditor.instance;
                 }
             }
