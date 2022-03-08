@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using GalacticScale.Editor;
 using GSSerializer;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -166,6 +167,19 @@ namespace GalacticScale
 
         public static iConfigurablePlugin GetConfigurablePluginInstance(Type t)
         {
+            GS2.Warn($"Type: {t}");
+            if (StarEditor.instance != null)
+            {
+                GS2.Warn($"StarEditor instance not null {StarEditor.instance.GetType()}");
+                if (StarEditor.instance.GetType() == t)
+                {
+                    GS2.Warn("StarEditor!");
+                    return StarEditor.instance;
+                }
+            }
+            
+            if (typeof(PlanetEditor) == t) return null;//PlanetEditor.instance;
+            if (typeof(ThemeEditor) == t) return null;//ThemeEditor.instance;
             foreach (var g in GS2.Plugins)
                 if (g.GetType() == t)
                     if (g is iConfigurablePlugin)

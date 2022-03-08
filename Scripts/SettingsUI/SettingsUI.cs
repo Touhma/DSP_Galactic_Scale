@@ -220,7 +220,7 @@ namespace GalacticScale
             }
         }
 
-        private static void CreateUIElement(GSUI option, GSUIList list)
+        public static void CreateUIElement(GSUI option, GSUIList list)
         {
             switch (option.Type)
             {

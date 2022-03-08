@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using GalacticScale.Editor;
 using NGPT;
 using UnityEngine;
 using UnityEngine.UI;
@@ -284,6 +285,12 @@ namespace GalacticScale
                     viewStar = starmap.starPool[primaryIndex].starData;
                     starIndex = primaryIndex;
                 }
+            }
+
+            if (VFInput.control)
+            {
+                StarEditor.CreateMainPanel(star);
+                return;
             }
             // UIRoot.instance.galaxySelect.resourceMultiplierSlider.gameObject.SetActive(false);
             ClearStarmap(starmap);

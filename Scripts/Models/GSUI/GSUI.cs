@@ -409,7 +409,7 @@ namespace GalacticScale
             {
                 if (generator is null && plugin == null)
                 {
-                    GS2.Error($"{Label} Trying to create Default Callback when Generator = null");
+                    GS2.Error($"{Label} Trying to create Default Callback when Generator and Plugin = null");
                     return;
                 }
 

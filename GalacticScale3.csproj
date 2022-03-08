@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
+	  <LangVersion>10</LangVersion>
     <RootNamespace>GalacticScale</RootNamespace>
   </PropertyGroup>
   <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
@@ -10,7 +11,7 @@
 		<Description>Galaxy Customization for Dyson Sphere Program</Description>
 		<Version>2.4.6</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>9.0</LangVersion>
+		
 		<OutDir>bin/$(Configuration)</OutDir>
 		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale_GalacticScale\</OutDir>
 	</PropertyGroup>

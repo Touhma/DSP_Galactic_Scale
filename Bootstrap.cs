@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using GalacticScale.Editor;
 using GSSerializer;
 using HarmonyLib;
 using UnityEngine;
@@ -45,6 +46,7 @@ namespace GalacticScale
         {
             if (GS2.TP == null) GS2.TP = gameObject.AddComponent<TeleportComponent>();
             if (GS2.InputComponent == null) GS2.InputComponent = gameObject.AddComponent<InputComponent>();
+            if (GS2.StarEditor == null) GS2.StarEditor = gameObject.AddComponent<StarEditor>();
         }
         private void ApplyHarmonyPatches()
         {
