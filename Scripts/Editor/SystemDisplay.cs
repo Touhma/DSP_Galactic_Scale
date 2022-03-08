@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using NGPT;
 using UnityEngine;
@@ -62,6 +63,7 @@ namespace GalacticScale
                     float num4 = Vector3.Distance(ray.GetPoint(300f * num3), starData.position);
                     if (num4 < mouseTolerance)
                     {
+                        if (GS2.GetGSStar(starData).Decorative) continue;
                         // GS2.Warn($"Mouse Close to {starData.name}");
                         // if (num4 < starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25f)
                         // {
@@ -376,6 +378,30 @@ namespace GalacticScale
             // ClearStarmap(starmap);
             ShowStarCount();
             starmap.OnGalaxyDataReset();
+            OnGalaxyDataResetPostFix(starmap);
+        }
+
+        public static string StripStarFromDisplayType(string input)
+        {
+            List<string> exploded = input.Split(' ').ToList();
+            exploded.Remove("Star");
+            return String.Concat(exploded, ' ');
+        }
+        public static void OnGalaxyDataResetPostFix(UIVirtualStarmap __instance)
+        {
+            foreach (var s in __instance.starPool)
+            {
+                var starData = s.starData;
+                if (starData == null) continue;
+                var gsStar = GS2.GetGSStar(starData);
+                if (gsStar == null) continue;
+                
+                if (!String.IsNullOrEmpty(gsStar.BinaryCompanion))
+                {
+                    var bc = GS2.GetGSStar(gsStar.BinaryCompanion);
+                    if (s.textContent != null) s.textContent += $" with {StripStarFromDisplayType( bc.displayType)} binary";
+                }
+            }
         }
         public static void ShowSolarSystem(UIVirtualStarmap starmap, int starIndex)
         {
@@ -620,11 +646,17 @@ namespace GalacticScale
                 text = text + starData.spectr.ToString() + "型恒星".Translate();
             }
 
+         
             if (starData.index == ((customBirthStar != -1) ? customBirthStar - 1 : starmap._galaxyData.birthStarId - 1))
             {
                 text = "即将登陆".Translate() + "\r\n" + text;
             }
-
+            var gsStar = GS2.GetGSStar(starData);
+            if (!String.IsNullOrEmpty(gsStar.BinaryCompanion))
+            {
+                var bc = GS2.GetGSStar(gsStar.BinaryCompanion);
+                text += $" with {bc.displayType} binary";
+            }
             starmap.starPool[0].active = true;
             starmap.starPool[0].starData = starData;
             starmap.starPool[0].pointRenderer.material.SetColor("_TintColor", color);
