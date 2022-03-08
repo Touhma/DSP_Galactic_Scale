@@ -24,6 +24,7 @@ namespace GalacticScale
         public float VirtualStarmapPlanetScaleFactor => Preferences.GetFloat("VSPlanetScaleFactor", 5f);
         public float VirtualStarmapStarScaleFactor => Preferences.GetFloat("VSStarScaleFactor", 0.5f);
         public float VirtualStarmapOrbitScaleFactor => Preferences.GetFloat("VSOrbitScaleFactor", 5f);
+        public float VirtualStarmapClickTolerance => Preferences.GetFloat("VSClickTolerance", 3f);
         public bool Dev => Preferences.GetBool("Dev");
         public string ImportFilename => Preferences.GetString("Import Filename");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
@@ -155,6 +156,8 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Slider("GalaxySelect Planet ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSPlanetScaleFactor", null, "How big planets should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Star ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSStarScaleFactor", null, "How big star should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Orbit ScaleFactor".Translate(), 0.1f, 5f, 100f,0.1f,  "VSOrbitScaleFactor", null, "How spaced orbits should be in the new game system view".Translate()));
+            DebugOptions.Add(GSUI.Slider("GalaxySelect Click Tolerance".Translate(), 1f, 3f, 10f,0.1f,  "VSClickTolerance", null, "How close to a star/planet your mouse needs to be to register a click".Translate()));
+
             DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", o =>
             {
                 // GS2.WarnJson(gameDesc);
