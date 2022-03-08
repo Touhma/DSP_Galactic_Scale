@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
-using GalacticScale.UI.Builder;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 
 namespace GalacticScale.Editor
@@ -102,9 +102,27 @@ namespace GalacticScale.Editor
         {
             if (editStar != null)
             {
+                var origName = editStar.Name;
+                foreach (var s in GSSettings.Stars) GS2.Warn(s.Name);
+                
                 editStar.Name = o;
                 GSSettings.Instance.imported = true;
+                if (o != null && o != "") foreach (var b in editStar.Bodies)
+                {
+                    b.Name = b.Name.Replace(origName, o);
+                }
+                foreach (var s in GSSettings.Stars) GS2.Warn("GSSettings.Stars " + s.Name);
+                foreach (var s in GS2.galaxy.stars) GS2.Warn("galaxy " + s.name);
+                foreach (var s in GS2.gsStars) GS2.Warn("gsStars " + s.Value.Name);
                 GS2.ProcessGalaxy(GS2.gameDesc, true);
+                foreach (var s in GSSettings.Stars) GS2.Warn("GSSettings.Stars > " + s.Name);
+                foreach (var s in GS2.galaxy.stars) GS2.Warn("galaxy > " + s.name);
+                foreach (var s in GS2.gsStars) GS2.Warn("gsStars >" + s.Value.Name);
+                foreach (var s in UIRoot.instance.galaxySelect.starmap.starPool)
+                {
+                    if (s.starData?.index == editStar.assignedIndex) s.starData.name = o;
+                }
+                SystemDisplay.ShowStarMap(UIRoot.instance.galaxySelect.starmap);
             }
         }
 
