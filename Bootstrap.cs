@@ -13,9 +13,9 @@ namespace GalacticScale
     {
         public static int PreferencesVersion = 2104;
     }
+    
 
-
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.4.6")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.4.7")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -25,6 +25,7 @@ namespace GalacticScale
 
         internal void Awake()
         {
+            
             InitializeLogger();
             InitializeComponents();
             ApplyHarmonyPatches();
@@ -34,7 +35,6 @@ namespace GalacticScale
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
             Assembly a = Assembly.GetAssembly(typeof(GSStar));
-            GS2.Warn(a.GetName().Version.ToString());
             GS2.Version = $"{v.Major}.{v.Minor}.{v.Build}";
             BCE.Console.Init();
             Logger = new ManualLogSource("GS2");

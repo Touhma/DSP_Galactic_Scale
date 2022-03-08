@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.7 - Fixed Error when saving games with short names. Added configurable mouse tolerance for systemdisplay. Fixed Planet name text flickering in center of screen when clicked.
+
 - Version 2.4.6 - Fixed Warning System for Raptor (Hopefully). Fixed Quickstart bug from 2.4.3
 
 - Version 2.4.5 - Fixed Autosave Galaxy Setting Spam. Will require generator recompile.

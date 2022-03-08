@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.4.6"
-description = "v2.4.6. Fix Quickstart Bug"
+versionNumber = "2.4.7"
+description = "v2.4.7. Fix Save Bug (Saves affected are fine, just didn't tell you it saved)"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

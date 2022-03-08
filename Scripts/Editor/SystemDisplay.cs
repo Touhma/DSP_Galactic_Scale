@@ -437,6 +437,7 @@ namespace GalacticScale
                 // GS2.Warn("ShowSolarSystem3");
                 // create fake StarData to pass _OnLateUpdate()
                 StarData dummyStarData = new StarData();
+                dummyStarData.age = -1;
                 dummyStarData.position = pPos;
                 var gsPlanet = GS2.GetGSPlanet(pData);
                 var gsTheme = gsPlanet.GsTheme;
