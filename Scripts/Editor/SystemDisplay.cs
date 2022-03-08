@@ -63,7 +63,7 @@ namespace GalacticScale
                     float num4 = Vector3.Distance(ray.GetPoint(300f * num3), starData.position);
                     if (num4 < mouseTolerance)
                     {
-                        if (GS2.GetGSStar(starData).Decorative) continue;
+                        if (starData.age < 0 || GS2.GetGSStar(starData).Decorative) continue;
                         // GS2.Warn($"Mouse Close to {starData.name}");
                         // if (num4 < starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25f)
                         // {
@@ -131,7 +131,7 @@ namespace GalacticScale
                     var distanceFromClickToStar = Vector3.Distance(ray.GetPoint(300f * num2), starData.position);
                     if (distanceFromClickToStar < (double)clickTolerance)
                     {
-                        if (GS2.GetGSStar(starData).Decorative) continue;
+                        if (starData.age < 0 || GS2.GetGSStar(starData).Decorative) continue;
                         clickTolerance = distanceFromClickToStar >= starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25 ? distanceFromClickToStar : 0.0f;
                         starIndex = i;
                     }
