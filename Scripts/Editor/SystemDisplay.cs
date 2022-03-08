@@ -115,7 +115,7 @@ namespace GalacticScale
             if (deBounce) return;
             deBounce = true;
             var starIndex = -1;
-            var clickTolerance = 1.7f;
+            var clickTolerance = GS2.Config.VirtualStarmapClickTolerance;
             for (var i = 0; i < starmap.starPool.Count; ++i)
                 if (starmap.starPool[i].active)
                 {
