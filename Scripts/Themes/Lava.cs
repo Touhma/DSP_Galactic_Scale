@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public static partial class Themes
     {
-        public static GSTheme Lava = new()
+        public static GSTheme Lava = new GSTheme
         {
             Name = "Lava",
             Base = true,
@@ -15,15 +15,18 @@ namespace GalacticScale
 
             LDBThemeId = 9,
             Algo = 5,
-            MinRadius = 30,
+            MinRadius = 5,
             MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Lava 1/",
-            Temperature = 5.0f,
+            Temperature = 5f,
             Distribute = EThemeDistribute.Default,
-            ModX = new Vector2(0.0f, 0.0f),
-            ModY = new Vector2(0.0f, 0.0f),
+            Habitable = false,
+            ModX = new Vector2(0f, 0f),
+            ModY = new Vector2(0f, 0f),
             VeinSettings = new GSVeinSettings { Algorithm = "GS2" },
             TerrainSettings = new GSTerrainSettings { BrightnessFix = true },
+
+            //AmbientSettings 1
             AmbientSettings = new GSAmbientSettings
             {
                 Color1 = new Color(0.2588235f, 0.05098039f, 0.02352941f, 1f),
@@ -40,109 +43,133 @@ namespace GalacticScale
                 DustColor3 = new Color(0.3110638f, 0.4268085f, 0.51f, 1f),
                 DustStrength1 = 2f,
                 DustStrength2 = 0.5f,
-                DustStrength3 = 3,
+                DustStrength3 = 3f,
                 BiomeSound1 = 0,
                 BiomeSound2 = 2,
                 BiomeSound3 = 2,
                 CubeMap = "Vanilla",
                 Reflections = new Color(),
-                LutContribution = 0.5f
+                LutContribution = 0.5f,
             },
-            Vegetables0 = new[]
-            {
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12
-            },
-            Vegetables1 = new[]
-            {
-                1,
-                2,
-                3,
-                4,
-                5
-            },
-            Vegetables2 = new int[] { },
+            Vegetables0 = new int[]
+  {
+647,
+646,
+647,
+646,
+645,
+645,
+644,
+643,
+642,
+634,
+635,
+632,
+633,
+636,
+631,
+  },
+            Vegetables1 = new int[]
+  {
+647,
+646,
+644,
+643,
+647,
+646,
+645,
+644,
+643,
+642,
+634,
+635,
+  },
+            Vegetables2 = new int[]
+  {
+  },
             Vegetables3 = new int[]
-            {
-            },
+  {
+  },
             Vegetables4 = new int[]
-            {
-            },
+  {
+637,
+639,
+640,
+638,
+636,
+641,
+  },
             Vegetables5 = new int[]
-            {
-            },
-            VeinSpot = new[]
-            {
-                15,
-                15,
-                2,
-                9,
-                4,
-                2,
-                0
-            },
-            VeinCount = new[]
-            {
-                1.0f,
-                1.0f,
-                0.6f,
-                1.0f,
-                0.6f,
-                0.3f,
-                0.0f
-            },
-            VeinOpacity = new[]
-            {
-                1.0f,
-                1.0f,
-                0.6f,
-                1.0f,
-                0.5f,
-                0.3f,
-                0.0f
-            },
-            RareVeins = new[]
-            {
-                9,
-                10,
-                12
-            },
-            RareSettings = new[]
-            {
-                0.0f,
-                0.2f,
-                0.6f,
-                0.7f,
-                0.0f,
-                0.2f,
-                0.6f,
-                0.7f,
-                0.0f,
-                0.1f,
-                0.2f,
-                0.8f
-            },
+  {
+  },
+            VeinSpot = new int[]
+  {
+15,
+15,
+2,
+9,
+4,
+2,
+0,
+  },
+            VeinCount = new float[]
+  {
+1f,
+1f,
+0.6f,
+1f,
+0.6f,
+0.3f,
+0f,
+  },
+            VeinOpacity = new float[]
+  {
+1f,
+1f,
+0.6f,
+1f,
+0.5f,
+0.3f,
+0f,
+  },
+            RareVeins = new int[]
+  {
+9,
+10,
+12,
+  },
+            RareSettings = new float[]
+  {
+0f,
+0.2f,
+0.6f,
+0.7f,
+0f,
+0.2f,
+0.6f,
+0.7f,
+0f,
+0.1f,
+0.2f,
+0.8f,
+  },
             GasItems = new int[]
-            {
-            },
+  {
+  },
             GasSpeeds = new float[]
-            {
-            },
+  {
+  },
             UseHeightForBuild = false,
             Wind = 0.7f,
             IonHeight = 60f,
-            WaterHeight = -2.50f,
+            WaterHeight = -2.5f,
             WaterItemId = -1,
-            Musics = new[]
-            {
-                10
-            },
-            SFXPath = "SFX/sfx-amb-lava-1",
+            Musics = new int[]
+  {
+20,
+10,
+  },
+            SFXPath = "SFX/sfx-amb-lava-2",
             SFXVolume = 0.4f,
             CullingRadius = 0f,
             terrainMaterial = new GSMaterialSettings

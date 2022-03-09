@@ -47,16 +47,24 @@ namespace GalacticScale
                 Reflections = new Color(),
                 LutContribution = 0.3f
             },
-            Vegetables0 = new[]
-            {
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12
-            },
+            Vegetables0 = new int[]
+{
+1061,
+1062,
+659,
+1066,
+658,
+1065,
+657,
+656,
+1064,
+651,
+1063,
+654,
+653,
+652,
+655,
+},
             Vegetables1 = new[]
             {
                 1,
