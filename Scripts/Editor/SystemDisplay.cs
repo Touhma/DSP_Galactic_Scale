@@ -83,7 +83,7 @@ namespace GalacticScale
                         starmap.starPointBirth.transform.localPosition = starData.position;
                     }
 
-                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || i == GSSettings.BirthPlanet.planetData.star.index);
+                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || (i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay));
 
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
@@ -706,6 +706,22 @@ namespace GalacticScale
             if (temperature > -1) return 0.5f;
             if (temperature > -3.1f) return 0.8f;
             return 0.9f;
+        }
+
+        public static void InitHelpText(UIGalaxySelect __instance)
+        {
+            var g = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/");
+            var tt = g.GetComponentInChildren<Text>();
+            if (g.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(  g.GetComponentInChildren<Localizer>());
+            tt.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
+            tt.alignment = TextAnchor.LowerLeft;
+            g.SetActive(true);
+            var r = g.GetComponent<RectTransform>();
+            r.anchorMax = r.anchorMin = r.pivot = Vector2.zero;
+            r.offsetMin = new Vector2(0, 1);
+            r.offsetMax = new Vector2(300, 20);
+            r.anchoredPosition = new Vector2(0, 80);
+            r.sizeDelta = new Vector2(300, 300);
         }
     }
 }

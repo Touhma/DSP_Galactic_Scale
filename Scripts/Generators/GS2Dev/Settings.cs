@@ -50,7 +50,31 @@ namespace GalacticScale.Generators
                     UI[key].Set(importedPreferences[key]);
                 }
             }
-
+            // WarnJson(importedPreferences);
+            for (var i = 0; i < 14; i++)
+            {
+                if (!UI.ContainsKey($"{typeLetter[i]}minStars")) break;
+                GS2.Warn($"{importedPreferences.GetInt("OcountBias",30)}");
+                // if (!UI.ContainsKey($"{typeLetter[i]}binaryEnabled") break;
+                UI[$"{typeLetter[i]}minStars"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}minStars", 0));
+                UI[$"{typeLetter[i]}planetCount"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetCount", new FloatPair(1, 10)));
+                UI[$"{typeLetter[i]}planetSize"]?.Set( importedPreferences.GetFloatFloat($"{typeLetter[i]}planetSize",new FloatPair(50, 500)));
+                UI[$"{typeLetter[i]}sizeBias"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}sizeBias",50));
+                UI[$"{typeLetter[i]}countBias"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}countBias",50));
+                UI[$"{typeLetter[i]}chanceGas"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}chanceGas",20));
+                UI[$"{typeLetter[i]}chanceMoon"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}chanceMoon",20));
+                UI[$"{typeLetter[i]}orbits"]?.Set( importedPreferences.GetFloatFloat($"{typeLetter[i]}orbits",new FloatPair(0.1f, 10)));
+                UI[$"{typeLetter[i]}orbitOverride"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}orbitOverride", false));
+                UI[$"{typeLetter[i]}inclination"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}inclination",-1));
+                UI[$"{typeLetter[i]}orbitLongitude"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}orbitLongitude",0));
+                UI[$"{typeLetter[i]}hzOverride"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}hzOverride", false));
+                UI[$"{typeLetter[i]}rareChance"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}rareChance",-1f));
+                UI[$"{typeLetter[i]}luminosityBoost"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}luminosityBoost",1f));
+                if (i >= 8 && i <= 11) continue;
+                UI[$"{typeLetter[i]}binaryEnabled"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled",false));
+            }
+            // GS2.Warn($"Imported:{importedPreferences.GetInt($"OcountBias")}");
+            // GS2.Warn($"Prefs:{importedPreferences.GetInt($"OcountBias")}");
             if (loaded) loaded = false;
             Config.DefaultStarCount = importedPreferences.GetInt("defaultStarCount");
             //if (!importedPreferences.GetBool("ludicrousMode")) Config.MaxStarCount = 1024;
@@ -219,7 +243,6 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}countBias", 50);
                 preferences.Set($"{typeLetter[i]}chanceGas", 20);
                 preferences.Set($"{typeLetter[i]}chanceMoon", 20);
-                preferences.Set($"{typeLetter[i]}orbits", new FloatPair(0.9f, 2));
                 preferences.Set($"{typeLetter[i]}orbits", new FloatPair(0.1f, 10));
                 preferences.Set($"{typeLetter[i]}orbitOverride", false);
                 preferences.Set($"{typeLetter[i]}inclination", -1);

@@ -226,7 +226,7 @@ namespace GalacticScale.Generators
                     }
                 }
                 var starLum = Mathf.Pow(star.luminosity, 0.3333f);
-                var lum = star.luminosity / (oRadius * oRadius);
+                var lum = Mathf.Clamp(star.luminosity / (oRadius * oRadius), 0.01f, 5f);
                 var lum2 = Mathf.Log(lum);
                 // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
                 body.Luminosity = lum;
