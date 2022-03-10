@@ -76,7 +76,7 @@
                 if (s.Name == name) return s;
             }
 
-            Error("Star \"{name}\" not found");
+            Error($"Star \"{name}\" not found");
             return null;
         }
 

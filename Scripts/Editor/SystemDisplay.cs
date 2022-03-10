@@ -15,11 +15,9 @@ namespace GalacticScale
         public static bool inSystemDisplay = false;
         private static StarData viewStar;
         public static Button randomButton;
-        public static Button startButton;
         public static Button backButton;
         public static bool deBounce = false;
         public static int customBirthStar = -1;
-        public static int customBirthPlanet = -1;
         public static float mouseTolerance = 1.7f;
         public static void AbortRender(UIVirtualStarmap starmap)
         {
@@ -69,18 +67,7 @@ namespace GalacticScale
                     float num4 = Vector3.Distance(ray.GetPoint(300f * num3), starData.position);
                     if (num4 < mouseTolerance)
                     {
-
                         if (starData.age >= 0 && GS2.GetGSStar(starData).Decorative) continue;
-
-                        // GS2.Warn($"Mouse Close to {starData.name}");
-                        // if (num4 < starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25f)
-                        // {
-                        //     mouseTolerance = 0f;
-                        // }
-                        // else
-                        // {
-                        //     mouseTolerance = num4;
-                        // }
                         targetIndex = i;
                     }
                     if (i == GSSettings.BirthPlanet.planetData.star.index)
@@ -179,6 +166,7 @@ namespace GalacticScale
 
         public static void OnRandomClick(UIGalaxySelect instance)
         {
+            GSSettings.Instance.imported = false;
             instance.Rerand();
             ShowStarMap(instance.starmap);
         }
@@ -304,7 +292,6 @@ namespace GalacticScale
                 StarEditor.CreateMainPanel(star);
                 return;
             }
-            // UIRoot.instance.galaxySelect.resourceMultiplierSlider.gameObject.SetActive(false);
             ClearStarmap(starmap);
             GS2.Warn($"OnStarClick {viewStar.name}");
             HideStarCount();
@@ -345,28 +332,21 @@ namespace GalacticScale
             int planetIndex = clickIndex -1;
             GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
             PlanetData pData = viewStar?.planets[planetIndex];
-            GS2.Warn("C");
             if (pData == null) return;
             GS2.Warn($"Setting new Star as BirthStar and Planet as {pData.name}");
             if (pData.star.id != starmap.galaxyData.birthStarId || pData.id != starmap.galaxyData.birthPlanetId)
             {
-                GS2.Warn($"---- Original birthPlanetID:{starmap.galaxyData.birthPlanetId} {starmap.galaxyData.PlanetById(starmap.galaxyData.birthPlanetId)}");
                 starmap.galaxyData.birthStarId = viewStar.id;
                 starmap.galaxyData.birthPlanetId = pData.id;
                 GSSettings.BirthPlanetName = pData.name;
-                GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
                 GSSettings.BirthPlanetId = pData.id;
-                GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
-                // GSSettings.BirthPlanet = GS2.GetGSPlanet(pData);
                 GSSettings.Instance.imported = true;
                 GS2.galaxy.birthStarId = viewStar.id;
                 GS2.galaxy.birthPlanetId = pData.id;
                 GameMain.galaxy.birthPlanetId = pData.id;
                 GameMain.galaxy.birthStarId = viewStar.id;
-                GS2.Warn($"GameMain.galaxy.birthPlanetID:{GameMain.galaxy.birthPlanetId} should be {pData.id}");
                 GameMain.data.galaxy.birthPlanetId = pData.id;
                 GameMain.data.galaxy.birthStarId = viewStar.id;
-                GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
             }
             HideStarDetail();
             HideStarCount();
@@ -379,9 +359,6 @@ namespace GalacticScale
             UIRoot.instance.galaxySelect.seedInput.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(true);
-            // UIRoot.instance.galaxySelect.starCountText .gameObject.SetActive(true);
-            // UIRoot.instance.galaxySelect.resourceMultiplierText.gameObject.SetActive(true);
-            
         }
         public static void ShowStarMap(UIVirtualStarmap starmap)
         {
@@ -391,7 +368,6 @@ namespace GalacticScale
             starmap.clickText = "";
             HidePlanetDetail();
             HideStarDetail();
-            // ClearStarmap(starmap);
             ShowStarCount();
             starmap.OnGalaxyDataReset();
             

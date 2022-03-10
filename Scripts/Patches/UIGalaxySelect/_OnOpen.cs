@@ -26,7 +26,6 @@ namespace GalacticScale
 
             if (SystemDisplay.backButton == null)
             {
-                SystemDisplay.startButton = __instance.transform.GetChild(0).GetComponent<Button>();
                 SystemDisplay.randomButton = __instance.transform.GetChild(1).GetComponent<Button>();
                 SystemDisplay.backButton =__instance.transform.GetChild(2).GetComponent<Button>();
                 SystemDisplay.initializeButtons(__instance);

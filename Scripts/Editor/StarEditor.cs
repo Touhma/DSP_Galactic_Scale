@@ -17,6 +17,7 @@ namespace GalacticScale.Editor
         public static Button saveButton;
         public static RectTransform mainPanel;
         public static GSUIPanel settingsPanel;
+        public static string editName;
         public static void OpenMainPanel()
         {
             
@@ -28,7 +29,8 @@ namespace GalacticScale.Editor
         {
             if (Initialized)
             {
-                editStar = star;
+                if (star.Decorative) editStar = GS2.GetBinaryStarHost(star);
+                else editStar = star;
                 UpdateEditor();
                 return;
             }
@@ -60,6 +62,7 @@ namespace GalacticScale.Editor
             options.Add(GSUI.Header("Star Editor"));
             
             UI.Add("starName", options.Add(GSUI.Input("Name", star.Name, "starName", SetStarName)));
+            options.Add(GSUI.Button("Apply", "Apply", Apply));
             for (var i = 0; i < options.Count; i++) // Main Settings
                 // GS2.Warn($"Creating {options[i].Label}");
                 SettingsUI.CreateUIElement(options[i], settingsPanel.contents);
@@ -97,22 +100,33 @@ namespace GalacticScale.Editor
         public static void UpdateEditor()
         {
             UI["starName"]?.Set(editStar?.Name);
+            editName = editStar?.Name;
         }
         public static void SetStarName(Val o)
+        {
+            if (string.IsNullOrEmpty(o)) return;
+            editName = o;
+        }
+
+        public static void Apply(Val o)
         {
             if (editStar != null)
             {
                 var origName = editStar.Name;
                 foreach (var s in GSSettings.Stars) GS2.Warn(s.Name);
                 
-                editStar.Name = o;
+                editStar.Name = editName;
                 var bc = editStar.GetBinaryCompanion();
-                if (bc != null) bc.Name = o + " B";
+                if (bc != null)
+                {
+                    bc.Name = editName + "-B";
+                    editStar.BinaryCompanion = bc.Name;
+                }
                 
                 GSSettings.Instance.imported = true;
-                if (o != null && o != "") foreach (var b in editStar.Bodies)
+                if (editName != null && editName != "") foreach (var b in editStar.Bodies)
                 {
-                    b.Name = b.Name.Replace(origName+" - ", o + " - ");
+                    b.Name = b.Name.Replace(origName+" - ", editName + " - ");
                 }
                 foreach (var s in GSSettings.Stars) GS2.Warn("GSSettings.Stars " + s.Name);
                 foreach (var s in GS2.galaxy.stars) GS2.Warn("galaxy " + s.name);
@@ -122,14 +136,20 @@ namespace GalacticScale.Editor
                 foreach (var s in GSSettings.Stars) GS2.Warn("GSSettings.Stars > " + s.Name);
                 foreach (var s in GS2.galaxy.stars) GS2.Warn("galaxy > " + s.name);
                 foreach (var s in GS2.gsStars) GS2.Warn("gsStars >" + s.Value.Name);
-                // foreach (var s in UIRoot.instance.galaxySelect.starmap.starPool)
-                // {
-                //     if (s.starData?.index == editStar.assignedIndex) s.starData.name = o;
-                // }
                 SystemDisplay.ShowStarMap(UIRoot.instance.galaxySelect.starmap);
+                for (int i = 0; i < UIRoot.instance.galaxySelect.starmap.starPool.Count; i++)
+                {
+                    var s = UIRoot.instance.galaxySelect.starmap.starPool[i]?.starData;
+                    if (s != null)
+                    {
+                        if (s.index == editStar.assignedIndex)
+                        {
+                            SystemDisplay.ShowSolarSystem(UIRoot.instance.galaxySelect.starmap, i);
+                        }
+                    }
+                }
             }
         }
-
         public void Init()
         {
             GS2.Warn("StarEditor Init");
