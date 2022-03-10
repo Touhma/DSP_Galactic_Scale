@@ -1,5 +1,6 @@
 ﻿using System;
 using HarmonyLib;
+using NebulaCompatibility;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -23,7 +24,7 @@ namespace GalacticScale
                 UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
                 GS2.canvasOverlay = false;
             }
-
+            if (NebulaCompat.IsMultiplayerActive) return true;
             if (SystemDisplay.backButton == null)
             {
                 SystemDisplay.startButton = __instance.transform.GetChild(0).GetComponent<Button>();

@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.4.9"
-description = "v2.4.9. Blueprint extra space bugfix"
+versionNumber = "2.4.10"
+description = "v2.4.10. Nebula Compatibility (Fingers x'd)"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

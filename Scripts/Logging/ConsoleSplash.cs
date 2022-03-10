@@ -17,7 +17,7 @@ namespace GalacticScale
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.Write("│", ConsoleColor.Red);
                 BCE.Console.Write("  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ ", ConsoleColor.DarkGray);
-                BCE.Console.Write("Version " + Version + " Initializing   ", ConsoleColor.White);
+                BCE.Console.Write($"Version {Version,6} Initializing   ", ConsoleColor.White);
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.WriteLine("└─────────────────────────────────────────────────────────────────────────┘", ConsoleColor.Red);
             }
@@ -28,7 +28,7 @@ namespace GalacticScale
                 Bootstrap.Debug(".─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─."); // Failsafe if BCE not present
                 Bootstrap.Debug("│  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                │");
                 Bootstrap.Debug("│  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤                                 │");
-                Bootstrap.Debug("│  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ Version " + Version + " Initializing   │");
+                Bootstrap.Debug($"│  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ Version  {Version,6} Initializing   │");
                 Bootstrap.Debug("└──────https://discord.gg/NbpBn6gM6d──────────────────────────────────────┘");
             }
         }

@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.10 - Hopefully more compatibility with Nebula
+
 - Version 2.4.9 - Fixed blueprints using extra space
 
 - Version 2.4.8 - Fixed Lava & Hurricane Themes missing rocks. Added hint text to galaxy select. Clamped solar power to 1-500%. Fixed GS2 Star Overrides not loading correctly. Fixed bug where planetdetail wouldnt close on game start.

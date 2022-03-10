@@ -12,7 +12,365 @@ namespace GalacticScale
 {
     public class PatchOnWhatever
     {
-	    [HarmonyPrefix]
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(BuildTool_PathAddon), "CheckBuildConditions")]
+		public static bool CheckBuildConditions(BuildTool_PathAddon __instance)
+		{
+			if (__instance.cursorValid)
+			{
+				Vector3 position = __instance.player.position;
+				float num = __instance.player.mecha.buildArea * __instance.player.mecha.buildArea;
+				if ((__instance.handbp.lpos - position).sqrMagnitude > num)
+				{
+					__instance.handbp.condition = EBuildCondition.OutOfReach;
+				}
+			}
+			if (__instance.handbp != null && __instance.handbp.desc.isSpraycoster)
+			{
+				Vector3 reshapeData = SpraycoaterComponent.GetReshapeData(__instance.handbp.lpos, __instance.handbp.lrot);
+				if (Mathf.Abs(reshapeData.x) > 0.265f || Mathf.Abs(reshapeData.y) > 0.265f)
+				{
+					__instance.handbp.condition = EBuildCondition.TooSkew;
+				}
+			}
+			for (int i = 0; i < __instance.potentialBeltObjIdArray.Length; i++)
+			{
+				int num2 = __instance.potentialBeltObjIdArray[i];
+				int num3 = (int)Mathf.Sign((float)num2) * (Mathf.Abs(num2) >> 4);
+				if (num3 != 0 && __instance.GetBeltInputCount(num3) > 1 && !__instance.HasAddonConn(num3))
+				{
+					//__instance.handbp.condition = EBuildCondition.Collide;
+				}
+			}
+			Pose[] addonAreaColPoses = __instance.handbp.desc.addonAreaColPoses;
+			Vector3[] addonAreaSize = __instance.handbp.desc.addonAreaSize;
+			for (int j = 0; j < __instance.potentialBeltCursor; j++)
+			{
+				int num4 = __instance.potentialBeltObjIdArray[j];
+				int objId = (int)Mathf.Sign((float)num4) * (Mathf.Abs(num4) >> 4);
+				int num5 = Mathf.Abs(num4) & 15;
+				Vector3 b = __instance.handbp.lpos + __instance.handbp.lrot * __instance.handbp.desc.addonAreaPoses[num5].position;
+				Quaternion b2 = __instance.handbp.lrot * addonAreaColPoses[num5].rotation;
+				Pose objectPose = __instance.GetObjectPose(objId);
+				bool flag;
+				Pose beltOutputBeltPose = __instance.GetBeltOutputBeltPose(objId, out flag);
+				bool flag2;
+				Pose beltInputBeltPose = __instance.GetBeltInputBeltPose(objId, out flag2);
+				bool flag3 = true;
+				if (flag)
+				{
+					Vector3 normalized = (beltOutputBeltPose.position - objectPose.position).normalized;
+					Vector3 normalized2 = objectPose.position.normalized;
+					float num6 = Quaternion.Angle(Quaternion.LookRotation(normalized, normalized2), b2);
+					flag3 &= (num6 < 20.5f || num6 > 159.5f);
+					flag3 &= (Mathf.Abs(objectPose.position.magnitude - beltOutputBeltPose.position.magnitude) < 0.6f);
+				}
+				if (flag2)
+				{
+					Vector3 normalized3 = (objectPose.position - beltInputBeltPose.position).normalized;
+					Vector3 normalized4 = objectPose.position.normalized;
+					float num7 = Quaternion.Angle(Quaternion.LookRotation(normalized3, normalized4), b2);
+					flag3 &= (num7 < 20.5f || num7 > 159.5f);
+					flag3 &= (Mathf.Abs(objectPose.position.magnitude - beltInputBeltPose.position.magnitude) < 0.6f);
+				}
+				bool flag4 = true;
+				Vector3 lineStart = __instance.handbp.lpos + __instance.handbp.lrot * (addonAreaColPoses[num5].position + addonAreaColPoses[num5].forward * addonAreaSize[num5].z * 2.5f);
+				Vector3 lineEnd = __instance.handbp.lpos + __instance.handbp.lrot * (addonAreaColPoses[num5].position - addonAreaColPoses[num5].forward * addonAreaSize[num5].z * 2.5f);
+				float num8 = Maths.DistancePointLine(objectPose.position, lineStart, lineEnd);
+				if (Mathf.Pow((objectPose.position - b).sqrMagnitude + num8 * num8, 0.5f) < addonAreaSize[num5].z)
+				{
+					flag4 = false;
+				}
+				if (!flag3 && !flag4)
+				{
+					//__instance.handbp.condition = EBuildCondition.Collide;
+				}
+			}
+			int id = __instance.handbp.item.ID;
+			int num9 = 1;
+			if (__instance.tmpInhandId == id && __instance.tmpInhandCount > 0)
+			{
+				num9 = 1;
+				__instance.tmpInhandCount--;
+			}
+			else
+			{
+				int num10;
+				__instance.tmpPackage.TakeTailItems(ref id, ref num9, out num10, false);
+			}
+			if (num9 == 0)
+			{
+				__instance.handbp.condition = EBuildCondition.NotEnoughItem;
+			}
+			if (__instance.handbp.condition == EBuildCondition.Ok && __instance.handPrefabDesc.isSpraycoster && Mathf.Abs(Vector3.Dot(__instance.handbp.lrot.Forward(), __instance.handbp.lpos.normalized)) > 0.05f)
+			{
+				__instance.handbp.condition = EBuildCondition.TooSkew;
+			}
+			if (__instance.handbp.condition == EBuildCondition.Ok)
+			{
+				ColliderData[] buildColliders = __instance.handbp.desc.buildColliders;
+				for (int k = 0; k < buildColliders.Length; k++)
+				{
+					ColliderData colliderData = __instance.handbp.desc.buildColliders[k];
+					colliderData.pos = __instance.handbp.lpos + __instance.handbp.lrot * colliderData.pos;
+					colliderData.q = __instance.handbp.lrot * colliderData.q;
+					int mask = 428032;
+					Array.Clear(BuildTool._tmp_cols, 0, BuildTool._tmp_cols.Length);
+					int num11 = Physics.OverlapBoxNonAlloc(colliderData.pos, colliderData.ext, BuildTool._tmp_cols, colliderData.q, mask, QueryTriggerInteraction.Collide);
+					if (num11 > 0)
+					{
+						bool flag5 = false;
+						PlanetPhysics physics = __instance.player.planetData.physics;
+						for (int l = 0; l < num11; l++)
+						{
+							ColliderData colliderData3;
+							bool colliderData2 = physics.GetColliderData(BuildTool._tmp_cols[l], out colliderData3);
+							int num12 = 0;
+							if (colliderData2 && colliderData3.isForBuild)
+							{
+								if (colliderData3.objType == EObjectType.Entity)
+								{
+									num12 = colliderData3.objId;
+								}
+								else if (colliderData3.objType == EObjectType.Prebuild)
+								{
+									num12 = -colliderData3.objId;
+								}
+							}
+							if (!__instance.IsPotentialBeltObj(num12))
+							{
+								PrefabDesc prefabDesc = __instance.GetPrefabDesc(num12);
+								Collider collider = BuildTool._tmp_cols[l];
+								if (collider.gameObject.layer == 18)
+								{
+									BuildPreviewModel component = collider.GetComponent<BuildPreviewModel>();
+									if ((component != null && component.index == __instance.handbp.previewIndex) || (__instance.handbp.desc.isInserter && !component.buildPreview.desc.isInserter) || (!__instance.handbp.desc.isInserter && component.buildPreview.desc.isInserter) || (!__instance.handbp.desc.isBelt && component.buildPreview.desc.isBelt))
+									{
+										goto IL_711;
+									}
+								}
+								if (prefabDesc == null || !prefabDesc.isBelt || (!__instance.IsPotentialBeltConn(num12) && !__instance.HasAddonConn(num12)))
+								{
+									flag5 = true;
+								}
+							}
+							IL_711:;
+						}
+						if (flag5)
+						{
+							//__instance.handbp.condition = EBuildCondition.Collide;
+							break;
+						}
+					}
+				}
+				if (__instance.planet != null)
+				{
+					float num13 = 64f;
+					float num14 = __instance.actionBuild.history.buildMaxHeight + 0.5f + __instance.planet.realRadius;
+					if (__instance.handbp.lpos.sqrMagnitude > num14 * num14)
+					{
+						if (__instance.actionBuild.history.buildMaxHeight + 0.5f <= num13)
+						{
+							BuildModel model = __instance.actionBuild.model;
+							model.cursorText = model.cursorText + "垂直建造可升级".Translate() + "\r\n";
+						}
+						__instance.handbp.condition = EBuildCondition.OutOfVerticalConstructionHeight;
+					}
+				}
+				bool flag6 = false;
+				Vector3 b3 = Vector3.zero;
+				if (__instance.planet.id == __instance.planet.galaxy.birthPlanetId && __instance.actionBuild.history.SpaceCapsuleExist())
+				{
+					b3 = __instance.planet.birthPoint;
+					flag6 = true;
+				}
+				if (flag6 && __instance.handbp.lpos.magnitude < __instance.planet.realRadius + 3f)
+				{
+					Vector3 ext = __instance.handbp.desc.buildCollider.ext;
+					float num15 = Mathf.Sqrt(ext.x * ext.x + ext.z * ext.z);
+					if ((__instance.handbp.lpos - b3).magnitude - num15 < 3.7f)
+					{
+						//__instance.handbp.condition = EBuildCondition.Collide;
+					}
+				}
+			}
+			if ((__instance.handPrefabDesc.isMonitor && __instance.handBpParams[0] == 0) || (__instance.handPrefabDesc.isSpraycoster && __instance.handBpParams[0] == 0 && __instance.handBpParams[1] == 0))
+			{
+				int m = 0;
+				while (m < __instance.handbp.desc.landPoints.Length)
+				{
+					Vector3 point = __instance.handbp.desc.landPoints[m];
+					point.y = 0f;
+					Vector3 vector = __instance.handbp.lpos + __instance.handbp.lrot * point;
+					Vector3 normalized5 = vector.normalized;
+					vector += normalized5 * 3f;
+					Vector3 direction = -normalized5;
+					float num16 = 0f;
+					RaycastHit raycastHit;
+					if (!Physics.Raycast(new Ray(vector, direction), out raycastHit, 100f, 8704, QueryTriggerInteraction.Collide))
+					{
+						goto IL_9E8;
+					}
+					num16 = raycastHit.distance;
+					if (raycastHit.point.magnitude - __instance.factory.planet.realRadius >= -0.3f)
+					{
+						goto IL_9E8;
+					}
+					__instance.handbp.condition = EBuildCondition.NeedGround;
+					IL_A2D:
+					m++;
+					continue;
+					IL_9E8:
+					float num17;
+					if (Physics.Raycast(new Ray(vector, direction), out raycastHit, 100f, 16, QueryTriggerInteraction.Collide))
+					{
+						num17 = raycastHit.distance;
+					}
+					else
+					{
+						num17 = 1000f;
+					}
+					if (num16 - num17 > 0.27f)
+					{
+						__instance.handbp.condition = EBuildCondition.NeedGround;
+						goto IL_A2D;
+					}
+					goto IL_A2D;
+				}
+			}
+			if (__instance.handbp.condition != EBuildCondition.Ok)
+			{
+				__instance.actionBuild.model.cursorState = -1;
+				BuildModel model2 = __instance.actionBuild.model;
+				model2.cursorText += BuildPreview.GetConditionText(__instance.handbp.condition);
+			}
+			return __instance.handbp.condition == EBuildCondition.Ok;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(BuildTool_PathAddon), "SnapToBelt")]
+		public static bool SnapToBelt(BuildTool_PathAddon __instance)
+		{
+			if (__instance.handbp == null)
+			{
+				return false;
+			}
+			PrefabDesc prefabDesc = __instance.GetPrefabDesc(__instance.castObjectId);
+			if (prefabDesc != null && prefabDesc.multiLevel)
+			{
+				return false;
+			}
+			bool flag = false;
+			int num = 0;
+			float num2 = float.MaxValue;
+			for (int i = 0; i < __instance.handbp.desc.addonAreaColPoses.Length; i++)
+			{
+				if (__instance.addonAreaBeltObjIdArray[i] != 0 && !__instance.HasAddonConn(__instance.addonAreaBeltObjIdArray[i]))
+				{
+					Vector3 b = __instance.handbp.lpos + __instance.handbp.lrot * __instance.handbp.desc.addonAreaPoses[i].position;
+					float magnitude = (__instance.GetObjectPose(__instance.addonAreaBeltObjIdArray[i]).position - b).magnitude;
+					bool flag2 = false;
+					if (magnitude < num2)
+					{
+						if (__instance.handPrefabDesc.isMonitor)
+						{
+							flag2 = true;
+						}
+						else if (__instance.handPrefabDesc.isSpraycoster)
+						{
+							Pose objectPose = __instance.GetObjectPose(__instance.addonAreaBeltObjIdArray[i]);
+							if (Mathf.Abs(objectPose.position.magnitude - b.magnitude) < 0.5f)
+							{
+								flag2 = true;
+							}
+						}
+					}
+					if (flag2)
+					{
+						flag = true;
+						num = i;
+						num2 = magnitude;
+					}
+				}
+			}
+			if (VFInput._rotate.onDown)
+			{
+				if (flag)
+				{
+					__instance.yaw += 180f;
+				}
+				else
+				{
+					__instance.yaw += 270f;
+				}
+				__instance.yaw %= 360f;
+			}
+			Quaternion quaternion = Maths.SphericalRotation(__instance.handbp.lpos.normalized, __instance.yaw);
+			__instance.handbp.lrot = quaternion;
+			__instance.handbp.lrot2 = quaternion;
+			if (!flag)
+			{
+				return false;
+			}
+			int num3 = __instance.addonAreaBeltObjIdArray[num];
+			int num4 = 0;
+			Vector3 b2 = Vector3.zero;
+			Quaternion lhs = Quaternion.identity;
+			if (num3 > 0)
+			{
+				num4 = __instance.factory.entityPool[num3].beltId;
+				BeltComponent beltComponent = __instance.factory.cargoTraffic.beltPool[num4];
+				if (beltComponent.outputId != 0 || beltComponent.backInputId != 0 || beltComponent.leftInputId != 0 || beltComponent.rightInputId != 0)
+				{
+					int segPathId = beltComponent.segPathId;
+					CargoPath cargoPath = __instance.factory.cargoTraffic.GetCargoPath(segPathId);
+					int num5 = beltComponent.segIndex + beltComponent.segPivotOffset;
+					b2 = cargoPath.pointPos[num5].normalized * (cargoPath.pointPos[num5].magnitude - 0.15f);
+					float y = (float)(Mathf.RoundToInt(__instance.yaw) / 180) * 180f;
+					lhs = cargoPath.pointRot[num5] * Quaternion.Euler(0f, y, 0f);
+				}
+			}
+			else
+			{
+				bool flag3 = false;
+				for (int j = 0; j < 4; j++)
+				{
+					bool flag4;
+					int num6;
+					int num7;
+					__instance.factory.ReadObjectConn(num3, j, out flag4, out num6, out num7);
+					flag3 |= (num6 != 0);
+					if (flag3)
+					{
+						Vector3 forward = (j == 0) ? (__instance.GetObjectPose(num6).position - __instance.GetObjectPose(num3).position).normalized : (__instance.GetObjectPose(num3).position - __instance.GetObjectPose(num6).position).normalized;
+						Pose objectPose = __instance.GetObjectPose(num3);
+						Vector3 normalized = objectPose.position.normalized;
+						b2 = __instance.GetObjectPose(num3).position;
+						float y2 = (float)(Mathf.RoundToInt(__instance.yaw) / 180) * 180f;
+						lhs = Quaternion.LookRotation(forward, normalized) * Quaternion.Euler(0f, y2, 0f);
+						break;
+					}
+				}
+			}
+			Quaternion quaternion2 = lhs * Quaternion.Euler(-__instance.handbp.desc.addonAreaPoses[num].rotation.eulerAngles);
+			Vector3 b3 = __instance.handbp.lpos + quaternion2 * __instance.handbp.desc.addonAreaPoses[num].position;
+			Vector3 vector = __instance.handbp.lpos + b2 - b3;
+			__instance.handbp.lpos = vector;
+			__instance.handbp.lpos2 = vector;
+			__instance.handbp.lrot = quaternion2;
+			__instance.handbp.lrot2 = quaternion2;
+			if (__instance.handPrefabDesc.isMonitor)
+			{
+				__instance.handBpParams[0] = num4;
+				return false;
+			}
+			if (__instance.handPrefabDesc.isSpraycoster)
+			{
+				__instance.handBpParams[num] = num4;
+			}
+			return false;
+		}
+		[HarmonyPrefix]
 	    [HarmonyPatch(typeof(GameHistoryData), "SetForNewGame")]
         public static bool SetForNewGame(GameHistoryData __instance)
 {

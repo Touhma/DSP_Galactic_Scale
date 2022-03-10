@@ -8,7 +8,7 @@
 	<PropertyGroup>
 		<AssemblyName>GalacticScale</AssemblyName>
 		<Description>Galaxy Customization for Dyson Sphere Program</Description>
-		<Version>2.4.9</Version>
+		<Version>2.4.10</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
 		<OutDir>bin/$(Configuration)</OutDir>
@@ -40,7 +40,7 @@
 		</None>
 		<None Update="Package\galacticbundle">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>galacticbundle</TargetPath>
+      <TargetPath>.\galacticbundle</TargetPath>
 		</None>
 	</ItemGroup>
 
