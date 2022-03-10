@@ -33,6 +33,14 @@ namespace GalacticScale
             // backButton.onClick.AddListener(() => OnBackClick(instance));
             randomButton.onClick.AddListener(() => OnRandomClick(instance));
         }
+
+        public static void ResetView()
+        {
+            
+                GameCamera.instance.transform.localPosition = Vector3.zero;
+                UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1f;
+            
+        }
         public static void OnUpdate(UIVirtualStarmap starmap)
         {
             if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += VFInput.shift?1f:.1f;
@@ -41,11 +49,8 @@ namespace GalacticScale
             if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.left);
             if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.up);
             if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.down);
-            if (VFInput._jump)
-            {
-                GameCamera.instance.transform.localPosition = Vector3.zero;
-                UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1f;
-            }
+            if (VFInput._jump) ResetView();
+
             int targetIndex = -1;
             for (var i = 0; i < starmap.starPool.Count; ++i)
             {
