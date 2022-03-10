@@ -316,7 +316,44 @@ namespace GalacticScale
                 ["DesertFragment8"] = 618,
                 ["DesertFragment9"] = 619,
 
+                ["AshenPermafrost1"] = 621,
+                ["AshenPermafrost2"] = 622,
+                ["AshenPermafrost3"] = 623,
+                ["AshenPermafrost4"] = 624,
+                ["AshenPermafrost5"] = 625,
+                ["AshenPermafrost6"] = 626,
+                ["AshenPermafrost7"] = 627,
+                ["AshenPermafrost8"] = 628,
+                ["AshenPermafrost9"] = 629,
 
+                ["LavaStone1"] = 631,
+                ["LavaStone2"] = 632,
+                ["LavaStone3"] = 633,
+                ["LavaStone4"] = 634,
+                ["LavaStone5"] = 635,
+                ["LavaStone6"] = 636,
+                ["LavaStone7"] = 637,
+                ["LavaStone8"] = 638,
+                ["LavaStone9"] = 639,
+                ["LavaStone10"] = 640,
+                ["LavaStone11"] = 641,
+                ["LavaStone12"] = 642,
+                ["LavaStone13"] = 643,
+                ["LavaStone14"] = 644,
+                ["LavaStone15"] = 645,
+                ["LavaStone16"] = 646,
+                ["LavaStone17"] = 647,
+                
+                ["HurricaneStone1"] = 651,
+                ["HurricaneStone2"] = 652,
+                ["HurricaneStone3"] = 653,
+                ["HurricaneStone4"] = 654,
+                ["HurricaneStone5"] = 655,
+                ["HurricaneStone6"] = 656,
+                ["HurricaneStone7"] = 657,
+                ["HurricaneStone8"] = 658,
+                ["HurricaneStone9"] = 659,
+                
                 ["MedGrass7"] = 1001,
                 ["MedGrass8"] = 1002,
                 ["MedGrass9"] = 1003,
@@ -342,6 +379,21 @@ namespace GalacticScale
                 ["DesertFragment11"] = 1042,
                 ["DesertFragment12"] = 1043,
 
+                ["AridDesertSpecialFX1"] = 1044,
+                
+                ["AshenPermafrost10"] = 1051,
+                ["AshenPermafrost11"] = 1052,
+                ["AshenPermafrost12"] = 1053,
+                ["AshenPermafrost13"] = 1054,
+                ["AshenPermafrost14"] = 1055,
+                
+                ["HurricaneStone10"] = 1061,
+                ["HurricaneStone11"] = 1062,
+                ["HurricaneStone12"] = 1063,
+                ["HurricaneStone13"] = 1064,
+                ["HurricaneStone14"] = 1065,
+                ["HurricaneStone15"] = 1066,
+                
                 ["LandingPod"] = 9999
             };
 

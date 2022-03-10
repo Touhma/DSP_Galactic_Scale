@@ -58,14 +58,14 @@ namespace GalacticScale
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null 2");
             if (__instance.gameDesc?.starCount <= 0) __instance.gameDesc.starCount = 1;
             __instance.SetStarmapGalaxy();
-            PlanetModelingManager.PrepareWorks();
+            // PlanetModelingManager.PrepareWorks();
             var grids = GameObject.Find("UI Root/Galaxy Select Starmap/grids");
             if (grids != null) for (int i = 0; i < grids.transform.childCount; i++)
             {
                 var grid = grids.transform.GetChild(i);
                 if (grid.name != "grid-0" && grid.name != "stars") grid.gameObject.SetActive(false);
             }
-                
+            SystemDisplay.InitHelpText(__instance);    
             return false;
         }
         //[HarmonyPostfix]

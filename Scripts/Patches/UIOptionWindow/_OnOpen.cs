@@ -31,6 +31,7 @@ namespace GalacticScale
                 overlayCanvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
                 GS2.canvasOverlay = true;
             }
+            GS2.LoadPreferences();
         }
     }
 }
