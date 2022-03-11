@@ -54,10 +54,13 @@ namespace GalacticScale
             int targetIndex = -1;
             for (var i = 0; i < starmap.starPool.Count; ++i)
             {
-                // GS2.Warn($"#{i} {GSSettings.BirthPlanet.planetData.star.index}");
+                GS2.Warn($"#{i} {GSSettings.BirthPlanet.planetData.star.index}");
                 if (starmap.starPool[i].active) //&& i == GSSettings.BirthPlanet.planetData.star.index
                 {
                     StarData starData = starmap.starPool[i].starData;
+                    var gsStar = GS2.GetGSStar(starData);
+                    bool decorative = false;
+                    if (gsStar != null) decorative = gsStar.Decorative;
                     Vector2 zero = Vector2.zero;
                     UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out zero);
                     zero.x += 18f;
@@ -68,7 +71,7 @@ namespace GalacticScale
                     float num4 = Vector3.Distance(ray.GetPoint(300f * num3), starData.position);
                     if (num4 < mouseTolerance)
                     {
-                        if (starData.age >= 0 && GS2.GetGSStar(starData).Decorative) continue;
+                        if (starData.age >= 0 && decorative) continue;
                         // GS2.Warn($"Mouse Close to {starData.name}");
                         // if (num4 < starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25f)
                         // {
@@ -125,7 +128,11 @@ namespace GalacticScale
             for (var i = 0; i < starmap.starPool.Count; ++i)
                 if (starmap.starPool[i].active)
                 {
+                    GS2.Warn("Pressing");
                     var starData = starmap.starPool[i].starData;
+                    var gsStar = GS2.GetGSStar(starData);
+                    bool decorative = false;
+                    if (gsStar != null) decorative = gsStar.Decorative;
                     // var rectPoint = Vector2.zero;
                     // UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out _);
                     // rectPoint.x += 18f;
@@ -136,7 +143,7 @@ namespace GalacticScale
                     var distanceFromClickToStar = Vector3.Distance(ray.GetPoint(300f * num2), starData.position);
                     if (distanceFromClickToStar < (double)clickTolerance)
                     {
-                        if (starData.age >= 0 && GS2.GetGSStar(starData).Decorative) continue;
+                        if (starData.age >= 0 && decorative) continue;
                         clickTolerance = distanceFromClickToStar >= starmap.starPool[i].pointRenderer.transform.localScale.x * 0.25 ? distanceFromClickToStar : 0.0f;
                         starIndex = i;
                     }
@@ -283,6 +290,7 @@ namespace GalacticScale
         {
             viewStar = starmap.starPool[starIndex].starData;
             GSStar star = GS2.GetGSStar(viewStar);
+            GS2.Warn("Clicked Star");
             if (star.Decorative)
             {
                 var primaryStar = GS2.GetBinaryStarHost(star);
@@ -615,6 +623,9 @@ namespace GalacticScale
                 num2 = 0.8f;
             }
 
+            var gsStar = GS2.GetGSStar(starData);
+            var decorative = gsStar.Decorative;
+            if (decorative) num2 /= 3;
             string text = starData.displayName + "  ";
             if (starData.type == EStarType.GiantStar)
             {
@@ -657,7 +668,6 @@ namespace GalacticScale
             {
                 text = "即将登陆".Translate() + "\r\n" + text;
             }
-            var gsStar = GS2.GetGSStar(starData);
             if (!String.IsNullOrEmpty(gsStar.BinaryCompanion))
             {
                 var bc = GS2.GetGSStar(gsStar.BinaryCompanion);
@@ -667,6 +677,7 @@ namespace GalacticScale
             starmap.starPool[0].starData = starData;
             starmap.starPool[0].pointRenderer.material.SetColor("_TintColor", color);
             starmap.starPool[0].pointRenderer.transform.localPosition = starData.position;
+            if (decorative) starmap.starPool[0].pointRenderer.transform.localPosition = starData.position + VectorLF3.one;
             starmap.starPool[0].pointRenderer.transform.localScale = Vector3.one * num2 * 2;
             starmap.starPool[0].pointRenderer.gameObject.SetActive(true);
             starmap.starPool[0].nameText.text = text;
