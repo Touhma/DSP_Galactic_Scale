@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 namespace = "Galactic_Scale"
 name = "GalacticScale"
 versionNumber = "2.4.10"
-description = "v2.4.10. Nebula Compatibility (Fingers x'd)"
+description = "v2.4.10. Spraycoater Fix. Nebula Compatibility (Fingers x'd)"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

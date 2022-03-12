@@ -1,5 +1,5 @@
 # DSP Galactic Scale 2.0 Mod
-- Version 2.4.10 - Hopefully more compatibility with Nebula
+- Version 2.4.10 - Hopefully more compatibility with Nebula. Fixed Spraycoater attaching to existing belt. Fixed spraycoater graphical glitch. Fixed a few small bugs.
 
 - Version 2.4.9 - Fixed blueprints using extra space
 
