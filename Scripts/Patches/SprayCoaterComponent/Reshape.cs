@@ -13,7 +13,7 @@ namespace GalacticScale
         // [HarmonyDebug]
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
-        public static IEnumerable<CodeInstruction> BuildTool_Click_DeterminePreviews_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        public static IEnumerable<CodeInstruction> SpraycoaterComponentReshapeTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false,
                 new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(200))); // Search for 200f
