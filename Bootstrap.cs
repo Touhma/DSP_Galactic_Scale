@@ -15,7 +15,7 @@ namespace GalacticScale
     }
     
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.4.10")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.4.11")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -56,6 +56,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_BlueprintPaste));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Click));
             Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_Path));
+            Harmony.CreateAndPatchAll(typeof(PatchOnBuildTool_PathAddon));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameAbnormalityData));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameData));
             Harmony.CreateAndPatchAll(typeof(PatchOnGameDesc));
@@ -80,6 +81,7 @@ namespace GalacticScale
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Fly));
             Harmony.CreateAndPatchAll(typeof(PatchOnPlayerMove_Sail));
             Harmony.CreateAndPatchAll(typeof(PatchOnPowerSystem));
+            Harmony.CreateAndPatchAll(typeof(PatchOnSprayCoaterComponent));
             Harmony.CreateAndPatchAll(typeof(PatchOnStarGen));
             Harmony.CreateAndPatchAll(typeof(PatchOnStationComponent));
             Harmony.CreateAndPatchAll(typeof(PatchOnTrashSystem));

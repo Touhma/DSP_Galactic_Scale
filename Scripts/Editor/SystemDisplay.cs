@@ -54,7 +54,7 @@ namespace GalacticScale
             int targetIndex = -1;
             for (var i = 0; i < starmap.starPool.Count; ++i)
             {
-                GS2.Warn($"#{i} {GSSettings.BirthPlanet.planetData.star.index}");
+                // GS2.Warn($"#{i} {GSSettings.BirthPlanet.planetData.star.index}");
                 if (starmap.starPool[i].active) //&& i == GSSettings.BirthPlanet.planetData.star.index
                 {
                     StarData starData = starmap.starPool[i].starData;
@@ -128,7 +128,7 @@ namespace GalacticScale
             for (var i = 0; i < starmap.starPool.Count; ++i)
                 if (starmap.starPool[i].active)
                 {
-                    GS2.Warn("Pressing");
+                    // GS2.Warn("Pressing");
                     var starData = starmap.starPool[i].starData;
                     var gsStar = GS2.GetGSStar(starData);
                     bool decorative = false;
@@ -170,7 +170,7 @@ namespace GalacticScale
         
         public static void OnBackClick(UIGalaxySelect instance)
         {
-            GS2.Warn("BackClick");
+            // GS2.Warn("BackClick");
             if (!inSystemDisplay)
             {
                 instance._Close();

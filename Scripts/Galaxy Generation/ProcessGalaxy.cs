@@ -23,12 +23,12 @@ namespace GalacticScale
                 {
                     Log("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
-                    Warn(LDB._themes.dataArray.Length.ToString());
+                    // Warn(LDB._themes.dataArray.Length.ToString());
                     if (LDB._themes.dataArray != null && LDB._themes.dataArray.Length > 128) Array.Resize(ref LDB._themes.dataArray, 128);
-                    Warn(LDB._themes.dataArray.Length.ToString());
-                    GS2.LogJson(gameDesc);
-                    GS2.Warn(gameDesc.resourceMultiplier.ToString());
-                    GS2.Warn(GSSettings.Instance.galaxyParams.resourceMulti.ToString());
+                    // Warn(LDB._themes.dataArray.Length.ToString());
+                    // GS2.LogJson(gameDesc);
+                    // GS2.Warn(gameDesc.resourceMultiplier.ToString());
+                    // GS2.Warn(GSSettings.Instance.galaxyParams.resourceMulti.ToString());
                     Log("Seed From gameDesc = " + GSSettings.Seed);
                     gsPlanets.Clear();
                     gsStars.Clear();
@@ -60,12 +60,12 @@ namespace GalacticScale
                 // else
                 //     ThemeLibrary = GSSettings.ThemeLibrary;
 
-                Log("Generating TempPoses");
+                // Log("Generating TempPoses");
                 var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
                 Log($"TempPoses Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
-                Log("Creating new GalaxyData");
+                // Log("Creating new GalaxyData");
                 galaxy = new GalaxyData();
                 galaxy.seed = GSSettings.Seed;
                 galaxy.starCount = GSSettings.StarCount;
@@ -104,7 +104,7 @@ namespace GalacticScale
                 Log($"Resource Coefficients Set: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
-                Log("Setting up Birth Planet");
+                // Log("Setting up Birth Planet");
                 //SetupBirthPlanet();
                 Log("Generating Veins");
                 GenerateVeins(sketchOnly);
@@ -113,7 +113,7 @@ namespace GalacticScale
 
                 //if (GS2.CheatMode) return galaxy;
                 //}
-                Log("Creating Galaxy StarGraph");
+                // Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log($"Stargraph Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
@@ -121,7 +121,7 @@ namespace GalacticScale
                 //Log("End of galaxy generation");
                 Log($"Galaxy Created. birthStarid:{galaxy.birthStarId}");
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
-                Warn($"birthPlanet:{galaxy.PlanetById(galaxy.birthPlanetId).name}");
+                Log($"birthPlanet:{galaxy.PlanetById(galaxy.birthPlanetId).name}");
                 Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
                 Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
                 Log($"First System Radius = {galaxy.stars[0].systemRadius}");
@@ -132,8 +132,8 @@ namespace GalacticScale
                 //         GS2.Warn($"Theme used:{planet.GsTheme.Name}");
                 //     }
                 // }
-                Warn("RM:" + GSSettings.Instance.galaxyParams.resourceMulti);
-                Warn($"GUID:{GSSettings.Instance.generatorGUID}");
+                // Warn("RM:" + GSSettings.Instance.galaxyParams.resourceMulti);
+                // Warn($"GUID:{GSSettings.Instance.generatorGUID}");
                 // WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
                 return galaxy;
             }

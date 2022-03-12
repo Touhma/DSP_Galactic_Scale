@@ -1,9 +1,29 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace GalacticScale
 {
     public class PatchOnBuildTool_Path
     {
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BuildTool_Path), "GetGridWidth")]
+        public static bool GetGridWidth(BuildTool_Path __instance, ref float __result, Vector3 _pos, Vector3 _forward)
+        {
+            var r = __instance.planet.realRadius;
+            Vector3 normalized = _pos.normalized;
+            if (normalized.x * normalized.x + normalized.z * normalized.z <= 1E-06f)
+            {
+                __result = 1.254f;
+                return false;
+            }
+            _pos = normalized * r;
+            Vector3 rhs = (_pos.y > 0f) ? (new Vector3(0f, r, 0f) - _pos).normalized : (new Vector3(0f, -1*r, 0f) - _pos).normalized;
+            float num = Mathf.Abs(Vector3.Dot(Vector3.Cross(normalized, rhs), _forward));
+            int num2 = BlueprintUtils.GetLongitudeSegmentCount(normalized, (int)r) * 5;
+            float num3 = Mathf.Pow(1f - Mathf.Pow(Mathf.Abs(Vector3.Dot(normalized, Vector3.up)), 2f), 0.5f) * r * 3.1415927f * 2f / (float)num2;
+            __result = num * num3 + (1f - num) * 1.254f;
+            return false;
+        }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BuildTool_Path), "CheckBuildConditions")]
         public static bool CheckBuildConditions(bool __result, BuildTool_Path __instance, ref bool ___cursorValid)

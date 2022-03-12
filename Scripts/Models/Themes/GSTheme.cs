@@ -156,7 +156,7 @@ namespace GalacticScale
             {
                 if (BaseName != "" && BaseName != null)
                 {
-                    GS2.Log($"{Name} initializing from base theme: " + BaseName);
+                    // GS2.Log($"{Name} initializing from base theme: " + BaseName);
 
 
                     if (!AllLoadedThemes.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
