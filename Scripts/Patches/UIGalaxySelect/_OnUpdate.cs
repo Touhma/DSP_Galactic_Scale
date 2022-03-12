@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NebulaCompatibility;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 
@@ -11,6 +12,7 @@ namespace GalacticScale
         
         public static bool _OnUpdate(UIGalaxySelect __instance)
         {
+            if (NebulaCompat.IsMultiplayerActive) return true;
             __instance.starmap._Update();
             // if (GS2.ModellingDone)
             // {

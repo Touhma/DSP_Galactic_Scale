@@ -1,4 +1,10 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.11 - Hopefully fix logistic vessel pathing around huge stars. Thanks 64bit
+
+- Version 2.4.10 - Hopefully more compatibility with Nebula. Fixed Spraycoater attaching to existing belt. Fixed spraycoater graphical glitch. Fixed a few small bugs. Thanks starfish!
+
+- Version 2.4.9 - Fixed blueprints using extra space
+
 - Version 2.4.8 - Fixed Lava & Hurricane Themes missing rocks. Added hint text to galaxy select. Clamped solar power to 1-500%. Fixed GS2 Star Overrides not loading correctly. Fixed bug where planetdetail wouldnt close on game start.
 
 - Version 2.4.7 - Fixed Error when saving games with short names. Added configurable mouse tolerance for systemdisplay. Fixed Planet name text flickering in center of screen when clicked.
