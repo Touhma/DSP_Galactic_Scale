@@ -15,11 +15,11 @@ namespace GalacticScale
 
         public void FixedUpdate()
         {
-            if (VFInput.alt)
-            {
-                var t =GameMain.localPlanet.aux.activeGrid.CalcLocalGridSize(GameMain.mainPlayer.position, Vector3.forward);
-                GS2.Log(t.ToString());
-            }
+            // if (VFInput.alt)
+            // {
+            //     var t =GameMain.localPlanet.aux.activeGrid.CalcLocalGridSize(GameMain.mainPlayer.position, Vector3.forward);
+            //     GS2.Log(t.ToString());
+            // }
             // GS2.Log("FU");
             if (VFInput.alt && VFInput.control && VFInput._openMechLight) GS2.WarnJson(HandleLocalStarPlanets.TransitionRadii); //alt ctrl L
             if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode();

@@ -59,9 +59,9 @@
         {
             //Warn($"{id}/{gsStars.Count}");
             GSStar star = null;
-            if (!gsStars.ContainsKey(id)) Warn($"Star {id} not in gsStars collection.");
-            else star = gsStars[id];
-            if (star == null) Warn("Star is null");
+            if (gsStars.ContainsKey(id)) star = gsStars[id];
+            // else Warn($"Star {id} not in gsStars collection.");
+            // if (star == null) Warn("Star is null");
             return star;
         }
 

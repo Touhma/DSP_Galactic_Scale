@@ -28,7 +28,11 @@ namespace GalacticScale
             var kc = GS2.keyedLUTs.Keys;
             foreach (var k in kc) s += k + " ";
 
-            if (!GS2.keyedLUTs.ContainsKey(_segment)) GS2.SetLuts(_segment, __instance.planet.radius);
+            if (!GS2.keyedLUTs.ContainsKey(_segment))
+            {
+                GS2.Log($"Setting LUTS for segment{_segment} {__instance.planet.name} size:{__instance.planet.realRadius}");
+                GS2.SetLuts(_segment, __instance.planet.realRadius);
+            }
             if (GS2.keyedLUTs.ContainsKey(_segment))
             {
                 var total = 0;
