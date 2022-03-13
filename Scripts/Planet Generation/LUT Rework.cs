@@ -27,6 +27,10 @@ namespace GalacticScale
                 for (var cnt = 0; cnt < numSegments; cnt++)
                 {
                     var ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
+                    var diameter = ringradius * 2;
+                    var circumference = Mathf.PI * diameter;
+                    var gridSize = (circumference)/4 / lastMajorRadiusCount;
+                    GS2.Log($"gridSize:{gridSize} for planetRadius:{planetRadius} cnt:{cnt} lmrcnt:{lastMajorRadiusCount} numSegments:{numSegments}");
                     var classicIdx = Mathf.CeilToInt(Mathf.Abs(Mathf.Cos((float)((cnt + 1) / (segments / 4f) * Math.PI * 0.5))) * segments);
 
                     //If the new radius is smaller than 90% of the currently used radius, use it as the new segment count to avoid tile squishing
