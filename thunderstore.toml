@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.4.12"
-description = "v2.4.12. Blueprint fix for 510 planets. Vessel Pathing Fix (Thanks 46bit!)"
+versionNumber = "2.4.13"
+description = "v2.4.13. Blueprint fix"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

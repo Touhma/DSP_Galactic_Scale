@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.13 - Fix another blueprint bug
+
 - Version 2.4.12 - Hopefully fix blueprint error on 510 size planets.
 
 - Version 2.4.11 - Hopefully fix logistic vessel pathing around huge stars. Thanks 46bit
