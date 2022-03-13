@@ -36,7 +36,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler2(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
-            var codeMatcher = new codeMatcher = new CodeMatcher(instructions, il).MatchForward(false, new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(2.5f))); // Search for ldc.r4 2.5f
+            var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false, new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(2.5f))); // Search for ldc.r4 2.5f
             if (codeMatcher.IsInvalid)
             {
                 GS2.Error("InternalTickRemote 2nd Transpiler Failed");

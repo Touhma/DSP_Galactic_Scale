@@ -10,9 +10,9 @@ namespace GalacticScale
 
         public static void SetLuts(int segments, float planetRadius)
         {
-            if (!DSPGame.IsMenuDemo && !Vanilla)
+            if (!DSPGame.IsMenuDemo && !Vanilla) // Prevent special LUT's being created in main menu
             {
-                // Prevent special LUT's being created in main menu
+                
                 if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
                 var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 var lut = new int[numSegments];
@@ -23,7 +23,7 @@ namespace GalacticScale
 
                 var classicLUT = new int[512];
                 classicLUT[0] = 1;
-
+                // GS2.Warn("Start");
                 for (var cnt = 0; cnt < numSegments; cnt++)
                 {
                     var ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
@@ -37,9 +37,12 @@ namespace GalacticScale
                     }
 
                     lut[cnt] = lastMajorRadiusCount;
+                    // Log(classicIdx.ToString());
+                    if (classicIdx >= classicLUT.Length) classicIdx = classicLUT.Length -1;
                     classicLUT[classicIdx] = lastMajorRadiusCount;
                 }
 
+                // GS2.Warn("Mid");
                 var last = 1;
                 for (var oldlLutIdx = 1; oldlLutIdx < 512; oldlLutIdx++)
                     if (classicLUT[oldlLutIdx] > last)
@@ -54,6 +57,7 @@ namespace GalacticScale
                         classicLUT[oldlLutIdx] = last;
                     }
 
+                // Warn("End");
                 if (segments == 200)
                 {
                     lut = new[]

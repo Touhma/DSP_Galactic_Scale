@@ -9,6 +9,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetGrid), "DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(PlanetGrid __instance, int latitudeIndex, int segment, ref int __result)
         {
+            
             var a = 0;
             if (!DSPGame.IsMenuDemo)
                 if (!GS2.Vanilla)
@@ -25,7 +26,7 @@ namespace GalacticScale
                         var index = Mathf.Abs(latitudeIndex) % (segment / 2);
                         
                         if (index >= segment / 4) index = segment / 4 - index;
-                        if (index > GS2.keyedLUTs[segment].Length - 1 || index < 0)
+                        if (index < 0)
                         {
                             // GS2.Warn($"Using DSLC {latitudeIndex} {segment} {__result} {GS2.keyedLUTs[segment].Length} Index:{index}");
                             // GS2.Warn($"Index:{index}");
@@ -34,6 +35,8 @@ namespace GalacticScale
                             // __result = index2 < 500 ? PlatformSystem.segmentTable[index2] : (index2 + 49) / 100 * 100;
                             __result = 4;
                         }
+
+                        if (index > GS2.keyedLUTs[segment].Length - 1) __result = GS2.keyedLUTs[segment][GS2.keyedLUTs[segment].Length - 1];
                         else __result = GS2.keyedLUTs[segment][index];
                         a = 1 * 1;
                     }

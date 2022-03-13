@@ -1,5 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
-- Version 2.4.11 - Hopefully fix logistic vessel pathing around huge stars. Thanks 64bit
+- Version 2.4.12 - Hopefully fix blueprint error on 510 size planets.
+
+- Version 2.4.11 - Hopefully fix logistic vessel pathing around huge stars. Thanks 46bit
 
 - Version 2.4.10 - Hopefully more compatibility with Nebula. Fixed Spraycoater attaching to existing belt. Fixed spraycoater graphical glitch. Fixed a few small bugs. Thanks starfish!
 
