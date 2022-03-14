@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using NebulaAPI;
 using NebulaCompatibility;
 using NGPT;
 using UnityEngine;
@@ -20,8 +19,9 @@ namespace GalacticScale
         public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)
         {
             if (GS2.Vanilla) return true;
-           SystemDisplay.OnUpdate(__instance);
-           return false;
+            if (NebulaCompat.IsClient && !NebulaCompat.IsMPGameLoaded()) return true; // Use Nebula code when in client's lobby
+            SystemDisplay.OnUpdate(__instance);
+            return false;
         }
     }
 }
