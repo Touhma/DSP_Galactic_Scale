@@ -13,7 +13,7 @@ namespace GalacticScale
         private static string oldLoadingText = "";
         private static string baseText = "";
 
-        [HarmonyTranspiler]
+        [HarmonyTranspiler, HarmonyBefore("dsp.nebula - multiplayer")]
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
         public static IEnumerable<CodeInstruction> Refresh_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
