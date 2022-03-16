@@ -97,7 +97,7 @@ namespace GalacticScale
                     if (num1 > 1.0)
                         num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
                     var rc = Mathf.Pow(7f, num1) * 0.6f;
-                    //Warn($"Beta 68 Test:  Changed level of {star.name, 12} from {l, 12} to {star.level, 12} resource coef:{star.resourceCoef, 12} to {rc, 12} magnitude/32:{num1, 12}");
+                    // Warn($"Beta 68 Test:  Changed level of {star.name, 12} from {l, 12} to {star.level, 12} resource coef:{star.resourceCoef, 12} to {rc, 12} magnitude/32:{num1, 12}");
                     star.resourceCoef = rc;
                 }
 
