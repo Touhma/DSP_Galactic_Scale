@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.15 - Add solar power settings to Galacticscale Generator
+
 - Version 2.4.14 - Improve Nebula Compatibility
 
 - Version 2.4.13 - Fix another blueprint bug

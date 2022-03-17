@@ -225,11 +225,25 @@ namespace GalacticScale.Generators
 
                     }
                 }
+
+                var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
+                var minSolar = solarRange.low / 100f;
+                var maxSolar = solarRange.high / 100f;
                 var starLum = Mathf.Pow(star.luminosity, 0.3333f);
-                var lum = Mathf.Clamp(star.luminosity / (oRadius * oRadius), 0.01f, 5f);
-                var lum2 = Mathf.Log(lum);
+                var lumInverse = Mathf.Clamp(star.luminosity / (oRadius * oRadius), minSolar, maxSolar);
+                var lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
+                var lumLinear = Mathf.Clamp(star.luminosity / oRadius, minSolar, maxSolar);
                 // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
-                body.Luminosity = lum;
+                switch (preferences.GetString("solarScheme", "Linear"))
+                {
+                    case "None": body.Luminosity = lumNone;
+                        break;
+                    case "InverseSquare": body.Luminosity = lumInverse;
+                        break;
+                    default: body.Luminosity = lumLinear;
+                        break;
+                }
+              
 
             }
         }
