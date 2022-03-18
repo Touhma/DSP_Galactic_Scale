@@ -86,7 +86,7 @@ namespace GalacticScale
                     if (i == GSSettings.BirthPlanet.planetData.star.index)
                     {
                         Color value = starmap.starColors.Evaluate(starData.color);
-                        starmap.starPointBirth.gameObject.SetActive(true);
+                        starmap.starPointBirth.gameObject.SetActive(!inSystemDisplay);
                         starmap.starPointBirth.material.SetColor("_TintColor", value);
                         starmap.starPointBirth.transform.localPosition = starData.position;
                     }

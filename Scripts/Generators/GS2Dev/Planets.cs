@@ -225,14 +225,21 @@ namespace GalacticScale.Generators
 
                     }
                 }
-
+                oRadius -= star.RadiusAU;
+                var hzMin = star.genData.Get("minHZ", 0.75f);
+                var hzMax = star.genData.Get("maxHZ").Float(1.5f);
+                var hz = (hzMax - hzMin) / 2 + hzMin;
+                
+                var scale = (hz-star.RadiusAU) / oRadius;
+                var oldoRadius = oRadius;
+                oRadius = Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.0f));
                 var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
                 var minSolar = solarRange.low / 100f;
                 var maxSolar = solarRange.high / 100f;
                 var starLum = Mathf.Pow(star.luminosity, 0.3333f);
-                var lumInverse = Mathf.Clamp(star.luminosity / (oRadius * oRadius), minSolar, maxSolar);
+                var lumInverse = Mathf.Clamp(scale/(star.luminosity / (oRadius * oRadius)), minSolar, maxSolar);
                 var lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
-                var lumLinear = Mathf.Clamp(star.luminosity / oRadius, minSolar, maxSolar);
+                var lumLinear = Mathf.Clamp(scale/(star.luminosity / oRadius), minSolar, maxSolar);
                 // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
                 switch (preferences.GetString("solarScheme", "Linear"))
                 {
@@ -243,7 +250,7 @@ namespace GalacticScale.Generators
                     default: body.Luminosity = lumLinear;
                         break;
                 }
-              
+                GS2.Warn($"{body.Name} HZ:{hz} Scale:{scale} oldORadius:{oldoRadius} oRadius:{oRadius} temperature:{body.GsTheme.Temperature} {body.GsTheme} result:{body.Luminosity}");
 
             }
         }
