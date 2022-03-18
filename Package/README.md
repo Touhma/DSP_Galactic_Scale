@@ -1,5 +1,11 @@
 # DSP Galactic Scale 2.0 Mod
-- Version 2.4.15 - Add solar power settings to Galacticscale Generator
+- Version 2.4.18 - Fix orbit spacing :)
+
+- Version 2.4.17 - Add options to change star/planet naming in GalacticScale Generator
+
+- Version 2.4.16 - Add variable to increase orbit spacing to GalacticScale Generator
+
+- Version 2.4.15 - Add solar power settings to GalacticScale Generator
 
 - Version 2.4.14 - Improve Nebula Compatibility
 
@@ -188,3 +194,5 @@ Credits:
 - Kremnev8 - GS2 Code / Advisor
 - 
 - NHunter - GS2 Code / Advisor
+-
+- 46Bit - GS2 Code

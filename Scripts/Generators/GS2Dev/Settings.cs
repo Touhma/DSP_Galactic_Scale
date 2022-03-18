@@ -8,7 +8,7 @@ namespace GalacticScale.Generators
     public partial class GS2Generator2
     {
         private static bool loaded;
-
+        public static float minOrbit = 0.05f;
         private readonly string[] typeDesc =
         {
             "Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant",
@@ -237,7 +237,9 @@ namespace GalacticScale.Generators
             preferences.Set("luminosityBoost", 1);
             preferences.Set("solarScheme", "Linear");
             preferences.Set("solarRange", new FloatPair(1,500));
-            
+            preferences.Set("orbitSpacing", 0.05f);
+            preferences.Set("vanillaStarNames",false);
+            preferences.Set("planetNames", "Default");
             for (var i = 0; i < 14; i++)
             {
                 preferences.Set($"{typeLetter[i]}minStars", 0);
@@ -286,7 +288,9 @@ namespace GalacticScale.Generators
             AddSpacer(sOptions);
             UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string>(){ "Linear", "InverseSquare", "None"}, "InverseSquare", "solarScheme", SetSolarScheme)));
             UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar", 0, 10, 500, 5000, 1, "solarRange")));
-        UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
+            UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
+            UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme", new List<string>() { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names")));
+            UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
             UI.Add("innerPlanetDistance", sOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
             UI.Add("allowResonances", sOptions.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
             UI.Add("moonsAreSmall", sOptions.Add(GSUI.Checkbox("Moons Are Small".Translate(), true, "moonsAreSmall", null, "Try to ensure moons are 1/2 their planets size or less".Translate())));
@@ -374,7 +378,7 @@ namespace GalacticScale.Generators
             UI.Add("defaultStarCount", gOptions.Add(GSUI.Slider("Default StarCount".Translate(), 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback, "How many stars should the slider default to".Translate())));
             UI.Add("starSizeMulti", gOptions.Add(GSUI.Slider("Star Size Multiplier".Translate(), 0.5f, 5f, 20, 0.5f, "starSizeMulti", null, "GS2 uses 10x as standard. They just look cooler.".Translate())));
             UI.Add("luminosityBoost", gOptions.Add(GSUI.Slider("Luminosity Multiplier".Translate(), 0, 0, 10, .25f, "luminosityBoost", LuminosityBoostCallback, "Increase the luminosity of all stars by this multiplier".Translate(), "Default".Translate())));
-
+            UI.Add("vanillaStarNames", gOptions.Add(GSUI.Checkbox("Use Vanilla Star Names".Translate(), false, "vanillaStarNames", null, "Use DSP's Name Generator")));
             AddSpacer(gOptions);
             gOptions.Add(GSUI.Group("Binary Star Settings".Translate(), CreateBinaryStarOptions(), "Settings that control Binary Star formation".Translate()));
             AddSpacer(gOptions);
