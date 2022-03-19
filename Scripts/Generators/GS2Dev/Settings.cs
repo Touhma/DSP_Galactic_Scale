@@ -236,6 +236,7 @@ namespace GalacticScale.Generators
             preferences.Set("rareChance", -1f);
             preferences.Set("luminosityBoost", 1);
             preferences.Set("solarScheme", "InverseSquare");
+            preferences.Set("solarLerp", 0.5f);
             preferences.Set("solarRange", new FloatPair(1,500));
             preferences.Set("orbitSpacing", 0.05f);
             preferences.Set("vanillaStarNames",false);
@@ -291,7 +292,7 @@ namespace GalacticScale.Generators
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
             UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string>(){ "Linear", "InverseSquare", "None"}, "InverseSquare", "solarScheme", SetSolarScheme)));
-            UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping", 0, 1, 0.1f, "solarLerp")));
+            UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping", 0, 1, 1f, 0.1f, "solarLerp")));
             UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar", 0, 10, 500, 5000, 1, "solarRange")));
             UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
             UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme", new List<string>() { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names")));
