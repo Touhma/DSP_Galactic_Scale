@@ -259,7 +259,7 @@ namespace GalacticScale.Generators
                 
                 var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
                 var lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
-                var lumLinear = Mathf.Clamp(star.luminosity / maxHZ * oRadius, minSolar, maxSolar);
+                var lumLinear = Mathf.Clamp(star.luminosity / (Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f))/hz), minSolar, maxSolar);
                 // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
                 switch (preferences.GetString("solarScheme", "Linear"))
                 {

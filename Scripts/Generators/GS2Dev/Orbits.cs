@@ -185,6 +185,7 @@ namespace GalacticScale.Generators
                 }
 
                 var selectedRange = r.Item(availableOrbits);
+                if (preferences.GetBool("preferInnerPlanets", false)) selectedRange = availableOrbits[r.Next(0, Mathf.FloorToInt( availableOrbits.Count/2f))];
                 // GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
                 var rangeMin = selectedRange.inner + preferences.GetFloat("orbitSpacing", 0.05f)+ planet.SystemRadius;
                 var rangeMax = selectedRange.outer - +preferences.GetFloat("orbitSpacing", 0.05f) - planet.SystemRadius;
