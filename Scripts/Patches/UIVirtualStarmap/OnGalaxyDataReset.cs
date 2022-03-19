@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using NebulaCompatibility;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GalacticScale
 {
@@ -137,6 +138,10 @@ namespace GalacticScale
                     }
                 }
             }
+
+            Text text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
+            text.text = $"Start Game at {__instance._galaxyData.PlanetById(__instance._galaxyData.birthPlanetId)?.displayName}";
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             return false;
         }

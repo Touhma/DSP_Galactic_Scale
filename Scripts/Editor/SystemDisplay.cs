@@ -364,6 +364,9 @@ namespace GalacticScale
                 GameMain.data.galaxy.birthPlanetId = pData.id;
                 GameMain.data.galaxy.birthStarId = viewStar.id;
                 GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
+                Text text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
+                text.text = $"Start Game at {pData.displayName}";
+                text.horizontalOverflow = HorizontalWrapMode.Overflow;
             }
             HideStarDetail();
             HideStarCount();
