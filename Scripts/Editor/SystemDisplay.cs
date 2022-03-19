@@ -106,7 +106,7 @@ namespace GalacticScale
 
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
-                    starmap.starPool[i].nameText.text = starmap.starPool[i].textContent + starData.id;
+                    starmap.starPool[i].nameText.text = starmap.starPool[i].textContent;
                     // if (!inSystemDisplay)
                     // {
                     //     GS2.Warn("Setting StarText");
@@ -478,7 +478,7 @@ namespace GalacticScale
                 dummyStarData.id = pData.id;
                 var realRadius = Mathf.Clamp( pData.realRadius, 100, 800);
                 
-                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius/40000f); //1000
+                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius/1000f); //1000
                 Vector3 planetScale = Vector3.one * pScale;
                 // if (scale.x > 3 || scale.y > 3 || scale.z > 3)
                 // {
