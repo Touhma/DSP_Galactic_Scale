@@ -66,10 +66,16 @@ namespace GalacticScale.Generators
         }
         public void NamePlanetsRandom(GSStar star)
         {
-
+            List<string> availableNames = new List<string>();
+            foreach (var name in PlanetNames) availableNames.Add(name);
             foreach (var planet in star.Bodies)
             {
-                planet.Name = random.Item(PlanetNames); ;
+                if (availableNames.Count > 0)
+                {
+                    var name = random.Item(availableNames);
+                    planet.Name = $"{star.Name} - {name}";
+                    availableNames.Remove(name);
+                }
             }
         }
 
@@ -93,10 +99,11 @@ namespace GalacticScale.Generators
             var freeOrbitRanges = new List<(float inner, float outer)>();
 
             //Warn("Orbit Count 0");
+            // GS2.Log($"BirthStar = {birthStar.Name} {(birthPlanet != null ? birthPlanet.Name : "null")}");
             if (star == birthStar)
             {
                 var birthRadius = Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)), star.RadiusAU * 1.5f, 100f);
-                // GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
+                GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(birthPlanet);
                 birthPlanet.OrbitRadius = birthRadius;
@@ -222,6 +229,7 @@ namespace GalacticScale.Generators
                     }
                 // else planets2[0].Name += $" {i}";
             }
+            // GS2.Log($"Planets assigned {(birthPlanet != null ? birthPlanet.Name : "null")}");
         }
 
         private int OrbitSort(Orbit x, Orbit y)

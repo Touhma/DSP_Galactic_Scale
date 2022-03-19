@@ -11,7 +11,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect), "SetStarmapGalaxy")]
         public static bool SetStarmapGalaxy(ref UIGalaxySelect __instance)
         {
-            GS2.Warn("B");
+            // GS2.Warn("B");
             if (NebulaCompat.IsMultiplayerActive && NebulaCompat.IsClient && !GSSettings.lobbyReceivedUpdateValues)
             {
                 GS2.Warn("Running Nebula Code");
@@ -22,7 +22,7 @@ namespace GalacticScale
 
             GSSettings.lobbyReceivedUpdateValues = false;
 
-            GS2.Log("Start");
+            // GS2.Log("Start");
             if (__instance.gameDesc != null && __instance.gameDesc.starCount <= 0) __instance.gameDesc.starCount = 1;
 
             GalaxyData galaxy; // = __instance.starmap.galaxyData;
@@ -35,10 +35,10 @@ namespace GalacticScale
 
             //GS2.Warn("Done");
             if (__instance.starmap == null) GS2.Warn("Starmap Null");
-            if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
+            // if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
             if (__instance.starmap.galaxyData != null)
             {
-                GS2.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
+                // GS2.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
                 __instance.starmap.galaxyData.Free();
             }
 
@@ -56,7 +56,7 @@ namespace GalacticScale
             if (GS2.ActiveGenerator.Config == null) GS2.Warn("GS2.generator.Config Null");
             if (GS2.ActiveGenerator.Config.DisableStarCountSlider)
             {
-                GS2.Log("Disabling StarCountSlider");
+                // GS2.Log("Disabling StarCountSlider");
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText == null) GS2.Warn("starcounttext null");
                 if (starCountText == null) starCountText = CreateStarCountText(__instance.starCountSlider);
@@ -65,7 +65,7 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log("Enabling StarCountSlider");
+                // GS2.Log("Enabling StarCountSlider");
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText != null) starCountText.SetActive(false);
 
@@ -74,7 +74,7 @@ namespace GalacticScale
 
             if (GS2.ActiveGenerator.Config.DisableSeedInput)
             {
-                GS2.Log("Disabling SeedInput");
+                // GS2.Log("Disabling SeedInput");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
                 inputField.transform.parent.GetComponent<Text>().enabled = false;
                 inputField.GetComponentInChildren<Text>().enabled = false;
@@ -82,14 +82,14 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log("Enabling SeedInput");
+                // GS2.Log("Enabling SeedInput");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/galaxy-seed/InputField");
                 inputField.transform.parent.GetComponent<Text>().enabled = true;
                 inputField.GetComponentInChildren<Text>().enabled = true;
                 inputField.GetComponent<Image>().enabled = true;
             }
 
-            GS2.Log("End");
+            // GS2.Log("End");
             return false;
         }
 
@@ -103,7 +103,7 @@ namespace GalacticScale
                 GS2.Log("Galaxy Null, Returning from Postfix");
                 return;
             }
-            GS2.Warn("A");
+            // GS2.Warn("A");
             // if (!NebulaCompat.IsMultiplayerActive)
             // {
             //     GS2.Log("Nebula Null, Returning from Postfix");
@@ -111,7 +111,7 @@ namespace GalacticScale
             //     return;
             // }
 
-            GS2.Warn("B");
+            // GS2.Warn("B");
             
             // if (GameMain.universeSimulator == null)
             // {
@@ -166,7 +166,7 @@ namespace GalacticScale
             }
             // End 
             
-            GS2.Warn("End");
+            // GS2.Warn("End");
         }
     }
 }

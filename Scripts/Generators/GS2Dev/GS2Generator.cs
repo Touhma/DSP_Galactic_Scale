@@ -10,9 +10,9 @@ namespace GalacticScale.Generators
         private readonly Dictionary<GSStar, List<Orbit>> starOrbits = new();
 
         private GSPlanet birthPlanet;
-        private GSPlanet birthPlanetHost;
+        // private GSPlanet birthPlanetHost;
 
-        private int birthPlanetIndex = -1;
+        // private int birthPlanetIndex = -1;
 
         //private bool birthPlanetIsMoon;
         private GSStar birthStar;
@@ -67,7 +67,7 @@ namespace GalacticScale.Generators
 
             highStopwatch.Begin();
             CalculateFrequencies();
-            Log($"Frequencies Caltulated: {highStopwatch.duration:F5}");
+            Log($"Frequencies Calculated: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             GenerateStars(starCount);
             Log($"Stars Generated: {highStopwatch.duration:F5}");
@@ -86,7 +86,7 @@ namespace GalacticScale.Generators
                 birthPlanet.veinSettings.Algorithm = "GS2";
             birthPlanet.GsTheme.CustomGeneration = true;
             if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
-            Log($"BirthPlanet Selected: {highStopwatch.duration:F5}");
+            Log($"BirthPlanet Selected: {birthPlanet.Name}{highStopwatch.duration:F5}");
             highStopwatch.Begin();
             SanityCheck();
             Log($"Sanity Checked: {highStopwatch.duration:F5}");
@@ -114,6 +114,7 @@ namespace GalacticScale.Generators
             // GSSettings.Stars[bsIndex].Planets[bpIndex] = birthPlanet;
             // }
             // Log("End");
+            // Log($"Setting Birthplanet Name to {birthPlanet.Name}");
             GSSettings.BirthPlanetName = birthPlanet.Name;
             if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
             foreach (var star in GSSettings.Stars)
@@ -429,106 +430,106 @@ namespace GalacticScale.Generators
             // WarnJson(birthPlanet.veinSettings);
         }
 
-        private void PickNewBirthPlanet()
-        {
-            if (GSSettings.StarCount == 0) Error("Cannot pick birth planet as there are 0 generated stars");
-            //LogJson(GSSettings.Stars.HabitablePlanets, true);
-
-            var HabitablePlanets = GSSettings.Stars.HabitablePlanets;
-            if (HabitablePlanets.Count == 1)
-            {
-                birthPlanet = HabitablePlanets[0];
-                birthStar = GetGSStar(birthPlanet);
-                if (IsPlanetOfStar(birthStar, birthPlanet))
-                {
-                    birthPlanetHost = null;
-                    Log($"Selected only habitable planet {birthPlanet.Name} as planet of {birthStar.Name}");
-                    return;
-                }
-
-                foreach (var planet in birthStar.Planets)
-                foreach (var moon in planet.Moons)
-                {
-                    if (moon == birthPlanet)
-                    {
-                        birthPlanetHost = planet;
-                        Log($"Selected only habitable planet {birthPlanet.Name} as moon of {birthStar.Name}");
-                        return;
-                    }
-
-                    if (IsMoonOfPlanet(moon, birthPlanet))
-                    {
-                        birthPlanetHost = moon;
-                        Log($"Selected only habitable planet {birthPlanet.Name} as submoon of {birthStar.Name}");
-                        return;
-                    }
-                }
-            }
-
-            if (HabitablePlanets.Count == 0)
-            {
-                Log("Generating new habitable planet by overwriting an existing one");
-                var star = GSSettings.Stars.RandomStar;
-                var index = 0;
-                //Warn("Getting index");
-                if (star.PlanetCount > 1) index = Mathf.RoundToInt((star.PlanetCount - 1) / 2);
-
-                var planet = star.Planets[index];
-                //LogJson(planet, true);
-                //Warn("Getting themeNames");
-                var themeNames = GSSettings.ThemeLibrary.Habitable;
-                //Warn($"Count = {themeNames.Count}");
-                var themeName = themeNames[random.Next(themeNames.Count)];
-                Log($"Setting Planet Theme to {themeName}");
-                planet.Theme = themeName;
-                //Warn("Setting birthPlanet");
-                birthPlanet = planet;
-                birthPlanetIndex = index;
-                birthStar = star;
-                Log($"Selected {birthPlanet.Name}");
-                //LogJson(planet, true);
-            }
-            else if (HabitablePlanets.Count > 1)
-            {
-                Log("Selecting random habitable planet");
-                birthPlanet = HabitablePlanets[random.Next(1, HabitablePlanets.Count - 1)];
-                birthStar = GetGSStar(birthPlanet);
-                for (var i = 0; i < birthStar.PlanetCount; i++)
-                {
-                    if (birthStar.Planets[i] == birthPlanet)
-                    {
-                        //birthPlanetIsMoon = false;
-                        birthPlanetIndex = i;
-                        Log($"Selected {birthPlanet.Name} as birthPlanet (planet) index {i} of star {birthStar.Name}");
-                        return;
-                    }
-
-                    for (var j = 0; j < birthStar.Planets[i].Moons.Count; j++)
-                    {
-                        if (birthStar.Planets[i].Moons[j] == birthPlanet)
-                        {
-                            //birthPlanetIsMoon = true;
-                            birthPlanetHost = birthStar.Planets[i];
-                            birthPlanetIndex = j;
-                            Log($"Selected {birthPlanet.Name} as birthPlanet (moon) index {j} of planet {birthPlanetHost.Name} ");
-                            return;
-                        }
-
-                        for (var k = 0; k < birthStar.Planets[i].Moons[j].Moons.Count; k++)
-                            if (birthStar.Planets[i].Moons[j].Moons[k] == birthPlanet)
-                            {
-                                //birthPlanetIsMoon = true;
-                                birthPlanetHost = birthStar.Planets[i].Moons[j];
-                                birthPlanetIndex = k;
-                                Log($"Selected {birthPlanet.Name} as birthPlanet (sub moon) index {k} of moon {birthPlanetHost.Name} ");
-                                return;
-                            }
-                    }
-                }
-
-
-                Error($"Selected {birthPlanet.Name} but failed to find a birthStar or host!");
-            }
-        }
+        // private void PickNewBirthPlanet()
+        // {
+        //     if (GSSettings.StarCount == 0) Error("Cannot pick birth planet as there are 0 generated stars");
+        //     //LogJson(GSSettings.Stars.HabitablePlanets, true);
+        //
+        //     var HabitablePlanets = GSSettings.Stars.HabitablePlanets;
+        //     if (HabitablePlanets.Count == 1)
+        //     {
+        //         birthPlanet = HabitablePlanets[0];
+        //         birthStar = GetGSStar(birthPlanet);
+        //         if (IsPlanetOfStar(birthStar, birthPlanet))
+        //         {
+        //             birthPlanetHost = null;
+        //             Log($"Selected only habitable planet {birthPlanet.Name} as planet of {birthStar.Name}");
+        //             return;
+        //         }
+        //
+        //         foreach (var planet in birthStar.Planets)
+        //         foreach (var moon in planet.Moons)
+        //         {
+        //             if (moon == birthPlanet)
+        //             {
+        //                 birthPlanetHost = planet;
+        //                 Log($"Selected only habitable planet {birthPlanet.Name} as moon of {birthStar.Name}");
+        //                 return;
+        //             }
+        //
+        //             if (IsMoonOfPlanet(moon, birthPlanet))
+        //             {
+        //                 birthPlanetHost = moon;
+        //                 Log($"Selected only habitable planet {birthPlanet.Name} as submoon of {birthStar.Name}");
+        //                 return;
+        //             }
+        //         }
+        //     }
+        //
+        //     if (HabitablePlanets.Count == 0)
+        //     {
+        //         Log("Generating new habitable planet by overwriting an existing one");
+        //         var star = GSSettings.Stars.RandomStar;
+        //         var index = 0;
+        //         //Warn("Getting index");
+        //         if (star.PlanetCount > 1) index = Mathf.RoundToInt((star.PlanetCount - 1) / 2);
+        //
+        //         var planet = star.Planets[index];
+        //         //LogJson(planet, true);
+        //         //Warn("Getting themeNames");
+        //         var themeNames = GSSettings.ThemeLibrary.Habitable;
+        //         //Warn($"Count = {themeNames.Count}");
+        //         var themeName = themeNames[random.Next(themeNames.Count)];
+        //         Log($"Setting Planet Theme to {themeName}");
+        //         planet.Theme = themeName;
+        //         //Warn("Setting birthPlanet");
+        //         birthPlanet = planet;
+        //         birthPlanetIndex = index;
+        //         birthStar = star;
+        //         Log($"Selected {birthPlanet.Name}");
+        //         //LogJson(planet, true);
+        //     }
+        //     else if (HabitablePlanets.Count > 1)
+        //     {
+        //         Log("Selecting random habitable planet");
+        //         birthPlanet = HabitablePlanets[random.Next(1, HabitablePlanets.Count - 1)];
+        //         birthStar = GetGSStar(birthPlanet);
+        //         for (var i = 0; i < birthStar.PlanetCount; i++)
+        //         {
+        //             if (birthStar.Planets[i] == birthPlanet)
+        //             {
+        //                 //birthPlanetIsMoon = false;
+        //                 birthPlanetIndex = i;
+        //                 Log($"Selected {birthPlanet.Name} as birthPlanet (planet) index {i} of star {birthStar.Name}");
+        //                 return;
+        //             }
+        //
+        //             for (var j = 0; j < birthStar.Planets[i].Moons.Count; j++)
+        //             {
+        //                 if (birthStar.Planets[i].Moons[j] == birthPlanet)
+        //                 {
+        //                     //birthPlanetIsMoon = true;
+        //                     birthPlanetHost = birthStar.Planets[i];
+        //                     birthPlanetIndex = j;
+        //                     Log($"Selected {birthPlanet.Name} as birthPlanet (moon) index {j} of planet {birthPlanetHost.Name} ");
+        //                     return;
+        //                 }
+        //
+        //                 for (var k = 0; k < birthStar.Planets[i].Moons[j].Moons.Count; k++)
+        //                     if (birthStar.Planets[i].Moons[j].Moons[k] == birthPlanet)
+        //                     {
+        //                         //birthPlanetIsMoon = true;
+        //                         birthPlanetHost = birthStar.Planets[i].Moons[j];
+        //                         birthPlanetIndex = k;
+        //                         Log($"Selected {birthPlanet.Name} as birthPlanet (sub moon) index {k} of moon {birthPlanetHost.Name} ");
+        //                         return;
+        //                     }
+        //             }
+        //         }
+        //
+        //
+        //         Error($"Selected {birthPlanet.Name} but failed to find a birthStar or host!");
+        //     }
+        // }
     }
 }

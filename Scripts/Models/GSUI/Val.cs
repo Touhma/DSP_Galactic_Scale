@@ -46,7 +46,7 @@
         public int Int(int def = -1)
         {
             if (int.TryParse(ToString(), out var i)) return i;
-            GS2.Error("Failed to parse int");
+            GS2.Error($"Failed to parse int: {ToString()}");
             return def;
         }
 

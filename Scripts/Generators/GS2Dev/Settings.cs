@@ -255,7 +255,7 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}orbitLongitude", 0);
                 preferences.Set($"{typeLetter[i]}hzOverride", false);
                 preferences.Set($"{typeLetter[i]}rareChance", -1f);
-                preferences.Set($"{typeLetter[i]}luminosityBoost", 0);
+                preferences.Set($"{typeLetter[i]}luminosityBoost", 1);
                 preferences.Set($"{typeLetter[i]}binaryEnabled", false);
             }
 

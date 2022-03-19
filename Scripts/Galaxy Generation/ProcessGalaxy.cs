@@ -123,8 +123,8 @@ namespace GalacticScale
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
                 Log($"birthPlanet:{galaxy.PlanetById(galaxy.birthPlanetId).name}");
                 Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
-                Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
-                Log($"First System Radius = {galaxy.stars[0].systemRadius}");
+                // Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
+                // Log($"First System Radius = {galaxy.stars[0].systemRadius}");
                 // foreach (var star in GSSettings.Stars)
                 // {
                 //     foreach (var planet in star.Planets)
