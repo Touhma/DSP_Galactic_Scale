@@ -40,7 +40,7 @@ namespace GalacticScale.Generators
 
         public void GenerateStars(int starCount, int startID = 0)
         {
-            Log("Generating Stars");
+            // Log("Generating Stars");
             var birthIndex = random.Next(starCount);
             for (var i = startID; i < starCount; i++)
             {
@@ -97,14 +97,14 @@ var starName = SystemNames.GetName(starSeed);
                 birthStar = random.Item(availBirthStars);
             }
 
-            Log(birthStar.Name + " is birthstar");
+            // Log(birthStar.Name + " is birthstar");
             if (forcedBirthStar != null)
-                // GS2.Warn("Forcing birthStar");
+                GS2.Warn("Forcing birthStar");
                 foreach (var star in GSSettings.Stars)
                     if (star.Name == forcedBirthStar)
                     {
                         birthStar = star;
-                        // GS2.Warn("birthStar forced");
+                        GS2.Warn("birthStar forced");
                         break;
                     }
         }
@@ -204,13 +204,32 @@ var starName = SystemNames.GetName(starSeed);
 
         private FloatPair CalculateHabitableZone(GSStar star)
         {
+            // var starLum = Mathf.Pow(star.luminosity, 0.3333f);
+            // var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
+            //
+            // var minSolar = solarRange.low / 100f;
+            // var maxSolar = solarRange.high / 100f;
+            // // oRadius -= star.RadiusAU;
+            // float minHZ = star.genData.Get("minHZ", 1);
+            // float maxHZ = star.genData.Get("maxHZ", 100f);
+            // var hz = (maxHZ - minHZ) / 2 + minHZ;
+            // var oSquared = oRadius * oRadius;
+            // var hzSquared = hz * hz;
+            // var distance = hzSquared / oSquared;
+            // var intensity = distance * starLum;
+            //
+            //     
+            // var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
+            
+            
+            
             // Warn($"Calculating Habitable Zone for {star.Name}");
-            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
+            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
             var flp = Utils.CalculateHabitableZone(lum);
-            var min = flp.low + star.RadiusAU;
-            var max = flp.high + star.RadiusAU;
-            min += star.RadiusAU;
-            max += star.RadiusAU;
+
+            var min = flp.low;
+            var max = flp.high;
+
             var sl = GetTypeLetterFromStar(star);
             if (preferences.GetBool($"{sl}hzOverride"))
             {
@@ -228,7 +247,8 @@ var starName = SystemNames.GetName(starSeed);
                 min += star.genData.Get("binaryOffset", 1f) * 60f;
                 max += star.genData.Get("binaryOffset", 1f) * 60f;
             }
-
+            min += star.RadiusAU;
+            max += star.RadiusAU;
             star.genData.Set("minHZ", min);
             star.genData.Set("maxHZ", max);
             // Warn($"HZ of {star.Name} {min}:{max}");
@@ -241,19 +261,19 @@ var starName = SystemNames.GetName(starSeed);
             var sl = GetTypeLetterFromStar(star);
 
             var radius = star.RadiusAU;
-            var lum = star.luminosity/preferences.GetFloat("luminosityBoost");
-            var min = radius + 0.2f * radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
+            var lum = star.luminosity;// /preferences.GetFloat("luminosityBoost", 1);
+            var min = radius + 0.33f;//* radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
 
             if (preferences.GetBool($"{sl}orbitOverride"))
             {
                 var fp = preferences.GetFloatFloat($"{sl}orbits", new FloatPair(0.02f, 20f));
-                // Warn($"Using Star Type Override {fp.low}");
+                Warn($"Using Star Type Override {fp.low}");
                 min = fp.low;
             }
 
             if (star.genData.Get("hasBinary", false))
             {
-                // Warn("Increasing for Binary");
+                Warn("Increasing for Binary");
                 min += star.genData.Get("binaryOffset", 1f) * 60f;
             }
 
@@ -268,7 +288,7 @@ var starName = SystemNames.GetName(starSeed);
             var sl = GetTypeLetterFromStar(star);
             // Warn($"Calculating Maximum Orbit for {star.Name}");
             var minMaxOrbit = 5f;
-            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
+            var lum = star.luminosity;//Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
             var hzMax = star.genData.Get("maxHZ");
             var maxOrbitByLuminosity = lum * 4f;
             var maxOrbitByRadius = Pow(star.radius/preferences.GetFloat("starSizeMulti"), 0.75f);

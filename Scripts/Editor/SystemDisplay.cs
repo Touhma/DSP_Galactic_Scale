@@ -52,6 +52,8 @@ namespace GalacticScale
             if (VFInput._jump) ResetView();
 
             int targetIndex = -1;
+            starmap.starPointBirth.gameObject.SetActive(false);
+
             for (var i = 0; i < starmap.starPool.Count; ++i)
             {
                 // GS2.Warn($"#{i} {GSSettings.BirthPlanet.planetData.star.index}");
@@ -90,6 +92,15 @@ namespace GalacticScale
                         starmap.starPointBirth.material.SetColor("_TintColor", value);
                         starmap.starPointBirth.transform.localPosition = starData.position;
                     }
+
+                    if (starData.id == GSSettings.BirthPlanet?.planetData?.id && viewStar?.id == GSSettings.BirthPlanet?.planetData?.star?.id)
+                    {
+                        Color value = starmap.starColors.Evaluate(starData.color);
+                        starmap.starPointBirth.gameObject.SetActive(inSystemDisplay);
+                        starmap.starPointBirth.material.SetColor("_TintColor", value);
+                        starmap.starPointBirth.transform.localPosition = starData.position;
+                    }
+                    // else GS2.Log($"{starData?.id} {GSSettings.BirthPlanet?.planetData?.id} {viewStar?.id} {GSSettings.BirthPlanet?.planetData?.star?.id}");
 
                     starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || (i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay));
 
@@ -186,27 +197,27 @@ namespace GalacticScale
         }
         public static void OnStarMapClick(UIVirtualStarmap starmap, int starIndex)
         {
-            GS2.Warn($"StarmapClick { starIndex}");
+            // GS2.Warn($"StarmapClick { starIndex}");
             switch (starIndex)
             {
                 case -1 when (UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
-                    GS2.Warn("Hiding Planet Details");
+                    // GS2.Warn("Hiding Planet Details");
                     HidePlanetDetail();
                     break;
                 case -1 when (!UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
-                    GS2.Warn("Hiding SolarSystem");
+                    // GS2.Warn("Hiding SolarSystem");
                     ShowStarMap(starmap);
                     break;
                 case 0 when inSystemDisplay:
-                    GS2.Warn("System Star Click");
+                    // GS2.Warn("System Star Click");
                     OnSolarSystemStarClick(starmap);
                     break;
                 case int x when x >= 0 && inSystemDisplay:
-                    GS2.Warn($"PlanetClick {starIndex}");
+                    // GS2.Warn($"PlanetClick {starIndex}");
                     OnSolarSystemPlanetClick(starmap, starIndex);
                     break;
                 case int x when x >= 0 && !inSystemDisplay:                   ;
-                    GS2.Warn($"- {starIndex} OnStarMapClick");
+                    // GS2.Warn($"- {starIndex} OnStarMapClick");
                     OnStarClick(starmap, starIndex);
                     break;
                 default:
@@ -216,7 +227,7 @@ namespace GalacticScale
         }
         public static void OnStarMapRightClick(UIVirtualStarmap starmap, int starIndex)
         {
-            GS2.Warn($"StarmapRightClick { starIndex}");
+            // GS2.Warn($"StarmapRightClick { starIndex}");
             switch (starIndex)
             {
                 case -1 when (UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
@@ -321,6 +332,7 @@ namespace GalacticScale
 
         public static void RegenerateGalaxyWithNewBirthStar(UIVirtualStarmap starmap, StarData starData)
         {
+            GS2.Warn($"Regenerating galaxy with new birthstar:{starData.name} id:{starData.id} index:{starData.index}");
             GS2.ActiveGenerator.Generate(GSSettings.StarCount, starData);
             starmap.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
             starmap.OnGalaxyDataReset();
@@ -364,6 +376,9 @@ namespace GalacticScale
                 GameMain.data.galaxy.birthPlanetId = pData.id;
                 GameMain.data.galaxy.birthStarId = viewStar.id;
                 GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
+                Text text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
+                text.text = $"Start Game at {pData.displayName}";
+                text.horizontalOverflow = HorizontalWrapMode.Overflow;
             }
             HideStarDetail();
             HideStarCount();
@@ -429,7 +444,9 @@ namespace GalacticScale
             StarData starData = starmap._galaxyData.StarById(starIndex + 1); // because StarById() decrements by 1
             AddStarToStarmap(starmap, starData);
             
-            var starScale = starmap.starPool[0].starData.radius /40f * GS2.Config.VirtualStarmapStarScaleFactor;
+            var starScale = starmap.starPool[0].starData.radius /40f * GS2.Config.VirtualStarmapStarScaleFactor; //This is RadiusAU
+            // var starScale = starmap.starPool[0].starData.radius * GS2.Config.VirtualStarmapStarScaleFactor;
+
             GS2.Warn($"Scale : {starScale} Radius:{starmap.starPool[0].starData.radius} OrigScale:{starmap.starPool[0].pointRenderer.transform.localScale}");
             starmap.starPool[0].pointRenderer.transform.localScale = new Vector3(starScale,starScale,starScale);
             //starmap.clickText = starData.id.ToString();
@@ -461,7 +478,7 @@ namespace GalacticScale
                 dummyStarData.id = pData.id;
                 var realRadius = Mathf.Clamp( pData.realRadius, 100, 800);
                 
-                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius / 1000);
+                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius/1000f); //1000
                 Vector3 planetScale = Vector3.one * pScale;
                 // if (scale.x > 3 || scale.y > 3 || scale.z > 3)
                 // {
@@ -690,7 +707,7 @@ namespace GalacticScale
         }
         public static void ClearStarmap(UIVirtualStarmap starmap)
         {
-            GS2.Warn("ClearStarmap");
+            // GS2.Warn("ClearStarmap");
 
             
             
