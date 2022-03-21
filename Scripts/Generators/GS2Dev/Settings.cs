@@ -236,7 +236,6 @@ namespace GalacticScale.Generators
             preferences.Set("rareChance", -1f);
             preferences.Set("luminosityBoost", 1);
             preferences.Set("solarScheme", "InverseSquare");
-            preferences.Set("solarLerp", 0.5f);
             preferences.Set("solarRange", new FloatPair(1,500));
             preferences.Set("solarLerp", 0.0f);
             preferences.Set("orbitSpacing", 0.05f);
@@ -293,9 +292,8 @@ namespace GalacticScale.Generators
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
             UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string>(){ "Linear", "InverseSquare", "None"}, "InverseSquare", "solarScheme", SetSolarScheme)));
-            UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping", 0, 1, 1f, 0.1f, "solarLerp")));
+            UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping", 0, 0, 1f, 0.1f, "solarLerp", null, "How close to 100% the inner and outer planets will be")));
             UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar", 0, 10, 500, 5000, 1, "solarRange")));
-            UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Solar Smoothing", -1, 0, 1, 0.1f, "solarLerp", null, "How extreme changes in solar output are by distance")));
             UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
             UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme", new List<string>() { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names")));
             UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
