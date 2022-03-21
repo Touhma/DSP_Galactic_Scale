@@ -226,6 +226,7 @@ var starName = SystemNames.GetName(starSeed);
             // Warn($"Calculating Habitable Zone for {star.Name}");
             var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
             var flp = Utils.CalculateHabitableZone(lum);
+
             var min = flp.low;
             var max = flp.high;
 

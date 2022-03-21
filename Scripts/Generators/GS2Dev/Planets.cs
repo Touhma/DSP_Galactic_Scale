@@ -229,6 +229,7 @@ namespace GalacticScale.Generators
 
                     }
                 }
+
                 // var starLum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
                 var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
 
@@ -246,6 +247,7 @@ namespace GalacticScale.Generators
                 // //intensity1 x distance1squared = intensity2 x distance2squared
                 var minSolar = solarRange.low / 100f;
                 var maxSolar = solarRange.high / 100f;
+
                 // oRadius += star.RadiusAU;
                 float minHZ = star.genData.Get("minHZ", 1);
                 float maxHZ = star.genData.Get("maxHZ", 100f);
@@ -271,6 +273,7 @@ namespace GalacticScale.Generators
                     default: body.Luminosity = lumLinear;
                         break;
                 }
+
                 // GS2.Warn($"{star.RadiusAU}, {starLum}, {minHZ}, {maxHZ}, {hz}, {oRadius}, {lumInverse}, {lumLinear}, {intensity}  ");
 
 

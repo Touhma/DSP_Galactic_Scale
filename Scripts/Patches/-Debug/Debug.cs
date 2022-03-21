@@ -122,7 +122,7 @@ namespace GalacticScale
                     var arg = "";
                     if (planet.singularity > EPlanetSingularity.None || planet.orbitAround > 0) arg = "<color=\"#FD965EC0\">" + planet.singularityString + "</color>";
                     var text = string.Format("行星类型".Translate() + "\r\n", planet.typeString, arg);
-                    if (GS2.GetGSPlanet(planet).GsTheme.DisplayName == "Comet") text = "Comet\r\n";
+                    if (!GS2.Vanilla && GS2.GetGSPlanet(planet).GsTheme.DisplayName == "Comet") text = "Comet\r\n";
                     if (uistarmapPlanet == __instance.focusPlanet) text = "<color=\"#FFFFFFB0\">" + __instance.focusPlanet.planet.displayName + "</color>\r\n" + text;
                     var mainPlayer = GameMain.mainPlayer;
                     var num = (planet.uPosition - mainPlayer.uPosition).magnitude - planet.realRadius - 50.0;
