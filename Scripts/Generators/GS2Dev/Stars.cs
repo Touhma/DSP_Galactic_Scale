@@ -266,13 +266,13 @@ var starName = SystemNames.GetName(starSeed);
             if (preferences.GetBool($"{sl}orbitOverride"))
             {
                 var fp = preferences.GetFloatFloat($"{sl}orbits", new FloatPair(0.02f, 20f));
-                Warn($"Using Star Type Override {fp.low}");
+                // Warn($"Using Star Type Override {fp.low}");
                 min = fp.low;
             }
 
             if (star.genData.Get("hasBinary", false))
             {
-                Warn("Increasing for Binary");
+                // Warn("Increasing for Binary");
                 min += star.genData.Get("binaryOffset", 1f) * 60f;
             }
 

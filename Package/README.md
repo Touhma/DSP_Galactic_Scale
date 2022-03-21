@@ -1,5 +1,8 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.20 - Fix bug with comet generation
+
 - Version 2.4.19 - Fix Planet Placement and Solar Values in GSGen. Fix SystemDisplay. Add "Start at PlanetName". Fix Nebula Compatibility (thanks starfish!)
+
 - Version 2.4.18 - Fix orbit spacing :)
 
 - Version 2.4.17 - Add options to change star/planet naming in GalacticScale Generator

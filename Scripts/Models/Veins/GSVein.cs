@@ -27,7 +27,7 @@
             var random = new GS2.Random(seed);
             richness = (float)random.NextDouble() * gsPlanet.planetData.star.resourceCoef;
             count = random.Next(1, 20);
-            GS2.Warn($"Added to {gsPlanet.Name} richness:{richness} count:{count}");
+            // GS2.Warn($"Added to {gsPlanet.Name} richness:{richness} count:{count}");
             //position = Vector3.zero;
         }
 
