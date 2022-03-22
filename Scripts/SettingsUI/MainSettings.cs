@@ -193,7 +193,7 @@ namespace GalacticScale
 
         public void EnableDevMode()
         {
-            Preferences.Set("Dev", true);
+            Preferences.Set("Dev", !Preferences.GetBool("Dev", false));
             // SavePreferences();
         }
 

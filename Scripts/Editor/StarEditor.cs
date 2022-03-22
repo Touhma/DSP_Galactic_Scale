@@ -40,7 +40,9 @@ namespace GalacticScale.Editor
             var gsuipath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll");
             Assembly.LoadFrom(gsuipath);
             var gsp = GS2.Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
-            mainPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();
+            var editorpanel = GS2.Bundle.LoadAsset<GameObject>("assets/editorpanel.prefab");
+            var editorPanelRect = Instantiate(editorpanel, details, false).GetComponent<RectTransform>();
+            mainPanel = Instantiate( gsp, editorPanelRect.transform , false).GetComponent<RectTransform>();
             mainPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;
             settingsPanel = mainPanel.GetComponentInChildren<GSUIPanel>();
             mainPanel.gameObject.SetActive(true);
