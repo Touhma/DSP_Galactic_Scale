@@ -20,6 +20,7 @@ public static partial class GS2
             var lut = new int[numSegments];
             var segmentAngle = Mathf.PI / 2f / numSegments; //quarter circle divided by num segments is the angle per segment
 
+
             // var lastMajorRadius = planetRadius;
             // var lastMajorRadiusCount = segments;
             // var lastMajorGridSize = 1f;
@@ -64,6 +65,7 @@ public static partial class GS2
                 {
                     var origSegCount = SegmentCount[index];
                     var ratios = new float[6]
+
                     {
                         0.5f,
                         0.625f,
@@ -157,6 +159,7 @@ public static partial class GS2
                 // lastCount = lut[index];
                 classicLUT[classicIdx] = SegmentCount[index];
                 if (index == numSegments - 1)
+
                 {
                     lut[index] = 4;
                     classicLUT[classicIdx] = 4;

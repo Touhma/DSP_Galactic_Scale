@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using static GalacticScale.GS2;
 using static UnityEngine.Mathf;
@@ -39,12 +40,17 @@ namespace GalacticScale.Generators
 
         public void GenerateStars(int starCount, int startID = 0)
         {
-            Log("Generating Stars");
+            // Log("Generating Stars");
             var birthIndex = random.Next(starCount);
             for (var i = startID; i < starCount; i++)
             {
                 var (type, spectr) = ChooseStarType(i == birthIndex);
-                var star = new GSStar(random.Next(), SystemNames.GetName(i), spectr, type, new GSPlanets());
+                var starSeed = random.Next();
+var starName = SystemNames.GetName(starSeed);
+                if (preferences.GetBool("vanillaStarNames", false)) { 
+                    starName = NameGen._RandomStarName(starSeed, new StarData() { type = type }); 
+                }
+                var star = new GSStar(starSeed, starName, spectr, type, new GSPlanets());
                 if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
                 if (star.Type == EStarType.BlackHole && preferences.GetFloat("starSizeMulti", 10f) < 2.01f)
                     star.radius *= preferences.GetFloat("starSizeMulti", 2f);
@@ -91,14 +97,14 @@ namespace GalacticScale.Generators
                 birthStar = random.Item(availBirthStars);
             }
 
-            Log(birthStar.Name + " is birthstar");
+            // Log(birthStar.Name + " is birthstar");
             if (forcedBirthStar != null)
-                // GS2.Warn("Forcing birthStar");
+                GS2.Warn("Forcing birthStar");
                 foreach (var star in GSSettings.Stars)
                     if (star.Name == forcedBirthStar)
                     {
                         birthStar = star;
-                        // GS2.Warn("birthStar forced");
+                        GS2.Warn("birthStar forced");
                         break;
                     }
         }
@@ -198,13 +204,32 @@ namespace GalacticScale.Generators
 
         private FloatPair CalculateHabitableZone(GSStar star)
         {
+            // var starLum = Mathf.Pow(star.luminosity, 0.3333f);
+            // var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
+            //
+            // var minSolar = solarRange.low / 100f;
+            // var maxSolar = solarRange.high / 100f;
+            // // oRadius -= star.RadiusAU;
+            // float minHZ = star.genData.Get("minHZ", 1);
+            // float maxHZ = star.genData.Get("maxHZ", 100f);
+            // var hz = (maxHZ - minHZ) / 2 + minHZ;
+            // var oSquared = oRadius * oRadius;
+            // var hzSquared = hz * hz;
+            // var distance = hzSquared / oSquared;
+            // var intensity = distance * starLum;
+            //
+            //     
+            // var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
+            
+            
+            
             // Warn($"Calculating Habitable Zone for {star.Name}");
-            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
+            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
             var flp = Utils.CalculateHabitableZone(lum);
+
             var min = flp.low;
             var max = flp.high;
-            min += star.RadiusAU;
-            max += star.RadiusAU;
+
             var sl = GetTypeLetterFromStar(star);
             if (preferences.GetBool($"{sl}hzOverride"))
             {
@@ -222,7 +247,8 @@ namespace GalacticScale.Generators
                 min += star.genData.Get("binaryOffset", 1f) * 60f;
                 max += star.genData.Get("binaryOffset", 1f) * 60f;
             }
-
+            min += star.RadiusAU;
+            max += star.RadiusAU;
             star.genData.Set("minHZ", min);
             star.genData.Set("maxHZ", max);
             // Warn($"HZ of {star.Name} {min}:{max}");
@@ -235,8 +261,8 @@ namespace GalacticScale.Generators
             var sl = GetTypeLetterFromStar(star);
 
             var radius = star.RadiusAU;
-            var lum = star.luminosity/preferences.GetFloat("luminosityBoost");
-            var min = radius + 0.2f * radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
+            var lum = star.luminosity;// /preferences.GetFloat("luminosityBoost", 1);
+            var min = radius + 0.33f;//* radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
 
             if (preferences.GetBool($"{sl}orbitOverride"))
             {
@@ -262,7 +288,7 @@ namespace GalacticScale.Generators
             var sl = GetTypeLetterFromStar(star);
             // Warn($"Calculating Maximum Orbit for {star.Name}");
             var minMaxOrbit = 5f;
-            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
+            var lum = star.luminosity;//Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
             var hzMax = star.genData.Get("maxHZ");
             var maxOrbitByLuminosity = lum * 4f;
             var maxOrbitByRadius = Pow(star.radius/preferences.GetFloat("starSizeMulti"), 0.75f);

@@ -9,6 +9,7 @@ namespace GalacticScale
         public static bool OnGalaxyDataReset(ref UIVirtualStarmap __instance)
         {
             return SystemDisplay.OnGalaxyDataReset(__instance);
+
         }
     }
 }

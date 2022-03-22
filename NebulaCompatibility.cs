@@ -17,12 +17,9 @@ namespace NebulaCompatibility
         private void Awake()
         {
             NebulaModAPI.RegisterPackets(Assembly.GetExecutingAssembly());
-            var v = Assembly.GetExecutingAssembly().GetName().Version;
             BCE.Console.Init();
-            var _ = new Harmony("dsp.galactic-scale.2.depcheck");
             if (NebulaModAPI.NebulaIsInstalled)
             {
-                NebulaCompat.NebulaIsInstalled = true;
                 NebulaModAPI.OnMultiplayerGameStarted += NebulaCompat.NebulaStart;
                 NebulaModAPI.OnMultiplayerGameEnded += NebulaCompat.NebulaEnd;
             }
@@ -61,9 +58,13 @@ namespace NebulaCompatibility
 
     public static class NebulaCompat
     {
-        public static bool NebulaIsInstalled = false;
         public static bool IsMultiplayerActive = false;
         public static bool IsClient = false;
+
+        public static bool IsMPGameLoaded()
+        {
+            return IsMultiplayerActive && NebulaModAPI.MultiplayerSession.IsGameLoaded;
+        }
 
         public static void NebulaStart()
         {

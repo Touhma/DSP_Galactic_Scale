@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using static GalacticScale.GS2;
 
@@ -7,7 +8,7 @@ namespace GalacticScale.Generators
     public partial class GS2Generator2
     {
         private static bool loaded;
-
+        public static float minOrbit = 0.05f;
         private readonly string[] typeDesc =
         {
             "Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant",
@@ -234,6 +235,13 @@ namespace GalacticScale.Generators
             preferences.Set("orbitLongitude", -1);
             preferences.Set("rareChance", -1f);
             preferences.Set("luminosityBoost", 1);
+            preferences.Set("solarScheme", "InverseSquare");
+            preferences.Set("solarRange", new FloatPair(1,500));
+            preferences.Set("solarLerp", 0.0f);
+            preferences.Set("orbitSpacing", 0.05f);
+            preferences.Set("vanillaStarNames",false);
+            preferences.Set("planetNames", "Default");
+            preferences.Set("preferInnerPlanets", false);
             for (var i = 0; i < 14; i++)
             {
                 preferences.Set($"{typeLetter[i]}minStars", 0);
@@ -248,8 +256,9 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}inclination", -1);
                 preferences.Set($"{typeLetter[i]}orbitLongitude", 0);
                 preferences.Set($"{typeLetter[i]}hzOverride", false);
+                preferences.Set($"{typeLetter[i]}preferInnerPlanets", false);
                 preferences.Set($"{typeLetter[i]}rareChance", -1f);
-                preferences.Set($"{typeLetter[i]}luminosityBoost", 0);
+                preferences.Set($"{typeLetter[i]}luminosityBoost", 1);
                 preferences.Set($"{typeLetter[i]}binaryEnabled", false);
             }
 
@@ -272,10 +281,21 @@ namespace GalacticScale.Generators
             loaded = true;
         }
 
+        private void SetSolarScheme(Val o)
+        {
+            if (o == "Linear") UI["solarLerp"].Show();
+            else UI["solarLerp"].Hide();
+            // Warn(o);
+        }
         private GSOptions CreateSystemOptions()
         {
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
+            UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string>(){ "Linear", "InverseSquare", "None"}, "InverseSquare", "solarScheme", SetSolarScheme)));
+            UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping", 0, 0, 1f, 0.1f, "solarLerp", null, "How close to 100% the inner and outer planets will be")));
+            UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar", 0, 10, 500, 5000, 1, "solarRange")));
+            UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
+            UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme", new List<string>() { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names")));
             UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
             UI.Add("innerPlanetDistance", sOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
             UI.Add("allowResonances", sOptions.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
@@ -296,6 +316,7 @@ namespace GalacticScale.Generators
             UI.Add("hz", sOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat("hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat("hz", new FloatPair(0, 3)).high, 100, 0.01f, "hz", null, HzLowCallback, HzHighCallback, "Force habitable zone between these distances".Translate())));
             UI.Add("orbitOverride", sOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, "orbitOverride", OrbitOverrideCallback, "Enable the slider below".Translate())));
             UI.Add("orbits", sOptions.Add(GSUI.RangeSlider("Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, "orbits", null, OrbitLowCallback, OrbitHighCallback, "Force the distances planets can spawn between".Translate())));
+            UI.Add("preferInnerPlanets", sOptions.Add(GSUI.Checkbox("Prefer Inner Planets", false, "preferInnerPlanets", PreferInnerPlanetsCallback)));
             AddSpacer(sOptions);
             return sOptions;
         }
@@ -364,7 +385,7 @@ namespace GalacticScale.Generators
             UI.Add("defaultStarCount", gOptions.Add(GSUI.Slider("Default StarCount".Translate(), 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback, "How many stars should the slider default to".Translate())));
             UI.Add("starSizeMulti", gOptions.Add(GSUI.Slider("Star Size Multiplier".Translate(), 0.5f, 5f, 20, 0.5f, "starSizeMulti", null, "GS2 uses 10x as standard. They just look cooler.".Translate())));
             UI.Add("luminosityBoost", gOptions.Add(GSUI.Slider("Luminosity Multiplier".Translate(), 0, 0, 10, .25f, "luminosityBoost", LuminosityBoostCallback, "Increase the luminosity of all stars by this multiplier".Translate(), "Default".Translate())));
-
+            UI.Add("vanillaStarNames", gOptions.Add(GSUI.Checkbox("Use Vanilla Star Names".Translate(), false, "vanillaStarNames", null, "Use DSP's Name Generator")));
             AddSpacer(gOptions);
             gOptions.Add(GSUI.Group("Binary Star Settings".Translate(), CreateBinaryStarOptions(), "Settings that control Binary Star formation".Translate()));
             AddSpacer(gOptions);
@@ -406,6 +427,8 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider("Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider("Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, $"{typeLetter[i]}orbits", null, null, null, "Force the distances planets can spawn between".Translate())));
+                UI.Add($"{typeLetter[i]}preferInnerPlanets", tOptions.Add(GSUI.Checkbox("Prefer Inner Planets", false, $"{typeLetter[i]}preferInnerPlanets")));
+
                 UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"{typeLetter[i]}inclination", null, "Maximum angle of orbit".Translate(), "Random".Translate())));
                 UI.Add($"{typeLetter[i]}orbitLongitude", tOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, $"{typeLetter[i]}orbitLongitude", null, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
                 UI.Add($"{typeLetter[i]}rareChance", tOptions.Add(GSUI.Slider("Rare Vein Chance % Override".Translate(), -1, -1, 100, 1f, $"{typeLetter[i]}rareChance", null, "Override the chance of planets spawning rare veins".Translate(), "Default".Translate())));
@@ -527,7 +550,10 @@ namespace GalacticScale.Generators
         {
             SetAllStarTypeOptions("orbitOverride", o);
         }
-
+        private void PreferInnerPlanetsCallback(Val o)
+        {
+            SetAllStarTypeOptions("preferInnerPlanets", o);
+        }
         private void InclinationCallback(Val o)
         {
             SetAllStarTypeOptions("inclination", o);

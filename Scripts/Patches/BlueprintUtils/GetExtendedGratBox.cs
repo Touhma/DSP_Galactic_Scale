@@ -9,7 +9,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(BlueprintUtils), "GetExtendedGratBox", typeof(BPGratBox), typeof(float))]
         public static bool GetExtendedGratBoxA(ref BPGratBox __result, BPGratBox gratbox, float extend_grid = 0.5f)
         {
-            var segments = 4* Mathf.RoundToInt (GameMain.localPlanet.realRadius/4f);
+            var segments = (int)GameMain.localPlanet.realRadius;//4* Mathf.RoundToInt (GameMain.localPlanet.realRadius/4f);
             float longitudeRadPerGrid;
             if (gratbox.y * gratbox.w > 0f && gratbox.y > 0f)
             {

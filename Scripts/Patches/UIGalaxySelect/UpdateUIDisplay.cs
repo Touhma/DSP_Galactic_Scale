@@ -17,7 +17,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGalaxySelect), "UpdateUIDisplay")]
         public static bool UpdateUIDisplay(ref UIGalaxySelect __instance, GalaxyData galaxy)
         {
-            if (NebulaCompat.IsMultiplayerActive) return true;
+            if (NebulaCompat.IsClient) return true;
             __instance.starCountSlider.onValueChanged.RemoveListener(__instance.OnStarCountSliderValueChange);
             if (galaxy == null) return false;
 

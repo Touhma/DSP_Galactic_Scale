@@ -21,7 +21,8 @@ namespace GalacticScale.Generators
             comet.Radius = Utils.ParsePlanetSize(random.NextFloat(29, 41));
             comet.Theme = random.Item(cometThemes).Name;
             comet.OrbitInclination = 66f;
-            comet.OrbitRadius = star.Planets[star.Planets.Count-1].OrbitRadius + 0.5f;
+            if (star.Planets.Count > 0) comet.OrbitRadius = star.Planets[star.Planets.Count - 1].OrbitRadius + 0.5f;
+            else return;
             comet.Luminosity = 0f;
             comet.OrbitalPeriod = Utils.CalculateOrbitPeriod(comet.OrbitRadius);
             star.Planets.Add(comet);
@@ -147,18 +148,21 @@ namespace GalacticScale.Generators
 
 
             // GS2.WarnJson((from s in star.Planets select s.Name).ToList());
-            // GS2.Warn("Now Assigning Moon Orbits");
+            // GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignMoonOrbits(star);
-            // GS2.Warn("Now Assigning Planet Orbits");
+            // GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignPlanetOrbits(star);
-            // GS2.Warn("Now Assigning Themes");
+            // GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
             SelectPlanetThemes(star);
-            // GS2.Warn("Now assigning parameters");
+            // GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
             FudgeNumbersForPlanets(star);
+            // GS2.Warn("Done");
         }
 
         private void FudgeNumbersForPlanets(GSStar star)
         {
+            // GS2.Warn($"{star.displayType} {star.radius} {star.RadiusAU} {star.luminosity}");
+            // GS2.Warn("Star RadiusAU, Star Luminance, HZMin, HZMax, HZ, Orbit Radius, LumInv, LumLin , intensity ");
             foreach (var body in star.Bodies)
             {
                 body.RotationPhase = random.Next(360);
@@ -225,11 +229,53 @@ namespace GalacticScale.Generators
 
                     }
                 }
-                var starLum = Mathf.Pow(star.luminosity, 0.3333f);
-                var lum = Mathf.Clamp(star.luminosity / (oRadius * oRadius), 0.01f, 5f);
-                var lum2 = Mathf.Log(lum);
-                // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
-                body.Luminosity = lum;
+
+                // var starLum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
+                var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
+
+                // var minSolar = solarRange.low / 100f;
+                // var maxSolar = solarRange.high / 100f;
+                // // oRadius += star.RadiusAU;
+                // float minHZ = star.genData.Get("minHZ", 1);
+                // float maxHZ = star.genData.Get("maxHZ", 100f);
+                // var hz = (maxHZ - minHZ) / 2 + minHZ;
+                // var oSquared = oRadius * oRadius;
+                // var hzSquared = hz * hz;
+                // var distance = hzSquared / oSquared;
+                // var intensity = Mathf.Pow(distance,0.5f) * Mathf.Pow( starLum, 0.33f);
+                //
+                // //intensity1 x distance1squared = intensity2 x distance2squared
+                var minSolar = solarRange.low / 100f;
+                var maxSolar = solarRange.high / 100f;
+
+                // oRadius += star.RadiusAU;
+                float minHZ = star.genData.Get("minHZ", 1);
+                float maxHZ = star.genData.Get("maxHZ", 100f);
+                var hz = (maxHZ - minHZ) / 2 + minHZ;
+                var oSquared = oRadius * oRadius;
+                var hzSquared = hz * hz;
+                var intensity = hzSquared / oSquared;
+                // var intensity = Mathf.Pow(distance,0.5f) * Mathf.Pow( starLum, 0.33f);
+
+                //1 x hzsquared = intensity2 x oRadiussquared
+                //hzSquared / oRadsquared = intensity2;
+                
+                var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
+                var lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
+                var lumLinear = Mathf.Clamp(1 / (Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f))/hz), minSolar, maxSolar);
+                // GS2.Warn($"Lerping from {oRadius} to {hz} by {preferences.GetFloat("solarLerp",  0.5f)} = {Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f))} ");
+                switch (preferences.GetString("solarScheme", "Linear"))
+                {
+                    case "None": body.Luminosity = lumNone;
+                        break;
+                    case "InverseSquare": body.Luminosity = lumInverse;
+                        break;
+                    default: body.Luminosity = lumLinear;
+                        break;
+                }
+
+                // GS2.Warn($"{star.RadiusAU}, {starLum}, {minHZ}, {maxHZ}, {hz}, {oRadius}, {lumInverse}, {lumLinear}, {intensity}  ");
+
 
             }
         }
@@ -265,6 +311,8 @@ namespace GalacticScale.Generators
                 }
             }
             //Orbits should be set.
+            // GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+
         }
 
 
@@ -286,7 +334,7 @@ namespace GalacticScale.Generators
                 }
                 else
                 {
-                    GS2.Warn("Setting Theme for BirthPlanet");
+                    // GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
                     var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric, EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
                     if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
                     else planet.Theme = "Mediterranean";
@@ -299,6 +347,7 @@ namespace GalacticScale.Generators
                         body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
             }
+            // GS2.Log($"Themes Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
         }
 
         public bool CalculateIsGas(GSStar star)

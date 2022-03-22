@@ -9,7 +9,7 @@
 	<PropertyGroup>
 		<AssemblyName>GalacticScale</AssemblyName>
 		<Description>Galaxy Customization for Dyson Sphere Program</Description>
-		<Version>2.4.11</Version>
+		<Version>2.4.21</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		
 		<OutDir>bin/$(Configuration)</OutDir>

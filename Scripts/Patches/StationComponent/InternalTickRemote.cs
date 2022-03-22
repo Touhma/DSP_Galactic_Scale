@@ -9,6 +9,10 @@ namespace GalacticScale
 {
     public class PatchOnStationComponent
     {
+        // Two patches being made to StationComponent.InternalTickRemote:
+        // 1. Allow logistics vessels to path in systems up to 99 astrobodies, up from 10.
+        // 2. Allow logistics vessels to get much closer to stars, rather than staying 2.5x radius away.
+        //    Makes planets near huge stars reachable by ship.
         // [HarmonyDebug]
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
@@ -33,16 +37,15 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler2(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false, new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(2.5f))); // Search for ldc.r4 2.5f
-
             if (codeMatcher.IsInvalid)
             {
-                GS2.Error("InternalTickRemote Transpiler Failed");
+                GS2.Error("InternalTickRemote 2nd Transpiler Failed");
                 return instructions;
             }
-
-            instructions = codeMatcher.Repeat(z => z // Repeat for all occurences 
-                    .Set(OpCodes.Ldc_R4, 1.0f)) // Replace operand with 1
+            instructions = codeMatcher.Repeat(z => z // Repeat for all occurences
+                   .Set(OpCodes.Ldc_R4, 1.0f)) // Replace operand with 1.0f
                 .InstructionEnumeration();
+
             return instructions;
         }
     }

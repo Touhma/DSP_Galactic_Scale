@@ -24,7 +24,7 @@ namespace GalacticScale
                 UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
                 GS2.canvasOverlay = false;
             }
-            if (NebulaCompat.IsMultiplayerActive) return true;
+            if (NebulaCompat.IsClient) return true;
             if (SystemDisplay.backButton == null)
             {
                 SystemDisplay.randomButton = __instance.transform.GetChild(1).GetComponent<Button>();
