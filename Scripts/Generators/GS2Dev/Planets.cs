@@ -21,7 +21,8 @@ namespace GalacticScale.Generators
             comet.Radius = Utils.ParsePlanetSize(random.NextFloat(29, 41));
             comet.Theme = random.Item(cometThemes).Name;
             comet.OrbitInclination = 66f;
-            comet.OrbitRadius = star.Planets[star.Planets.Count-1].OrbitRadius + 0.5f;
+            if (star.Planets.Count > 0) comet.OrbitRadius = star.Planets[star.Planets.Count - 1].OrbitRadius + 0.5f;
+            else return;
             comet.Luminosity = 0f;
             comet.OrbitalPeriod = Utils.CalculateOrbitPeriod(comet.OrbitRadius);
             star.Planets.Add(comet);
@@ -262,7 +263,7 @@ namespace GalacticScale.Generators
                 var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
                 var lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
                 var lumLinear = Mathf.Clamp(1 / (Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f))/hz), minSolar, maxSolar);
-                // GS2.Warn($"Luminosity for {body.Name,30}:{body.Luminosity,10}:{lum,9} log2:{lum2} {body.OrbitRadius,8} Star Luminosity:{starLum,10} LBR:{star.lightBalanceRadius} ");
+                // GS2.Warn($"Lerping from {oRadius} to {hz} by {preferences.GetFloat("solarLerp",  0.5f)} = {Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f))} ");
                 switch (preferences.GetString("solarScheme", "Linear"))
                 {
                     case "None": body.Luminosity = lumNone;

@@ -30,7 +30,7 @@ namespace GalacticScale
         {
             random = new GS2.Random(GSSettings.Seed);
             var planet = gsPlanet.planetData;
-            GS2.Log("GenBirthPoints");
+            // GS2.Log("GenBirthPoints");
             Pose pose;
             var n = 85.0 / planet.orbitalPeriod + planet.orbitPhase / 360.0;
             var n2 = (int)(n + 0.1);
@@ -102,7 +102,7 @@ namespace GalacticScale
 
                 if (flag) break;
             }
-            GS2.Log("Finished Birthpoints");
+            // GS2.Log("Finished Birthpoints");
         }
 
         private static void GenerateNodeVectors(List<Vector2> nodeVectors, int maxCount)
