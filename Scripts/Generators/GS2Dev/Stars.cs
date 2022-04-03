@@ -58,7 +58,7 @@ var starName = SystemNames.GetName(starSeed);
                 //     star.dysonRadius * Mathf.Clamp(preferences.GetFloat("starSizeMulti", 10f), 0.5f, 100f);
                 star.dysonRadius = (float)(star.physicsRadius * 1.5f / 40000.0);
                 // Warn($"Dyson Radius for {star.Name}:{star.dysonRadius}");
-                star.dysonRadius = Clamp(star.dysonRadius, 0, 10f);
+                star.dysonRadius = Clamp(star.dysonRadius, 0.1f, 100f);
                 //Warn($"Habitable zone for {star.Name} {Utils.CalculateHabitableZone(star.luminosity)}");
                 star.Seed = random.Next();
                 GSSettings.Stars.Add(star);
