@@ -136,7 +136,7 @@ namespace GalacticScale
             }
 
             Assembly.LoadFrom(gsuipath);
-            var gsp = Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
+            var gsp = Bundle.LoadAsset<GameObject>("assets/gssettingspanelcopy.prefab");
             GSSettingsPanel = Object.Instantiate(gsp, details, false).GetComponent<RectTransform>();
             GSSettingsPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;
             var sp = Bundle.LoadAsset<GameObject>("SettingsPanel");

@@ -36,25 +36,29 @@ namespace GalacticScale.Editor
             }
 
             editStar = star;
-            var details = UIRoot.instance.galaxySelect.gameObject.GetComponent<RectTransform>();
+            var galaxySelect = UIRoot.instance.galaxySelect.gameObject.GetComponent<RectTransform>();
             var gsuipath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll");
             Assembly.LoadFrom(gsuipath);
-            var gsp = GS2.Bundle.LoadAsset<GameObject>("assets/gssettingspanel.prefab");
+            // var gsp = GS2.Bundle.LoadAsset<GameObject>("assets/gssettingspanelcopy.prefab");
             var editorpanel = GS2.Bundle.LoadAsset<GameObject>("assets/editorpanel.prefab");
-            var editorPanelRect = Instantiate(editorpanel, details, false).GetComponent<RectTransform>();
-            mainPanel = Instantiate( gsp, editorPanelRect.transform , false).GetComponent<RectTransform>();
+            var editorPanelRect = Instantiate(editorpanel, galaxySelect, false).GetComponent<RectTransform>();
+            // var editorPanelContent = editorPanelRect.GetComponentInChildren<VerticalLayoutGroup>().gameObject;
+            // while (editorPanelContent.transform.childCount > 0)
+            //     Object.DestroyImmediate(editorPanelContent.transform.GetChild(0).gameObject);
+            // mainPanel = Instantiate( gsp, editorPanelContent.transform , false).GetComponent<RectTransform>();
+            mainPanel = editorPanelRect.GetComponentInChildren<ScrollRect>().gameObject.GetComponent<RectTransform>();
             mainPanel.GetComponent<ScrollRect>().scrollSensitivity = 10;
             settingsPanel = mainPanel.GetComponentInChildren<GSUIPanel>();
             mainPanel.gameObject.SetActive(true);
-            var bgimg = mainPanel.gameObject.AddComponent<Image>();
-            bgimg.color = new Color(0, 0, 0, 0.75f);
+            // var bgimg = mainPanel.gameObject.AddComponent<Image>();
+            // bgimg.color = new Color(0, 0, 0, 0.75f);
             settingsPanel.gameObject.SetActive(true);
-            mainPanel.pivot = new Vector2(0, 0.5f);
-            mainPanel.anchorMax = new Vector2(0, 1);
-            mainPanel.anchorMin = new Vector2(0, 0);
-            mainPanel.sizeDelta = new Vector2(900f, -100f);
-            mainPanel.anchoredPosition = new Vector2(50, 0);
-            // mainPanel.anchoredPosition = new Vector2(50f, -120f);
+            // mainPanel.pivot = new Vector2(0, 0.5f);
+            // mainPanel.anchorMax = new Vector2(0, 1);
+            // mainPanel.anchorMin = new Vector2(0, 0);
+            // mainPanel.sizeDelta = new Vector2(900f, -100f);
+            // mainPanel.anchoredPosition = new Vector2(50, 0);
+            // // mainPanel.anchoredPosition = new Vector2(50f, -120f);
             mainPanel.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             // Warn(mainPanel.sizeDelta.ToString());
             // mainPanel.sizeDelta = new Vector2(10f, 10f);

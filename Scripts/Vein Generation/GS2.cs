@@ -298,7 +298,7 @@ namespace GalacticScale
 
         private static void AddVeinType(GSPlanet gsPlanet, EVeinType type, int count)
         {
-            // GS2.Log("Adding to " + gsPlanet.Name + " a vein of " + type + ": x" + count);
+            GS2.Log("Adding to " + gsPlanet.Name + " a vein of " + type + ": x" + count);
             var veinType = new GSVeinType(type);
             for (var i = 0; i < count; i++)
             {
