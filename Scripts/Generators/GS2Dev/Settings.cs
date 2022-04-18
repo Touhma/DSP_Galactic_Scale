@@ -71,6 +71,7 @@ namespace GalacticScale.Generators
                 UI[$"{typeLetter[i]}hzOverride"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}hzOverride", false));
                 UI[$"{typeLetter[i]}rareChance"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}rareChance",-1f));
                 UI[$"{typeLetter[i]}luminosityBoost"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}luminosityBoost",1f));
+                UI[$"{typeLetter[i]}innerPlanetDistance"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}innerPlanetDistance",1f));
                 if (i >= 8 && i <= 11) continue;
                 UI[$"{typeLetter[i]}binaryEnabled"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled",false));
             }
@@ -244,6 +245,7 @@ namespace GalacticScale.Generators
             preferences.Set("preferInnerPlanets", false);
             for (var i = 0; i < 14; i++)
             {
+                preferences.Set($"{typeLetter[i]}innerPlanetDistance", 1f);
                 preferences.Set($"{typeLetter[i]}minStars", 0);
                 preferences.Set($"{typeLetter[i]}planetCount", new FloatPair(1, 10));
                 preferences.Set($"{typeLetter[i]}planetSize", new FloatPair(50, 500));
@@ -297,7 +299,7 @@ namespace GalacticScale.Generators
             UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
             UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme", new List<string>() { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names")));
             UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
-            UI.Add("innerPlanetDistance", sOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
+            UI.Add("innerPlanetDistance", sOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", InnerPlanetDistanceCallback, "Distance forced tidal locking stops acting".Translate())));
             UI.Add("allowResonances", sOptions.Add(GSUI.Checkbox("Allow Orbital Harmonics".Translate(), true, "allowResonances", null, "Allow Orbital Resonance 1:2 and 1:4".Translate())));
             UI.Add("moonsAreSmall", sOptions.Add(GSUI.Checkbox("Moons Are Small".Translate(), true, "moonsAreSmall", null, "Try to ensure moons are 1/2 their planets size or less".Translate())));
             UI.Add("moonBias", sOptions.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias", null, "Lower prefers telluric planets, higher gas giants".Translate())));
@@ -423,6 +425,8 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider("Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
                 UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 3)).low, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Force habitable zone between these distances".Translate())));
+                UI.Add($"{typeLetter[i]}innerPlanetDistance", tOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, $"{typeLetter[i]}innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
+
                 UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider("Chance for Gas giant".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceGas")));
                 UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider("Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon")));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
@@ -496,6 +500,10 @@ namespace GalacticScale.Generators
             SetAllStarTypeOptions("luminosityBoost", o);
         }
 
+        private void InnerPlanetDistanceCallback(Val o)
+        {
+            SetAllStarTypeOptions("innerPlanetDistance", o);
+        }
         private void OrbitLowCallback(Val o)
         {
             SetAllStarTypeRangeSliderMin("orbits", o);
@@ -726,7 +734,12 @@ namespace GalacticScale.Generators
             var t = preferences.GetFloatFloat($"{sl}planetCount", new FloatPair(1, 10));
             return (int)t.high;
         }
-
+        private float GetInnerPlanetDistanceForStar(GSStar star)
+        {
+            var sl = GetTypeLetterFromStar(star);
+            var t = preferences.GetFloat($"{sl}innerPlanetDistance", 1f);
+            return t;
+        }
         private int GetMinPlanetCountForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);

@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.22 - Add Inner Planet Distance as Star Specific Override to GSGen
+
 - Version 2.4.21 - Fix bug with Vanilla Gen
 
 - Version 2.4.20 - Fix bug with comet generation
