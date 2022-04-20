@@ -12,6 +12,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIMainMenu), "_OnOpen")]
         public static void _OnOpen(ref UIMainMenu __instance)
         {
+            SystemDisplay.ResetView();
             var overlayCanvas = GameObject.Find("Overlay Canvas");
             if (overlayCanvas == null)
                 // Log.Warn("'Overlay Canvas' not found!");

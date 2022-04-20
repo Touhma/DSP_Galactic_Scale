@@ -12,7 +12,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
 		<OutDir>bin/$(Configuration)</OutDir>
-		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale_GalacticScale\</OutDir>
+		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale\</OutDir>
 	</PropertyGroup>
 
 	<ItemGroup>

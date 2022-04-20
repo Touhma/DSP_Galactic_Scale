@@ -359,13 +359,15 @@ namespace GalacticScale.Generators
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = (star.genData.Get("minHZ"), star.genData.Get("maxHZ"));
+            (float min, float max) orbit  = (star.genData.Get("minOrbit"), star.genData.Get("maxOrbit"));
+            var frozenOrbitStart = (orbit.max - hz.max) / 2 + hz.max;
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;
             if (OrbitRadius < hz.max) return EThemeHeat.Temperate;
-            if (OrbitRadius < hz.max * 2) return EThemeHeat.Cold;
+            if (OrbitRadius < frozenOrbitStart) return EThemeHeat.Cold;                                                                                                                                                     
             return EThemeHeat.Frozen;
         }
-        public static List<string> PlanetNames = new List<string>() {
+        public static List<string> PlanetNames = new () {
             "Achelous",
 "Oceanu",
 "Siren",

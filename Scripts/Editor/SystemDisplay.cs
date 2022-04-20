@@ -20,6 +20,7 @@ namespace GalacticScale
         public static int customBirthStar = -1;
         public static int customBirthPlanet = -1;
         public static float mouseTolerance = 1.7f;
+
         public static void AbortRender(UIVirtualStarmap starmap)
         {
             // Modeler.Reset();
@@ -36,41 +37,39 @@ namespace GalacticScale
 
         public static void ResetView()
         {
-            
-                GameCamera.instance.transform.localPosition = Vector3.zero;
-                UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1f;
-            
+            GameCamera.instance.transform.localPosition = Vector3.zero;
+            UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1f;
         }
+
         public static void OnUpdate(UIVirtualStarmap starmap)
         {
-            if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += VFInput.shift?1f:.1f;
-            if (Input.mouseScrollDelta.y > 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio -= VFInput.shift?1f:0.1f;
-            if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.right);
-            if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.left);
-            if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.up);
-            if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift?1f:0.1f) * Vector3.down);
+            if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += VFInput.shift ? 1f : .1f;
+            if (Input.mouseScrollDelta.y > 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio -= VFInput.shift ? 1f : 0.1f;
+            if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.right);
+            if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.left);
+            if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.up);
+            if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.down);
             if (VFInput._jump) ResetView();
 
-            int targetIndex = -1;
+            var targetIndex = -1;
             starmap.starPointBirth.gameObject.SetActive(false);
 
             for (var i = 0; i < starmap.starPool.Count; ++i)
-            {
                 // GS2.Warn($"#{i} {GSSettings.BirthPlanet.planetData.star.index}");
                 if (starmap.starPool[i].active) //&& i == GSSettings.BirthPlanet.planetData.star.index
                 {
-                    StarData starData = starmap.starPool[i].starData;
+                    var starData = starmap.starPool[i].starData;
                     var gsStar = GS2.GetGSStar(starData);
-                    bool decorative = false;
+                    var decorative = false;
                     if (gsStar != null) decorative = gsStar.Decorative;
-                    Vector2 zero = Vector2.zero;
+                    var zero = Vector2.zero;
                     UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out zero);
                     zero.x += 18f;
                     zero.y += 6f;
                     starmap.starPool[i].nameText.rectTransform.anchoredPosition = zero;
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    float num3 = Kit.ClosestPoint2Straight(ray.origin, ray.GetPoint(300f), starData.position);
-                    float num4 = Vector3.Distance(ray.GetPoint(300f * num3), starData.position);
+                    var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    var num3 = Kit.ClosestPoint2Straight(ray.origin, ray.GetPoint(300f), starData.position);
+                    var num4 = Vector3.Distance(ray.GetPoint(300f * num3), starData.position);
                     if (num4 < mouseTolerance)
                     {
                         if (starData.age >= 0 && decorative) continue;
@@ -85,9 +84,10 @@ namespace GalacticScale
                         // }
                         targetIndex = i;
                     }
+
                     if (i == GSSettings.BirthPlanet.planetData.star.index)
                     {
-                        Color value = starmap.starColors.Evaluate(starData.color);
+                        var value = starmap.starColors.Evaluate(starData.color);
                         starmap.starPointBirth.gameObject.SetActive(!inSystemDisplay);
                         starmap.starPointBirth.material.SetColor("_TintColor", value);
                         starmap.starPointBirth.transform.localPosition = starData.position;
@@ -95,14 +95,14 @@ namespace GalacticScale
 
                     if (starData.id == GSSettings.BirthPlanet?.planetData?.id && viewStar?.id == GSSettings.BirthPlanet?.planetData?.star?.id)
                     {
-                        Color value = starmap.starColors.Evaluate(starData.color);
+                        var value = starmap.starColors.Evaluate(starData.color);
                         starmap.starPointBirth.gameObject.SetActive(inSystemDisplay);
                         starmap.starPointBirth.material.SetColor("_TintColor", value);
                         starmap.starPointBirth.transform.localPosition = starData.position;
                     }
                     // else GS2.Log($"{starData?.id} {GSSettings.BirthPlanet?.planetData?.id} {viewStar?.id} {GSSettings.BirthPlanet?.planetData?.star?.id}");
 
-                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || (i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay));
+                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay);
 
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
@@ -113,17 +113,13 @@ namespace GalacticScale
                     //     starmap.starPool[i].nameText.text = Utils.GetStarDetail(starmap.starPool[i].starData);
                     // }
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
-
-                    
                 }
-                // GS2.Warn($"Setting StarPointBirth to {__instance.starPool[i].starData.name}");
-                // var starData = starmap.starPool[i].starData;
-                // var color = starmap.starColors.Evaluate(starData.color);
-                // starmap.starPointBirth.gameObject.SetActive(true);
-                // starmap.starPointBirth.material.SetColor("_TintColor", color);
-                // starmap.starPointBirth.transform.localPosition = starData.position;
-            }
-            
+            // GS2.Warn($"Setting StarPointBirth to {__instance.starPool[i].starData.name}");
+            // var starData = starmap.starPool[i].starData;
+            // var color = starmap.starColors.Evaluate(starData.color);
+            // starmap.starPointBirth.gameObject.SetActive(true);
+            // starmap.starPointBirth.material.SetColor("_TintColor", color);
+            // starmap.starPointBirth.transform.localPosition = starData.position;
 
 
             if (!(VFInput.rtsConfirm.pressing || VFInput.rtsCancel.pressing))
@@ -132,6 +128,7 @@ namespace GalacticScale
                 //GS2.Log($"Nope {VFInput.rtsConfirm.pressing}{VFInput.rtsCancel.pressing}{VFInput.rtsConfirm.onDown}{VFInput.rtsCancel.onDown}{VFInput.axis_button.down[0]}{VFInput.axis_button.down[1]}");
                 return;
             }
+
             if (deBounce) return;
             deBounce = true;
             var starIndex = -1;
@@ -142,7 +139,7 @@ namespace GalacticScale
                     // GS2.Warn("Pressing");
                     var starData = starmap.starPool[i].starData;
                     var gsStar = GS2.GetGSStar(starData);
-                    bool decorative = false;
+                    var decorative = false;
                     if (gsStar != null) decorative = gsStar.Decorative;
                     // var rectPoint = Vector2.zero;
                     // UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out _);
@@ -169,25 +166,23 @@ namespace GalacticScale
                     // }
                 }
 
-            if (VFInput.rtsConfirm.pressing)
-            {
-                OnStarMapClick(starmap, starIndex);
-            }
-            if (VFInput.rtsCancel.pressing)
-            {
-                OnStarMapRightClick(starmap, starIndex);
-            }
+            if (VFInput.rtsConfirm.pressing) OnStarMapClick(starmap, starIndex);
+            if (VFInput.rtsCancel.pressing) OnStarMapRightClick(starmap, starIndex);
         }
-        
+
         public static void OnBackClick(UIGalaxySelect instance)
         {
             // GS2.Warn("BackClick");
             if (!inSystemDisplay)
             {
+                ResetView();
                 instance._Close();
                 UIRoot.instance.OpenMainMenuUI();
             }
-            else ShowStarMap(instance.starmap);
+            else
+            {
+                ShowStarMap(instance.starmap);
+            }
         }
 
         public static void OnRandomClick(UIGalaxySelect instance)
@@ -195,16 +190,17 @@ namespace GalacticScale
             instance.Rerand();
             ShowStarMap(instance.starmap);
         }
+
         public static void OnStarMapClick(UIVirtualStarmap starmap, int starIndex)
         {
             // GS2.Warn($"StarmapClick { starIndex}");
             switch (starIndex)
             {
-                case -1 when (UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
+                case -1 when UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
                     // GS2.Warn("Hiding Planet Details");
                     HidePlanetDetail();
                     break;
-                case -1 when (!UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
+                case -1 when !UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
                     // GS2.Warn("Hiding SolarSystem");
                     ShowStarMap(starmap);
                     break;
@@ -216,7 +212,8 @@ namespace GalacticScale
                     // GS2.Warn($"PlanetClick {starIndex}");
                     OnSolarSystemPlanetClick(starmap, starIndex);
                     break;
-                case int x when x >= 0 && !inSystemDisplay:                   ;
+                case int x when x >= 0 && !inSystemDisplay:
+                    ;
                     // GS2.Warn($"- {starIndex} OnStarMapClick");
                     OnStarClick(starmap, starIndex);
                     break;
@@ -225,17 +222,18 @@ namespace GalacticScale
                     break;
             }
         }
+
         public static void OnStarMapRightClick(UIVirtualStarmap starmap, int starIndex)
         {
             // GS2.Warn($"StarmapRightClick { starIndex}");
             switch (starIndex)
             {
-                case -1 when (UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
+                case -1 when UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
                     GS2.Warn("Rightclick Hiding Details");
                     HidePlanetDetail();
                     ShowStarCount();
                     break;
-                case -1 when (!UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf):
+                case -1 when !UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
                     GS2.Warn("RightClick Hiding SolarSystem");
                     ShowStarMap(starmap);
                     break;
@@ -248,23 +246,25 @@ namespace GalacticScale
                     OnSolarSystemPlanetRightClick(starmap, starIndex);
                     break;
                 case int x when x >= 0 && !inSystemDisplay:
-                    
+
                     GS2.Warn($"- {starIndex} OnStarMapRightClick");
                     // SetBirthStar(starmap.starPool[starIndex].starData);
-                    OnStarRightClick(starmap,starIndex);
+                    OnStarRightClick(starmap, starIndex);
                     break;
-                   
+
                 default:
                     GS2.Warn($"RightClicked Starmap with Erroneous starIndex of {starIndex}");
                     break;
             }
         }
+
         public static void OnSolarSystemStarClick(UIVirtualStarmap starmap)
         {
             HidePlanetDetail();
             HideStarCount();
             ShowStarDetail(viewStar);
         }
+
         public static void HideStarCount()
         {
             GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group")?.SetActive(false);
@@ -273,14 +273,17 @@ namespace GalacticScale
             UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(false);
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(false);
         }
+
         public static void HidePlanetDetail()
         {
             UIRoot.instance.uiGame.planetDetail.gameObject.SetActive(false);
         }
+
         public static void HideStarDetail()
         {
             UIRoot.instance.uiGame.starDetail.gameObject.SetActive(false);
         }
+
         public static void ShowPlanetDetail(PlanetData pData)
         {
             UIRoot.instance.uiGame.SetPlanetDetail(pData);
@@ -289,6 +292,7 @@ namespace GalacticScale
             UIRoot.instance.uiGame.planetDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
             UIRoot.instance.uiGame.planetDetail._OnUpdate();
         }
+
         public static void ShowStarDetail(StarData starData)
         {
             UIRoot.instance.uiGame.SetStarDetail(starData);
@@ -297,10 +301,11 @@ namespace GalacticScale
             UIRoot.instance.uiGame.starDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
             UIRoot.instance.uiGame.starDetail._OnUpdate();
         }
+
         public static void OnStarClick(UIVirtualStarmap starmap, int starIndex)
         {
             viewStar = starmap.starPool[starIndex].starData;
-            GSStar star = GS2.GetGSStar(viewStar);
+            var star = GS2.GetGSStar(viewStar);
             GS2.Warn("Clicked Star");
             if (star.Decorative)
             {
@@ -312,6 +317,7 @@ namespace GalacticScale
                     starIndex = primaryIndex;
                 }
             }
+
             // UIRoot.instance.galaxySelect.resourceMultiplierSlider.gameObject.SetActive(false);
             ClearStarmap(starmap);
             GS2.Warn($"OnStarClick {viewStar.name}");
@@ -322,12 +328,8 @@ namespace GalacticScale
         public static void OnStarRightClick(UIVirtualStarmap starmap, int starIndex)
         {
             if (!GS2.GetGSStar(starmap.starPool[starIndex].starData).Decorative)
-            {
                 if (GS2.ActiveGenerator.Config.enableStarSelector)
-                {
                     RegenerateGalaxyWithNewBirthStar(starmap, starmap.starPool[starIndex].starData);
-                }
-            }
         }
 
         public static void RegenerateGalaxyWithNewBirthStar(UIVirtualStarmap starmap, StarData starData)
@@ -337,23 +339,25 @@ namespace GalacticScale
             starmap.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
             starmap.OnGalaxyDataReset();
         }
+
         public static void OnSolarSystemPlanetClick(UIVirtualStarmap starmap, int clickIndex)
         {
-            int planetIndex = clickIndex -1;
+            var planetIndex = clickIndex - 1;
             GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
-            PlanetData pData = viewStar?.planets[planetIndex];
+            var pData = viewStar?.planets[planetIndex];
             GS2.Warn("C");
             if (pData == null) return;
             GS2.Warn($"{pData.name}");
             HideStarDetail();
             HideStarCount();
             ShowPlanetDetail(pData);
-        }        
+        }
+
         public static void OnSolarSystemPlanetRightClick(UIVirtualStarmap starmap, int clickIndex)
         {
-            int planetIndex = clickIndex -1;
+            var planetIndex = clickIndex - 1;
             GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
-            PlanetData pData = viewStar?.planets[planetIndex];
+            var pData = viewStar?.planets[planetIndex];
             GS2.Warn("C");
             if (pData == null) return;
             GS2.Warn($"Setting new Star as BirthStar and Planet as {pData.name}");
@@ -363,9 +367,9 @@ namespace GalacticScale
                 starmap.galaxyData.birthStarId = viewStar.id;
                 starmap.galaxyData.birthPlanetId = pData.id;
                 GSSettings.BirthPlanetName = pData.name;
-                GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
+                GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
                 GSSettings.BirthPlanetId = pData.id;
-                GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
+                GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
                 // GSSettings.BirthPlanet = GS2.GetGSPlanet(pData);
                 GSSettings.Instance.imported = true;
                 GS2.galaxy.birthStarId = viewStar.id;
@@ -375,15 +379,17 @@ namespace GalacticScale
                 GS2.Warn($"GameMain.galaxy.birthPlanetID:{GameMain.galaxy.birthPlanetId} should be {pData.id}");
                 GameMain.data.galaxy.birthPlanetId = pData.id;
                 GameMain.data.galaxy.birthStarId = viewStar.id;
-                GS2.Warn($" GSSettings.BirthPlanetId:{ GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
-                Text text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
+                GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
+                var text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
                 text.text = $"Start Game at {pData.displayName}";
                 text.horizontalOverflow = HorizontalWrapMode.Overflow;
             }
+
             HideStarDetail();
             HideStarCount();
             ShowPlanetDetail(pData);
         }
+
         public static void ShowStarCount()
         {
             GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group").SetActive(true);
@@ -393,8 +399,8 @@ namespace GalacticScale
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(true);
             // UIRoot.instance.galaxySelect.starCountText .gameObject.SetActive(true);
             // UIRoot.instance.galaxySelect.resourceMultiplierText.gameObject.SetActive(true);
-            
         }
+
         public static void ShowStarMap(UIVirtualStarmap starmap)
         {
             GS2.Warn("Reverting to galaxy view");
@@ -411,10 +417,11 @@ namespace GalacticScale
 
         public static string StripStarFromDisplayType(string input)
         {
-            List<string> exploded = input.Split(' ').ToList();
+            var exploded = input.Split(' ').ToList();
             exploded.Remove("Star");
-            return String.Join(" ",exploded.ToArray());
+            return string.Join(" ", exploded.ToArray());
         }
+
         public static void OnGalaxyDataResetPostFix(UIVirtualStarmap __instance)
         {
             foreach (var s in __instance.starPool)
@@ -423,14 +430,15 @@ namespace GalacticScale
                 if (starData == null) continue;
                 var gsStar = GS2.GetGSStar(starData);
                 if (gsStar == null) continue;
-                
-                if (!String.IsNullOrEmpty(gsStar.BinaryCompanion))
+
+                if (!string.IsNullOrEmpty(gsStar.BinaryCompanion))
                 {
                     var bc = GS2.GetGSStar(gsStar.BinaryCompanion);
-                    if (s.textContent != null) s.textContent += $" with {StripStarFromDisplayType( bc.displayType)} binary";
+                    if (s.textContent != null) s.textContent += $" with {StripStarFromDisplayType(bc.displayType)} binary";
                 }
             }
         }
+
         public static void ShowSolarSystem(UIVirtualStarmap starmap, int starIndex)
         {
             ClearStarmap(starmap);
@@ -441,45 +449,45 @@ namespace GalacticScale
             PlanetModelingManager.StartPlanetComputeThread();
 
             // add star
-            StarData starData = starmap._galaxyData.StarById(starIndex + 1); // because StarById() decrements by 1
+            var starData = starmap._galaxyData.StarById(starIndex + 1); // because StarById() decrements by 1
             AddStarToStarmap(starmap, starData);
-            
-            var starScale = starmap.starPool[0].starData.radius /40f * GS2.Config.VirtualStarmapStarScaleFactor; //This is RadiusAU
+
+            var starScale = starmap.starPool[0].starData.radius / 40f * GS2.Config.VirtualStarmapStarScaleFactor; //This is RadiusAU
             // var starScale = starmap.starPool[0].starData.radius * GS2.Config.VirtualStarmapStarScaleFactor;
 
             GS2.Warn($"Scale : {starScale} Radius:{starmap.starPool[0].starData.radius} OrigScale:{starmap.starPool[0].pointRenderer.transform.localScale}");
-            starmap.starPool[0].pointRenderer.transform.localScale = new Vector3(starScale,starScale,starScale);
+            starmap.starPool[0].pointRenderer.transform.localScale = new Vector3(starScale, starScale, starScale);
             //starmap.clickText = starData.id.ToString();
             //Debug.Log("Setting it to " + starmap.clickText + " " + starData.id);
 
-            for (int i = 0; i < starData.planetCount; i++)
+            for (var i = 0; i < starData.planetCount; i++)
             {
                 // add planets
-                PlanetData pData = starData.planets[i];
-                Color color = starmap.neutronStarColor;
-                
-                bool isMoon = false;
+                var pData = starData.planets[i];
+                var color = starmap.neutronStarColor;
 
-                VectorLF3 pPos = GetRelativeRotatedPlanetPos(starData, pData, ref isMoon);
+                var isMoon = false;
+
+                var pPos = GetRelativeRotatedPlanetPos(starData, pData, ref isMoon);
                 // GS2.Warn("ShowSolarSystem2");
                 // request generation of planet surface data to display its details when clicked and if not already loaded
                 //if (!pData.loaded) PlanetModelingManager.RequestLoadPlanet(pData);
                 // GS2.Warn("ShowSolarSystem3");
                 // create fake StarData to pass _OnLateUpdate()
-                StarData dummyStarData = new StarData();
+                var dummyStarData = new StarData();
                 dummyStarData.age = -1;
                 dummyStarData.position = pPos;
                 var gsPlanet = GS2.GetGSPlanet(pData);
                 var gsTheme = gsPlanet.GsTheme;
                 var orbitColor = PlanetTemperatureToStarColor(gsTheme.Temperature);
-                var planetColor = (gsTheme.minimapMaterial.Colors.ContainsKey("_Color"))? gsTheme.minimapMaterial.Colors["_Color"]:Color.magenta;
+                var planetColor = gsTheme.minimapMaterial.Colors.ContainsKey("_Color") ? gsTheme.minimapMaterial.Colors["_Color"] : Color.magenta;
                 if (pData.type == EPlanetType.Gas) planetColor = new Color(planetColor.r, planetColor.g, planetColor.b, 0.2f);
                 // GS2.Log($"Color of {starData.name} a {starData.typeString} star is {starData.color}");
                 dummyStarData.id = pData.id;
-                var realRadius = Mathf.Clamp( pData.realRadius, 100, 800);
-                
-                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius/1000f); //1000
-                Vector3 planetScale = Vector3.one * pScale;
+                var realRadius = Mathf.Clamp(pData.realRadius, 100, 800);
+
+                var pScale = GS2.Config.VirtualStarmapPlanetScaleFactor * (realRadius / 1000f); //1000
+                var planetScale = Vector3.one * pScale;
                 // if (scale.x > 3 || scale.y > 3 || scale.z > 3)
                 // {
                 //     scale = new Vector3(3, 3, 3);
@@ -490,7 +498,7 @@ namespace GalacticScale
                 // GS2.Warn($"Pool Length: {i + 1} / {starmap.starPool.Count}");
                 while (starmap.starPool.Count <= i + 1)
                 {
-                    UIVirtualStarmap.StarNode starNode2 = new UIVirtualStarmap.StarNode();
+                    var starNode2 = new UIVirtualStarmap.StarNode();
                     starNode2.active = false;
                     starNode2.starData = null;
                     starNode2.pointRenderer = Object.Instantiate<MeshRenderer>(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
@@ -501,7 +509,7 @@ namespace GalacticScale
                 starmap.starPool[i + 1].active = true;
 
                 // GS2.Warn("ShowSolarSystem4a");
-                
+
                 starmap.starPool[i + 1].starData = dummyStarData;
                 starmap.starPool[i + 1].pointRenderer.material.SetColor("_TintColor", planetColor);
                 starmap.starPool[i + 1].pointRenderer.transform.localPosition = pPos;
@@ -517,7 +525,6 @@ namespace GalacticScale
                 // GS2.Warn($"ShowSolarSystem5 {i} / {starmap.connPool.Count}");
                 // add orbit renderer
                 while (starmap.connPool.Count <= i)
-                {
                     starmap.connPool.Add(new UIVirtualStarmap.ConnNode
                     {
                         active = false,
@@ -525,41 +532,33 @@ namespace GalacticScale
                         starB = null,
                         lineRenderer = Object.Instantiate(starmap.connLinePrefab, starmap.connLinePrefab.transform.parent)
                     });
-                    //starmap.connPool[starmap.connPool.Count-1].lineRenderer.material.SetColor("_LineColorA", Color.Lerp(color, Color.white, 0.65f));
-                    //starmap.connPool[starmap.connPool.Count - 1].lineRenderer.material.SetColor("_LineColorB", Color.Lerp(color, Color.white, 0.65f));
-                }
+                //starmap.connPool[starmap.connPool.Count-1].lineRenderer.material.SetColor("_LineColorA", Color.Lerp(color, Color.white, 0.65f));
+                //starmap.connPool[starmap.connPool.Count - 1].lineRenderer.material.SetColor("_LineColorB", Color.Lerp(color, Color.white, 0.65f));
 
                 //if (starmap.connPool.Count -1 >= i) {
                 starmap.connPool[i].active = true;
                 starmap.connPool[i].lineRenderer.material.SetColor("_LineColorA", Color.Lerp(starmap.starColors.Evaluate(orbitColor), Color.white, 0.65f));
                 starmap.connPool[i].lineRenderer.material.SetColor("_LineColorB", Color.Lerp(starmap.starColors.Evaluate(orbitColor), Color.white, 0.25f));
-                if (starmap.connPool[i].lineRenderer.positionCount != 61)
-                {
-                    starmap.connPool[i].lineRenderer.positionCount = 61;
-                }
+                if (starmap.connPool[i].lineRenderer.positionCount != 61) starmap.connPool[i].lineRenderer.positionCount = 61;
 
                 //}
                 // GS2.Warn("ShowSolarSystem6");
-                for (int j = 0; j < 61; j++)
+                for (var j = 0; j < 61; j++)
                 {
                     // GS2.Warn("ShowSolarSystem7");
-                    float f = (float)j * 0.017453292f * 6f; // ty dsp devs :D
+                    var f = (float)j * 0.017453292f * 6f; // ty dsp devs :D
                     Vector3 cPos = GetCenterOfOrbit(starData, pData, ref isMoon);
                     Vector3 position;
                     if (isMoon)
-                    {
                         position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.z);
-                    }
                     else
-                    {
                         position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.z);
-                    }
 
                     // GS2.Warn("ShowSolarSystem7a");
 
                     // rotate position around center by orbit angle
-                    Quaternion quaternion = Quaternion.Euler(pData.orbitInclination, pData.orbitInclination, pData.orbitInclination);
-                    Vector3 dir = quaternion * (position - cPos);
+                    var quaternion = Quaternion.Euler(pData.orbitInclination, pData.orbitInclination, pData.orbitInclination);
+                    var dir = quaternion * (position - cPos);
                     position = dir + cPos;
 
                     starmap.connPool[i].lineRenderer.SetPosition(j, position);
@@ -570,13 +569,11 @@ namespace GalacticScale
                 starmap.connPool[i].lineRenderer.gameObject.SetActive(true);
             }
         }
+
         private static VectorLF3 GetCenterOfOrbit(StarData starData, PlanetData pData, ref bool isMoon)
         {
             // GS2.Warn("GetCenterOfOrbit");
-            if (pData.orbitAroundPlanet != null)
-            {
-                return GetRelativeRotatedPlanetPos(starData, pData.orbitAroundPlanet, ref isMoon);
-            }
+            if (pData.orbitAroundPlanet != null) return GetRelativeRotatedPlanetPos(starData, pData.orbitAroundPlanet, ref isMoon);
 
             isMoon = false;
             return starData.position;
@@ -590,7 +587,7 @@ namespace GalacticScale
             Quaternion quaternion;
             if (pData.orbitAroundPlanet != null)
             {
-                VectorLF3 centerPos = GetRelativeRotatedPlanetPos(starData, pData.orbitAroundPlanet, ref isMoon);
+                var centerPos = GetRelativeRotatedPlanetPos(starData, pData.orbitAroundPlanet, ref isMoon);
                 isMoon = true;
                 pos = new VectorLF3(Mathf.Cos(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + centerPos.x, centerPos.y, Mathf.Sin(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + centerPos.z);
                 quaternion = Quaternion.Euler(pData.orbitInclination, pData.orbitInclination, pData.orbitInclination);
@@ -608,60 +605,36 @@ namespace GalacticScale
         private static void AddStarToStarmap(UIVirtualStarmap starmap, StarData starData)
         {
             // GS2.Warn("AddStarToStarMap");
-            Color color = starmap.starColors.Evaluate(starData.color);
+            var color = starmap.starColors.Evaluate(starData.color);
             if (starData.type == EStarType.NeutronStar)
-            {
                 color = starmap.neutronStarColor;
-            }
             else if (starData.type == EStarType.WhiteDwarf)
-            {
                 color = starmap.whiteDwarfColor;
-            }
-            else if (starData.type == EStarType.BlackHole)
-            {
-                color = starmap.blackholeColor;
-            }
+            else if (starData.type == EStarType.BlackHole) color = starmap.blackholeColor;
 
-            float num2 = 1.2f;
+            var num2 = 1.2f;
             if (starData.type == EStarType.GiantStar)
-            {
                 num2 = 3f;
-            }
             else if (starData.type == EStarType.WhiteDwarf)
-            {
                 num2 = 0.6f;
-            }
             else if (starData.type == EStarType.NeutronStar)
-            {
                 num2 = 0.6f;
-            }
-            else if (starData.type == EStarType.BlackHole)
-            {
-                num2 = 0.8f;
-            }
+            else if (starData.type == EStarType.BlackHole) num2 = 0.8f;
 
             var gsStar = GS2.GetGSStar(starData);
             var decorative = gsStar.Decorative;
             if (decorative) num2 /= 3;
-            string text = starData.displayName + "  ";
+            var text = starData.displayName + "  ";
             if (starData.type == EStarType.GiantStar)
             {
                 if (starData.spectr <= ESpectrType.K)
-                {
                     text += "红巨星".Translate();
-                }
                 else if (starData.spectr <= ESpectrType.F)
-                {
                     text += "黄巨星".Translate();
-                }
                 else if (starData.spectr == ESpectrType.A)
-                {
                     text += "白巨星".Translate();
-                }
                 else
-                {
                     text += "蓝巨星".Translate();
-                }
             }
             else if (starData.type == EStarType.WhiteDwarf)
             {
@@ -680,16 +653,14 @@ namespace GalacticScale
                 text = text + starData.spectr.ToString() + "型恒星".Translate();
             }
 
-         
-            if (starData.index == ((customBirthStar != -1) ? customBirthStar - 1 : starmap._galaxyData.birthStarId - 1))
-            {
-                text = "即将登陆".Translate() + "\r\n" + text;
-            }
-            if (!String.IsNullOrEmpty(gsStar.BinaryCompanion))
+
+            if (starData.index == (customBirthStar != -1 ? customBirthStar - 1 : starmap._galaxyData.birthStarId - 1)) text = "即将登陆".Translate() + "\r\n" + text;
+            if (!string.IsNullOrEmpty(gsStar.BinaryCompanion))
             {
                 var bc = GS2.GetGSStar(gsStar.BinaryCompanion);
                 text += $" with {bc.displayType} binary";
             }
+
             starmap.starPool[0].active = true;
             starmap.starPool[0].starData = starData;
             starmap.starPool[0].pointRenderer.material.SetColor("_TintColor", color);
@@ -705,21 +676,21 @@ namespace GalacticScale
 
             starmap.starPool[0].nameText.gameObject.SetActive(true);
         }
+
         public static void ClearStarmap(UIVirtualStarmap starmap)
         {
             // GS2.Warn("ClearStarmap");
 
-            
-            
-            foreach (UIVirtualStarmap.StarNode starNode in starmap.starPool)
+
+            foreach (var starNode in starmap.starPool)
             {
                 starNode.active = false;
                 starNode.starData = null;
                 starNode.pointRenderer.gameObject.SetActive(false);
                 starNode.nameText.gameObject.SetActive(false);
             }
-            
-            foreach (UIVirtualStarmap.ConnNode connNode in starmap.connPool)
+
+            foreach (var connNode in starmap.connPool)
             {
                 connNode.active = false;
                 connNode.starA = null;
@@ -729,7 +700,6 @@ namespace GalacticScale
             // starmap = new UIVirtualStarmap();
             // starmap.starPool = new List<UIVirtualStarmap.StarNode>();
             // starmap.connPool = new List<UIVirtualStarmap.ConnNode>();
-            
         }
 
         private static float PlanetTemperatureToStarColor(float temperature)
@@ -745,7 +715,7 @@ namespace GalacticScale
         {
             var g = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/");
             var tt = g.GetComponentInChildren<Text>();
-            if (g.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(  g.GetComponentInChildren<Localizer>());
+            if (g.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(g.GetComponentInChildren<Localizer>());
             tt.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
             tt.alignment = TextAnchor.LowerLeft;
             g.SetActive(true);
