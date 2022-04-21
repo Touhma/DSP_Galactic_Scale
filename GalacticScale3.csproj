@@ -8,11 +8,11 @@
 	<PropertyGroup>
 		<AssemblyName>GalacticScale</AssemblyName>
 		<Description>Galaxy Customization for Dyson Sphere Program</Description>
-		<Version>2.4.22</Version>
+		<Version>2.4.23</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>9.0</LangVersion>
 		<OutDir>bin/$(Configuration)</OutDir>
-		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale_GalacticScale\</OutDir>
+		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale\</OutDir>
 	</PropertyGroup>
 
 	<ItemGroup>

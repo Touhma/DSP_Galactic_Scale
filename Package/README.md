@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.23 - Fix Camera Shift when loading game after moving camera in system display
+
 - Version 2.4.22 - Add Inner Planet Distance as Star Specific Override to GSGen
 
 - Version 2.4.21 - Fix bug with Vanilla Gen
