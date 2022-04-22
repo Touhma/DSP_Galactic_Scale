@@ -40,6 +40,8 @@ namespace GalacticScale
                 GS2.Warn("LoadingPrefsData");
                 new GamePrefsData().Import(r);
             }
+
+            GS2.Warn("Loaded");
             GameHistoryData gameHistoryData = new GameHistoryData();
             gameHistoryData.Init(new GameData());
             GS2.Warn("Loading GameHistoryData");
