@@ -4,7 +4,7 @@ using System.IO;
 
 namespace GalacticScale
 {
-    public class PatchOnGameSave
+    public partial class PatchOnGameSave
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameSave), "SaveCurrentGame")]

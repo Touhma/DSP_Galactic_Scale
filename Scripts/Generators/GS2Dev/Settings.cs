@@ -55,7 +55,7 @@ namespace GalacticScale.Generators
             for (var i = 0; i < 14; i++)
             {
                 if (!UI.ContainsKey($"{typeLetter[i]}minStars")) break;
-                GS2.Warn($"{importedPreferences.GetInt("OcountBias",30)}");
+                // GS2.Warn($"{importedPreferences.GetInt("OcountBias",30)}");
                 // if (!UI.ContainsKey($"{typeLetter[i]}binaryEnabled") break;
                 UI[$"{typeLetter[i]}minStars"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}minStars", 0));
                 UI[$"{typeLetter[i]}planetCount"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetCount", new FloatPair(1, 10)));

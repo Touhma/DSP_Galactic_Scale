@@ -18,6 +18,8 @@ namespace GalacticScale
 
         public static bool Import(BinaryReader r, string Force = "") // Load Settings from Save Game
         {
+            GS2.Warn("Import");
+
             Log("Importing from Save");
             if (!SaveOrLoadWindowOpen) GSSettings.Reset(0);
             var serializer = new fsSerializer();

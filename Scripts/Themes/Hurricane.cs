@@ -149,8 +149,9 @@ namespace GalacticScale
             WaterItemId = 0,
             Musics = new[]
             {
+                26,
                 11,
-                4
+                4,
             },
             SFXPath = "SFX/sfx-amb-desert-3",
             SFXVolume = 0.4f,

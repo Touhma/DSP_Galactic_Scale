@@ -4,8 +4,8 @@ namespace GalacticScale
 {
     public static partial class PatchOnGameAbnormalityData
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(GameAbnormalityData), "IsAbnormalityChecked")]
-        public static bool IsAbnormalityChecked(ref bool __result)
+        [HarmonyPrefix, HarmonyPatch(typeof(ABN.GameAbnormalityData_0925), "NothingAbnormal")]
+        public static bool IsGameNormal(ref bool __result)
         {
             __result = true;
             return false;

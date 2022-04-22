@@ -130,7 +130,8 @@ namespace GalacticScale
             Musics = new[]
             {
                 5,
-                11
+                11,
+                14,
             },
             SFXPath = "SFX/sfx-amb-desert-2",
             SFXVolume = 0.15f,

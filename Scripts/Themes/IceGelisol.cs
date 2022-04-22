@@ -27,15 +27,36 @@ namespace GalacticScale
 
             Vegetables0 = new int[]
             {
+                669,
+                670,
+                671,
             },
             Vegetables1 = new int[]
             {
+                665,
+                666,
+                667,
+                668,
+                665,
+                666,
+                667,
+                668,
+                664,
+                663,
+                662,
+                661,
             },
             Vegetables2 = new int[]
             {
+                1071,
+                1072,
             },
             Vegetables3 = new int[]
             {
+                1073,
+                1074,
+                1071,
+                1072,
             },
             Vegetables4 = new int[]
             {
@@ -107,8 +128,8 @@ namespace GalacticScale
             WaterItemId = 1000,
             Musics = new[]
             {
+                27,
                 4,
-                11
             },
             SFXPath = "SFX/sfx-amb-desert-2",
             SFXVolume = 0.3f,

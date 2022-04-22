@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.4.23"
-description = "v2.4.23. "
+versionNumber = "2.4.25"
+description = "v2.4.25. BACKUP SAVES!!! Fix for latest DSP Update "
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

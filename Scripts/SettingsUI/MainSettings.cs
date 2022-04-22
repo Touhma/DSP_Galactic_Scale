@@ -193,8 +193,10 @@ namespace GalacticScale
 
         public void EnableDevMode()
         {
-            Preferences.Set("Dev", true);
-            // SavePreferences();
+            GS2.Warn("Toggling Dev Mode");
+            Preferences.Set("Dev", !Preferences.GetBool("Dev", false));
+            Warn($"Dev Mode: {Preferences.GetBool("Dev", false)}");
+            SavePreferences();
         }
 
         public void ResetBinaryStars(Val o)
