@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.4.26"
-description = "v2.4.26. BACKUP SAVES!!! Prevents some errors "
+versionNumber = "2.5.0"
+description = "v2.5. BACKUP SAVES!!! Changed the way GS Handles savedata"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

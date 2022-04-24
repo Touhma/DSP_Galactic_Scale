@@ -44,7 +44,8 @@ namespace GalacticScale
                 }
                 else
                 {
-                    Log($"Settings Loaded From Save File { GSSettings.BirthPlanet.Name}");
+                    Warn("**************************");
+                    Log($"Settings Loaded From Save File { GSSettings.BirthPlanet.Name} {GSSettings.Instance.stars.Count} {GSSettings.StarCount}");
                     gameDesc.resourceMultiplier = GSSettings.Instance.galaxyParams.resourceMulti;
                     // Log($"RM1:{gameDesc.resourceMultiplier}");
                     // Log(gameDesc.resourceMultiplier.ToString());
