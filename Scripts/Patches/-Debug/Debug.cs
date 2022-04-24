@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -30,7 +31,8 @@ namespace GalacticScale
                     GS2.Warn($"If False {num2}");
                     if (!LDB.achievements.Exist(num2)) return false;
                     AchievementProto achievementProto = LDB.achievements.Select(num2);
-                    (__instance.runtimeAsm.CreateInstance(achievementProto.RuntimeDataName) as AchievementRuntimeData).Import(r);
+                    if (!String.IsNullOrEmpty(achievementProto.RuntimeDataName)) 
+                    (__instance.runtimeAsm.CreateInstance(achievementProto.RuntimeDataName) as AchievementRuntimeData)?.Import(r);
                 }
             }
 

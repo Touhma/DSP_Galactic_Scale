@@ -26,8 +26,8 @@ namespace GalacticScale
 		}
 
 		GS2.Warn("Trying");
-		// try
-		// {
+		try
+		{
 			header = new GameSaveHeader();
 			using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
 			{
@@ -113,16 +113,16 @@ namespace GalacticScale
 					}
 				}
 			}
-		// }
-		// catch (Exception e)
-		// {
-		// 	GS2.Warn("Exception");
-		// 	GS2.Warn(e.Message);
-		// 	GS2.Warn(e.StackTrace);
-		// 	header = null;
-		// 	desc = null;
-		// 	property = null;
-		// }
+		}
+		catch (Exception e)
+		{
+			GS2.Warn("Exception");
+			GS2.Warn(e.Message);
+			GS2.Warn(e.StackTrace);
+			header = null;
+			desc = null;
+			property = null;
+		}
 
 		return false;
 	}

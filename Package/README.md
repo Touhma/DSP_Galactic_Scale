@@ -1,4 +1,6 @@
 # DSP Galactic Scale 2.0 Mod
+- Version 2.4.26 - BACKUP SAVES!!! Prevents some errors when loading saves.
+
 - Version 2.4.25 - BACKUP SAVES!!! Assumed Working in latest DSP Update. Save loading fixed. 
 
 - Version 2.4.24 - Recompile for latest DSP Update, untested. May still not work or throw errors.
