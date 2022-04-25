@@ -1,6 +1,9 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES
+- Version 2.5.2 - Fixed Ice Gellisol rocks
+
+- Version 2.5.1 - Fixed Autosave and LastExit
 
 - Version 2.5.0 - Changed the way GS Handles Saves. No longer injects GS data into the DSP save file. 
 

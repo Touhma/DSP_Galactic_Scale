@@ -354,6 +354,19 @@ namespace GalacticScale
                 ["HurricaneStone8"] = 658,
                 ["HurricaneStone9"] = 659,
                 
+                ["IceFieldFrozenSoilIce1"] = 661,
+                ["IceFieldFrozenSoilIce2"] = 662,
+                ["IceFieldFrozenSoilIce3"] = 663,
+                ["IceFieldFrozenSoilIce4"] = 664,
+                ["IceFieldFrozenSoilIce5"] = 665,
+                ["IceFieldFrozenSoilIce6"] = 666,
+                ["IceFieldFrozenSoilIce7"] = 667,
+                ["IceFieldFrozenSoilIce8"] = 668,
+                ["IceFieldFrozenSoilIce9"] = 669,
+                ["IceFieldFrozenSoilIce10"] = 670,
+                ["IceFieldFrozenSoilIce11"] = 671,
+                
+                
                 ["MedGrass7"] = 1001,
                 ["MedGrass8"] = 1002,
                 ["MedGrass9"] = 1003,
@@ -393,6 +406,11 @@ namespace GalacticScale
                 ["HurricaneStone13"] = 1064,
                 ["HurricaneStone14"] = 1065,
                 ["HurricaneStone15"] = 1066,
+                
+                ["IceFieldFrozenIce12"] = 1071,
+                ["IceFieldFrozenIce13"] = 1072,
+                ["IceFieldFrozenIce14"] = 1073,
+                ["IceFieldFrozenIce15"] = 1074,
                 
                 ["LandingPod"] = 9999
             };

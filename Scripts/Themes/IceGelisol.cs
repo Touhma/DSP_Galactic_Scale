@@ -21,7 +21,7 @@ namespace GalacticScale
             Temperature = -5.0f,
             Distribute = EThemeDistribute.Default,
             ModX = new Vector2(0.0f, 0.0f),
-            ModY = new Vector2(1.0f, 1.0f),
+            ModY = new Vector2(0.35f, -0.15f),
             VeinSettings = new GSVeinSettings { Algorithm = "Vanilla" },
             AmbientSettings = new GSAmbientSettings(),
 

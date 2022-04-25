@@ -20,7 +20,8 @@ namespace GalacticScale
             }
             if (File.Exists(backuppath)) File.Move(backuppath, deletepath);
             if (File.Exists(path)) File.Move(path, backuppath);
-            if (saveName.Length < 9 || saveName.Substring(1,8) != "autosave" && saveName.Substring(1,8) != "lastexit") GS2.SaveSettingsToJson(path);
+            // if (saveName.Length < 9 || saveName.Substring(1,8) != "autosave" && saveName.Substring(1,8) != "lastexit")
+            GS2.SaveSettingsToJson(path);
             if (File.Exists(deletepath)) File.Delete(deletepath);
             
             
