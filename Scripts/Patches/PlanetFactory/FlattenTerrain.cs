@@ -155,8 +155,17 @@ namespace GalacticScale
                 var num18 = __instance.tmp_ids[l];
                 var vector = __instance.vegePool[num18].pos;
                 vector = quaternion * (vector - pos);
-                if (bound.Contains(vector))
+                if (bound.Contains(vector) && __instance.vegePool[num18].protoId < 9999) //Edited after 0.9.25 update
                 {
+                    if (GameMain.gameTick > 0L)
+                    {
+                        VegeProto vegeProto = LDB.veges.Select((int)__instance.vegePool[num18].protoId);
+                        if (vegeProto != null)
+                        {
+                            VFEffectEmitter.Emit(vegeProto.MiningEffect, __instance.vegePool[num18].pos, __instance.vegePool[num18].rot);
+                            VFAudio.Create(vegeProto.MiningAudio, null, __instance.vegePool[num18].pos, true, 1, -1, -1L);
+                        }
+                    } // End 0.9.25 edit
                     __instance.RemoveVegeWithComponents(num18);
                 }
                 else
