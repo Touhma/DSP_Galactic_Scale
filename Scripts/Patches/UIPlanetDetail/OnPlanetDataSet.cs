@@ -123,7 +123,21 @@ namespace GalacticScale
                 var waterItemId = __instance.planet.waterItemId;
                 Sprite icon = null;
                 var str = "无".Translate();
-                if (waterItemId < 0) str = waterItemId != -1 ? "未知".Translate() : "熔岩".Translate();
+                if (waterItemId < 0)
+                {
+                    if (waterItemId == -1)
+                    {
+                        str = "熔岩".Translate();
+                    }
+                    else if (waterItemId == -2)
+                    {
+                        str = "冰".Translate();
+                    }
+                    else
+                    {
+                        str = "未知".Translate();
+                    }
+                }
 
                 var itemProto1 = LDB.items.Select(waterItemId);
                 if (itemProto1 != null)
