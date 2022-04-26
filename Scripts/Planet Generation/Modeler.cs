@@ -139,7 +139,10 @@ namespace GalacticScale
                                 if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVeins(false);
                                 num4 = highStopwatch.duration;
                             }
-
+                            else if (planetData.galaxy.birthPlanetId == planetData.id) //Added after 0.9.25 update
+                            {
+                                planetData.GenBirthPoints();
+                            }//end add 0.9.25 update
                             if (planetComputeThreadLogs != null)
                                 lock (planetComputeThreadLogs)
                                 {
