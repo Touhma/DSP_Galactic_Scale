@@ -97,6 +97,7 @@ namespace GalacticScale
             __instance.stationPilerLevel = 1;
             __instance.remoteStationExtraStorage = 0;
             __instance.localStationExtraStorage = 0;
+            __instance.propertyData.Clear(); //Added after 0.9.25 update
             return false;
         }
         
