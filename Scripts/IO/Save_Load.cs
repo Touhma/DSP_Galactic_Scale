@@ -16,7 +16,7 @@ namespace GalacticScale
             // w.Write(json);
         }
 
-        public static bool Import(BinaryReader r, string Force = "") // Load Settings from Save Game
+        public static bool Import(BinaryReader r, string LoadPath = "") // Load Settings from Save Game
         {
             // return true;
             GS2.Warn("Import");
@@ -28,7 +28,7 @@ namespace GalacticScale
             GS2.Warn($"Initial Stream Position:{position}");
             var version = "2";
             var json = "";
-
+            // var isVanilla = true;
             version = r.ReadString();
             json = r.ReadString();
             fsData data2;
@@ -39,7 +39,7 @@ namespace GalacticScale
                 Warn(parseResult.FormattedMessages);
                 r.BaseStream.Position = position;
                 if (SaveOrLoadWindowOpen) return true;
-                if (Force == "") // Must be a vanilla save?
+                if (LoadPath == "" || !File.Exists(LoadPath)) // Must be a vanilla save?
                 {
                     ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
                     return false;
@@ -47,14 +47,14 @@ namespace GalacticScale
             }
             
             GS2.Warn( $"parseResult:{parseResult.Succeeded}");
-            GS2.Warn($"Input file : {Force}");
+            GS2.Warn($"Input file : {LoadPath}");
             GS2.Warn($"After Parse, Stream Position:{r.BaseStream.Position}");    
             if (SaveOrLoadWindowOpen) return true;
             var result = new GSSettings(0);
-            if (Force != "")
+            if (LoadPath != "")
             {
-                GS2.Warn($"*** Loading Settings From {Force}");
-                LoadSettingsFromJson(Force);
+                GS2.Warn($"*** Loading Settings From {LoadPath}");
+                LoadSettingsFromJson(LoadPath);
                 Warn($"StarCount : {GSSettings.StarCount}");
             }
             else
@@ -66,10 +66,10 @@ namespace GalacticScale
                     if (deserialize.Failed)
                     {
                         Warn("Deserialize Failed");
-                        if (Force == "") r.BaseStream.Position = position;
-                        if (Force == "") ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
+                        if (LoadPath == "") r.BaseStream.Position = position;
+                        if (LoadPath == "") ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
                         GS2.Warn($"After Deserialize Stream Position:{r.BaseStream.Position}");
-                        if (Force == "") return false;
+                        if (LoadPath == "") return false;
                     }
                     else
                     {
