@@ -31,17 +31,22 @@ namespace GalacticScale
         private IEnumerator Teleport(PlanetData planet)
         {
             yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(0.1f);
             TargetPlanet = null;
             TargetStar = null;
             GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * planet.realRadius;
             GameMain.data.mainPlayer.movementState = EMovementState.Sail;
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
+            yield return new WaitForSeconds(1);
+            GameMain.mainPlayer.transform.localScale = Vector3.one * GS2.Config.MechaScale;
+
         }
 
         private IEnumerator Teleport(StarData star)
         {
             yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(0.1f);
             TargetPlanet = null;
             TargetStar = null;
             GameMain.mainPlayer.uPosition = star.uPosition + VectorLF3.unit_z * 1;
@@ -49,6 +54,8 @@ namespace GalacticScale
             TeleportEnabled = false;
             GameMain.mainPlayer.transform.localScale = Vector3.one;
             GameCamera.instance.FrameLogic();
+            yield return new WaitForSeconds(1);
+            GameMain.mainPlayer.transform.localScale = Vector3.one  * GS2.Config.MechaScale;
         }
 
         public bool NavArrowClick(UIStarmap starmap)

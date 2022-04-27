@@ -34,7 +34,7 @@ namespace GalacticScale
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
         public static GS2MainSettings Config = new();
-
+        
         public static GalaxyData galaxy;
 
         public static GameDesc gameDesc;

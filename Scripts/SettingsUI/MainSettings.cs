@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using GSSerializer;
+using UnityEngine;
 using static GalacticScale.GS2;
 
 namespace GalacticScale
@@ -31,6 +32,7 @@ namespace GalacticScale
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
         public bool ScarletRevert => Preferences.GetBool("RevertScarlet");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
+        public float MechaScale => Preferences.GetFloat("MechaScale", 1f);
 
         // public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
         public bool MinifyJson
@@ -152,6 +154,7 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));
+            DebugOptions.Add(GSUI.Slider("Mecha Scale".Translate(), 0.1f, 1f, 10f, 0.1f, "MechaScale", ScaleMecha, "How big Icarus should be. 1 = default"));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Planet ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSPlanetScaleFactor", null, "How big planets should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Star ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSStarScaleFactor", null, "How big star should be in the new game system view".Translate()));
@@ -199,9 +202,13 @@ namespace GalacticScale
             SavePreferences();
         }
 
+        public void ScaleMecha(Val o)
+        {
+            if (GameMain.mainPlayer != null) GameMain.mainPlayer.transform.localScale = Vector3.one * Preferences.GetFloat("MechaScale", 1f);
+        }
         public void ResetBinaryStars(Val o)
         {
-            var random = new Random(GSSettings.Seed);
+            var random = new GS2.Random(GSSettings.Seed);
             foreach (var star in GSSettings.Stars)
                 if (star.BinaryCompanion != null)
                 {
