@@ -1,6 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES
+- Version 2.5.6 - Improve Teleportation Functionality
 - Version 2.5.5 - Fix Mecha Scaling when teleporting and add debug scale value for funsies.
 - Version 2.5.4 - Fix Vanilla Generator Saves
 - Version 2.5.3 - Added some missing code from recent updates that dpmm99 discovered
