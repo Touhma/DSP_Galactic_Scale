@@ -191,7 +191,7 @@ namespace GalacticScale.Generators
                 body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f) * random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
                 var innerPlanetDistanceForStar = GetInnerPlanetDistanceForStar(star);
-                GS2.Warn($"{innerPlanetDistanceForStar} for star {star.Name} {star.displayType}");
+                // GS2.Warn($"{innerPlanetDistanceForStar} for star {star.Name} {star.displayType}");
                 if (GS2.IsPlanetOfStar(star, body) && body.OrbitRadius < innerPlanetDistanceForStar && (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets")))
                     body.RotationPeriod = body.OrbitalPeriod; // Tidal Lock
                 else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 1.5f && random.NextFloat() < 0.2f)

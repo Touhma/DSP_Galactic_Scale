@@ -45,6 +45,15 @@ namespace GalacticScale.Generators
                     //For rocky worlds
                     var smolTheme = theme.Clone();
                     smolTheme.DisplayName = theme.DisplayName;
+                    if (smolTheme.DisplayName.Length > 3 && smolTheme.DisplayName.Substring(smolTheme.DisplayName.Length - 3) == "sol")
+                    {
+                        // GS2.Warn($"RENAME {smolTheme.DisplayName} {smolTheme.DisplayName.Substring(smolTheme.DisplayName.Length - 3)}");
+                        smolTheme.DisplayName = smolTheme.DisplayName.Substring(0, smolTheme.DisplayName.Length - 3) + "smol";
+                    }
+                    else
+                    {
+                        // GS2.Warn($"NO RENAME {smolTheme.DisplayName} {smolTheme.DisplayName.Substring(smolTheme.DisplayName.Length - 3)}");
+                    }
                     smolTheme.Name += "smol";
                     smolTheme.VeinSettings.Algorithm = "GS2W";
                     smolTheme.CustomGeneration = true;
@@ -321,8 +330,25 @@ namespace GalacticScale.Generators
             iceMalusol.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
             iceMalusol.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
             iceMalusol.AmbientSettings.CubeMap = "GS2";
+            Color ico = new Color(0.4f, 0.0f, 0.1f, 1.0f);
+            iceMalusol.oceanMaterial.Colors = new Dictionary<string, Color>() {
+                ["_Color"] = ico,
+                ["_Color0"] = ico,
+                ["_Color1"] = ico,
+                ["_Color2"] = ico,
+                ["_Color3"] = ico,
+                ["_DensityParams"] = new Color(0.9f,0.1f,0.9f,0),
+                };
+            iceMalusol.MinRadius = 50;
             iceMalusol.Process();
+            var iceMalusmol = new GSTheme("IceMalusmol", "Ice Malusmol".Translate(), "IceMalusol");
+            iceMalusmol.MaxRadius = 40;
+            iceMalusmol.MinRadius = 5;
 
+            iceMalusmol.VeinSettings.Algorithm = "GS2W";
+            iceMalusmol.CustomGeneration = true;
+            iceMalusmol.atmosphereMaterial.Params["_Intensity"] = 0f;
+            iceMalusmol.Process();
             var acidGreenhouse = new GSTheme("AcidGreenhouse", "Acid Greenhouse".Translate(), "VolcanicAsh");
             acidGreenhouse.atmosphereMaterial.Tint = new Color(0.5f, 0.4f, 0.0f, 0.8f);
             acidGreenhouse.atmosphereMaterial.Params = new Dictionary<string, float>

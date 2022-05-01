@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.5.6"
-description = "v2.5.6 Better Teleporting"
+versionNumber = "2.5.8"
+description = "v2.5.8 Fixed Scarlet Ice Lake"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

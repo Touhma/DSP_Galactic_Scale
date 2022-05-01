@@ -29,6 +29,7 @@ namespace GalacticScale
             planet.type = gsTheme.PlanetType;
             planet.ionHeight = gsTheme.IonHeight;
             planet.windStrength = gsTheme.Wind;
+            planet.iceFlag = gsTheme.IceFlag;
             planet.waterHeight = gsTheme.WaterHeight;
             planet.waterItemId = gsTheme.WaterItemId;
             planet.levelized = gsTheme.UseHeightForBuild;

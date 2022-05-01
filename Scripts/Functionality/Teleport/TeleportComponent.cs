@@ -14,8 +14,8 @@ namespace GalacticScale
             ticker++;
             if (ticker > 60)
             {
-                GS2.Warn(
-                    $"FU: TP:{TargetPlanet != null} TS:{TargetStar != null} TE:{TeleportEnabled} LS:{GameMain.localStar != null} LSL{GameMain.localStar?.loaded}");
+                // GS2.Warn(
+                    // $"FU: TP:{TargetPlanet != null} TS:{TargetStar != null} TE:{TeleportEnabled} LS:{GameMain.localStar != null} LSL{GameMain.localStar?.loaded}");
                 ticker = 0;
             }
             else return;

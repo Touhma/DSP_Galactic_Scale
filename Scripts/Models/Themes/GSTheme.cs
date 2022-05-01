@@ -412,6 +412,7 @@ namespace GalacticScale
             IonHeight = baseTheme.IonHeight;
             WaterHeight = baseTheme.WaterHeight;
             WaterItemId = baseTheme.WaterItemId;
+            IceFlag = baseTheme.IceFlag;
             Musics = (int[])baseTheme.Musics.Clone();
             SFXPath = baseTheme.SFXPath;
             SFXVolume = baseTheme.SFXVolume;
