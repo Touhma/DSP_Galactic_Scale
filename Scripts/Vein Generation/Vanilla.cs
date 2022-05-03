@@ -287,9 +287,10 @@ namespace GalacticScale
                 Array.Copy(themeProto.VeinCount, 0, veinCounts, 1, Math.Min(themeProto.VeinCount.Length, veinCounts.Length - 1)); //How many veins per group
             if (themeProto.VeinOpacity != null)
                 Array.Copy(themeProto.VeinOpacity, 0, veinOpacity, 1, Math.Min(themeProto.VeinOpacity.Length, veinOpacity.Length - 1)); //How Rich the veins are
-            gsPlanet.planetData.veinSpotsSketch = veinSpots;
+            
             var p = InitSpecials(gsPlanet, veinSpots, veinCounts, veinOpacity);
             InitRares(gsPlanet, themeProto, veinSpots, veinCounts, veinOpacity, p);
+            gsPlanet.planetData.veinSpotsSketch = veinSpots;
         }
     }
 }

@@ -169,7 +169,7 @@ namespace GalacticScale
                 if (!GS2.Config.ForceRare && veinGroups[i].rare && gsPlanet.planetData.star.level + 0.1 < random.NextDouble() * random.NextDouble())
                     //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;
-                if (sketchOnly)
+                if (sketchOnly && veinGroups[i].count > 0)
                 {
                     gsPlanet.planetData.veinSpotsSketch[(int)veinGroups[i].type]++;
                     continue;
@@ -210,7 +210,7 @@ namespace GalacticScale
                     veinGroups[i].position = potentialVector;
                     // GS2.Log("Succeeded finding a vector =" + veinGroups[i].type + " on planet:" + gsPlanet.Name);
                 }
-                // else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
+                else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
             }
 
             if (sketchOnly) return null;
