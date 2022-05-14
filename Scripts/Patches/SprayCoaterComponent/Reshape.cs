@@ -14,8 +14,8 @@ namespace GalacticScale
         // Replaces all 200f with planet.realRadius. There is a -200f in a Vector3 that will be missed, haven't noticed any issues yet with it.
         
         // [HarmonyDebug]
-        // [HarmonyTranspiler]
-        // [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
         public static IEnumerable<CodeInstruction> SpraycoaterComponentReshapeTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false,
@@ -28,7 +28,8 @@ namespace GalacticScale
             }
 
             instructions =  codeMatcher.Repeat(z => z // Repeat for all occurences 
-                .SetInstruction(Transpilers.EmitDelegate<Func<float>>(() => GameMain.localPlanet?.realRadius ?? 200f))).InstructionEnumeration();
+	            .SetInstructionAndAdvance(new CodeInstruction(OpCodes.Ldarg_1)) 
+	            .Insert(Transpilers.EmitDelegate<Func<PlanetFactory, float>>((factory) => factory.planet?.realRadius ?? 200f))).InstructionEnumeration();
             
             // codeMatcher = new CodeMatcher(instructions, il).MatchForward(false,
             //     new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(400))); // Search for 200f
@@ -47,8 +48,8 @@ namespace GalacticScale
             return instructions;
         }
         
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
         public static bool Reshape(SpraycoaterComponent __instance, PlanetFactory factory, AnimData[] _animPool)
 
 {
