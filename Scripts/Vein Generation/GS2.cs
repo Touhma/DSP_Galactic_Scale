@@ -44,7 +44,7 @@ namespace GalacticScale
 
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
-            foreach (var veinGroup in ores) veinSpots[(int)veinGroup.type]++;
+            foreach (var veinGroup in ores) if (veinGroup.veins.Count > 0) veinSpots[(int)veinGroup.type]++;
 
             gsPlanet.planetData.veinSpotsSketch = veinSpots;
         }

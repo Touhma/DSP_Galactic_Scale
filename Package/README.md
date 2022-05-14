@@ -1,6 +1,8 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES
+- Version 2.5.11 - Add toggle for starting system rare
+- Version 2.5.10 - Add slider for planet rotation in Sol Generator for @Cidno
 - Version 2.5.9 - Possible bug fix for reported veins in starmap
 - Version 2.5.8 - Fix Scarlet Ice Lake Ice. Can now walk/build on.
 - Version 2.5.7 - Fixed duplicate space capsule

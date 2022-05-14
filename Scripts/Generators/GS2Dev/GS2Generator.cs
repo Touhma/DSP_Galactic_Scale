@@ -74,6 +74,7 @@ namespace GalacticScale.Generators
             // GenerateOrbits();
             highStopwatch.Begin();
             GeneratePlanets();
+            if (!preferences.GetBool("noRaresStartingSystem", false)) RemoveRaresFromStartingSystem();
             Log($"Planets Generated: {highStopwatch.duration:F5}");
             // AssignOrbits();
             highStopwatch.Begin();

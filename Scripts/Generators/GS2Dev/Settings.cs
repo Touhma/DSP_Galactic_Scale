@@ -192,6 +192,7 @@ namespace GalacticScale.Generators
             preferences.Set("birthPlanetSize", 200);
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
+            preferences.Set("noRaresStartingSystem", false);
             preferences.Set("birthTidalLock", false);
             preferences.Set("birthRareDisable", true);
             preferences.Set("limitPlanetSize20", false);
@@ -357,6 +358,7 @@ namespace GalacticScale.Generators
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
+            UI.Add("noRaresStartingSystem",bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
