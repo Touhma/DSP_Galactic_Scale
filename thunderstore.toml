@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.5.12"
-description = "v2.5.12 Better Nebula Compatibility"
+versionNumber = "2.5.13"
+description = "v2.5.13 Better Nebula Compatibility"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

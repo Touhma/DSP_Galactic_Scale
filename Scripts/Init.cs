@@ -183,6 +183,13 @@ namespace GalacticScale
                 updateMessage = "";
             }
 
+            if (ActiveGenerator != GetGeneratorByID(GSSettings.Instance.generatorGUID))
+            {
+                ActiveGenerator = GetGeneratorByID(GSSettings.Instance.generatorGUID);
+                GSEvents.GeneratorChange(ActiveGenerator);
+            }
+
+            
             // Warn("Step8");
             UpdateNebulaSettings();
             // Warn("Step9");
