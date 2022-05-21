@@ -10,7 +10,7 @@ namespace GalacticScale
     public class PatchOnStationComponent
     {
         // Two patches being made to StationComponent.InternalTickRemote:
-        // 1. Allow logistics vessels to path in systems up to 99 astrobodies, up from 10.
+        // 1. Allow logistics vessels to path in systems up to 100 astrobodies, up from 10.
         // 2. Allow logistics vessels to get much closer to stars, rather than staying 2.5x radius away.
         //    Makes planets near huge stars reachable by ship.
         // [HarmonyDebug]
@@ -27,7 +27,7 @@ namespace GalacticScale
             }
 
             instructions = codeMatcher.Repeat(z => z // Repeat for all occurences 
-                    .Set(OpCodes.Ldc_I4_S, 99)) // Replace operand with 99
+                    .Set(OpCodes.Ldc_I4_S, 100)) // Replace operand with 100
                 .InstructionEnumeration();
             return instructions;
         }
