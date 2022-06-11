@@ -12,7 +12,6 @@ namespace GalacticScale
             DisplayName = "Ice Field Gelisol".Translate(),
             PlanetType = EPlanetType.Ice,
             ThemeType = EThemeType.Telluric,
-
             LDBThemeId = 10,
             Algo = 3,
             MinRadius = 5,
@@ -23,7 +22,6 @@ namespace GalacticScale
             ModX = new Vector2(0.0f, 0.0f),
             ModY = new Vector2(0.35f, -0.15f),
             VeinSettings = new GSVeinSettings { Algorithm = "Vanilla" },
-            AmbientSettings = new GSAmbientSettings(),
 
             Vegetables0 = new int[]
             {

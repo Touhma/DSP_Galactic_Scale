@@ -1,6 +1,9 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES
+
+- Version 2.5.15 - Add new Planet Types (IceGelisol 2/3, FrozenTundra, PandoraSwamp 1/2, Crystal Desert, Savanna)
+- Version 2.5.14 - Update for DSP 12900 (New Planets Not Yet Added, I'll be working on them today)
 - Version 2.5.13 - Starfi5h's Nebula Compatibility fix
 - Version 2.5.12 - Better Nebula Compatibility RE: Spray Coater Graphics
 - Version 2.5.11 - Add toggle for starting system rare
@@ -17,11 +20,11 @@
 
 - Version 2.5.1 - Fixed Autosave and LastExit
 
-- Version 2.5.0 - Changed the way GS Handles Saves. No longer injects GS data into the DSP save file. 
+- Version 2.5.0 - Changed the way GS Handles Saves. No longer injects GS data into the DSP save file.
 
 - Version 2.4.26 - BACKUP SAVES!!! Prevents some errors when loading saves.
 
-- Version 2.4.25 - BACKUP SAVES!!! Assumed Working in latest DSP Update. Save loading fixed. 
+- Version 2.4.25 - BACKUP SAVES!!! Assumed Working in latest DSP Update. Save loading fixed.
 
 - Version 2.4.24 - Recompile for latest DSP Update 0.9.25 , untested. May still not work or throw errors.
 
@@ -33,7 +36,8 @@
 
 - Version 2.4.20 - Fix bug with comet generation
 
-- Version 2.4.19 - Fix Planet Placement and Solar Values in GSGen. Fix SystemDisplay. Add "Start at PlanetName". Fix Nebula Compatibility (thanks starfish!)
+- Version 2.4.19 - Fix Planet Placement and Solar Values in GSGen. Fix SystemDisplay. Add "Start at PlanetName". Fix
+  Nebula Compatibility (thanks starfish!)
 
 - Version 2.4.18 - Fix orbit spacing :)
 
@@ -51,13 +55,16 @@
 
 - Version 2.4.11 - Hopefully fix logistic vessel pathing around huge stars. Thanks 46bit
 
-- Version 2.4.10 - Hopefully more compatibility with Nebula. Fixed Spraycoater attaching to existing belt. Fixed spraycoater graphical glitch. Fixed a few small bugs. Thanks starfish!
+- Version 2.4.10 - Hopefully more compatibility with Nebula. Fixed Spraycoater attaching to existing belt. Fixed
+  spraycoater graphical glitch. Fixed a few small bugs. Thanks starfish!
 
 - Version 2.4.9 - Fixed blueprints using extra space
 
-- Version 2.4.8 - Fixed Lava & Hurricane Themes missing rocks. Added hint text to galaxy select. Clamped solar power to 1-500%. Fixed GS2 Star Overrides not loading correctly. Fixed bug where planetdetail wouldnt close on game start.
+- Version 2.4.8 - Fixed Lava & Hurricane Themes missing rocks. Added hint text to galaxy select. Clamped solar power to
+  1-500%. Fixed GS2 Star Overrides not loading correctly. Fixed bug where planetdetail wouldnt close on game start.
 
-- Version 2.4.7 - Fixed Error when saving games with short names. Added configurable mouse tolerance for systemdisplay. Fixed Planet name text flickering in center of screen when clicked.
+- Version 2.4.7 - Fixed Error when saving games with short names. Added configurable mouse tolerance for systemdisplay.
+  Fixed Planet name text flickering in center of screen when clicked.
 
 - Version 2.4.6 - Fixed Warning System for Raptor (Hopefully). Fixed Quickstart bug from 2.4.3
 
@@ -71,16 +78,16 @@
 
 - Version 2.4.1 - Fix the icon :)
 
-- Version 2.4 - Merge Experimental and Main Branches
-              - Fix a bunch of bugs
+- Version 2.4 - Merge Experimental and Main Branches - Fix a bunch of bugs
 
 - Version 2.3.16 - Comets added to GS2 Generator
 
-- Version 2.3.15 - Test GS2 More realistic solar power. Settings update. Will require generator recompile. 
+- Version 2.3.15 - Test GS2 More realistic solar power. Settings update. Will require generator recompile.
 
 - Version 2.3.14 - Fixed blueprints at poles. Now deletes logs older than a week
 
-- Version 2.3.13 - Fixed issues in galaxy select. Fixed loading game when in space. Fixed loading game putting player inside planet. Fixed Obsidian theme for new games.
+- Version 2.3.13 - Fixed issues in galaxy select. Fixed loading game when in space. Fixed loading game putting player
+  inside planet. Fixed Obsidian theme for new games.
 
 - Version 2.3.12 - Removed a lot of logspam. Fixed error on quit while planets loading
 
@@ -88,7 +95,8 @@
 
 - Version 2.3.10 - Fixed the galaxy select star/planet labels. Hit alt to get them all to show
 
-- Version 2.3.9 - @starfi5h 's super fast start implemented. No more waiting for every planet to load! Fixed bug when quitting before all planets are generated.
+- Version 2.3.9 - @starfi5h 's super fast start implemented. No more waiting for every planet to load! Fixed bug when
+  quitting before all planets are generated.
 
 - Version 2.3.8 - Fix gamestart - Nebula tested and working at least as far as new game is concerned
 
@@ -100,15 +108,19 @@
 
 - Version 2.3.4 - Further refinement of system view
 
-- Version 2.3.3 - Implemented System View in Galaxy Select Screen. Click a star to view the system. Currently testing scale of planets etc, help by trying new values under Debug Options in settings. Post screenshots to our discord if you find a combination that works well. I'm thinking we might need to apply some sort of logarithmic compression to boost tiny planets and shrink huge gas giants. 
-- Added CloseError as a dependency. You're probably going to get errors, why look at the red box of annoyance if you don't have to?
+- Version 2.3.3 - Implemented System View in Galaxy Select Screen. Click a star to view the system. Currently testing
+  scale of planets etc, help by trying new values under Debug Options in settings. Post screenshots to our discord if
+  you find a combination that works well. I'm thinking we might need to apply some sort of logarithmic compression to
+  boost tiny planets and shrink huge gas giants.
+- Added CloseError as a dependency. You're probably going to get errors, why look at the red box of annoyance if you
+  don't have to?
 
 - Version 2.3.2 - Finally fixed North/South Pole markers on non standard planet sizes :)
 
 - Version 2.3.1 - Changed Luminosity Boost. Fixed Slider rounding error. Fixed Moon size for Starter Planet.
 
-- Version 2.3 - Experimental UI Changes to sliders. Includes button to switch between slider and text entry. Floating point bug not fixed. :(
-
+- Version 2.3 - Experimental UI Changes to sliders. Includes button to switch between slider and text entry. Floating
+  point bug not fixed. :(
 
 [![Galactic Scale Trailer](https://github.com/Touhma/DSP_Plugins/blob/main/thumb.png?raw=true)](https://www.youtube.com/watch?v=JpdW3S73hYw "Galactic Scale Trailer - Click to Watch!")
 
@@ -205,30 +217,31 @@ the moons, planets, stars, etc
 
 This mod is and will always be free of charge for everyone.
 
-If you really want to support us, there's a donation link at the bottom of the about page on our website http://customizing.space
+If you really want to support us, there's a donation link at the bottom of the about page on our
+website http://customizing.space
 
 Credits:
 
 - innominata - GS1/GS2/GS3 Code/Art
-- 
+-
 - Touhma - GS1 Mod Developer / Advisor
-- 
+-
 - Shad0wlife - GS1/GS2 Code / Advisor
-- 
+-
 - GlitchHound - GS1 Code / Advisor
-- 
+-
 - sp00ktober - GS2/GS3 Code /Advisor
-- 
+-
 - tyukara - GS2 Japanese Translation
-- 
+-
 - Mushroom - GS1 Dev Env
-- 
+-
 - PhantomGamers - GS2 Dev Env / Advisor
-- 
+-
 - starfish - GS3 Code / Advisor
-- 
+-
 - Kremnev8 - GS2 Code / Advisor
-- 
+-
 - NHunter - GS2 Code / Advisor
 -
 - 46Bit - GS2 Code

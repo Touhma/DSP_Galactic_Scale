@@ -86,7 +86,14 @@ namespace GalacticScale
                 ["IceGiant3"] = Themes.IceGiant3,
                 ["IceGiant4"] = Themes.IceGiant4,
                 ["GasGiant5"] = Themes.Gas5,
-                ["AridDesert2"] = Themes.AridDesert2
+                ["AridDesert2"] = Themes.AridDesert2,
+                ["IceGelisol2"] = Themes.IceGelisol2,
+                ["IceGelisol3"] = Themes.IceGelisol3,
+                ["Savanna"] = Themes.Savanna,
+                ["CrystalDesert"] = Themes.CrystalDesert,
+                ["FrozenTundra"] = Themes.FrozenTundra,
+                ["PandoraSwamp"] = Themes.PandoraSwamp,
+                ["PandoraSwamp2"] = Themes.PandoraSwamp2
             };
 
             return t;

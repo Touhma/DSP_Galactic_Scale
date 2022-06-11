@@ -34,30 +34,7 @@ namespace GalacticScale
                 VeinTypes = new GSVeinTypes()
             },
 //AmbientSettings 1
-            AmbientSettings = new GSAmbientSettings
-            {
-                Color1 = new Color(0f, 0f, 0f, 1f),
-                Color2 = new Color(0f, 0f, 0f, 1f),
-                Color3 = new Color(0f, 0f, 0f, 1f),
-                WaterColor1 = new Color(0f, 0f, 0f, 1f),
-                WaterColor2 = new Color(0f, 0f, 0f, 1f),
-                WaterColor3 = new Color(0f, 0f, 0f, 1f),
-                BiomeColor1 = new Color(1f, 1f, 1f, 0f),
-                BiomeColor2 = new Color(1f, 1f, 1f, 0f),
-                BiomeColor3 = new Color(1f, 1f, 1f, 0f),
-                DustColor1 = new Color(1f, 1f, 1f, 0f),
-                DustColor2 = new Color(1f, 1f, 1f, 0f),
-                DustColor3 = new Color(1f, 1f, 1f, 0f),
-                DustStrength1 = 1f,
-                DustStrength2 = 1f,
-                DustStrength3 = 1f,
-                BiomeSound1 = 0,
-                BiomeSound2 = 0,
-                BiomeSound3 = 0,
-                CubeMap = "Vanilla",
-                Reflections = new Color(),
-                LutContribution = 0f
-            },
+
             Vegetables0 = new[]
             {
                 617,

@@ -1,51 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
-    <TargetFramework>net472</TargetFramework>
-    <RootNamespace>GalacticScale</RootNamespace>
-  </PropertyGroup>
-  <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
-	<PropertyGroup>
-		<AssemblyName>GalacticScale</AssemblyName>
-		<Description>Galaxy Customization for Dyson Sphere Program</Description>
-		<Version>2.5.13</Version>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>9.0</LangVersion>
-		<OutDir>bin/$(Configuration)</OutDir>
-		<OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale\</OutDir>
-	</PropertyGroup>
+    <PropertyGroup>
+        <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
+        <TargetFramework>net472</TargetFramework>
+        <RootNamespace>GalacticScale</RootNamespace>
+    </PropertyGroup>
+    <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
+    <PropertyGroup>
+        <AssemblyName>GalacticScale</AssemblyName>
+        <Description>Galaxy Customization for Dyson Sphere Program</Description>
+        <Version>2.5.15</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>9.0</LangVersion>
+        <OutDir>bin/$(Configuration)</OutDir>
+        <OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale\</OutDir>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-		<PackageReference Include="BepInEx.Core" Version="5.*" />
-		<PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-		<PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
-		<PackageReference Include="DysonSphereProgram.GameLibs" Version="0.9.25.11989-r.0" IncludeAssets="compile" />
-		<PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.Core" Version="5.*" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+        <PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
+        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.9.26.12891-r.0" IncludeAssets="compile" />
+        <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
+    </ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
-	</ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+    </ItemGroup>
 
-	<ItemGroup>
-	  <Reference Include="GSUI">
-	    <HintPath>Package\GSUI.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
+    <ItemGroup>
+        <Reference Include="GSUI">
+            <HintPath>Package\GSUI.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Update="LICENSE">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Package\galacticbundle">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>.\galacticbundle</TargetPath>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Update="LICENSE">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Package\galacticbundle">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>.\galacticbundle</TargetPath>
+        </None>
+    </ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="Assets\galaxy.json" />
-	  <EmbeddedResource Include="Assets\galaxy.json" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Remove="Assets\galaxy.json" />
+        <EmbeddedResource Include="Assets\galaxy.json" />
+    </ItemGroup>
 </Project>

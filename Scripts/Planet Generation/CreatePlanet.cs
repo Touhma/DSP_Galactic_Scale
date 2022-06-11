@@ -104,9 +104,8 @@ namespace GalacticScale
             gsPlanet.planetData = planet;
             //GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
             planet.luminosity = gsPlanet.Luminosity;
-            
 
-            
+
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
             //Log("Setting Theme|"+gsPlanet.Name);
@@ -116,12 +115,12 @@ namespace GalacticScale
             // Log($"Theme Set for {planet.name} took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());
-            if (star.galaxy.astroPoses == null) Error("Astroposes array does not exist");
+            if (star.galaxy.astrosData == null) Error("Astroposes array does not exist");
 
-            if (star.galaxy.astroPoses.Length <= planet.id)
+            if (star.galaxy.astrosData.Length <= planet.id)
                 Error($"Astroposes does not contain index {planet.id} when trying to set planet uRadius");
             //GS2.Warn($"Setting astropose for {planet.name}");
-            star.galaxy.astroPoses[planet.id].uRadius = planet.realRadius;
+            star.galaxy.astrosData[planet.id].uRadius = planet.realRadius;
             if (star.planets.Length <= counter)
                 Error($"star.planets length of {star.planets.Length} <= counter {counter}");
 

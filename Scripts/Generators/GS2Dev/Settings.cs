@@ -9,6 +9,7 @@ namespace GalacticScale.Generators
     {
         private static bool loaded;
         public static float minOrbit = 0.05f;
+
         private readonly string[] typeDesc =
         {
             "Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant",
@@ -51,6 +52,7 @@ namespace GalacticScale.Generators
                     UI[key].Set(importedPreferences[key]);
                 }
             }
+
             // WarnJson(importedPreferences);
             for (var i = 0; i < 14; i++)
             {
@@ -59,22 +61,24 @@ namespace GalacticScale.Generators
                 // if (!UI.ContainsKey($"{typeLetter[i]}binaryEnabled") break;
                 UI[$"{typeLetter[i]}minStars"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}minStars", 0));
                 UI[$"{typeLetter[i]}planetCount"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetCount", new FloatPair(1, 10)));
-                UI[$"{typeLetter[i]}planetSize"]?.Set( importedPreferences.GetFloatFloat($"{typeLetter[i]}planetSize",new FloatPair(50, 500)));
-                UI[$"{typeLetter[i]}sizeBias"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}sizeBias",50));
-                UI[$"{typeLetter[i]}countBias"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}countBias",50));
-                UI[$"{typeLetter[i]}chanceGas"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}chanceGas",20));
-                UI[$"{typeLetter[i]}chanceMoon"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}chanceMoon",20));
-                UI[$"{typeLetter[i]}orbits"]?.Set( importedPreferences.GetFloatFloat($"{typeLetter[i]}orbits",new FloatPair(0.1f, 10)));
-                UI[$"{typeLetter[i]}orbitOverride"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}orbitOverride", false));
-                UI[$"{typeLetter[i]}inclination"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}inclination",-1));
-                UI[$"{typeLetter[i]}orbitLongitude"]?.Set( importedPreferences.GetInt($"{typeLetter[i]}orbitLongitude",0));
-                UI[$"{typeLetter[i]}hzOverride"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}hzOverride", false));
-                UI[$"{typeLetter[i]}rareChance"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}rareChance",-1f));
-                UI[$"{typeLetter[i]}luminosityBoost"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}luminosityBoost",1f));
-                UI[$"{typeLetter[i]}innerPlanetDistance"]?.Set( importedPreferences.GetFloat($"{typeLetter[i]}innerPlanetDistance",1f));
+                UI[$"{typeLetter[i]}planetSize"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetSize", new FloatPair(50, 500)));
+                UI[$"{typeLetter[i]}sizeBias"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}sizeBias", 50));
+                UI[$"{typeLetter[i]}countBias"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}countBias", 50));
+                UI[$"{typeLetter[i]}chanceGas"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}chanceGas", 20));
+                UI[$"{typeLetter[i]}chanceMoon"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}chanceMoon", 20));
+                UI[$"{typeLetter[i]}orbits"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}orbits", new FloatPair(0.1f, 10)));
+                UI[$"{typeLetter[i]}hz"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0.9f, 2)));
+                UI[$"{typeLetter[i]}orbitOverride"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}orbitOverride", false));
+                UI[$"{typeLetter[i]}inclination"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}inclination", -1));
+                UI[$"{typeLetter[i]}orbitLongitude"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}orbitLongitude", 0));
+                UI[$"{typeLetter[i]}hzOverride"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}hzOverride", false));
+                UI[$"{typeLetter[i]}rareChance"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}rareChance", -1f));
+                UI[$"{typeLetter[i]}luminosityBoost"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}luminosityBoost", 1f));
+                UI[$"{typeLetter[i]}innerPlanetDistance"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}innerPlanetDistance", 1f));
                 if (i >= 8 && i <= 11) continue;
-                UI[$"{typeLetter[i]}binaryEnabled"]?.Set( importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled",false));
+                UI[$"{typeLetter[i]}binaryEnabled"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled", false));
             }
+
             // GS2.Warn($"Imported:{importedPreferences.GetInt($"OcountBias")}");
             // GS2.Warn($"Prefs:{importedPreferences.GetInt($"OcountBias")}");
             if (loaded) loaded = false;
@@ -238,10 +242,10 @@ namespace GalacticScale.Generators
             preferences.Set("rareChance", -1f);
             preferences.Set("luminosityBoost", 1);
             preferences.Set("solarScheme", "InverseSquare");
-            preferences.Set("solarRange", new FloatPair(1,500));
+            preferences.Set("solarRange", new FloatPair(1, 500));
             preferences.Set("solarLerp", 0.0f);
             preferences.Set("orbitSpacing", 0.05f);
-            preferences.Set("vanillaStarNames",false);
+            preferences.Set("vanillaStarNames", false);
             preferences.Set("planetNames", "Default");
             preferences.Set("preferInnerPlanets", false);
             for (var i = 0; i < 14; i++)
@@ -290,11 +294,12 @@ namespace GalacticScale.Generators
             else UI["solarLerp"].Hide();
             // Warn(o);
         }
+
         private GSOptions CreateSystemOptions()
         {
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
-            UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string>(){ "Linear", "InverseSquare", "None"}, "InverseSquare", "solarScheme", SetSolarScheme)));
+            UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string>() { "Linear", "InverseSquare", "None" }, "InverseSquare", "solarScheme", SetSolarScheme)));
             UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping", 0, 0, 1f, 0.1f, "solarLerp", null, "How close to 100% the inner and outer planets will be")));
             UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar", 0, 10, 500, 5000, 1, "solarRange")));
             UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
@@ -358,7 +363,7 @@ namespace GalacticScale.Generators
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
-            UI.Add("noRaresStartingSystem",bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
+            UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
@@ -506,6 +511,7 @@ namespace GalacticScale.Generators
         {
             SetAllStarTypeOptions("innerPlanetDistance", o);
         }
+
         private void OrbitLowCallback(Val o)
         {
             SetAllStarTypeRangeSliderMin("orbits", o);
@@ -560,10 +566,12 @@ namespace GalacticScale.Generators
         {
             SetAllStarTypeOptions("orbitOverride", o);
         }
+
         private void PreferInnerPlanetsCallback(Val o)
         {
             SetAllStarTypeOptions("preferInnerPlanets", o);
         }
+
         private void InclinationCallback(Val o)
         {
             SetAllStarTypeOptions("inclination", o);
@@ -670,13 +678,14 @@ namespace GalacticScale.Generators
         private void InitForcedStars()
         {
             _forcedStars = new List<string>();
-            
+
             GS2.Warn(preferences.GetInt("birthStar", 14).ToString());
             for (var i = 0; i < 14; i++)
             {
                 var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
                 for (var j = 0; j < count; j++) _forcedStars.Add(typeLetter[i]);
             }
+
             var bsInt = preferences.GetInt("birthStar", 14);
             if (bsInt >= 14) return;
             if (!_forcedStars.Contains(typeLetter[bsInt])) _forcedStars.Add(typeLetter[bsInt]);
@@ -736,12 +745,14 @@ namespace GalacticScale.Generators
             var t = preferences.GetFloatFloat($"{sl}planetCount", new FloatPair(1, 10));
             return (int)t.high;
         }
+
         private float GetInnerPlanetDistanceForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);
             var t = preferences.GetFloat($"{sl}innerPlanetDistance", 1f);
             return t;
         }
+
         private int GetMinPlanetCountForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);

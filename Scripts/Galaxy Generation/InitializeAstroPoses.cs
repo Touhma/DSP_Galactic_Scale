@@ -9,7 +9,7 @@ namespace GalacticScale
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
             var gSize = galaxy.starCount * 1000;
-            galaxy.astroPoses = new AstroPose[gSize];
+            galaxy.astrosData = new AstroData[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i, random);
             if (!GSSettings.Instance.imported)
@@ -40,8 +40,8 @@ namespace GalacticScale
             highStopwatch.Begin();
             Log("Planets have been created");
             galaxy.starCount = galaxy.stars.Length;
-            var astroPoses = galaxy.astroPoses;
-            for (var index = 0; index < galaxy.astroPoses.Length; ++index)
+            var astroPoses = galaxy.astrosData;
+            for (var index = 0; index < galaxy.astrosData.Length; ++index)
             {
                 astroPoses[index].uRot.w = 1f;
                 astroPoses[index].uRotNext.w = 1f;

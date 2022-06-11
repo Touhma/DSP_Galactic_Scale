@@ -13,9 +13,9 @@ namespace GalacticScale
     {
         public static int PreferencesVersion = 2104;
     }
-    
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.5.13")]
+
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.5.15")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -25,7 +25,6 @@ namespace GalacticScale
 
         internal void Awake()
         {
-            
             InitializeLogger();
             InitializeComponents();
             ApplyHarmonyPatches();
@@ -41,11 +40,13 @@ namespace GalacticScale
             BepInEx.Logging.Logger.Sources.Add(Logger);
             GS2.ConsoleSplash();
         }
+
         private void InitializeComponents()
         {
             if (GS2.TP == null) GS2.TP = gameObject.AddComponent<TeleportComponent>();
             if (GS2.InputComponent == null) GS2.InputComponent = gameObject.AddComponent<InputComponent>();
         }
+
         private void ApplyHarmonyPatches()
         {
             var harmony = new Harmony("dsp.galactic-scale.2");
@@ -114,28 +115,25 @@ namespace GalacticScale
         public static void Debug(object data, LogLevel logLevel, bool isActive)
         {
             if (isActive && Logger != null)
+            {
+                while (buffer.Count > 0)
                 {
-                    while (buffer.Count > 0)
-                    {
-                        var o = buffer.Dequeue();
-                        var l = ((object data, LogLevel loglevel, bool isActive))o;
-                        if (l.isActive) Logger.Log(l.loglevel, "Q:" + l.data);
-                    }
+                    var o = buffer.Dequeue();
+                    var l = ((object data, LogLevel loglevel, bool isActive))o;
+                    if (l.isActive) Logger.Log(l.loglevel, "Q:" + l.data);
+                }
 
-                    Logger.Log(logLevel, data);
-                }
-                else
-                {
-                    buffer.Enqueue((data, logLevel, true));
-                }
-            
+                Logger.Log(logLevel, data);
+            }
+            else
+            {
+                buffer.Enqueue((data, logLevel, true));
+            }
         }
 
         public static void Debug(object data)
         {
             Debug(data, LogLevel.Message, true);
         }
-
-
     }
 }

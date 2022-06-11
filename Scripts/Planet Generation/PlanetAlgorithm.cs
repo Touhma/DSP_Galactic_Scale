@@ -119,6 +119,11 @@
                 case 8: return new PlanetAlgorithm8();
                 case 9 when GS2.Config.ScarletRevert: return new PlanetAlgorithm0();
                 case 9 when !GS2.Config.ScarletRevert: return new PlanetAlgorithm9();
+                case 10: return new PlanetAlgorithm10();
+                case 11: return new PlanetAlgorithm11();
+                case 12: return new PlanetAlgorithm12();
+                case 13: return new PlanetAlgorithm13();
+                case 14: return new PlanetAlgorithm14();
             }
 
             return new PlanetAlgorithm0();
