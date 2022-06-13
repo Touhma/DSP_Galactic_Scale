@@ -5,6 +5,41 @@ namespace GalacticScale
     public partial class PatchOnPlanetAlgorithm
     {
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm14), "GenerateVegetables")]
+        public static bool PlanetAlgorithm14_GenerateVegetables(PlanetAlgorithm14 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }
+                [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm13), "GenerateVegetables")]
+        public static bool PlanetAlgorithm13_GenerateVegetables(PlanetAlgorithm13 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }
+                [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm12), "GenerateVegetables")]
+        public static bool PlanetAlgorithm12_GenerateVegetables(PlanetAlgorithm12 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }
+                [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm11), "GenerateVegetables")]
+        public static bool PlanetAlgorithm11_GenerateVegetables(PlanetAlgorithm11 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }
+                [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm10), "GenerateVegetables")]
+        public static bool PlanetAlgorithm10_GenerateVegetables(PlanetAlgorithm10 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }
+                [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetAlgorithm9), "GenerateVegetables")]
         public static bool PlanetAlgorithm9_GenerateVegetables(PlanetAlgorithm9 __instance)
         {

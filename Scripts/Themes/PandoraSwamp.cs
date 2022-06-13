@@ -23,11 +23,6 @@ namespace GalacticScale
             Habitable = true,
             ModX = new Vector2(1f, 1f),
             ModY = new Vector2(3f, 3f),
-            CustomGeneration = false,
-            TerrainSettings = new GSTerrainSettings
-            {
-                Algorithm = "Vanilla"
-            },
             VeinSettings = new GSVeinSettings
             {
                 Algorithm = "Vanilla",

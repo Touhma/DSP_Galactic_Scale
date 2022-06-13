@@ -47,6 +47,10 @@ namespace GalacticScale
                 if (model.BaseName != null && model.BaseName != "")
                     SerializeMember(serialized, null, "BaseName", model.BaseName);
 
+                if (!based || model.ModX != baseTheme.ModX)
+                    SerializeMember(serialized, null, "ModX", model.ModX);
+                if (!based || model.ModY != baseTheme.ModY)
+                    SerializeMember(serialized, null, "ModY", model.ModY);
                 if (!based || model.MinRadius != baseTheme.MinRadius)
                     SerializeMember(serialized, null, "MinRadius", model.MinRadius);
                 if (!based || model.MaxRadius != baseTheme.MaxRadius)
@@ -120,6 +124,8 @@ namespace GalacticScale
                 SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
                 SerializeMember(serialized, null, "DisplayName", model.DisplayName);
                 SerializeMember(serialized, null, "BaseName", model.BaseName);
+                SerializeMember(serialized, null, "ModX", model.ModX);
+                SerializeMember(serialized, null, "ModY", model.ModY);
                 SerializeMember(serialized, null, "MaxRadius", model.MaxRadius);
                 SerializeMember(serialized, null, "MinRadius", model.MinRadius);
                 SerializeMember(serialized, null, "ThemeType", model.ThemeType);
@@ -175,7 +181,8 @@ namespace GalacticScale
             if (data.ContainsKey("PlanetType")) DeserializeMember(data, null, "PlanetType", out model.PlanetType);
             if (data.ContainsKey("StarTypes")) DeserializeMember(data, null, "StarTypes", out model.StarTypes);
             if (data.ContainsKey("Algo")) DeserializeMember(data, null, "Algo", out model.Algo);
-
+            if (data.ContainsKey("ModX")) DeserializeMember(data, null, "ModX", out model.ModX);
+            if (data.ContainsKey("ModY")) DeserializeMember(data, null, "ModY", out model.ModY);
             if (data.ContainsKey("CustomGeneration"))
                 DeserializeMember(data, null, "CustomGeneration", out model.CustomGeneration);
 

@@ -5,6 +5,42 @@ namespace GalacticScale
     public partial class PatchOnPlanetAlgorithm
     {
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm14), "GenerateTerrain")]
+        public static bool PlanetAlgorithm14_GenerateTerrain(PlanetAlgorithm14 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm13), "GenerateTerrain")]
+        public static bool PlanetAlgorithm13_GenerateTerrain(PlanetAlgorithm13 __instance)
+        {
+            GS2.Log("Running GenerateTerrain on PA13");
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm12), "GenerateTerrain")]
+        public static bool PlanetAlgorithm12_GenerateTerrain(PlanetAlgorithm12 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm11), "GenerateTerrain")]
+        public static bool PlanetAlgorithm11_GenerateTerrain(PlanetAlgorithm11 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetAlgorithm10), "GenerateTerrain")]
+        public static bool PlanetAlgorithm10_GenerateTerrain(PlanetAlgorithm10 __instance)
+        {
+            if (__instance.planet == null || __instance.planet.data == null) return false;
+            return true;
+        }        
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetAlgorithm9), "GenerateTerrain")]
         public static bool PlanetAlgorithm9_GenerateTerrain(PlanetAlgorithm9 __instance)
         {

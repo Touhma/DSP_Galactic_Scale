@@ -12,7 +12,6 @@ namespace GalacticScale
             DisplayName = "Pandora Swamp II".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-
             LDBThemeId = 25,
             Algo = 13,
             MinRadius = 5,
@@ -23,11 +22,6 @@ namespace GalacticScale
             Habitable = true,
             ModX = new Vector2(1f, 1f),
             ModY = new Vector2(3f, 3f),
-            CustomGeneration = false,
-            TerrainSettings = new GSTerrainSettings
-            {
-                Algorithm = "Vanilla"
-            },
             VeinSettings = new GSVeinSettings
             {
                 Algorithm = "Vanilla",
