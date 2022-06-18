@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.6.0"
-description = "v2.6.0 BACKUP SAVES. Fixed planet generation bug that *may* destroy saves. You've been warned."
+versionNumber = "2.7.1"
+description = "v2.7.1 BACKUP SAVES. May not work. You've been warned. DSP Update 13026 + Hotfixes"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

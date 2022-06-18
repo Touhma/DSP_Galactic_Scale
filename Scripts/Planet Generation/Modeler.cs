@@ -136,7 +136,7 @@ namespace GalacticScale
                                 if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVegetables();
                                 num3 = highStopwatch.duration;
                                 highStopwatch.Begin();
-                                if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVeins(false);
+                                if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVeins();
                                 num4 = highStopwatch.duration;
                             }
                             // else if (planetData.galaxy.birthPlanetId == planetData.id) //Added after 0.9.25 update

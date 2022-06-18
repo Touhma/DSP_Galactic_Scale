@@ -140,9 +140,11 @@ namespace GalacticScale
 
         private static void InitializePlanetVeins(PlanetData planet, int veinVectorCount)
         {
-            Array.Clear(planet.veinAmounts, 0, planet.veinAmounts.Length);
+            // Array.Clear(planet.veinAmounts, 0, planet.veinAmounts.Length);
+            
             planet.data.veinCursor = 1;
-            planet.veinGroups = new PlanetData.VeinGroup[veinVectorCount];
+            // planet.veinGroups = new PlanetData.VeinGroup[veinVectorCount];
+            planet.veinGroups = new VeinGroup[veinVectorCount];
         }
 
         private static void InitializeVeinGroup(int i, EVeinType veinType, Vector3 position, PlanetData planet)
@@ -166,8 +168,8 @@ namespace GalacticScale
                 modelIndex = RandomVeinModelIndex(veinType),
                 productId = PlanetModelingManager.veinProducts[(int)veinType]
             };
-            planet.veinAmounts[(int)veinType] += vein.amount;
-            planet.veinSpotsSketch[(int)veinType]++;
+            // planet.veinAmounts[(int)veinType] += vein.amount;
+            // planet.veinSpotsSketch[(int)veinType]++;
             planet.veinGroups[groupIndex].count++;
             planet.veinGroups[groupIndex].amount += vein.amount;
             planet.data.AddVeinData(vein); //add to the planets rawdata veinpool

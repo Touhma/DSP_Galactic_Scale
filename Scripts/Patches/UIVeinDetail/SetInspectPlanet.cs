@@ -10,21 +10,27 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIVeinDetail), "SetInspectPlanet")]
         public static bool SetInspectPlanet(ref UIVeinDetail __instance, PlanetData planet)
         {
+            PlanetFactory planetFactory = (planet == null) ? null : planet.factory;
+            if (planetFactory == null || !planet.factoryLoaded)
+            {
+                planet = null;
+            }
             __instance.inspectPlanet = planet;
-            for (var i = 0; i < __instance.allTips.Count; i++)
+            for (int i = 0; i < __instance.allTips.Count; i++)
+            {
                 if (__instance.allTips[i] != null)
                 {
                     __instance.allTips[i]._Free();
-                    __instance.allTips[i].inspectPlanet = __instance.inspectPlanet;
+                    __instance.allTips[i].inspectFactory = planetFactory;
                 }
-
+            }
             if (__instance.inspectPlanet != null)
             {
                 var veinTipConfig = GS2.Config.VeinTips;
-                for (var j = 0; j < planet.veinGroups.Length; j++)
+                for (int j = 1; j < planetFactory.veinGroups.Length; j++)
                 {
-                    var typeNum = (int)planet.veinGroups[j].type;
-                    if (veinTipConfig.ContainsKey(typeNum) && veinTipConfig[typeNum]) __instance.CreateOrOpenATip(planet, j);
+                    var typeNum = (int)planetFactory.veinGroups[j].type;
+                    if (veinTipConfig.ContainsKey(typeNum) && veinTipConfig[typeNum]) __instance.CreateOrOpenATip(planetFactory, j);
                 }
             }
 

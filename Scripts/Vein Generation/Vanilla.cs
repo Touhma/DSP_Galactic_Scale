@@ -6,7 +6,7 @@ namespace GalacticScale
 {
     public static partial class VeinAlgorithms
     {
-        public static void GenerateVeinsVanilla(GSPlanet gsPlanet, bool sketchOnly)
+        public static void GenerateVeinsVanilla(GSPlanet gsPlanet)//, bool sketchOnly)
         {
             random = new GS2.Random(gsPlanet.Seed);
             var themeProto = LDB.themes.Select(gsPlanet.planetData.theme);
@@ -15,11 +15,11 @@ namespace GalacticScale
             var birth = GSSettings.BirthPlanet == gsPlanet;
             var planetRadiusFactor = 2.1f / gsPlanet.planetData.radius;
             InitializeFromThemeProto(gsPlanet, themeProto, out var veinSpots, out var veinCounts, out var veinOpacity);
-            if (birth && !sketchOnly)
+            if (birth)// && !sketchOnly)
                 gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next()); //GenBirthPoints(gsPlanet);
 
             gsPlanet.veinData.Clear();
-            if (sketchOnly) return;
+            // if (sketchOnly) return;
             if (birth) InitBirthVeinVectors(gsPlanet);
 
             CalculateVectorsVanilla(gsPlanet, planetRadiusFactor, veinSpots);
@@ -290,7 +290,7 @@ namespace GalacticScale
             
             var p = InitSpecials(gsPlanet, veinSpots, veinCounts, veinOpacity);
             InitRares(gsPlanet, themeProto, veinSpots, veinCounts, veinOpacity, p);
-            gsPlanet.planetData.veinSpotsSketch = veinSpots;
+            // gsPlanet.planetData.veinSpotsSketch = veinSpots;
         }
     }
 }

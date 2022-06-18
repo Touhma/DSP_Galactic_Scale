@@ -107,9 +107,9 @@ namespace GalacticScale
 
                 // Log("Setting up Birth Planet");
                 //SetupBirthPlanet();
-                Log("Generating Veins");
-                GenerateVeins(sketchOnly);
-                Log($"Veins Generated: {highStopwatch.duration:F5}");
+                // Log("Generating Veins");
+                // GenerateVeins(sketchOnly);
+                // Log($"Veins Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
                 //if (GS2.CheatMode) return galaxy;
@@ -155,7 +155,7 @@ namespace GalacticScale
             {
                 var star = galaxy.stars[i];
                 for (var j = 0; j < star.planetCount; ++j)
-                    PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins(SketchOnly);
+                    PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins();
             }
         }
     }

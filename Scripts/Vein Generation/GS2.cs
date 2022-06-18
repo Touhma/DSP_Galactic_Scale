@@ -7,20 +7,20 @@ namespace GalacticScale
 {
     public static partial class VeinAlgorithms
     {
-        public static void GenerateVeinsGS2(GSPlanet gsPlanet, bool sketchOnly)
+        public static void GenerateVeinsGS2(GSPlanet gsPlanet)//, bool sketchOnly)
         {
             random = new GS2.Random(gsPlanet.Seed);
             InitializeFromVeinSettings(gsPlanet);
-            if (GSSettings.BirthPlanet == gsPlanet && !sketchOnly)
+            if (GSSettings.BirthPlanet == gsPlanet)// && !sketchOnly)
                 GenBirthPoints(gsPlanet);
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
-            if (sketchOnly)
-            {
-                gsPlanet.planetData.veinSpotsSketch = new int[PlanetModelingManager.veinProtos.Length];
-                CalculateVectorsGS2(gsPlanet, true);
-                return;
-            }
+            // if (sketchOnly)
+            // {
+            //     gsPlanet.planetData.veinSpotsSketch = new int[PlanetModelingManager.veinProtos.Length];
+            //     CalculateVectorsGS2(gsPlanet, true);
+            //     return;
+            // }
 
             if (GSSettings.BirthPlanet == gsPlanet) InitBirthVeinVectors(gsPlanet);
             AddVeinsToPlanetGS2(gsPlanet, CalculateVectorsGS2(gsPlanet));
@@ -46,7 +46,7 @@ namespace GalacticScale
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
             foreach (var veinGroup in ores) if (veinGroup.veins.Count > 0) veinSpots[(int)veinGroup.type]++;
 
-            gsPlanet.planetData.veinSpotsSketch = veinSpots;
+            // gsPlanet.planetData.veinSpotsSketch = veinSpots;
         }
 
         private static void AddVeinsToPlanetGS2(GSPlanet gsPlanet, List<GSVeinDescriptor> veinData)
@@ -157,7 +157,7 @@ namespace GalacticScale
             var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.Radius, 2);
             var birth = planet.id == GSSettings.BirthPlanetId;
             var groupVector = new Vector3();
-            if (!sketchOnly) groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
+            groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypes(gsPlanet);
             var veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
@@ -169,11 +169,11 @@ namespace GalacticScale
                 if (!GS2.Config.ForceRare && veinGroups[i].rare && gsPlanet.planetData.star.level + 0.1 < random.NextDouble() * random.NextDouble())
                     //GS2.Log("Randomly Skipping Rare Vein " + veinGroups[i].type + " on planet " + gsPlanet.Name + " due to star level");
                     continue;
-                if (sketchOnly && veinGroups[i].count > 0)
-                {
-                    gsPlanet.planetData.veinSpotsSketch[(int)veinGroups[i].type]++;
-                    continue;
-                }
+                // if (sketchOnly && veinGroups[i].count > 0)
+                // {
+                //     gsPlanet.planetData.veinSpotsSketch[(int)veinGroups[i].type]++;
+                //     continue;
+                // }
 
                 var v = veinGroups[i];
                 if (v.position != Vector3.zero) continue;
@@ -213,7 +213,7 @@ namespace GalacticScale
                 else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
             }
 
-            if (sketchOnly) return null;
+            
             if (!birth) return veinGroups;
             var gsVeinDescriptorList = new List<GSVeinDescriptor>();
             var ironCount = 6;

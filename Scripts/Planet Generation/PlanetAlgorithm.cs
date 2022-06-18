@@ -40,10 +40,10 @@
             if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings())
             {
                 if (gsTheme.VeinSettings.Algorithm == "Vanilla")
-                    veinAlgo = (p, sketchOnly) =>
+                    veinAlgo = (p)=>//, sketchOnly) =>
                     {
                         // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
-                        if (!UIRoot.instance.backToMainMenu) baseAlgorithm.GenerateVeins(sketchOnly);
+                        if (!UIRoot.instance.backToMainMenu) baseAlgorithm.GenerateVeins();
                     };
                 else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
@@ -51,12 +51,12 @@
             else
             {
                 if (gsPlanet.veinSettings.Algorithm == "Vanilla")
-                    veinAlgo = (p, sketchOnly) =>
+                    veinAlgo = (p)=>//, sketchOnly) =>
                     {
                         // GS2.WarnJson(gsPlanet);
                         // GS2.WarnJson(gsPlanet.GsTheme);
                         // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
-                        if (!UIRoot.instance.backToMainMenu) baseAlgorithm.GenerateVeins(sketchOnly);
+                        if (!UIRoot.instance.backToMainMenu) baseAlgorithm.GenerateVeins();
                     };
                 else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsPlanet.veinSettings.Algorithm);
@@ -99,10 +99,12 @@
             if (gsPlanet != null) if (!UIRoot.instance.backToMainMenu) vegeAlgo(gsPlanet);
         }
 
-        public override void GenerateVeins(bool sketchOnly)
+        public override void GenerateVeins()
         {
             // GS2.Log($"PlanetAlgorithm|GenerateVeins() for {gsPlanet.Name} {gsPlanet.Theme}");
-            if (gsPlanet != null) if (!UIRoot.instance.backToMainMenu) veinAlgo(gsPlanet, sketchOnly);
+            if (gsPlanet != null)
+                if (!UIRoot.instance.backToMainMenu)
+                    veinAlgo(gsPlanet);//, false);
         }
 
         public static PlanetAlgorithm GetBaseAlgo(int algoId)

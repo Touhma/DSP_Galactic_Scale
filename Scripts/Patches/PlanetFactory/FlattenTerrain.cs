@@ -7,6 +7,29 @@ namespace GalacticScale
 {
     public static class PatchOnPlanetFactory
     {
+        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetFactory), "InitVeinGroups", typeof(PlanetData))]
+        public static bool InitVeinGroups(PlanetFactory __instance, PlanetData planet)
+        {
+            Mutex veinGroupsLock = planet.veinGroupsLock;
+            lock (veinGroupsLock)
+            {
+                if (planet.veinGroups == null)
+                {
+                    planet.veinGroups = new VeinGroup[1];
+                }
+                int num = planet.veinGroups.Length;
+                int num2 = (num >= 1) ? num : 1;
+                __instance.veinGroups = new VeinGroup[num2];
+                Array.Copy(planet.veinGroups, __instance.veinGroups, num);
+                __instance.veinGroups[0].SetNull();
+            }
+
+            return false;
+        }
+        
+        
         // [HarmonyTranspiler]
         // [HarmonyPatch(typeof(PlanetFactory), "FlattenTerrain")]
         // public static IEnumerable<CodeInstruction> FlattenTerrainTranspiler(IEnumerable<CodeInstruction> instructions,
