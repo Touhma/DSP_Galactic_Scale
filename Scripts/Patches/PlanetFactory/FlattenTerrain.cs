@@ -76,6 +76,22 @@ namespace GalacticScale
                     matcher.SetAndAdvance(OpCodes.Ldloc_S, intNum5.LocalIndex);
                 }
             }
+            
+            // find codes look like A = new Type[1024]
+            matcher.Start();
+            matcher.MatchForward(false,
+                new CodeMatch(OpCodes.Ldc_I4, 1024),
+                new CodeMatch(OpCodes.Newarr),
+                new CodeMatch(OpCodes.Stfld)
+            );
+
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("PlanetFactory_FlattenTerrain_Transpiler: fail to find codes look like A = new Type[1024]");
+                return instructions;
+            }
+            
+            matcher.SetOperandAndAdvance(4096);
 
             return matcher.InstructionEnumeration();
         }
