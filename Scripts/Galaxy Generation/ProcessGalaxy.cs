@@ -45,7 +45,7 @@ namespace GalacticScale
                 else
                 {
                     Warn("**************************");
-                    Log($"Settings Loaded From Save File { GSSettings.BirthPlanet.Name} {GSSettings.Instance.stars.Count} {GSSettings.StarCount}");
+                    Log($"Settings Loaded From Save File {GSSettings.BirthPlanet.Name} {GSSettings.Instance.stars.Count} {GSSettings.StarCount}");
                     gameDesc.resourceMultiplier = GSSettings.Instance.galaxyParams.resourceMulti;
                     // Log($"RM1:{gameDesc.resourceMultiplier}");
                     // Log(gameDesc.resourceMultiplier.ToString());
@@ -84,7 +84,7 @@ namespace GalacticScale
 
                 // Log("AstroPoses Initialized");
                 //SetupBirthPlanet();
-                GS2.Warn($"Setting up birthPlanet {GSSettings.BirthPlanetId}");
+                Warn($"Setting up birthPlanet {GSSettings.BirthPlanetId}");
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
                 //if (createPlanets) {

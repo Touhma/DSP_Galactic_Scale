@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using UnityEngine;
 using static GalacticScale.GS2;
 using static UnityEngine.Mathf;
 
@@ -28,7 +26,7 @@ namespace GalacticScale.Generators
             star.genData.Add("hasBinary", true);
             star.BinaryCompanion = binary.Name;
             var binaryRadius = StarDefaults.Radius(binary) * preferences.GetFloat("starSizeMulti", 2f);
-            
+
             binary.radius = Clamp(star.radius * .6f, 0.01f, binaryRadius);
             binary.Decorative = true;
             var offset = (star.RadiusLY + binary.RadiusLY) * preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f);
@@ -46,10 +44,8 @@ namespace GalacticScale.Generators
             {
                 var (type, spectr) = ChooseStarType(i == birthIndex);
                 var starSeed = random.Next();
-var starName = SystemNames.GetName(starSeed);
-                if (preferences.GetBool("vanillaStarNames", false)) { 
-                    starName = NameGen._RandomStarName(starSeed, new StarData() { type = type }); 
-                }
+                var starName = SystemNames.GetName(starSeed);
+                if (preferences.GetBool("vanillaStarNames")) starName = NameGen._RandomStarName(starSeed, new StarData { type = type });
                 var star = new GSStar(starSeed, starName, spectr, type, new GSPlanets());
                 if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
                 if (star.Type == EStarType.BlackHole && preferences.GetFloat("starSizeMulti", 10f) < 2.01f)
@@ -99,14 +95,14 @@ var starName = SystemNames.GetName(starSeed);
 
             // Log(birthStar.Name + " is birthstar");
             if (forcedBirthStar != null)
-                GS2.Warn("Forcing birthStar");
-                foreach (var star in GSSettings.Stars)
-                    if (star.Name == forcedBirthStar)
-                    {
-                        birthStar = star;
-                        GS2.Warn("birthStar forced");
-                        break;
-                    }
+                Warn("Forcing birthStar");
+            foreach (var star in GSSettings.Stars)
+                if (star.Name == forcedBirthStar)
+                {
+                    birthStar = star;
+                    Warn("birthStar forced");
+                    break;
+                }
         }
 
         private int GetStarPlanetCount(GSStar star)
@@ -220,11 +216,10 @@ var starName = SystemNames.GetName(starSeed);
             //
             //     
             // var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
-            
-            
-            
+
+
             // Warn($"Calculating Habitable Zone for {star.Name}");
-            var lum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
+            var lum = Pow(Pow(star.luminosity, 0.33f) * preferences.GetFloat("luminosityBoost"), 3);
             var flp = Utils.CalculateHabitableZone(lum);
 
             var min = flp.low;
@@ -247,6 +242,7 @@ var starName = SystemNames.GetName(starSeed);
                 min += star.genData.Get("binaryOffset", 1f) * 60f;
                 max += star.genData.Get("binaryOffset", 1f) * 60f;
             }
+
             min += star.RadiusAU;
             max += star.RadiusAU;
             star.genData.Set("minHZ", min);
@@ -261,8 +257,8 @@ var starName = SystemNames.GetName(starSeed);
             var sl = GetTypeLetterFromStar(star);
 
             var radius = star.RadiusAU;
-            var lum = star.luminosity;// /preferences.GetFloat("luminosityBoost", 1);
-            var min = radius + 0.33f;//* radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
+            var lum = star.luminosity; // /preferences.GetFloat("luminosityBoost", 1);
+            var min = radius + 0.33f; //* radius/preferences.GetFloat("starSizeMulti") * Sqrt(Sqrt(lum));
 
             if (preferences.GetBool($"{sl}orbitOverride"))
             {
@@ -272,10 +268,8 @@ var starName = SystemNames.GetName(starSeed);
             }
 
             if (star.genData.Get("hasBinary", false))
-            {
                 // Warn("Increasing for Binary");
                 min += star.genData.Get("binaryOffset", 1f) * 60f;
-            }
 
             min = Clamp(min, radius * 1.1f, 100f);
             star.genData.Set("minOrbit", min);
@@ -288,10 +282,10 @@ var starName = SystemNames.GetName(starSeed);
             var sl = GetTypeLetterFromStar(star);
             // Warn($"Calculating Maximum Orbit for {star.Name}");
             var minMaxOrbit = 5f;
-            var lum = star.luminosity;//Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
+            var lum = star.luminosity; //Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)/preferences.GetFloat("luminosityBoost")),3);
             var hzMax = star.genData.Get("maxHZ");
             var maxOrbitByLuminosity = lum * 4f;
-            var maxOrbitByRadius = Pow(star.radius/preferences.GetFloat("starSizeMulti"), 0.75f);
+            var maxOrbitByRadius = Pow(star.radius / preferences.GetFloat("starSizeMulti"), 0.75f);
             var maxOrbitByHabitableZone = 2f * hzMax;
             var maxByPlanetCount = star.bodyCount * 0.3f;
             // float density = (2f*GetSystemDensityBiasForStar(star))/100f;
@@ -307,10 +301,8 @@ var starName = SystemNames.GetName(starSeed);
             // Warn($"Getting Max Orbit for Star {star.Name}\r\n HardCap:{star.MaxOrbit} \r\nMaxbyRadius({star.radius}):{maxOrbitByRadius} \r\nMaxbyPlanets({star.PlanetCount}):{maxByPlanetCount} \r\nMaxbyLum({lum}):{maxOrbitByLuminosity} \r\nMaxByHZ({hzMax}):{maxOrbitByHabitableZone} \r\n HabitableZone:{star.genData.Get("minHZ")}:{hzMax}");
             // Warn($"Final Max({max}):{max}");
             if (star.genData.Get("hasBinary", false))
-            {
                 // Warn("Increasing Max Orbit for Binary");
                 max += star.genData.Get("binaryOffset", 1f) * 60f;
-            }
 
             star.genData.Set("maxOrbit", max);
             return max;

@@ -7,6 +7,7 @@ namespace GalacticScale.Generators
     {
         public static string[] baseKeys;
         public static List<GSTheme> cometThemes = new();
+
         public static void SetupBaseThemes()
         {
             var newLibrary = new ThemeLibrary();
@@ -50,10 +51,7 @@ namespace GalacticScale.Generators
                         // GS2.Warn($"RENAME {smolTheme.DisplayName} {smolTheme.DisplayName.Substring(smolTheme.DisplayName.Length - 3)}");
                         smolTheme.DisplayName = smolTheme.DisplayName.Substring(0, smolTheme.DisplayName.Length - 3) + "smol";
                     }
-                    else
-                    {
-                        // GS2.Warn($"NO RENAME {smolTheme.DisplayName} {smolTheme.DisplayName.Substring(smolTheme.DisplayName.Length - 3)}");
-                    }
+
                     smolTheme.Name += "smol";
                     smolTheme.VeinSettings.Algorithm = "GS2W";
                     smolTheme.CustomGeneration = true;
@@ -330,15 +328,16 @@ namespace GalacticScale.Generators
             iceMalusol.terrainMaterial.Textures.Add("_BioTex2A", "GS2|grey-snow");
             iceMalusol.AmbientSettings.Reflections = new Color(1, 0, 0, 1);
             iceMalusol.AmbientSettings.CubeMap = "GS2";
-            Color ico = new Color(0.4f, 0.0f, 0.1f, 1.0f);
-            iceMalusol.oceanMaterial.Colors = new Dictionary<string, Color>() {
+            var ico = new Color(0.4f, 0.0f, 0.1f, 1.0f);
+            iceMalusol.oceanMaterial.Colors = new Dictionary<string, Color>
+            {
                 ["_Color"] = ico,
                 ["_Color0"] = ico,
                 ["_Color1"] = ico,
                 ["_Color2"] = ico,
                 ["_Color3"] = ico,
-                ["_DensityParams"] = new Color(0.9f,0.1f,0.9f,0),
-                };
+                ["_DensityParams"] = new(0.9f, 0.1f, 0.9f, 0)
+            };
             iceMalusol.MinRadius = 50;
             iceMalusol.Process();
             var iceMalusmol = new GSTheme("IceMalusmol", "Ice Malusmol".Translate(), "IceMalusol");
@@ -473,7 +472,7 @@ namespace GalacticScale.Generators
             comet.MaxRadius = 50;
             comet.Temperature = -6;
             comet.ThemeType = EThemeType.Private;
-            comet.TerrainSettings = new();
+            comet.TerrainSettings = new GSTerrainSettings();
             comet.TerrainSettings.Algorithm = "GSTA1";
             comet.TerrainSettings.BaseHeight = -7.13f;
             comet.TerrainSettings.BiomeHeightModifier = 1;
@@ -489,7 +488,7 @@ namespace GalacticScale.Generators
             comet.terrainMaterial.Tint = new Color(0.8f, 0.8f, 0.8f, 0.4f);
             comet.atmosphereMaterial.Params["_Intensity"] = 0f;
             comet.Process();
-            for (var c=11; c<=14; c++)
+            for (var c = 11; c <= 14; c++)
             {
                 var cometVariant = new GSTheme($"Comet{c}", "Comet", "Comet");
                 cometVariant.VeinSettings.VeinTypes.Clear();
@@ -497,6 +496,7 @@ namespace GalacticScale.Generators
                 cometThemes.Add(cometVariant);
                 cometVariant.Process();
             }
+
             var center = new GSTheme("Center", " ", "Barren");
             center.PlanetType = EPlanetType.Gas;
             center.atmosphereMaterial.Tint = Color.black;
@@ -505,7 +505,7 @@ namespace GalacticScale.Generators
             center.Process();
 
             var hotGas = new GSTheme("Inferno", "Infernal Gas Giant".Translate(), "GasGiant");
-            
+
             hotGas.terrainMaterial.Tint = new Color(1, 0.8f, 0.1f);
             hotGas.Temperature = 4f;
             hotGas.MinRadius = 5;

@@ -4,7 +4,7 @@
         <TargetFramework>net472</TargetFramework>
         <RootNamespace>GalacticScale</RootNamespace>
     </PropertyGroup>
-    <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
+    <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')"/>
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
@@ -16,16 +16,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-        <PackageReference Include="BepInEx.Core" Version="5.*" />
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-        <PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
-        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.9.26.13026-r.0" IncludeAssets="compile" />
-        <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile"/>
+        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.9.26.13026-r.0" IncludeAssets="compile"/>
+        <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile"/>
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -45,7 +45,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Assets\galaxy.json" />
-        <EmbeddedResource Include="Assets\galaxy.json" />
+        <None Remove="Assets\galaxy.json"/>
+        <EmbeddedResource Include="Assets\galaxy.json"/>
     </ItemGroup>
 </Project>

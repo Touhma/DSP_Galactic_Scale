@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using NebulaCompatibility;
-using NGPT;
-using UnityEngine;
 
 namespace GalacticScale
 {
@@ -14,6 +12,7 @@ namespace GalacticScale
         // __instance.OnGalaxyDataReset();
 
         public static bool deBounce = false;
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIVirtualStarmap), "_OnLateUpdate")]
         public static bool _OnLateUpdate(ref UIVirtualStarmap __instance)

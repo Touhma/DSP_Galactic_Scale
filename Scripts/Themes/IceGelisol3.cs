@@ -45,16 +45,16 @@ namespace GalacticScale
                 BiomeSound3 = 0,
                 CubeMap = "Vanilla",
                 Reflections = new Color(),
-                LutContribution = 1f,
+                LutContribution = 1f
             },
 
-            Vegetables0 = new int[]
+            Vegetables0 = new[]
             {
                 669,
                 670,
-                671,
+                671
             },
-            Vegetables1 = new int[]
+            Vegetables1 = new[]
             {
                 665,
                 666,
@@ -67,19 +67,19 @@ namespace GalacticScale
                 664,
                 663,
                 662,
-                661,
+                661
             },
-            Vegetables2 = new int[]
+            Vegetables2 = new[]
             {
                 1071,
-                1072,
+                1072
             },
-            Vegetables3 = new int[]
+            Vegetables3 = new[]
             {
                 1073,
                 1074,
                 1071,
-                1072,
+                1072
             },
             Vegetables4 = new int[]
             {
@@ -152,7 +152,7 @@ namespace GalacticScale
             Musics = new[]
             {
                 27,
-                4,
+                4
             },
             SFXPath = "SFX/sfx-amb-desert-2",
             SFXVolume = 0.3f,
@@ -161,11 +161,11 @@ namespace GalacticScale
             {
                 Colors = new Dictionary<string, Color>
                 {
-                    ["_Color"] = new Color(1f, 1f, 1f, 1f),
-                    ["_Color8"] = new Color(1f, 1f, 1f, 1f),
-                    ["_EmissionColor"] = new Color(0f, 0f, 0f, 1f),
-                    ["_PlanetPos"] = new Color(0f, 0f, 0f, 0f),
-                    ["_PlanetRadius"] = new Color(200f, 100f, 255f, 0f),
+                    ["_Color"] = new(1f, 1f, 1f, 1f),
+                    ["_Color8"] = new(1f, 1f, 1f, 1f),
+                    ["_EmissionColor"] = new(0f, 0f, 0f, 1f),
+                    ["_PlanetPos"] = new(0f, 0f, 0f, 0f),
+                    ["_PlanetRadius"] = new(200f, 100f, 255f, 0f)
                 },
                 Params = new Dictionary<string, float>
                 {
@@ -188,14 +188,14 @@ namespace GalacticScale
                     ["_SunColorAdd"] = 5f,
                     ["_SunRiseScatterPower"] = 60f,
                     ["_UVSec"] = 0f,
-                    ["_ZWrite"] = 1f,
+                    ["_ZWrite"] = 1f
                 }
             },
             minimapMaterial = new GSMaterialSettings
             {
                 Colors = new Dictionary<string, Color>
                 {
-                    ["_EmissionColor"] = new Color(0f, 0f, 0f, 1f),
+                    ["_EmissionColor"] = new(0f, 0f, 0f, 1f)
                 },
                 Params = new Dictionary<string, float>
                 {
@@ -213,25 +213,25 @@ namespace GalacticScale
                     ["_SrcBlend"] = 1f,
                     ["_UVSec"] = 0f,
                     ["_WireIntens"] = 2f,
-                    ["_ZWrite"] = 1f,
+                    ["_ZWrite"] = 1f
                 }
             },
             oceanMaterial = new GSMaterialSettings
             {
                 Colors = new Dictionary<string, Color>
                 {
-                    ["_BumpDirection"] = new Color(1f, 1f, -1f, 1f),
-                    ["_BumpTiling"] = new Color(1f, 1f, -2f, 3f),
-                    ["_FoamColor"] = new Color(0f, 0f, 0f, 1f),
-                    ["_PLColor1"] = new Color(0f, 0f, 0f, 1f),
-                    ["_PLColor2"] = new Color(0f, 0f, 0f, 1f),
-                    ["_PLColor3"] = new Color(1f, 1f, 1f, 1f),
-                    ["_PLParam1"] = new Color(0f, 0f, 0f, 0f),
-                    ["_PLParam2"] = new Color(0f, 0f, 0f, 0f),
-                    ["_PLPos1"] = new Color(0f, 0f, 0f, 0f),
-                    ["_PLPos2"] = new Color(0f, 0f, 0f, 0f),
-                    ["_SLColor1"] = new Color(1f, 1f, 1f, 1f),
-                    ["_SpecColor"] = new Color(1f, 1f, 1f, 1f),
+                    ["_BumpDirection"] = new(1f, 1f, -1f, 1f),
+                    ["_BumpTiling"] = new(1f, 1f, -2f, 3f),
+                    ["_FoamColor"] = new(0f, 0f, 0f, 1f),
+                    ["_PLColor1"] = new(0f, 0f, 0f, 1f),
+                    ["_PLColor2"] = new(0f, 0f, 0f, 1f),
+                    ["_PLColor3"] = new(1f, 1f, 1f, 1f),
+                    ["_PLParam1"] = new(0f, 0f, 0f, 0f),
+                    ["_PLParam2"] = new(0f, 0f, 0f, 0f),
+                    ["_PLPos1"] = new(0f, 0f, 0f, 0f),
+                    ["_PLPos2"] = new(0f, 0f, 0f, 0f),
+                    ["_SLColor1"] = new(1f, 1f, 1f, 1f),
+                    ["_SpecColor"] = new(1f, 1f, 1f, 1f)
                 },
                 Params = new Dictionary<string, float>
                 {
@@ -249,17 +249,17 @@ namespace GalacticScale
                     ["_SLIntensity1"] = 1f,
                     ["_SLRange1"] = 10f,
                     ["_Shininess"] = 40f,
-                    ["_SpotExp"] = 2f,
+                    ["_SpotExp"] = 2f
                 }
             },
             terrainMaterial = new GSMaterialSettings
             {
                 Colors = new Dictionary<string, Color>
                 {
-                    ["_Color"] = new Color(1f, 1f, 1f, 1f),
-                    ["_EmissionColor"] = new Color(0f, 0f, 0f, 1f),
-                    ["_GICloudColor"] = new Color(1f, 1f, 1f, 1f),
-                    ["_Rotation"] = new Color(0f, 0f, 0f, 1f),
+                    ["_Color"] = new(1f, 1f, 1f, 1f),
+                    ["_EmissionColor"] = new(0f, 0f, 0f, 1f),
+                    ["_GICloudColor"] = new(1f, 1f, 1f, 1f),
+                    ["_Rotation"] = new(0f, 0f, 0f, 1f)
                 },
                 Params = new Dictionary<string, float>
                 {
@@ -281,16 +281,16 @@ namespace GalacticScale
                     ["_SrcBlend"] = 1f,
                     ["_StepBlend"] = 1f,
                     ["_UVSec"] = 0f,
-                    ["_ZWrite"] = 1f,
+                    ["_ZWrite"] = 1f
                 }
             },
             thumbMaterial = new GSMaterialSettings
             {
                 Colors = new Dictionary<string, Color>
                 {
-                    ["_EmissionColor"] = new Color(0f, 0f, 0f, 1f),
-                    ["_Rotation"] = new Color(0f, 0f, 0f, 1f),
-                    ["_SunDir"] = new Color(0f, 0f, 1f, 0f),
+                    ["_EmissionColor"] = new(0f, 0f, 0f, 1f),
+                    ["_Rotation"] = new(0f, 0f, 0f, 1f),
+                    ["_SunDir"] = new(0f, 0f, 1f, 0f)
                 },
                 Params = new Dictionary<string, float>
                 {
@@ -316,7 +316,7 @@ namespace GalacticScale
                     ["_ToggleVerta"] = 0f,
                     ["_UVSec"] = 0f,
                     ["_WireIntens"] = 2f,
-                    ["_ZWrite"] = 1f,
+                    ["_ZWrite"] = 1f
                 }
             }
         };

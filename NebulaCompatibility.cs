@@ -2,7 +2,6 @@
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
-using HarmonyLib;
 using GalacticScale;
 using NebulaAPI;
 
@@ -23,6 +22,7 @@ namespace NebulaCompatibility
                 NebulaModAPI.OnMultiplayerGameStarted += NebulaCompat.NebulaStart;
                 NebulaModAPI.OnMultiplayerGameEnded += NebulaCompat.NebulaEnd;
             }
+
             Logger = new ManualLogSource("GS2DepCheck");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             Logger.Log(LogLevel.Message, "Loaded");
@@ -58,8 +58,8 @@ namespace NebulaCompatibility
 
     public static class NebulaCompat
     {
-        public static bool IsMultiplayerActive = false;
-        public static bool IsClient = false;
+        public static bool IsMultiplayerActive;
+        public static bool IsClient;
 
         public static bool IsMPGameLoaded()
         {

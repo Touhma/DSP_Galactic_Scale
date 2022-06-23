@@ -47,24 +47,24 @@ namespace GalacticScale
                 Reflections = new Color(),
                 LutContribution = 0.3f
             },
-            Vegetables0 = new int[]
-{
-1061,
-1062,
-659,
-1066,
-658,
-1065,
-657,
-656,
-1064,
-651,
-1063,
-654,
-653,
-652,
-655,
-},
+            Vegetables0 = new[]
+            {
+                1061,
+                1062,
+                659,
+                1066,
+                658,
+                1065,
+                657,
+                656,
+                1064,
+                651,
+                1063,
+                654,
+                653,
+                652,
+                655
+            },
             Vegetables1 = new[]
             {
                 1,
@@ -151,7 +151,7 @@ namespace GalacticScale
             {
                 26,
                 11,
-                4,
+                4
             },
             SFXPath = "SFX/sfx-amb-desert-3",
             SFXVolume = 0.4f,

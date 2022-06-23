@@ -7,11 +7,11 @@ namespace GalacticScale
 {
     public static partial class VeinAlgorithms
     {
-        public static void GenerateVeinsGS2(GSPlanet gsPlanet)//, bool sketchOnly)
+        public static void GenerateVeinsGS2(GSPlanet gsPlanet) //, bool sketchOnly)
         {
             random = new GS2.Random(gsPlanet.Seed);
             InitializeFromVeinSettings(gsPlanet);
-            if (GSSettings.BirthPlanet == gsPlanet)// && !sketchOnly)
+            if (GSSettings.BirthPlanet == gsPlanet) // && !sketchOnly)
                 GenBirthPoints(gsPlanet);
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
@@ -44,7 +44,9 @@ namespace GalacticScale
 
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
-            foreach (var veinGroup in ores) if (veinGroup.veins.Count > 0) veinSpots[(int)veinGroup.type]++;
+            foreach (var veinGroup in ores)
+                if (veinGroup.veins.Count > 0)
+                    veinSpots[(int)veinGroup.type]++;
 
             // gsPlanet.planetData.veinSpotsSketch = veinSpots;
         }
@@ -212,10 +214,13 @@ namespace GalacticScale
                     veinGroups[i].position = potentialVector;
                     // GS2.Log("Succeeded finding a vector =" + veinGroups[i].type + " on planet:" + gsPlanet.Name);
                 }
-                else GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
+                else
+                {
+                    GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
+                }
             }
 
-            
+
             if (!birth) return veinGroups;
             var gsVeinDescriptorList = new List<GSVeinDescriptor>();
             var ironCount = 6;

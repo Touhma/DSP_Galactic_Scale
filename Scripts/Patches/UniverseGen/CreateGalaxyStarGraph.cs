@@ -18,7 +18,7 @@ namespace GalacticScale
                 galaxy.graphNodes[index1] = new StarGraphNode(galaxy.stars[index1]);
                 var graphNode1 = galaxy.graphNodes[index1];
                 for (var index2 = 0; index2 < Math.Min(GSSettings.GalaxyParams.graphMaxStars, index1); ++index2)
-                //for (var index2 = 0; index2 < index1; ++index2)
+                    //for (var index2 = 0; index2 < index1; ++index2)
                 {
                     var graphNode2 = galaxy.graphNodes[index2];
                     if ((graphNode1.pos - graphNode2.pos).sqrMagnitude < GSSettings.GalaxyParams.graphDistance)

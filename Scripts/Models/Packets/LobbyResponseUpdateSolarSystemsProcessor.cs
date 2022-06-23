@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using NebulaAPI;
 using GalacticScale;
+using NebulaAPI;
 
 namespace NebulaCompatibility
 {
@@ -35,22 +35,23 @@ namespace NebulaCompatibility
 
             // Old galaxyData is free in SetStarmapGalaxy(), so we need to reassign again
             galaxyData = UIRoot.instance.galaxySelect.starmap.galaxyData;
-            for (int i = 0; i < packet.Names.Length; i++)
+            for (var i = 0; i < packet.Names.Length; i++)
             {
                 GS2.Warn($"{packet.Names[i]} {packet.StarIds[i]} {packet.PlanetIds[i]}");
                 if (packet.StarIds[i] != NebulaModAPI.STAR_NONE)
                 {
-                    StarData star = galaxyData.StarById(packet.StarIds[i]);
+                    var star = galaxyData.StarById(packet.StarIds[i]);
                     star.overrideName = packet.Names[i];
                     star.NotifyOnDisplayNameChange();
                 }
                 else
                 {
-                    PlanetData planet = galaxyData.PlanetById(packet.PlanetIds[i]);
+                    var planet = galaxyData.PlanetById(packet.PlanetIds[i]);
                     planet.overrideName = packet.Names[i];
                     planet.NotifyOnDisplayNameChange();
                 }
             }
+
             // Update display names
             UIRoot.instance.galaxySelect.starmap.OnGalaxyDataReset();
         }

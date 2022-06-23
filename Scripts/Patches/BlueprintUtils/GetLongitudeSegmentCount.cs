@@ -29,24 +29,18 @@ namespace GalacticScale
             __result = PlanetGrid.DetermineLongitudeSegmentCount(num / 5, _segmentCnt);
             return false;
         }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(BlueprintUtils), "GetLongitudeSegmentCount", typeof(int), typeof(int))]
-        public static bool GetLongitudeSegmentCount(ref int __result,int _latitudeGridIdx, int _segmentCnt = 200)
+        public static bool GetLongitudeSegmentCount(ref int __result, int _latitudeGridIdx, int _segmentCnt = 200)
         {
             // GS2.Warn($"**SegmentCount: {_segmentCnt}");
             // GS2.Warn($"*_latitudeGridIdx: {_latitudeGridIdx}");
 
-            if (_latitudeGridIdx < 0)
-            {
-                _latitudeGridIdx = -_latitudeGridIdx;
-            }
-            if (_latitudeGridIdx > 0)
-            {
-                _latitudeGridIdx--;
-            }
+            if (_latitudeGridIdx < 0) _latitudeGridIdx = -_latitudeGridIdx;
+            if (_latitudeGridIdx > 0) _latitudeGridIdx--;
             __result = PlanetGrid.DetermineLongitudeSegmentCount(_latitudeGridIdx / 5, _segmentCnt);
             return false;
         }
-        
     }
 }

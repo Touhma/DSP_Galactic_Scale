@@ -52,7 +52,7 @@ namespace GalacticScale
                                 if (array != null) Array.Copy(array, __instance.potentialBeltObjIdArray, __instance.potentialBeltCursor);
                             }
 
-                            __instance.potentialBeltObjIdArray[__instance.potentialBeltCursor] = ((Mathf.Abs(num4) << 4) + i) * (int)Mathf.Sign((float)num4);
+                            __instance.potentialBeltObjIdArray[__instance.potentialBeltCursor] = ((Mathf.Abs(num4) << 4) + i) * (int)Mathf.Sign(num4);
                             __instance.potentialBeltCursor++;
                             var magnitude = (__instance.GetObjectPose(num4).position - b).magnitude;
                             if (magnitude < num && magnitude < 2f)
@@ -66,8 +66,8 @@ namespace GalacticScale
 
                 __instance.addonAreaBeltObjIdArray[i] = num2;
             }
+
             return false;
         }
-
     }
 }

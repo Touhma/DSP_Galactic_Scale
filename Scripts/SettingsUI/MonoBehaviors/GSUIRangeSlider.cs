@@ -84,14 +84,12 @@ namespace GalacticScale
             sliderActive = !sliderActive;
             if (sliderActive)
             {
-                
                 _inputLow.gameObject.SetActive(false);
                 _inputHigh.gameObject.SetActive(false);
                 _slider.gameObject.SetActive(true);
             }
             else
             {
-                
                 _inputLow.gameObject.SetActive(true);
                 _inputHigh.gameObject.SetActive(true);
                 _slider.gameObject.SetActive(false);
@@ -99,20 +97,23 @@ namespace GalacticScale
                 _inputHigh.text = _highValueText.text;
             }
         }
+
         public void onLowInputChange(string value)
         {
-            if (!float.TryParse(value, out float result)) return;
+            if (!float.TryParse(value, out var result)) return;
             _slider.LowValue = result;
             OnChange?.Invoke(new FloatPair(result, _slider.HighValue));
             OnLowChange?.Invoke(result);
         }
+
         public void onHighInputChange(string value)
         {
-            if (!float.TryParse(value, out float result)) return;
+            if (!float.TryParse(value, out var result)) return;
             _slider.HighValue = result;
             OnChange?.Invoke(new FloatPair(_slider.LowValue, _slider.HighValue));
             OnHighChange?.Invoke(result);
         }
+
         public void OnSliderValueChange(float LowValue, float HighValue)
         {
             // GS2.Log($"SliderValChange(Range) { LowValue} {HighValue}");

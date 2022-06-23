@@ -1,22 +1,18 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using NGPT;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace GalacticScale
 {
     public static class SystemDisplay
     {
-        public static bool inSystemDisplay = false;
+        public static bool inSystemDisplay;
         public static StarData viewStar;
         public static Button randomButton;
         public static Button startButton;
         public static Button backButton;
-        public static bool deBounce = false;
+        public static bool deBounce;
         public static int customBirthStar = -1;
         public static int customBirthPlanet = -1;
         public static float mouseTolerance = 1.7f;
@@ -276,7 +272,7 @@ namespace GalacticScale
             UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.SetActive(false);
             UIRoot.instance.galaxySelect.propertyMultiplierText.gameObject.SetActive(false);
             UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.SetActive(false);
-            
+
 
             UIRoot.instance.galaxySelect.seedInput.transform.parent.gameObject.SetActive(false);
             UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(false);
@@ -514,8 +510,8 @@ namespace GalacticScale
                     var starNode2 = new UIVirtualStarmap.StarNode();
                     starNode2.active = false;
                     starNode2.starData = null;
-                    starNode2.pointRenderer = Object.Instantiate<MeshRenderer>(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
-                    starNode2.nameText = Object.Instantiate<Text>(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent);
+                    starNode2.pointRenderer = Object.Instantiate(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
+                    starNode2.nameText = Object.Instantiate(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent);
                     starmap.starPool.Add(starNode2);
                 }
 
@@ -559,13 +555,13 @@ namespace GalacticScale
                 for (var j = 0; j < 61; j++)
                 {
                     // GS2.Warn("ShowSolarSystem7");
-                    var f = (float)j * 0.017453292f * 6f; // ty dsp devs :D
+                    var f = j * 0.017453292f * 6f; // ty dsp devs :D
                     Vector3 cPos = GetCenterOfOrbit(starData, pData, ref isMoon);
                     Vector3 position;
                     if (isMoon)
-                        position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.z);
+                        position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.z);
                     else
-                        position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + (float)cPos.z);
+                        position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.z);
 
                     // GS2.Warn("ShowSolarSystem7a");
 
@@ -663,7 +659,7 @@ namespace GalacticScale
             }
             else if (starData.type == EStarType.MainSeqStar)
             {
-                text = text + starData.spectr.ToString() + "型恒星".Translate();
+                text = text + starData.spectr + "型恒星".Translate();
             }
 
 

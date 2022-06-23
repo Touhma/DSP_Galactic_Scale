@@ -51,12 +51,13 @@ namespace GalacticScale
                                 if (array != null) Array.Copy(array, __instance.potentialBeltObjIdArray, __instance.potentialBeltCursor);
                             }
 
-                            __instance.potentialBeltObjIdArray[__instance.potentialBeltCursor] = ((Mathf.Abs(num2) << 4) + i) * (int)Mathf.Sign((float)num2);
+                            __instance.potentialBeltObjIdArray[__instance.potentialBeltCursor] = ((Mathf.Abs(num2) << 4) + i) * (int)Mathf.Sign(num2);
                             __instance.potentialBeltCursor++;
                         }
                     }
                 }
             }
+
             return false;
         }
     }

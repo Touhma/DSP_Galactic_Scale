@@ -1,10 +1,8 @@
 using HarmonyLib;
-using UnityEngine;
 
 namespace GalacticScale
 {
-   
-    public partial class PatchOnBuildTool_Inserter
+    public class PatchOnBuildTool_Inserter
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BuildTool_Inserter), "CheckBuildConditions")]

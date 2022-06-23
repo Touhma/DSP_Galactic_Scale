@@ -1,7 +1,6 @@
 ﻿using System;
 using GSSerializer;
 using UnityEngine;
-using UnityEngine.Experimental.TerrainAPI;
 
 namespace GalacticScale
 {
@@ -170,30 +169,30 @@ namespace GalacticScale
             if (string.IsNullOrEmpty(name)) return null;
             var i = 0;
             foreach (var star in Stars)
+            foreach (var planet in star.Bodies)
             {
-                foreach (var planet in star.Bodies)
-                {
-                    i++;
-                    if (planet.Name == name) return planet;
-                }
+                i++;
+                if (planet.Name == name) return planet;
             }
+
             GS2.Error($"FindPlanet Failed to Find {name}. Searched {i} bodies");
             return null;
         }
+
         public static GSPlanet FindPlanet(int id)
         {
             var i = 0;
             foreach (var star in Stars)
+            foreach (var planet in star.Bodies)
             {
-                foreach (var planet in star.Bodies)
-                {
-                    i++;
-                    if (planet.planetData.id == id) return planet;
-                }
+                i++;
+                if (planet.planetData.id == id) return planet;
             }
+
             GS2.Error($"FindPlanet Failed to Find {id}. Searched {i} bodies");
             return null;
         }
+
         public static int PrimaryStarCount()
         {
             var count = 0;

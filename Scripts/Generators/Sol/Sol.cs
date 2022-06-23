@@ -59,8 +59,7 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Checkbox("Accurate Stars".Translate(), true, "accurateStars")); //, (o) => { ReadStarData(); }));
             Options.Add(GSUI.Checkbox("Start in Sol".Translate(), true, "startInSol"));
             Options.Add(GSUI.Slider("Max planets per system".Translate(), 1, 10, 99, "maxPlanetCount"));
-            Options.Add(GSUI.Slider("Sol System Day/Night Multi", 0.5f, 1f, 20f, 0.5f, "IncreaseRotation", null,
-                "Change the Sol system planets day/night cycle"));
+            Options.Add(GSUI.Slider("Sol System Day/Night Multi", 0.5f, 1f, 20f, 0.5f, "IncreaseRotation", null, "Change the Sol system planets day/night cycle"));
             UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 20, 30, 510, o =>
             {
                 var maxSize = preferences.GetFloat("maxPlanetSize", 300);
@@ -466,7 +465,7 @@ namespace GalacticScale.Generators
             string theme;
             List<string> themeNames;
 
-            var radius = Utils.ParsePlanetSize( random.Next(30, Mathf.Clamp(host.Radius - 10, 30, 510)));
+            var radius = Utils.ParsePlanetSize(random.Next(30, Mathf.Clamp(host.Radius - 10, 30, 510)));
             if (preferences.GetBool("moonsAreSmall", true) && radius > 200) radius = random.Next(30, 190);
             //switch (heat)
             //{
@@ -529,7 +528,7 @@ namespace GalacticScale.Generators
                 radius = random.Next(Mathf.Min(avgPlanetSize, maxPlanetSize - 100), Mathf.Min(maxPlanetSize, 510)); //needs more limits, but I got bored
             else
                 radius = random.Next(minPlanetSize, maxPlanetSize);
-            return Utils.ParsePlanetSize( radius);
+            return Utils.ParsePlanetSize(radius);
         }
 
         public GSPlanet RandomPlanet(GSStar star, string name, int orbitIndex, int orbitCount, int moonCount, int availMoons)
@@ -659,8 +658,8 @@ namespace GalacticScale.Generators
             else
             {
                 scale = 1f;
-                radius = Utils.ParsePlanetSize( ChooseRadius(tiny, huge));
-                
+                radius = Utils.ParsePlanetSize(ChooseRadius(tiny, huge));
+
                 themeNames = GSSettings.ThemeLibrary.Query(EThemeType.Planet, ThemeHeat, radius);
                 themeName = themeNames[random.Next(0, themeNames.Count - 1)];
             }
@@ -759,13 +758,8 @@ namespace GalacticScale.Generators
                 GSSettings.BirthPlanetName = "Earth";
             }
 
-             
-            
-                foreach (var p in planets)
-                {
-                    p.RotationPeriod *= preferences.GetFloat("IncreaseRotation", 1f);
-                }
-            
+
+            foreach (var p in planets) p.RotationPeriod *= preferences.GetFloat("IncreaseRotation", 1f);
         }
 
         public class ExternalStarData

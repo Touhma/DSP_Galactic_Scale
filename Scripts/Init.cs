@@ -34,7 +34,7 @@ namespace GalacticScale
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
         public static GS2MainSettings Config = new();
-        
+
         public static GalaxyData galaxy;
 
         public static GameDesc gameDesc;
@@ -48,6 +48,7 @@ namespace GalacticScale
 
         public static bool IsMenuDemo => DSPGame.IsMenuDemo || !Initialized;
         public static bool Vanilla => ActiveGenerator.GUID == "space.customizing.generators.vanilla";
+
         public static AssetBundle Bundle
         {
             get
@@ -60,12 +61,14 @@ namespace GalacticScale
                     else bundle = AssetBundle.LoadFromFile(path2);
                     // foreach (var name in _bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
                 }
+
                 if (bundle == null)
                 {
                     Error("Failed to load AssetBundle!".Translate());
                     UIMessageBox.Show("Error", "Asset Bundle not found. \r\nPlease ensure your directory structure is correct.\r\n Installation instructions can be found at http://customizing.space/release. \r\nAn error log has been generated in the plugin/ErrorLog Directory".Translate(), "Return".Translate(), 0);
                     return null;
                 }
+
                 return bundle;
             }
         }
@@ -189,7 +192,7 @@ namespace GalacticScale
                 GSEvents.GeneratorChange(ActiveGenerator);
             }
 
-            
+
             // Warn("Step8");
             UpdateNebulaSettings();
             // Warn("Step9");

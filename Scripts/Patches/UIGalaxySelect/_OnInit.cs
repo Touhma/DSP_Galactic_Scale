@@ -18,7 +18,6 @@ namespace GalacticScale
                 GSSettings.Seed = s;
             });
             __instance.sandboxToggle.isOn = false;
-
         }
     }
 }

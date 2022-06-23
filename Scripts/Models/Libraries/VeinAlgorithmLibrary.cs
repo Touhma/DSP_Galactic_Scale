@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public delegate void GSVeinAlgorithm(GSPlanet gsPlanet);//, bool sketchOnly);
+    public delegate void GSVeinAlgorithm(GSPlanet gsPlanet); //, bool sketchOnly);
 
     public class VeinAlgorithmLibrary : Dictionary<string, GSVeinAlgorithm>
     {

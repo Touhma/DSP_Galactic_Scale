@@ -9,7 +9,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GameDesc), "Export")]
         public static void Export(BinaryWriter w)
         {
-            GS2.Warn($"^^^Export^^^");
+            GS2.Warn("^^^Export^^^");
             // GS2.Warn("Exporting");
             // if (GS2.IsMenuDemo || GS2.Vanilla) return;
             // var minify = GS2.Config.MinifyJson;

@@ -1,11 +1,8 @@
 ﻿using System.Collections;
-using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
-using GSSerializer;
 using HarmonyLib;
-using UnityEngine;
 
 namespace GalacticScale
 {
@@ -33,7 +30,7 @@ namespace GalacticScale
         private void InitializeLogger()
         {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
-            Assembly a = Assembly.GetAssembly(typeof(GSStar));
+            var a = Assembly.GetAssembly(typeof(GSStar));
             GS2.Version = $"{v.Major}.{v.Minor}.{v.Build}";
             BCE.Console.Init();
             Logger = new ManualLogSource("GS2");
@@ -117,9 +114,6 @@ namespace GalacticScale
             harmony.PatchAll(typeof(PatchOnUniverseSimulator));
             harmony.PatchAll(typeof(PatchOnVFPreload));
             harmony.PatchAll(typeof(PatchOnWarningSystem));
-            
-            
-            
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive)

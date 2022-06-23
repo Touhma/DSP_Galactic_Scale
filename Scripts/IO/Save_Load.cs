@@ -19,13 +19,13 @@ namespace GalacticScale
         public static bool Import(BinaryReader r, string LoadPath = "") // Load Settings from Save Game
         {
             // return true;
-            GS2.Warn("Import");
+            Warn("Import");
 
             Log("Importing from Save.");
             if (!SaveOrLoadWindowOpen) GSSettings.Reset(0);
             var serializer = new fsSerializer();
             var position = r.BaseStream.Position;
-            GS2.Warn($"Initial Stream Position:{position}");
+            Warn($"Initial Stream Position:{position}");
             var version = "2";
             var json = "";
             // var isVanilla = true;
@@ -45,15 +45,15 @@ namespace GalacticScale
                     return false;
                 }
             }
-            
-            GS2.Warn( $"parseResult:{parseResult.Succeeded}");
-            GS2.Warn($"Input file : {LoadPath}");
-            GS2.Warn($"After Parse, Stream Position:{r.BaseStream.Position}");    
+
+            Warn($"parseResult:{parseResult.Succeeded}");
+            Warn($"Input file : {LoadPath}");
+            Warn($"After Parse, Stream Position:{r.BaseStream.Position}");
             if (SaveOrLoadWindowOpen) return true;
             var result = new GSSettings(0);
             if (LoadPath != "")
             {
-                GS2.Warn($"*** Loading Settings From {LoadPath}");
+                Warn($"*** Loading Settings From {LoadPath}");
                 LoadSettingsFromJson(LoadPath);
                 Warn($"StarCount : {GSSettings.StarCount}");
             }
@@ -61,27 +61,26 @@ namespace GalacticScale
             {
                 try
                 {
-                    
                     var deserialize = serializer.TryDeserialize(data2, ref result);
                     if (deserialize.Failed)
                     {
                         Warn("Deserialize Failed");
                         if (LoadPath == "") r.BaseStream.Position = position;
                         if (LoadPath == "") ActiveGenerator = GetGeneratorByID("space.customizing.generators.vanilla");
-                        GS2.Warn($"After Deserialize Stream Position:{r.BaseStream.Position}");
+                        Warn($"After Deserialize Stream Position:{r.BaseStream.Position}");
                         if (LoadPath == "") return false;
                     }
                     else
                     {
                         GSSettings.Instance = result;
                     }
-
                 }
                 catch (Exception e)
                 {
                     Warn($"{e.Message}");
                 }
             }
+
             Warn($"StarCount2 : {GSSettings.StarCount}");
             // if (Force == "") result = GSSettings.Instance;
             // Warn($"StarCount3 : {GSSettings.StarCount}");
@@ -97,7 +96,7 @@ namespace GalacticScale
             // if (Force == "") GSSettings.Instance = result;
             Warn($"StarCount3 : {GSSettings.StarCount}");
             GSSettings.Instance.imported = true;
-            GS2.Warn($"Final Stream Position:{r.BaseStream.Position}");
+            Warn($"Final Stream Position:{r.BaseStream.Position}");
             return true;
         }
     }

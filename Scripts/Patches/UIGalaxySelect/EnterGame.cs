@@ -17,13 +17,13 @@ namespace GalacticScale
             {
                 GS2.Warn("Starting Game, Skipping Prologue.");
                 DSPGame.StartGameSkipPrologue(___gameDesc);
-            } else if (!NebulaCompat.IsMultiplayerActive)
+            }
+            else if (!NebulaCompat.IsMultiplayerActive)
             {
                 DSPGame.StartGame(___gameDesc);
             }
 
             return false;
         }
-        
     }
 }

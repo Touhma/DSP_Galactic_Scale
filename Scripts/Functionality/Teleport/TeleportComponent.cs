@@ -5,19 +5,18 @@ namespace GalacticScale
 {
     public class TeleportComponent : MonoBehaviour
     {
+        public bool TeleportEnabled;
+        public int ticker;
         public PlanetData TargetPlanet;
         public StarData TargetStar;
-        public bool TeleportEnabled;
-        public int ticker = 0;
+
         public void FixedUpdate()
         {
             ticker++;
             if (ticker > 60)
-            {
                 // GS2.Warn(
-                    // $"FU: TP:{TargetPlanet != null} TS:{TargetStar != null} TE:{TeleportEnabled} LS:{GameMain.localStar != null} LSL{GameMain.localStar?.loaded}");
+                // $"FU: TP:{TargetPlanet != null} TS:{TargetStar != null} TE:{TeleportEnabled} LS:{GameMain.localStar != null} LSL{GameMain.localStar?.loaded}");
                 ticker = 0;
-            }
             else return;
             if (!GS2.Config.CheatMode) return;
             if (DSPGame.IsMenuDemo) return;
@@ -36,6 +35,7 @@ namespace GalacticScale
                 StartCoroutine(Teleport(TargetStar));
             }
         }
+
         private IEnumerator Teleport(PlanetData planet)
         {
             GS2.Warn($"Teleporting to {planet.name}");
@@ -57,7 +57,6 @@ namespace GalacticScale
 
         private IEnumerator Teleport(StarData star)
         {
-
             yield return new WaitForEndOfFrame();
             // yield return new WaitForSeconds(0.2f);
 
@@ -69,7 +68,7 @@ namespace GalacticScale
             yield return new WaitForEndOfFrame();
             GameCamera.instance.FrameLogic();
             yield return new WaitForEndOfFrame();
-            GameMain.mainPlayer.transform.localScale = Vector3.one  * GS2.Config.MechaScale;
+            GameMain.mainPlayer.transform.localScale = Vector3.one * GS2.Config.MechaScale;
             if (GameMain.localStar == star)
             {
                 TargetPlanet = null;

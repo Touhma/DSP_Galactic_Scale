@@ -67,6 +67,7 @@ namespace GalacticScale
                     num15 = (3.0 - num15 - num15) * num15 * num15;
                     hdEnd = -0.3 - num15 * 3.700000047683716;
                 }
+
                 if (data.heightData == null) return;
                 data.heightData[i] = (ushort)((gsPlanet.planetData.radius + hdEnd + 0.2 + t.BaseHeight) * 100.0 * t.HeightMulti);
                 data.biomoData[i] = (byte)Mathf.Clamp((float)((bdEnd + t.BiomeHeightModifier) * 100.0 * t.BiomeHeightMulti), 0f, 200f);

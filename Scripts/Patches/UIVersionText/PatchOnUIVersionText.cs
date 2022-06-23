@@ -13,7 +13,8 @@ namespace GalacticScale
         private static string oldLoadingText = "";
         private static string baseText = "";
 
-        [HarmonyTranspiler, HarmonyBefore("dsp.nebula - multiplayer")]
+        [HarmonyTranspiler]
+        [HarmonyBefore("dsp.nebula - multiplayer")]
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
         public static IEnumerable<CodeInstruction> Refresh_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -30,52 +31,46 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIVersionText), "Refresh")]
         public static void RefreshPostfix(ref Text ___textComp, bool ___firstFrame)
         {
-            bool inSystemDisplay = SystemDisplay.inSystemDisplay;
+            var inSystemDisplay = SystemDisplay.inSystemDisplay;
             if (inSystemDisplay)
             {
                 if (string.IsNullOrEmpty(baseText)) baseText = ___textComp.text;
-                PatchOnUIVersionText.oldLoadingText = PatchOnUIVersionText.loadingText;
-                bool flag = SystemDisplay.viewStar != null;
+                oldLoadingText = loadingText;
+                var flag = SystemDisplay.viewStar != null;
                 if (flag)
                 {
-                    StarData viewStar = SystemDisplay.viewStar;
-                    bool flag2 = !viewStar.calculated;
+                    var viewStar = SystemDisplay.viewStar;
+                    var flag2 = !viewStar.calculated;
                     if (flag2)
                     {
-                        PatchOnUIVersionText.loadingText = baseText + "\r\nStar Loading...\r\n";
-                        int num = 0;
-                        GSStar gsstar = GS2.GetGSStar(viewStar);
-                        foreach (GSPlanet gsplanet in gsstar.Bodies)
+                        loadingText = baseText + "\r\nStar Loading...\r\n";
+                        var num = 0;
+                        var gsstar = GS2.GetGSStar(viewStar);
+                        foreach (var gsplanet in gsstar.Bodies)
                         {
-                            bool flag3 = !gsplanet.planetData.calculating && !gsplanet.planetData.calculated;
-                            if (flag3)
-                            {
-                                gsplanet.planetData.RunCalculateThread();
-                            }
-                            bool flag4 = !gsplanet.planetData.calculated;
-                            if (flag4)
-                            {
-                                num++;
-                            }
+                            var flag3 = !gsplanet.planetData.calculating && !gsplanet.planetData.calculated;
+                            if (flag3) gsplanet.planetData.RunCalculateThread();
+                            var flag4 = !gsplanet.planetData.calculated;
+                            if (flag4) num++;
                         }
-                        int bodyCount = gsstar.bodyCount;
-                        PatchOnUIVersionText.loadingText += string.Format("Calculating planet {0}/{1}...\r\n", bodyCount - num, bodyCount);
+
+                        var bodyCount = gsstar.bodyCount;
+                        loadingText += string.Format("Calculating planet {0}/{1}...\r\n", bodyCount - num, bodyCount);
                     }
                     else
                     {
-                        PatchOnUIVersionText.loadingText = "";
+                        loadingText = "";
                     }
                 }
                 else
                 {
-                    PatchOnUIVersionText.loadingText = "";
+                    loadingText = "";
                 }
-                bool flag5 = PatchOnUIVersionText.loadingText != PatchOnUIVersionText.oldLoadingText;
-                if (flag5)
-                {
-                    ___textComp.text = PatchOnUIVersionText.baseText + PatchOnUIVersionText.loadingText;
-                }
+
+                var flag5 = loadingText != oldLoadingText;
+                if (flag5) ___textComp.text = baseText + loadingText;
             }
+
             if (GS2.IsMenuDemo || !GameMain.isRunning) return;
             if (string.IsNullOrEmpty(baseText)) baseText = ___textComp.text;
             if (___textComp != null && GameMain.localStar != null)

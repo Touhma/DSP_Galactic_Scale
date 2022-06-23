@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public static partial class Themes
     {
-        public static GSTheme PandoraSwamp2 = new GSTheme
+        public static GSTheme PandoraSwamp2 = new()
         {
             Name = "PandoraSwamp2",
             Base = true,
@@ -50,9 +50,9 @@ namespace GalacticScale
                 BiomeSound3 = 2,
                 CubeMap = "Vanilla",
                 Reflections = new Color(),
-                LutContribution = 0.6f,
+                LutContribution = 0.6f
             },
-            Vegetables0 = new int[]
+            Vegetables0 = new[]
             {
                 681,
                 682,
@@ -62,9 +62,9 @@ namespace GalacticScale
                 151,
                 148,
                 149,
-                1085,
+                1085
             },
-            Vegetables1 = new int[]
+            Vegetables1 = new[]
             {
                 1085,
                 681,
@@ -74,23 +74,23 @@ namespace GalacticScale
                 682,
                 1086,
                 144,
-                150,
+                150
             },
-            Vegetables2 = new int[]
+            Vegetables2 = new[]
             {
                 1084,
                 1081,
                 1082,
                 1083,
                 1085,
-                1086,
+                1086
             },
-            Vegetables3 = new int[]
+            Vegetables3 = new[]
             {
                 141,
-                145,
+                145
             },
-            Vegetables4 = new int[]
+            Vegetables4 = new[]
             {
                 1084,
                 681,
@@ -100,12 +100,12 @@ namespace GalacticScale
                 1086,
                 685,
                 146,
-                147,
+                147
             },
             Vegetables5 = new int[]
             {
             },
-            VeinSpot = new int[]
+            VeinSpot = new[]
             {
                 8,
                 3,
@@ -113,9 +113,9 @@ namespace GalacticScale
                 1,
                 3,
                 9,
-                20,
+                20
             },
-            VeinCount = new float[]
+            VeinCount = new[]
             {
                 0.7f,
                 0.6f,
@@ -123,9 +123,9 @@ namespace GalacticScale
                 1f,
                 0.6f,
                 1f,
-                1f,
+                1f
             },
-            VeinOpacity = new float[]
+            VeinOpacity = new[]
             {
                 0.7f,
                 0.5f,
@@ -133,15 +133,15 @@ namespace GalacticScale
                 1f,
                 0.7f,
                 1.2f,
-                1f,
+                1f
             },
-            RareVeins = new int[]
+            RareVeins = new[]
             {
                 10,
                 11,
-                13,
+                13
             },
-            RareSettings = new float[]
+            RareSettings = new[]
             {
                 0f,
                 0.5f,
@@ -154,7 +154,7 @@ namespace GalacticScale
                 0f,
                 0.5f,
                 0.2f,
-                1f,
+                1f
             },
             GasItems = new int[]
             {
@@ -167,74 +167,75 @@ namespace GalacticScale
             IonHeight = 60f,
             WaterHeight = -2f,
             WaterItemId = 0,
-            Musics = new int[]
+            Musics = new[]
             {
                 15,
-                16,
+                16
             },
             SFXPath = "SFX/sfx-amb-ocean-3",
             SFXVolume = 1f,
             CullingRadius = 0f,
-atmosphereMaterial = new GSMaterialSettings
-{
-Colors = new Dictionary<string, Color>{
-["_Color"] = new Color(0.3443396f, 0.734796f, 1f,1f),
-["_Color0"] = new Color(0.4316979f, 0f, 0.7176471f,1f),
-["_Color1"] = new Color(0.4241931f, 0.3649215f, 0.7254902f,1f),
-["_Color2"] = new Color(0.4965216f, 0.4575917f, 0.8584906f,1f),
-["_Color3"] = new Color(0.2642171f, 0.671552f, 0.811f,1f),
-["_Color4"] = new Color(0.6048944f, 0.6950161f, 0.9217973f,1f),
-["_Color5"] = new Color(0.6918148f, 0f, 0.7547169f,1f),
-["_Color6"] = new Color(0.4537178f, 0f, 0.7924528f,1f),
-["_Color7"] = new Color(0.6050931f, 0.4470588f, 0.8392157f,1f),
-["_Color8"] = new Color(0.902f, 0.804f, 1f,1f),
-["_ColorF"] = new Color(0.7517568f, 0.6968f, 0.8666667f,1f),
-["_EmissionColor"] = new Color(0f, 0f, 0f,1f),
-["_LocalPos"] = new Color(196.7228f, 24.81346f, 37.8507f,0f),
-["_PlanetPos"] = new Color(0f, 0f, 0f,0f),
-["_PlanetRadius"] = new Color(200f, 100f, 260f,0f),
-["_Sky0"] = new Color(0.3254899f, 0.5490196f, 0.7529413f,0.4901961f),
-["_Sky1"] = new Color(0.3666937f, 0.3083836f, 0.6603774f,0.3568628f),
-["_Sky2"] = new Color(0.3415806f, 0.3983026f, 0.7169812f,0.8588235f),
-["_Sky3"] = new Color(0.2766015f, 0.1960783f, 0.5254902f,0.6784314f),
-["_Sky4"] = new Color(0.5427575f, 0.6441936f, 0.8785993f,1f),
-},
-Params = new Dictionary<string, float>{
-["_AtmoDensity"] = 1.1f,
-["_AtmoThickness"] = 70f,
-["_BumpScale"] = 1f,
-["_Cutoff"] = 0.5f,
-["_Density"] = 0.005f,
-["_DetailNormalMapScale"] = 1f,
-["_DstBlend"] = 0f,
-["_FarFogDensity"] = 0.25f,
-["_FogDensity"] = 0.9f,
-["_FogSaturate"] = 0.85f,
-["_GlossMapScale"] = 1f,
-["_Glossiness"] = 0.5f,
-["_GlossyReflections"] = 1f,
-["_GroundAtmosPower"] = 3f,
-["_Intensity"] = 1f,
-["_IntensityControl"] = 1f,
-["_Metallic"] = 0f,
-["_Mode"] = 0f,
-["_OcclusionStrength"] = 1f,
-["_Parallax"] = 0.02f,
-["_RimFogExp"] = 1.3f,
-["_RimFogPower"] = 2.5f,
-["_SkyAtmosPower"] = 7f,
-["_SmoothnessTextureChannel"] = 0f,
-["_SpecularHighlights"] = 1f,
-["_SrcBlend"] = 1f,
-["_SunColorAdd"] = 1f,
-["_SunColorSkyUse"] = 1f,
-["_SunColorUse"] = 0f,
-["_SunRiseScatterPower"] = 60f,
-["_UVSec"] = 0f,
-["_ZWrite"] = 1f,
-}
-},
-
+            atmosphereMaterial = new GSMaterialSettings
+            {
+                Colors = new Dictionary<string, Color>
+                {
+                    ["_Color"] = new(0.3443396f, 0.734796f, 1f, 1f),
+                    ["_Color0"] = new(0.4316979f, 0f, 0.7176471f, 1f),
+                    ["_Color1"] = new(0.4241931f, 0.3649215f, 0.7254902f, 1f),
+                    ["_Color2"] = new(0.4965216f, 0.4575917f, 0.8584906f, 1f),
+                    ["_Color3"] = new(0.2642171f, 0.671552f, 0.811f, 1f),
+                    ["_Color4"] = new(0.6048944f, 0.6950161f, 0.9217973f, 1f),
+                    ["_Color5"] = new(0.6918148f, 0f, 0.7547169f, 1f),
+                    ["_Color6"] = new(0.4537178f, 0f, 0.7924528f, 1f),
+                    ["_Color7"] = new(0.6050931f, 0.4470588f, 0.8392157f, 1f),
+                    ["_Color8"] = new(0.902f, 0.804f, 1f, 1f),
+                    ["_ColorF"] = new(0.7517568f, 0.6968f, 0.8666667f, 1f),
+                    ["_EmissionColor"] = new(0f, 0f, 0f, 1f),
+                    ["_LocalPos"] = new(196.7228f, 24.81346f, 37.8507f, 0f),
+                    ["_PlanetPos"] = new(0f, 0f, 0f, 0f),
+                    ["_PlanetRadius"] = new(200f, 100f, 260f, 0f),
+                    ["_Sky0"] = new(0.3254899f, 0.5490196f, 0.7529413f, 0.4901961f),
+                    ["_Sky1"] = new(0.3666937f, 0.3083836f, 0.6603774f, 0.3568628f),
+                    ["_Sky2"] = new(0.3415806f, 0.3983026f, 0.7169812f, 0.8588235f),
+                    ["_Sky3"] = new(0.2766015f, 0.1960783f, 0.5254902f, 0.6784314f),
+                    ["_Sky4"] = new(0.5427575f, 0.6441936f, 0.8785993f, 1f)
+                },
+                Params = new Dictionary<string, float>
+                {
+                    ["_AtmoDensity"] = 1.1f,
+                    ["_AtmoThickness"] = 70f,
+                    ["_BumpScale"] = 1f,
+                    ["_Cutoff"] = 0.5f,
+                    ["_Density"] = 0.005f,
+                    ["_DetailNormalMapScale"] = 1f,
+                    ["_DstBlend"] = 0f,
+                    ["_FarFogDensity"] = 0.25f,
+                    ["_FogDensity"] = 0.9f,
+                    ["_FogSaturate"] = 0.85f,
+                    ["_GlossMapScale"] = 1f,
+                    ["_Glossiness"] = 0.5f,
+                    ["_GlossyReflections"] = 1f,
+                    ["_GroundAtmosPower"] = 3f,
+                    ["_Intensity"] = 1f,
+                    ["_IntensityControl"] = 1f,
+                    ["_Metallic"] = 0f,
+                    ["_Mode"] = 0f,
+                    ["_OcclusionStrength"] = 1f,
+                    ["_Parallax"] = 0.02f,
+                    ["_RimFogExp"] = 1.3f,
+                    ["_RimFogPower"] = 2.5f,
+                    ["_SkyAtmosPower"] = 7f,
+                    ["_SmoothnessTextureChannel"] = 0f,
+                    ["_SpecularHighlights"] = 1f,
+                    ["_SrcBlend"] = 1f,
+                    ["_SunColorAdd"] = 1f,
+                    ["_SunColorSkyUse"] = 1f,
+                    ["_SunColorUse"] = 0f,
+                    ["_SunRiseScatterPower"] = 60f,
+                    ["_UVSec"] = 0f,
+                    ["_ZWrite"] = 1f
+                }
+            }
         };
     }
 }

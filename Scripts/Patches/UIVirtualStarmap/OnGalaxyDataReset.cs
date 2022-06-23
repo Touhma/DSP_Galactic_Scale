@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using NebulaCompatibility;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +16,7 @@ namespace GalacticScale
 
             return true;
         }
-        
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIVirtualStarmap), "OnGalaxyDataReset")]
         public static bool OnGalaxyDataReset(ref UIVirtualStarmap __instance)
@@ -150,7 +149,7 @@ namespace GalacticScale
                 }
             }
 
-            Text text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
+            var text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
             text.text = $"Start Game at {__instance._galaxyData.PlanetById(__instance._galaxyData.birthPlanetId)?.displayName}";
             text.horizontalOverflow = HorizontalWrapMode.Overflow;
 

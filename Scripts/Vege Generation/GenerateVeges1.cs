@@ -54,7 +54,6 @@ namespace GalacticScale
             //GS2.Log("GenerateVeges1|" + gsPlanet.Name + "4");
             for (var i = 0; i < data.dataLength; i++)
             {
-                
                 var num13 = i % stride;
                 var num14 = i / stride;
                 if (num13 > num11) num13--;

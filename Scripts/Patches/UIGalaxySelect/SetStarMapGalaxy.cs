@@ -37,10 +37,8 @@ namespace GalacticScale
             if (__instance.starmap == null) GS2.Warn("Starmap Null");
             // if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
             if (__instance.starmap.galaxyData != null)
-            {
                 // GS2.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
                 __instance.starmap.galaxyData.Free();
-            }
 
             if (galaxy == null) GS2.Warn("galaxy Null");
             //else GS2.Warn("Galaxy not null");
@@ -112,7 +110,7 @@ namespace GalacticScale
             // }
 
             // GS2.Warn("B");
-            
+
             // if (GameMain.universeSimulator == null)
             // {
             //     GS2.Warn("Instantiating UniverseSimulator");
@@ -147,15 +145,15 @@ namespace GalacticScale
             // Increase Pool Count to prevent Nebula from failing to initialize system view when starcount < planetcount
             while (starmap.starPool.Count <= 100)
             {
-                UIVirtualStarmap.StarNode starNode2 = new UIVirtualStarmap.StarNode();
+                var starNode2 = new UIVirtualStarmap.StarNode();
                 starNode2.active = false;
                 starNode2.starData = null;
-                starNode2.pointRenderer = Object.Instantiate<MeshRenderer>(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
-                starNode2.nameText = Object.Instantiate<Text>(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent);
+                starNode2.pointRenderer = Object.Instantiate(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
+                starNode2.nameText = Object.Instantiate(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent);
                 starmap.starPool.Add(starNode2);
             }
+
             while (starmap.connPool.Count <= 100)
-            {
                 starmap.connPool.Add(new UIVirtualStarmap.ConnNode
                 {
                     active = false,
@@ -163,9 +161,8 @@ namespace GalacticScale
                     starB = null,
                     lineRenderer = Object.Instantiate(starmap.connLinePrefab, starmap.connLinePrefab.transform.parent)
                 });
-            }
             // End 
-            
+
             // GS2.Warn("End");
         }
     }

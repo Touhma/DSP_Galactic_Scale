@@ -231,7 +231,7 @@ namespace GalacticScale
                 if (__instance.arriveLandTime >= 5f)
                 {
                     __instance.arriveLandTime = 5f;
-                    __instance.gameData.EndStandardModeGuide(true);
+                    __instance.gameData.EndStandardModeGuide();
                     GS2.Warn("StandardModeGuide Ended");
                     if (GameMain.gameScenario != null) GameMain.gameScenario.NotifyOnGameStart();
                 }

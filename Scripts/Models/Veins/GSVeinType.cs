@@ -49,7 +49,7 @@ namespace GalacticScale
             [EVeinType.Mag] = "Unipolar",
             [EVeinType.Stone] = "Stone"
         };
-        
+
         public static GS2.Random random = new(GSSettings.Seed);
         public int generate;
 

@@ -4,7 +4,7 @@ namespace GalacticScale
 {
     public static partial class PatchOnGameHistoryData
     {
-[HarmonyPrefix]
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(GameHistoryData), "SetForNewGame")]
         public static bool SetForNewGame(GameHistoryData __instance)
         {
@@ -66,6 +66,5 @@ namespace GalacticScale
             __instance.propertyData.Clear(); //Added after 0.9.25 update
             return false;
         }
-        
     }
 }

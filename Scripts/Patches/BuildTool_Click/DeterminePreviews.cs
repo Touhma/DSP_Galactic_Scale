@@ -30,16 +30,12 @@ namespace GalacticScale
         //          IL_071a: call         valuetype [UnityEngine.CoreModule]UnityEngine.Vector3 [UnityEngine.CoreModule]UnityEngine.Vector3::op_Multiply(valuetype [UnityEngine.CoreModule]UnityEngine.Vector3, float32)
         //          IL_071f: stloc.s      vector3_3
 
-        
+
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(BuildTool_Click), "DeterminePreviews")]
         public static IEnumerable<CodeInstruction> BuildTool_Click_DeterminePreviews_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            instructions = new CodeMatcher(instructions).MatchForward(true,
-            new CodeMatch(i => i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "get_realRadius"),
-            new CodeMatch(OpCodes.Call)) 
-            .InsertAndAdvance(Transpilers.EmitDelegate<Func<float, float>>(realRadius => { return Mathf.Min(realRadius * 0.025f, 20f)/0.025f; }))
-            .InstructionEnumeration();
+            instructions = new CodeMatcher(instructions).MatchForward(true, new CodeMatch(i => i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "get_realRadius"), new CodeMatch(OpCodes.Call)).InsertAndAdvance(Transpilers.EmitDelegate<Func<float, float>>(realRadius => { return Mathf.Min(realRadius * 0.025f, 20f) / 0.025f; })).InstructionEnumeration();
             return instructions;
         }
     }
@@ -294,4 +290,4 @@ namespace GalacticScale
     //         __instance.buildPreviews.Clear();
     //         return false;
     //     }
-    }
+}

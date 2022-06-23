@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public partial class PatchOnWarningSystem
+    public class PatchOnWarningSystem
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(WarningSystem), "Init")]

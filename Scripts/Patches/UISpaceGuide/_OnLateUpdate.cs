@@ -206,62 +206,44 @@ namespace GalacticScale
                 //Added this chunk after 0.9.25 update
                 if (GameMain.gameScenario != null)
                 {
-                    CosmicMessageManager cosmicMessageManager = GameMain.gameScenario.cosmicMessageManager;
-                    CosmicMessageData[] messages = cosmicMessageManager.messages;
-                    for (int l = 1; l < messages.Length; l++)
+                    var cosmicMessageManager = GameMain.gameScenario.cosmicMessageManager;
+                    var messages = cosmicMessageManager.messages;
+                    for (var l = 1; l < messages.Length; l++)
                     {
-                        CosmicMessageData cosmicMessageData = messages[l];
+                        var cosmicMessageData = messages[l];
                         if (cosmicMessageData != null && cosmicMessageData.protoId != 0)
                         {
-                            bool flag7 = false;
-                            int protoId = cosmicMessageData.protoId;
-                            if (__instance.uiGame.dfSpaceGuideOnFinal && !flag7 && __instance.history.GetMessagePin(protoId) == EPin.Show)
-                            {
-                                flag7 = true;
-                            }
+                            var flag7 = false;
+                            var protoId = cosmicMessageData.protoId;
+                            if (__instance.uiGame.dfSpaceGuideOnFinal && !flag7 && __instance.history.GetMessagePin(protoId) == EPin.Show) flag7 = true;
 
-                            VectorLF3 vectorLF5 = cosmicMessageData.uPosition - camUPos;
-                            double num12 = directionOfView.x * vectorLF5.x + directionOfView.y * vectorLF5.y + directionOfView.z * vectorLF5.z;
+                            var vectorLF5 = cosmicMessageData.uPosition - camUPos;
+                            var num12 = directionOfView.x * vectorLF5.x + directionOfView.y * vectorLF5.y + directionOfView.z * vectorLF5.z;
                             if (!flag7 && cosmicMessageManager.IsMessageVisible(protoId))
                             {
                                 flag7 = true;
-                                if ((cosmicMessageData.uPosition - __instance.gameData.mainPlayer.uPosition).magnitude < 500.0)
-                                {
-                                    flag7 = false;
-                                }
+                                if ((cosmicMessageData.uPosition - __instance.gameData.mainPlayer.uPosition).magnitude < 500.0) flag7 = false;
 
-                                if (flag7 && __instance.history.GetMessagePin(protoId) == EPin.Hide)
-                                {
-                                    flag7 = false;
-                                }
+                                if (flag7 && __instance.history.GetMessagePin(protoId) == EPin.Hide) flag7 = false;
 
                                 if (!flag7 && num12 > 0.0)
                                 {
                                     num12 /= vectorLF5.magnitude;
-                                    if (num12 > 0.999)
-                                    {
-                                        flag7 = true;
-                                    }
+                                    if (num12 > 0.999) flag7 = true;
                                 }
                             }
 
                             if (!flag7 && __instance.gameData.mainPlayer.navigation.indicatorMsgId == protoId && num12 > 0.0)
                             {
                                 num12 /= vectorLF5.magnitude;
-                                if (num12 > 0.999)
-                                {
-                                    flag7 = true;
-                                }
+                                if (num12 > 0.999) flag7 = true;
                             }
 
-                            if (__instance.mouseInMessage == protoId)
-                            {
-                                flag7 = true;
-                            }
+                            if (__instance.mouseInMessage == protoId) flag7 = true;
 
                             if (flag7)
                             {
-                                VectorLF3 vec = Maths.QInvRotateLF(__instance.relRot, cosmicMessageData.uPosition - __instance.relPos);
+                                var vec = Maths.QInvRotateLF(__instance.relRot, cosmicMessageData.uPosition - __instance.relPos);
                                 __instance.SetEntry(ref _guidecnt, ESpaceGuideType.CosmicMessage, protoId, 0, vec, 1f);
                             }
                         }

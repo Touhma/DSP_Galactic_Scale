@@ -9,22 +9,17 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetGrid), "DetermineLongitudeSegmentCount")]
         public static bool DetermineLongitudeSegmentCount(PlanetGrid __instance, int latitudeIndex, int segment, ref int __result)
         {
-            
             //var a = 0;
             if (!DSPGame.IsMenuDemo)
                 if (!GS2.Vanilla)
                 {
-                    
                     if (!GS2.keyedLUTs.ContainsKey(segment))
-                    {
                         // GS2.Warn("Setting LUT");
                         GS2.SetLuts(segment, segment);
-                    }
                     if (GS2.keyedLUTs.ContainsKey(segment))
                     {
-                        
                         var index = Mathf.Abs(latitudeIndex) % (segment / 2);
-                        
+
                         if (index >= segment / 4) index = segment / 4 - index;
                         if (index < 0 || GS2.keyedLUTs[segment].Length == 0)
                         {

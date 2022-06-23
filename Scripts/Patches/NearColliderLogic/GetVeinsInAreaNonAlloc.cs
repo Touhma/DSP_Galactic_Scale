@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    internal static partial class PatchOnNearColliderLogic
+    internal static class PatchOnNearColliderLogic
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NearColliderLogic), "GetVeinsInAreaNonAlloc")]

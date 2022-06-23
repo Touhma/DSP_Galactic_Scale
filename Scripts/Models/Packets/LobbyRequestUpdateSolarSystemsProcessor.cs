@@ -1,7 +1,7 @@
-﻿using System.IO;
-using NebulaAPI;
+﻿using System.Collections.Generic;
+using System.IO;
 using GalacticScale;
-using System.Collections.Generic;
+using NebulaAPI;
 
 namespace NebulaCompatibility
 {
@@ -11,13 +11,12 @@ namespace NebulaCompatibility
         public override void ProcessPacket(LobbyRequestUpdateSolarSystems packet, INebulaConnection conn)
         {
             if (IsClient) return;
-                        
-            List<string> names = new List<string>();
-            List<int> starIds = new List<int>();
-            List<int> planetIds = new List<int>();
+
+            var names = new List<string>();
+            var starIds = new List<int>();
+            var planetIds = new List<int>();
             if (GameMain.galaxy != null)
-            {
-                foreach (StarData s in GameMain.galaxy.stars)
+                foreach (var s in GameMain.galaxy.stars)
                 {
                     if (!string.IsNullOrEmpty(s.overrideName))
                     {
@@ -25,17 +24,15 @@ namespace NebulaCompatibility
                         starIds.Add(s.id);
                         planetIds.Add(NebulaModAPI.PLANET_NONE);
                     }
-                    foreach (PlanetData p in s.planets)
-                    {
+
+                    foreach (var p in s.planets)
                         if (!string.IsNullOrEmpty(p.overrideName))
                         {
                             names.Add(p.overrideName);
                             starIds.Add(NebulaModAPI.STAR_NONE);
                             planetIds.Add(p.id);
                         }
-                    }
                 }
-            }
 
             using (var ms = new MemoryStream())
             {

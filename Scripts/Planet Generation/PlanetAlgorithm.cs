@@ -40,7 +40,7 @@
             if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings())
             {
                 if (gsTheme.VeinSettings.Algorithm == "Vanilla")
-                    veinAlgo = (p)=>//, sketchOnly) =>
+                    veinAlgo = p => //, sketchOnly) =>
                     {
                         // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
                         if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) baseAlgorithm.GenerateVeins();
@@ -51,7 +51,7 @@
             else
             {
                 if (gsPlanet.veinSettings.Algorithm == "Vanilla")
-                    veinAlgo = (p)=>//, sketchOnly) =>
+                    veinAlgo = p => //, sketchOnly) =>
                     {
                         // GS2.WarnJson(gsPlanet);
                         // GS2.WarnJson(gsPlanet.GsTheme);
@@ -89,14 +89,17 @@
         public override void GenerateTerrain(double modX, double modY)
         {
             //GS2.Log("PlanetAlgorithm|GenerateTerrain|" + gsPlanet.Name);
-            if (gsPlanet != null) if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) terrainAlgo(gsPlanet, modX, modY); //GS2.Log("PlanetAlgorithm|GenerateTerrain|End");
-            
+            if (gsPlanet != null)
+                if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null)
+                    terrainAlgo(gsPlanet, modX, modY); //GS2.Log("PlanetAlgorithm|GenerateTerrain|End");
         }
 
         public override void GenerateVegetables()
         {
             //GS2.Log("PlanetAlgorithm|GenerateVegetables()");
-            if (gsPlanet != null) if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) vegeAlgo(gsPlanet);
+            if (gsPlanet != null)
+                if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null)
+                    vegeAlgo(gsPlanet);
         }
 
         public override void GenerateVeins()
@@ -104,7 +107,7 @@
             // GS2.Log($"PlanetAlgorithm|GenerateVeins() for {gsPlanet.Name} {gsPlanet.Theme}");
             if (gsPlanet != null)
                 if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null)
-                    veinAlgo(gsPlanet);//, false);
+                    veinAlgo(gsPlanet); //, false);
         }
 
         public static PlanetAlgorithm GetBaseAlgo(int algoId)

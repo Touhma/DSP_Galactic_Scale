@@ -6,7 +6,7 @@ namespace GalacticScale
 {
     public static partial class VeinAlgorithms
     {
-        public static void GenerateVeinsVanilla(GSPlanet gsPlanet)//, bool sketchOnly)
+        public static void GenerateVeinsVanilla(GSPlanet gsPlanet) //, bool sketchOnly)
         {
             random = new GS2.Random(gsPlanet.Seed);
             var themeProto = LDB.themes.Select(gsPlanet.planetData.theme);
@@ -15,7 +15,7 @@ namespace GalacticScale
             var birth = GSSettings.BirthPlanet == gsPlanet;
             var planetRadiusFactor = 2.1f / gsPlanet.planetData.radius;
             InitializeFromThemeProto(gsPlanet, themeProto, out var veinSpots, out var veinCounts, out var veinOpacity);
-            if (birth)// && !sketchOnly)
+            if (birth) // && !sketchOnly)
                 gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next()); //GenBirthPoints(gsPlanet);
 
             gsPlanet.veinData.Clear();
@@ -287,7 +287,7 @@ namespace GalacticScale
                 Array.Copy(themeProto.VeinCount, 0, veinCounts, 1, Math.Min(themeProto.VeinCount.Length, veinCounts.Length - 1)); //How many veins per group
             if (themeProto.VeinOpacity != null)
                 Array.Copy(themeProto.VeinOpacity, 0, veinOpacity, 1, Math.Min(themeProto.VeinOpacity.Length, veinOpacity.Length - 1)); //How Rich the veins are
-            
+
             var p = InitSpecials(gsPlanet, veinSpots, veinCounts, veinOpacity);
             InitRares(gsPlanet, themeProto, veinSpots, veinCounts, veinOpacity, p);
             // gsPlanet.planetData.veinSpotsSketch = veinSpots;

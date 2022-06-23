@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public static partial class Themes
     {
-        public static GSTheme Lava = new GSTheme
+        public static GSTheme Lava = new()
         {
             Name = "Lava",
             Base = true,
@@ -49,126 +49,126 @@ namespace GalacticScale
                 BiomeSound3 = 2,
                 CubeMap = "Vanilla",
                 Reflections = new Color(),
-                LutContribution = 0.5f,
+                LutContribution = 0.5f
             },
-            Vegetables0 = new int[]
-  {
-647,
-646,
-647,
-646,
-645,
-645,
-644,
-643,
-642,
-634,
-635,
-632,
-633,
-636,
-631,
-  },
-            Vegetables1 = new int[]
-  {
-647,
-646,
-644,
-643,
-647,
-646,
-645,
-644,
-643,
-642,
-634,
-635,
-  },
+            Vegetables0 = new[]
+            {
+                647,
+                646,
+                647,
+                646,
+                645,
+                645,
+                644,
+                643,
+                642,
+                634,
+                635,
+                632,
+                633,
+                636,
+                631
+            },
+            Vegetables1 = new[]
+            {
+                647,
+                646,
+                644,
+                643,
+                647,
+                646,
+                645,
+                644,
+                643,
+                642,
+                634,
+                635
+            },
             Vegetables2 = new int[]
-  {
-  },
+            {
+            },
             Vegetables3 = new int[]
-  {
-  },
-            Vegetables4 = new int[]
-  {
-637,
-639,
-640,
-638,
-636,
-641,
-  },
+            {
+            },
+            Vegetables4 = new[]
+            {
+                637,
+                639,
+                640,
+                638,
+                636,
+                641
+            },
             Vegetables5 = new int[]
-  {
-  },
-            VeinSpot = new int[]
-  {
-15,
-15,
-2,
-9,
-4,
-2,
-0,
-  },
-            VeinCount = new float[]
-  {
-1f,
-1f,
-0.6f,
-1f,
-0.6f,
-0.3f,
-0f,
-  },
-            VeinOpacity = new float[]
-  {
-1f,
-1f,
-0.6f,
-1f,
-0.5f,
-0.3f,
-0f,
-  },
-            RareVeins = new int[]
-  {
-9,
-10,
-12,
-  },
-            RareSettings = new float[]
-  {
-0f,
-0.2f,
-0.6f,
-0.7f,
-0f,
-0.2f,
-0.6f,
-0.7f,
-0f,
-0.1f,
-0.2f,
-0.8f,
-  },
+            {
+            },
+            VeinSpot = new[]
+            {
+                15,
+                15,
+                2,
+                9,
+                4,
+                2,
+                0
+            },
+            VeinCount = new[]
+            {
+                1f,
+                1f,
+                0.6f,
+                1f,
+                0.6f,
+                0.3f,
+                0f
+            },
+            VeinOpacity = new[]
+            {
+                1f,
+                1f,
+                0.6f,
+                1f,
+                0.5f,
+                0.3f,
+                0f
+            },
+            RareVeins = new[]
+            {
+                9,
+                10,
+                12
+            },
+            RareSettings = new[]
+            {
+                0f,
+                0.2f,
+                0.6f,
+                0.7f,
+                0f,
+                0.2f,
+                0.6f,
+                0.7f,
+                0f,
+                0.1f,
+                0.2f,
+                0.8f
+            },
             GasItems = new int[]
-  {
-  },
+            {
+            },
             GasSpeeds = new float[]
-  {
-  },
+            {
+            },
             UseHeightForBuild = false,
             Wind = 0.7f,
             IonHeight = 60f,
             WaterHeight = -2.5f,
             WaterItemId = -1,
-            Musics = new int[]
-  {
-20,
-10,
-  },
+            Musics = new[]
+            {
+                20,
+                10
+            },
             SFXPath = "SFX/sfx-amb-lava-2",
             SFXVolume = 0.4f,
             CullingRadius = 0f,

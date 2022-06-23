@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace GalacticScale.Generators
@@ -10,14 +9,19 @@ namespace GalacticScale.Generators
         {
             switch (preferences.GetString("planetNames", "default"))
             {
-                case "Alpha": NamePlanetsAlpha(star); break;
+                case "Alpha":
+                    NamePlanetsAlpha(star);
+                    break;
 
-                case "Random": NamePlanetsRandom(star); break;
-                default: NamePlanetsRoman(star); break;
-
-
+                case "Random":
+                    NamePlanetsRandom(star);
+                    break;
+                default:
+                    NamePlanetsRoman(star);
+                    break;
             }
         }
+
         public void NamePlanetsAlpha(GSStar star)
         {
             var i = 1;
@@ -41,6 +45,7 @@ namespace GalacticScale.Generators
                 i++;
             }
         }
+
         public void NamePlanetsRoman(GSStar star)
         {
             var i = 1;
@@ -64,19 +69,18 @@ namespace GalacticScale.Generators
                 i++;
             }
         }
+
         public void NamePlanetsRandom(GSStar star)
         {
-            List<string> availableNames = new List<string>();
+            var availableNames = new List<string>();
             foreach (var name in PlanetNames) availableNames.Add(name);
             foreach (var planet in star.Bodies)
-            {
                 if (availableNames.Count > 0)
                 {
                     var name = random.Item(availableNames);
                     planet.Name = $"{star.Name} - {name}";
                     availableNames.Remove(name);
                 }
-            }
         }
 
         private void AssignPlanetOrbits(GSStar star)
@@ -137,17 +141,13 @@ namespace GalacticScale.Generators
                 // GS2.Log($"Orbit Count > 1. Free orbit range count = {freeOrbitRanges.Count}");
                 var availableOrbits = new List<(float inner, float outer)>();
                 foreach (var range in freeOrbitRanges)
-                {
                     // GS2.Log($"Free orbits:{range}. Checking SystemRadius:{planet.SystemRadius}. {0.05f + 2 * planet.SystemRadius}");
 
 
-                    if ((range.outer - range.inner) > ( 2 * (planet.SystemRadius+ preferences.GetFloat("orbitSpacing", 0.05f))))
-                    {
+                    if (range.outer - range.inner > 2 * (planet.SystemRadius + preferences.GetFloat("orbitSpacing", 0.05f)))
                         //(1 + 1 * (GetSystemDensityBiasForStar(star) / 50)) * 2*planet.SystemRadius)
                         //GS2.Warn($"Adding {range} {preferences.GetFloat("orbitSpacing", 0.05f)} {range.outer - range.inner} {preferences.GetFloat("orbitSpacing", 0.05f) + 2 * planet.SystemRadius}");
                         availableOrbits.Add(range);
-                    }
-                }
 
                 if (availableOrbits.Count == 0)
                 {
@@ -185,9 +185,9 @@ namespace GalacticScale.Generators
                 }
 
                 var selectedRange = r.Item(availableOrbits);
-                if (preferences.GetBool("preferInnerPlanets", false)) selectedRange = availableOrbits[r.Next(0, Mathf.FloorToInt( availableOrbits.Count/2f))];
+                if (preferences.GetBool("preferInnerPlanets")) selectedRange = availableOrbits[r.Next(0, Mathf.FloorToInt(availableOrbits.Count / 2f))];
                 // GS2.Log($"radius = r.NextFloat({selectedRange.inner + planet.SystemRadius}, {selectedRange.outer - planet.SystemRadius})");
-                var rangeMin = selectedRange.inner + preferences.GetFloat("orbitSpacing", 0.05f)+ planet.SystemRadius;
+                var rangeMin = selectedRange.inner + preferences.GetFloat("orbitSpacing", 0.05f) + planet.SystemRadius;
                 var rangeMax = selectedRange.outer - +preferences.GetFloat("orbitSpacing", 0.05f) - planet.SystemRadius;
                 var radius = r.NextFloat(rangeMin, rangeMax);
                 freeOrbitRanges.Remove(selectedRange);
@@ -300,7 +300,7 @@ namespace GalacticScale.Generators
                     foreach (var planet in planets)
                         if (planet.SystemRadius > largestRadius)
                             largestRadius = planet.SystemRadius;
-                    largestRadius += GS2Generator2.minOrbit;
+                    largestRadius += minOrbit;
                     var circumference = radius * 2 * Mathf.PI;
                     // GS2.Log($"HasRoom Circumference = {circumference} largestRadius = {largestRadius} Planet Count = {planets.Count}");
                     if (largestRadius * 2 * planets.Count < circumference) return true;
@@ -400,6 +400,5 @@ namespace GalacticScale.Generators
 
             return output;
         }
-
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using GSSerializer;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace GalacticScale
 {

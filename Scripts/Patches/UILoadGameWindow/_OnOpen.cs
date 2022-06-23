@@ -11,6 +11,5 @@ namespace GalacticScale
             GS2.SaveOrLoadWindowOpen = true; // Prevents GSSettings getting overwritten when loading a save for purposes of displaying thumbnail
             return true;
         }
-
     }
 }

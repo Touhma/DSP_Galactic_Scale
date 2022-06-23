@@ -3,7 +3,7 @@ using HarmonyLib;
 namespace GalacticScale
 {
     //Adding Null Checks for System Display in Galaxy Select
-    public partial class PatchOnUniverseSimulator
+    public class PatchOnUniverseSimulator
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UniverseSimulator), "FindStarSimulator")]

@@ -12,7 +12,6 @@ namespace GalacticScale
         {
             if (!DSPGame.IsMenuDemo && !Vanilla) // Prevent special LUT's being created in main menu
             {
-                
                 if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
                 var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 var lut = new int[numSegments];
@@ -38,7 +37,7 @@ namespace GalacticScale
 
                     lut[cnt] = lastMajorRadiusCount;
                     // Log(classicIdx.ToString());
-                    if (classicIdx >= classicLUT.Length) classicIdx = classicLUT.Length -1;
+                    if (classicIdx >= classicLUT.Length) classicIdx = classicLUT.Length - 1;
                     classicLUT[classicIdx] = lastMajorRadiusCount;
                 }
 

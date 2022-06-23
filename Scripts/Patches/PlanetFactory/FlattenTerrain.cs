@@ -2,26 +2,21 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
-using UnityEngine;
 
 namespace GalacticScale
 {
     public static class PatchOnPlanetFactory
     {
-        
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetFactory), "InitVeinGroups", typeof(PlanetData))]
         public static bool InitVeinGroups(PlanetFactory __instance, PlanetData planet)
         {
-            Mutex veinGroupsLock = planet.veinGroupsLock;
+            var veinGroupsLock = planet.veinGroupsLock;
             lock (veinGroupsLock)
             {
-                if (planet.veinGroups == null)
-                {
-                    planet.veinGroups = new VeinGroup[1];
-                }
-                int num = planet.veinGroups.Length;
-                int num2 = (num >= 1) ? num : 1;
+                if (planet.veinGroups == null) planet.veinGroups = new VeinGroup[1];
+                var num = planet.veinGroups.Length;
+                var num2 = num >= 1 ? num : 1;
                 __instance.veinGroups = new VeinGroup[num2];
                 Array.Copy(planet.veinGroups, __instance.veinGroups, num);
                 __instance.veinGroups[0].SetNull();
@@ -29,28 +24,22 @@ namespace GalacticScale
 
             return false;
         }
-        
+
         // change
         // short num5 = (short)(planet.realRadius * 100f + 20f);
         // to
         // int newLocalVar = (int)(planet.realRadius * 100f + 20f)
         // assign newLocalVar to all variables which request num5
-        [HarmonyTranspiler, HarmonyPatch(typeof(PlanetFactory), nameof(PlanetFactory.FlattenTerrain))]
-        static IEnumerable<CodeInstruction> PlanetFactory_FlattenTerrain_Transpiler (IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(PlanetFactory), nameof(PlanetFactory.FlattenTerrain))]
+        private static IEnumerable<CodeInstruction> PlanetFactory_FlattenTerrain_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            LocalBuilder intNum5 = generator.DeclareLocal(typeof(int));
+            var intNum5 = generator.DeclareLocal(typeof(int));
 
-            CodeMatcher matcher = new CodeMatcher(instructions);
+            var matcher = new CodeMatcher(instructions);
 
             // find codes look like (short)(A * 100f + 20f)
-            matcher.MatchForward(true,
-                new CodeMatch(OpCodes.Ldc_R4, 100f),
-                new CodeMatch(OpCodes.Mul),
-                new CodeMatch(OpCodes.Ldc_R4, 20f),
-                new CodeMatch(OpCodes.Add),
-                new CodeMatch(OpCodes.Conv_I2),
-                new CodeMatch(OpCodes.Stloc_S)
-            );
+            matcher.MatchForward(true, new CodeMatch(OpCodes.Ldc_R4, 100f), new CodeMatch(OpCodes.Mul), new CodeMatch(OpCodes.Ldc_R4, 20f), new CodeMatch(OpCodes.Add), new CodeMatch(OpCodes.Conv_I2), new CodeMatch(OpCodes.Stloc_S));
 
             if (matcher.IsInvalid)
             {
@@ -59,7 +48,7 @@ namespace GalacticScale
             }
 
             // index of the old varialbe
-            int oldNum5Index = ((LocalBuilder)matcher.Operand).LocalIndex;
+            var oldNum5Index = ((LocalBuilder)matcher.Operand).LocalIndex;
 
             // assign the result of the calculation to new local variable
             matcher.Advance(-1); // move back to conv.i2
@@ -69,29 +58,20 @@ namespace GalacticScale
             // find all places reading old variable, replace them with new local variable
             while (matcher.IsValid)
             {
-                matcher.MatchForward(true, new CodeMatch(
-                    instruction => instruction.opcode == OpCodes.Ldloc_S && ((LocalBuilder)instruction.operand).LocalIndex == oldNum5Index
-                ));
-                if (matcher.IsValid)
-                {
-                    matcher.SetAndAdvance(OpCodes.Ldloc_S, intNum5.LocalIndex);
-                }
+                matcher.MatchForward(true, new CodeMatch(instruction => instruction.opcode == OpCodes.Ldloc_S && ((LocalBuilder)instruction.operand).LocalIndex == oldNum5Index));
+                if (matcher.IsValid) matcher.SetAndAdvance(OpCodes.Ldloc_S, intNum5.LocalIndex);
             }
-            
+
             // find codes look like A = new Type[1024]
             matcher.Start();
-            matcher.MatchForward(false,
-                new CodeMatch(OpCodes.Ldc_I4, 1024),
-                new CodeMatch(OpCodes.Newarr),
-                new CodeMatch(OpCodes.Stfld)
-            );
+            matcher.MatchForward(false, new CodeMatch(OpCodes.Ldc_I4, 1024), new CodeMatch(OpCodes.Newarr), new CodeMatch(OpCodes.Stfld));
 
             if (matcher.IsInvalid)
             {
                 GS2.Error("PlanetFactory_FlattenTerrain_Transpiler: fail to find codes look like A = new Type[1024]");
                 return instructions;
             }
-            
+
             matcher.SetOperandAndAdvance(4096);
 
             return matcher.InstructionEnumeration();

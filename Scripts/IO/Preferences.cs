@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Emit;
 using GSSerializer;
-
 
 namespace GalacticScale
 {
     public static partial class GS2
     {
-        static GSPreferences Preferences = new GSPreferences();
+        private static GSPreferences Preferences = new();
+
         public static void SavePreferences()
         {
-            GS2.Warn("SavePreferences");
+            Warn("SavePreferences");
             Preferences.version = PreferencesVersion;
             Preferences.MainSettings = Config.Export();
 
@@ -27,7 +26,6 @@ namespace GalacticScale
             //        Log("Finished adding preferences for " + gen.Name);
             //    }
             foreach (var g in Plugins)
-            {
                 if (g is iConfigurablePlugin)
                 {
                     var plugin = g;
@@ -36,11 +34,9 @@ namespace GalacticScale
                     Preferences.PluginPreferences[plugin.GUID] = prefs;
                     Log("Finished updating preferences for " + plugin.Name);
                 }
-            }
+
             if (ActiveGenerator is iConfigurableGenerator)
-            {
                 Preferences.Save(ActiveGenerator as iConfigurableGenerator);
-            }
             else GSPreferences.WriteToDisk(Preferences);
             //var serializer = new fsSerializer();
             //Log("Trying to serialize preferences object");
@@ -122,9 +118,8 @@ namespace GalacticScale
 
         private class GSPreferences
         {
-            public readonly Dictionary<string, GSGenPreferences> PluginPreferences = new();
-
             public readonly Dictionary<string, GSGenPreferences> GeneratorPreferences = new();
+            public readonly Dictionary<string, GSGenPreferences> PluginPreferences = new();
 
             public GSGenPreferences MainSettings = new();
 
@@ -132,15 +127,16 @@ namespace GalacticScale
 
             public static bool WriteToDisk(GSPreferences preferences)
             {
-                GS2.Warn("WriteToDisk");
+                Warn("WriteToDisk");
 
                 var serializer = new fsSerializer();
                 var fsResult = serializer.TrySerialize(Preferences, out var data);
                 if (fsResult.Failed)
                 {
-                    GS2.Error(fsResult.FormattedMessages);
+                    Error(fsResult.FormattedMessages);
                     return false;
                 }
+
                 var json = fsJsonPrinter.PrettyJson(data);
                 if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
                 if (!Directory.Exists(DataDir)) return false;
@@ -153,15 +149,17 @@ namespace GalacticScale
                     Error(e.Message);
                     return false;
                 }
+
                 return true;
             }
+
             public static GSPreferences ReadFromDisk()
             {
                 Log("ReadFromDisk");
                 var path = Path.Combine(DataDir, "Preferences.json");
                 if (!CheckJsonFileExists(path))
                 {
-                    GS2.Warn("Cannot find Preferences.json. Creating");
+                    Warn("Cannot find Preferences.json. Creating");
 
                     var newPreferences = new GSPreferences();
                     WriteToDisk(newPreferences);
@@ -180,6 +178,7 @@ namespace GalacticScale
                     Warn(fsResult.FormattedMessages);
                     return new GSPreferences();
                 }
+
                 if (preferences.version != PreferencesVersion)
                 {
                     Warn("Preferences.json Version Mismatch. Renaming to Preferences.Old");
@@ -189,28 +188,29 @@ namespace GalacticScale
                     updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
                     return new GSPreferences();
                 }
+
                 return preferences;
             }
+
             public bool Save(iConfigurableGenerator generator)
             {
                 Log($"Save (Generator) {generator.GUID}");
                 var generatorPreferences = generator.Export();
-                this.GeneratorPreferences[generator.GUID] = generatorPreferences;
+                GeneratorPreferences[generator.GUID] = generatorPreferences;
                 return WriteToDisk(this);
             }
+
             public GSGenPreferences Load(iConfigurableGenerator generator, bool fromFile = false)
             {
-
                 if (!fromFile)
-                {   if (GeneratorPreferences.ContainsKey(generator.GUID)) return GeneratorPreferences[generator.GUID];
+                {
+                    if (GeneratorPreferences.ContainsKey(generator.GUID)) return GeneratorPreferences[generator.GUID];
                     Warn("Generator Preferences do not exist, creating new");
                     return new GSGenPreferences();
                 }
+
                 var preferences = ReadFromDisk();
-                if (preferences.GeneratorPreferences.ContainsKey(generator.GUID))
-                {
-                    return preferences.GeneratorPreferences[generator.GUID];
-                }
+                if (preferences.GeneratorPreferences.ContainsKey(generator.GUID)) return preferences.GeneratorPreferences[generator.GUID];
                 Warn("Generator Preferences do not exist, creating new");
                 return new GSGenPreferences();
             }

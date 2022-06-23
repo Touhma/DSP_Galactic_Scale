@@ -61,20 +61,20 @@ namespace GalacticScale
 
             details.gameObject.SetActive(true);
             details.gameObject.name = "content-gs";
-            
+
             // __instance.tabTweeners.AddItem(details.GetComponent<Tweener>());  
-            Tweener[] tabTweeners = __instance.tabTweeners;
+            var tabTweeners = __instance.tabTweeners;
             __instance.tabTweeners = tabTweeners.AddToArray(details.GetComponent<Tweener>());
-            
+
             // _tabButtons.AddItem(galacticButton.GetComponent<UIButton>());
-            UIButton[] newTabButtons = __instance.tabButtons.AddToArray(galacticButton.GetComponent<UIButton>());
+            var newTabButtons = __instance.tabButtons.AddToArray(galacticButton.GetComponent<UIButton>());
             __instance.tabButtons = newTabButtons;
-            
+
             // _tabTexts.AddItem(galacticButton.GetComponentInChildren<Text>());
-            Text[] newTabTexts = __instance.tabTexts.AddToArray(galacticButton.GetComponentInChildren<Text>());
+            var newTabTexts = __instance.tabTexts.AddToArray(galacticButton.GetComponentInChildren<Text>());
             __instance.tabTexts = newTabTexts;
-            
-                
+
+
             var languageCombo = details.Find("language").GetComponent<RectTransform>();
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;

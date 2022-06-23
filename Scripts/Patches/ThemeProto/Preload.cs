@@ -1,11 +1,9 @@
-
 using HarmonyLib;
 using UnityEngine;
 
 namespace GalacticScale
 {
-   
-    public partial class PatchOnThemeProto
+    public class PatchOnThemeProto
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ThemeProto), "Preload")]

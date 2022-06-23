@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
-using UnityEngine;
 using NebulaCompatibility;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -48,7 +48,7 @@ namespace GalacticScale
             __instance.targetUPos = __instance.localPlanet.uPosition + (VectorLF3)(__instance.localPlanet.runtimeRotation * __instance.targetPos);
             __instance.targetRot = Maths.SphericalRotation(__instance.localPlanet.birthPoint, 0.0f);
             __instance.targetURot = __instance.localPlanet.runtimeRotation * __instance.targetRot;
-            if(__instance.localPlanet.factory != null)
+            if (__instance.localPlanet.factory != null)
             {
                 __instance.localPlanet.factory.FlattenTerrain(__instance.targetPos, __instance.targetRot, new Bounds(Vector3.zero, new Vector3(10f, 5f, 10f)), removeVein: true, lift: true);
                 GS2.Log("Waking in SpacePod");
@@ -56,6 +56,7 @@ namespace GalacticScale
                 GS2.Log("Searching for landing place");
                 __instance.gameData.InitLandingPlace();
             }
+
             __instance.player.controller.memCameraTargetRot = __instance.targetRot;
             __instance.player.cameraTarget.rotation = __instance.targetRot;
             // if (GS2.Config.CheatMode && !GS2.ResearchUnlocked)

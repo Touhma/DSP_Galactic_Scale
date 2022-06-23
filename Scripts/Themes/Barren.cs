@@ -131,7 +131,7 @@ namespace GalacticScale
             {
                 5,
                 11,
-                14,
+                14
             },
             SFXPath = "SFX/sfx-amb-desert-2",
             SFXVolume = 0.15f,

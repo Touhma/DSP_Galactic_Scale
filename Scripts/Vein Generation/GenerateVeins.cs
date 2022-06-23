@@ -141,7 +141,7 @@ namespace GalacticScale
         private static void InitializePlanetVeins(PlanetData planet, int veinVectorCount)
         {
             // Array.Clear(planet.veinAmounts, 0, planet.veinAmounts.Length);
-            
+
             planet.data.veinCursor = 1;
             // planet.veinGroups = new PlanetData.VeinGroup[veinVectorCount];
             planet.veinGroups = new VeinGroup[veinVectorCount];

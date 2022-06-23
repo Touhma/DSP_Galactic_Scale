@@ -23,13 +23,13 @@ namespace GalacticScale
             ModY = new Vector2(0.35f, -0.15f),
             VeinSettings = new GSVeinSettings { Algorithm = "Vanilla" },
 
-            Vegetables0 = new int[]
+            Vegetables0 = new[]
             {
                 669,
                 670,
-                671,
+                671
             },
-            Vegetables1 = new int[]
+            Vegetables1 = new[]
             {
                 665,
                 666,
@@ -42,19 +42,19 @@ namespace GalacticScale
                 664,
                 663,
                 662,
-                661,
+                661
             },
-            Vegetables2 = new int[]
+            Vegetables2 = new[]
             {
                 1071,
-                1072,
+                1072
             },
-            Vegetables3 = new int[]
+            Vegetables3 = new[]
             {
                 1073,
                 1074,
                 1071,
-                1072,
+                1072
             },
             Vegetables4 = new int[]
             {
@@ -127,7 +127,7 @@ namespace GalacticScale
             Musics = new[]
             {
                 27,
-                4,
+                4
             },
             SFXPath = "SFX/sfx-amb-desert-2",
             SFXVolume = 0.3f,

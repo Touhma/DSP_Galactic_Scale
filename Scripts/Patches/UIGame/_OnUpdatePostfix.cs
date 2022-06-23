@@ -1,13 +1,13 @@
 ﻿using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIGame
+    public class PatchOnUIGame
     {
-        private static Vector3 currentScale = new Vector3(200, 200, 200);
+        private static Vector3 currentScale = new(200, 200, 200);
         private static PlanetData currentPlanet;
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIGame), "_OnUpdate")]
         public static void _OnUpdate(UIGame __instance)
@@ -19,6 +19,7 @@ namespace GalacticScale
                 __instance.polarMark.transform.localScale = currentScale;
                 return;
             }
+
             if (GameMain.localPlanet != currentPlanet)
             {
                 //GS2.Warn("Polar Mark");
@@ -30,7 +31,6 @@ namespace GalacticScale
                 currentScale = new Vector3(r, r, r);
                 __instance.polarMark.transform.localScale = currentScale;
             }
-
         }
     }
 }

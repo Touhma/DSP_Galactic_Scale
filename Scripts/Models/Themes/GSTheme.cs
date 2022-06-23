@@ -38,7 +38,7 @@ namespace GalacticScale
 
         [NonSerialized] public bool Habitable;
 
-        public int IceFlag = 0;
+        public int IceFlag;
 
         [NonSerialized] public bool initialized;
 
@@ -155,12 +155,11 @@ namespace GalacticScale
             get
             {
                 if (BaseName != "" && BaseName != null)
-                {
                     // GS2.Log($"{Name} initializing from base theme: " + BaseName);
 
 
-                    if (!AllLoadedThemes.ContainsKey(BaseName)) GS2.Warn($"Theme {BaseName} not found");
-                }
+                    if (!AllLoadedThemes.ContainsKey(BaseName))
+                        GS2.Warn($"Theme {BaseName} not found");
 
                 return BaseName != "" && BaseName != null ? AllLoadedThemes.ContainsKey(BaseName) ? AllLoadedThemes[BaseName] : Themes.Mediterranean : null;
             }

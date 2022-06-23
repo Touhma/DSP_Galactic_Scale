@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIStarDetail
+    public class PatchOnUIStarDetail
     {
         private static int actualLevel = 5;
 
@@ -31,85 +31,67 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         public static bool OnStarDataSet2(StarData ____star, InputField ___nameInput, Text ___typeText, RectTransform ___paramGroup, Text ___massValueText, Text ___spectrValueText, Text ___radiusValueText, Text ___luminoValueText, Text ___temperatureValueText, Text ___ageValueText, Sprite ___unknownResIcon, GameObject ___trslBg, GameObject ___imgBg, UIResAmountEntry ___tipEntry, UIResAmountEntry ___entryPrafab, ref UIStarDetail __instance)
         {
-            for (int i = 0; i < __instance.entries.Count; i++)
+            for (var i = 0; i < __instance.entries.Count; i++)
             {
-                UIResAmountEntry uiresAmountEntry = __instance.entries[i];
+                var uiresAmountEntry = __instance.entries[i];
                 uiresAmountEntry.SetEmpty();
                 __instance.pool.Add(uiresAmountEntry);
             }
 
             __instance.entries.Clear();
             __instance.tipEntry = null;
-            if (__instance.veinAmounts == null)
-            {
-                __instance.veinAmounts = new long[64];
-            }
+            if (__instance.veinAmounts == null) __instance.veinAmounts = new long[64];
 
-            if (__instance.veinCounts == null)
-            {
-                __instance.veinCounts = new int[64];
-            }
+            if (__instance.veinCounts == null) __instance.veinCounts = new int[64];
 
             Array.Clear(__instance.veinAmounts, 0, __instance.veinAmounts.Length);
             Array.Clear(__instance.veinCounts, 0, __instance.veinCounts.Length);
             __instance.calculated = false;
             if (__instance.star != null)
             {
-                if (!__instance.star.calculated)
-                {
-                    __instance.star.RunCalculateThread();
-                }
+                if (!__instance.star.calculated) __instance.star.RunCalculateThread();
 
                 __instance.calculated = __instance.star.calculated;
-                double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
-                int num = (__instance.star == GameMain.localStar) ? 2 : ((magnitude < 14400000.0) ? 3 : 4);
-                bool flag = GameMain.history.universeObserveLevel >= num;
+                var magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
+                var num = __instance.star == GameMain.localStar ? 2 : magnitude < 14400000.0 ? 3 : 4;
+                var flag = GameMain.history.universeObserveLevel >= num;
                 if (__instance.calculated && flag)
                 {
                     __instance.star.CalcVeinAmounts(ref __instance.veinAmounts);
                     __instance.star.CalcVeinCounts(ref __instance.veinCounts);
                 }
 
-                if (!__instance.nameInput.isFocused)
-                {
-                    __instance.nameInput.text = __instance.star.displayName;
-                }
+                if (!__instance.nameInput.isFocused) __instance.nameInput.text = __instance.star.displayName;
 
                 __instance.typeText.text = __instance.star.typeString;
                 __instance.massValueText.text = __instance.star.mass.ToString("0.000") + " M    ";
                 __instance.spectrValueText.text = __instance.star.spectr.ToString();
                 __instance.radiusValueText.text = __instance.star.radius.ToString("0.00") + " R    ";
-                double num2 = (double)__instance.star.dysonLumino;
+                double num2 = __instance.star.dysonLumino;
                 __instance.luminoValueText.text = num2.ToString("0.000") + " L    ";
                 __instance.temperatureValueText.text = __instance.star.temperature.ToString("#,##0") + " K";
                 if (Localization.isKMG)
-                {
                     __instance.ageValueText.text = (__instance.star.age * __instance.star.lifetime).ToString("#,##0 ") + "百万亿年".Translate();
-                }
                 else
-                {
                     __instance.ageValueText.text = (__instance.star.age * __instance.star.lifetime * 0.01f).ToString("#,##0.00 ") + "百万亿年".Translate();
-                }
 
-                int num3 = 0;
+                var num3 = 0;
                 if (flag)
-                {
-                    for (int j = 1; j < 15; j++)
+                    for (var j = 1; j < 15; j++)
                     {
-                        int num4 = j;
-                        VeinProto veinProto = LDB.veins.Select(num4);
-                        ItemProto itemProto = LDB.items.Select(veinProto.MiningItem);
-                        bool flag2 = __instance.veinAmounts[j] > 0L; //Has this vein
+                        var num4 = j;
+                        var veinProto = LDB.veins.Select(num4);
+                        var itemProto = LDB.items.Select(veinProto.MiningItem);
+                        var flag2 = __instance.veinAmounts[j] > 0L; //Has this vein
                         if (itemProto != null && flag2)
                         {
-                            UIResAmountEntry entry = __instance.GetEntry();
+                            var entry = __instance.GetEntry();
                             __instance.entries.Add(entry);
-                            entry.SetInfo(num3, itemProto.name, veinProto.iconSprite, veinProto.description, j >= 7, false, (j == 7) ? "         /s" : "                ");
+                            entry.SetInfo(num3, itemProto.name, veinProto.iconSprite, veinProto.description, j >= 7, false, j == 7 ? "         /s" : "                ");
                             entry.refId = num4;
                             num3++;
                         }
                     }
-                }
 
                 var entrycounts = new Dictionary<ItemProto, int>();
                 var entries = new Dictionary<ItemProto, UIResAmountEntry>();
@@ -192,7 +174,7 @@ namespace GalacticScale
                     ++num3;
                 }
 
-                
+
                 // if (flag)
                 // {
                 // 	// Create Water Items
@@ -251,7 +233,7 @@ namespace GalacticScale
                 // }
                 if (!flag)
                 {
-                    UIResAmountEntry entry4 = __instance.GetEntry();
+                    var entry4 = __instance.GetEntry();
                     __instance.entries.Add(entry4);
                     entry4.SetInfo(num3, "", null, "", true, true, "");
                     __instance.tipEntry = entry4;
@@ -260,9 +242,9 @@ namespace GalacticScale
 
                 __instance.SetResCount(num3);
                 __instance.RefreshDynamicProperties();
-                
             }
-return false;
+
+            return false;
 
             // var getEntry = Traverse.Create(__instance).Method("GetEntry");
             //

@@ -158,8 +158,8 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Planet ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSPlanetScaleFactor", null, "How big planets should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Star ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSStarScaleFactor", null, "How big star should be in the new game system view".Translate()));
-            DebugOptions.Add(GSUI.Slider("GalaxySelect Orbit ScaleFactor".Translate(), 0.1f, 5f, 100f,0.1f,  "VSOrbitScaleFactor", null, "How spaced orbits should be in the new game system view".Translate()));
-            DebugOptions.Add(GSUI.Slider("GalaxySelect Click Tolerance".Translate(), 1f, 3f, 10f,0.1f,  "VSClickTolerance", null, "How close to a star/planet your mouse needs to be to register a click".Translate()));
+            DebugOptions.Add(GSUI.Slider("GalaxySelect Orbit ScaleFactor".Translate(), 0.1f, 5f, 100f, 0.1f, "VSOrbitScaleFactor", null, "How spaced orbits should be in the new game system view".Translate()));
+            DebugOptions.Add(GSUI.Slider("GalaxySelect Click Tolerance".Translate(), 1f, 3f, 10f, 0.1f, "VSClickTolerance", null, "How close to a star/planet your mouse needs to be to register a click".Translate()));
 
             DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", o =>
             {
@@ -196,9 +196,9 @@ namespace GalacticScale
 
         public void EnableDevMode()
         {
-            GS2.Warn("Toggling Dev Mode");
-            Preferences.Set("Dev", !Preferences.GetBool("Dev", false));
-            Warn($"Dev Mode: {Preferences.GetBool("Dev", false)}");
+            Warn("Toggling Dev Mode");
+            Preferences.Set("Dev", !Preferences.GetBool("Dev"));
+            Warn($"Dev Mode: {Preferences.GetBool("Dev")}");
             SavePreferences();
         }
 
@@ -206,6 +206,7 @@ namespace GalacticScale
         {
             if (GameMain.mainPlayer != null) GameMain.mainPlayer.transform.localScale = Vector3.one * Preferences.GetFloat("MechaScale", 1f);
         }
+
         public void ResetBinaryStars(Val o)
         {
             var random = new GS2.Random(GSSettings.Seed);

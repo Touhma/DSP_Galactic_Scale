@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using UnityEngine;
 
 namespace GalacticScale
 {
@@ -42,8 +39,9 @@ namespace GalacticScale
                 GS2.Error("InternalTickRemote 2nd Transpiler Failed");
                 return instructions;
             }
+
             instructions = codeMatcher.Repeat(z => z // Repeat for all occurences
-                   .Set(OpCodes.Ldc_R4, 1.0f)) // Replace operand with 1.0f
+                    .Set(OpCodes.Ldc_R4, 1.0f)) // Replace operand with 1.0f
                 .InstructionEnumeration();
 
             return instructions;

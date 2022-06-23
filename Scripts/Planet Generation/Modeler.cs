@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading;
 using static GalacticScale.GS2;
 using static PlanetModelingManager;
@@ -13,7 +12,8 @@ namespace GalacticScale
         public static bool planetModQueueSorted;
         public static List<PlanetData> planetQueue = new();
         public static bool planetQueueSorted;
-        public static bool aborted = false;
+        public static bool aborted;
+
         public static void Reset()
         {
             planetModQueue = new List<PlanetData>();
@@ -87,7 +87,7 @@ namespace GalacticScale
                 if (planetQueue.Count > 0)
                 {
                     planetData = planetQueue[0];
-                    GS2.ModellingDone = false;
+                    ModellingDone = false;
                     planetQueue.RemoveAt(0);
                     Log($"Retrieved sorted planet from list: {planetData.name}");
                 }
@@ -97,7 +97,6 @@ namespace GalacticScale
                     Log($"Preamble time taken:{pqsw.duration:F5}");
                     try
                     {
-                        
                         var planetAlgorithm = Algorithm(planetData);
                         if (planetAlgorithm != null)
                         {
@@ -133,9 +132,10 @@ namespace GalacticScale
                             {
                                 if (aborted)
                                 {
-                                    GS2.Warn("Aborted");
+                                    Warn("Aborted");
                                     return false;
                                 }
+
                                 Log("Creating Factory");
                                 highStopwatch.Begin();
                                 if (planetData.type != EPlanetType.Gas && planetData.data != null) planetAlgorithm.GenerateVegetables();
@@ -145,6 +145,7 @@ namespace GalacticScale
                                 if (planetData.data != null) planetData.CalculateVeinGroups();
                                 num4 = highStopwatch.duration;
                             }
+
                             // else if (planetData.galaxy.birthPlanetId == planetData.id) //Added after 0.9.25 update
                             // {
                             //     planetData.GenBirthPoints();
@@ -180,10 +181,13 @@ namespace GalacticScale
                 //Log("Modeler 10sec Tick");
                 if (planetData == null)
                 {
-                    GS2.ModellingDone = true;
+                    ModellingDone = true;
                     Thread.Sleep(50);
                 }
-                else if (num % 20 == 0) Thread.Sleep(2);
+                else if (num % 20 == 0)
+                {
+                    Thread.Sleep(2);
+                }
             }
         }
 

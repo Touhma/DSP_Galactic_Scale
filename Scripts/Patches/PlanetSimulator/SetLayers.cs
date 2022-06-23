@@ -14,7 +14,7 @@ namespace GalacticScale
                 __instance.planetData.bodyObject.SetLayer(9, true);
                 if (__instance.oceanCollider != null)
                 {
-                    if (__instance.planetData.iceFlag > 0 || (!GS2.IsMenuDemo && !GS2.Vanilla && GS2.GetGSPlanet(__instance.planetData.id)?.GsTheme?.WaterItemId == -2))
+                    if (__instance.planetData.iceFlag > 0 || !GS2.IsMenuDemo && !GS2.Vanilla && GS2.GetGSPlanet(__instance.planetData.id)?.GsTheme?.WaterItemId == -2)
                     {
                         __instance.oceanCollider.gameObject.layer = 9;
                         __instance.oceanCollider.isTrigger = false;
@@ -25,15 +25,9 @@ namespace GalacticScale
                     }
                 }
 
-                if (__instance.atmoTrans0 != null)
-                {
-                    __instance.atmoTrans0.gameObject.layer = 0;
-                }
+                if (__instance.atmoTrans0 != null) __instance.atmoTrans0.gameObject.layer = 0;
 
-                if (__instance.atmoTrans1 != null)
-                {
-                    __instance.atmoTrans1.gameObject.layer = 0;
-                }
+                if (__instance.atmoTrans1 != null) __instance.atmoTrans1.gameObject.layer = 0;
 
                 __instance.layerSet = true;
             }

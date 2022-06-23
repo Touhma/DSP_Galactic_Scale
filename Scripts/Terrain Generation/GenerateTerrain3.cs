@@ -65,6 +65,7 @@ namespace GalacticScale
                 data.heightData[index] = (ushort)((planet.radius + num15 * t.HeightMulti + 0.2 + t.BaseHeight) * 100.0);
                 data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.BiomeHeightMulti + t.BiomeHeightModifier), 0.0f, 200f);
             }
+
             GS2.Log("--------------------");
         }
     }

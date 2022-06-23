@@ -27,7 +27,7 @@ namespace GalacticScale
             }
 
             var data = gsPlanet.planetData.data;
-            GS2.Log("GenerateTerrain1|" + gsPlanet.Name + "|"+(data == null));
+            GS2.Log("GenerateTerrain1|" + gsPlanet.Name + "|" + (data == null));
             var maxHD = -999;
             var minHD = 999999;
             var maxBH = -999;
@@ -60,8 +60,9 @@ namespace GalacticScale
 
                 if (bh < minBH) minBH = bh;
             }
+
             GS2.Log("--------------------");
-            GS2.Log("R:" + gsPlanet.Radius + " Planet : " + gsPlanet.Name + " minHD:"+minHD+" maxHD:" + maxHD + " minBH:" + minBH + "maxBH:"  + maxBH);
+            GS2.Log("R:" + gsPlanet.Radius + " Planet : " + gsPlanet.Name + " minHD:" + minHD + " maxHD:" + maxHD + " minBH:" + minBH + "maxBH:" + maxBH);
         }
     }
 }

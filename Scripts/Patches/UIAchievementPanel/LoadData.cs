@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace GalacticScale
 {
-   
     [HarmonyPatch(typeof(UIAchievementPanel))]
     public partial class PatchOnUIAchievementPanel
     {

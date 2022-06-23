@@ -9,7 +9,6 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GameDesc), "Import")]
         public static void Import(BinaryReader r, ref GameDesc __instance)
         {
-            
             GS2.Warn("Import");
             if (!GS2.IsMenuDemo)
             {

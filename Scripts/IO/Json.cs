@@ -183,19 +183,21 @@ namespace GalacticScale
             File.AppendAllText(path, json);
             Log("End");
         }
+
         private static void CleanErrorLogs()
         {
             var path = Path.Combine(AssemblyPath, "ErrorLog");
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            string[] files = Directory.GetFiles(path, "*.json");
+            var files = Directory.GetFiles(path, "*.json");
 
-            foreach (string file in files)
+            foreach (var file in files)
             {
-                FileInfo fi = new FileInfo(file);
+                var fi = new FileInfo(file);
                 if (fi.LastAccessTime < DateTime.Now.AddDays(-7))
                     fi.Delete();
             }
         }
+
         private static bool CheckJsonFileExists(string path)
         {
             Log("Checking if Json File Exists");

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -15,13 +14,6 @@ namespace GalacticScale
         public Text _valueText;
         public string negativeLabel = "";
         public GSOptionCallback OnChange;
-
-        private void Start()
-        {
-            
-            _button.onClick.AddListener(OnNumClick);
-            _input.onValueChanged.AddListener(onInputChange);
-        }
 
         public float Value
         {
@@ -53,6 +45,12 @@ namespace GalacticScale
             set => _slider.maxValue = value;
         }
 
+        private void Start()
+        {
+            _button.onClick.AddListener(OnNumClick);
+            _input.onValueChanged.AddListener(onInputChange);
+        }
+
         public void OnSliderValueChange(Slider slider)
         {
             // GS2.Warn($"{slider.value} -> {Mathf.RoundToInt(slider.value * 100f)}");
@@ -61,6 +59,7 @@ namespace GalacticScale
             if (negativeLabel != "" && value < 0) _valueText.text = negativeLabel;
             OnChange?.Invoke(value);
         }
+
         public void OnNumClick()
         {
             sliderActive = !sliderActive;
@@ -71,19 +70,20 @@ namespace GalacticScale
             }
             else
             {
-                
                 _input.gameObject.SetActive(true);
                 _input.text = _valueText.text;
                 _slider.gameObject.SetActive(false);
             }
         }
+
         public void onInputChange(string value)
         {
-            if (!float.TryParse(value, out float result)) return;
+            if (!float.TryParse(value, out var result)) return;
             _slider.value = result;
 
             OnChange?.Invoke(result);
         }
+
         public void initialize(GSUI options)
         {
             // GS2.Log("Initializing");

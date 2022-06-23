@@ -59,7 +59,6 @@ namespace GalacticScale.Generators
 
         public void OnUpdate(string key, Val val)
         {
-     
         }
 
         private void themeselect(Val o)

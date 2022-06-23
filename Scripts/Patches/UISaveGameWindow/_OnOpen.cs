@@ -2,7 +2,6 @@ using HarmonyLib;
 
 namespace GalacticScale
 {
-   
     public partial class PatchOnUISaveGameWindow
     {
         [HarmonyPrefix]

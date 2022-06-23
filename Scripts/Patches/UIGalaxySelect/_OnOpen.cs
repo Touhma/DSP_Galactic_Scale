@@ -12,26 +12,29 @@ namespace GalacticScale
         public static GameObject StartButton;
 
         public static UnityAction startAction;
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIGalaxySelect), "_OnOpen")]
         public static bool _OnOpen(UIGalaxySelect __instance, ref Slider ___starCountSlider, ref Slider ___resourceMultiplierSlider)
         {
             //GS2.Warn("Fix");
-            
+
             if (GS2.canvasOverlay)
             {
                 //GS2.Warn("FIXING WITH GALAXYSELECT!");
                 UIRoot.instance.overlayCanvas.renderMode = RenderMode.ScreenSpaceCamera;
                 GS2.canvasOverlay = false;
             }
+
             if (NebulaCompat.IsClient) return true;
             if (SystemDisplay.backButton == null)
             {
                 SystemDisplay.startButton = __instance.transform.GetChild(0).GetComponent<Button>();
                 SystemDisplay.randomButton = __instance.transform.GetChild(1).GetComponent<Button>();
-                SystemDisplay.backButton =__instance.transform.GetChild(2).GetComponent<Button>();
+                SystemDisplay.backButton = __instance.transform.GetChild(2).GetComponent<Button>();
                 SystemDisplay.initializeButtons(__instance);
             }
+
             SystemDisplay.inSystemDisplay = false;
             UIRoot.instance.galaxySelect.cameraPoser.distRatio = 1;
             SystemDisplay.ShowStarCount();
@@ -44,7 +47,7 @@ namespace GalacticScale
 
             if (StartButton == null) GS2.Warn("StartButton Null");
             StartButton?.SetActive(true);
-            
+
             GS2.Log(StartButton?.name);
             __instance.random =
                 //new DotNet35Random(GSSettings.Seed);
@@ -61,12 +64,14 @@ namespace GalacticScale
             __instance.SetStarmapGalaxy();
             // PlanetModelingManager.PrepareWorks();
             var grids = GameObject.Find("UI Root/Galaxy Select Starmap/grids");
-            if (grids != null) for (int i = 0; i < grids.transform.childCount; i++)
-            {
-                var grid = grids.transform.GetChild(i);
-                if (grid.name != "grid-0" && grid.name != "stars") grid.gameObject.SetActive(false);
-            }
-            SystemDisplay.InitHelpText(__instance);    
+            if (grids != null)
+                for (var i = 0; i < grids.transform.childCount; i++)
+                {
+                    var grid = grids.transform.GetChild(i);
+                    if (grid.name != "grid-0" && grid.name != "stars") grid.gameObject.SetActive(false);
+                }
+
+            SystemDisplay.InitHelpText(__instance);
             return false;
         }
         //[HarmonyPostfix]
