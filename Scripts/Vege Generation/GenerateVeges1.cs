@@ -12,6 +12,7 @@ namespace GalacticScale
             //GS2.Log("GenerateVeges1|" + gsPlanet.Name);
             //GS2.Warn($"USING GS2 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var planet = gsPlanet.planetData;
+            if (planet == null) return;
             var themeProto = LDB.themes.Select(planet.theme);
             if (themeProto == null) return;
             random = new GS2.Random(GSSettings.Seed);
@@ -53,6 +54,7 @@ namespace GalacticScale
             //GS2.Log("GenerateVeges1|" + gsPlanet.Name + "4");
             for (var i = 0; i < data.dataLength; i++)
             {
+                
                 var num13 = i % stride;
                 var num14 = i / stride;
                 if (num13 > num11) num13--;
@@ -188,12 +190,14 @@ namespace GalacticScale
                     var num46 = num35 * (vector4.x + vector4.y) + (1f - vector4.x);
                     var num47 = (num34 * (vector4.z + vector4.w) + (1f - vector4.z)) * num46;
                     vege.pos = (vector5 + vector6).normalized;
+                    if (data == null) return;
                     num18 = data.QueryHeight(vege.pos);
                     vege.pos *= num18;
                     vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) * Quaternion.AngleAxis(angle, Vector3.up);
                     vege.scl = new Vector3(num47, num46, num47);
                     vege.modelIndex = (short)vegeProtos[vege.protoId].ModelIndex;
                     vege.hp = vegeHps[vege.protoId];
+                    if (data == null) return;
                     var num48 = data.AddVegeData(vege);
                     data.vegeIds[i] = (ushort)num48;
                 }
@@ -226,6 +230,7 @@ namespace GalacticScale
                         vege.scl = new Vector3(num56, num55, num56);
                         vege.modelIndex = (short)vegeProtos[vege.protoId].ModelIndex;
                         vege.hp = 1;
+                        if (data == null) return;
                         var num57 = data.AddVegeData(vege);
                         data.vegeIds[i] = (ushort)num57;
                     }

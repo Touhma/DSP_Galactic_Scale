@@ -87,6 +87,7 @@ namespace GalacticScale
             __instance.nCountText.text = N.ToString();
             __instance.wdCountText.text = W.ToString();
             __instance.bhCountText.text = H.ToString();
+            __instance.sandboxToggle.isOn = __instance.gameDesc.isSandboxMode;
             return false;
         }
     }

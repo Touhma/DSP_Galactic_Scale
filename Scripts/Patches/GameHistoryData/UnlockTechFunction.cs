@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public static class PatchOnGameHistoryData
+    public static partial class PatchOnGameHistoryData
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameHistoryData), "logisticShipWarpSpeedModified", MethodType.Getter)]

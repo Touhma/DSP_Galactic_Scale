@@ -154,6 +154,7 @@ namespace GalacticScale
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + random.NextDouble() / 2;
 
             var planet = gsPlanet.planetData;
+            if (planet == null) return null;
             var planetRadiusFactor = Math.Pow(2.1 / gsPlanet.Radius, 2);
             var birth = planet.id == GSSettings.BirthPlanetId;
             var groupVector = new Vector3();
@@ -188,6 +189,7 @@ namespace GalacticScale
                     if (oreVein) potentialVector += groupVector; //randomize placement in the patch
 
                     potentialVector.Normalize(); //make the length of the vector 1
+                    if (planet.data == null) return null;
                     var height = planet.data.QueryHeight(potentialVector);
                     if (PreventUnderwater && (height < planet.radius || !oreVein && height < planet.radius + 0.5f))
                         // GS2.Log("Point is underwater!");

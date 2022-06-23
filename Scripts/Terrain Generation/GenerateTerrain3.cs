@@ -33,6 +33,7 @@ namespace GalacticScale
             var simplexNoise1 = new SimplexNoise(seed1);
             var simplexNoise2 = new SimplexNoise(seed2);
             var data = planet.data;
+            if (data == null) return;
             for (var index = 0; index < data.dataLength; ++index)
             {
                 var num4 = data.vertices[index].x * (double)planet.radius;
@@ -60,6 +61,7 @@ namespace GalacticScale
                 double num17 = Mathf.Abs((float)f);
                 var num18 = num17 <= 0.0 ? 0.0 : num17 <= 2.0 ? num17 : 2.0;
                 var num19 = num18 + (num18 <= 1.8 ? num12 * 0.2 : -num12 * 0.8);
+                if (data.heightData == null) return;
                 data.heightData[index] = (ushort)((planet.radius + num15 * t.HeightMulti + 0.2 + t.BaseHeight) * 100.0);
                 data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.BiomeHeightMulti + t.BiomeHeightModifier), 0.0f, 200f);
             }

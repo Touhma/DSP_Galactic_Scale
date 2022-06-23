@@ -39,10 +39,12 @@ namespace GalacticScale
             }
 
             var data = gsPlanet.planetData.data;
+            if (data == null) return;
             float radius = gsPlanet.Radius;
             var planet = gsPlanet.planetData;
             for (var i = 0; i < data.dataLength; ++i)
             {
+                if (data.vertices == null) return;
                 var num1 = data.vertices[i].x * (double)radius;
                 var num2 = data.vertices[i].y * (double)radius;
                 var num3 = data.vertices[i].z * (double)radius;
@@ -77,7 +79,7 @@ namespace GalacticScale
                 hdEndValue = hdEndValue * t.HeightMulti + t.BaseHeight;
                 var bEndValue = hdEndValue * num11 + (num8 * 2.1 * t.BiomeHeightMulti + 0.800000011920929 + t.BiomeHeightModifier);
                 if (bEndValue > 1.70000004768372 && bEndValue < 2.0) bEndValue = 2.0;
-
+                if (data.heightData == null) return;
                 data.heightData[i] = (ushort)((radius + hdEndValue + 0.2) * 100.0);
                 data.biomoData[i] = (byte)Mathf.Clamp((float)(bEndValue * 100.0), 0.0f, 200f);
                 //double num3 = data.vertices[i].x * planet.radius;

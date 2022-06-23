@@ -12,7 +12,7 @@ namespace GalacticScale
     public static class SystemDisplay
     {
         public static bool inSystemDisplay = false;
-        private static StarData viewStar;
+        public static StarData viewStar;
         public static Button randomButton;
         public static Button startButton;
         public static Button backButton;
@@ -262,6 +262,7 @@ namespace GalacticScale
         {
             HidePlanetDetail();
             HideStarCount();
+            viewStar.RunCalculateThread();
             ShowStarDetail(viewStar);
         }
 
@@ -269,6 +270,14 @@ namespace GalacticScale
         {
             GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group")?.SetActive(false);
             GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/top-title")?.SetActive(false);
+            GS2.Warn($"{UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.name}");
+            GS2.Warn($"{UIRoot.instance.galaxySelect.propertyMultiplierText.transform.parent.gameObject.name}");
+            GS2.Warn($"{UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.name}");
+            UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.SetActive(false);
+            UIRoot.instance.galaxySelect.propertyMultiplierText.gameObject.SetActive(false);
+            UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.SetActive(false);
+            
+
             UIRoot.instance.galaxySelect.seedInput.transform.parent.gameObject.SetActive(false);
             UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(false);
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(false);
@@ -350,6 +359,7 @@ namespace GalacticScale
             GS2.Warn($"{pData.name}");
             HideStarDetail();
             HideStarCount();
+            pData.RunCalculateThread();
             ShowPlanetDetail(pData);
         }
 
@@ -394,7 +404,10 @@ namespace GalacticScale
         {
             GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group").SetActive(true);
             GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/top-title").SetActive(true);
+            UIRoot.instance.galaxySelect.propertyMultiplierText.gameObject.SetActive(true);
+            UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.seedInput.transform.parent.gameObject.SetActive(true);
+            UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(true);
             // UIRoot.instance.galaxySelect.starCountText .gameObject.SetActive(true);

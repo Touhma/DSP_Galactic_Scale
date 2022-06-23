@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public class PatchOnUIStarmap
+    public partial class PatchOnUIStarmap
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIStarmap), "OnCursorFunction3Click")]

@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.7.1")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.7.5")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -56,9 +56,11 @@ namespace GalacticScale
             harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintCopy));
             harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintPaste));
             harmony.PatchAll(typeof(PatchOnBuildTool_Click));
+            harmony.PatchAll(typeof(PatchOnBuildTool_Inserter));
             harmony.PatchAll(typeof(PatchOnBuildTool_Path));
             harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
             harmony.PatchAll(typeof(PatchOnGameAbnormalityData));
+            harmony.PatchAll(typeof(PatchOnGameAchievementData));
             harmony.PatchAll(typeof(PatchOnGameData));
             harmony.PatchAll(typeof(PatchOnGameDesc));
             harmony.PatchAll(typeof(PatchOnGameHistoryData));
@@ -85,18 +87,23 @@ namespace GalacticScale
             harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
             harmony.PatchAll(typeof(PatchOnStarGen));
             harmony.PatchAll(typeof(PatchOnStationComponent));
+            harmony.PatchAll(typeof(PatchOnThemeProto));
             harmony.PatchAll(typeof(PatchOnTrashSystem));
+            harmony.PatchAll(typeof(PatchOnUIAchievementPanel));
             harmony.PatchAll(typeof(PatchOnUIAdvisorTip));
             harmony.PatchAll(typeof(PatchOnUIBuildingGrid));
             harmony.PatchAll(typeof(PatchOnUIEscMenu));
             harmony.PatchAll(typeof(PatchOnUIGalaxySelect));
             harmony.PatchAll(typeof(PatchOnUIGame));
             harmony.PatchAll(typeof(PatchOnUIGameLoadingSplash));
+            harmony.PatchAll(typeof(PatchOnUILoadGameWindow));
             harmony.PatchAll(typeof(PatchOnUIMainMenu));
             harmony.PatchAll(typeof(PatchOnUIOptionWindow));
             harmony.PatchAll(typeof(PatchOnUIPlanetDetail));
+            harmony.PatchAll(typeof(PatchOnUIReplicatorWindow));
             harmony.PatchAll(typeof(PatchOnUIResearchResultsWindow));
             harmony.PatchAll(typeof(PatchOnUIRoot));
+            harmony.PatchAll(typeof(PatchOnUISaveGameWindow));
             harmony.PatchAll(typeof(PatchOnUISpaceGuide));
             harmony.PatchAll(typeof(PatchOnUISpaceGuideEntry));
             harmony.PatchAll(typeof(PatchOnUIStarDetail));
@@ -109,7 +116,10 @@ namespace GalacticScale
             harmony.PatchAll(typeof(PatchOnUniverseGen));
             harmony.PatchAll(typeof(PatchOnUniverseSimulator));
             harmony.PatchAll(typeof(PatchOnVFPreload));
-            harmony.PatchAll(typeof(PatchOnUIAchievementPanel));
+            harmony.PatchAll(typeof(PatchOnWarningSystem));
+            
+            
+            
         }
 
         public static void Debug(object data, LogLevel logLevel, bool isActive)

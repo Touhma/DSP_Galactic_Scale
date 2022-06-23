@@ -115,11 +115,16 @@ namespace GalacticScale
                                 Log($"Creating Planet {planetData.name}");
                                 highStopwatch.Begin();
                                 planetData.data = new PlanetRawData(planetData.precision);
+                                if (planetData == null) return false;
                                 planetData.modData = planetData.data.InitModData(planetData.modData);
+                                if (planetData == null) return false;
                                 planetData.data.CalcVerts();
+                                if (planetData == null) return false;
                                 planetData.aux = new PlanetAuxData(planetData);
                                 Log("Generating Terrain");
+                                if (planetData == null) return false;
                                 planetAlgorithm.GenerateTerrain(planetData.mod_x, planetData.mod_y);
+                                if (planetData == null) return false;
                                 planetAlgorithm.CalcWaterPercent();
                                 num2 = highStopwatch.duration;
                             }
@@ -133,10 +138,11 @@ namespace GalacticScale
                                 }
                                 Log("Creating Factory");
                                 highStopwatch.Begin();
-                                if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVegetables();
+                                if (planetData.type != EPlanetType.Gas && planetData.data != null) planetAlgorithm.GenerateVegetables();
                                 num3 = highStopwatch.duration;
                                 highStopwatch.Begin();
-                                if (planetData.type != EPlanetType.Gas) planetAlgorithm.GenerateVeins();
+                                if (planetData.type != EPlanetType.Gas && planetData.data != null) planetAlgorithm.GenerateVeins();
+                                if (planetData.data != null) planetData.CalculateVeinGroups();
                                 num4 = highStopwatch.duration;
                             }
                             // else if (planetData.galaxy.birthPlanetId == planetData.id) //Added after 0.9.25 update
@@ -149,14 +155,16 @@ namespace GalacticScale
                                     planetComputeThreadLogs.Add($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                     Log($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                 }
+
+                            planetData?.NotifyCalculated();
                         }
                     }
                     catch (Exception ex)
                     {
                         lock (planetComputeThreadError)
                         {
-                            if (string.IsNullOrEmpty(planetComputeThreadError))
-                                planetComputeThreadError = ex.ToString();
+                            // if (string.IsNullOrEmpty(planetComputeThreadError))
+                            //     planetComputeThreadError = ex.ToString();
                         }
                     }
 

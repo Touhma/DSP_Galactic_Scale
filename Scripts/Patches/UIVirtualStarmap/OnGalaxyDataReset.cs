@@ -9,6 +9,17 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIVirtualStarmap), "OnGalaxyDataReset")]
+        public static bool OnGalaxyDataReset_Prefix(UIVirtualStarmap __instance)
+        {
+            __instance.clickText = ""; // reset to vanilla
+
+            foreach (var connNode in __instance.connPool) connNode.lineRenderer.positionCount = 2;
+
+            return true;
+        }
+        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UIVirtualStarmap), "OnGalaxyDataReset")]
         public static bool OnGalaxyDataReset(ref UIVirtualStarmap __instance)
         {
             //GS2.Error("............................................");

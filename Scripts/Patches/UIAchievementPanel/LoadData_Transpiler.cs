@@ -11,7 +11,7 @@ namespace GalacticScale
      * problematic vanilla line was: this.uiEntries.Add(keyValuePair.Key, uiachievementEntry);
      */
     [HarmonyPatch(typeof(UIAchievementPanel))]
-    public class PatchOnUIAchievementPanel
+    public partial class PatchOnUIAchievementPanel
     {
         [HarmonyTranspiler]
         [HarmonyPatch(nameof(UIAchievementPanel.LoadData))]

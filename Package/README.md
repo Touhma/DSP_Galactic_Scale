@@ -2,6 +2,10 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.7.5 - Fix error when loading game while planets are calculating
+- Version 2.7.4 - Combine Gas/Liquid Items in Star Detail again. Fix System view UI. Fix Sandbox toggle in newgame and load game.
+- Version 2.7.3 - Hopefully fix errors introduced by 2.7.2
+- Version 2.7.2 - Fixed issue with birthplanet veins not being calculated. Thanks to starfish. Fixed vein display in new game system viewer. Merged LittleSaya's PR with Transpiler for PlanetFactory.FlattenTerrain. Known issue: With lots of planets the star details will be overflowing with oceans. Will fix soon.
 - Version 2.7.1 - Two bugfixes regarding outer planets and gas giants giving errors when viewing details
 - Version 2.7.0 - Updated for DSP 13026. May or may not work. Need feedback in discord. They changed a bunch of stuff relating to veins. BACKUP YOUR SAVES
  

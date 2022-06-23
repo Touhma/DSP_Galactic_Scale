@@ -18,8 +18,10 @@
             }
 
             var data = gsPlanet.planetData.data;
+            if (data == null) return;
             for (var i = 0; i < data.dataLength; i++)
             {
+                if (data.heightData == null) return;
                 data.heightData[i] = (ushort)(gsPlanet.planetData.radius * 100.1);
                 data.biomoData[i] = 0;
             }

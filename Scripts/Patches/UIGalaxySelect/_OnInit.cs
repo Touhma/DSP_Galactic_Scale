@@ -17,7 +17,8 @@ namespace GalacticScale
                 int.TryParse(seed, out s);
                 GSSettings.Seed = s;
             });
-            
+            __instance.sandboxToggle.isOn = false;
+
         }
     }
 }

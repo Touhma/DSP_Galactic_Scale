@@ -32,6 +32,7 @@ namespace GalacticScale
             var minHD = 999999;
             var maxBH = -999;
             var minBH = 999999;
+            if (data == null) return;
             for (var i = 0; i < data.dataLength; ++i)
             {
                 var x = data.vertices[i].x * (double)gsPlanet.planetData.radius;
@@ -47,6 +48,7 @@ namespace GalacticScale
                 var num19 = f * t.BiomeHeightMulti + noise3 + t.BiomeHeightModifier * 2.5 + 0.3;
                 var num20 = num19 >= 1.0 ? (num19 - 1.0) * 0.8 + 1.0 : num19;
                 var hd = (int)((gsPlanet.planetData.radius + num17 + 0.2) * 100.0);
+                if (data.heightData == null) return;
                 data.heightData[i] = (ushort)Mathf.Clamp(hd, ushort.MinValue, ushort.MaxValue);
                 var bh = (byte)Mathf.Clamp((float)(num20 * 100.0), 0.0f, 200f);
                 data.biomoData[i] = bh;

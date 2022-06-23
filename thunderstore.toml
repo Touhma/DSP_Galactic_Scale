@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.7.1"
-description = "v2.7.1 BACKUP SAVES. May not work. You've been warned. DSP Update 13026 + Hotfixes"
+versionNumber = "2.7.5"
+description = "v2.7.5 BACKUP SAVES. Fix error on loading while calculating previous game"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 
