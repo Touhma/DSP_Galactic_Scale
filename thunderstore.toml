@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.7.5"
-description = "v2.7.5 BACKUP SAVES. Fix error on loading while calculating previous game"
+versionNumber = "2.7.6"
+description = "v2.7.6 BACKUP SAVES. Fix error on randomizing galaxy while calculating previous one"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

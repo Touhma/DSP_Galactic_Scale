@@ -71,7 +71,11 @@ namespace GalacticScale
                 if (flag5) ___textComp.text = baseText + loadingText;
             }
 
-            if (GS2.IsMenuDemo || !GameMain.isRunning) return;
+            if (GS2.IsMenuDemo || !GameMain.isRunning)
+            {
+                if (!string.IsNullOrEmpty(baseText)) ___textComp.text = baseText;
+                return;
+            }
             if (string.IsNullOrEmpty(baseText)) baseText = ___textComp.text;
             if (___textComp != null && GameMain.localStar != null)
             {

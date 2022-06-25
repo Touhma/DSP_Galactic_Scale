@@ -1,26 +1,113 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
+using UnityEngine.Rendering;
 using static GalacticScale.GS2;
 using static PlanetModelingManager;
 
 namespace GalacticScale
 {
-    public static class Modeler
+    public static partial class Modeler
     {
         public static List<PlanetData> planetModQueue = new();
         public static bool planetModQueueSorted;
         public static List<PlanetData> planetQueue = new();
         public static bool planetQueueSorted;
-        public static bool aborted;
+        public static List<PlanetData> processing = new();
+        public static bool Idle => processing.Count == 0;
+        // public static async Task KillPlanetCompute()
+        // {
+        //     // Warn("Killing Planet Compute");
+        //     // if (planetComputeThreadFlag == ThreadFlag.Running) EndPlanetComputeThread();
+        //     // shouldAbort = true;
+        //     // while (true)
+        //     // {
+        //     //     if (planetComputeThreadFlag == ThreadFlag.Ended) break;
+        //     //     Warn($"Waiting for Planet Compute to end {planetComputeThreadFlag}");
+        //     //     await Task.Delay(10);
+        //     // }
+        //     //
+        //     // Warn("Planet Compute Ended");
+        //     genPlanetReqList = new Queue<PlanetData>(100);
+        //     modPlanetReqList = new Queue<PlanetData>(100);
+        //     fctPlanetReqList = new Queue<PlanetData>(100);
+        // }
 
+        // public static async Task KillPlanetCalc()
+        // {
+        //     Warn("Killing Planet Calc");
+        //     // shouldAbortCalc = true;
+        //     // if (planetCalculateThreadFlag == ThreadFlag.Running) EndPlanetCalculateThread();
+        //     // while (true)
+        //     // {
+        //     //     Warn($"Waiting for planetCalc to end {planetCalculateThreadFlag}");
+        //     //     if (planetCalculateThreadFlag == ThreadFlag.Ended) break;
+        //     //     await Task.Delay(10);
+        //     // }
+        //
+        //     // Warn("Planet planetCalc Ended");
+        //     calPlanetReqList = new Queue<PlanetData>(100);
+        //     Warn("Planet Calc Thread Killed");
+        // }
+
+        // public static async Task RestartPlanetCalcThread()
+        // {
+        //     Warn("Restarting Planet Calc Thread");
+        //
+        //     await KillPlanetCalc();
+        //     Warn("Planet Calc Thread Killed");
+        //
+        //     StartPlanetCalculateThread();
+        //     Warn("Planet Calc Thread Restarted");
+        // }
+
+        // public static async Task RestartPlanetComputeThread()
+        // {
+        //     Warn("Restarting Planet Compute Thread");
+        //     await KillPlanetCompute();
+        //     Warn("Planet Compute Thread Killed");
+        //     StartPlanetComputeThread();
+        //     Warn("Planet Compute Thread Restarted");
+        // }
+
+        // public static void StopModellingPlanets()
+        // {
+        //     Warn($"Restarting Planet Modeler {processing.Count}");
+        //     Reset();
+        //     Bootstrap.WaitUntil(() => processing.Count == 0, StopModellingPlanetsPart2);
+        //
+        // }
+        // public async static void StopModellingPlanetsPart2()
+        // {
+        //     Warn($"Restarting Planet Modeler2 {processing.Count}");
+        //     // await Task.Delay(1000);
+        //     Warn("Modeler continue restart. Killing Calc and Compute");
+        //     // await KillPlanetCalc();
+        //     // await KillPlanetCompute();
+        //     Warn("Compute and Calc Ended, Resetting.");
+        //     Warn("Reset Complete. Starting Compute and Calculate");
+        //     Warn($"Restarting Planet Modeler3 {processing.Count}");
+        //     // StartPlanetCalculateThread();
+        //     // StartPlanetComputeThread();
+        //     Warn($"Restarting Planet Modeler4 {Idle}");
+        //
+        // }
         public static void Reset()
         {
+            calPlanetReqList = new Queue<PlanetData>(100);
+            genPlanetReqList = new Queue<PlanetData>(100);
+            modPlanetReqList = new Queue<PlanetData>(100);
+            fctPlanetReqList = new Queue<PlanetData>(100);
             planetModQueue = new List<PlanetData>();
             planetModQueueSorted = false;
             planetQueue = new List<PlanetData>();
             planetQueueSorted = false;
-            aborted = true;
+            // calcPlanet = null;
+            // compPlanet = null;
+            // shouldAbort = true;
         }
 
         public static int DistanceComparison(PlanetData p1, PlanetData p2)
@@ -34,161 +121,6 @@ namespace GalacticScale
         private static double distanceTo(PlanetData planet)
         {
             return (GameMain.mainPlayer.uPosition - planet.uPosition).magnitude;
-        }
-
-        public static bool Compute(ref ThreadFlag ___planetComputeThreadFlag, ref ThreadFlagLock ___planetComputeThreadFlagLock, ref Thread ___planetComputeThread)
-        {
-            Log("Compute");
-            object obj = null;
-            lock (planetComputeThreadFlagLock)
-            {
-                obj = planetComputeThread;
-            }
-
-            var cycles = 0;
-            while (true)
-            {
-                cycles++;
-                aborted = false;
-                var pqsw = new HighStopwatch();
-                pqsw.Begin();
-                var num = 0;
-                lock (planetComputeThreadFlagLock)
-                {
-                    if (planetComputeThreadFlag != ThreadFlag.Running)
-                    {
-                        planetComputeThreadFlag = ThreadFlag.Ended;
-                        return false;
-                    }
-
-                    if (obj != planetComputeThread) return false;
-                }
-
-                PlanetData planetData = null;
-                lock (genPlanetReqList)
-                {
-                    if (genPlanetReqList.Count > 0)
-                    {
-                        Log("Processing List");
-                        planetQueueSorted = false;
-                        while (genPlanetReqList.Count > 0) planetQueue.Add(genPlanetReqList.Dequeue());
-                    }
-                }
-
-                if (!planetQueueSorted && planetQueue.Count > 1)
-                    lock (planetQueue)
-                    {
-                        Log($"Sorting Queue with {planetQueue.Count} entries where Player:{GameMain.mainPlayer?.uPosition} localPlanet:{GameMain.localPlanet?.name}:{GameMain.localPlanet?.uPosition}");
-                        planetQueue.Sort(DistanceComparison);
-                        planetQueueSorted = true;
-                        Log("Sorted");
-                    }
-
-                if (planetQueue.Count > 0)
-                {
-                    planetData = planetQueue[0];
-                    ModellingDone = false;
-                    planetQueue.RemoveAt(0);
-                    Log($"Retrieved sorted planet from list: {planetData.name}");
-                }
-
-                if (planetData != null)
-                {
-                    Log($"Preamble time taken:{pqsw.duration:F5}");
-                    try
-                    {
-                        var planetAlgorithm = Algorithm(planetData);
-                        if (planetAlgorithm != null)
-                        {
-                            var highStopwatch = new HighStopwatch();
-                            var num2 = 0.0;
-                            var num3 = 0.0;
-                            var num4 = 0.0;
-                            if (planetData.data == null)
-                            {
-                                // if (aborted)
-                                // {
-                                //     GS2.Warn("Aborted");
-                                //     return false;
-                                // }
-                                Log($"Creating Planet {planetData.name}");
-                                highStopwatch.Begin();
-                                planetData.data = new PlanetRawData(planetData.precision);
-                                if (planetData == null) return false;
-                                planetData.modData = planetData.data.InitModData(planetData.modData);
-                                if (planetData == null) return false;
-                                planetData.data.CalcVerts();
-                                if (planetData == null) return false;
-                                planetData.aux = new PlanetAuxData(planetData);
-                                Log("Generating Terrain");
-                                if (planetData == null) return false;
-                                planetAlgorithm.GenerateTerrain(planetData.mod_x, planetData.mod_y);
-                                if (planetData == null) return false;
-                                planetAlgorithm.CalcWaterPercent();
-                                num2 = highStopwatch.duration;
-                            }
-
-                            if (planetData.factory == null)
-                            {
-                                if (aborted)
-                                {
-                                    Warn("Aborted");
-                                    return false;
-                                }
-
-                                Log("Creating Factory");
-                                highStopwatch.Begin();
-                                if (planetData.type != EPlanetType.Gas && planetData.data != null) planetAlgorithm.GenerateVegetables();
-                                num3 = highStopwatch.duration;
-                                highStopwatch.Begin();
-                                if (planetData.type != EPlanetType.Gas && planetData.data != null) planetAlgorithm.GenerateVeins();
-                                if (planetData.data != null) planetData.CalculateVeinGroups();
-                                num4 = highStopwatch.duration;
-                            }
-
-                            // else if (planetData.galaxy.birthPlanetId == planetData.id) //Added after 0.9.25 update
-                            // {
-                            //     planetData.GenBirthPoints();
-                            // }//end add 0.9.25 update
-                            if (planetComputeThreadLogs != null)
-                                lock (planetComputeThreadLogs)
-                                {
-                                    planetComputeThreadLogs.Add($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
-                                    Log($"{planetData.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
-                                }
-
-                            planetData?.NotifyCalculated();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        lock (planetComputeThreadError)
-                        {
-                            // if (string.IsNullOrEmpty(planetComputeThreadError))
-                            //     planetComputeThreadError = ex.ToString();
-                        }
-                    }
-
-                    lock (modPlanetReqList)
-                    {
-                        //Log($"Queuing {planetData.name} in modPlanetReqList after {pqsw.duration:F5}");
-                        modPlanetReqList.Enqueue(planetData);
-                    }
-                }
-
-                if (cycles > 600)
-                    cycles = 0;
-                //Log("Modeler 10sec Tick");
-                if (planetData == null)
-                {
-                    ModellingDone = true;
-                    Thread.Sleep(50);
-                }
-                else if (num % 20 == 0)
-                {
-                    Thread.Sleep(2);
-                }
-            }
         }
 
         public static void ModelingCoroutine()

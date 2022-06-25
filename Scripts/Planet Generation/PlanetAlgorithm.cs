@@ -30,7 +30,7 @@
                 terrainAlgo = (p, modX, modY) =>
                 {
                     // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Terrain Algo Running");
-                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) baseAlgorithm.GenerateTerrain(modX, modY);
+                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateTerrain(modX, modY);
                 };
             else
                 // GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to " + gsTheme.TerrainSettings.Algorithm);
@@ -43,7 +43,7 @@
                     veinAlgo = p => //, sketchOnly) =>
                     {
                         // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
-                        if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) baseAlgorithm.GenerateVeins();
+                        if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
                     };
                 else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
@@ -56,7 +56,7 @@
                         // GS2.WarnJson(gsPlanet);
                         // GS2.WarnJson(gsPlanet.GsTheme);
                         // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
-                        if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) baseAlgorithm.GenerateVeins();
+                        if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
                     };
                 else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsPlanet.veinSettings.Algorithm);
@@ -67,7 +67,7 @@
                 vegeAlgo = p =>
                 {
                     // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vege Algo Running");
-                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null) baseAlgorithm.GenerateVegetables();
+                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.vegeIds != null) baseAlgorithm.GenerateVegetables();
                 };
             else
                 // GS2.Log("GS2PlanetAlgorithm|Constructor|GS Vege Algo Running");

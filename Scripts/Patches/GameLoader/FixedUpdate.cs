@@ -41,18 +41,18 @@ namespace GalacticScale
                 // GS2.Warn($"{GameMain.localStar?.name}");
                 if (GameMain.mainPlayer != null && GameMain.gameTick == 0L && GS2.Config.SkipPrologue)
                 {
-                    //GS2.Warn($"Setting uPosition");
+                    // GS2.Warn($"Setting uPosition");
                     GameMain.mainPlayer.uPosition = GameMain.localPlanet.uPosition;
                 }
 
-                GS2.Warn($"{GameMain.localPlanet == null}");
+                // GS2.Warn($"{GameMain.localPlanet == null}");
                 GameMain.localPlanet?.Load();
                 GameMain.localStar?.Load();
             }
 
             if (__instance.frame >= 7)
             {
-                //GS2.Warn("FRAME 7");
+                // GS2.Warn("FRAME 7");
                 // if (!GS2.Config.SkipPrologue) if (GameMain.localStar != null && !GameMain.localStar.loaded) __instance.frame = 7;
                 //     else
                 //     {
@@ -68,7 +68,7 @@ namespace GalacticScale
                 {
                     if (GameMain.data == null)
                     {
-                        GS2.Warn("GameMain.data null");
+                        // GS2.Warn("GameMain.data null");
                         return false;
                     }
 

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using NGPT;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,10 +28,20 @@ namespace GalacticScale
         {
             // backButton.onClick.RemoveAllListeners();
             randomButton.onClick.RemoveAllListeners();
+            randomButton.onClick.m_PersistentCalls.Clear();
+            startButton.onClick.RemoveAllListeners();
+            startButton.onClick.m_PersistentCalls.Clear();
             // backButton.onClick.AddListener(() => OnBackClick(instance));
+            startButton.onClick.AddListener(() => OnStartClick(instance));
             randomButton.onClick.AddListener(() => OnRandomClick(instance));
         }
 
+        static void OnStartClick(UIGalaxySelect instance)
+        {
+            Debug.Log("Start Clicked");
+            Modeler.Reset();
+            Bootstrap.WaitUntil(()=>Modeler.Idle, ()=>PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc));
+        }
         public static void ResetView()
         {
             GameCamera.instance.transform.localPosition = Vector3.zero;
@@ -183,9 +194,23 @@ namespace GalacticScale
 
         public static void OnRandomClick(UIGalaxySelect instance)
         {
-            instance.Rerand();
-            ShowStarMap(instance.starmap);
+            // await Modeler.KillPlanetCompute();
+            // Task.WaitAll( Modeler.RestartPlanetCalcThread(),Modeler.RestartPlanetComputeThread());
+            Modeler.Reset();
+            GS2.Log("A");
+            GS2.Warn(Modeler.processing.Count.ToString());
+            // instance.Rerand();
+            // ShowStarMap(instance.starmap);
+            // PlanetModelingManager.StartPlanetCalculateThread();
+            Bootstrap.WaitUntil(()=>Modeler.Idle, () =>
+            {
+                GS2.Log("Idle, restarting sysdisp");
+                instance.Rerand();
+                ShowStarMap(instance.starmap);
+            });
+
         }
+
 
         public static void OnStarMapClick(UIVirtualStarmap starmap, int starIndex)
         {
@@ -357,6 +382,7 @@ namespace GalacticScale
             HideStarCount();
             pData.RunCalculateThread();
             ShowPlanetDetail(pData);
+            GS2.Warn($"calculated:{pData.calculated} calculating:{pData.calculating}");
         }
 
         public static void OnSolarSystemPlanetRightClick(UIVirtualStarmap starmap, int clickIndex)
@@ -454,13 +480,13 @@ namespace GalacticScale
             inSystemDisplay = true;
             GS2.Warn("ShowSolarSystem");
             // start planet compute thread if not done already
-            // Modeler.aborted = false;
-            PlanetModelingManager.StartPlanetComputeThread();
-
+            // Modeler.shouldAbort = false;
+     //       PlanetModelingManager.StartPlanetComputeThread();
+            // await Modeler.RestartPlanetCalcThread();
             // add star
             var starData = starmap._galaxyData.StarById(starIndex + 1); // because StarById() decrements by 1
             AddStarToStarmap(starmap, starData);
-
+            starData.RunCalculateThread();
             var starScale = starmap.starPool[0].starData.radius / 40f * GS2.Config.VirtualStarmapStarScaleFactor; //This is RadiusAU
             // var starScale = starmap.starPool[0].starData.radius * GS2.Config.VirtualStarmapStarScaleFactor;
 

@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -12,16 +14,18 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.7.5")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.7.6")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
+        public static Bootstrap instance;
         public new static ManualLogSource Logger;
         public static Queue buffer = new();
 
         internal void Awake()
         {
+            instance = this;
             InitializeLogger();
             InitializeComponents();
             ApplyHarmonyPatches();
@@ -139,5 +143,19 @@ namespace GalacticScale
         {
             Debug(data, LogLevel.Message, true);
         }
+
+        public static void WaitUntil(TestFunction t, TestThen u)
+        {
+            instance.StartCoroutine(WaitUntilRoutine(t, u));
+        }
+        public static IEnumerator WaitUntilRoutine(TestFunction t, TestThen u)
+        {
+           yield return new WaitUntil(()=>t());
+           u();
+        }
     }
+
+    public delegate bool TestFunction();
+
+    public delegate void TestThen();
 }
