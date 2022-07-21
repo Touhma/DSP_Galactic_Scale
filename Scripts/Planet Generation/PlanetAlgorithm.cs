@@ -39,13 +39,13 @@
 
             if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings())
             {
-                if (gsTheme.VeinSettings.Algorithm == "Vanilla")
-                    veinAlgo = p => //, sketchOnly) =>
-                    {
-                        // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
-                        if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
-                    };
-                else
+                // if (gsTheme.VeinSettings.Algorithm == "Vanilla")
+                //     veinAlgo = p => //, sketchOnly) =>
+                //     {
+                //         GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Vein Algo Running");
+                //         if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
+                //     };
+                // else
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
             }
             else

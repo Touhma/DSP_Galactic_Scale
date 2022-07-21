@@ -74,7 +74,7 @@ namespace GalacticScale.Generators
             // GenerateOrbits();
             highStopwatch.Begin();
             GeneratePlanets();
-            if (!preferences.GetBool("noRaresStartingSystem")) RemoveRaresFromStartingSystem();
+            
             Log($"Planets Generated: {highStopwatch.duration:F5}");
             // AssignOrbits();
             highStopwatch.Begin();
@@ -86,6 +86,7 @@ namespace GalacticScale.Generators
             if (birthPlanet.veinSettings.Algorithm == "Vanilla")
                 birthPlanet.veinSettings.Algorithm = "GS2";
             birthPlanet.GsTheme.CustomGeneration = true;
+            if (!preferences.GetBool("noRaresStartingSystem")) RemoveRaresFromStartingSystem();
             if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
             Log($"BirthPlanet Selected: {birthPlanet.Name}{highStopwatch.duration:F5}");
             highStopwatch.Begin();

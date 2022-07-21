@@ -76,7 +76,7 @@ namespace GalacticScale
                                     planetCalculateThreadLogs.Add(string.Format("{0}\r\nGenerate Terrain {1:F5} s\r\nGenerate Vegetables {2:F5} s\r\nGenerate Veins {3:F5} s\r\n", calcPlanet.displayName, duration, duration2, duration3));
                                 }
                             }
-
+                            
                             calcPlanet.NotifyCalculated();
                             processing.Remove(calcPlanet);
                         }

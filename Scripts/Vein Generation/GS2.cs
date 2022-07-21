@@ -9,12 +9,14 @@ namespace GalacticScale
     {
         public static void GenerateVeinsGS2(GSPlanet gsPlanet) //, bool sketchOnly)
         {
+            Debug.Log("Generating");
             random = new GS2.Random(gsPlanet.Seed);
             InitializeFromVeinSettings(gsPlanet);
             if (GSSettings.BirthPlanet == gsPlanet) // && !sketchOnly)
                 GenBirthPoints(gsPlanet);
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
+            
             // if (sketchOnly)
             // {
             //     gsPlanet.planetData.veinSpotsSketch = new int[PlanetModelingManager.veinProtos.Length];
@@ -28,18 +30,30 @@ namespace GalacticScale
 
         private static void InitializeFromVeinSettings(GSPlanet gsPlanet)
         {
-            // GS2.Warn($"Initializing Veins for Theme { gsPlanet.Theme}");
+            GS2.Warn($"Initializing Veins for Theme { gsPlanet.Theme}");
             // GS2.WarnJson(gsPlanet?.veinSettings);
             if (gsPlanet?.veinSettings == null)
             {
-                // GS2.Log("Cloning veinsettings for planet");
+                GS2.Log($"Cloning veinsettings for {gsPlanet.Name}");
                 if (!GSSettings.ThemeLibrary.ContainsKey(gsPlanet.Theme))
                 {
                     GS2.Warn($"{gsPlanet.Theme} not found in themelibrary. ThemeLibrary Contents:");
                     GS2.WarnJson(GSSettings.ThemeLibrary.Keys.ToList());
                 }
 
-                if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings()) gsPlanet.veinSettings = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).VeinSettings.Clone();
+                if (gsPlanet.veinSettings == null || gsPlanet.veinSettings == new GSVeinSettings())
+                {
+                    GS2.Log($"Performing Clone of Veinsettings for {gsPlanet.Name}");
+                    gsPlanet.veinSettings = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).VeinSettings.Clone();
+                }
+            }
+            else
+            {
+                GS2.Log($"Using preconfigured veinsettings for {gsPlanet.Name}");
+                foreach (var x in gsPlanet.veinSettings.VeinTypes)
+                {
+                    GS2.LogJson(x);
+                }
             }
 
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
@@ -56,6 +70,7 @@ namespace GalacticScale
             var planet = gsPlanet.planetData;
             var resourceCoef = planet.star.resourceCoef;
             var planetRadiusFactor = 2.1 / gsPlanet.planetData.radius;
+            GS2.Log($"Resetting VeinGroups for {gsPlanet.Name}");
             InitializePlanetVeins(planet, veinData.Count);
             var nodeVectors = new List<Vector2>();
             var infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
@@ -162,6 +177,7 @@ namespace GalacticScale
             var groupVector = new Vector3();
             groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypes(gsPlanet);
+            gsPlanet.planetData.veinGroups = new VeinGroup[veinGroups.Count];
             var veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
             {

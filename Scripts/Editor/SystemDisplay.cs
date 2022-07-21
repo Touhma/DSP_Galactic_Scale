@@ -17,6 +17,7 @@ namespace GalacticScale
         public static int customBirthStar = -1;
         public static int customBirthPlanet = -1;
         public static float mouseTolerance = 1.7f;
+        public static bool inGalaxySelect;
 
         public static void AbortRender(UIVirtualStarmap starmap)
         {
@@ -50,6 +51,7 @@ namespace GalacticScale
 
         public static void OnUpdate(UIVirtualStarmap starmap)
         {
+            inGalaxySelect = true;
             if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += VFInput.shift ? 1f : .1f;
             if (Input.mouseScrollDelta.y > 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio -= VFInput.shift ? 1f : 0.1f;
             if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.right);
@@ -183,6 +185,7 @@ namespace GalacticScale
             if (!inSystemDisplay)
             {
                 ResetView();
+                inGalaxySelect = false;
                 instance._Close();
                 UIRoot.instance.OpenMainMenuUI();
             }
@@ -419,6 +422,9 @@ namespace GalacticScale
 
             HideStarDetail();
             HideStarCount();
+            // pData.CalculateVeinGroups();
+            // pData.NotifyCalculated();
+            pData.RunCalculateThread();
             ShowPlanetDetail(pData);
         }
 

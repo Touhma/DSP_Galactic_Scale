@@ -157,7 +157,7 @@ namespace GalacticScale
 
         private static void AddVeinToPlanet(int amount, EVeinType veinType, Vector3 position, short groupIndex, PlanetData planet)
         {
-            // GS2.Log("Adding Vein GroupIndex = "+groupIndex);
+            // GS2.Log($"Adding Vein {veinType} GroupIndex = "+groupIndex);
             var vein = new VeinData
             {
                 amount = amount,

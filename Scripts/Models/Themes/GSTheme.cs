@@ -310,6 +310,7 @@ namespace GalacticScale
 
         public void PopulateVeinData()
         {
+            GS2.Log($"Populating VeinData for {Name}");
             for (var vType = 0; vType < VeinSpot.Length; vType++)
             {
                 if (VeinSpot[vType] == 0) continue;
