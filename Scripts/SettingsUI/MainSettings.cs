@@ -83,6 +83,7 @@ namespace GalacticScale
         public GSGenPreferences Export()
         {
             Preferences.Set("Generator ID", ActiveGenerator.GUID);
+            foreach (var x in Preferences) GS2.Log($"Key:{x.Key} Value:{x.Value}");
             return Preferences;
         }
 

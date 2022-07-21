@@ -14,7 +14,7 @@ namespace GalacticScale
             Warn("SavePreferences");
             Preferences.version = PreferencesVersion;
             Preferences.MainSettings = Config.Export();
-
+            foreach (var x in Preferences.MainSettings) GS2.Warn($"Key:{x.Key} Value:{x.Value}");
             //foreach (var g in Generators)
             //    if (g is iConfigurableGenerator)
             //    {
@@ -179,15 +179,15 @@ namespace GalacticScale
                     return new GSPreferences();
                 }
 
-                if (preferences.version != PreferencesVersion)
-                {
-                    Warn("Preferences.json Version Mismatch. Renaming to Preferences.Old");
-                    var newName = "Preferences.Old." + DateTime.Now.ToString("yyMMddHHmmss");
-                    if (File.Exists(Path.Combine(DataDir, newName))) File.Delete(Path.Combine(DataDir, newName));
-                    File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir, newName));
-                    updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
-                    return new GSPreferences();
-                }
+                // if (preferences.version != PreferencesVersion)
+                // {
+                //     Warn("Preferences.json Version Mismatch. Renaming to Preferences.Old");
+                //     var newName = "Preferences.Old." + DateTime.Now.ToString("yyMMddHHmmss");
+                //     if (File.Exists(Path.Combine(DataDir, newName))) File.Delete(Path.Combine(DataDir, newName));
+                //     File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir, newName));
+                //     updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
+                //     return new GSPreferences();
+                // }
 
                 return preferences;
             }

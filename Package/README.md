@@ -2,6 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.7.8 - Fix strange mod conflict caused by debug logging
+- Version 2.7.7 - Another attempt to fix issues loading saves
 - Version 2.7.6 - Fix errors when starting/ending game while still calculating veins
 - Version 2.7.5 - Fix error when loading game while planets are calculating
 - Version 2.7.4 - Combine Gas/Liquid Items in Star Detail again. Fix System view UI. Fix Sandbox toggle in newgame and
