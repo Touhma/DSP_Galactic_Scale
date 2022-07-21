@@ -18,6 +18,8 @@ namespace GalacticScale
         public static int customBirthPlanet = -1;
         public static float mouseTolerance = 1.7f;
         public static bool inGalaxySelect;
+        public static UIGalaxySelect uiGalaxySelect;
+        public static UIStarDetail uiStarDetail;
 
         public static void AbortRender(UIVirtualStarmap starmap)
         {
@@ -286,7 +288,14 @@ namespace GalacticScale
         {
             HidePlanetDetail();
             HideStarCount();
-            viewStar.RunCalculateThread();
+            if (!viewStar.calculated)
+            {
+                foreach (var p in viewStar.planets)
+                {
+                    GS2.Log($"Planet {p.name} calculated:{p.calculated}");
+                }
+                viewStar.RunCalculateThread();
+            }
             ShowStarDetail(viewStar);
         }
 
@@ -333,6 +342,7 @@ namespace GalacticScale
             UIRoot.instance.uiGame.starDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
             UIRoot.instance.uiGame.starDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
             UIRoot.instance.uiGame.starDetail._OnUpdate();
+            UIRoot.instance.uiGame.starDetail.RefreshDynamicProperties();
         }
 
         public static void OnStarClick(UIVirtualStarmap starmap, int starIndex)
