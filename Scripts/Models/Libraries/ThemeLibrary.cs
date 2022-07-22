@@ -108,6 +108,7 @@ namespace GalacticScale
 
         public GSTheme Find(string name)
         {
+            if (string.IsNullOrEmpty(name)) return null;
             if (!ContainsKey(name))
             {
                 var s = GS2.GetCaller();

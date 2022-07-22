@@ -14,14 +14,40 @@ namespace GalacticScale
 
             var birth = GSSettings.BirthPlanet == gsPlanet;
             var planetRadiusFactor = 2.1f / gsPlanet.planetData.radius;
-            InitializeFromThemeProto(gsPlanet, themeProto, out var veinSpots, out var veinCounts, out var veinOpacity);
+            InitializeFromVeinSettings(gsPlanet);
+            // InitializeFromThemeProto(gsPlanet, themeProto, out var veinSpots, out var veinCounts, out var veinOpacity);
             if (birth) // && !sketchOnly)
                 gsPlanet.planetData.GenBirthPoints(gsPlanet.planetData.data, random.Next()); //GenBirthPoints(gsPlanet);
 
             gsPlanet.veinData.Clear();
             // if (sketchOnly) return;
             if (birth) InitBirthVeinVectors(gsPlanet);
+            List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
+            var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
+            foreach (var veinGroup in ores)
+            {
+                if (veinGroup.veins.Count > 0)
+                {
+                    veinSpots[(int)veinGroup.type]++;
+                }
+            }
 
+            var veinCounts = new float[PlanetModelingManager.veinProtos.Length];
+            foreach (var veinGroup in ores)
+            {
+                if (veinGroup.veins.Count > 0)
+                {
+                    veinCounts[(int)veinGroup.type] += veinGroup.veins.Count;
+                }
+            }
+            var veinOpacity = new float[PlanetModelingManager.veinProtos.Length];
+            foreach (var veinGroup in ores)
+            {
+                if (veinGroup.veins.Count > 0)
+                {
+                    veinOpacity[(int)veinGroup.type] = veinGroup.veins[0].richness;
+                }
+            }
             CalculateVectorsVanilla(gsPlanet, planetRadiusFactor, veinSpots);
             AddVeinsToPlanetVanilla(gsPlanet, planetRadiusFactor, veinCounts, veinOpacity, birth);
         }

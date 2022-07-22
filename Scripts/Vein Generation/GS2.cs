@@ -52,15 +52,19 @@ namespace GalacticScale
                 GS2.Log($"Using preconfigured veinsettings for {gsPlanet.Name}");
                 foreach (var x in gsPlanet.veinSettings.VeinTypes)
                 {
-                    GS2.LogJson(x);
+                    if ((int)x.type > 7) GS2.Log($"Contains:{x.type}");
                 }
             }
 
             List<GSVeinType> ores = gsPlanet.veinSettings.VeinTypes;
             var veinSpots = new int[PlanetModelingManager.veinProtos.Length];
             foreach (var veinGroup in ores)
+            {
                 if (veinGroup.veins.Count > 0)
+                {
                     veinSpots[(int)veinGroup.type]++;
+                }
+            }
 
             // gsPlanet.planetData.veinSpotsSketch = veinSpots;
         }

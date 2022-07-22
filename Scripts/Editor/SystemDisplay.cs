@@ -43,6 +43,7 @@ namespace GalacticScale
         {
             Debug.Log("Start Clicked");
             Modeler.Reset();
+            inGalaxySelect = false;
             Bootstrap.WaitUntil(()=>Modeler.Idle, ()=>PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc));
         }
         public static void ResetView()
@@ -290,9 +291,11 @@ namespace GalacticScale
             HideStarCount();
             if (!viewStar.calculated)
             {
+
+                Debug.Log("Star not Calculated. Planet Status:");
                 foreach (var p in viewStar.planets)
                 {
-                    GS2.Log($"Planet {p.name} calculated:{p.calculated}");
+                    Debug.Log($"{p.name}: {p.calculated}");
                 }
                 viewStar.RunCalculateThread();
             }
@@ -393,7 +396,7 @@ namespace GalacticScale
             GS2.Warn($"{pData.name}");
             HideStarDetail();
             HideStarCount();
-            pData.RunCalculateThread();
+            if (!pData.calculated) pData.RunCalculateThread();
             ShowPlanetDetail(pData);
             GS2.Warn($"calculated:{pData.calculated} calculating:{pData.calculating}");
         }

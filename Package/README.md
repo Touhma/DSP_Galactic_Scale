@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.7.9 - Fix no rares in starting system
 - Version 2.7.8 - Fix strange mod conflict caused by debug logging
 - Version 2.7.7 - Another attempt to fix issues loading saves
 - Version 2.7.6 - Fix errors when starting/ending game while still calculating veins
