@@ -7,13 +7,13 @@ namespace GalacticScale.Generators
     {
         private void RemoveRaresFromStartingSystem()
         {
-            GS2.Warn($"RemoveRares Running");
+            // GS2.Warn($"RemoveRares Running");
             foreach (var p in birthStar.Bodies)
             {
-                GS2.Warn($"RemoveRares {p.Name}");
+                // GS2.Warn($"RemoveRares {p.Name}");
                 if (p.veinSettings == null || p.veinSettings == new GSVeinSettings())
                 {
-                    GS2.Warn($"RemoveRares Initializing Veins for {p.Name}");
+                    // GS2.Warn($"RemoveRares Initializing Veins for {p.Name}");
                     p.veinSettings = p.GsTheme.VeinSettings.Clone();
                 }
 
@@ -31,7 +31,7 @@ namespace GalacticScale.Generators
                                 GS2.Warn($"RemoveRares Removing {v.type} from {p.Name}");
                                 v.veins = new List<GSVein>();
                                 
-                                    GS2.LogJson(v);
+                                    // GS2.LogJson(v);
                                 
                                 break;
                             default: newTypes.Add(v);

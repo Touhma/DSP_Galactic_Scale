@@ -51,7 +51,7 @@ namespace GalacticScale
         private void ApplyHarmonyPatches()
         {
             var harmony = new Harmony("dsp.galactic-scale.2");
-            harmony.PatchAll(typeof(PatchOnWhatever));
+            harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
             harmony.PatchAll(typeof(PatchOnBlueprintUtils));
             harmony.PatchAll(typeof(PatchOnBuildingGizmo));
             harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintCopy));

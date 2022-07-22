@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading.Tasks;
 using NGPT;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,18 +7,25 @@ namespace GalacticScale
 {
     public static class SystemDisplay
     {
+        private const float mouseTolerance = 1.7f;
         public static bool inSystemDisplay;
         public static StarData viewStar;
         public static Button randomButton;
         public static Button startButton;
         public static Button backButton;
-        public static bool deBounce;
-        public static int customBirthStar = -1;
-        public static int customBirthPlanet = -1;
-        public static float mouseTolerance = 1.7f;
+        private static bool deBounce;
+        private static readonly int CustomBirthStar = -1;
         public static bool inGalaxySelect;
-        public static UIGalaxySelect uiGalaxySelect;
-        public static UIStarDetail uiStarDetail;
+        private static GameObject galaxySelectRightGroup;
+        private static GameObject galaxySelectTopTitle;
+        private static readonly int TintColor = Shader.PropertyToID("_TintColor");
+        private static readonly int LineColorA = Shader.PropertyToID("_LineColorA");
+        private static readonly int LineColorB = Shader.PropertyToID("_LineColorB");
+        private static UIGalaxySelect GalaxySelect => UIRoot.instance.galaxySelect;
+        private static UIGame uiGame => UIRoot.instance.uiGame;
+        private static UIPlanetDetail uiPlanetDetail => uiGame.planetDetail;
+        private static UIStarDetail uiStarDetail => uiGame.starDetail;
+
 
         public static void AbortRender(UIVirtualStarmap starmap)
         {
@@ -27,8 +33,10 @@ namespace GalacticScale
             ShowStarMap(starmap);
         }
 
-        public static void initializeButtons(UIGalaxySelect instance)
+        public static void InitializeButtons(UIGalaxySelect instance)
         {
+            galaxySelectTopTitle = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/top-title");
+            galaxySelectRightGroup = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group");
             // backButton.onClick.RemoveAllListeners();
             randomButton.onClick.RemoveAllListeners();
             randomButton.onClick.m_PersistentCalls.Clear();
@@ -39,13 +47,14 @@ namespace GalacticScale
             randomButton.onClick.AddListener(() => OnRandomClick(instance));
         }
 
-        static void OnStartClick(UIGalaxySelect instance)
+        private static void OnStartClick(UIGalaxySelect instance)
         {
             Debug.Log("Start Clicked");
             Modeler.Reset();
             inGalaxySelect = false;
-            Bootstrap.WaitUntil(()=>Modeler.Idle, ()=>PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc));
+            Bootstrap.WaitUntil(() => Modeler.Idle, () => PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc));
         }
+
         public static void ResetView()
         {
             GameCamera.instance.transform.localPosition = Vector3.zero;
@@ -55,8 +64,14 @@ namespace GalacticScale
         public static void OnUpdate(UIVirtualStarmap starmap)
         {
             inGalaxySelect = true;
-            if (Input.mouseScrollDelta.y < 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio += VFInput.shift ? 1f : .1f;
-            if (Input.mouseScrollDelta.y > 0) UIRoot.instance.galaxySelect.cameraPoser.distRatio -= VFInput.shift ? 1f : 0.1f;
+            if (inSystemDisplay)
+            {
+                if (uiPlanetDetail.gameObject.activeSelf) uiPlanetDetail._OnUpdate();
+                if (uiStarDetail.gameObject.activeSelf) uiStarDetail._OnUpdate();
+            }
+
+            if (Input.mouseScrollDelta.y < 0) GalaxySelect.cameraPoser.distRatio += VFInput.shift ? 1f : .1f;
+            if (Input.mouseScrollDelta.y > 0) GalaxySelect.cameraPoser.distRatio -= VFInput.shift ? 1f : 0.1f;
             if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.right);
             if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.left);
             if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.up);
@@ -74,8 +89,7 @@ namespace GalacticScale
                     var gsStar = GS2.GetGSStar(starData);
                     var decorative = false;
                     if (gsStar != null) decorative = gsStar.Decorative;
-                    var zero = Vector2.zero;
-                    UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out zero);
+                    UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out var zero);
                     zero.x += 18f;
                     zero.y += 6f;
                     starmap.starPool[i].nameText.rectTransform.anchoredPosition = zero;
@@ -101,7 +115,7 @@ namespace GalacticScale
                     {
                         var value = starmap.starColors.Evaluate(starData.color);
                         starmap.starPointBirth.gameObject.SetActive(!inSystemDisplay);
-                        starmap.starPointBirth.material.SetColor("_TintColor", value);
+                        starmap.starPointBirth.material.SetColor(TintColor, value);
                         starmap.starPointBirth.transform.localPosition = starData.position;
                     }
 
@@ -109,12 +123,12 @@ namespace GalacticScale
                     {
                         var value = starmap.starColors.Evaluate(starData.color);
                         starmap.starPointBirth.gameObject.SetActive(inSystemDisplay);
-                        starmap.starPointBirth.material.SetColor("_TintColor", value);
+                        starmap.starPointBirth.material.SetColor(TintColor, value);
                         starmap.starPointBirth.transform.localPosition = starData.position;
                     }
                     // else GS2.Log($"{starData?.id} {GSSettings.BirthPlanet?.planetData?.id} {viewStar?.id} {GSSettings.BirthPlanet?.planetData?.star?.id}");
 
-                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay);
+                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || (i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay));
 
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
@@ -129,7 +143,7 @@ namespace GalacticScale
             // GS2.Warn($"Setting StarPointBirth to {__instance.starPool[i].starData.name}");
             // var starData = starmap.starPool[i].starData;
             // var color = starmap.starColors.Evaluate(starData.color);
-            // starmap.starPointBirth.gameObject.SetActive(true);
+            // starmap.starPointBirth.galaxySelectRightGroup.SetActive(true);
             // starmap.starPointBirth.material.SetColor("_TintColor", color);
             // starmap.starPointBirth.transform.localPosition = starData.position;
 
@@ -172,7 +186,7 @@ namespace GalacticScale
                     // if (i == GSSettings.BirthPlanet.planetData.star.index)
                     // {
                     //     var color = __instance.starColors.Evaluate(starData.color);
-                    //     __instance.starPointBirth.gameObject.SetActive(true);
+                    //     __instance.starPointBirth.galaxySelectRightGroup.SetActive(true);
                     //     __instance.starPointBirth.material.SetColor("_TintColor", color);
                     //     __instance.starPointBirth.transform.localPosition = starData.position;
                     // }
@@ -198,49 +212,48 @@ namespace GalacticScale
             }
         }
 
-        public static void OnRandomClick(UIGalaxySelect instance)
+        private static void OnRandomClick(UIGalaxySelect instance)
         {
             // await Modeler.KillPlanetCompute();
             // Task.WaitAll( Modeler.RestartPlanetCalcThread(),Modeler.RestartPlanetComputeThread());
             Modeler.Reset();
-            GS2.Log("A");
-            GS2.Warn(Modeler.processing.Count.ToString());
+            // GS2.Log("A");
+            // GS2.Warn(Modeler.processing.Count.ToString());
             // instance.Rerand();
             // ShowStarMap(instance.starmap);
             // PlanetModelingManager.StartPlanetCalculateThread();
-            Bootstrap.WaitUntil(()=>Modeler.Idle, () =>
+            Bootstrap.WaitUntil(() => Modeler.Idle, () =>
             {
-                GS2.Log("Idle, restarting sysdisp");
+                // GS2.Log("Idle, restarting sysdisp");
                 instance.Rerand();
                 ShowStarMap(instance.starmap);
             });
-
         }
 
 
-        public static void OnStarMapClick(UIVirtualStarmap starmap, int starIndex)
+        private static void OnStarMapClick(UIVirtualStarmap starmap, int starIndex)
         {
             // GS2.Warn($"StarmapClick { starIndex}");
             switch (starIndex)
             {
-                case -1 when UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
+                case -1 when uiPlanetDetail.gameObject.activeSelf:
                     // GS2.Warn("Hiding Planet Details");
                     HidePlanetDetail();
                     break;
-                case -1 when !UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
+                case -1 when !uiPlanetDetail.gameObject.activeSelf:
                     // GS2.Warn("Hiding SolarSystem");
                     ShowStarMap(starmap);
                     break;
                 case 0 when inSystemDisplay:
                     // GS2.Warn("System Star Click");
-                    OnSolarSystemStarClick(starmap);
+                    OnSolarSystemStarClick();
                     break;
-                case int x when x >= 0 && inSystemDisplay:
+                case >= 0 when inSystemDisplay:
                     // GS2.Warn($"PlanetClick {starIndex}");
-                    OnSolarSystemPlanetClick(starmap, starIndex);
+                    OnSolarSystemPlanetClick(starIndex);
                     break;
-                case int x when x >= 0 && !inSystemDisplay:
-                    ;
+                case >= 0 when !inSystemDisplay:
+
                     // GS2.Warn($"- {starIndex} OnStarMapClick");
                     OnStarClick(starmap, starIndex);
                     break;
@@ -250,31 +263,31 @@ namespace GalacticScale
             }
         }
 
-        public static void OnStarMapRightClick(UIVirtualStarmap starmap, int starIndex)
+        private static void OnStarMapRightClick(UIVirtualStarmap starmap, int starIndex)
         {
             // GS2.Warn($"StarmapRightClick { starIndex}");
             switch (starIndex)
             {
-                case -1 when UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
-                    GS2.Warn("Rightclick Hiding Details");
+                case -1 when uiPlanetDetail.gameObject.activeSelf:
+                    // GS2.Warn("Rightclick Hiding Details");
                     HidePlanetDetail();
                     ShowStarCount();
                     break;
-                case -1 when !UIRoot.instance.uiGame.planetDetail.gameObject.activeSelf:
-                    GS2.Warn("RightClick Hiding SolarSystem");
+                case -1 when !uiPlanetDetail.gameObject.activeSelf:
+                    // GS2.Warn("RightClick Hiding SolarSystem");
                     ShowStarMap(starmap);
                     break;
                 case 0 when inSystemDisplay:
-                    GS2.Warn("System Star RightClick");
-                    OnSolarSystemStarClick(starmap);
+                    // GS2.Warn("System Star RightClick");
+                    OnSolarSystemStarClick();
                     break;
-                case int x when x >= 0 && inSystemDisplay:
-                    GS2.Warn($"Planet RightClick {starIndex}");
+                case >= 0 when inSystemDisplay:
+                    // GS2.Warn($"Planet RightClick {starIndex}");
                     OnSolarSystemPlanetRightClick(starmap, starIndex);
                     break;
-                case int x when x >= 0 && !inSystemDisplay:
+                case >= 0 when !inSystemDisplay:
 
-                    GS2.Warn($"- {starIndex} OnStarMapRightClick");
+                    // GS2.Warn($"- {starIndex} OnStarMapRightClick");
                     // SetBirthStar(starmap.starPool[starIndex].starData);
                     OnStarRightClick(starmap, starIndex);
                     break;
@@ -285,74 +298,69 @@ namespace GalacticScale
             }
         }
 
-        public static void OnSolarSystemStarClick(UIVirtualStarmap starmap)
+        private static void OnSolarSystemStarClick()
         {
             HidePlanetDetail();
             HideStarCount();
             if (!viewStar.calculated)
             {
-
                 Debug.Log("Star not Calculated. Planet Status:");
-                foreach (var p in viewStar.planets)
-                {
-                    Debug.Log($"{p.name}: {p.calculated}");
-                }
+                foreach (var p in viewStar.planets) Debug.Log($"{p.name}: {p.calculated}");
                 viewStar.RunCalculateThread();
             }
+
             ShowStarDetail(viewStar);
         }
 
-        public static void HideStarCount()
+        private static void HideStarCount()
         {
-            GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group")?.SetActive(false);
-            GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/top-title")?.SetActive(false);
-            GS2.Warn($"{UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.name}");
-            GS2.Warn($"{UIRoot.instance.galaxySelect.propertyMultiplierText.transform.parent.gameObject.name}");
-            GS2.Warn($"{UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.name}");
-            UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.SetActive(false);
-            UIRoot.instance.galaxySelect.propertyMultiplierText.gameObject.SetActive(false);
-            UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.SetActive(false);
-
-
-            UIRoot.instance.galaxySelect.seedInput.transform.parent.gameObject.SetActive(false);
-            UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(false);
-            UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(false);
+            if (galaxySelectRightGroup != null) galaxySelectRightGroup.SetActive(false);
+            if (galaxySelectTopTitle != null) galaxySelectTopTitle.SetActive(false);
+            // GS2.Warn($"{UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.galaxySelectRightGroup.name}");
+            // GS2.Warn($"{UIRoot.instance.galaxySelect.propertyMultiplierText.transform.parent.galaxySelectRightGroup.name}");
+            // GS2.Warn($"{UIRoot.instance.galaxySelect.addrText.transform.parent.galaxySelectRightGroup.name}");
+            GalaxySelect.sandboxToggle.transform.parent.gameObject.SetActive(false);
+            GalaxySelect.propertyMultiplierText.gameObject.SetActive(false);
+            GalaxySelect.addrText.transform.parent.gameObject.SetActive(false);
+            GalaxySelect.seedInput.transform.parent.gameObject.SetActive(false);
+            GalaxySelect.starCountSlider.transform.parent.gameObject.SetActive(false);
+            GalaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(false);
         }
 
-        public static void HidePlanetDetail()
+        private static void HidePlanetDetail()
         {
-            UIRoot.instance.uiGame.planetDetail.gameObject.SetActive(false);
+            uiPlanetDetail.gameObject.SetActive(false);
         }
 
-        public static void HideStarDetail()
+        private static void HideStarDetail()
         {
-            UIRoot.instance.uiGame.starDetail.gameObject.SetActive(false);
+            uiStarDetail.gameObject.SetActive(false);
         }
 
-        public static void ShowPlanetDetail(PlanetData pData)
+        private static void ShowPlanetDetail(PlanetData pData)
         {
-            UIRoot.instance.uiGame.SetPlanetDetail(pData);
-            UIRoot.instance.uiGame.planetDetail.gameObject.SetActive(true);
-            UIRoot.instance.uiGame.planetDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
-            UIRoot.instance.uiGame.planetDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
-            UIRoot.instance.uiGame.planetDetail._OnUpdate();
+            uiGame.SetPlanetDetail(pData);
+            uiPlanetDetail.gameObject.SetActive(true);
+            uiPlanetDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
+            uiPlanetDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
+            uiPlanetDetail._OnUpdate();
         }
 
-        public static void ShowStarDetail(StarData starData)
+        private static void ShowStarDetail(StarData starData)
         {
-            UIRoot.instance.uiGame.SetStarDetail(starData);
-            UIRoot.instance.uiGame.starDetail.gameObject.SetActive(true);
-            UIRoot.instance.uiGame.starDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
-            UIRoot.instance.uiGame.starDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
-            UIRoot.instance.uiGame.starDetail._OnUpdate();
-            UIRoot.instance.uiGame.starDetail.RefreshDynamicProperties();
+            uiGame.SetStarDetail(starData);
+            uiStarDetail.gameObject.SetActive(true);
+            uiStarDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
+            uiStarDetail.gameObject.GetComponent<RectTransform>().parent.gameObject.GetComponent<RectTransform>().parent.gameObject.SetActive(true);
+            uiStarDetail._OnUpdate();
+            uiStarDetail.RefreshDynamicProperties();
         }
 
-        public static void OnStarClick(UIVirtualStarmap starmap, int starIndex)
+        private static void OnStarClick(UIVirtualStarmap starmap, int starIndex)
         {
             viewStar = starmap.starPool[starIndex].starData;
             var star = GS2.GetGSStar(viewStar);
-            GS2.Warn("Clicked Star");
+            // GS2.Warn("Clicked Star");
             if (star.Decorative)
             {
                 var primaryStar = GS2.GetBinaryStarHost(star);
@@ -364,70 +372,70 @@ namespace GalacticScale
                 }
             }
 
-            // UIRoot.instance.galaxySelect.resourceMultiplierSlider.gameObject.SetActive(false);
+            // UIRoot.instance.galaxySelect.resourceMultiplierSlider.galaxySelectRightGroup.SetActive(false);
             ClearStarmap(starmap);
-            GS2.Warn($"OnStarClick {viewStar.name}");
+            // GS2.Warn($"OnStarClick {viewStar.name}");
             HideStarCount();
             ShowSolarSystem(starmap, starIndex);
         }
 
-        public static void OnStarRightClick(UIVirtualStarmap starmap, int starIndex)
+        private static void OnStarRightClick(UIVirtualStarmap starmap, int starIndex)
         {
             if (!GS2.GetGSStar(starmap.starPool[starIndex].starData).Decorative)
                 if (GS2.ActiveGenerator.Config.enableStarSelector)
                     RegenerateGalaxyWithNewBirthStar(starmap, starmap.starPool[starIndex].starData);
         }
 
-        public static void RegenerateGalaxyWithNewBirthStar(UIVirtualStarmap starmap, StarData starData)
+        private static void RegenerateGalaxyWithNewBirthStar(UIVirtualStarmap starmap, StarData starData)
         {
-            GS2.Warn($"Regenerating galaxy with new birthstar:{starData.name} id:{starData.id} index:{starData.index}");
+            GS2.Log($"Regenerating galaxy with new birthstar:{starData.name} id:{starData.id} index:{starData.index}");
             GS2.ActiveGenerator.Generate(GSSettings.StarCount, starData);
             starmap.galaxyData = GS2.ProcessGalaxy(GS2.gameDesc, true);
             starmap.OnGalaxyDataReset();
         }
 
-        public static void OnSolarSystemPlanetClick(UIVirtualStarmap starmap, int clickIndex)
+        private static void OnSolarSystemPlanetClick(int clickIndex)
         {
             var planetIndex = clickIndex - 1;
-            GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
+            GS2.Log($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
             var pData = viewStar?.planets[planetIndex];
-            GS2.Warn("C");
+            // GS2.Warn("C");
             if (pData == null) return;
-            GS2.Warn($"{pData.name}");
+            GS2.Log($"{pData.name}");
             HideStarDetail();
             HideStarCount();
             if (!pData.calculated) pData.RunCalculateThread();
             ShowPlanetDetail(pData);
-            GS2.Warn($"calculated:{pData.calculated} calculating:{pData.calculating}");
+            GS2.Log($"calculated:{pData.calculated} calculating:{pData.calculating}");
         }
 
-        public static void OnSolarSystemPlanetRightClick(UIVirtualStarmap starmap, int clickIndex)
+        private static void OnSolarSystemPlanetRightClick(UIVirtualStarmap starmap, int clickIndex)
         {
             var planetIndex = clickIndex - 1;
-            GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
+            // GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
             var pData = viewStar?.planets[planetIndex];
-            GS2.Warn("C");
+            // GS2.Warn("C");
             if (pData == null) return;
-            GS2.Warn($"Setting new Star as BirthStar and Planet as {pData.name}");
+            GS2.Log($"Setting new Star as BirthStar and Planet as {pData.name}");
             if (pData.star.id != starmap.galaxyData.birthStarId || pData.id != starmap.galaxyData.birthPlanetId)
             {
-                GS2.Warn($"---- Original birthPlanetID:{starmap.galaxyData.birthPlanetId} {starmap.galaxyData.PlanetById(starmap.galaxyData.birthPlanetId)}");
+                GS2.Log($"---- Original birthPlanetID:{starmap.galaxyData.birthPlanetId} {starmap.galaxyData.PlanetById(starmap.galaxyData.birthPlanetId)}");
                 starmap.galaxyData.birthStarId = viewStar.id;
                 starmap.galaxyData.birthPlanetId = pData.id;
                 GSSettings.BirthPlanetName = pData.name;
-                GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
+                // GS2.Log($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
                 GSSettings.BirthPlanetId = pData.id;
-                GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
+                // GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} {GSSettings.BirthPlanet.Name} should be {pData.id} {pData.name}");
                 // GSSettings.BirthPlanet = GS2.GetGSPlanet(pData);
                 GSSettings.Instance.imported = true;
                 GS2.galaxy.birthStarId = viewStar.id;
                 GS2.galaxy.birthPlanetId = pData.id;
                 GameMain.galaxy.birthPlanetId = pData.id;
                 GameMain.galaxy.birthStarId = viewStar.id;
-                GS2.Warn($"GameMain.galaxy.birthPlanetID:{GameMain.galaxy.birthPlanetId} should be {pData.id}");
+                // GS2.Warn($"GameMain.galaxy.birthPlanetID:{GameMain.galaxy.birthPlanetId} should be {pData.id}");
                 GameMain.data.galaxy.birthPlanetId = pData.id;
                 GameMain.data.galaxy.birthStarId = viewStar.id;
-                GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
+                // GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
                 var text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
                 text.text = $"Start Game at {pData.displayName}";
                 text.horizontalOverflow = HorizontalWrapMode.Overflow;
@@ -443,21 +451,21 @@ namespace GalacticScale
 
         public static void ShowStarCount()
         {
-            GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group").SetActive(true);
-            GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/top-title").SetActive(true);
+            galaxySelectRightGroup.SetActive(true);
+            galaxySelectTopTitle.SetActive(true);
             UIRoot.instance.galaxySelect.propertyMultiplierText.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.addrText.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.seedInput.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.sandboxToggle.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.starCountSlider.transform.parent.gameObject.SetActive(true);
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(true);
-            // UIRoot.instance.galaxySelect.starCountText .gameObject.SetActive(true);
-            // UIRoot.instance.galaxySelect.resourceMultiplierText.gameObject.SetActive(true);
+            // UIRoot.instance.galaxySelect.starCountText .galaxySelectRightGroup.SetActive(true);
+            // UIRoot.instance.galaxySelect.resourceMultiplierText.galaxySelectRightGroup.SetActive(true);
         }
 
-        public static void ShowStarMap(UIVirtualStarmap starmap)
+        private static void ShowStarMap(UIVirtualStarmap starmap)
         {
-            GS2.Warn("Reverting to galaxy view");
+            // GS2.Warn("Reverting to galaxy view");
             inSystemDisplay = false;
             viewStar = null;
             starmap.clickText = "";
@@ -469,14 +477,14 @@ namespace GalacticScale
             OnGalaxyDataResetPostFix(starmap);
         }
 
-        public static string StripStarFromDisplayType(string input)
+        private static string StripStarFromDisplayType(string input)
         {
             var exploded = input.Split(' ').ToList();
             exploded.Remove("Star");
             return string.Join(" ", exploded.ToArray());
         }
 
-        public static void OnGalaxyDataResetPostFix(UIVirtualStarmap __instance)
+        private static void OnGalaxyDataResetPostFix(UIVirtualStarmap __instance)
         {
             foreach (var s in __instance.starPool)
             {
@@ -493,14 +501,14 @@ namespace GalacticScale
             }
         }
 
-        public static void ShowSolarSystem(UIVirtualStarmap starmap, int starIndex)
+        private static void ShowSolarSystem(UIVirtualStarmap starmap, int starIndex)
         {
             ClearStarmap(starmap);
             inSystemDisplay = true;
-            GS2.Warn("ShowSolarSystem");
+            // GS2.Warn("ShowSolarSystem");
             // start planet compute thread if not done already
             // Modeler.shouldAbort = false;
-     //       PlanetModelingManager.StartPlanetComputeThread();
+            //       PlanetModelingManager.StartPlanetComputeThread();
             // await Modeler.RestartPlanetCalcThread();
             // add star
             var starData = starmap._galaxyData.StarById(starIndex + 1); // because StarById() decrements by 1
@@ -509,7 +517,7 @@ namespace GalacticScale
             var starScale = starmap.starPool[0].starData.radius / 40f * GS2.Config.VirtualStarmapStarScaleFactor; //This is RadiusAU
             // var starScale = starmap.starPool[0].starData.radius * GS2.Config.VirtualStarmapStarScaleFactor;
 
-            GS2.Warn($"Scale : {starScale} Radius:{starmap.starPool[0].starData.radius} OrigScale:{starmap.starPool[0].pointRenderer.transform.localScale}");
+            // GS2.Warn($"Scale : {starScale} Radius:{starmap.starPool[0].starData.radius} OrigScale:{starmap.starPool[0].pointRenderer.transform.localScale}");
             starmap.starPool[0].pointRenderer.transform.localScale = new Vector3(starScale, starScale, starScale);
             //starmap.clickText = starData.id.ToString();
             //Debug.Log("Setting it to " + starmap.clickText + " " + starData.id);
@@ -518,7 +526,6 @@ namespace GalacticScale
             {
                 // add planets
                 var pData = starData.planets[i];
-                var color = starmap.neutronStarColor;
 
                 var isMoon = false;
 
@@ -528,9 +535,11 @@ namespace GalacticScale
                 //if (!pData.loaded) PlanetModelingManager.RequestLoadPlanet(pData);
                 // GS2.Warn("ShowSolarSystem3");
                 // create fake StarData to pass _OnLateUpdate()
-                var dummyStarData = new StarData();
-                dummyStarData.age = -1;
-                dummyStarData.position = pPos;
+                var dummyStarData = new StarData
+                {
+                    age = -1,
+                    position = pPos
+                };
                 var gsPlanet = GS2.GetGSPlanet(pData);
                 var gsTheme = gsPlanet.GsTheme;
                 var orbitColor = PlanetTemperatureToStarColor(gsTheme.Temperature);
@@ -552,11 +561,13 @@ namespace GalacticScale
                 // GS2.Warn($"Pool Length: {i + 1} / {starmap.starPool.Count}");
                 while (starmap.starPool.Count <= i + 1)
                 {
-                    var starNode2 = new UIVirtualStarmap.StarNode();
-                    starNode2.active = false;
-                    starNode2.starData = null;
-                    starNode2.pointRenderer = Object.Instantiate(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent);
-                    starNode2.nameText = Object.Instantiate(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent);
+                    var starNode2 = new UIVirtualStarmap.StarNode
+                    {
+                        active = false,
+                        starData = null,
+                        pointRenderer = Object.Instantiate(starmap.starPointPrefab, starmap.starPointPrefab.transform.parent),
+                        nameText = Object.Instantiate(starmap.nameTextPrefab, starmap.nameTextPrefab.transform.parent)
+                    };
                     starmap.starPool.Add(starNode2);
                 }
 
@@ -565,7 +576,7 @@ namespace GalacticScale
                 // GS2.Warn("ShowSolarSystem4a");
 
                 starmap.starPool[i + 1].starData = dummyStarData;
-                starmap.starPool[i + 1].pointRenderer.material.SetColor("_TintColor", planetColor);
+                starmap.starPool[i + 1].pointRenderer.material.SetColor(TintColor, planetColor);
                 starmap.starPool[i + 1].pointRenderer.transform.localPosition = pPos;
                 starmap.starPool[i + 1].pointRenderer.transform.localScale = planetScale;
                 starmap.starPool[i + 1].pointRenderer.gameObject.SetActive(true);
@@ -591,8 +602,8 @@ namespace GalacticScale
 
                 //if (starmap.connPool.Count -1 >= i) {
                 starmap.connPool[i].active = true;
-                starmap.connPool[i].lineRenderer.material.SetColor("_LineColorA", Color.Lerp(starmap.starColors.Evaluate(orbitColor), Color.white, 0.65f));
-                starmap.connPool[i].lineRenderer.material.SetColor("_LineColorB", Color.Lerp(starmap.starColors.Evaluate(orbitColor), Color.white, 0.25f));
+                starmap.connPool[i].lineRenderer.material.SetColor(LineColorA, Color.Lerp(starmap.starColors.Evaluate(orbitColor), Color.white, 0.65f));
+                starmap.connPool[i].lineRenderer.material.SetColor(LineColorB, Color.Lerp(starmap.starColors.Evaluate(orbitColor), Color.white, 0.25f));
                 if (starmap.connPool[i].lineRenderer.positionCount != 61) starmap.connPool[i].lineRenderer.positionCount = 61;
 
                 //}
@@ -602,11 +613,7 @@ namespace GalacticScale
                     // GS2.Warn("ShowSolarSystem7");
                     var f = j * 0.017453292f * 6f; // ty dsp devs :D
                     Vector3 cPos = GetCenterOfOrbit(starData, pData, ref isMoon);
-                    Vector3 position;
-                    if (isMoon)
-                        position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.z);
-                    else
-                        position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.z);
+                    var position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.z);
 
                     // GS2.Warn("ShowSolarSystem7a");
 
@@ -708,7 +715,7 @@ namespace GalacticScale
             }
 
 
-            if (starData.index == (customBirthStar != -1 ? customBirthStar - 1 : starmap._galaxyData.birthStarId - 1)) text = "即将登陆".Translate() + "\r\n" + text;
+            if (starData.index == (CustomBirthStar != -1 ? CustomBirthStar - 1 : starmap._galaxyData.birthStarId - 1)) text = "即将登陆".Translate() + "\r\n" + text;
             if (!string.IsNullOrEmpty(gsStar.BinaryCompanion))
             {
                 var bc = GS2.GetGSStar(gsStar.BinaryCompanion);
@@ -717,7 +724,7 @@ namespace GalacticScale
 
             starmap.starPool[0].active = true;
             starmap.starPool[0].starData = starData;
-            starmap.starPool[0].pointRenderer.material.SetColor("_TintColor", color);
+            starmap.starPool[0].pointRenderer.material.SetColor(TintColor, color);
             starmap.starPool[0].pointRenderer.transform.localPosition = starData.position;
             if (decorative) starmap.starPool[0].pointRenderer.transform.localPosition = starData.position + VectorLF3.one;
             starmap.starPool[0].pointRenderer.transform.localScale = Vector3.one * num2 * 2;
@@ -731,7 +738,7 @@ namespace GalacticScale
             starmap.starPool[0].nameText.gameObject.SetActive(true);
         }
 
-        public static void ClearStarmap(UIVirtualStarmap starmap)
+        private static void ClearStarmap(UIVirtualStarmap starmap)
         {
             // GS2.Warn("ClearStarmap");
 
@@ -767,18 +774,18 @@ namespace GalacticScale
 
         public static void InitHelpText(UIGalaxySelect __instance)
         {
-            var g = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/");
-            var tt = g.GetComponentInChildren<Text>();
-            if (g.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(g.GetComponentInChildren<Localizer>());
-            tt.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
-            tt.alignment = TextAnchor.LowerLeft;
-            g.SetActive(true);
-            var r = g.GetComponent<RectTransform>();
-            r.anchorMax = r.anchorMin = r.pivot = Vector2.zero;
-            r.offsetMin = new Vector2(0, 1);
-            r.offsetMax = new Vector2(300, 20);
-            r.anchoredPosition = new Vector2(0, 80);
-            r.sizeDelta = new Vector2(300, 300);
+            var leftGroup = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/");
+            var helpText = leftGroup.GetComponentInChildren<Text>();
+            if (leftGroup.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(leftGroup.GetComponentInChildren<Localizer>());
+            helpText.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
+            helpText.alignment = TextAnchor.LowerLeft;
+            leftGroup.SetActive(true);
+            var leftGroupRect = leftGroup.GetComponent<RectTransform>();
+            leftGroupRect.anchorMax = leftGroupRect.anchorMin = leftGroupRect.pivot = Vector2.zero;
+            leftGroupRect.offsetMin = new Vector2(0, 1);
+            leftGroupRect.offsetMax = new Vector2(300, 20);
+            leftGroupRect.anchoredPosition = new Vector2(0, 80);
+            leftGroupRect.sizeDelta = new Vector2(300, 300);
         }
     }
 }

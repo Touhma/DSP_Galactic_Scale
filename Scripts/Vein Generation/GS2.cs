@@ -30,7 +30,7 @@ namespace GalacticScale
 
         private static void InitializeFromVeinSettings(GSPlanet gsPlanet)
         {
-            GS2.Warn($"Initializing Veins for Theme { gsPlanet.Theme}");
+            GS2.Log($"Initializing Veins for Theme { gsPlanet.Theme}");
             // GS2.WarnJson(gsPlanet?.veinSettings);
             if (gsPlanet?.veinSettings == null)
             {
