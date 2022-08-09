@@ -8,7 +8,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetModelingManager), "Algorithm")]
         public static bool Algorithm(PlanetData planet, ref PlanetAlgorithm __result)
         {
-            GS2.Log($"Start {SystemDisplay.inGalaxySelect}");
+            GS2.Log($"Starting. InGalaxySelect:{SystemDisplay.inGalaxySelect}. Called by {GS2.GetCaller(1)}");
             if (DSPGame.IsMenuDemo && !SystemDisplay.inGalaxySelect)
             {
                 GS2.Log("Menu");

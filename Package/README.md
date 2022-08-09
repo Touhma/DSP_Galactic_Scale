@@ -2,6 +2,9 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.7.12 - Additional monitoring component null reference avoidance
+- Version 2.7.11 - Fix very rare bug with monitoring component trying to use a speaker that doesn't exist in the pool. *shrug*
+- Version 2.7.10 - Hopefully fix Nebula compatibility
 - Version 2.7.9 - Fix no rares in starting system, and pregame system viewer improvements.
 - Version 2.7.8 - Fix strange mod conflict caused by debug logging
 - Version 2.7.7 - Another attempt to fix issues loading saves

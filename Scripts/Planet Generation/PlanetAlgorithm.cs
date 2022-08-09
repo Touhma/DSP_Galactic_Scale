@@ -60,7 +60,7 @@
                 //         if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
                 //     };
                 // else
-                GS2.Warn($"Selecting vein algo {gsTheme.VeinSettings.Algorithm} for {gsPlanet.Name}");
+                GS2.Log($"Selecting vein algo {gsTheme.VeinSettings.Algorithm} for {gsPlanet.Name}");
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsPlanet.veinSettings.Algorithm);
             }
 

@@ -52,6 +52,7 @@ namespace GalacticScale
             Debug.Log("Start Clicked");
             Modeler.Reset();
             inGalaxySelect = false;
+            Debug.Log($"Waiting for modeler to reset...{Modeler.processing.Count}");
             Bootstrap.WaitUntil(() => Modeler.Idle, () => PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc));
         }
 

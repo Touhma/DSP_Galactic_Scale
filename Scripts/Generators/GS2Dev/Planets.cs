@@ -28,7 +28,7 @@ namespace GalacticScale.Generators
                             case EVeinType.Fractal:
                             case EVeinType.Grat:
                             case EVeinType.Mag:
-                                GS2.Warn($"RemoveRares Removing {v.type} from {p.Name}");
+                                GS2.Log($"RemoveRares Removing {v.type} from {p.Name}");
                                 v.veins = new List<GSVein>();
                                 
                                     // GS2.LogJson(v);
