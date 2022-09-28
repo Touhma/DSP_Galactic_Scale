@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.7.12"
-description = "v2.7.12 Fix another issue with MonitorComponent. Whatever that is"
+versionNumber = "2.8.0"
+description = "v2.8.0 Update for new DSP Patch. Implemented starfish's warning system fix. (Thanks!)"
 websiteUrl = "https://github.com/innominata/GalacticScale3"
 containsNsfwContent = false
 

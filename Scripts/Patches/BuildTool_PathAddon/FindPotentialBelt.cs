@@ -7,8 +7,8 @@ namespace GalacticScale
     public static partial class PatchOnBuildTool_PathAddon
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(BuildTool_PathAddon), nameof(BuildTool_PathAddon.FindPotentialBelt))]
-        private static bool FindPotentialBelt(BuildTool_PathAddon __instance)
+        [HarmonyPatch(typeof(BuildTool_Addon), nameof(BuildTool_Addon.FindPotentialBelt))]
+        private static bool FindPotentialBelt(BuildTool_Addon __instance)
         {
             Array.Clear(__instance.potentialBeltObjIdArray, 0, __instance.potentialBeltObjIdArray.Length);
             Array.Clear(__instance.addonAreaBeltObjIdArray, 0, __instance.addonAreaBeltObjIdArray.Length);
