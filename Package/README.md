@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.8.1 - Fix Logistic Bot Speed. For games created on 2.8.0 a button is added under Settings/GalacticScale/Debug that should fix the issue.
 - Version 2.8.0 - Update for new DSP Version. Implemented starfish's warning system fix.
 - Version 2.7.12 - Additional monitoring component null reference avoidance
 - Version 2.7.11 - Fix very rare bug with monitoring component trying to use a speaker that doesn't exist in the pool. *shrug*

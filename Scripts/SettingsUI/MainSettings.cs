@@ -180,6 +180,48 @@ namespace GalacticScale
             //     GS2.WarnJson(GSSettings.ThemeLibrary.Select(p=>p.Key).ToList());
             // }));
             DebugOptions.Add(GSUI.Spacer());
+            DebugOptions.Add(GSUI.Button("Reset Logistic Bot Speed", "Reset",
+                (_) =>
+                {
+                    GameMain.data.history.logisticCourierSpeed = Configs.freeMode.logisticCourierSpeed;
+                    GameMain.data.history.logisticCourierSpeedScale = 1f;
+                    GameMain.data.history.logisticCourierCarries = Configs.freeMode.logisticCourierCarries;
+                    GameMain.data.history.dispenserDeliveryMaxAngle = Configs.freeMode.dispenserDeliveryMaxAngle;
+                    if (GameMain.data.history.techStates[3401].unlocked)
+                    {
+                        GameMain.data.history.logisticCourierSpeedScale += 0.1f;
+                    }
+                    if (GameMain.data.history.techStates[3402].unlocked)
+                    {
+                        GameMain.data.history.logisticCourierSpeedScale += 0.1f;
+                    }
+                    if (GameMain.data.history.techStates[3403].unlocked)
+                    {
+                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
+                    }
+                    if (GameMain.data.history.techStates[3404].unlocked)
+                    {
+                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
+                    }
+                    if (GameMain.data.history.techStates[3405].unlocked)
+                    {
+                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
+                    }
+                    if (GameMain.data.history.techStates[3406].unlocked)
+                    {
+                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
+                    }
+                    GameMain.data.history.logisticCourierSpeedScale += 0.2f * (float)(GameMain.data.history.techStates[3407].curLevel - 7);
+                    for (int num12 = 3501; num12 <= 3507; num12++)
+                    {
+                        if (GameMain.data.history.techStates[num12].unlocked)
+                        {
+                            GameMain.data.history.logisticCourierCarries++;
+                        }
+                    }
+                }, null, "Fix games created on 2.8.0"));
+        
+            
             Options.Add(GSUI.Group("Debug Options".Translate(), DebugOptions, "Useful for testing galaxies/themes".Translate()));
             Options.Add(GSUI.Spacer());
 

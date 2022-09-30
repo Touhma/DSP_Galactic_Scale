@@ -52,6 +52,10 @@ namespace GalacticScale
             __instance.logisticShipSpeedScale = 1f;
             __instance.logisticShipWarpDrive = Configs.freeMode.logisticShipWarpDrive;
             __instance.logisticShipCarries = Configs.freeMode.logisticShipCarries;
+            __instance.logisticCourierSpeed = Configs.freeMode.logisticCourierSpeed;//Added after 0.9.27 Update
+            __instance.logisticCourierSpeedScale = 1f;//Added after 0.9.27 Update
+            __instance.logisticCourierCarries = Configs.freeMode.logisticCourierCarries;//Added after 0.9.27 Update
+            __instance.dispenserDeliveryMaxAngle = Configs.freeMode.dispenserDeliveryMaxAngle;//Added after 0.9.27 Update
             __instance.miningCostRate = Configs.freeMode.miningCostRate;
             __instance.miningSpeedScale = Configs.freeMode.miningSpeedScale;
             __instance.storageLevel = 2;
@@ -64,6 +68,7 @@ namespace GalacticScale
             __instance.remoteStationExtraStorage = 0;
             __instance.localStationExtraStorage = 0;
             __instance.propertyData.Clear(); //Added after 0.9.25 update
+            __instance.createWithSandboxMode = __instance.gameData.gameDesc.isSandboxMode; //Added after 0.9.27 Update
             return false;
         }
     }
