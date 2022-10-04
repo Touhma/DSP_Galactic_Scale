@@ -153,21 +153,19 @@ namespace GalacticScale
                 ["RedStoneTree5"] = 114,
                 ["RedStoneTree6"] = 115,
                 ["RedStoneTree7"] = 116,
-
                 ["JungleTree1"] = 121,
                 ["JungleTree2"] = 122,
-                ["JungleTree3"] = 123,
+                // ["JungleTree3"] = 123,
+                ["JungleTree3"] = 122,
                 ["JungleTree4"] = 124,
                 ["JungleTree5"] = 125,
                 ["JungleTree6"] = 126,
-
                 ["WhiteTree1"] = 131,
                 ["WhiteTree2"] = 132,
                 ["WhiteTree3"] = 133,
                 ["WhiteTree4"] = 134,
                 ["WhiteTree5"] = 135,
                 ["WhiteTree6"] = 136,
-
                 ["PandoraTree1"] = 141,
                 ["PandoraTree2"] = 142,
                 ["PandoraTree3"] = 143,
@@ -179,7 +177,6 @@ namespace GalacticScale
                 ["PandoraTree9"] = 149,
                 ["PandoraTree10"] = 150,
                 ["PandoraTree11"] = 151,
-
                 ["PrairieDesertTree1"] = 161,
                 ["PrairieDesertTree2"] = 162,
                 ["PrairieDesertTree3"] = 163,
@@ -190,13 +187,11 @@ namespace GalacticScale
                 ["PrairieDesertTree8"] = 168,
                 ["PrairieDesertTree9"] = 169,
                 ["PrairieDesertTree10"] = 170,
-
                 ["MedStone1"] = 601,
                 ["MedStone2"] = 602,
                 ["MedStone3"] = 603,
                 ["MedStone4"] = 604,
                 ["MedStone5"] = 605,
-
                 ["DesertFragment1"] = 611,
                 ["DesertFragment2"] = 612,
                 ["DesertFragment3"] = 613,

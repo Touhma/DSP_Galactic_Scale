@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.8.1"
-description = "v2.8.1 Fix Logistics Bot Speed. Debug option to fix broken speed on existing games."
+versionNumber = "2.8.2"
+description = "v2.8.2 Small fix for missing Vegetation error."
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 
