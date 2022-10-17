@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.8.2"
-description = "v2.8.2 Small fix for missing Vegetation error."
+versionNumber = "2.8.4"
+description = "v2.8.4 Attempt at fixing mod compatibility. Reverts 2.8.3."
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 

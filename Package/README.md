@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.8.4 - Attempt at fixing mod compatibility.  Reverts 2.8.3.
 - Version 2.8.2 - Remove non existing vegetation "Jungle Tree 3"
 - Version 2.8.1 - Fix Logistic Bot Speed. For games created on 2.8.0 a button is added under Settings/GalacticScale/Debug that should fix the issue.
 - Version 2.8.0 - Update for new DSP Version. Implemented starfish's warning system fix.
