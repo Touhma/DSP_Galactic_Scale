@@ -59,8 +59,8 @@ namespace GalacticScale
                 var flag = GameMain.history.universeObserveLevel >= num;
                 if (__instance.calculated && flag)
                 {
-                    __instance.star.CalcVeinAmounts(ref __instance.veinAmounts);
-                    __instance.star.CalcVeinCounts(ref __instance.veinCounts);
+                    __instance.star.CalcVeinAmounts(ref __instance.veinAmounts, __instance.tmp_ids, __instance.uiGame.veinAmountDisplayFilter);
+                    __instance.star.CalcVeinCounts(ref __instance.veinCounts, __instance.tmp_ids, __instance.uiGame.veinAmountDisplayFilter);
                 }
 
                 if (!__instance.nameInput.isFocused) __instance.nameInput.text = __instance.star.displayName;

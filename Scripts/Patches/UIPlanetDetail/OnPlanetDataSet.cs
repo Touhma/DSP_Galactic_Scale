@@ -100,8 +100,8 @@ namespace GalacticScale
 
                     if (__instance.calculated && flag)
                     {
-                        __instance.planet.CalcVeinAmounts(ref __instance.veinAmounts);
-                        __instance.planet.CalcVeinCounts(ref __instance.veinCounts);
+                        __instance.planet.CalcVeinAmounts(ref __instance.veinAmounts, __instance.tmp_ids, __instance.uiGame.veinAmountDisplayFilter);
+                        __instance.planet.CalcVeinCounts(ref __instance.veinCounts, __instance.tmp_ids, __instance.uiGame.veinAmountDisplayFilter);
                     }
 
                     if (!__instance.nameInput.isFocused) __instance.nameInput.text = __instance.planet.displayName;
