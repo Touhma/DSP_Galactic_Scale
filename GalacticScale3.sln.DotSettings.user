@@ -1,4 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005Cassemblypublicizer_005Cpublicized_005Fassemblies_005CAssembly_002DCSharp_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CDyson_0020Sphere_0020Program_005CDSPGAME_005FData_005CManaged_005CAssembly_002DCSharp_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CDyson_0020Sphere_0020Program_005CDSPGAME_005FData_005CManaged_005CUnityEngine_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CDyson_0020Sphere_0020Program_005CDSPGAME_005FData_005CManaged_005CUnityEngine_002EUIModule_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CDyson_0020Sphere_0020Program_005CDSPGAME_005FData_005CManaged_005CUnityEngine_002EUI_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Users\inno\.nuget\packages\dysonsphereprogram.gamelibs\0.9.25.11989-r.0\lib\net45\Assembly-CSharp.dll" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\tony\.nuget\packages\unityengine.modules\2018.4.12" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\tony\.nuget\packages\unityengine.modules\2019.4.3" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\tony\.nuget\packages\unityengine.modules\2019.4.31" Loaded="True" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
