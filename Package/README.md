@@ -2,7 +2,9 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.8.7 - Incorporate 2.8.5 which was missed from .6
 - Version 2.8.6 - Update for DSP 0.9.27.14659
+- Version 2.8.5 - starfish's xgp fix
 - Version 2.8.4 - Attempt at fixing mod compatibility.  Reverts 2.8.3.
 - Version 2.8.2 - Remove non existing vegetation "Jungle Tree 3"
 - Version 2.8.1 - Fix Logistic Bot Speed. For games created on 2.8.0 a button is added under Settings/GalacticScale/Debug that should fix the issue.
