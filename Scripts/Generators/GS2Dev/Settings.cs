@@ -191,6 +191,8 @@ namespace GalacticScale.Generators
             preferences.Set("starSizeMulti", 10);
             preferences.Set("binaryChance", 0);
             preferences.Set("birthPlanetSize", 200);
+            preferences.Set("birthPlanetMoon", false);
+            preferences.Set("birthPlanetGasMoon", false);
             preferences.Set("birthPlanetUnlock", false);
             preferences.Set("birthPlanetSiTi", false);
             preferences.Set("noRaresStartingSystem", false);
@@ -363,6 +365,8 @@ namespace GalacticScale.Generators
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
+            UI.Add("birthPlanetMoon", bOptions.Add(GSUI.Checkbox("Birth Planet is a Moon", false, "birthPlanetMoon")));
+            UI.Add("birthPlanetGasMoon", bOptions.Add(GSUI.Checkbox("... of a Gas Giant", false, "birthPlanetGasMoon")));
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
             AddSpacer(bOptions);
             return bOptions;
