@@ -32,8 +32,10 @@ namespace GalacticScale
                 Object.Destroy(primitive.GetComponent<Collider>());
                 var component = primitive.GetComponent<Renderer>();
                 var atmosMaterial = __instance.planetData.atmosMaterial;
-                component.sharedMaterial = atmosMaterial;
+                var atmosMaterialLate = __instance.planetData.atmosMaterialLate;
+                component.sharedMaterials = new Material[2] {atmosMaterial, atmosMaterialLate};
                 __instance.atmoMat = atmosMaterial;
+                __instance.atmoMatLate = atmosMaterialLate;
                 component.shadowCastingMode = ShadowCastingMode.Off;
                 component.receiveShadows = false;
                 component.lightProbeUsage = LightProbeUsage.Off;

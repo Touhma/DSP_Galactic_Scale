@@ -147,6 +147,26 @@ namespace GalacticScale
             __instance.atmoMat.SetFloat("_SunRiseScatterPower", Mathf.Max(60f * __instance.planetData.GetScaleFactored(), (float)((magnitude - __instance.planetData.realRadius * 2.0) * 0.180000007152557)));
             __instance.atmoMat.SetFloat("_IntensityControl", num1);
             __instance.atmoMat.renderQueue = __instance.planetData != localPlanet ? 2989 : 2991;
+            __instance.atmoMatLate.SetVector("_PlanetPos", __instance.transform.localPosition);
+            __instance.atmoMatLate.SetVector("_SunDir", vector3_2);
+            __instance.atmoMatLate.SetVector("_PlanetRadius", vector4_3);
+            __instance.atmoMatLate.SetColor("_Color4", ___star.sunAtmosColor);
+            __instance.atmoMatLate.SetColor("_Sky4", ___star.sunriseAtmosColor);
+            __instance.atmoMatLate.SetVector("_LocalPos", vector4_2);
+            __instance.atmoMatLate.SetFloat("_SunRiseScatterPower", Mathf.Max(60f * __instance.planetData.GetScaleFactored(), (float)((magnitude - __instance.planetData.realRadius * 2.0) * 0.180000007152557)));
+            __instance.atmoMatLate.SetFloat("_IntensityControl", num1);
+            if (__instance.planetData == localPlanet)
+            {
+                __instance.atmoMatLate.renderQueue = 3100;
+                __instance.atmoMatLate.SetInt("_StencilRef", 2);
+                __instance.atmoMatLate.SetInt("_StencilComp", 3);
+            }
+            else
+            {
+                __instance.atmoMatLate.renderQueue = 2989;
+                __instance.atmoMatLate.SetInt("_StencilRef", 0);
+                __instance.atmoMatLate.SetInt("_StencilComp", 1);
+            }
 
             return false;
         }

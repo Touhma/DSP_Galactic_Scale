@@ -51,6 +51,7 @@ namespace GalacticScale
                 p.terrainMaterial = null;
                 p.oceanMaterial = null;
                 p.atmosMaterial = null;
+                p.atmosMaterialLate = null;
                 p.minimapMaterial = null;
                 GS2.SetPlanetTheme(p, gsPlanet);
                 GameMain.localStar.planets[p.index] = p;
