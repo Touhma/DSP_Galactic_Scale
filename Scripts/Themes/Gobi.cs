@@ -233,6 +233,8 @@ namespace GalacticScale
                     ["_SmoothnessTextureChannel"] = 0f,
                     ["_SpecularHighlights"] = 1f,
                     ["_SrcBlend"] = 1f,
+                    ["_StencilComp"] = 8f,
+                    ["_StencilRef"] = 0f,
                     ["_SunColorAdd"] = 5f,
                     ["_SunColorSkyUse"] = 0.05f,
                     ["_SunColorUse"] = 0.2f,
