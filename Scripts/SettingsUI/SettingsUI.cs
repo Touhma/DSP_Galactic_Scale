@@ -74,12 +74,26 @@ namespace GalacticScale
             var newTabTexts = __instance.tabTexts.AddToArray(galacticButton.GetComponentInChildren<Text>());
             __instance.tabTexts = newTabTexts;
 
+            //DSP expects the same number of tabButtons and revertButtons. Otherwise will throw an IndexOutOfRange exception on exit.
+            //See UIOptionWindow._OnRegEvent()
+            var revertButtons = __instance.revertButtons;
+            var revertButton = details.Find("revert-button").GetComponent<RectTransform>();
+            revertButton.gameObject.SetActive(false); // Revert function not implemented, so hide for now.
+            var newRevertButtons = revertButtons.AddToArray(revertButton.GetComponent<UIButton>());
+            __instance.revertButtons = newRevertButtons;
 
             var languageCombo = details.Find("language").GetComponent<RectTransform>();
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;
-            while (details.transform.childCount > 0)
-                Object.DestroyImmediate(details.transform.GetChild(0).gameObject);
+
+            //Remove everything except for the placeholder revert button
+            foreach (RectTransform child in details)
+            {
+                if (child != revertButton)
+                {
+                    Object.Destroy(child.gameObject);
+                }
+            }
 
             ImportCustomGeneratorOptions();
             CreateOptionsUI();
