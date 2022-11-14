@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale.Generators
@@ -19,25 +20,25 @@ namespace GalacticScale.Generators
 
                 var newTypes = new GSVeinTypes();
                 foreach (var v in p.veinSettings.VeinTypes)
+                {
+                    switch (v.type)
                     {
-                        switch (v.type)
-                        {
-                            case EVeinType.Bamboo:
-                            case EVeinType.Crysrub:
-                            case EVeinType.Diamond:
-                            case EVeinType.Fractal:
-                            case EVeinType.Grat:
-                            case EVeinType.Mag:
-                                GS2.Log($"RemoveRares Removing {v.type} from {p.Name}");
-                                v.veins = new List<GSVein>();
+                        case EVeinType.Bamboo:
+                        case EVeinType.Crysrub:
+                        case EVeinType.Diamond:
+                        case EVeinType.Fractal:
+                        case EVeinType.Grat:
+                        case EVeinType.Mag:
+                            GS2.Log($"RemoveRares Removing {v.type} from {p.Name}");
+                            v.veins = new List<GSVein>();
                                 
-                                    // GS2.LogJson(v);
+                            // GS2.LogJson(v);
                                 
-                                break;
-                            default: newTypes.Add(v);
-                                break;
-                        }
+                            break;
+                        default: newTypes.Add(v);
+                            break;
                     }
+                }
 
                 p.veinSettings.VeinTypes = newTypes;
 
@@ -82,112 +83,65 @@ namespace GalacticScale.Generators
             var subMoonChance = 0.0;
             if (preferences.GetBool("secondarySatellites"))
                 subMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
+            var moonBias = preferences.GetFloat("MoonBias", 50f);
             //moonChance = moonChance - subMoonChance;
 
-            var gasCount = Mathf.RoundToInt(starBodyCount * (float) gasChance);
-            
+            var isBirthStar = star == birthStar;
+            var startOnMoon = isBirthStar && preferences.GetBool("birthPlanetMoon", false);
+            var startIsMoonOfGas = isBirthStar && startOnMoon && preferences.GetBool("birthPlanetGasMoon", false);
+            var birthPlanetSize = preferences.GetInt("birthPlanetSize", 200);
 
-            var telluricCount = starBodyCount - gasCount;
-            
-            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount}");
-            if (telluricCount == 0 && star == birthStar)
-            {
-                telluricCount = 1;
-                gasCount--;
-            }
-if (gasCount == 0 && preferences.GetBool("birthPlanetMoon, false)") && preferences.GetBool("birthPlanetGasMoon")) gasCount++;
-if (telluricCount == 0 && gasCount == 0 && preferences.GetBool("birthPlanetMoon, false)") &&
-                                                                                                                                             !preferences.GetBool("birthPlanetGasMoon")) telluricCount++;
-            var moonCount = Mathf.RoundToInt(telluricCount * (float) moonChance);
-            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
-            telluricCount = telluricCount - moonCount;
-            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
-
-            if (telluricCount == 0 && star == birthStar)
-            {
-                telluricCount = 1;
-                moonCount--;
-            }
-
-            if (moonCount > 0 && gasCount == 0 && telluricCount == 0)
-            {
-                if (star == birthStar) telluricCount++;
-                else if (gasChance > 0) gasCount++;
-                else telluricCount++;
-                if (moonCount > 0) moonCount--;
-            }
-            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount}");
-
-            var secondaryMoonCount = Mathf.RoundToInt((moonCount - 1) * (float) subMoonChance);
+            var gasCount = Math.Max(startIsMoonOfGas ? 1 : 0, Mathf.RoundToInt(starBodyCount * (float)gasChance));
+            var telluricCount = Math.Max(isBirthStar ? 1 : 0, starBodyCount - gasCount);
+            var moonCount = Math.Max(startOnMoon ? 1 : 0, Mathf.RoundToInt(telluricCount * (float)moonChance));
+            telluricCount -= moonCount;
+            var secondaryMoonCount = moonCount > 1 ? Mathf.RoundToInt((moonCount - 1) * (float)subMoonChance) : 0;
             moonCount -= secondaryMoonCount;
-            // GS2.Log($"GasCount:{gasCount} TelluricCount:{telluricCount} MoonCount:{moonCount} SecondaryMoonCount:{secondaryMoonCount}");
-            // GS2.Log($"GasChance:{gasChance} TelluricChance:{1-gasChance} MoonChance:{moonChance} SecondaryMoonChance:{subMoonChance}");
 
-            var startOnMoon = preferences.GetBool("birthPlanetMoon", false);
+            var gasPlanets = new GSPlanets();
+            var telPlanets = new GSPlanets();
             var moons = new GSPlanets();
-            birthPlanet = new GSPlanet("BirthPlanet", "Mediterranean",
-                preferences.GetInt("birthPlanetSize", 200), -1, -1,
-                -1, -1, -1, -1, -1, -1, new GSPlanets());
 
-            if (star == birthStar && !startOnMoon)
-            {
-                birthPlanet = star.Planets.Add(birthPlanet);
-                GS2.Log($"Created Birth Planet in star {star.Name}: {birthPlanet}");
-            }
+            var radius = GetStarPlanetSize(star);
 
-            for (var i = star == birthStar ? 1 : 0; i < telluricCount; i++)
+            for (var i = 0; i < telluricCount - (isBirthStar && !startOnMoon ? 1 : 0); i++)
             {
-                var radius = GetStarPlanetSize(star);
                 var p = new GSPlanet("planet_" + i, "Barren", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
-                star.Planets.Add(p);
                 p.genData.Add("hosttype", "star");
                 p.genData.Add("hostname", star.Name);
+                telPlanets.Add(p);
             }
 
             for (var i = 0; i < gasCount; i++)
             {
-                var radius = GetStarPlanetSize(star);
                 var p = new GSPlanet("planet_" + i, "Gas", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                 if (!preferences.GetBool("hugeGasGiants", true)) p.Radius = 80;
                 p.Scale = 10f;
-                star.Planets.Add(p);
                 p.genData.Add("hosttype", "star");
                 p.genData.Add("hostname", star.Name);
+                gasPlanets.Add(p);
             }
-            var gasPlanets = new GSPlanets();
-            var telPlanets = new GSPlanets();
-            foreach (var p in star.Planets)
-                if (p.Scale == 10f) gasPlanets.Add(p);
-                else telPlanets.Add(p);
-            // GS2.Log($"StarPlanetCount:{star.Planets.Count} BirthStar?:{star == birthStar}");
-            var startIsMoonOfGas = preferences.GetBool("birthPlanetGasMoon", false);
-            if (startOnMoon && startIsMoonOfGas) random.Item(gasPlanets).Moons.Add(birthPlanet);
-            else if (startOnMoon && !startIsMoonOfGas) random.Item(telPlanets).Moons.Add(birthPlanet);
-            for (var i = startOnMoon ? 1 : 0; i < moonCount; i++)
+
+            for (var i = 0; i < moonCount - (isBirthStar && startOnMoon ? 1 : 0); i++)
             {
                 GSPlanet randomPlanet;
+                var hostGas = random.NextPick(moonBias / 100f);
 
-                if (gasPlanets.Count > 0 && random.NextPick(preferences.GetFloat("MoonBias", 50f) / 100f))
+                if (gasPlanets.Count > 0 && hostGas)
                 {
                     randomPlanet = random.Item(gasPlanets);
                 }
-                else if (telPlanets.Count > 0)
+                else //if (telPlanets.Count > 0)
                 {
                     randomPlanet = random.Item(telPlanets);
                 }
-                else
-                {
-                    GS2.Log($"{star.Planets.Count}...");
-                    randomPlanet = random.Item(star.Planets);
-                }
 
-                var moon = new GSPlanet("Moon " + i, "Barren",
-                    GetStarMoonSize(star, randomPlanet.Radius, randomPlanet.Scale == 10f), -1, -1, -1, -1, -1, -1, -1,
-                    -1, new GSPlanets());
+                var moon = new GSPlanet("Moon " + i, "Barren", GetStarMoonSize(star, randomPlanet.Radius, hostGas), -1,
+                    -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                 randomPlanet.Moons.Add(moon);
-                moons.Add(moon);
                 moon.genData.Add("hosttype", "planet");
                 moon.genData.Add("hostname", randomPlanet.Name);
+                moons.Add(moon);
                 // GS2.Log($"Added {moon} to {randomPlanet}");
             }
 
@@ -195,12 +149,42 @@ if (telluricCount == 0 && gasCount == 0 && preferences.GetBool("birthPlanetMoon,
             {
                 var randomMoon = random.Item(moons);
                 var mm = new GSPlanet("MoonMoon" + i, "Barren", GetStarMoonSize(star, randomMoon.Radius, false), -1, -1,
-                    -1, -1, -1, -1, -1, -1); // {radius = GetStarMoonSize(star, randomMoon.radius, false)});
-                randomMoon.Moons.Add(mm);
+                    -1, -1, -1, -1, -1, -1);
                 mm.genData.Add("hosttype", "moon");
                 mm.genData.Add("hostname", randomMoon.Name);
+                randomMoon.Moons.Add(mm);
                 // GS2.Log($"Added {mm} {mm.Radius} to {randomMoon.Name}");
             }
+
+            if (isBirthStar)
+            {
+                birthPlanet = new GSPlanet("BirthPlanet", "Mediterranean", birthPlanetSize, -1, -1, -1, -1, -1, -1, -1,
+                    -1, new GSPlanets());
+                if (startIsMoonOfGas)
+                {
+                    random.Item(gasPlanets).Moons.Add(birthPlanet);
+                }
+                else if (startOnMoon)
+                {
+                    random.Item(telPlanets).Moons.Add(birthPlanet);
+                }
+                else
+                {
+                    telPlanets.Add(birthPlanet);
+                }
+                
+                GS2.Log($"Created Birth Planet in star {star.Name}: {birthPlanet}");
+            }
+
+            foreach (var p in telPlanets)
+                star.Planets.Add(p);
+
+            foreach (var p in gasPlanets)
+                star.Planets.Add(p);
+
+
+
+
 
 
             // GS2.WarnJson((from s in star.Planets select s.Name).ToList());
