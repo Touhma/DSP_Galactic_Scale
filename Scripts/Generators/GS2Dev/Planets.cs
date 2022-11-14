@@ -102,10 +102,9 @@ namespace GalacticScale.Generators
             var telPlanets = new GSPlanets();
             var moons = new GSPlanets();
 
-            var radius = GetStarPlanetSize(star);
-
             for (var i = 0; i < telluricCount - (isBirthStar && !startOnMoon ? 1 : 0); i++)
             {
+                var radius = GetStarPlanetSize(star);
                 var p = new GSPlanet("planet_" + i, "Barren", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                 p.genData.Add("hosttype", "star");
                 p.genData.Add("hostname", star.Name);
@@ -114,6 +113,7 @@ namespace GalacticScale.Generators
 
             for (var i = 0; i < gasCount; i++)
             {
+                var radius = GetStarPlanetSize(star);
                 var p = new GSPlanet("planet_" + i, "Gas", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                 if (!preferences.GetBool("hugeGasGiants", true)) p.Radius = 80;
                 p.Scale = 10f;
