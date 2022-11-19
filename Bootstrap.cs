@@ -112,6 +112,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnUIStarDetail));
                 harmony.PatchAll(typeof(PatchOnUIStarmap));
                 harmony.PatchAll(typeof(PatchOnUIStarmapPlanet));
+                harmony.PatchAll(typeof(PatchOnUIStarmapStar));
                 harmony.PatchAll(typeof(PatchOnUITutorialTip));
                 harmony.PatchAll(typeof(PatchOnUIVeinDetail));
                 harmony.PatchAll(typeof(PatchOnUIVersionText));
