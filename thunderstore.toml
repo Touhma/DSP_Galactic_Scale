@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.8.8"
-description = "v2.8.8 GSGen Moon Start"
+versionNumber = "2.9.0"
+description = "v2.9.0 Bugfixes. Thanks karki"
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 
