@@ -14,12 +14,12 @@ namespace GalacticScale
         [HarmonyPatch(typeof(FactoryModel), "InitCollectorMaterial")]
         public static void AdjustMk2MiningEffect(ref FactoryModel __instance)
         {
+            if (GS2.Vanilla) return;
+
             const float standardRadius = 200f;
             const float standardPlanetCurveOffset = 0.3f;
 
             var realRadius = __instance.planet.realRadius;
-            if (realRadius == standardRadius) return;
-
             var adjustVertexY = realRadius - standardRadius;
 
             // veins at the far end of the miner are lower due to the curve of the planet. Adjust this offset a bit so the effect appears closer to where it should.
