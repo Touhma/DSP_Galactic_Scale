@@ -196,6 +196,7 @@ namespace GalacticScale
             // Warn("Step8");
             UpdateNebulaSettings();
             // Warn("Step9");
+            Utils.InitMk2MinerEffectVertices();
         }
     }
 }
