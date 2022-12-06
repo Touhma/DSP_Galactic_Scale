@@ -63,6 +63,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnBuildTool_Path));
                 harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
                 harmony.PatchAll(typeof(PatchOnFactoryModel));
+                harmony.PatchAll(typeof(PatchOnGalaxyData));
                 harmony.PatchAll(typeof(PatchOnGameAbnormalityData));
                 harmony.PatchAll(typeof(PatchOnGameAchievementData));
                 harmony.PatchAll(typeof(PatchOnGameData));
