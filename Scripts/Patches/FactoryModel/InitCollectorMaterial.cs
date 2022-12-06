@@ -12,7 +12,7 @@ namespace GalacticScale
         /// <param name="__instance"></param>
         [HarmonyPrefix]
         [HarmonyPatch(typeof(FactoryModel), "InitCollectorMaterial")]
-        public static void AdjustMk2MiningEffect(ref FactoryModel __instance)
+        public static void InitCollectorMaterial(ref FactoryModel __instance)
         {
             if (GS2.Vanilla) return;
 

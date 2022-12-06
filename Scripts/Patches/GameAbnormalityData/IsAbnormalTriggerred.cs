@@ -7,7 +7,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GameAbnormalityData_0925), "IsAbnormalTriggerred")]
-        public static bool IsAbnormalityTriggered(ref bool __result)
+        public static bool IsAbnormalTriggerred(ref bool __result)
         {
             __result = false;
             return false;
