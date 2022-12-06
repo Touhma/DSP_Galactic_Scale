@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.10.1 - karki multithreaded some star stuff and got speed improvements! :D
 - Version 2.10 - karki fixed Mk2 Miner Graphical Error, Sped up Starmap :D Thanks!
 - Version 2.9 - karki fixed birth planet generation and an error on exit. Thanks!
 - Version 2.8.8 - Added ability to begin on a moon to GS Generator Settings
