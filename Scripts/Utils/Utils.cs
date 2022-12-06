@@ -13,6 +13,8 @@ namespace GalacticScale
 {
     public static class Utils
     {
+        private static Vector3[][] originalMk2MinerEffectVertices;
+
         public static string Serialize(object value, bool pretty = true)
         {
             var serializer = new fsSerializer();
@@ -633,6 +635,58 @@ namespace GalacticScale
                 lines.Add("}");
                 File.WriteAllLines(Path.Combine(GS2.DataDir, $"{themeName}.cs"), lines);
             }
+        }
+
+        public static void InitMk2MinerEffectVertices()
+        {
+            // Save the initial values of the Advanced miner effect mesh, so that it can be adjusted on each planet load.
+            // Could undo changes when leaving a planet instead of saving, but seems error-prone. (float precision, etc)
+            if (originalMk2MinerEffectVertices != null)
+            {
+                GS2.Error("Tried to save Advanced Miner effect vertices again after they had already been saved. This should only be called once.");
+                return;
+            }
+            // Model ID of the mining effect is 59
+            var prefabDesc = LDB.models.Select(59).prefabDesc;
+            originalMk2MinerEffectVertices = new Vector3[prefabDesc.lodCount][];
+            // Only one LOD mesh as of 0.9.27, but why not future proof.
+            for (var i = 0; i < prefabDesc.lodCount; i++)
+            {
+                var mesh = prefabDesc.lodMeshes[i];
+                originalMk2MinerEffectVertices[i] = mesh.vertices;
+            }
+        }
+
+        public static bool AdjustMk2MinerEffectVertices(float adjustVertexY)
+        {
+            if (originalMk2MinerEffectVertices == null)
+            {
+                GS2.Error("Tried to adjust Advanced Miner effect vertices before they were saved.");
+                return false;
+            }
+            // Model ID of the mining effect is 59
+            var prefabDesc = LDB.models.Select(59).prefabDesc;
+            // Only one LOD mesh as of 0.9.27, but why not future proof.
+            for (var i = 0; i < prefabDesc.lodCount; i++)
+            {
+                var mesh = prefabDesc.lodMeshes[i];
+                var adjustedVertices = new Vector3[originalMk2MinerEffectVertices[i].Length];
+                Array.Copy(originalMk2MinerEffectVertices[i], adjustedVertices, originalMk2MinerEffectVertices[i].Length);
+                // the submeshes of the mesh share a vertices array, but we only want to adjust three of the four submeshes, so iterate across each submesh.
+                // Skip the first submesh: the spinning circle effect around the vein (also visible on Mk1 Miners) already works fine and does not need to be adjusted.
+                // The remaining three submeshes: top-circle, laser, and collection should be adjusted.
+                for (var j = 1; j < mesh.subMeshCount; j++)
+                {
+                    //GetIndices returns vertex indices of each triangle in the submesh, but triangles can share vertices, so iterate across distinct vertex indices.
+                    foreach (var k in mesh.GetIndices(j).Distinct())
+                    {
+                        //GS2.Log($"Adjusting submodel {j}: vertex at index: {k} by {adjustVertexY} from {adjustedVertices[k].y} to {adjustedVertices[k].y + adjustVertexY}");
+                        adjustedVertices[k].y += adjustVertexY;
+                    }
+                }
+                mesh.vertices = adjustedVertices;
+            }
+            return true;
         }
 
         public static class AddressHelper
