@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -26,8 +27,12 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GalaxyData), "UpdatePoses")]
         public static bool UpdatePoses(Double time, GalaxyData __instance)
         {
-            if (MultithreadSystem.usedThreadCntSetting < 2 || __instance.starCount <= 64) return true;
-            Parallel.For(0, __instance.starCount, new ParallelOptions {MaxDegreeOfParallelism = MultithreadSystem.usedThreadCntSetting},
+            var threads = MultithreadSystem.usedThreadCntSetting;
+            // 0 = "Default" in Gameplay settings. Use all available cores.
+            if (threads == 0) threads = SystemInfo.processorCount;
+
+            if (threads < 2 || __instance.starCount <= 64) return true;
+            Parallel.For(0, __instance.starCount, new ParallelOptions {MaxDegreeOfParallelism = threads},
                 (i) =>
                 {
                     for (var j = 0; j < __instance.stars[i].planetCount; j++)
