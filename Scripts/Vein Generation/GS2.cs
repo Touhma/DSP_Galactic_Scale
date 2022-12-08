@@ -7,23 +7,17 @@ namespace GalacticScale
 {
     public static partial class VeinAlgorithms
     {
-        public static void GenerateVeinsGS2(GSPlanet gsPlanet) //, bool sketchOnly)
+        public static void GenerateVeinsGS2(GSPlanet gsPlanet) 
         {
             Debug.Log("Generating");
             random = new GS2.Random(gsPlanet.Seed);
+            
             InitializeFromVeinSettings(gsPlanet);
-            if (GSSettings.BirthPlanet == gsPlanet) // && !sketchOnly)
-                GenBirthPoints(gsPlanet);
+            if (GSSettings.BirthPlanet == gsPlanet) GenBirthPoints(gsPlanet);
+            
             AddSpecialVeins(gsPlanet);
             gsPlanet.veinData.Clear();
             
-            // if (sketchOnly)
-            // {
-            //     gsPlanet.planetData.veinSpotsSketch = new int[PlanetModelingManager.veinProtos.Length];
-            //     CalculateVectorsGS2(gsPlanet, true);
-            //     return;
-            // }
-
             if (GSSettings.BirthPlanet == gsPlanet) InitBirthVeinVectors(gsPlanet);
             AddVeinsToPlanetGS2(gsPlanet, CalculateVectorsGS2(gsPlanet));
         }
@@ -171,6 +165,7 @@ namespace GalacticScale
 
         private static List<GSVeinDescriptor> CalculateVectorsGS2(GSPlanet gsPlanet, bool sketchOnly = false, bool PreventUnderwater = true)
         {
+            GS2.Warn($"Calculating Vectors for {gsPlanet.Name} ");
             var randomFactor = 1.0;
             if (gsPlanet.randomizeVeinCounts) randomFactor = 0.5 + random.NextDouble() / 2;
 
@@ -236,7 +231,7 @@ namespace GalacticScale
                 }
                 else
                 {
-                    GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attemps");
+                    GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attempts");
                 }
             }
 

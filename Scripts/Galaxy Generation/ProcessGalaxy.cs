@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace GalacticScale
@@ -136,6 +137,7 @@ namespace GalacticScale
                 // Warn("RM:" + GSSettings.Instance.galaxyParams.resourceMulti);
                 // Warn($"GUID:{GSSettings.Instance.generatorGUID}");
                 // WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
+                if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemesPost.json"), LDB._themes.dataArray);
                 return galaxy;
             }
             catch (Exception e)
