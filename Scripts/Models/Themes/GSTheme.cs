@@ -10,7 +10,6 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSThemeConverter))]
     public class GSTheme
     {
-        [NonSerialized] public static ThemeLibrary AllLoadedThemes = new();
         [NonSerialized] public bool added;
         public int Algo;
         [NonSerialized] public string ambient;
@@ -158,10 +157,10 @@ namespace GalacticScale
                     // GS2.Log($"{Name} initializing from base theme: " + BaseName);
 
 
-                    if (!AllLoadedThemes.ContainsKey(BaseName))
+                    if (!GSSettings.ThemeLibrary.ContainsKey(BaseName))
                         GS2.Warn($"Theme {BaseName} not found");
 
-                return BaseName != "" && BaseName != null ? AllLoadedThemes.ContainsKey(BaseName) ? AllLoadedThemes[BaseName] : Themes.Mediterranean : null;
+                return BaseName != "" && BaseName != null ? GSSettings.ThemeLibrary.ContainsKey(BaseName) ? GSSettings.ThemeLibrary[BaseName] : Themes.Mediterranean : null;
             }
             set => BaseName = value.Name;
         }
@@ -220,7 +219,7 @@ namespace GalacticScale
 
             ProcessTints();
             if (TerrainSettings.BrightnessFix) terrainMat.SetFloat("_HeightEmissionRadius", 5); //fix for lava
-            AllLoadedThemes.Add(Name, this);
+            GSSettings.ThemeLibrary.Add(Name, this);
         }
 
         public void PopulateVegeData()
