@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.10.1"
-description = "v2.10.1 Improvements. Thanks again karki"
+versionNumber = "2.10.2"
+description = "v2.10.2 Vein count/placement fixes. May break existing saves Thanks again karki"
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 

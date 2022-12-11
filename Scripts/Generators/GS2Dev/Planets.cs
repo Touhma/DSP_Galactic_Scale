@@ -209,7 +209,7 @@ namespace GalacticScale.Generators
                     GS2.Log($"Vein Settings missing for planet {p.Name} with theme {p.GsTheme.Name}. Cloning...");
                     p.veinSettings = p.GsTheme.VeinSettings.Clone();
                 }
-            }        
+            }
         }
 
         private void FudgeNumbersForPlanets(GSStar star)
