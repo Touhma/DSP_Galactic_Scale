@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.10.3 - Fix error with birthplanet theme
 - Version 2.10.2 - Possibly savebreaking, Vein algorithm fixes, multithreading fix. Thanks karki :)
 - Version 2.10.1 - karki multithreaded some star stuff and got speed improvements! :D
 - Version 2.10 - karki fixed Mk2 Miner Graphical Error, Sped up Starmap :D Thanks!
