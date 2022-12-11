@@ -414,9 +414,9 @@ namespace GalacticScale.Generators
                             var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon,
                                 EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default,
                                 true);
-                            if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
-                            else planet.Theme = "Mediterranean";
-                            planet.Scale = 1f;
+                            if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
+                            else body.Theme = "Mediterranean";
+                            body.Scale = 1f;
                         }
                     }
                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
