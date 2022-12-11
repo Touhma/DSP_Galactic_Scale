@@ -404,7 +404,21 @@ namespace GalacticScale.Generators
                 //GS2.Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
                 foreach (var body in planet.Bodies)
                     if (body != planet)
-                        body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
+                    {
+                        if (body != birthPlanet)
+                        {
+                            body.Theme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon, heat, body.Radius);
+                        }
+                        else
+                        {
+                            var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon,
+                                EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default,
+                                true);
+                            if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
+                            else body.Theme = "Mediterranean";
+                            body.Scale = 1f;
+                        }
+                    }
                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
             }
             // GS2.Log($"Themes Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
