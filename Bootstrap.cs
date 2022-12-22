@@ -89,6 +89,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnPlayerMove_Fly));
                 harmony.PatchAll(typeof(PatchOnPlayerMove_Sail));
                 harmony.PatchAll(typeof(PatchOnPowerSystem));
+                harmony.PatchAll(typeof(PatchOnPrefebDesc));
                 harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
                 harmony.PatchAll(typeof(PatchOnStarGen));
                 harmony.PatchAll(typeof(PatchOnStationComponent));
