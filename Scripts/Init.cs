@@ -138,6 +138,8 @@ namespace GalacticScale
             LoadGenerators();
             // Warn("Step9");
             LoadPreferences();
+            // Warn("Step10");
+            CustomShaderManager.InitWithBundle(Bundle);
             // Log("End");
         }
 
@@ -196,7 +198,6 @@ namespace GalacticScale
             // Warn("Step8");
             UpdateNebulaSettings();
             // Warn("Step9");
-            Utils.InitMk2MinerEffectVertices();
         }
     }
 }
