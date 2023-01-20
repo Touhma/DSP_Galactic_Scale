@@ -135,6 +135,7 @@ namespace GalacticScale
             __instance.atmoTrans1.localPosition = new Vector3(0, 0, Mathf.Clamp(Vector3.Dot(lhs, ___lookCamera.forward) + 10f / __instance.planetData.GetScaleFactored(), 0.0f, Math.Max(320f, 320f * __instance.planetData.GetScaleFactored())));
             var num1 = Mathf.Clamp01(8000f * __instance.planetData.GetScaleFactored() / magnitude);
             var num2 = Mathf.Clamp01(4000f * __instance.planetData.GetScaleFactored() / magnitude);
+            var value4 = Mathf.Max(0f, magnitude / 6000f - 1f);
             var atmoMatRadiusParam = __instance.atmoMatRadiusParam;
             atmoMatRadiusParam.z = atmoMatRadiusParam.x + (float)((__instance.atmoMatRadiusParam.z - (double)__instance.atmoMatRadiusParam.x) * (2.70000004768372 - num2 * 1.70000004768372));
             var vector4_3 = atmoMatRadiusParam * vscale * __instance.planetData.GetScaleFactored();
@@ -146,6 +147,7 @@ namespace GalacticScale
             __instance.atmoMat.SetVector("_LocalPos", vector4_2);
             __instance.atmoMat.SetFloat("_SunRiseScatterPower", Mathf.Max(60f * __instance.planetData.GetScaleFactored(), (float)((magnitude - __instance.planetData.realRadius * 2.0) * 0.180000007152557)));
             __instance.atmoMat.SetFloat("_IntensityControl", num1);
+            __instance.atmoMat.SetFloat("_DistanceControl", value4);
             __instance.atmoMat.renderQueue = __instance.planetData != localPlanet ? 2989 : 2991;
             __instance.atmoMatLate.SetVector("_PlanetPos", __instance.transform.localPosition);
             __instance.atmoMatLate.SetVector("_SunDir", vector3_2);
@@ -155,6 +157,7 @@ namespace GalacticScale
             __instance.atmoMatLate.SetVector("_LocalPos", vector4_2);
             __instance.atmoMatLate.SetFloat("_SunRiseScatterPower", Mathf.Max(60f * __instance.planetData.GetScaleFactored(), (float)((magnitude - __instance.planetData.realRadius * 2.0) * 0.180000007152557)));
             __instance.atmoMatLate.SetFloat("_IntensityControl", num1);
+            __instance.atmoMatLate.SetFloat("_DistanceControl", value4);
             if (__instance.planetData == localPlanet)
             {
                 __instance.atmoMatLate.renderQueue = 3100;

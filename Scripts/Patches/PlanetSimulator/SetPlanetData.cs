@@ -42,6 +42,11 @@ namespace GalacticScale
                 component.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
                 __instance.atmoTrans1.localScale = Vector3.one * (planet.realRadius * 5f * planet.GetScaleFactored());
                 __instance.atmoMatRadiusParam = __instance.atmoMat.GetVector("_PlanetRadius");
+                __instance.oceanMat = __instance.planetData.oceanMaterial;
+                if (__instance.oceanMat != null)
+                {
+                    __instance.oceanRenderQueue = __instance.oceanMat.renderQueue;
+                }
             }
 
             ___lookCamera = Camera.main.transform;
