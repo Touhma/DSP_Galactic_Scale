@@ -107,6 +107,10 @@ namespace GalacticScale
                 if ((!based || !model.atmosphereMaterial.Equals(baseTheme.atmosphereMaterial)) && model.atmosphereMaterial != null)
                     SerializeMember(serialized, null, "atmosphereMaterial", model.atmosphereMaterial);
                 //if ((!based || model.atmosphereTint != baseTheme.atmosphereTint) && model.atmosphereTint != new UnityEngine.Color()) SerializeMember(serialized, null, "atmosphereTint", model.atmosphereTint);
+                if ((!based || !model.nephogramMaterial.Equals(baseTheme.nephogramMaterial)) && model.nephogramMaterial != null)
+                    SerializeMember(serialized, null, "nephogramMaterial", model.nephogramMaterial);
+                if ((!based || !model.cloudMaterial.Equals(baseTheme.cloudMaterial)) && model.cloudMaterial != null)
+                    SerializeMember(serialized, null, "cloudMaterial", model.cloudMaterial);
                 if ((!based || !model.thumbMaterial.Equals(baseTheme.thumbMaterial)) && model.thumbMaterial != null)
                     SerializeMember(serialized, null, "thumbMaterial", model.thumbMaterial);
                 //if ((!based || model.thumbTint != baseTheme.thumbTint) && model.thumbTint != new UnityEngine.Color()) SerializeMember(serialized, null, "thumbTint", model.thumbTint);
@@ -154,6 +158,8 @@ namespace GalacticScale
                 SerializeMember(serialized, null, "terrainMaterial", model.terrainMaterial);
                 SerializeMember(serialized, null, "oceanMaterial", model.oceanMaterial);
                 SerializeMember(serialized, null, "atmosphereMaterial", model.atmosphereMaterial);
+                SerializeMember(serialized, null, "nephogramMaterial", model.nephogramMaterial);
+                SerializeMember(serialized, null, "cloudMaterial", model.cloudMaterial);
                 SerializeMember(serialized, null, "thumbMaterial", model.thumbMaterial);
                 SerializeMember(serialized, null, "minimapMaterial", model.minimapMaterial);
                 //SerializeMember(serialized, null, "ambient", model.ambient);
@@ -249,6 +255,10 @@ namespace GalacticScale
             if (data.ContainsKey("atmosphereMaterial"))
                 DeserializeMember(data, null, "atmosphereMaterial", out model.atmosphereMaterial);
             //if (data.ContainsKey("atmosphereTint")) DeserializeMember(data, null, "atmosphereTint", out model.atmosphereMaterial.Tint);
+            if (data.ContainsKey("nephogramMaterial"))
+                DeserializeMember(data, null, "nephogramMaterial", out model.nephogramMaterial);
+            if (data.ContainsKey("cloudMaterial"))
+                DeserializeMember(data, null, "cloudMaterial", out model.cloudMaterial);
             if (data.ContainsKey("thumbMaterial"))
                 DeserializeMember(data, null, "thumbMaterial", out model.thumbMaterial);
             //if (data.ContainsKey("thumbTint")) DeserializeMember(data, null, "thumbTint", out model.thumbMaterial.Tint);

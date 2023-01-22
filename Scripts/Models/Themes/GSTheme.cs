@@ -95,6 +95,14 @@ namespace GalacticScale
         public bool UseHeightForBuild;
         public int Variant = 0;
 
+        [NonSerialized] public Material nephogramMat;
+
+        public GSMaterialSettings nephogramMaterial = new();
+
+        [NonSerialized] public Material cloudMat;
+
+        public GSMaterialSettings cloudMaterial = new();
+
         public GSVegeSettings VegeSettings = new()
         {
             Algorithm = "Vanilla"
@@ -419,6 +427,8 @@ namespace GalacticScale
             terrainMat = baseTheme.terrainMat != null ? Object.Instantiate(baseTheme.terrainMat) : null;
             oceanMat = baseTheme.oceanMat != null ? Object.Instantiate(baseTheme.oceanMat) : null;
             atmosMat = baseTheme.atmosMat != null ? Object.Instantiate(baseTheme.atmosMat) : null;
+            nephogramMat = baseTheme.nephogramMat != null ? Object.Instantiate(baseTheme.nephogramMat) : null;
+            cloudMat = baseTheme.cloudMat != null ? Object.Instantiate(baseTheme.cloudMat) : null;
             thumbMat = baseTheme.thumbMat != null ? Object.Instantiate(baseTheme.thumbMat) : null;
             minimapMat = baseTheme.minimapMat != null ? Object.Instantiate(baseTheme.minimapMat) : null;
             ambientDesc = baseTheme.ambientDesc != null ? Object.Instantiate(baseTheme.ambientDesc) : null;
@@ -500,6 +510,8 @@ namespace GalacticScale
             if (terrainMat != null) tp.terrainMat = new[] { terrainMat };
             if (oceanMat != null) tp.oceanMat = new[] { oceanMat };
             if (atmosMat != null) tp.atmosMat = new[] { atmosMat };
+            if (nephogramMat != null) tp.nephogramMat = new[] { nephogramMat };
+            if (cloudMat != null) tp.cloudMat = new[] { cloudMat };
             if (thumbMat != null) tp.thumbMat = new[] { thumbMat };
             if (minimapMat != null) tp.minimapMat = new[] { minimapMat };
             if (ambientDesc != null) tp.ambientDesc = new[] { ambientDesc };
@@ -542,6 +554,10 @@ namespace GalacticScale
             if (settings == oceanMaterial) materialType = "ocean";
 
             if (settings == atmosphereMaterial) materialType = "atmosphere";
+
+            if (settings == nephogramMaterial) materialType = "cloud-nephogram";
+
+            if (settings == cloudMaterial) materialType = "cloud-particle";
 
             if (settings == minimapMaterial) materialType = "minimap";
 
@@ -642,6 +658,10 @@ namespace GalacticScale
             CreateMaterial(terrainMaterial, out terrainMat);
             // GS2.Log("Creating Ocean Material");
             CreateMaterial(oceanMaterial, out oceanMat);
+            // GS2.Log("Creating Nephogram Material");
+            CreateMaterial(nephogramMaterial, out nephogramMat);
+            // GS2.Log("Creating Atmosphere Material");
+            CreateMaterial(cloudMaterial, out cloudMat);
             // GS2.Log("Creating Atmosphere Material");
             CreateMaterial(atmosphereMaterial, out atmosMat);
             // GS2.Log("Creating Minimap Material");
@@ -695,6 +715,10 @@ namespace GalacticScale
 
             foreach (var kvp in atmosphereMaterial?.Colors) atmosMat.SetColor(kvp.Key, kvp.Value);
 
+            foreach (var kvp in nephogramMaterial?.Colors) nephogramMat.SetColor(kvp.Key, kvp.Value);
+
+            foreach (var kvp in cloudMaterial?.Colors) cloudMat.SetColor(kvp.Key, kvp.Value);
+
             foreach (var kvp in thumbMaterial?.Colors) thumbMat.SetColor(kvp.Key, kvp.Value);
 
             foreach (var kvp in minimapMaterial?.Colors) minimapMat.SetColor(kvp.Key, kvp.Value);
@@ -704,6 +728,7 @@ namespace GalacticScale
             foreach (var kvp in oceanMaterial?.Params) oceanMat.SetFloat(kvp.Key, kvp.Value);
 
             foreach (var kvp in atmosphereMaterial?.Params) atmosMat.SetFloat(kvp.Key, kvp.Value);
+            //TODO: nephogram/cloud params?
 
             foreach (var kvp in thumbMaterial?.Params) thumbMat.SetFloat(kvp.Key, kvp.Value);
 
@@ -744,6 +769,7 @@ namespace GalacticScale
 
         public void ProcessTints()
         {
+            //TODO: Tint for clouds?
             //GS2.Log("Processing Terrain Tint for " + Name);
             if (terrainMaterial.Tint != new Color()) TintTerrain(terrainMaterial.Tint);
             //GS2.Log("Processing Ocean Tint for " + Name);
@@ -847,6 +873,7 @@ namespace GalacticScale
 
         public void TintOcean(Color c)
         {
+            //TODO: IceLake now has a different shader with new params
             //GS2.Log("Start");
             if (oceanMat == null)
                 // GS2.Warn("oceanMat Null for " + Name);

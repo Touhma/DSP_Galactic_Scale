@@ -49,19 +49,6 @@ namespace GalacticScale
             },
             Vegetables0 = new[]
             {
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12
-            },
-            Vegetables1 = new int[]
-            {
-            },
-            Vegetables2 = new []
-            {
                 748,
                 749,
                 750,
@@ -72,6 +59,12 @@ namespace GalacticScale
                 747,
                 741,
                 742
+            },
+            Vegetables1 = new int[]
+            {
+            },
+            Vegetables2 = new int[]
+            {
             },
             Vegetables3 = new int[]
             {
