@@ -14,7 +14,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(CloudSimulator), "OnEnable")]
         public static void OnEnable(CloudSimulator __instance)
         {
-            GS2.Warn($"CloudSim.OnEnable for {__instance.planet.name}: cloudHeight = {__instance.cloudHeight}, realRadius = {__instance.planet.realRadius}");
+            GS2.Log($"CloudSim.OnEnable for {__instance.planet.name}: cloudHeight = {__instance.cloudHeight}, realRadius = {__instance.planet.realRadius}, atmosphereHeight = {__instance.planet.atmosphereHeight} atmosMaterialPlanetRadius = {__instance.planet.atmosMaterial.GetVector("_PlanetRadius").z} nephogram.localScale: {__instance.nephogram.transform.localScale}");
+            
         }
     }
 }
