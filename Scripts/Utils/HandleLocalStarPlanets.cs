@@ -216,7 +216,8 @@ namespace GalacticScale
 
         private static double TransisionDistance(StarData star)
         {
-            return (star.systemRadius + 2) * 40000;
+            GSStar s = GetGSStar(star);
+            return (s.SystemRadius + 2) * 40000;
         }
         //
         // private static void CheckTransitionDistanceOfMoon(GSPlanet moon)

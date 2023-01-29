@@ -172,6 +172,7 @@ namespace GalacticScale
                     ["_AtmoDensity"] = 1f,
                     ["_BumpScale"] = 1f,
                     ["_DetailNormalMapScale"] = 1f,
+                    ["_DistanceControl"] = 0f,
                     ["_DstBlend"] = 0f,
                     ["_GlossMapScale"] = 1f,
                     ["_GlossyReflections"] = 1f,

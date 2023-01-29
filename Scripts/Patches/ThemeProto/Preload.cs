@@ -13,6 +13,8 @@ namespace GalacticScale
             __instance.terrainMat = Utils.ResourcesLoadArray<Material>(__instance.MaterialPath + "terrain", "{0}-{1}", true);
             __instance.oceanMat = Utils.ResourcesLoadArray<Material>(__instance.MaterialPath + "ocean", "{0}-{1}", true);
             __instance.atmosMat = Utils.ResourcesLoadArray<Material>(__instance.MaterialPath + "atmosphere", "{0}-{1}", true);
+            __instance.nephogramMat = CommonUtils.ResourcesLoadArray<Material>(__instance.MaterialPath + "cloud-nephogram", "{0}-{1}", emptyNull: true);
+            __instance.cloudMat = CommonUtils.ResourcesLoadArray<Material>(__instance.MaterialPath + "cloud-particle", "{0}-{1}", emptyNull: true);
             __instance.lowMat = Utils.ResourcesLoadArray<Material>(__instance.MaterialPath + "low", "{0}-{1}", true);
             __instance.thumbMat = Utils.ResourcesLoadArray<Material>(__instance.MaterialPath + "thumb", "{0}-{1}", true);
             __instance.minimapMat = Utils.ResourcesLoadArray<Material>(__instance.MaterialPath + "minimap", "{0}-{1}", true);

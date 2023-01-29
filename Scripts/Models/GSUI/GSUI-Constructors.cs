@@ -158,7 +158,20 @@ namespace GalacticScale
             instance.postfix = instance.CreateDefaultPostfix();
             return instance;
         }
+        public static GSUI GasSizeRangeSlider(string label, float min, float valLow, float valHigh, float max, string key, GSOptionCallback callback = null, GSOptionCallback callbackLow = null, GSOptionCallback callbackHigh = null, string hint = "")
+        {
+            GSUI instance = null;
+            var tt = Utils.GetCallingType();
+            foreach (var t in tt.GetInterfaces())
+                if (t.Name == "iGenerator" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurableGeneratorInstance(tt), key, label, "RangeSlider", new GSRangeSliderConfig { minValue = min, maxValue = max, defaultLowValue = valLow, defaultHighValue = valHigh, callbackLow = callbackLow, callbackHigh = callbackHigh }, null, null, hint);
+                else if (t.Name == "iConfigurablePlugin" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurablePluginInstance(tt), key, label, "RangeSlider", new GSRangeSliderConfig { minValue = min, maxValue = max, defaultLowValue = valLow, defaultHighValue = valHigh, callbackLow = callbackLow, callbackHigh = callbackHigh }, null, null, hint);
+            if (instance == null) return null;
 
+            var defaultCallback = instance.CreateDefaultCallback(callback);
+            instance.callback = CreateGasSizeRangeCallback(instance, defaultCallback);
+            instance.postfix = instance.CreateDefaultPostfix();
+            return instance;
+        }
         //Slider with increment and no Key
         public static GSUI Slider(string label, float min, float val, float max, float increment, GSOptionCallback callback = null, GSOptionPostfix postfix = null, string hint = "")
         {

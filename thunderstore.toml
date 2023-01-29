@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.10.3"
-description = "v2.10.3 Fix error with GS2 Generator Birthplanet Theme Selection"
+versionNumber = "2.11.0"
+description = "v2.11.0 Some Cloud Fixes, Fix Disappearing Planets. Backup Saves."
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 

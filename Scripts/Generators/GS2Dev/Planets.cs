@@ -113,7 +113,7 @@ namespace GalacticScale.Generators
 
             for (var i = 0; i < gasCount; i++)
             {
-                var radius = GetStarPlanetSize(star);
+                var radius = Mathf.RoundToInt(GetStarGasSize(star)/10f);
                 var p = new GSPlanet("planet_" + i, "Gas", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                 if (!preferences.GetBool("hugeGasGiants", true)) p.Radius = 80;
                 p.Scale = 10f;

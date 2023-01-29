@@ -229,6 +229,7 @@ namespace GalacticScale
                     ["_Cutoff"] = 0.5f,
                     ["_Density"] = 0.005f,
                     ["_DetailNormalMapScale"] = 1f,
+                    ["_DistanceControl"] = 0f,
                     ["_DstBlend"] = 0f,
                     ["_FarFogDensity"] = 0.5f,
                     ["_FogDensity"] = 0.4f,

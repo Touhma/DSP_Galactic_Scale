@@ -292,6 +292,17 @@ namespace GalacticScale
                 ["Arctictundra13"] = 733,
                 ["Arctictundra14"] = 734,
 
+                ["ScarletIceStone1"] = 741,
+                ["ScarletIceStone2"] = 742,
+                ["ScarletIceStone3"] = 743,
+                ["ScarletIceStone4"] = 744,
+                ["ScarletIceStone5"] = 745,
+                ["ScarletIceStone6"] = 746,
+                ["ScarletIceStone7"] = 747,
+                ["ScarletIceStone8"] = 748,
+                ["ScarletIceStone9"] = 749,
+                ["ScarletIceStone10"] = 750,
+
                 ["MedGrass7"] = 1001,
                 ["MedGrass8"] = 1002,
                 ["MedGrass9"] = 1003,

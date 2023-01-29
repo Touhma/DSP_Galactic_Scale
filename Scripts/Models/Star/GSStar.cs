@@ -355,6 +355,6 @@ namespace GalacticScale
             clone.Planets = new GSPlanets(Planets);
             return clone;
         }
-        //public float SystemRadius => Planets[Planets.Count -1].SystemRadius;
+        public float SystemRadius => Planets[Planets.Count -1].SystemRadius + 1000;
     }
 }

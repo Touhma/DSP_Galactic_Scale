@@ -213,6 +213,7 @@ namespace GalacticScale.Generators
             preferences.Set("moonBias", 50);
             preferences.Set("planetCount", new FloatPair(1, 10));
             preferences.Set("planetSize", new FloatPair(50, 500));
+            preferences.Set("gasSize", new FloatPair(500, 5000));
             preferences.Set("sizeBias", 50);
             preferences.Set("countBias", 50);
             preferences.Set("freqK", 40);
@@ -253,6 +254,7 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}minStars", 0);
                 preferences.Set($"{typeLetter[i]}planetCount", new FloatPair(1, 10));
                 preferences.Set($"{typeLetter[i]}planetSize", new FloatPair(50, 500));
+                preferences.Set($"{typeLetter[i]}gasSize", new FloatPair(500, 5000));
                 preferences.Set($"{typeLetter[i]}sizeBias", 50);
                 preferences.Set($"{typeLetter[i]}countBias", 50);
                 preferences.Set($"{typeLetter[i]}chanceGas", 20);
@@ -335,6 +337,8 @@ namespace GalacticScale.Generators
             UI.Add("rotationMulti", sOptions.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 10, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
             UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Planet Sizes".Translate(), CreateLimitPlanetSizeOptions(), "Force Planets to these sizes".Translate()));
+            UI.Add("gasSize", sOptions.Add(GSUI.GasSizeRangeSlider("Gas Planet Size".Translate(), 50, 500, 5000, 5100, "gasSize", null, GasSizeLow, GasSizeHigh, "Min/Max Size of Gas Planets".Translate())));
+            sOptions.Add(GSUI.Group("Limit Gas Giant Sizes".Translate(), CreateLimitGasSizeOptions(), "Force Gas Giants to these sizes".Translate()));
             UI.Add("sizeBias", sOptions.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
             UI.Add("inclination", sOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, "inclination", InclinationCallback, "Maximum angle of orbit".Translate(), "Random".Translate())));
             UI.Add("orbitLongitude", sOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, "orbitLongitude", LongitudeCallback, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));
@@ -418,7 +422,20 @@ namespace GalacticScale.Generators
             AddSpacer(gOptions);
             return gOptions;
         }
-
+        private GSOptions CreateLimitGasSizeOptions()
+        {
+            var gOptions = new GSOptions();
+            AddSpacer(gOptions);
+            UI.Add("limitGasSize200", gOptions.Add(GSUI.Checkbox("200".Translate(), false, "limitGasSize200")));
+            UI.Add("limitGasSize500", gOptions.Add(GSUI.Checkbox("500".Translate(), false, "limitGasSize500")));
+            UI.Add("limitGasSize1000", gOptions.Add(GSUI.Checkbox("1000".Translate(), false, "limitGasSize1000")));
+            UI.Add("limitGasSize2000", gOptions.Add(GSUI.Checkbox("2000".Translate(), false, "limitGasSize2000")));
+            UI.Add("limitGasSize3000", gOptions.Add(GSUI.Checkbox("3000".Translate(), false, "limitGasSize3000")));
+            UI.Add("limitGasSize4000", gOptions.Add(GSUI.Checkbox("4000".Translate(), false, "limitGasSize4000")));
+            UI.Add("limitGasSize5000", gOptions.Add(GSUI.Checkbox("5000".Translate(), false, "limitGasSize5000")));
+            AddSpacer(gOptions);
+            return gOptions;
+        }
         private GSOptions CreateStarOverrideOptions()
         {
             var oOptions = new GSOptions();
@@ -430,6 +447,7 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}countBias", tOptions.Add(GSUI.Slider("Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias", null, "Prefer Less (lower) or More (higher) Counts".Translate())));
                 UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider("Telluric Planet Size".Translate(), 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
+                UI.Add($"{typeLetter[i]}gasSize", tOptions.Add(GSUI.RangeSlider("Gas Giant Planet Size".Translate(), 50, 500, 5000, 5100, 10f, $"{typeLetter[i]}gasSize", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider("Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
                 UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 3)).low, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Force habitable zone between these distances".Translate())));
@@ -551,6 +569,15 @@ namespace GalacticScale.Generators
         private void PlanetSizeHigh(Val o)
         {
             SetAllStarTypeRangeSliderMax("planetSize", Utils.ParsePlanetSize(o));
+        }       
+        private void GasSizeLow(Val o)
+        {
+            SetAllStarTypeRangeSliderMin("gasSize", Utils.ParseGasSize(o));
+        }
+
+        private void GasSizeHigh(Val o)
+        {
+            SetAllStarTypeRangeSliderMax("gasSize", Utils.ParseGasSize(o));
         }
 
         private void SizeBiasCallback(Val o)
@@ -781,7 +808,18 @@ namespace GalacticScale.Generators
             var t = preferences.GetFloatFloat($"{sl}planetSize", new FloatPair(30, 500));
             return (int)t.low;
         }
-
+        private int GetMinGasSizeForStar(GSStar star)
+        {
+            var sl = GetTypeLetterFromStar(star);
+            var t = preferences.GetFloatFloat($"{sl}gasSize", new FloatPair(300, 5000));
+            return (int)t.low;
+        }
+        private int GetMaxGasSizeForStar(GSStar star)
+        {
+            var sl = GetTypeLetterFromStar(star);
+            var t = preferences.GetFloatFloat($"{sl}gasSize", new FloatPair(300, 5000));
+            return (int)t.high;
+        }
         private int GetSizeBiasForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);

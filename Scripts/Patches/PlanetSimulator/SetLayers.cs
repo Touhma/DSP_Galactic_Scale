@@ -29,6 +29,8 @@ namespace GalacticScale
 
                 if (__instance.atmoTrans1 != null) __instance.atmoTrans1.gameObject.layer = 0;
 
+                if (__instance.cloudSimulator != null) __instance.cloudSimulator.gameObject.layer = 0;
+
                 __instance.layerSet = true;
             }
 

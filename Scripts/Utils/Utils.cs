@@ -330,7 +330,15 @@ namespace GalacticScale
             //GS2.Warn(radius.ToString());
             return (int)radius;
         }
+        public static int ParseGasSize(float radius)
+        {
+            if (radius < 80f) return 50;
 
+            radius = Mathf.Clamp(radius, 100, 5100) / 100;
+            radius = Mathf.RoundToInt(radius) * 100;
+            //GS2.Warn(radius.ToString());
+            return (int)radius;
+        }
         public static string GetStarDetail(StarData star)
         {
             var gsStar = GS2.GetGSStar(star);

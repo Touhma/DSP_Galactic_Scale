@@ -23,6 +23,7 @@ namespace GalacticScale
                     __instance.atmoTrans0.localScale *= planet.GetScaleFactored();
                 else
                     __instance.atmoTrans0.localScale /= planet.GetScaleFactored();
+                //__instance.cloudSimulator.nephogram.transform.localScale
 
                 var primitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 primitive.layer = 31;
@@ -42,6 +43,16 @@ namespace GalacticScale
                 component.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
                 __instance.atmoTrans1.localScale = Vector3.one * (planet.realRadius * 5f * planet.GetScaleFactored());
                 __instance.atmoMatRadiusParam = __instance.atmoMat.GetVector("_PlanetRadius");
+                __instance.oceanMat = __instance.planetData.oceanMaterial;
+                if (__instance.oceanMat != null)
+                {
+                    __instance.oceanRenderQueue = __instance.oceanMat.renderQueue;
+                }
+
+                if (__instance.cloudSimulator != null)
+                {
+                    __instance.cloudSimulator.OnEnable();
+                }
             }
 
             ___lookCamera = Camera.main.transform;

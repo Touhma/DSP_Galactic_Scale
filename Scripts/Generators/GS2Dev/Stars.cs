@@ -157,7 +157,15 @@ namespace GalacticScale.Generators
             var size = ClampedNormalSize(random, min, max, bias);
             return ParsePlanetSize(size);
         }
-
+        private int GetStarGasSize(GSStar star)
+        {
+            // GS2.Warn("GetStarPlanetSize");
+            var min = GetMinGasSizeForStar(star);
+            var max = GetMaxGasSizeForStar(star);
+            var bias = GetSizeBiasForStar(star);
+            var size = ClampedNormalSizeGas(random, min, max, bias);
+            return ParseGasSize(size);
+        }
         private int ParsePlanetSize(int size)
         {
             var sizes = new List<int>();
@@ -197,7 +205,45 @@ namespace GalacticScale.Generators
 
             return largest;
         }
+        private int ParseGasSize(int size)
+        {
+            var sizes = new List<int>();
+            // GS2.Log("Getting List");
+            if (preferences.GetBool("limitGasSize200")) sizes.Add(200);
+            if (preferences.GetBool("limitGasSize500")) sizes.Add(500);
+            if (preferences.GetBool("limitGasSize1000")) sizes.Add(1000);
+            if (preferences.GetBool("limitGasSize2000")) sizes.Add(2000);
+            if (preferences.GetBool("limitGasSize3000")) sizes.Add(3000);
+            if (preferences.GetBool("limitGasSize4000")) sizes.Add(4000);
+            if (preferences.GetBool("limitGasSize5000")) sizes.Add(5000);
+            // GS2.Log("Got List "+sizes.Count);
+            var count = sizes.Count;
+            if (count == 0) return size;
+            // Log("Count wasnt 0");
+            var largest = sizes[sizes.Count - 1];
+            var smallest = sizes[0];
+            // GS2.Warn($"Size:{size} Count:{sizes.Count}");
 
+            if (size <= smallest) return smallest;
+            if (size >= largest) return largest;
+            if (count == 1) return smallest;
+            if (count == 2)
+            {
+                if (Abs(size - smallest) < Abs(largest - size)) return smallest;
+                return largest;
+            }
+
+            for (var i = 1; i < sizes.Count; i++)
+            {
+                var larger = sizes[i];
+                if (size > larger) continue;
+                var smaller = sizes[i - 1];
+                if (Abs(size - smaller) < Abs(larger - size)) return smaller;
+                return larger;
+            }
+
+            return largest;
+        }
         private FloatPair CalculateHabitableZone(GSStar star)
         {
             // var starLum = Mathf.Pow(star.luminosity, 0.3333f);
