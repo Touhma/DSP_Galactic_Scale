@@ -410,7 +410,18 @@ namespace GalacticScale.Generators
             //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
             return result;
         }
-
+        private int ClampedNormalSizeGas(GS2.Random random, int min, int max, int bias)
+        {
+            var range = max - min;
+            var average = bias / 100f * range + min;
+            var sdHigh = (max - average) / 3;
+            var sdLow = (average - min) / 3;
+            var sd = Math.Max(sdLow, sdHigh);
+            var fResult = random.Normal(average, sd);
+            var result = Mathf.Clamp(Utils.ParseGasSize(fResult), min, max);
+            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            return result;
+        }
 
         private void AddSiTiToBirthPlanet()
         {

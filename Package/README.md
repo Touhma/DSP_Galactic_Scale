@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.11.0 - Fix disappearing planets in far flung orbits. Fix some clouds. Add Gas Giant Size Settings which may or may not break the game. Revert to previous version if so and let me know.
 - Version 2.10.3 - Fix error with birthplanet theme
 - Version 2.10.2 - Possibly savebreaking, Vein algorithm fixes, multithreading fix. Thanks karki :)
 - Version 2.10.1 - karki multithreaded some star stuff and got speed improvements! :D

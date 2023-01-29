@@ -402,6 +402,18 @@ namespace GalacticScale
                 existingCallback(new FloatPair(parsedLow, parsedHigh));
             };
         }
+        private static GSOptionCallback CreateGasSizeRangeCallback(GSUI instance, GSOptionCallback existingCallback)
+        {
+            return o =>
+            {
+                // GS2.Warn("*");
+                var value = o.FloatFloat();
+                float parsedLow = Utils.ParseGasSize(value.low);
+                float parsedHigh = Utils.ParseGasSize(value.high);
+                instance.Set(new FloatPair(parsedLow, parsedHigh));
+                existingCallback(new FloatPair(parsedLow, parsedHigh));
+            };
+        }
 
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null)
         {
