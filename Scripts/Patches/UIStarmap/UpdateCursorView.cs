@@ -19,15 +19,19 @@ namespace GalacticScale
                 uistarmapPlanet = __instance.focusPlanet;
                 uistarmapStar = null;
                 __instance.cursorFunctionGroup.SetActive(true);
+                bool active2 = GameMain.sandboxToolsEnabled && GameMain.mainPlayer.planetId != __instance.focusPlanet.planet.id && !GameMain.mainPlayer.warping;
+                __instance.fastTravelButton.gameObject.SetActive(active2);
                 var planetPin = GameMain.history.GetPlanetPin(__instance.focusPlanet.planet.id);
                 __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, planetPin == EPin.Show ? -90 : planetPin == EPin.Hide ? 90 : 0);
                 __instance.cursorFunctionText1.text = (planetPin == EPin.Show ? "天体显示标签" : planetPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
+                __instance.fastTravelButton.button.interactable = !__instance.fastTravelling;
             }
             else if (__instance.focusStar != null)
             {
                 uistarmapPlanet = null;
                 uistarmapStar = __instance.focusStar;
                 __instance.cursorFunctionGroup.SetActive(true);
+                __instance.fastTravelButton.gameObject.SetActive(false);
                 var starPin = GameMain.history.GetStarPin(__instance.focusStar.star.id);
                 __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, starPin == EPin.Show ? -90 : starPin == EPin.Hide ? 90 : 0);
                 __instance.cursorFunctionText1.text = (starPin == EPin.Show ? "天体显示标签" : starPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
@@ -35,6 +39,7 @@ namespace GalacticScale
             else
             {
                 __instance.cursorFunctionGroup.SetActive(false);
+                __instance.fastTravelButton.gameObject.SetActive(false);
             }
 
             if (uistarmapPlanet != null) uistarmapStar = null;
