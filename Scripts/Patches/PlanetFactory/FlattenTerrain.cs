@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace GalacticScale
 {
-    public static class PatchOnPlanetFactory
+    public static partial class PatchOnPlanetFactory
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetFactory), "InitVeinGroups", typeof(PlanetData))]
