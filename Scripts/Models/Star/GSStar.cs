@@ -356,6 +356,6 @@ namespace GalacticScale
             return clone;
         }
 
-        public float SystemRadius => Planets[Planets.Count - 1].OrbitOutermostSystemRadiusAU;
+        public float SystemRadius => Planets[Planets.Count - 1].OrbitOutermostSystemRadiusAU + 1;
     }
 }
