@@ -144,11 +144,12 @@ namespace GalacticScale
 
             planet.data.veinCursor = 1;
             // planet.veinGroups = new PlanetData.VeinGroup[veinVectorCount];
-            planet.veinGroups = new VeinGroup[veinVectorCount];
+            planet.veinGroups = new VeinGroup[veinVectorCount+1];
         }
 
         private static void InitializeVeinGroup(int i, EVeinType veinType, Vector3 position, PlanetData planet)
         {
+            i++;
             planet.veinGroups[i].type = veinType;
             planet.veinGroups[i].pos = position;
             planet.veinGroups[i].count = 0;
@@ -157,6 +158,7 @@ namespace GalacticScale
 
         private static void AddVeinToPlanet(int amount, EVeinType veinType, Vector3 position, short groupIndex, PlanetData planet)
         {
+            groupIndex++;
             // GS2.Log($"Adding Vein {veinType} GroupIndex = "+groupIndex);
             var vein = new VeinData
             {
