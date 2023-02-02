@@ -134,7 +134,7 @@ namespace GalacticScale
 				__instance.orbitRadiusValueText.text = __instance.planet.orbitRadius.ToString("0.00#") + " AU";
 				__instance.orbitRadiusValueTextEx.text = ((__instance.planet.orbitAround == 0)
 					? "环绕恒星".Translate()
-					: ("环绕空格".Translate() + NameGen.roman[__instance.planet.orbitAround] + "号星".Translate()));
+					: ("环绕空格".Translate() + RomanNumbers.roman[__instance.planet.orbitAround] + "号星".Translate()));
 				__instance.orbitPeriodValueText.text =
 					__instance.planet.orbitalPeriod.ToString("#,##0") + "空格秒".Translate();
 				__instance.rotationPeriodValueText.text =
