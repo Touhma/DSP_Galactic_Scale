@@ -105,7 +105,7 @@ namespace GalacticScale
                     EraseVegetableAtPoint(veinPosition, gsPlanet.planetData);
                     veinPosition = Utils.PositionAtSurface(veinPosition, gsPlanet);
                     if (!Utils.IsUnderWater(veinPosition, gsPlanet))
-                        AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, gsPlanet.planetData);
+                        AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)(i+1), gsPlanet.planetData);
                 }
             }
 

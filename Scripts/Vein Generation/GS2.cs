@@ -121,7 +121,7 @@ namespace GalacticScale
                     veinPosition = Utils.PositionAtSurface(veinPosition, gsPlanet);
                     //if (!Utils.IsUnderWater(veinPosition, gsPlanet))
                     // GS2.Warn("Adding Vein To Planet");
-                    AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, planet);
+                    AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)(i+1), planet);
                 }
             }
 
