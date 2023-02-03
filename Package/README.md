@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.11.4 - Fix Null Reference Error when quitting
 - Version 2.11.3 - Fix errors in roman number display when more than 20 planets are used. Fix vein display problems. Fix Fast Travel button. Thanks starfish!
 - Version 2.11.2 - Bump version number
 - Version 2.11.1 - Fix of the fix

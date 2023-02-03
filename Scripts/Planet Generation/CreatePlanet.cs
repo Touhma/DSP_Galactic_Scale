@@ -112,6 +112,7 @@ namespace GalacticScale
             // Log($"ThemeLibrary? for {planet.name} took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
             SetPlanetTheme(planet, gsPlanet);
+            planet.temperatureBias = gsPlanet.GsTheme.AtmoHeight;
             // Log($"Theme Set for {planet.name} took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
             //PlanetGen.SetPlanetTheme(planetData, star, gameDesc, 1, 0, ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.NextDouble(), ran.Next());

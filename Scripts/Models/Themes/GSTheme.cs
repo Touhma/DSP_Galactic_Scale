@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using GSSerializer;
+using Microsoft.Xbox;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -32,7 +33,7 @@ namespace GalacticScale
         public string DisplayName = "Default Theme";
         public EThemeDistribute Distribute = EThemeDistribute.Interstellar;
         public int[] GasItems = { };
-
+        [NonSerialized] public float AtmoHeight = 60f;
         public float[] GasSpeeds = { };
 
         [NonSerialized] public bool Habitable;
@@ -703,8 +704,13 @@ namespace GalacticScale
             // GS2.Log("About to process tints for "+Name);
             ProcessTints();
             ProcessMaterialSettings();
+            SaveAtmosphereHeight();
         }
 
+        void SaveAtmosphereHeight()
+        {
+            AtmoHeight = atmosMat.GetVector("_PlanetRadius").z - atmosMat.GetVector("_PlanetRadius").x;
+        }
         public void ProcessMaterialSettings()
         {
             //GS2.Log("Processing MaterialSettings for " + Name);
