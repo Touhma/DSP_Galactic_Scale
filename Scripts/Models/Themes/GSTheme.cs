@@ -199,8 +199,8 @@ namespace GalacticScale
 
             if (!initialized) InitMaterials();
 
-            if (PlanetType != EPlanetType.Gas)
-            {
+            // if (PlanetType != EPlanetType.Gas)
+            // {
                 if (AmbientSettings == null)
                 {
                     AmbientSettings = new GSAmbientSettings();
@@ -214,7 +214,11 @@ namespace GalacticScale
                     // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
                 }
                 //GS2.Log("Finished Processing Ambient Settings for " + Name);
-            }
+            // }
+            // else
+            // {
+            //     
+            // }
 
             if (VeinSettings.RequiresConversion && !Base)
                 ConvertVeinData();
@@ -433,6 +437,7 @@ namespace GalacticScale
             thumbMat = baseTheme.thumbMat != null ? Object.Instantiate(baseTheme.thumbMat) : null;
             minimapMat = baseTheme.minimapMat != null ? Object.Instantiate(baseTheme.minimapMat) : null;
             ambientDesc = baseTheme.ambientDesc != null ? Object.Instantiate(baseTheme.ambientDesc) : null;
+
             //GS2.Warn($"Ambient Desc for {Name} {Utils.AddressHelper.GetAddress(ambientDesc)} {Utils.AddressHelper.GetAddress(baseTheme.ambientDesc)}");
             ambientSfx = baseTheme.ambientSfx != null ? Object.Instantiate(baseTheme.ambientSfx) : null;
             //GS2.Log("Copying ambientSettings for " + Name);
@@ -448,6 +453,17 @@ namespace GalacticScale
                     //GS2.Log($"Cloning {DisplayName}");
                     AmbientSettings = baseTheme.AmbientSettings.Clone();
                 //GS2.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
+            }
+            if (ambientDesc == null)
+            {
+                ambientDesc = CommonUtils.ResourcesLoadArray<AmbientDesc>("Universe/Materials/Planets/Ocean 1/" + "ambient", "{0}-{1}", true)[0];
+
+                // ambientDesc = Object.Instantiate(baseTheme.ambientDesc);
+                // AmbientSettings.ToTheme(this);
+                if (ambientDesc == null)
+                {
+                    GS2.Error("AmbientDesc Still Null");
+                }
             }
         }
 

@@ -526,6 +526,7 @@ namespace GalacticScale.Generators
             //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 });
             hotGas.oceanMaterial.Colors["_Color"] = new Color { r = 0.288f, g = 0.14f, b = 0.03f, a = 1 };
             //hotGas.oceanMat.SetColor("_Color", new Color() { r = 0.917f, g = 0.776f, b = 0.6f, a = 1 });
+
             hotGas.CustomGeneration = true;
             hotGas.TerrainSettings = new GSTerrainSettings
             {
@@ -548,6 +549,11 @@ namespace GalacticScale.Generators
                 ["_AtmoThickness"] = 3
             };
             hotGas.WaterItemId = 1000;
+            hotGas.ambientDesc = CommonUtils.ResourcesLoadArray<AmbientDesc>("Universe/Materials/Planets/Ocean 1/" + "ambient", "{0}-{1}", true)[0];
+            hotGas.AmbientSettings.FromTheme(GSSettings.ThemeLibrary.Find("Mediterranean"));
+            // if (hotGas.AmbientSettings == null) hotGas.AmbientSettings = new GSAmbientSettings();
+            // hotGas.AmbientSettings.FromTheme(GSSettings.ThemeLibrary.Find("Mediterranean"));
+
             hotGas.Process();
             //stupid.CustomGeneration = true;
             //stupid.TerrainSettings = new GSTerrainSettings

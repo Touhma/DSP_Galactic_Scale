@@ -38,8 +38,10 @@ namespace GalacticScale
         {
             //GS2.Log("Start " + (theme.ambientDesc == null));
             if (theme.ambientDesc == null)
-                //GS2.Warn(theme.Name + " has no AmbientDesc");
+            {
+                GS2.Warn(theme.Name + " has no AmbientDesc");
                 return;
+            }
 
             Color1 = theme.ambientDesc.ambientColor0; //Trees Day Tint
             Color2 = theme.ambientDesc.ambientColor1; //Trees Twilight Tint

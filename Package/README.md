@@ -2,6 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.11.6 - 2nd Attempt
+- Version 2.11.5 - Attempt to fix Null Reference error with Infernal Giant
 - Version 2.11.4 - Fix Null Reference Error when quitting
 - Version 2.11.3 - Fix errors in roman number display when more than 20 planets are used. Fix vein display problems. Fix Fast Travel button. Thanks starfish!
 - Version 2.11.2 - Bump version number
