@@ -20,7 +20,7 @@ namespace GalacticScale
             }
             if (VFInput.shift)
             {
-                GS2.Warn($"Overriding AtmosHeight to {__instance.realRadius+50f}");
+                // GS2.Warn($"Overriding AtmosHeight to {__instance.realRadius+50f}");
                 __result = __instance.realRadius+50f;
                 return false;
             }
@@ -33,7 +33,7 @@ namespace GalacticScale
                     __result = __instance.temperatureBias;
                 }
 
-               GS2.Warn($"Atmosphere Height Set to {__result} for planet:{__instance.name}");
+               // GS2.Warn($"Atmosphere Height Set to {__result} for planet:{__instance.name}");
             
             return false;
         }
