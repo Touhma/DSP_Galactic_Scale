@@ -1,7 +1,12 @@
-﻿namespace GalacticScale
+﻿using System.Globalization;
+using GSSerializer;
+
+namespace GalacticScale
 {
+    [fsObject(Converter = typeof(FloatPairConverter ))]
     public struct FloatPair
     {
+        private static readonly CultureInfo UsEnglishCulture = new CultureInfo("en-US");
         public float low;
         public float high;
 
@@ -10,10 +15,15 @@
             this.low = low;
             this.high = high;
         }
-
+        public FloatPair(string floatPairString)
+        {
+            var parts = floatPairString.Split(':');
+            low = float.Parse(parts[0], UsEnglishCulture);
+            high = float.Parse(parts[1], UsEnglishCulture);
+        }
         public override string ToString()
         {
-            return $"{low}:{high}";
+            return $"{low.ToString(UsEnglishCulture)}:{high.ToString(UsEnglishCulture)}";
         }
     }
 
