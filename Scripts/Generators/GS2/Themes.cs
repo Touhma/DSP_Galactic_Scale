@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GalacticScale.Generators
 {
-    public partial class GS2Generator3 : iConfigurableGenerator
+    public partial class GS2Generator2 : iConfigurableGenerator
     {
         public static string[] baseKeys;
         public static List<GSTheme> cometThemes = new();

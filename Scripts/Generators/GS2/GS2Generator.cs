@@ -5,7 +5,7 @@ using static GalacticScale.GS2;
 
 namespace GalacticScale.Generators
 {
-    public partial class GS2Generator3 : iConfigurableGenerator
+    public partial class GS2Generator2 : iConfigurableGenerator
     {
         private readonly Dictionary<GSStar, List<Orbit>> starOrbits = new();
 
@@ -26,15 +26,15 @@ namespace GalacticScale.Generators
         private GS2.Random random;
 
 
-        public string Name => "Galactic Scale 2 Dev";
+        public string Name => "Galactic Scale 2";
 
         public string Author => "innominata";
 
-        public string Description => "The Galactic Scale 2 Development Generator";
+        public string Description => "The Galactic Scale 2 Generator";
 
         public string Version => "0.0";
 
-        public string GUID => "space.customizing.generators.gs2devActual";
+        public string GUID => "space.customizing.generators.gs2dev";
 
         public void OnUpdate(string key, Val val)
         {

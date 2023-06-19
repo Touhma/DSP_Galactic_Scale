@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GalacticScale.Generators
 {
-    public partial class GS2Generator3 : iConfigurableGenerator
+    public partial class GS2Generator2 : iConfigurableGenerator
     {
         public void NamePlanets(GSStar star)
         {
@@ -46,16 +46,6 @@ namespace GalacticScale.Generators
             }
         }
 
-        public void nameMoonsRoman(GSPlanet planet)
-        {
-            var i = 1;
-            foreach (var moon in planet.Moons)
-            {
-                moon.Name = $"{planet.Name} - {RomanNumbers.roman[i]}";
-                if (moon.MoonCount > 0) nameMoonsRoman(moon);
-                i++;
-            }
-        }
         public void NamePlanetsRoman(GSStar star)
         {
             var i = 1;
@@ -63,19 +53,18 @@ namespace GalacticScale.Generators
             {
                 planet.Name = $"{star.Name} - {RomanNumbers.roman[i]}";
                 var j = 1;
-                if (planet.MoonCount > 0) nameMoonsRoman(planet);
-                // foreach (var moon in planet.Moons)
-                // {
-                //     moon.Name = $"{planet.Name} - {RomanNumbers.roman[j]}";
-                //     var h = 1;
-                //     foreach (var moon2 in moon.Moons)
-                //     {
-                //         moon2.Name = $"{moon.Name} - {RomanNumbers.roman[h]}";
-                //         h++;
-                //     }
-                //
-                //     j++;
-                // }
+                foreach (var moon in planet.Moons)
+                {
+                    moon.Name = $"{planet.Name} - {RomanNumbers.roman[j]}";
+                    var h = 1;
+                    foreach (var moon2 in moon.Moons)
+                    {
+                        moon2.Name = $"{moon.Name} - {RomanNumbers.roman[h]}";
+                        h++;
+                    }
+
+                    j++;
+                }
 
                 i++;
             }
@@ -344,7 +333,72 @@ namespace GalacticScale.Generators
         }
     }
 
-    
+    internal enum EAlphabet
+    {
+        a,
+        b,
+        c,
+        d,
+        e,
+        f,
+        g,
+        h,
+        i,
+        j,
+        k,
+        l,
+        m,
+        n,
+        o,
+        p,
+        q,
+        r,
+        s,
+        t,
+        u,
+        v,
+        w,
+        x,
+        y,
+        z
+    }
 
-    
+
+    public static class NameGenerator
+    {
+        private static GS2.Random r;
+
+        private static readonly string[] cone =
+        {
+            "rn", "st", "ll", "r", "rl", "gh", "l", "t", "d", "s"
+        };
+
+        private static readonly string[] conb =
+        {
+            "c", "pl", "s", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
+        };
+
+        private static readonly string[] conm =
+        {
+            "sc", "c", "cc", "s", "ss", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
+        };
+
+        private static readonly string[] vowel = { "o", "y", "u", "e", "ae", "i", "a" };
+
+
+        public static string New(GSPlanet planet)
+        {
+            if (r is null) r = new GS2.Random(planet.Seed);
+
+            var c = r.Next(1, 2);
+
+            var output = r.NextBool() ? r.Item(conb) : "";
+            for (var i = 0; i < c; i++) output += r.Item(vowel) + r.Item(conm);
+
+            output += r.Item(vowel);
+            output += r.NextBool() ? "" : r.Item(cone);
+
+            return output;
+        }
+    }
 }

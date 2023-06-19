@@ -6,7 +6,7 @@ using static UnityEngine.Mathf;
 
 namespace GalacticScale.Generators
 {
-    public partial class GS2Generator3 : iConfigurableGenerator
+    public partial class GS2Generator2 : iConfigurableGenerator
     {
         public void GenerateBinaryStar(GSStar star)
         {

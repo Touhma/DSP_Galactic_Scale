@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale.Generators
 {
-    public partial class GS2Generator3 : iConfigurableGenerator
+    public partial class GS2Generator2 : iConfigurableGenerator
     {
         public static List<string> PlanetNames = new()
         {
@@ -708,8 +708,6 @@ namespace GalacticScale.Generators
                 mm.genData.Add("hosttype", "moon");
                 mm.genData.Add("hostname", randomMoon.Name);
                 randomMoon.Moons.Add(mm);
-                if (preferences.GetBool("moonCeption", false)) moons.Add(mm);
-                
                 // GS2.Log($"Added {mm} {mm.Radius} to {randomMoon.Name}");
             }
 

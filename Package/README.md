@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.11.9 - Added GalacticScale Dev Generator, added Recursive Moon option. Removed Vanilla Gen due to lack of maintenance.
 - Version 2.11.8 - Attempt to fix localization issues
 - Version 2.11.7 - Fix Galaxy Generation when moon change is high
 - Version 2.11.6 - 2nd Attempt

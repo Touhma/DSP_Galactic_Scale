@@ -9,7 +9,8 @@ namespace GalacticScale
 
         public static List<iGenerator> Generators = new()
         {
-            new Vanilla(),
+            new GS2Generator3(),
+            // new Vanilla(),
             //new GS2Generator(),
             new GS2Generator2(),
             //new Generators.SizeTest(),

@@ -4,7 +4,7 @@ using static GalacticScale.GS2;
 
 namespace GalacticScale.Generators
 {
-    public partial class GS2Generator3
+    public partial class GS2Generator2
     {
         private static bool loaded;
         public static float minOrbit = 0.05f;
@@ -233,7 +233,6 @@ namespace GalacticScale.Generators
             preferences.Set("chanceGas", 20);
             preferences.Set("chanceMoon", 20);
             preferences.Set("chanceMoonMoon", 5);
-            preferences.Set("moonCeption", true);
             preferences.Set("orbitOverride", false);
             preferences.Set("hzOverride", false);
             preferences.Set("hz", new FloatPair(0.9f, 2));
@@ -313,8 +312,6 @@ namespace GalacticScale.Generators
             UI.Add("moonBias", sOptions.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias", null, "Lower prefers telluric planets, higher gas giants".Translate())));
             UI.Add("secondarySatellites", sOptions.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
             UI.Add("chanceMoonMoon", sOptions.Add(GSUI.Slider("Secondary Satellite Chance".Translate(), 0, 5, 99, "chanceMoonMoon", null, "% Chance for a moon to have a moon".Translate())));
-            UI.Add("moonCeption", sOptions.Add(GSUI.Checkbox("Recursive Moons".Translate(), true, "moonsCeption", null, "Moons of moons can have moons...".Translate())));
-
             AddSpacer(sOptions);
             sOptions.Add(GSUI.Header("Default Settings".Translate(), "Changing these will reset all star specific overrides".Translate()));
             UI.Add("planetCount", sOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, PlanetCountLow, PlanetCountHigh, "The amount of planets per star".Translate())));
