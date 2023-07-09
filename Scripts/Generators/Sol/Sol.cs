@@ -59,7 +59,7 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Checkbox("Accurate Stars".Translate(), true, "accurateStars")); //, (o) => { ReadStarData(); }));
             Options.Add(GSUI.Checkbox("Start in Sol".Translate(), true, "startInSol"));
             Options.Add(GSUI.Slider("Max planets per system".Translate(), 1, 10, 99, "maxPlanetCount"));
-            Options.Add(GSUI.Slider("Sol System Day/Night Multi", 0.5f, 1f, 20f, 0.5f, "IncreaseRotation", null, "Change the Sol system planets day/night cycle"));
+            Options.Add(GSUI.Slider("Sol System Day/Night Multi".Translate(), 0.5f, 1f, 20f, 0.5f, "IncreaseRotation", null, "Change the Sol system planets day/night cycle".Translate()));
             UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 20, 30, 510, o =>
             {
                 var maxSize = preferences.GetFloat("maxPlanetSize", 300);
