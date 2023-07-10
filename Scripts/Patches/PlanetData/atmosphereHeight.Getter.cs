@@ -18,12 +18,6 @@ namespace GalacticScale
                 }
                 return false;
             }
-            if (VFInput.shift)
-            {
-                // GS2.Warn($"Overriding AtmosHeight to {__instance.realRadius+50f}");
-                __result = __instance.realRadius+50f;
-                return false;
-            }
             if (!(__instance.atmosMaterial == null))
                 {
                     // GSPlanet gsPlanet = GS2.GetGSPlanet(__instance);
