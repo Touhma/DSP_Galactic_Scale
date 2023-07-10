@@ -66,7 +66,7 @@ namespace GalacticScale
                         }
 
                         var bodyCount = gsstar.bodyCount;
-                        loadingText += string.Format("Calculating planet {0}/{1}...\r\n", bodyCount - num, bodyCount);
+                        loadingText += string.Format("Calculating planet {0}/{1}...\r\n".Translate(), bodyCount - num, bodyCount);
                     }
                     else
                     {
@@ -92,7 +92,7 @@ namespace GalacticScale
             {
                 oldLoadingText = loadingText;
                 if (GameMain.localStar != null && !GameMain.localStar.loaded)
-                    loadingText = "\r\nLoading Planets:" + HandleLocalStarPlanets.GetStarLoadingStatus(GameMain.localStar);
+                    loadingText = "\r\n" + "Loading Planets: ".Translate() + HandleLocalStarPlanets.GetStarLoadingStatus(GameMain.localStar);
                 else loadingText = "";
                 if (GameMain.localStar != null && GameMain.localStar.loaded) loadingText = "";
                 if (GameMain.localStar == null) loadingText = "";
