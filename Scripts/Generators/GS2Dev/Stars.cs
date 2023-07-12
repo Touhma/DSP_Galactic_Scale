@@ -29,7 +29,7 @@ namespace GalacticScale.Generators
 
             binary.radius = Clamp(star.radius * .6f, 0.01f, binaryRadius);
             binary.Decorative = true;
-            var offset = (star.RadiusLY + binary.RadiusLY) * preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f);
+            var offset = (star.RadiusLY * 2 + binary.RadiusLY * 2) * preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f);
             star.genData.Add("binaryOffset", offset);
             binary.position = new VectorLF3(offset, 0, 0);
             star.luminosity += binary.luminosity;
