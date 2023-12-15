@@ -1,10 +1,52 @@
-﻿using HarmonyLib;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
 using UnityEngine;
 
 namespace GalacticScale
 {
     public class PatchOnBuildTool_Path
     {
+        [HarmonyTranspiler, HarmonyPatch(typeof(BuildTool_Path), "CheckBuildConditions")]
+        public static IEnumerable<CodeInstruction> CheckBuildConditions_Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            try
+            {
+                // replace : Physics.OverlapCapsuleNonAlloc(vector2, vector3, 0.28f, BuildTool._tmp_cols, 425984, QueryTriggerInteraction.Collide);
+                // with    : Physics.OverlapCapsuleNonAlloc(vector2, vector3, 0.22f, BuildTool._tmp_cols, 425984, QueryTriggerInteraction.Collide);
+                MethodInfo methodInfo = AccessTools.Method(typeof(Physics), "OverlapCapsuleNonAlloc", 
+                    new Type[] { typeof(Vector3), typeof(Vector3), typeof(float), typeof(Collider[]), typeof(int), typeof(QueryTriggerInteraction) });
+                int count = 0;
+                var codeMatcher = new CodeMatcher(instructions)
+                    .MatchForward(false, new CodeMatch(OpCodes.Call, methodInfo))
+                    .Repeat(
+                        matcher =>
+                        {
+                            if (matcher.InstructionAt(-4).opcode == OpCodes.Ldc_R4) {
+                                matcher
+                                    .Advance(-4)
+                                    .SetOperandAndAdvance(0.22f);
+                                count++;
+                                matcher.Advance(4);
+                            }
+                        }
+                    );
+
+                if (count != 4)
+                    GS2.Warn("BuildTool_Path.CheckBuildConditions transpiler doesn't work as expected: " + count);
+
+                return codeMatcher.InstructionEnumeration();
+            }
+            catch (Exception e)
+            {
+                GS2.Warn("BuildTool_Path.CheckBuildConditions transpiler fail!");
+                GS2.Warn(e.Message);
+                return instructions;
+            }
+        }
+        
         [HarmonyPrefix]
         [HarmonyPatch(typeof(BuildTool_Path), "GetGridWidth")]
         public static bool GetGridWidth(BuildTool_Path __instance, ref float __result, Vector3 _pos, Vector3 _forward)
@@ -50,7 +92,7 @@ namespace GalacticScale
 
             var entity = factory.entityPool[objId];
             var entity2 = factory.entityPool[objId2];
-            if (entity.isNull && entity2.isNull) return __result;
+            if (entity.id == 0 && entity2.id == 0) return __result;
             var itemProto = LDB.items.Select(entity.protoId); // Grab the prototype of the first object in the chain
             var itemProto2 = LDB.items.Select(entity2.protoId);
             if (itemProto == null && itemProto2 == null) return __result;

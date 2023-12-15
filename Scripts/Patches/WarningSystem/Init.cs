@@ -16,8 +16,8 @@ namespace GalacticScale
             __instance.tmpPrebuildPools = new PrebuildData[planetCount][];
             __instance.tmpSignPools = new SignData[planetCount][];
             var l = GameMain.galaxy.starCount * 400;
-            __instance.astroArr = new AstroPoseR[l];
-            __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default);
+            // __instance.astroArr = new AstroPoseR[l]; // removed in 0.10
+            // __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default); // removed in 0.10
         }
 
         [HarmonyPrefix]

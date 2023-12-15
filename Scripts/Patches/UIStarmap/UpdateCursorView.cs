@@ -11,6 +11,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIStarmap), "UpdateCursorView")]
         public static bool UpdateCursorView(UIStarmap __instance)
         {
+            Player mainPlayer = GameMain.mainPlayer; // 0.10
             var active = false;
             var uistarmapPlanet = __instance.mouseHoverPlanet;
             var uistarmapStar = __instance.mouseHoverStar;
@@ -24,7 +25,7 @@ namespace GalacticScale
                 var planetPin = GameMain.history.GetPlanetPin(__instance.focusPlanet.planet.id);
                 __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, planetPin == EPin.Show ? -90 : planetPin == EPin.Hide ? 90 : 0);
                 __instance.cursorFunctionText1.text = (planetPin == EPin.Show ? "天体显示标签" : planetPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
-                __instance.fastTravelButton.button.interactable = !__instance.fastTravelling;
+                __instance.fastTravelButton.button.interactable = !mainPlayer.fastTravelling && mainPlayer.isAlive;
             }
             else if (__instance.focusStar != null)
             {
@@ -56,7 +57,6 @@ namespace GalacticScale
                     var text = string.Format("行星类型".Translate() + "\r\n", planet.typeString, arg);
                     if (!GS2.Vanilla && GS2.GetGSPlanet(planet).GsTheme.DisplayName == "Comet") text = "Comet\r\n";
                     if (uistarmapPlanet == __instance.focusPlanet) text = "<color=\"#FFFFFFB0\">" + __instance.focusPlanet.planet.displayName + "</color>\r\n" + text;
-                    var mainPlayer = GameMain.mainPlayer;
                     var num = (planet.uPosition - mainPlayer.uPosition).magnitude - planet.realRadius - 50.0;
                     string str2;
                     if (num < 50.0)

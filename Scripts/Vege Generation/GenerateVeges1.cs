@@ -195,7 +195,8 @@ namespace GalacticScale
                     vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) * Quaternion.AngleAxis(angle, Vector3.up);
                     vege.scl = new Vector3(num47, num46, num47);
                     vege.modelIndex = (short)vegeProtos[vege.protoId].ModelIndex;
-                    vege.hp = vegeHps[vege.protoId];
+                    // vege.hp = vegeHps[vege.protoId]; //0.10
+                    vege.hash.InitHashBits(vege.pos.x, vege.pos.y, vege.pos.z); // 0.10
                     if (data == null) return;
                     var num48 = data.AddVegeData(vege);
                     data.vegeIds[i] = (ushort)num48;
@@ -228,7 +229,8 @@ namespace GalacticScale
                         vege.rot = Quaternion.FromToRotation(Vector3.up, vege.pos.normalized) * Quaternion.AngleAxis(angle2, Vector3.up);
                         vege.scl = new Vector3(num56, num55, num56);
                         vege.modelIndex = (short)vegeProtos[vege.protoId].ModelIndex;
-                        vege.hp = 1;
+                        // vege.hp = 1;// 0.10
+                        vege.hash.InitHashBits(vege.pos.x, vege.pos.y, vege.pos.z); // 0.10
                         if (data == null) return;
                         var num57 = data.AddVegeData(vege);
                         data.vegeIds[i] = (ushort)num57;

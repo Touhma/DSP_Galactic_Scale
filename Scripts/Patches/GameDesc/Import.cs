@@ -15,7 +15,7 @@ namespace GalacticScale
                 var ForceFile = Path.Combine(GS2.DataDir, "ForceImport.json");
                 var saveName = DSPGame.LoadFile;
                 var GSSave = GameConfig.gameSaveFolder + saveName + ".gs2";
-                GS2.Log("Not Menu Demo. Importing");
+                GS2.Warn("Not Menu Demo. Importing");
                 if (VFInput.shift && File.Exists(ForceFile))
                 {
                     GS2.Warn("LOADING GALAXY DESC FROM ForceImport.json");
@@ -39,7 +39,7 @@ namespace GalacticScale
                 return;
             }
 
-            GS2.Log("Menu Demo: " + GS2.IsMenuDemo);
+            GS2.Warn("Menu Demo: " + GS2.IsMenuDemo);
             GSSettings.Instance.imported = false;
         }
     }

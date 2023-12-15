@@ -156,6 +156,7 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));
             DebugOptions.Add(GSUI.Slider("Mecha Scale".Translate(), 0.1f, 1f, 10f, 0.1f, "MechaScale", ScaleMecha, "How big Icarus should be. 1 = default".Translate()));
+            DebugOptions.Add(GSUI.Button("Reset Binary Star Position".Translate(), "Go", ResetBinaryStars, null, "Try and move binary stars to new position relative to main star".Translate()));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Planet ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSPlanetScaleFactor", null, "How big planets should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Star ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSStarScaleFactor", null, "How big star should be in the new game system view".Translate()));
@@ -263,7 +264,7 @@ namespace GalacticScale
                         continue;
                     }
 
-                    var offset = star.genData.Get("binaryOffset", (star.RadiusLY + binary.RadiusLY) * random.NextFloat(1.1f, 1.3f));
+                    var offset = star.genData.Get("binaryOffset", (star.RadiusLY * 2 + binary.RadiusLY * 2) * Preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f));
                     binary.position = new VectorLF3(offset, 0, 0);
                     Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
                     // GS2.Warn("Setting Binary Star Position");

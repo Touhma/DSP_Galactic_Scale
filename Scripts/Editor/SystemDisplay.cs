@@ -35,8 +35,11 @@ namespace GalacticScale
 
         public static void InitializeButtons(UIGalaxySelect instance)
         {
-            galaxySelectTopTitle = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/top-title");
-            galaxySelectRightGroup = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group");
+            Debug.Log("1");
+            galaxySelectTopTitle = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/setting-group/top-title/");
+            Debug.Log("2");
+            galaxySelectRightGroup = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/right-group/");
+            Debug.Log("3");
             // backButton.onClick.RemoveAllListeners();
             randomButton.onClick.RemoveAllListeners();
             randomButton.onClick.m_PersistentCalls.Clear();

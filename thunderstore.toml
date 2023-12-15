@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.11.9"
-description = "v2.11.9 Moonception."
+versionNumber = "2.11.11"
+description = "v2.11.11 Fixes from the community :) You guys are awesome."
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 

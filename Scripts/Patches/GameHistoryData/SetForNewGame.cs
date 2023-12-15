@@ -67,6 +67,25 @@ namespace GalacticScale
             __instance.stationPilerLevel = 1;
             __instance.remoteStationExtraStorage = 0;
             __instance.localStationExtraStorage = 0;
+            __instance.kineticDamageScale = 1f;//Added after 0.10 Update
+            __instance.energyDamageScale = 1f;//Added after 0.10 Update
+            __instance.blastDamageScale = 1f;//Added after 0.10 Update
+            __instance.magneticDamageScale = 1f;//Added after 0.10 Update
+            __instance.planetaryATFieldEnergyRate = Configs.freeMode.planetaryATFieldEnergyRate;//Added after 0.10 Update
+            __instance.groundFleetPortCount = 0;//Added after 0.10 Update
+            __instance.spaceFleetPortCount = 0;//Added after 0.10 Update
+            __instance.combatDroneDamageRatio = 1f;//Added after 0.10 Update
+            __instance.combatDroneROFRatio = 1f;//Added after 0.10 Update
+            __instance.combatDroneDurabilityRatio = 1f;//Added after 0.10 Update
+            __instance.combatDroneSpeedRatio = 1f;//Added after 0.10 Update
+            __instance.combatShipDamageRatio = 1f;//Added after 0.10 Update
+            __instance.combatShipROFRatio = 1f;//Added after 0.10 Update
+            __instance.combatShipDurabilityRatio = 1f;//Added after 0.10 Update
+            __instance.combatShipSpeedRatio = 1f;//Added after 0.10 Update
+            __instance.fighterInitializeSpeedScale = 1f;//Added after 0.10 Update
+            __instance.minimalPropertyMultiplier = __instance.gameData.gameDesc.propertyMultiplier;//Added after 0.10 Update
+            __instance.minimalDifficulty = __instance.gameData.gameDesc.combatSettings.difficulty;//Added after 0.10 Update
+            __instance.dfTruceTimer = 0L;//Added after 0.10 Update
             __instance.propertyData.Clear(); //Added after 0.9.25 update
             __instance.createWithSandboxMode = __instance.gameData.gameDesc.isSandboxMode; //Added after 0.9.27 Update
             return false;

@@ -62,7 +62,7 @@ namespace GalacticScale.Generators
             foreach (var planet in star.Planets)
             {
                 planet.Name = $"{star.Name} - {RomanNumbers.roman[i]}";
-                var j = 1;
+                // var j = 1;
                 if (planet.MoonCount > 0) nameMoonsRoman(planet);
                 // foreach (var moon in planet.Moons)
                 // {

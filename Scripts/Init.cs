@@ -105,7 +105,10 @@ namespace GalacticScale
         public static void Init()
 
         {
-            Log($"Vanilla Theme Count: {LDB._themes.dataArray.Length.ToString()}");
+            Warn("Init");
+            Warn("Init2");
+            Warn($"Init {LDB._themes == null}");
+            // Warn($"Vanilla Theme Count: {LDB._themes.dataArray.Length.ToString()}");
             if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
             {
                 if (ActiveGenerator != null && ActiveGenerator.GUID == "space.customizing.generators.vanilla") updateMessage += "BACKUP YOUR SAVES. This version has potentially BREAKING CHANGES.\r\nNote: Settings for this mod are in the settings menu. Make sure to change the Generator to get the full Galactic Scale experience.\r\n".Translate();
@@ -114,7 +117,7 @@ namespace GalacticScale
                 updateMessage += "The latest DSP update has added additional planet themes which are yet to be included in GS2. \r\nI'm working on getting them added to the GS2 themeset, as well as implementing their new subtheme system".Translate();
             }
 
-            // Warn("Step2");
+            Warn("Step2");
             if (Directory.Exists(OldDataDir) && !Directory.Exists(DataDir))
             {
                 Warn($"Moving Configs from {OldDataDir} to {DataDir}");
@@ -122,23 +125,23 @@ namespace GalacticScale
                 updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
 
-            // Warn("Step3");
+            Warn("Step3");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
-            // Warn("Step4");
+            Warn("Step4");
             CleanErrorLogs();
 
             Config.Init();
-            // Warn("Step5");
+            Warn("Step5");
             LoadPreferences(true);
-            // Warn("Step6");
+            Warn("Step6");
             var themes = GSSettings.ThemeLibrary.Select(t => t.Value).ToList();
-            // Warn("Step7");
+            Warn("Step7");
             foreach (var t in themes) t.Process();
-            // Warn("Step8");
+            Warn("Step8");
             LoadGenerators();
-            // Warn("Step9");
+            Warn("Step9");
             LoadPreferences();
-            // Log("End");
+            Log("End");
         }
 
         public static void ShowMessage(string message, string title = "Galactic Scale", string button = "OK")
@@ -148,22 +151,22 @@ namespace GalacticScale
 
         public static void OnMenuLoaded()
         {
-            // Warn("Start");
+            Warn("Start");
             if (MenuHasLoaded) return;
             MenuHasLoaded = true;
             Log("Loading External Themes");
             LoadExternalThemes(Path.Combine(DataDir, "CustomThemes"));
-            // Warn("Step1");
+            Warn("Step1");
             ExternalThemeProcessor.LoadEnabledThemes();
-            // Warn("Step2");
+            Warn("Step2");
             Config.InitThemePanel();
-            // Warn("Step3");
+            Warn("Step3");
             if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemes.json"), LDB._themes.dataArray);
-            // Warn("Step4");
+            Warn("Step4");
             LDB._themes.Select(1);
-            // Warn("Step5");
+            Warn("Step5");
             if (Config.Dev) Utils.DumpProtosToCSharp();
-            // Warn("Step6");
+            Warn("Step6");
             if (Config.Dev)
             {
                 var da = LDB._veges.dataArray;
@@ -179,7 +182,7 @@ namespace GalacticScale
                 DumpObjectToJson(Path.Combine(DataDir, "ldbvege.json"), vegeDict);
             }
 
-            // Warn("Step7");
+            Warn("Step7");
             if (updateMessage != "")
             {
                 UIMessageBox.Show("Update Information", updateMessage, "Noted!", 0);
@@ -193,9 +196,9 @@ namespace GalacticScale
             }
 
 
-            // Warn("Step8");
+            Warn("Step8");
             UpdateNebulaSettings();
-            // Warn("Step9");
+            Warn("Step9");
             Utils.InitMk2MinerEffectVertices();
         }
     }

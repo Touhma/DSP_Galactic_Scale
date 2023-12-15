@@ -80,7 +80,7 @@ namespace GalacticScale
                     num5 += Mathf.Clamp(num4 * (num4 > 0f ? 0.3f : 0.9f), -0.9f, 0.3f) * 0.19f;
                 }
 
-                __instance.genPool[num2].gthStrength = __instance.CalculateGeothermalStrenth(pos, rot);
+                __instance.genPool[num2].gthStrength = __instance.CalculateGeothermalStrenth(pos, rot, 0);
                 __instance.genPool[num2].warmupSpeed = 0.0027777778f;
             }
 

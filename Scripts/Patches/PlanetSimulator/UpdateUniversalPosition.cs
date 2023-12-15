@@ -9,7 +9,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetSimulator), "UpdateUniversalPosition")]
-        public static bool UpdateUniversalPosition(ref PlanetSimulator __instance, ref StarSimulator ___star, ref bool ___isLocal, ref Transform ___lookCamera, Vector3 playerLPos, VectorLF3 playerUPos, Vector3 cameraPos)
+        public static bool UpdateUniversalPosition(ref PlanetSimulator __instance, ref StarSimulator ___star, ref bool ___isLocal, ref Transform ___lookCamera, VectorLF3 playerUPos, Vector3 cameraPos)
         {
             if (__instance.planetData == null || __instance.planetData.loading || __instance.planetData.factoryLoading || __instance.planetData == PlanetModelingManager.currentModelingPlanet) return false;
 

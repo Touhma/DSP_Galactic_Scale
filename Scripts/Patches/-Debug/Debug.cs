@@ -125,7 +125,7 @@ namespace GalacticScale
 							factory.entityPool[entityId].speakerId = 0;
 							if (factory.entityPool[entityId].warningId >= __instance.warningSystem.warningCursor)
 								factory.entityPool[entityId].warningId = 0;
-							factory.RemoveEntityWithComponents(entityId);
+							factory.RemoveEntityWithComponents(entityId, false);
 						}
 					}
 				}
