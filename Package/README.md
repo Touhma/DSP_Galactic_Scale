@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.2 - Attempt at getting some combat systems working. Seems to be working on normal to large planets, but I need it tested. Small planets seem to be broken still.
 - Version 2.12.1 - Fixed a lot of bugs in New Game screen. Dark Fog Settings work now. Only tested with 200 radius planets. Seems to be working at least for the first few mins.
 - Version 2.12.0 - Initial Dark Fog Test Build. DONT CRY IF THIS EXPLODES YOUR PC. Very Buggy. Only for testing, would not recommend trying to actually play the game on this build. Have fun in vanilla unless you're helping fix the bugs :)
 - Version 2.11.11 - Add Binary Star Fix from Arniox, and Soarqin's autobridging belt fix. Thanks to starfish for the transpiler, and for paying attention when I was asleep at the wheel.
