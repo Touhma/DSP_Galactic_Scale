@@ -58,6 +58,13 @@ namespace GalacticScale
             __instance.gameDesc = new GameDesc();
             __instance.gameDesc?.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.ActiveGenerator.Config.DefaultStarCount, 1, GS2.Config.ResourceMultiplier);
             GS2.gameDesc = __instance.gameDesc;
+            GS2.gameDesc.isPeaceMode = false;//0.10
+            int[] itemIds = PropertySystem.itemIds; //0.10
+            for (int i = 0; i < itemIds.Length; i++)//0.10
+            {//0.10
+                int itemId = itemIds[i];//0.10
+                __instance.propertyItems[i].SetPropertyIcon(itemId, 0, true);//0.10
+            }//0.10
             if (__instance.starmapGroup == null) GS2.Warn("smg Null");
             __instance.starmapGroup?.gameObject?.SetActive(true);
             if (__instance.starmap == null) GS2.Warn("starmap Null");
@@ -66,6 +73,8 @@ namespace GalacticScale
             if (__instance.gameDesc?.starCount <= 0) __instance.gameDesc.starCount = 1;
             __instance.SetStarmapGalaxy();
             // PlanetModelingManager.PrepareWorks();
+            __instance.darkFogToggle.isOn = __instance.gameDesc.isCombatMode;//0.10
+            __instance.uiCombat.gameDesc = __instance.gameDesc;//0.10
             var grids = GameObject.Find("UI Root/Galaxy Select Starmap/grids");
             if (grids != null)
                 for (var i = 0; i < grids.transform.childCount; i++)
@@ -73,7 +82,10 @@ namespace GalacticScale
                     var grid = grids.transform.GetChild(i);
                     if (grid.name != "grid-0" && grid.name != "stars") grid.gameObject.SetActive(false);
                 }
-
+            if (DSPGame.CombatPlayedCount() == 0)//0.10
+            {//0.10
+                __instance.uiCombat.advisorEnabled = true;//0.10
+            }//0.10
             SystemDisplay.InitHelpText(__instance);
             return false;
         }

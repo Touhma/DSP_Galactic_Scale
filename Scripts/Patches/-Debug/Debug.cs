@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
 
@@ -92,6 +94,42 @@ namespace GalacticScale
 	return false;
 }
 		
+		// [HarmonyTranspiler]
+		// [HarmonyPatch(typeof(EnemyData), "Formation", typeof(int), typeof(EnemyData), typeof(float), typeof(VectorLF3), typeof(Quaternion), typeof(Vector3))]
+		// public static IEnumerable<CodeInstruction> EnemyData_Formation(IEnumerable<CodeInstruction> instructions)
+		// {
+		// 	instructions = new CodeMatcher(instructions)
+		// 		.MatchForward(
+		// 			true, 
+		// 			new CodeMatch(OpCodes.Ldc_I4, 200)
+		// 			)
+		// 		.Repeat(matcher =>
+		// 		{
+		// 			matcher.SetInstruction(Transpilers.EmitDelegate<Func<float>>(() =>
+		// 					{
+		// 						var planet = GameMain.localPlanet;
+		// 						return planet?.realRadius ?? 200;
+		// 					}
+		// 				)
+		// 			);
+		// 		}).InstructionEnumeration();
+		//
+		// 	return instructions;
+		// }
+		
+		
+		[HarmonyPrefix, HarmonyPatch(typeof(TestCombatDetails), "Update")]
+		public static bool TestCombatDetailsUpdate()
+		{
+			GS2.Log("TCDUpdate");
+			return true;
+		}
+		[HarmonyPrefix, HarmonyPatch(typeof(TestEnemyGenerate), "Update")]
+		public static bool TestEnemyGenerateUpdate()
+		{
+			GS2.Log("TEGUpdate");
+			return true;
+		}
 		[HarmonyPrefix, HarmonyPatch(typeof(PlanetData), "CalculateVeinGroups")]
 		public static bool CalculateVeinGroups(PlanetData __instance)
 		{

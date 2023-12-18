@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -10,6 +11,11 @@ namespace GalacticScale
         public static void _OnOpen(ref Text ___stateText)
         {
             ___stateText.text += "\r\nGalactic Scale v" + GS2.Version;
+            var r = GameObject.Find("UI Root/Overlay Canvas/In Game/Esc Menu/combat-detail-btn").GetComponent<RectTransform>();
+            if (r != null)
+            {
+                r.position = new Vector3(r.position.x + 2, r.position.y, r.position.z);
+            }
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(UIEscMenu), "OnButton5Click")]

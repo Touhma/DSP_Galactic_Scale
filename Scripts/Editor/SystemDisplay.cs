@@ -56,7 +56,16 @@ namespace GalacticScale
             Modeler.Reset();
             inGalaxySelect = false;
             Debug.Log($"Waiting for modeler to reset...{Modeler.processing.Count}");
-            Bootstrap.WaitUntil(() => Modeler.Idle, () => PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc));
+            if (instance.uiCombat.active)//0.10...
+            {
+                instance.uiCombat.ApplySettings();
+                return;
+            }
+            if (!instance.gameDesc.isCombatMode)
+            {
+                instance.gameDesc.combatSettings.SetDefault();
+            }//...0.10
+            Bootstrap.WaitUntil(() => Modeler.Idle, () => PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc, ref instance));
         }
 
         public static void ResetView()
@@ -329,6 +338,7 @@ namespace GalacticScale
             GalaxySelect.seedInput.transform.parent.gameObject.SetActive(false);
             GalaxySelect.starCountSlider.transform.parent.gameObject.SetActive(false);
             GalaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(false);
+            GalaxySelect.darkFogToggle.transform.parent.gameObject.SetActive(false);
         }
 
         private static void HidePlanetDetail()
@@ -465,6 +475,7 @@ namespace GalacticScale
             UIRoot.instance.galaxySelect.resourceMultiplierSlider.transform.parent.gameObject.SetActive(true);
             // UIRoot.instance.galaxySelect.starCountText .galaxySelectRightGroup.SetActive(true);
             // UIRoot.instance.galaxySelect.resourceMultiplierText.galaxySelectRightGroup.SetActive(true);
+            GalaxySelect.darkFogToggle.transform.parent.gameObject.SetActive(true);
         }
 
         private static void ShowStarMap(UIVirtualStarmap starmap)
@@ -778,13 +789,24 @@ namespace GalacticScale
 
         public static void InitHelpText(UIGalaxySelect __instance)
         {
+            GS2.Log("1");
             var leftGroup = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/");
-            var helpText = leftGroup.GetComponentInChildren<Text>();
+            leftGroup.SetActive(true);
+            GS2.Log("2");
+            var helpTextObject = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/icarus-box/Text");
+            
+            GS2.Log("3");
+            helpTextObject.SetActive(true);
+            helpTextObject.transform.parent.gameObject.SetActive(true);
+            var helpText = helpTextObject.GetComponent<Text>();
+            GS2.Log("4");
             if (leftGroup.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(leftGroup.GetComponentInChildren<Localizer>());
             helpText.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
             helpText.alignment = TextAnchor.LowerLeft;
             leftGroup.SetActive(true);
+            GS2.Log("5");
             var leftGroupRect = leftGroup.GetComponent<RectTransform>();
+            GS2.Log("6");
             leftGroupRect.anchorMax = leftGroupRect.anchorMin = leftGroupRect.pivot = Vector2.zero;
             leftGroupRect.offsetMin = new Vector2(0, 1);
             leftGroupRect.offsetMax = new Vector2(300, 20);
