@@ -2,7 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
-- Version 2.12.0 - Initial Dark Fog Test Build
+- Version 2.12.0 - Initial Dark Fog Test Build. DONT CRY IF THIS EXPLODES YOUR PC. Very Buggy. Only for testing, would not recommend trying to actually play the game on this build. Have fun in vanilla unless you're helping fix the bugs :)
 - Version 2.11.11 - Add Binary Star Fix from Arniox, and Soarqin's autobridging belt fix. Thanks to starfish for the transpiler, and for paying attention when I was asleep at the wheel.
 - Version 2.11.10 - Translation additions. Thanks starfish
 - Version 2.11.9 - Added GalacticScale Dev Generator, added Recursive Moon option. Removed Vanilla Gen due to lack of maintenance.

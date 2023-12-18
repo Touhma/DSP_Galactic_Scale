@@ -20,7 +20,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
-<!--        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.9.27.15466-r.0" IncludeAssets="compile" />-->
+        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.28.20779-r.0" IncludeAssets="compile" />
         <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
     </ItemGroup>
 
@@ -29,15 +29,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Assembly-CSharp">
-          <HintPath>d:\Assembly-CSharp-nstrip.dll</HintPath>
-        </Reference>
+<!--        <Reference Include="Assembly-CSharp">-->
+<!--          <HintPath>d:\Assembly-CSharp-nstrip.dll</HintPath>-->
+<!--        </Reference>-->
         <Reference Include="GSUI">
             <HintPath>Package\GSUI.dll</HintPath>
         </Reference>
-        <Reference Include="UnityEngine.UI">
-          <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
-        </Reference>
+<!--        <Reference Include="UnityEngine.UI">-->
+<!--          <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>-->
+<!--        </Reference>-->
     </ItemGroup>
 
     <ItemGroup>

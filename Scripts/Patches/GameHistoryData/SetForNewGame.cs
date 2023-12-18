@@ -9,6 +9,7 @@ namespace GalacticScale
         public static bool SetForNewGame(GameHistoryData __instance)
         {
             __instance.recipeUnlocked.Clear();
+            __instance.specialItemUnlocked.Clear(); //0.10
             __instance.tutorialUnlocked.Clear();
             __instance.featureKeys.Clear();
             __instance.featureValues.Clear();
@@ -44,6 +45,9 @@ namespace GalacticScale
             __instance.solarEnergyLossRate = Configs.freeMode.solarEnergyLossRate;
             __instance.useIonLayer = Configs.freeMode.useIonLayer;
             __instance.inserterStackCount = Configs.freeMode.inserterStackCount;
+            __instance.constructionDroneSpeed = Configs.freeMode.droneSpeed;
+            __instance.constructionDroneMovement = Configs.freeMode.droneMovement;
+            __instance.autoReconstructSpeed = 0;
             __instance.logisticDroneSpeed = Configs.freeMode.logisticDroneSpeed;
             __instance.logisticDroneSpeedScale = 1f;
             __instance.logisticDroneCarries = Configs.freeMode.logisticDroneCarries;
@@ -86,6 +90,8 @@ namespace GalacticScale
             __instance.minimalPropertyMultiplier = __instance.gameData.gameDesc.propertyMultiplier;//Added after 0.10 Update
             __instance.minimalDifficulty = __instance.gameData.gameDesc.combatSettings.difficulty;//Added after 0.10 Update
             __instance.dfTruceTimer = 0L;//Added after 0.10 Update
+            __instance.combatSettings = __instance.gameData.gameDesc.combatSettings; //0.10
+
             __instance.propertyData.Clear(); //Added after 0.9.25 update
             __instance.createWithSandboxMode = __instance.gameData.gameDesc.isSandboxMode; //Added after 0.9.27 Update
             return false;

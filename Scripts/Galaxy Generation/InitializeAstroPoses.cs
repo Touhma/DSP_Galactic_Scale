@@ -51,9 +51,18 @@ namespace GalacticScale
             highStopwatch.Begin();
             for (var index = 0; index < GSSettings.StarCount; ++index)
             {
-                astroPoses[galaxy.stars[index].id * 100].uPos = astroPoses[galaxy.stars[index].id * 100].uPosNext = galaxy.stars[index].uPosition;
-                astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;
-                astroPoses[galaxy.stars[index].id * 100].uRadius = galaxy.stars[index].physicsRadius;
+                //0.10
+                // astroPoses[galaxy.stars[index].id * 100].uPos = astroPoses[galaxy.stars[index].id * 100].uPosNext = galaxy.stars[index].uPosition;
+                // astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;
+                // astroPoses[galaxy.stars[index].id * 100].uRadius = galaxy.stars[index].physicsRadius;
+                
+                int astroId = galaxy.stars[index].astroId;
+                astroPoses[astroId].id = astroId;
+                astroPoses[astroId].type = EAstroType.Star;
+                astroPoses[astroId].uPos = (astroPoses[astroId].uPosNext = galaxy.stars[index].uPosition);
+                astroPoses[astroId].uRot = (astroPoses[astroId].uRotNext = Quaternion.identity);
+                astroPoses[astroId].uRadius = galaxy.stars[index].physicsRadius;
+                //end 0.10
             }
 
             Log($"Astroposes filled in {highStopwatch.duration:F5}s");

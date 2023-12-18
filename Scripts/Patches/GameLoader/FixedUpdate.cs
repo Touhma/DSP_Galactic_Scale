@@ -129,7 +129,14 @@ namespace GalacticScale
                     if (!string.IsNullOrEmpty(str)) UIMessageBox.Show("存档修复标题".Translate(), "存档修复提示".Translate() + "\r\n" + str, "确定".Translate(), 0);
                 }
 
-                GameMain.data.patch = 3;
+                GameMain.data.patch = 9;
+                // if (__instance.onLoadComplete != null)
+                // {
+                //     __instance.onLoadComplete();
+                // }
+                var x = AccessTools.Method(typeof(GameLoader), "onLoadComplete");
+                    if (x != null) x.Invoke(__instance, new object[]{}); //Test?
+
             }
 
             //GS2.Warn("Increasing Frame");
