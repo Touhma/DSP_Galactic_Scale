@@ -51,6 +51,8 @@ namespace GalacticScale
             //0.10
             if (star == GSSettings.BirthStar)
             {
+	            galaxy.birthStarId = starData.id;
+	            GS2.Log($"Applying Birth Hive Settings to {star.Name}");
 	            ApplyBirthStarHiveSettings(random, starData);
             }
             else ApplyHiveSettings(random, starData);

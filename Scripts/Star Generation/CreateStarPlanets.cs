@@ -25,9 +25,13 @@ namespace GalacticScale
             star.planetCount = star.planets.Length;
 
             //0.10...
+            
+            
             for (int m = 0; m < star.planetCount; m++)
             {
                 PlanetData planetData = star.planets[m];
+                if (star.planets[m].name == GSSettings.BirthPlanetName) galaxy.birthPlanetId = GSSettings.BirthPlanetId;
+                GS2.Log($"Setting Galaxy BirthPlanetId to {galaxy.birthPlanetId}");
                 int orbitIndex6 = planetData.orbitIndex;
                 int orbitAroundOrbitIndex =
                     (planetData.orbitAroundPlanet != null) ? planetData.orbitAroundPlanet.orbitIndex : 0;

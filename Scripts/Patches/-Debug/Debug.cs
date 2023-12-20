@@ -304,63 +304,63 @@ namespace GalacticScale
             __instance.inGameRenderMaskS = -1;
             return false;
         }
-
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(EnemyData), "Formation",
-            new Type[]
-            {
-                typeof(int), typeof(EnemyData), typeof(float), typeof(VectorLF3), typeof(Quaternion), typeof(Vector3)
-            },
-            new ArgumentType[]
-            {
-                ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref,
-                ArgumentType.Ref
-            })]
-        [HarmonyPatch(typeof(TurretComponent), "CheckEnemyIsInAttackRange")]
-        [HarmonyPatch(typeof(DFGTurretComponent), "Aim")]
-        [HarmonyPatch(typeof(EnemyUnitComponent), "Attack_SLancer")]
-        [HarmonyPatch(typeof(GrowthTool_Node_DFGround), "CreateNode7")]
-        [HarmonyPatch(typeof(PlayerNavigation), "DetermineArrive")]
-        [HarmonyPatch(typeof(DFRelayComponent), "RelaySailLogic")]
-        [HarmonyPatch(typeof(PlayerAction_Navigate), "GameTick")]
-        [HarmonyPatch(typeof(FleetComponent), "GetUnitOrbitingAstroPose")]
-        [HarmonyPatch(typeof(PlayerNavigation), "Init")]
-        [HarmonyPatch(typeof(PlanetEnvironment), "LateUpdate")]
-        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
-        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRanger")]
-        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_SHumpback")]
-        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_OrbitTarget_SLancer")]
-        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackLaser_Large")]
-        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackPlasma_Small")]
-        [HarmonyPatch(typeof(TurretComponent), "SetStateToAim_Default")]
-        [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Gauss_Space")]
-        [HarmonyPatch(typeof(TurretComponent), "Shoot_Plasma")]
-        [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Plasma")]
-        [HarmonyPatch(typeof(DFSTurretComponent), "Shoot_Plasma")]
-        [HarmonyPatch(typeof(DFTinderComponent), "TinderSailLogic")]
-        [HarmonyPatch(typeof(PlayerAction_Plant), "UpdateRaycast")]
-        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
-        public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
-        {
-            instructions = new CodeMatcher(instructions)
-                .MatchForward(
-                    true,
-                    // new CodeMatch(Ldc_R4, 200f)
-                    new CodeMatch(i => i.OperandIs(200f))
-                )
-                .Repeat(matcher =>
-                {
-                    matcher.SetInstruction(Transpilers.EmitDelegate<Func<float>>(() =>
-                            {
-                                var planet = GameMain.localPlanet;
-                                return planet?.realRadius ?? 200f;
-                            }
-                        )
-                    );
-                }).InstructionEnumeration();
-
-            return instructions;
-        }
+        //
+        // [HarmonyTranspiler]
+        // [HarmonyPatch(typeof(EnemyData), "Formation",
+        //     new Type[]
+        //     {
+        //         typeof(int), typeof(EnemyData), typeof(float), typeof(VectorLF3), typeof(Quaternion), typeof(Vector3)
+        //     },
+        //     new ArgumentType[]
+        //     {
+        //         ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref,
+        //         ArgumentType.Ref
+        //     })]
+        // [HarmonyPatch(typeof(TurretComponent), "CheckEnemyIsInAttackRange")]
+        // [HarmonyPatch(typeof(DFGTurretComponent), "Aim")]
+        // [HarmonyPatch(typeof(EnemyUnitComponent), "Attack_SLancer")]
+        // [HarmonyPatch(typeof(GrowthTool_Node_DFGround), "CreateNode7")]
+        // [HarmonyPatch(typeof(PlayerNavigation), "DetermineArrive")]
+        // [HarmonyPatch(typeof(DFRelayComponent), "RelaySailLogic")]
+        // [HarmonyPatch(typeof(PlayerAction_Navigate), "GameTick")]
+        // [HarmonyPatch(typeof(FleetComponent), "GetUnitOrbitingAstroPose")]
+        // [HarmonyPatch(typeof(PlayerNavigation), "Init")]
+        // [HarmonyPatch(typeof(PlanetEnvironment), "LateUpdate")]
+        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
+        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRanger")]
+        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_SHumpback")]
+        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_OrbitTarget_SLancer")]
+        // [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackLaser_Large")]
+        // [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackPlasma_Small")]
+        // [HarmonyPatch(typeof(TurretComponent), "SetStateToAim_Default")]
+        // [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Gauss_Space")]
+        // [HarmonyPatch(typeof(TurretComponent), "Shoot_Plasma")]
+        // [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Plasma")]
+        // [HarmonyPatch(typeof(DFSTurretComponent), "Shoot_Plasma")]
+        // [HarmonyPatch(typeof(DFTinderComponent), "TinderSailLogic")]
+        // [HarmonyPatch(typeof(PlayerAction_Plant), "UpdateRaycast")]
+        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
+        // public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
+        // {
+        //     instructions = new CodeMatcher(instructions)
+        //         .MatchForward(
+        //             true,
+        //             // new CodeMatch(Ldc_R4, 200f)
+        //             new CodeMatch(i => i.OperandIs(200f))
+        //         )
+        //         .Repeat(matcher =>
+        //         {
+        //             matcher.SetInstruction(Transpilers.EmitDelegate<Func<float>>(() =>
+        //                     {
+        //                         var planet = GameMain.localPlanet;
+        //                         return planet?.realRadius ?? 200f;
+        //                     }
+        //                 )
+        //             );
+        //         }).InstructionEnumeration();
+        //
+        //     return instructions;
+        // }
 
 
         [HarmonyPrefix, HarmonyPatch(typeof(TestCombatDetails), "Update")]
