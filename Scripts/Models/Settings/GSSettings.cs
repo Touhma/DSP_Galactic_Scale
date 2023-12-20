@@ -13,7 +13,7 @@ namespace GalacticScale
 
         // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }
         private static GSPlanet birthPlanet;
-
+        private static GSStar birthStar;
 
         private static int birthPlanetId = -1; // this is a vanilla id, not a GS Index!
         private static string birthPlanetName;
@@ -140,8 +140,30 @@ namespace GalacticScale
             }
         }
 
+        public static GSStar BirthStar
+        {
+            get
+            {
+                if (birthStar == null)
+                {
+                    if (BirthPlanet != null)
+                    {
+                        foreach (var star in Stars)
+                        foreach (var planet in star.Bodies)
+                        {
+                            if (planet == BirthPlanet)
+                            {
+                                return star;
+                            }
+                        }
+                    }
+                }
+                else return birthStar;
+                GS2.Error($"Could not find BirthStar when requested by {GS2.GetCaller()}");
+                return null;
+            }
+        }
         public static int BirthStarId => BirthPlanet != null ? BirthPlanet.planetData.star.id : -1;
-
         public static int BirthPlanetId
         {
             get => BirthPlanet != null ? BirthPlanet.planetData.id : -1;
@@ -172,7 +194,11 @@ namespace GalacticScale
             foreach (var planet in star.Bodies)
             {
                 i++;
-                if (planet.Name == name) return planet;
+                if (planet.Name == name)
+                {
+                    birthStar = star;
+                    return planet;
+                }
             }
 
             GS2.Error($"FindPlanet Failed to Find {name}. Searched {i} bodies");

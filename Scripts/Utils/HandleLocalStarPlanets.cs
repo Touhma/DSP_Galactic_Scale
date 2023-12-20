@@ -153,7 +153,7 @@ namespace GalacticScale
         private static void EnsureStarStillLocal()
         {
             if (closestStar.loaded) LogStatus($"Ensure {closestStar.name} still local...");
-            if (!(DistanceTo(closestStar) > TransisionDistance(closestStar))) return;
+            if (!(DistanceTo(closestStar) > TransitionDistance(closestStar))) return;
             // GS2.Log(
             //     $"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransisionDistance(closestStar) / 40000}AU");
             GameMain.data.LeaveStar();
@@ -163,7 +163,7 @@ namespace GalacticScale
         private static void EnsurePlanetStillLocal()
         {
             // GS2.Log($"{DistanceTo(closestPlanet)} > {TransisionDistance(closestPlanet)}?");
-            if (!(DistanceTo(closestPlanet) > TransisionDistance(closestPlanet))) return;
+            if (!(DistanceTo(closestPlanet) > TransitionDistance(closestPlanet))) return;
 
             closestPlanet = null;
         }
@@ -173,7 +173,7 @@ namespace GalacticScale
             for (var i = 0; closestStar != null && closestPlanet == null && i < closestStar.planetCount; i++)
             {
                 var planet = closestStar.planets[i];
-                if (DistanceTo(planet) < TransisionDistance(planet))
+                if (DistanceTo(planet) < TransitionDistance(planet))
                 {
                     // GS2.Log($"Switching to {planet.name}");
                     closestPlanet = planet;
@@ -191,7 +191,7 @@ namespace GalacticScale
 
                 if (GetGSStar(star).Decorative) continue;
 
-                if (DistanceTo(star) < TransisionDistance(star))
+                if (DistanceTo(star) < TransitionDistance(star))
                 {
                     Log($"Found Star {star.name}");
                     closestStar = star;
@@ -214,7 +214,7 @@ namespace GalacticScale
             return (GameMain.mainPlayer.uPosition - star.uPosition).magnitude;
         }
 
-        private static double TransisionDistance(StarData star)
+        private static double TransitionDistance(StarData star)
         {
             GSStar s = GetGSStar(star);
             return (s.SystemRadius + 2) * 40000;
@@ -270,7 +270,7 @@ namespace GalacticScale
         /// </summary>
         /// <param name="planet">The planet to calculate a transition distance for</param>
         /// <returns></returns>
-        private static double TransisionDistance(PlanetData planet)
+        private static double TransitionDistance(PlanetData planet)
         {
             if (TransitionRadii.ContainsKey(planet)) return TransitionRadii[planet];
             var gsPlanet = GetGSPlanet(planet);

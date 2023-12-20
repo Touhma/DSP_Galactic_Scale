@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Reflection;
 using BepInEx;
@@ -50,10 +51,21 @@ namespace GalacticScale
 
         private void ApplyHarmonyPatches()
         {
+            Directory.CreateDirectory("./mmdump");
+            // {
+                foreach (var file in new DirectoryInfo("./mmdump").GetFiles())
+                {
+                    file.Delete();
+                }
+
+                Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
+                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
+            // }
             try
             {
                 var harmony = new Harmony("dsp.galactic-scale.2");
                 harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
+                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
                 harmony.PatchAll(typeof(PatchOnBlueprintUtils));
                 harmony.PatchAll(typeof(PatchOnBuildingGizmo));
                 harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintCopy));

@@ -14,7 +14,11 @@ namespace GalacticScale
     public static class Utils
     {
         private static Vector3[][] originalMk2MinerEffectVertices;
-
+        public static float getPlanetSize(float mod = 0)
+        {
+            var planet = GameMain.localPlanet;
+            return planet?.realRadius + mod ?? 200f + mod;
+        }
         public static string Serialize(object value, bool pretty = true)
         {
             var serializer = new fsSerializer();

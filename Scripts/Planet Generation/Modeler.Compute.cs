@@ -103,11 +103,11 @@ namespace GalacticScale
                                 if (compPlanet == null) return false;
                                 planetAlgorithm.GenerateTerrain(compPlanet.mod_x, compPlanet.mod_y);
                                 if (compPlanet == null) return false;
-                                planetAlgorithm.CalcWaterPercent();
+                                if (!UIRoot.instance.backToMainMenu) planetAlgorithm.CalcWaterPercent();
                                 num2 = highStopwatch.duration;
                             }
 
-                            if (compPlanet.factory == null)
+                            if (compPlanet.factory == null && !UIRoot.instance.backToMainMenu)
                             {
                                 Log("Creating Factory");
                                 highStopwatch.Begin();

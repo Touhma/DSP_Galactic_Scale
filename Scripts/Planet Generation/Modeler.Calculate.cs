@@ -57,7 +57,10 @@ namespace GalacticScale
                             if (calcPlanet == null || calcPlanet.data == null) return;                            calcPlanet.data.CalcVerts();
                             if (calcPlanet == null || calcPlanet.data == null) return;                            calcPlanet.aux = new PlanetAuxData(calcPlanet);
                             if (calcPlanet == null || calcPlanet.data == null || planetAlgorithm == null) return;                            planetAlgorithm.GenerateTerrain(calcPlanet.mod_x, calcPlanet.mod_y);
-                            if (calcPlanet == null || calcPlanet.data == null || planetAlgorithm == null) return;                            planetAlgorithm.CalcWaterPercent();
+                            if (calcPlanet == null || calcPlanet.data == null || planetAlgorithm == null)
+                            {
+                                GS2.Log("Aborted");
+                            } else planetAlgorithm.CalcWaterPercent();
                             if (calcPlanet == null || calcPlanet.data == null) return;                            var duration = highStopwatch.duration;
                             highStopwatch.Begin();
                             if (calcPlanet == null || calcPlanet.data == null || planetAlgorithm == null) return;                            if (calcPlanet.type != EPlanetType.Gas) planetAlgorithm.GenerateVegetables();

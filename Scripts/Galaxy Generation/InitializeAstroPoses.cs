@@ -10,6 +10,7 @@ namespace GalacticScale
             highStopwatch.Begin();
             var gSize = galaxy.starCount * 1000;
             galaxy.astrosData = new AstroData[gSize];
+            galaxy.astrosFactory = new PlanetFactory[gSize];
             Log("Creating Stars");
             for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i, random);
             if (!GSSettings.Instance.imported)
