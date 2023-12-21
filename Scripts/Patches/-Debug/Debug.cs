@@ -304,63 +304,86 @@ namespace GalacticScale
             __instance.inGameRenderMaskS = -1;
             return false;
         }
-        //
-        // [HarmonyTranspiler]
-        // [HarmonyPatch(typeof(EnemyData), "Formation",
-        //     new Type[]
-        //     {
-        //         typeof(int), typeof(EnemyData), typeof(float), typeof(VectorLF3), typeof(Quaternion), typeof(Vector3)
-        //     },
-        //     new ArgumentType[]
-        //     {
-        //         ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref,
-        //         ArgumentType.Ref
-        //     })]
-        // [HarmonyPatch(typeof(TurretComponent), "CheckEnemyIsInAttackRange")]
-        // [HarmonyPatch(typeof(DFGTurretComponent), "Aim")]
-        // [HarmonyPatch(typeof(EnemyUnitComponent), "Attack_SLancer")]
-        // [HarmonyPatch(typeof(GrowthTool_Node_DFGround), "CreateNode7")]
-        // [HarmonyPatch(typeof(PlayerNavigation), "DetermineArrive")]
-        // [HarmonyPatch(typeof(DFRelayComponent), "RelaySailLogic")]
-        // [HarmonyPatch(typeof(PlayerAction_Navigate), "GameTick")]
-        // [HarmonyPatch(typeof(FleetComponent), "GetUnitOrbitingAstroPose")]
-        // [HarmonyPatch(typeof(PlayerNavigation), "Init")]
-        // [HarmonyPatch(typeof(PlanetEnvironment), "LateUpdate")]
-        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
-        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRanger")]
-        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_SHumpback")]
-        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_OrbitTarget_SLancer")]
-        // [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackLaser_Large")]
-        // [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackPlasma_Small")]
-        // [HarmonyPatch(typeof(TurretComponent), "SetStateToAim_Default")]
-        // [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Gauss_Space")]
-        // [HarmonyPatch(typeof(TurretComponent), "Shoot_Plasma")]
-        // [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Plasma")]
-        // [HarmonyPatch(typeof(DFSTurretComponent), "Shoot_Plasma")]
-        // [HarmonyPatch(typeof(DFTinderComponent), "TinderSailLogic")]
-        // [HarmonyPatch(typeof(PlayerAction_Plant), "UpdateRaycast")]
-        // [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
-        // public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
-        // {
-        //     instructions = new CodeMatcher(instructions)
-        //         .MatchForward(
-        //             true,
-        //             // new CodeMatch(Ldc_R4, 200f)
-        //             new CodeMatch(i => i.OperandIs(200f))
-        //         )
-        //         .Repeat(matcher =>
-        //         {
-        //             matcher.SetInstruction(Transpilers.EmitDelegate<Func<float>>(() =>
-        //                     {
-        //                         var planet = GameMain.localPlanet;
-        //                         return planet?.realRadius ?? 200f;
-        //                     }
-        //                 )
-        //             );
-        //         }).InstructionEnumeration();
-        //
-        //     return instructions;
-        // }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(EnemyData), "Formation",
+            new Type[]
+            {
+                typeof(int), typeof(EnemyData), typeof(float), typeof(VectorLF3), typeof(Quaternion), typeof(Vector3)
+            },
+            new ArgumentType[]
+            {
+                ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref,
+                ArgumentType.Ref
+            })]
+        [HarmonyPatch(typeof(TurretComponent), "CheckEnemyIsInAttackRange")]
+
+        [HarmonyPatch(typeof(EnemyUnitComponent), "Attack_SLancer")]
+        [HarmonyPatch(typeof(GrowthTool_Node_DFGround), "CreateNode7")]
+        [HarmonyPatch(typeof(PlayerNavigation), "DetermineArrive")]
+        [HarmonyPatch(typeof(DFRelayComponent), "RelaySailLogic")]
+        [HarmonyPatch(typeof(PlayerAction_Navigate), "GameTick")]
+        [HarmonyPatch(typeof(FleetComponent), "GetUnitOrbitingAstroPose")]
+        [HarmonyPatch(typeof(PlayerNavigation), "Init")]
+        [HarmonyPatch(typeof(PlanetEnvironment), "LateUpdate")]
+        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
+        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRanger")]
+        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_SHumpback")]
+        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_OrbitTarget_SLancer")]
+        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackLaser_Large")]
+        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackPlasma_Small")]
+        [HarmonyPatch(typeof(TurretComponent), "SetStateToAim_Default")]
+        [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Gauss_Space")]
+        [HarmonyPatch(typeof(TurretComponent), "Shoot_Plasma")]
+        [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Plasma")]
+        [HarmonyPatch(typeof(DFSTurretComponent), "Shoot_Plasma")]
+        [HarmonyPatch(typeof(DFGTurretComponent), "Aim")]
+        [HarmonyPatch(typeof(DFGTurretComponent), "Shoot_Plasma")]
+        [HarmonyPatch(typeof(DFTinderComponent), "TinderSailLogic")]
+        [HarmonyPatch(typeof(PlayerAction_Plant), "UpdateRaycast")]
+        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
+        [HarmonyPatch(typeof(SkillSystem), "AddSpaceEnemyHatred", new []
+        {
+            typeof(EnemyDFHiveSystem), typeof(EnemyData), typeof(ETargetType), typeof(int), typeof(int)
+        }, new[]
+        {
+            ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal,ArgumentType.Normal,ArgumentType.Normal
+        })]
+
+    public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
+        {
+            var methodInfo = AccessTools.Method(typeof(PatchOnUnspecified_Debug), nameof(GetRadius));
+            instructions = new CodeMatcher(instructions)
+                .MatchForward(
+                    true,
+                    new CodeMatch(i =>
+                    {
+                        return (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
+                               
+                               (Convert.ToSingle(i.operand ?? 0f) == 200f || Convert.ToSingle(i.operand ?? 0f) == 202f || Convert.ToSingle(i.operand ?? 0f) == 206f|| Convert.ToSingle(i.operand ?? 0.0) == 197.6f );
+                    })
+                )
+                .Repeat(matcher =>
+                {
+                    Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at " + matcher.Pos + " type " + matcher.Operand?.GetType());
+                    var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+                    matcher.Advance(1);
+                    if (matcher.Instruction.opcode != Call)
+                        matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
+                }).InstructionEnumeration();
+
+            return instructions;
+        }
+        
+        public static T GetRadius<T>(T t)
+        {
+            var num = GameMain.localPlanet?.realRadius ?? 200f;
+            float orig = Convert.ToSingle(t);
+            var diff = orig - 200f;
+            num += diff;
+            // if (VFInput.alt) GS2.Log($"GetRadius Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{orig} returning {num}");
+            return (T)Convert.ChangeType(num, typeof(T));
+        }
 
 
         [HarmonyPrefix, HarmonyPatch(typeof(TestCombatDetails), "Update")]

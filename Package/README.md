@@ -2,6 +2,9 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+NOTE: innominata has lost his discord account. currently using Substantia account.
+
+- Version 2.12.4 - Much better combat on slightly smaller planets. 
 - Version 2.12.3 - Attempt at getting more stars to work
 - Version 2.12.2 - Attempt at getting some combat systems working. Seems to be working on normal to large planets, but I need it tested. Small planets seem to be broken still.
 - Version 2.12.1 - Fixed a lot of bugs in New Game screen. Dark Fog Settings work now. Only tested with 200 radius planets. Seems to be working at least for the first few mins.
