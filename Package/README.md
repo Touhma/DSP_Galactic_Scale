@@ -4,6 +4,7 @@
 
 NOTE: innominata has lost his discord account. currently using Substantia account.
 
+- Version 2.12.6 - Combat working on small planets (So far as I have tested at least)
 - Version 2.12.5 - Compatibility. Removed Replicator Alt Buttons.
 - Version 2.12.4 - Much better combat on slightly smaller planets. 
 - Version 2.12.3 - Attempt at getting more stars to work

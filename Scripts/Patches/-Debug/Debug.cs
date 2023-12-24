@@ -317,7 +317,7 @@ namespace GalacticScale
                 ArgumentType.Ref
             })]
         [HarmonyPatch(typeof(TurretComponent), "CheckEnemyIsInAttackRange")]
-
+        [HarmonyPatch(typeof(EnemyUnitComponent), "ApproachToTargetPoint_SLancer")]
         [HarmonyPatch(typeof(EnemyUnitComponent), "Attack_SLancer")]
         [HarmonyPatch(typeof(GrowthTool_Node_DFGround), "CreateNode7")]
         [HarmonyPatch(typeof(PlayerNavigation), "DetermineArrive")]
@@ -331,7 +331,11 @@ namespace GalacticScale
         [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_SHumpback")]
         [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_OrbitTarget_SLancer")]
         [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackLaser_Large")]
+        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_AttackLaser_Ground")]
+        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_AttackPlasma_Ground")]
+        [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_DefenseShield_Ground")]
         [HarmonyPatch(typeof(UnitComponent), "RunBehavior_Engage_SAttackPlasma_Small")]
+        [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Defense_Ground")]
         [HarmonyPatch(typeof(TurretComponent), "SetStateToAim_Default")]
         [HarmonyPatch(typeof(PlayerAction_Combat), "Shoot_Gauss_Space")]
         [HarmonyPatch(typeof(TurretComponent), "Shoot_Plasma")]
@@ -342,6 +346,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(DFTinderComponent), "TinderSailLogic")]
         [HarmonyPatch(typeof(PlayerAction_Plant), "UpdateRaycast")]
         [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
+        [HarmonyPatch(typeof(LocalLaserOneShot), "TickSkillLogic")]
+        [HarmonyPatch(typeof(LocalLaserContinuous), "TickSkillLogic")]
         [HarmonyPatch(typeof(SkillSystem), "AddSpaceEnemyHatred", new []
         {
             typeof(EnemyDFHiveSystem), typeof(EnemyData), typeof(ETargetType), typeof(int), typeof(int)
@@ -360,7 +366,7 @@ namespace GalacticScale
                     {
                         return (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
                                
-                               (Convert.ToSingle(i.operand ?? 0f) == 200f || Convert.ToSingle(i.operand ?? 0f) == 202f || Convert.ToSingle(i.operand ?? 0f) == 206f|| Convert.ToSingle(i.operand ?? 0.0) == 197.6f );
+                               (Convert.ToSingle(i.operand ?? 0f) == 200f ||Convert.ToSingle(i.operand ?? 0f) == 212f ||Convert.ToSingle(i.operand ?? 0f) == 225f || Convert.ToSingle(i.operand ?? 0f) == 200.5f || Convert.ToSingle(i.operand ?? 0f) == 202f || Convert.ToSingle(i.operand ?? 0f) == 206f|| Convert.ToSingle(i.operand ?? 0.0) == 197.6f || Convert.ToSingle(i.operand ?? 0.0) == 197.5f|| Convert.ToSingle(i.operand ?? 0.0) == 198.5f );
                     })
                 )
                 .Repeat(matcher =>
@@ -368,7 +374,7 @@ namespace GalacticScale
                     Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at " + matcher.Pos + " type " + matcher.Operand?.GetType());
                     var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
                     matcher.Advance(1);
-                    if (matcher.Instruction.opcode != Call)
+                    // if (matcher.Instruction.opcode != Call)
                         matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
                 }).InstructionEnumeration();
 
@@ -379,26 +385,27 @@ namespace GalacticScale
         {
             var num = GameMain.localPlanet?.realRadius ?? 200f;
             float orig = Convert.ToSingle(t);
+            if (num == orig || num > 226f || num < 197f) return (T)Convert.ChangeType(num, typeof(T));
             var diff = orig - 200f;
             num += diff;
-            // if (VFInput.alt) GS2.Log($"GetRadius Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{orig} returning {num}");
+            if (VFInput.alt) GS2.Log($"GetRadius Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{orig} returning {num}");
             return (T)Convert.ChangeType(num, typeof(T));
         }
 
-
-        [HarmonyPrefix, HarmonyPatch(typeof(TestCombatDetails), "Update")]
-        public static bool TestCombatDetailsUpdate()
-        {
-            GS2.Log("TCDUpdate");
-            return true;
-        }
-
-        [HarmonyPrefix, HarmonyPatch(typeof(TestEnemyGenerate), "Update")]
-        public static bool TestEnemyGenerateUpdate()
-        {
-            GS2.Log("TEGUpdate");
-            return true;
-        }
+        //
+        // [HarmonyPrefix, HarmonyPatch(typeof(TestCombatDetails), "Update")]
+        // public static bool TestCombatDetailsUpdate()
+        // {
+        //     GS2.Log("TCDUpdate");
+        //     return true;
+        // }
+        //
+        // [HarmonyPrefix, HarmonyPatch(typeof(TestEnemyGenerate), "Update")]
+        // public static bool TestEnemyGenerateUpdate()
+        // {
+        //     GS2.Log("TEGUpdate");
+        //     return true;
+        // }
 
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), "CalculateVeinGroups")]
         public static bool CalculateVeinGroups(PlanetData __instance)
