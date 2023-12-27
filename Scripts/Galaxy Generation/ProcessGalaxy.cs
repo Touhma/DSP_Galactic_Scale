@@ -56,13 +56,6 @@ namespace GalacticScale
                 highStopwatch.Begin();
                 Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
-                //Log("Processing ThemeLibrary");
-                // if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary == new ThemeLibrary())
-                //     GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
-                // else
-                //     ThemeLibrary = GSSettings.ThemeLibrary;
-
-                // Log("Generating TempPoses");
                 var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
                 Log($"TempPoses Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
@@ -99,23 +92,11 @@ namespace GalacticScale
                     if (num1 > 1.0)
                         num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
                     var rc = Mathf.Pow(7f, num1) * 0.6f;
-                    // Warn($"Beta 68 Test:  Changed level of {star.name, 12} from {l, 12} to {star.level, 12} resource coef:{star.resourceCoef, 12} to {rc, 12} magnitude/32:{num1, 12}");
                     star.resourceCoef = rc;
                 }
 
                 Log($"Resource Coefficients Set: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
-
-                // Log("Setting up Birth Planet");
-                //SetupBirthPlanet();
-                // Log("Generating Veins");
-                // GenerateVeins(sketchOnly);
-                // Log($"Veins Generated: {highStopwatch.duration:F5}");
-                highStopwatch.Begin();
-
-                //if (GS2.CheatMode) return galaxy;
-                //}
-                // Log("Creating Galaxy StarGraph");
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
                 Log($"Stargraph Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
@@ -125,26 +106,17 @@ namespace GalacticScale
                 Log($"birthPlanetId:{galaxy.birthPlanetId}");
                 Log($"birthPlanet:{galaxy.PlanetById(galaxy.birthPlanetId).name}");
                 Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
-                // Log($"its planets length: {galaxy.stars[galaxy.birthStarId - 1].planets.Length}");
-                // Log($"First System Radius = {galaxy.stars[0].systemRadius}");
-                // foreach (var star in GSSettings.Stars)
-                // {
-                //     foreach (var planet in star.Planets)
-                //     {
-                //         GS2.Warn($"Theme used:{planet.GsTheme.Name}");
-                //     }
-                // }
-                // Warn("RM:" + GSSettings.Instance.galaxyParams.resourceMulti);
-                // Warn($"GUID:{GSSettings.Instance.generatorGUID}");
-                // WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
                 if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemesPost.json"), LDB._themes.dataArray);
+                Log("Galaxy Generated");
                 return galaxy;
             }
             catch (Exception e)
             {
                 GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button").gameObject.SetActive(false);
                 Log(e.ToString());
-                DumpException(e);
+                Log(GetCaller());
+                Log(GetCaller(1));
+                // DumpException(e);
                 UIMessageBox.Show("Error", "There has been a problem creating the galaxy. \nPlease let the Galactic Scale team know in our discord server. An error log has been generated in the plugin/ErrorLog Directory", "Return", 0);
                 UIRoot.instance.OnGameLoadFailed();
                 return null;

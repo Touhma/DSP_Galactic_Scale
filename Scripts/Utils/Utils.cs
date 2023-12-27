@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using GSSerializer;
 using UnityEngine;
+using static GalacticScale.GS2;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
@@ -14,11 +15,27 @@ namespace GalacticScale
     public static class Utils
     {
         private static Vector3[][] originalMk2MinerEffectVertices;
+
+        public static Dictionary<PlanetData, PlanetFactory> PlanetFactories = new();
+
+        public static PlanetFactory GetPlanetFactoryFromPlanetData(PlanetData planet)
+        {
+            if (planet == null) return null;
+            if (PlanetFactories.ContainsKey(planet)) return PlanetFactories[planet];
+            foreach (var f in GameMain.spaceSector.galaxy.astrosFactory)
+            {
+                if (f?.planet != null && !PlanetFactories.ContainsKey(f.planet)) PlanetFactories.Add(f.planet, f);
+            }
+
+            return PlanetFactories.ContainsKey(planet) ? PlanetFactories[planet] : null;
+        }
+
         public static float getPlanetSize(float mod = 0)
         {
             var planet = GameMain.localPlanet;
             return planet?.realRadius + mod ?? 200f + mod;
         }
+
         public static string Serialize(object value, bool pretty = true)
         {
             var serializer = new fsSerializer();
@@ -28,6 +45,41 @@ namespace GalacticScale
                 return fsJsonPrinter.CompressedJson(data);
 
             return fsJsonPrinter.PrettyJson(data);
+        }
+
+        public static T FixRadius<T>(T t)
+        {
+            var num = GameMain.localPlanet?.realRadius ?? 200f;
+            float orig = Convert.ToSingle(t);
+            if (num == orig || num > 226f || num < 196f) return (T)Convert.ChangeType(num, typeof(T));
+            var diff = orig - 200f;
+            num += diff;
+            if (VFInput.alt)
+                GS2.Log(
+                    $"GetRadius Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{orig} returning {num}");
+            return (T)Convert.ChangeType(num, typeof(T));
+        }
+
+        public static T DeSerialize<T>(string json)
+        {
+            var serializer = new fsSerializer();
+            fsData data;
+            var fsresult = fsJsonParser.Parse(json, out data);
+            if (fsresult.Failed)
+            {
+                Error("Deserialization of Json " + json + " failed. " + fsresult.FormattedMessages);
+                return default;
+            }
+
+            T result = default;
+            var deserializeResult = serializer.TryDeserialize(data, ref result);
+            if (deserializeResult.Failed)
+            {
+                Error("Failed to deserialize " + json + ": " + deserializeResult.FormattedMessages);
+                return default;
+            }
+
+            return result;
         }
 
         public static T[] ResourcesLoadArray<T>(string path, string format, bool emptyNull) where T : Object
@@ -82,7 +134,8 @@ namespace GalacticScale
         {
             //random = new GS2.Random(GSSettings.Seed);
             var randomVector = Vector3.zero;
-            randomVector.x = (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
+            randomVector.x =
+                (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
             randomVector.y = (float)random.NextDouble() * 2f - 1f;
             randomVector.z = (float)random.NextDouble() * 2f - 1f;
             return randomVector;
@@ -158,13 +211,13 @@ namespace GalacticScale
 
         public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t)
         {
-            if (GS2.Config.GetType() == t) return GS2.Config;
+            if (Config.GetType() == t) return Config;
             foreach (var g in GS2.Generators)
                 if (g.GetType() == t)
                 {
                     if (g is iConfigurableGenerator)
                         return g as iConfigurableGenerator;
-                    GS2.Warn($"Generator {t} is not configurable");
+                    Warn($"Generator {t} is not configurable");
                 }
 
             return null;
@@ -172,7 +225,7 @@ namespace GalacticScale
 
         public static iConfigurablePlugin GetConfigurablePluginInstance(Type t)
         {
-            foreach (var g in GS2.Plugins)
+            foreach (var g in Plugins)
                 if (g.GetType() == t)
                     if (g is iConfigurablePlugin)
                         return g;
@@ -195,7 +248,7 @@ namespace GalacticScale
 
         public static Sprite GetSpriteAsset(string name)
         {
-            return GS2.Bundle.LoadAsset<Sprite>(name);
+            return Bundle.LoadAsset<Sprite>(name);
         }
 
         public static Sprite GetSplashSprite()
@@ -213,7 +266,7 @@ namespace GalacticScale
             //     case 4: spriteName = "s4"; break;
             //     
             // }
-            return GS2.Bundle.LoadAsset<Sprite>(spriteName);
+            return Bundle.LoadAsset<Sprite>(spriteName);
         }
 
         public static Cubemap TintCubeMap(Cubemap input, Color color)
@@ -228,42 +281,48 @@ namespace GalacticScale
             var colors = output.GetPixels(CubemapFace.PositiveX);
             var tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
+                    new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.PositiveX);
 
             colors = output.GetPixels(CubemapFace.PositiveY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
+                    new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.PositiveY);
 
             colors = output.GetPixels(CubemapFace.PositiveZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
+                    new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.PositiveZ);
 
             colors = output.GetPixels(CubemapFace.NegativeX);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
+                    new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.NegativeX);
 
             colors = output.GetPixels(CubemapFace.NegativeY);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
+                    new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.NegativeY);
 
             colors = output.GetPixels(CubemapFace.NegativeZ);
             tinted = new Color[colors.Length];
             for (var i = 0; i < colors.Length; i++)
-                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale), new Color(color.r, color.g, color.b), color.a);
+                tinted[i] = Color.Lerp(new Color(colors[i].grayscale, colors[i].grayscale, colors[i].grayscale),
+                    new Color(color.r, color.g, color.b), color.a);
 
             output.SetPixels(tinted, CubemapFace.NegativeZ);
 
@@ -275,17 +334,17 @@ namespace GalacticScale
 
         public static Texture GetTextureFromBundle(string name)
         {
-            var bundle = GS2.Bundle;
+            var bundle = Bundle;
             return bundle.LoadAsset<Texture>(name);
         }
 
         public static Texture GetTextureFromFile(string path)
         {
-            GS2.Log("Loading texture from file : " + path);
+            Log("Loading texture from file : " + path);
             var data = File.ReadAllBytes(path);
             if (data == null)
             {
-                GS2.Warn("Bytes = Null");
+                Warn("Bytes = Null");
                 return null;
             }
 
@@ -334,6 +393,7 @@ namespace GalacticScale
             //GS2.Warn(radius.ToString());
             return (int)radius;
         }
+
         public static int ParseGasSize(float radius)
         {
             if (radius < 80f) return 50;
@@ -343,9 +403,10 @@ namespace GalacticScale
             //GS2.Warn(radius.ToString());
             return (int)radius;
         }
+
         public static string GetStarDetail(StarData star)
         {
-            var gsStar = GS2.GetGSStar(star);
+            var gsStar = GetGSStar(star);
             var output = "";
 
             foreach (var planet in gsStar.Planets) output += "\r\n" + GetGSPlanetDetail(planet);
@@ -360,7 +421,7 @@ namespace GalacticScale
                 output = "Luminosity: " + Math.Round(Math.Pow(star.luminosity, 0.33), 2);
                 if (gsStar.BinaryCompanion != null)
                 {
-                    var binary = GS2.GetGSStar(gsStar.BinaryCompanion);
+                    var binary = GetGSStar(gsStar.BinaryCompanion);
                     if (binary != null) output += $"Binary Star ({binary.Type})\r\n";
                 }
 
@@ -391,7 +452,7 @@ namespace GalacticScale
             var output2 = "";
             if (gsStar.BinaryCompanion != null)
             {
-                var binary = GS2.GetGSStar(gsStar.BinaryCompanion);
+                var binary = GetGSStar(gsStar.BinaryCompanion);
                 output2 += $"Binary Star:{binary.displayType}\r\n";
             }
 
@@ -479,7 +540,7 @@ namespace GalacticScale
             foreach (var t in LDB._themes.dataArray)
             {
                 var themeName = string.Concat(t.displayName.Split(' '));
-                GS2.Warn($"Dumping {t.name}");
+                Warn($"Dumping {t.name}");
                 var lines = new List<string>();
                 lines.Add("using System.Collections.Generic;");
                 lines.Add("using UnityEngine;");
@@ -521,21 +582,34 @@ namespace GalacticScale
                     foreach (var a in t.ambientDesc)
                     {
                         lines.Add($"//AmbientSettings {ambientCount}");
-                        if (ambientCount > 1) lines.Add("Please duplicate theme for this variant, and delete the others.");
+                        if (ambientCount > 1)
+                            lines.Add("Please duplicate theme for this variant, and delete the others.");
                         lines.Add("AmbientSettings = new GSAmbientSettings");
                         lines.Add("{");
-                        lines.Add($"    Color1 = new Color({a.ambientColor0.r}f, {a.ambientColor0.g}f, {a.ambientColor0.b}f, {a.ambientColor0.a}f),");
-                        lines.Add($"    Color2 = new Color({a.ambientColor1.r}f, {a.ambientColor1.g}f, {a.ambientColor1.b}f, {a.ambientColor1.a}f),");
-                        lines.Add($"    Color3 = new Color({a.ambientColor2.r}f, {a.ambientColor2.g}f, {a.ambientColor2.b}f, {a.ambientColor2.a}f),");
-                        lines.Add($"    WaterColor1 = new Color({a.waterAmbientColor0.r}f, {a.waterAmbientColor0.g}f, {a.waterAmbientColor0.b}f, {a.waterAmbientColor0.a}f),");
-                        lines.Add($"    WaterColor2 = new Color({a.waterAmbientColor1.r}f, {a.waterAmbientColor1.g}f, {a.waterAmbientColor1.b}f, {a.waterAmbientColor1.a}f),");
-                        lines.Add($"    WaterColor3 = new Color({a.waterAmbientColor2.r}f, {a.waterAmbientColor2.g}f, {a.waterAmbientColor2.b}f, {a.waterAmbientColor2.a}f),");
-                        lines.Add($"    BiomeColor1 = new Color({a.biomoColor0.r}f, {a.biomoColor0.g}f, {a.biomoColor0.b}f, {a.biomoColor0.a}f),");
-                        lines.Add($"    BiomeColor2 = new Color({a.biomoColor1.r}f, {a.biomoColor1.g}f, {a.biomoColor1.b}f, {a.biomoColor1.a}f),");
-                        lines.Add($"    BiomeColor3 = new Color({a.biomoColor2.r}f, {a.biomoColor2.g}f, {a.biomoColor2.b}f, {a.biomoColor2.a}f),");
-                        lines.Add($"    DustColor1 = new Color({a.biomoDustColor0.r}f, {a.biomoDustColor0.g}f, {a.biomoDustColor0.b}f, {a.biomoDustColor0.a}f),");
-                        lines.Add($"    DustColor2 = new Color({a.biomoDustColor1.r}f, {a.biomoDustColor1.g}f, {a.biomoDustColor1.b}f, {a.biomoDustColor1.a}f),");
-                        lines.Add($"    DustColor3 = new Color({a.biomoDustColor2.r}f, {a.biomoDustColor2.g}f, {a.biomoDustColor2.b}f, {a.biomoDustColor2.a}f),");
+                        lines.Add(
+                            $"    Color1 = new Color({a.ambientColor0.r}f, {a.ambientColor0.g}f, {a.ambientColor0.b}f, {a.ambientColor0.a}f),");
+                        lines.Add(
+                            $"    Color2 = new Color({a.ambientColor1.r}f, {a.ambientColor1.g}f, {a.ambientColor1.b}f, {a.ambientColor1.a}f),");
+                        lines.Add(
+                            $"    Color3 = new Color({a.ambientColor2.r}f, {a.ambientColor2.g}f, {a.ambientColor2.b}f, {a.ambientColor2.a}f),");
+                        lines.Add(
+                            $"    WaterColor1 = new Color({a.waterAmbientColor0.r}f, {a.waterAmbientColor0.g}f, {a.waterAmbientColor0.b}f, {a.waterAmbientColor0.a}f),");
+                        lines.Add(
+                            $"    WaterColor2 = new Color({a.waterAmbientColor1.r}f, {a.waterAmbientColor1.g}f, {a.waterAmbientColor1.b}f, {a.waterAmbientColor1.a}f),");
+                        lines.Add(
+                            $"    WaterColor3 = new Color({a.waterAmbientColor2.r}f, {a.waterAmbientColor2.g}f, {a.waterAmbientColor2.b}f, {a.waterAmbientColor2.a}f),");
+                        lines.Add(
+                            $"    BiomeColor1 = new Color({a.biomoColor0.r}f, {a.biomoColor0.g}f, {a.biomoColor0.b}f, {a.biomoColor0.a}f),");
+                        lines.Add(
+                            $"    BiomeColor2 = new Color({a.biomoColor1.r}f, {a.biomoColor1.g}f, {a.biomoColor1.b}f, {a.biomoColor1.a}f),");
+                        lines.Add(
+                            $"    BiomeColor3 = new Color({a.biomoColor2.r}f, {a.biomoColor2.g}f, {a.biomoColor2.b}f, {a.biomoColor2.a}f),");
+                        lines.Add(
+                            $"    DustColor1 = new Color({a.biomoDustColor0.r}f, {a.biomoDustColor0.g}f, {a.biomoDustColor0.b}f, {a.biomoDustColor0.a}f),");
+                        lines.Add(
+                            $"    DustColor2 = new Color({a.biomoDustColor1.r}f, {a.biomoDustColor1.g}f, {a.biomoDustColor1.b}f, {a.biomoDustColor1.a}f),");
+                        lines.Add(
+                            $"    DustColor3 = new Color({a.biomoDustColor2.r}f, {a.biomoDustColor2.g}f, {a.biomoDustColor2.b}f, {a.biomoDustColor2.a}f),");
                         lines.Add($"    DustStrength1 = {a.biomoDustStrength0}f,");
                         lines.Add($"    DustStrength2 = {a.biomoDustStrength1}f,");
                         lines.Add($"    DustStrength3 = {a.biomoDustStrength2}f,");
@@ -645,7 +719,7 @@ namespace GalacticScale
                 lines.Add("        };");
                 lines.Add("    }");
                 lines.Add("}");
-                File.WriteAllLines(Path.Combine(GS2.DataDir, $"{themeName}.cs"), lines);
+                File.WriteAllLines(Path.Combine(DataDir, $"{themeName}.cs"), lines);
             }
         }
 
@@ -655,9 +729,11 @@ namespace GalacticScale
             // Could undo changes when leaving a planet instead of saving, but seems error-prone. (float precision, etc)
             if (originalMk2MinerEffectVertices != null)
             {
-                GS2.Error("Tried to save Advanced Miner effect vertices again after they had already been saved. This should only be called once.");
+                Error(
+                    "Tried to save Advanced Miner effect vertices again after they had already been saved. This should only be called once.");
                 return;
             }
+
             // Model ID of the mining effect is 59
             var prefabDesc = LDB.models.Select(59).prefabDesc;
             originalMk2MinerEffectVertices = new Vector3[prefabDesc.lodCount][];
@@ -673,9 +749,10 @@ namespace GalacticScale
         {
             if (originalMk2MinerEffectVertices == null)
             {
-                GS2.Error("Tried to adjust Advanced Miner effect vertices before they were saved.");
+                Error("Tried to adjust Advanced Miner effect vertices before they were saved.");
                 return false;
             }
+
             // Model ID of the mining effect is 59
             var prefabDesc = LDB.models.Select(59).prefabDesc;
             // Only one LOD mesh as of 0.9.27, but why not future proof.
@@ -683,7 +760,8 @@ namespace GalacticScale
             {
                 var mesh = prefabDesc.lodMeshes[i];
                 var adjustedVertices = new Vector3[originalMk2MinerEffectVertices[i].Length];
-                Array.Copy(originalMk2MinerEffectVertices[i], adjustedVertices, originalMk2MinerEffectVertices[i].Length);
+                Array.Copy(originalMk2MinerEffectVertices[i], adjustedVertices,
+                    originalMk2MinerEffectVertices[i].Length);
                 // the submeshes of the mesh share a vertices array, but we only want to adjust three of the four submeshes, so iterate across each submesh.
                 // Skip the first submesh: the spinning circle effect around the vein (also visible on Mk1 Miners) already works fine and does not need to be adjusted.
                 // The remaining three submeshes: top-circle, laser, and collection should be adjusted.
@@ -696,8 +774,10 @@ namespace GalacticScale
                         adjustedVertices[k].y += adjustVertexY;
                     }
                 }
+
                 mesh.vertices = adjustedVertices;
             }
+
             return true;
         }
 
@@ -750,6 +830,79 @@ namespace GalacticScale
             {
                 public IntPtr Value;
             }
+        }
+
+        public static int GetRelaysTargettingPlanet(PlanetData p)
+        {
+            var star = p.star;
+            var hives = GameMain.spaceSector.dfHives;
+            int relayCount = 0;
+            foreach (var hive in hives)
+            {
+                if (hive == null) continue;
+                if (hive.starData != star) continue;
+                var relays = hive.relays;
+                for (var i = 0; i < relays.count; i++)
+                {
+                    var relay = relays[i];
+                    if (relay != null && relay.targetAstroId == p.id)
+                    {
+                        relayCount++;
+                    }
+                }
+            }
+            return relayCount;
+        }
+
+        public static float Round2DP(float num)
+        {
+            return Mathf.Round(num * 100f) / 100f;
+        }
+        public static void LogDFInfo(StarData starData)
+        {
+            GSStar star = GetGSStar(starData);
+            LogTop();
+            LogMid(String.Format("{0,-40} {1,8} {2,8} {3,8}", star.Name, star.Type, star.Spectr, star.radius));
+            LogMid($"Darkfog Hives: {starData.initialHiveCount}/{starData.maxHiveCount}");
+            foreach (var d in GameMain.spaceSector.dfHives)
+            {
+                if (d != null && d.starData != null && d.starData == starData)
+                {
+                    LogMid(String.Format("{0,10}{1,20}{2,20}{3,20}", "Hive", "Threat:" + d.evolve.maxThreat,
+                        "Units:" + d.units?.count, "Orbit:" + Round2DP((float)d.orbitRadius)));
+                }
+            }
+
+            foreach (var p in starData.planets)
+            {
+                var factory = GetPlanetFactoryFromPlanetData(p);
+                var baseCount = factory?.enemySystem?.bases?.count ?? 0;
+                var relayCount = GetRelaysTargettingPlanet(p) - baseCount;
+
+                LogMid(String.Format("{0,40}{1,10}{2,10}{3,10}", p.name, GetGSPlanet(p).Theme, p.realRadius,
+                    baseCount));
+                if (baseCount > 0)
+                {
+                    for (var i = 0; i <= baseCount; i++)
+                    {
+                        var b = factory?.enemySystem?.bases[i];
+                        if (b != null)
+                        {
+                            LogMid(String.Format("{0,10}{1,10}{2,10}{3,10}", (i).ToString(),
+                                "Units:" + b.totalUnitCount, "Raiders:" + b.currentReadyRaiderCount,
+                                "Rangers:" + b.currentReadyRangerCount));
+                        }
+
+                    }
+                }
+
+                if (relayCount > 0)
+                {
+                        LogMid(String.Format("{0,10}{1,30}", relayCount.ToString(), "Unrealized Relay(s)"));
+                }
+            }
+
+            LogBot();
         }
     }
 }

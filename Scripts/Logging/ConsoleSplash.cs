@@ -17,7 +17,7 @@ namespace GalacticScale
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.Write("│", ConsoleColor.Red);
                 BCE.Console.Write("  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ ", ConsoleColor.DarkGray);
-                BCE.Console.Write($"Version {Version,7} Initializing ", ConsoleColor.White);
+                BCE.Console.Write($"Version {Version,9} Initializing ", ConsoleColor.White);
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.WriteLine("└─────────────────────────────────────────────────────────────────────────┘", ConsoleColor.Red);
             }

@@ -551,7 +551,7 @@ namespace GalacticScale.Generators
                         case EVeinType.Fractal:
                         case EVeinType.Grat:
                         case EVeinType.Mag:
-                            GS2.Log($"RemoveRares Removing {v.type} from {p.Name}");
+                            // GS2.Log($"RemoveRares Removing {v.type} from {p.Name}");
                             v.veins = new List<GSVein>();
 
                             // GS2.LogJson(v);
@@ -750,7 +750,7 @@ namespace GalacticScale.Generators
             foreach (var p in star.Bodies)
                 if (p.veinSettings == null || p.veinSettings == new GSVeinSettings())
                 {
-                    GS2.Log($"Vein Settings missing for planet {p.Name} with theme {p.GsTheme.Name}. Cloning...");
+                    // GS2.Log($"Vein Settings missing for planet {p.Name} with theme {p.GsTheme.Name}. Cloning...");
                     p.veinSettings = p.GsTheme.VeinSettings.Clone();
                 }
         }

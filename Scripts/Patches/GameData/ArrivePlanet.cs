@@ -39,6 +39,7 @@ namespace GalacticScale
                 {
                     GS2.Log($"{planet.name} is loaded, calling OnActivePlanetLoaded");
                     GameMain.mainPlayer.transform.localScale = Vector3.one;
+                    
                     __instance.OnActivePlanetLoaded(__instance.localPlanet);
                     return false;
                 }

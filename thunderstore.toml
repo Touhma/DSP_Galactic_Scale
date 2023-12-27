@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.12.6"
-description = "v2.12.6 Way Less Buggy but still Broken Test Build. See GS Discord Server"
+versionNumber = "2.12.7"
+description = "v2.12.7 Somewhat playable Test Build. DF is Unbalanced. See GS Discord Server"
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 

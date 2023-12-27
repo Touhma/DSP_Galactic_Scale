@@ -15,8 +15,8 @@ namespace GalacticScale
         {
             // GS2.Log("FU");
             if (VFInput.alt && VFInput.control && VFInput._openMechLight) GS2.WarnJson(HandleLocalStarPlanets.TransitionRadii); //alt ctrl L
-            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode();
-
+            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode(); //ctrl alt shift d
+            else if (VFInput.control && VFInput.shift && VFInput._moveRight) Utils.LogDFInfo(GameMain.localStar); //ctrl shift d
             if (VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null) // ctrl shift R
             {
                 GS2.Warn("*");

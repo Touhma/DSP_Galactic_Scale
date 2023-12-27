@@ -340,6 +340,17 @@ namespace GalacticScale
 						__instance.speedTipEntry.valueString = "";
 						num13++;
 					}
+					var f = Utils.GetPlanetFactoryFromPlanetData(__instance.planet);
+					var baseCount = f?.enemySystem?.bases?.count ?? 0;
+					if (baseCount > 0)
+					{
+						UIResAmountEntry entry9 = __instance.GetEntry();
+						__instance.entries.Add(entry9);
+						entry9.SetInfo(num13, "Darkfog Bases".Translate(), null, "", false, false, "");
+						__instance.speedTipEntry = entry9;
+						__instance.speedTipEntry.valueString = baseCount.ToString();
+						num13++;
+					}
 				}
 				else
 				{
@@ -563,6 +574,17 @@ namespace GalacticScale
 						entry16.SetInfo(num13, "实际采集速度".Translate(), null, "", false, false, "");
 						__instance.speedTipEntry = entry16;
 						__instance.speedTipEntry.valueString = "";
+						num13++;
+					}
+					var factory = Utils.GetPlanetFactoryFromPlanetData(__instance.planet);
+					var baseCount = factory?.enemySystem?.bases?.count ?? 0;
+					if (baseCount > 0)
+					{
+						UIResAmountEntry entry9 = __instance.GetEntry();
+						__instance.entries.Add(entry9);
+						entry9.SetInfo(num13, "Darkfog Bases".Translate(), null, "", false, false, "");
+						__instance.speedTipEntry = entry9;
+						__instance.speedTipEntry.valueString = baseCount.ToString();
 						num13++;
 					}
 				}

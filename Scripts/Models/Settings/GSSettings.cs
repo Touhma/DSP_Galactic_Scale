@@ -202,6 +202,7 @@ namespace GalacticScale
             }
 
             GS2.Error($"FindPlanet Failed to Find {name}. Searched {i} bodies");
+            foreach (var star in Stars) star.DebugStarData();
             return null;
         }
 

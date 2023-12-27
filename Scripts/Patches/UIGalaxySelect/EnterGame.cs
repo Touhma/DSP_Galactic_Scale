@@ -50,8 +50,9 @@ namespace GalacticScale
                     UIRoot.instance.StartCombatCutscene(__instance.gameDesc);
                     return false;
                 }
-
+                
                 DSPGame.StartGame(___gameDesc);
+                
             }
             else
             {

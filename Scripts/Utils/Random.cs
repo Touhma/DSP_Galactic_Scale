@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PCGSharp;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -74,9 +75,9 @@ namespace GalacticScale
                     return maxExclusive - 1;
                 }
 
-                if (maxExclusive < 0)
+                if (maxExclusive <= 0)
                 {
-                    Error($"Max {maxExclusive} < 0");
+                    Error($"Max {maxExclusive} <= 0 {GetCaller()}");
                     return maxExclusive;
                 }
 
@@ -95,7 +96,18 @@ namespace GalacticScale
 
                 return base.Next(minInclusive, maxInclusive + 1);
             }
-
+            public float ClampedNormal(float min, float max, int bias)
+            {
+                var range = max - min;
+                var average = bias / 100f * range + min;
+                var sdHigh = (max - average) / 3;
+                var sdLow = (average - min) / 3;
+                var sd = Math.Max(sdLow, sdHigh);
+                var rResult = Normal(average, sd);
+                var result = Mathf.Clamp(rResult, min, max);
+                //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+                return result;
+            }
             public VectorLF3 PointOnSphere(double radius)
             {
                 var z = NextDouble() * 2 * radius - radius;
@@ -107,28 +119,59 @@ namespace GalacticScale
 
             public T Item<T>(List<T> items)
             {
+                if (items.Count == 0)
+                {
+                    Error($"Item Length 0 {GetCaller()}");
+                }
                 return items[Next(items.Count)];
             }
 
             public (int, T) ItemWithIndex<T>(List<T> items)
             {
+                if (items.Count == 0)
+                {
+                    Error($"Item Length 0 {GetCaller()}");
+                }
                 var n = Next(items.Count);
                 return (n, items[n]);
             }
 
+            public T ItemAndRemove<T>(List<T> items)
+            {
+                if (items.Count == 0)
+                {
+                    Error($"Item Length 0 {GetCaller()}");
+                }
+                var n = Next(items.Count);
+                var result = items[n];
+                items.RemoveAt(n);
+                return result;
+            }
             public T Item<T>(T[] items)
             {
+                if (items.Length == 0)
+                {
+                    Error($"Item Length 0 {GetCaller()}");
+                }
                 return items[Next(items.Length)];
             }
 
             public (int, T) ItemWithIndex<T>(T[] items)
             {
+                if (items.Length == 0)
+                {
+                    Error($"Item Length 0 {GetCaller()}");
+                }
                 var n = Next(items.Length);
                 return (n, items[n]);
             }
 
             public KeyValuePair<W, X> Item<W, X>(Dictionary<W, X> items)
             {
+                if (items.Count == 0)
+                {
+                    Error($"Item Length 0 {GetCaller()}");
+                }
                 W[] keys = { };
                 items.Keys.CopyTo(keys, 0);
                 var key = keys[Next(keys.Length)];

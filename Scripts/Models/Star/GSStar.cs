@@ -85,6 +85,14 @@ namespace GalacticScale
             }
         }
 
+        public void DebugStarData()
+        {
+            Debug.Log(String.Format("|{0,10}|{1,10}|{2,10}|{3,10}|", this.Name, this.Type, this.Spectr,this.radius));
+            foreach (var b in this.Bodies)
+            {
+                Debug.Log(String.Format("|{0,10}|{1,10}|{2,10}|{3,10}|",b.genData.Get("birthPlanet", false)?"X":"-", b.Name, b.Radius,b.Theme));
+            }
+        }
         public GSPlanets TelluricBodies
         {
             get

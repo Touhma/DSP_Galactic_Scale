@@ -83,6 +83,7 @@ namespace GalacticScale
         public GSGenPreferences Export()
         {
             Preferences.Set("Generator ID", ActiveGenerator.GUID);
+            Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
             foreach (var x in Preferences) GS2.Log($"Key:{x.Key} Value:{x.Value}");
             return Preferences;
         }
@@ -99,7 +100,7 @@ namespace GalacticScale
             Preferences = preferences;
             // GS2.Log("*");
 
-            var id = Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
+            var id = Preferences.GetString("Generator ID", "space.customizing.generators.gs2DevActual");
             // GS2.Log("*");
 
             ActiveGenerator = GetGeneratorByID(id);

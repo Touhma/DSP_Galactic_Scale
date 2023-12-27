@@ -217,7 +217,13 @@ namespace GalacticScale
                 return Moons.Count;
             }
         }
-
+        public void DebugPlanetData()
+        {
+            foreach (var b in this.Bodies)
+            {
+                Debug.Log(String.Format("|{0,10}|{1,40}|{2,10}|{3,20}|",b.genData.Get("birthPlanet", false)?"X":"-", b.Name, b.Radius,b.Theme));
+            }
+        }
         public GSPlanets Bodies
         {
             get

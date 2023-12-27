@@ -13,6 +13,10 @@ namespace GalacticScale
         private static PlanetData closestPlanet;
         public static readonly Dictionary<PlanetData, double> TransitionRadii = new();
 
+        static HandleLocalStarPlanets()
+        {
+        }
+
         private static void LogStatus(string incoming = "")
         {
             if (incoming != "") status = incoming;
@@ -144,6 +148,7 @@ namespace GalacticScale
             {
                 resetCamera = true;
                 LogStatus($"Arriving at Star {closestStar.name}");
+                if (GS2.Config.DebugMode) Utils.LogDFInfo(closestStar);
                 GameMain.data.ArriveStar(closestStar);
             }
 

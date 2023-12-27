@@ -15,16 +15,6 @@ namespace GalacticScale
             Preferences.version = PreferencesVersion;
             Preferences.MainSettings = Config.Export();
             foreach (var x in Preferences.MainSettings) GS2.Warn($"Key:{x.Key} Value:{x.Value}");
-            //foreach (var g in Generators)
-            //    if (g is iConfigurableGenerator)
-            //    {
-            //        var gen = g as iConfigurableGenerator;
-            //        Log("Trying to get preferences for " + gen.Name);
-            //        var prefs = gen.Export();
-
-            //        Preferences.GeneratorPreferences[gen.GUID] = prefs;
-            //        Log("Finished adding preferences for " + gen.Name);
-            //    }
             foreach (var g in Plugins)
                 if (g is iConfigurablePlugin)
                 {
@@ -38,19 +28,6 @@ namespace GalacticScale
             if (ActiveGenerator is iConfigurableGenerator)
                 Preferences.Save(ActiveGenerator as iConfigurableGenerator);
             else GSPreferences.WriteToDisk(Preferences);
-            //var serializer = new fsSerializer();
-            //Log("Trying to serialize preferences object");
-            //serializer.TrySerialize(Preferences, out var data);
-            //Log("Serialized");
-            //var json = fsJsonPrinter.PrettyJson(data);
-            //if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
-
-            //File.WriteAllText(Path.Combine(DataDir, "Preferences.json"), json);
-            //Log("Reloading External Themes");
-            //// GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
-            ///
-            //
-            //ExternalThemeProcessor.LoadEnabledThemes(); //TODO figure out why this was here
             Log("End");
         }
 

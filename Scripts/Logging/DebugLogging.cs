@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using BepInEx.Logging;
 using GSSerializer;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -14,6 +17,99 @@ namespace GalacticScale
             if (DebugOn) Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{s}");
         }
 
+        public static void LogTop(int width = 80)
+        {
+            if (BCE.disabled)
+            {
+                Log("-----");
+                return;
+            }
+            var insert = width - 21;
+            var insertLeft = Mathf.FloorToInt(insert / 2) - 2;
+            var insertRight = insert - insertLeft - 4;
+            BCE.Console.Write("\n╔═", ConsoleColor.White);
+            BCE.Console.Write("═", ConsoleColor.Gray);
+            BCE.Console.Write("═", ConsoleColor.DarkGray);
+            BCE.Console.Write(SpaceString(insertLeft), ConsoleColor.Green);
+            BCE.Console.Write("*", ConsoleColor.Yellow);
+            BCE.Console.Write(".·", ConsoleColor.Gray);
+            BCE.Console.Write(":", ConsoleColor.DarkGray);
+            BCE.Console.Write("·.", ConsoleColor.Gray);
+            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
+            BCE.Console.Write(" ✦ ", ConsoleColor.Cyan);
+            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
+            BCE.Console.Write(".·", ConsoleColor.Gray);
+            BCE.Console.Write(":", ConsoleColor.DarkGray);
+            BCE.Console.Write("·.", ConsoleColor.Gray);
+            BCE.Console.Write("*", ConsoleColor.Yellow);
+            BCE.Console.Write(SpaceString(insertRight), ConsoleColor.Green);
+            BCE.Console.Write("═", ConsoleColor.DarkGray);
+            BCE.Console.Write("═", ConsoleColor.Gray);
+            BCE.Console.Write("═╗\n", ConsoleColor.White);
+
+        }
+        public static void LogBot(int width = 80)
+        {
+            if (BCE.disabled)
+            {
+                Log("-----");
+                return;
+            }
+            var insert = width - 21;
+            var insertLeft = Mathf.FloorToInt(insert / 2) - 2;
+            var insertRight = insert - insertLeft - 4;
+            BCE.Console.Write("╚═", ConsoleColor.White);
+            BCE.Console.Write("═", ConsoleColor.Gray);
+            BCE.Console.Write("═", ConsoleColor.DarkGray);
+            BCE.Console.Write(SpaceString(insertLeft), ConsoleColor.Green);
+            BCE.Console.Write("*", ConsoleColor.Yellow);
+            BCE.Console.Write(".·", ConsoleColor.Gray);
+            BCE.Console.Write(":", ConsoleColor.DarkGray);
+            BCE.Console.Write("·.", ConsoleColor.Gray);
+            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
+            BCE.Console.Write(" ✦ ", ConsoleColor.Cyan);
+            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
+            BCE.Console.Write(".·", ConsoleColor.Gray);
+            BCE.Console.Write(":", ConsoleColor.DarkGray);
+            BCE.Console.Write("·.", ConsoleColor.Gray);
+            BCE.Console.Write("*", ConsoleColor.Yellow);
+            BCE.Console.Write(SpaceString(insertRight), ConsoleColor.Green);
+            
+            BCE.Console.Write("═", ConsoleColor.DarkGray);
+            BCE.Console.Write("═", ConsoleColor.Gray);
+            BCE.Console.WriteLine("═╝", ConsoleColor.White);
+        }
+//─── ･ ｡ﾟ☆: *.☽ .* :☆ﾟ. ───
+        public static string SpaceString(int spaces)
+        {
+            return new string(' ', spaces);
+        }
+        public static void LogMid(string text, int width = 80)
+        {
+            if (BCE.disabled)
+            {
+                Log(text);
+                return;
+            }
+            if (text.Length < width -4) LogMidLine(text, width);
+            else
+            {
+                List<string> texts = new List<string>();
+                var i = 0;
+                while (text.Length > width - 4)
+                {
+                    LogMidLine(text.Substring(i, width - 4), width);
+                    text = text.Remove(i, width - 4);
+                }
+            }
+        }
+
+        public static void LogMidLine(string text, int width = 80)
+        {
+            BCE.Console.Write("║ ", ConsoleColor.White);
+            BCE.Console.Write(String.Format("{0,"+(width -4)+"}", text), ConsoleColor.Green);
+            BCE.Console.Write(" ║\n", ConsoleColor.White);
+        }
         public static void LogSpace(int lineCount = 1)
         {
             if (DebugOn)
@@ -57,10 +153,26 @@ namespace GalacticScale
             if (stackTrace.FrameCount <= depth) return "";
 
             var methodName = stackTrace.GetFrame(depth).GetMethod().Name;
-            var classPath = stackTrace.GetFrame(depth).GetMethod().ReflectedType.ToString().Split('.');
-            var className = classPath[classPath.Length - 1];
-            if (methodName == ".ctor") methodName = "<Constructor>";
-            return className + "|" + methodName + "|";
+            var reflectedType = stackTrace.GetFrame(depth).GetMethod().ReflectedType;
+            if (reflectedType != null)
+            {
+                var classPath = reflectedType.ToString().Split('.');
+                var className = classPath[classPath.Length - 1];
+                if (methodName == ".ctor") methodName = "<Constructor>";
+                return className + "|" + methodName + "|";
+            }
+
+            return "ERROR GETTING CALLER";
         }
+          public static void LogError(object sender, UnhandledExceptionEventArgs e, [CallerLineNumber] int lineNumber = 0) 
+            {
+                Error($"{lineNumber} {GetCaller(0)}");
+                LogException(e.ExceptionObject as Exception); 
+            }
+
+            private static void LogException(Exception ex)
+            {
+                Error(ex.StackTrace); //logs stack trace with line numbers
+            }
     }
 }

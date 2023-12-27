@@ -11,6 +11,22 @@ namespace GalacticScale
 {
     public class PatchOnUnspecified_Debug
     {
+        
+        [HarmonyPrefix, HarmonyPatch(typeof(KillStatistics), "RegisterFactoryKillStat")]
+        public static bool  RegisterFactoryKillStat(ref KillStatistics __instance, int factoryIndex, int modelIndex)
+        {
+            GS2.Log($"Trying to Register FactoryKill {factoryIndex}, {modelIndex}, {__instance.factoryKillStatPool.Length}, {__instance.gameData.localPlanet.factoryIndex}, {GameMain.data.factories.Length} {GameMain.data.factoryCount}");
+            if (factoryIndex < __instance.factoryKillStatPool.Length - 1) return false;
+            ref AstroKillStat ptr = ref __instance.factoryKillStatPool[factoryIndex];
+            if (ptr == null)
+            {
+                ptr = new AstroKillStat();
+                ptr.Init();
+            }
+            ptr.killRegister[modelIndex]++;
+            return false;
+        }
+        
         // [HarmonyPrefix, HarmonyPatch(typeof(PlanetAlgorithm), "CalcLandPercent")]
         // public static bool CalcLandPercent(PlanetData _planet)
         // {
@@ -176,23 +192,30 @@ namespace GalacticScale
             {
                 HighStopwatch highStopwatch = new HighStopwatch();
                 highStopwatch.Begin();
-                for (int j = 0; j < starCount; j++)
+                for (int starIndex = 0; starIndex < starCount; starIndex++)
                 {
-                    __instance.dfHives[j] = null;
-                    int num = __instance.galaxy.stars[j].initialHiveCount;
-                    if (j >= 100)
+                    __instance.dfHives[starIndex] = null;
+                    int initialHiveCount = __instance.galaxy.stars[starIndex].initialHiveCount;
+                    if (__instance.galaxy.stars[starIndex].planetCount == 0)
                     {
-                        num = 0;
+                        __instance.galaxy.stars[starIndex].initialHiveCount = 0;
+                        __instance.galaxy.stars[starIndex].maxHiveCount = 0;
+                        initialHiveCount = 0;
+                        
                     }
+                    // if (starIndex >= 100)
+                    // {
+                    //     num = 0;
+                    // }
 
                     EnemyDFHiveSystem enemyDFHiveSystem = null;
-                    for (int k = 0; k < num; k++)
+                    for (int k = 0; k < initialHiveCount; k++)
                     {
                         EnemyDFHiveSystem enemyDFHiveSystem2 = new EnemyDFHiveSystem();
-                        enemyDFHiveSystem2.Init(__instance.gameData, __instance.galaxy.stars[j].id, k);
+                        enemyDFHiveSystem2.Init(__instance.gameData, __instance.galaxy.stars[starIndex].id, k);
                         if (enemyDFHiveSystem == null)
                         {
-                            __instance.dfHives[j] = enemyDFHiveSystem2;
+                            __instance.dfHives[starIndex] = enemyDFHiveSystem2;
                         }
                         else
                         {
@@ -348,6 +371,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(EnemyUnitComponent), "RunBehavior_Engage_GRaider")]
         [HarmonyPatch(typeof(LocalLaserOneShot), "TickSkillLogic")]
         [HarmonyPatch(typeof(LocalLaserContinuous), "TickSkillLogic")]
+        [HarmonyPatch(typeof(PowerSystem), "CalculateGeothermalStrenth")]
         [HarmonyPatch(typeof(SkillSystem), "AddSpaceEnemyHatred", new []
         {
             typeof(EnemyDFHiveSystem), typeof(EnemyData), typeof(ETargetType), typeof(int), typeof(int)
@@ -358,7 +382,7 @@ namespace GalacticScale
 
     public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
         {
-            var methodInfo = AccessTools.Method(typeof(PatchOnUnspecified_Debug), nameof(GetRadius));
+            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.FixRadius));
             instructions = new CodeMatcher(instructions)
                 .MatchForward(
                     true,
@@ -366,7 +390,7 @@ namespace GalacticScale
                     {
                         return (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
                                
-                               (Convert.ToSingle(i.operand ?? 0f) == 200f ||Convert.ToSingle(i.operand ?? 0f) == 212f ||Convert.ToSingle(i.operand ?? 0f) == 225f || Convert.ToSingle(i.operand ?? 0f) == 200.5f || Convert.ToSingle(i.operand ?? 0f) == 202f || Convert.ToSingle(i.operand ?? 0f) == 206f|| Convert.ToSingle(i.operand ?? 0.0) == 197.6f || Convert.ToSingle(i.operand ?? 0.0) == 197.5f|| Convert.ToSingle(i.operand ?? 0.0) == 198.5f );
+                               (Convert.ToSingle(i.operand ?? 0f) == 196f ||Convert.ToSingle(i.operand ?? 0f) == 200f ||Convert.ToSingle(i.operand ?? 0f) == 212f ||Convert.ToSingle(i.operand ?? 0f) == 225f || Convert.ToSingle(i.operand ?? 0f) == 200.5f || Convert.ToSingle(i.operand ?? 0f) == 202f || Convert.ToSingle(i.operand ?? 0f) == 206f|| Convert.ToSingle(i.operand ?? 0.0) == 197.6f || Convert.ToSingle(i.operand ?? 0.0) == 197.5f|| Convert.ToSingle(i.operand ?? 0.0) == 198.5f );
                     })
                 )
                 .Repeat(matcher =>
@@ -381,16 +405,7 @@ namespace GalacticScale
             return instructions;
         }
         
-        public static T GetRadius<T>(T t)
-        {
-            var num = GameMain.localPlanet?.realRadius ?? 200f;
-            float orig = Convert.ToSingle(t);
-            if (num == orig || num > 226f || num < 197f) return (T)Convert.ChangeType(num, typeof(T));
-            var diff = orig - 200f;
-            num += diff;
-            if (VFInput.alt) GS2.Log($"GetRadius Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{orig} returning {num}");
-            return (T)Convert.ChangeType(num, typeof(T));
-        }
+
 
         //
         // [HarmonyPrefix, HarmonyPatch(typeof(TestCombatDetails), "Update")]

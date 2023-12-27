@@ -117,13 +117,17 @@ namespace GalacticScale.Generators
             // GSSettings.Stars[bsIndex].Planets[bpIndex] = birthPlanet;
             // }
             // Log("End");
-            // Log($"Setting Birthplanet Name to {birthPlanet.Name}");
+            Log($"Setting Birthplanet Name to {birthPlanet.Name}");
             GSSettings.BirthPlanetName = birthPlanet.Name;
             if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
             foreach (var star in GSSettings.Stars)
                 if (!star.Decorative && preferences.GetBool("cometsEnabled") && random.NextPick(preferences.GetFloat("cometChance", 0) / 100f) && star.PlanetCount < 100)
+                {
                     // GS2.Warn($"{preferences.GetFloat("cometChance", 0) / 100f} {random.NextPick(preferences.GetFloat("cometChance", 0) / 100f)}");
                     CreateComet(star);
+                }
+
+            AssignStarLevels();
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 
@@ -385,18 +389,7 @@ namespace GalacticScale.Generators
             return result;
         }
 
-        private float ClampedNormal(GS2.Random random, float min, float max, int bias)
-        {
-            var range = max - min;
-            var average = bias / 100f * range + min;
-            var sdHigh = (max - average) / 3;
-            var sdLow = (average - min) / 3;
-            var sd = Math.Max(sdLow, sdHigh);
-            var rResult = random.Normal(average, sd);
-            var result = Mathf.Clamp(rResult, min, max);
-            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
-            return result;
-        }
+       
 
         private int ClampedNormalSize(GS2.Random random, int min, int max, int bias)
         {

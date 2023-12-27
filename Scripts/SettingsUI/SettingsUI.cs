@@ -189,7 +189,7 @@ namespace GalacticScale
                 //for each canvas
                 var canvas = Object.Instantiate(sp, scrollContentRect, false).GetComponent<RectTransform>();
 
-                canvas.anchoredPosition = new Vector2(anchorX + 750, anchorY);
+                canvas.anchoredPosition = new Vector2(anchorX + 550, anchorY);
                 GeneratorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
                 if (currentGenIndex == i)
@@ -204,7 +204,7 @@ namespace GalacticScale
                 }
 
                 // GS2.Log($"Creating Generator Plugin UIElements for {i}");
-                AddGeneratorPluginUIElements(canvas, i);
+                AddGeneratorPluginUIElements(canvas, i, GS2.Generators[i].Name);
             }
 
             // Warn("Creating Main Settings");
@@ -221,12 +221,13 @@ namespace GalacticScale
 
 
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
-        private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex)
+        private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex, string name = "-")
         {
             // GS2.Log("AddGeneratorPluginUIElements: " + GS2.Generators[genIndex].Name);
             var generatorPluginOption = generatorPluginOptions[genIndex];
             // GS2.Log(GS2.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
             var list = canvas.GetComponentInChildren<GSUIPanel>().contents;
+            CreateUIElement(GSUI.Header(name),list);
             for (var i = 0; i < generatorPluginOption.Count; i++)
             {
                 var option = generatorPluginOption[i];

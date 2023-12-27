@@ -10,7 +10,7 @@ namespace GalacticScale
         {
             if (GS2.Vanilla || DSPGame.IsMenuDemo) return;
 
-            ___factories = new PlanetFactory[GSSettings.PlanetCount];
+            ___factories = new PlanetFactory[GSSettings.PlanetCount *2];
         }
         //[HarmonyPatch(typeof(GameData), "SetForNewGame"), HarmonyPostfix]
         //public static void SetForNewGame_Postfix(GameData __instance)

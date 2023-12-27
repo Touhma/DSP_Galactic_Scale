@@ -38,7 +38,7 @@ namespace GalacticScale
                 else
                 {
                     __instance.gameData.ArrivePlanet(__instance.gameData.galaxy.PlanetById(__instance.gameData.galaxy.birthPlanetId));
-                    if (__instance.gameData.localPlanet == null) return GS2.AbortGameStart("Unable to find a habitable starting planet. If loading from a custon JSON, please check it for errors with an online tool.");
+                    if (__instance.gameData.localPlanet == null) return GS2.AbortGameStart("Unable to find a habitable starting planet. If loading from a custom JSON, please check it for errors with an online tool.");
                 }
             }
 
@@ -56,7 +56,7 @@ namespace GalacticScale
                 GS2.Log("Searching for landing place");
                 __instance.gameData.InitLandingPlace();
             }
-
+            Utils.LogDFInfo(GameMain.localStar);
             __instance.player.controller.memCameraTargetRot = __instance.targetRot;
             __instance.player.cameraTarget.rotation = __instance.targetRot;
             // if (GS2.Config.CheatMode && !GS2.ResearchUnlocked)

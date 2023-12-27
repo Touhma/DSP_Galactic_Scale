@@ -36,6 +36,22 @@ namespace GalacticScale.Generators
             binary.luminosity = 0;
         }
 
+        public void AssignStarLevels()
+        {
+            birthStar.level = 0;
+            var maxDistance = 0f;
+            foreach (GSStar s in GSSettings.Stars)
+            {
+                float m = (float)s.position.magnitude - (float)birthStar.position.magnitude;
+                if (m > maxDistance) maxDistance = m;
+            }
+            foreach (GSStar s in GSSettings.Stars)
+            {
+                var m = (float)s.position.magnitude- (float)birthStar.position.magnitude;;
+                s.level = m / maxDistance;
+            }
+        }
+        
         public void GenerateStars(int starCount, int startID = 0)
         {
             // Log("Generating Stars");

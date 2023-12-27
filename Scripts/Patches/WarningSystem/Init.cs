@@ -10,14 +10,14 @@ namespace GalacticScale
         [HarmonyPatch(typeof(WarningSystem), "Init")]
         public static void Init(ref WarningSystem __instance)
         {
-            var planetCount = GSSettings.PlanetCount;
+            var planetCount = GSSettings.PlanetCount * 2;
             if (__instance.gameData.factories.Length > planetCount) planetCount = __instance.gameData.factories.Length;
             __instance.tmpEntityPools = new EntityData[planetCount][];
             __instance.tmpPrebuildPools = new PrebuildData[planetCount][];
             __instance.tmpSignPools = new SignData[planetCount][];
             var l = GameMain.galaxy.starCount * 400;
-            // __instance.astroArr = new AstroPoseR[l]; // removed in 0.10
-            // __instance.astroBuffer = new ComputeBuffer(l, 32, ComputeBufferType.Default); // removed in 0.10
+            __instance.warningSignals = new int[65536];
+            __instance.focusDetailSignals = new int[65536];
         }
 
         [HarmonyPrefix]
