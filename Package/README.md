@@ -4,6 +4,7 @@
 
 NOTE: innominata has lost his discord account. currently using Substantia account.
 
+- Version 2.12.8 - Fixed a bunch of darkfog stuff
 - Version 2.12.7 - Fixed Geothermal Power on DF Core Mines
 - Version 2.12.6 - Combat working on small planets (So far as I have tested at least)
 - Version 2.12.5 - Compatibility. Removed Replicator Alt Buttons.
