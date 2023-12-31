@@ -4,6 +4,12 @@
 
 NOTE: innominata has lost his discord account. currently using Substantia account.
 
+- Version 2.12.14 - Fixed issue loading saves
+- Version 2.12.13 - Fixed Pandora Planet
+- Version 2.12.12 - Update to newest DSP Version. Some new features may be bugged, only tested that the game works.
+- Version 2.12.11 - Possibly fix broken saves. Might break unbroken saves. Needs testing!
+- Version 2.12.10 - Fixed bug The_Iron_Angel caught when localPlanet was not present yet you killed something
+- Version 2.12.9 - Fixed a lot more darkfog stuff - Will move hives around.
 - Version 2.12.8 - Fixed a bunch of darkfog stuff
 - Version 2.12.7 - Fixed Geothermal Power on DF Core Mines
 - Version 2.12.6 - Combat working on small planets (So far as I have tested at least)

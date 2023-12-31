@@ -9,7 +9,7 @@ namespace GalacticScale
         public static bool SetForNewGame(GameHistoryData __instance)
         {
             __instance.recipeUnlocked.Clear();
-            __instance.specialItemUnlocked.Clear(); //0.10
+            __instance.enemyDropItemUnlocked.Clear(); //0.10
             __instance.tutorialUnlocked.Clear();
             __instance.featureKeys.Clear();
             __instance.featureValues.Clear();
@@ -91,7 +91,7 @@ namespace GalacticScale
             __instance.minimalDifficulty = __instance.gameData.gameDesc.combatSettings.difficulty;//Added after 0.10 Update
             __instance.dfTruceTimer = 0L;//Added after 0.10 Update
             __instance.combatSettings = __instance.gameData.gameDesc.combatSettings; //0.10
-
+            __instance.enemyDropScale = 1;
             __instance.propertyData.Clear(); //Added after 0.9.25 update
             __instance.createWithSandboxMode = __instance.gameData.gameDesc.isSandboxMode; //Added after 0.9.27 Update
             return false;

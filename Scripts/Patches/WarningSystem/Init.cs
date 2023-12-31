@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public class PatchOnWarningSystem
+    public partial class PatchOnWarningSystem
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(WarningSystem), "Init")]
@@ -33,22 +33,5 @@ namespace GalacticScale
             return true;
         }
 
-        // WarningData[] array = __instance.warningPool;
-        //     __instance.warningPool = new WarningData[newCapacity];
-        //     __instance.warningRecycle = new int[newCapacity];
-        //     if (array != null)
-        //     {
-        //         Array.Copy(array, __instance.warningPool, (newCapacity > __instance.warningCapacity) ? __instance.warningCapacity : newCapacity);
-        //     }
-        //
-        //     __instance.warningCapacity = newCapacity;
-        //     if (__instance.instBuffer != null)
-        //     {
-        //         __instance.instBuffer.Release();
-        //     }
-        //
-        //     __instance.instBuffer = new ComputeBuffer(newCapacity, 40, ComputeBufferType.Default);
-        //     return false;
-        // }
     }
 }

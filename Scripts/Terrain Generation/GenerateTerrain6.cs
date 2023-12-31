@@ -14,7 +14,7 @@ namespace GalacticScale
             }
 
             random = new GS2.Random(gsPlanet.Seed);
-            GS2.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            // GS2.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
             // GS2.Log("Generate Terrain for "+gsPlanet.Name + " " + t.landModifier );
             var xPrecision = t.xFactor;

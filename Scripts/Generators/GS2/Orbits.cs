@@ -169,7 +169,7 @@ namespace GalacticScale.Generators
                     //GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
                     if (success) continue;
 
-                    GS2.Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
+                    // GS2.Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
 
                     brokenPlanets.Add(planet);
 
@@ -180,7 +180,7 @@ namespace GalacticScale.Generators
                 if (availableOrbits.Count == 0)
 
                 {
-                    GS2.Log($"No Available Orbits Found for Planet {planet.Name}");
+                    // GS2.Log($"No Available Orbits Found for Planet {planet.Name}");
                     continue;
                 }
 
@@ -209,7 +209,7 @@ namespace GalacticScale.Generators
 
             foreach (var brokenPlanet in brokenPlanets)
             {
-                GS2.Warn($"Removing Planet {brokenPlanet}");
+                // GS2.Warn($"Removing Planet {brokenPlanet}");
                 star.Planets.Remove(brokenPlanet);
             }
 

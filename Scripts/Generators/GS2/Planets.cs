@@ -664,8 +664,8 @@ namespace GalacticScale.Generators
 
             for (var i = 0; i < moonCount - (isBirthStar && startOnMoon ? 1 : 0); i++)
             {
-                GS2.Log(
-                    $"Adding Moon {i + 1}/{moonCount} with bias {moonBias}. Available Hosts:{gasPlanets.Count} Gas / {telPlanets.Count}");
+                // GS2.Log(
+                //     $"Adding Moon {i + 1}/{moonCount} with bias {moonBias}. Available Hosts:{gasPlanets.Count} Gas / {telPlanets.Count}");
                 GSPlanet randomPlanet;
                 var hostGas = random.NextPick(moonBias / 100f);
 

@@ -736,7 +736,7 @@ namespace GalacticScale.Generators
             }
             for (var i = 0; i < secondaryMoonCount; i++)
             {
-                GS2.Log($"Picking Moon to host Secondary {gasPlanets.Count}/{telPlanets.Count}/{moonCount}/{secondaryMoonCount}");
+                // GS2.Log($"Picking Moon to host Secondary {gasPlanets.Count}/{telPlanets.Count}/{moonCount}/{secondaryMoonCount}");
                 var randomMoon = random.Item(moons);
                 var mm = new GSPlanet("MoonMoon" + i, "Barren", GetStarMoonSize(star, randomMoon.Radius, false), -1, -1,
                     -1, -1, -1, -1, -1, -1);
@@ -757,18 +757,18 @@ namespace GalacticScale.Generators
                 star.Planets.Add(p);
 
 
-            GS2.WarnJson((from s in star.Planets select s.Name).ToList());
-            GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.WarnJson((from s in star.Planets select s.Name).ToList());
+            // GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignMoonOrbits(star);
-            GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignPlanetOrbits(star);
-            GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
             SelectPlanetThemes(star);
-            GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
             FudgeNumbersForPlanets(star);
-            GS2.Warn("Done");
+            // GS2.Warn("Done");
             AssignVeinSettings(star);
-            GS2.Log($"Assigning Vein Settings for {star.Name}");
+            // GS2.Log($"Assigning Vein Settings for {star.Name}");
         }
 
         private void AssignVeinSettings(GSStar star)
@@ -776,7 +776,7 @@ namespace GalacticScale.Generators
             foreach (var p in star.Bodies)
                 if (p.veinSettings == null || p.veinSettings == new GSVeinSettings())
                 {
-                    GS2.Log($"Vein Settings missing for planet {p.Name} with theme {p.GsTheme.Name}. Cloning...");
+                    // GS2.Log($"Vein Settings missing for planet {p.Name} with theme {p.GsTheme.Name}. Cloning...");
                     p.veinSettings = p.GsTheme.VeinSettings.Clone();
                 }
         }

@@ -18,15 +18,15 @@ namespace GalacticScale
                 star.planetCount = gsStar.bodyCount;
             }
 
-            StarGen.SetHiveOrbitsConditionsTrue();
+            // StarGen.SetHiveOrbitsConditionsTrue();
             star.planets = new PlanetData[Math.Min(100, gsStar.bodyCount)];
             //Log("Creating Planet");
             for (var i = 0; i < gsStar.PlanetCount; i++) CreatePlanet(ref star, gsStar.Planets[i], random);
             star.planetCount = star.planets.Length;
 
             //0.10...
-            
-            if (star.planetCount > 0) CreateDarkFogHive(star, random);
+            // if (star.id == GameMain.galaxy.birthStarId) Log("**********Birth Star**********");
+            CreateDarkFogHive(star, random);
 
 
             Log($"End|{star.name}");

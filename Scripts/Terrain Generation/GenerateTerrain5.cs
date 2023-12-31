@@ -16,16 +16,16 @@ namespace GalacticScale
             }
 
             random = new GS2.Random(gsPlanet.Seed);
-            GS2.Log($"USING GSTA5 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            // GS2.Log($"USING GSTA5 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
-            GS2.Log("Generate 2 Terrain ");
+            // GS2.Log("Generate 2 Terrain ");
             var seed = random.Next();
             var seed2 = random.Next();
             var simplexNoise = new SimplexNoise(seed);
             var simplexNoise2 = new SimplexNoise(seed2);
             if (gsPlanet.planetData == null)
             {
-                GS2.Warn("gsPlanet.planetData Null");
+                // GS2.Warn("gsPlanet.planetData Null");
                 return;
             }
 

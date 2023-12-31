@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using BepInEx.Logging;
 using GSSerializer;
+using HarmonyLib;
 using UnityEngine;
 
 namespace GalacticScale
@@ -24,10 +25,11 @@ namespace GalacticScale
                 Log("-----");
                 return;
             }
+
             var insert = width - 21;
             var insertLeft = Mathf.FloorToInt(insert / 2) - 2;
             var insertRight = insert - insertLeft - 4;
-            BCE.Console.Write("\n╔═", ConsoleColor.White);
+            BCE.Console.Write("\r\n╔═", ConsoleColor.White);
             BCE.Console.Write("═", ConsoleColor.Gray);
             BCE.Console.Write("═", ConsoleColor.DarkGray);
             BCE.Console.Write(SpaceString(insertLeft), ConsoleColor.Green);
@@ -45,9 +47,9 @@ namespace GalacticScale
             BCE.Console.Write(SpaceString(insertRight), ConsoleColor.Green);
             BCE.Console.Write("═", ConsoleColor.DarkGray);
             BCE.Console.Write("═", ConsoleColor.Gray);
-            BCE.Console.Write("═╗\n", ConsoleColor.White);
-
+            BCE.Console.Write("═╗\r\n", ConsoleColor.White);
         }
+
         public static void LogBot(int width = 80)
         {
             if (BCE.disabled)
@@ -55,6 +57,7 @@ namespace GalacticScale
                 Log("-----");
                 return;
             }
+
             var insert = width - 21;
             var insertLeft = Mathf.FloorToInt(insert / 2) - 2;
             var insertRight = insert - insertLeft - 4;
@@ -74,24 +77,37 @@ namespace GalacticScale
             BCE.Console.Write("·.", ConsoleColor.Gray);
             BCE.Console.Write("*", ConsoleColor.Yellow);
             BCE.Console.Write(SpaceString(insertRight), ConsoleColor.Green);
-            
+
             BCE.Console.Write("═", ConsoleColor.DarkGray);
             BCE.Console.Write("═", ConsoleColor.Gray);
             BCE.Console.WriteLine("═╝", ConsoleColor.White);
         }
+
 //─── ･ ｡ﾟ☆: *.☽ .* :☆ﾟ. ───
         public static string SpaceString(int spaces)
         {
             return new string(' ', spaces);
         }
+
         public static void LogMid(string text, int width = 80)
         {
+
+            string[] lines = text.Split('\n');
+            if (lines.Length > 1)
+            {
+                foreach (string line in lines)
+                {
+                    LogMid(line, width);
+                }
+            }
+
             if (BCE.disabled)
             {
                 Log(text);
                 return;
             }
-            if (text.Length < width -4) LogMidLine(text, width);
+
+            if (text.Length < width - 4) LogMidLine(text, width);
             else
             {
                 List<string> texts = new List<string>();
@@ -107,9 +123,10 @@ namespace GalacticScale
         public static void LogMidLine(string text, int width = 80)
         {
             BCE.Console.Write("║ ", ConsoleColor.White);
-            BCE.Console.Write(String.Format("{0,"+(width -4)+"}", text), ConsoleColor.Green);
-            BCE.Console.Write(" ║\n", ConsoleColor.White);
+            BCE.Console.Write(String.Format("{0," + (width - 4) + "}", text), ConsoleColor.Green);
+            BCE.Console.Write(" ║\r\n", ConsoleColor.White);
         }
+
         public static void LogSpace(int lineCount = 1)
         {
             if (DebugOn)
@@ -164,15 +181,84 @@ namespace GalacticScale
 
             return "ERROR GETTING CALLER";
         }
-          public static void LogError(object sender, UnhandledExceptionEventArgs e, [CallerLineNumber] int lineNumber = 0) 
+
+        public static void LogError(object sender, UnhandledExceptionEventArgs e, [CallerLineNumber] int lineNumber = 0)
+        {
+            Error($"{lineNumber} {GetCaller(0)}");
+            LogException(e.ExceptionObject as Exception);
+        }
+
+        private static void LogException(Exception ex)
+        {
+            Error(ex.StackTrace); //logs stack trace with line numbers
+        }
+
+
+            public static string FormatTableHeader(string[] headers, int[] columnWidths, params Alignment[] alignments)
             {
-                Error($"{lineNumber} {GetCaller(0)}");
-                LogException(e.ExceptionObject as Exception); 
+                if (headers.Length != columnWidths.Length || headers.Length != alignments.Length)
+                {
+                    throw new ArgumentException("Input arrays must have the same length.");
+                }
+
+                string formatString = GenerateFormatString(columnWidths, alignments);
+                string headerRow = string.Format(formatString, headers);
+
+
+                return $"{headerRow}";
+            }
+            public static string FormatTable(string[] values, int[] columnWidths, params Alignment[] alignments)
+            {
+                if (values.Length != columnWidths.Length || values.Length != alignments.Length)
+                {
+                    throw new ArgumentException("Input arrays must have the same length.");
+                }
+                string formatString = GenerateFormatString(columnWidths, alignments);
+                string valueRow = string.Format(formatString, values);
+
+                return $"{valueRow}";
+            }
+            private static string GenerateFormatString(int[] columnWidths, Alignment[] alignments)
+            {
+                if (columnWidths.Length != alignments.Length)
+                {
+                    throw new ArgumentException("Column widths and alignments must have the same length.");
+                }
+
+                string formatString = "";
+
+                for (int i = 0; i < columnWidths.Length; i++)
+                {
+                    formatString += $"{{{i},-{columnWidths[i]}}}";
+
+                    if (i < columnWidths.Length - 1)
+                    {
+                        formatString += "  "; // Adjust this space as needed
+                    }
+                }
+
+                return formatString;
             }
 
-            private static void LogException(Exception ex)
+            public enum Alignment
             {
-                Error(ex.StackTrace); //logs stack trace with line numbers
+                Left,
+                Right,
+                Center
+            }
+
+
+            public static IEnumerable<CodeInstruction> LogTranspilerError(IEnumerable<CodeInstruction> instructions, string text)
+            {
+                Error(text);
+                Log(GetCaller());
+                LogTop();
+                foreach (CodeInstruction instruction in instructions)
+                {
+                    LogMid(instruction.ToString());
+                }
+                LogBot();
+                return instructions;
             }
     }
 }

@@ -12,9 +12,16 @@ namespace GalacticScale
             galaxy.astrosData = new AstroData[gSize];
             galaxy.astrosFactory = new PlanetFactory[gSize];
             Log("Creating Stars");
-            for (var i = 0; i < GSSettings.StarCount; i++) galaxy.stars[i] = CreateStar(i, random);
+            for (var i = 0; i < GSSettings.StarCount; i++)
+            {
+                galaxy.stars[i] = CreateStar(i, random);
+                // Log("Created Star " + galaxy.stars[i].name + " with id " + galaxy.stars[i].id + " and index " + galaxy.stars[i].index + "Hives:" + galaxy.stars[i].initialHiveCount + "/" + galaxy.stars[i].maxHiveCount);
+            }
+
             if (!GSSettings.Instance.imported)
+            {
                 foreach (var star in GSSettings.Stars)
+                {
                     if (star.BinaryCompanion != null)
                     {
                         var binary = GetGSStar(star.BinaryCompanion);
@@ -27,16 +34,21 @@ namespace GalacticScale
                         // Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
                         // GS2.Warn("Setting Binary Star Position");
                         galaxy.stars[binary.assignedIndex].position = binary.position = star.position + binary.position;
-                        galaxy.stars[binary.assignedIndex].uPosition = galaxy.stars[binary.assignedIndex].position * 2400000.0;
+                        galaxy.stars[binary.assignedIndex].uPosition =
+                            galaxy.stars[binary.assignedIndex].position * 2400000.0;
                         // GS2.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
                     }
-
+                }
+            }
+            // Log("2 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
 
             //for (var i = 0; i < galaxy.stars.Length; i++) GS2.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
             Log($"Stars Created in {highStopwatch.duration:F5}s");
             highStopwatch.Begin();
             Log("Creating Planets");
             for (var i = 0; i < GSSettings.StarCount; i++) CreateStarPlanets(ref galaxy.stars[i], gameDesc, random);
+            // Log("3 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
+
             Log($"Planets Created in {highStopwatch.duration:F5}s");
             highStopwatch.Begin();
             Log("Planets have been created");
@@ -49,6 +61,8 @@ namespace GalacticScale
             }
 
             Log($"Astroposes Reset in {highStopwatch.duration:F5}s");
+            // Log("4 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
+
             highStopwatch.Begin();
             for (var index = 0; index < GSSettings.StarCount; ++index)
             {
@@ -67,8 +81,10 @@ namespace GalacticScale
             }
 
             Log($"Astroposes filled in {highStopwatch.duration:F5}s");
+            // Log("5 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
+
             highStopwatch.Begin();
-            Log("Updating Poses");
+            // Log("Updating Poses");
             // galaxy.UpdatePoses(0.0);
 
             for (var i = 0; i < galaxy.stars.Length; i++)
@@ -79,6 +95,7 @@ namespace GalacticScale
                     if (galaxy.stars[i].planets[j] == null) Error($"GalaxyStars[{i}].planets[{j}] null");
                     else galaxy.stars[i].planets[j].UpdateRuntimePose(0.0);
             }
+            // Log("6 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
 
             Log($"Astroposes Initialized in {highStopwatch.duration:F5}s");
             highStopwatch.Begin();

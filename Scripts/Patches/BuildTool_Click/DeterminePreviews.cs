@@ -33,9 +33,18 @@ namespace GalacticScale
 
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(BuildTool_Click), "DeterminePreviews")]
-        public static IEnumerable<CodeInstruction> BuildTool_Click_DeterminePreviews_Transpiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> BuildTool_Click_DeterminePreviews_Transpiler(
+            IEnumerable<CodeInstruction> instructions)
         {
-            instructions = new CodeMatcher(instructions).MatchForward(true, new CodeMatch(i => i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "get_realRadius"), new CodeMatch(OpCodes.Call)).InsertAndAdvance(Transpilers.EmitDelegate<Func<float, float>>(realRadius => { return Mathf.Min(realRadius * 0.025f, 20f) / 0.025f; })).InstructionEnumeration();
+            instructions = new CodeMatcher(instructions)
+                .MatchForward(true,
+                    new CodeMatch(i =>
+                        i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "get_realRadius"),
+                    new CodeMatch(OpCodes.Call))
+                .InsertAndAdvance(Transpilers.EmitDelegate<Func<float, float>>(realRadius =>
+                {
+                    return Mathf.Min(realRadius * 0.025f, 20f) / 0.025f;
+                })).InstructionEnumeration();
             return instructions;
         }
     }

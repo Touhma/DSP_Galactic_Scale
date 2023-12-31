@@ -10,11 +10,7 @@ namespace GalacticScale.Generators
         private readonly Dictionary<GSStar, List<Orbit>> starOrbits = new();
 
         private GSPlanet birthPlanet;
-        // private GSPlanet birthPlanetHost;
 
-        // private int birthPlanetIndex = -1;
-
-        //private bool birthPlanetIsMoon;
         private GSStar birthStar;
         private string forcedBirthStar;
         private float maxStepLength = 3.5f;
@@ -50,16 +46,16 @@ namespace GalacticScale.Generators
             highStopwatch.Begin();
 
 
-            Log($"Start {GSSettings.Seed}");
+            // Log($"Start {GSSettings.Seed}");
             GSSettings.Reset(GSSettings.Seed);
             random = new GS2.Random(GSSettings.Seed);
             highStopwatch.Begin();
             InitForcedStars();
             SetupBaseThemes();
-            Log($"Base Themes Setup: {highStopwatch.duration:F5}");
+            // Log($"Base Themes Setup: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             InitThemes();
-            Log($"Themes Setup: {highStopwatch.duration:F5}");
+            // Log($"Themes Setup: {highStopwatch.duration:F5}");
             GSSettings.GalaxyParams.graphDistance = 32;
             GSSettings.GalaxyParams.graphMaxStars = 512;
             //starCount = preferences.GetInt("defaultStarCount", 64);
@@ -67,20 +63,20 @@ namespace GalacticScale.Generators
 
             highStopwatch.Begin();
             CalculateFrequencies();
-            Log($"Frequencies Calculated: {highStopwatch.duration:F5}");
+            // Log($"Frequencies Calculated: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             GenerateStars(starCount);
-            Log($"Stars Generated: {highStopwatch.duration:F5}");
+            // Log($"Stars Generated: {highStopwatch.duration:F5}");
             // GenerateOrbits();
             highStopwatch.Begin();
             GeneratePlanets();
 
 
-            Log($"Planets Generated: {highStopwatch.duration:F5}");
+            // Log($"Planets Generated: {highStopwatch.duration:F5}");
             // AssignOrbits();
             highStopwatch.Begin();
             SetPlanetOrbitPhase();
-            Log($"Orbits Phased: {highStopwatch.duration:F5}");
+            // Log($"Orbits Phased: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             // SelectBirthPlanet();
             if (birthPlanet.veinSettings == null) birthPlanet.veinSettings = birthPlanet.GsTheme.VeinSettings.Clone();
@@ -92,31 +88,10 @@ namespace GalacticScale.Generators
             Log($"BirthPlanet Selected: {birthPlanet.Name}{highStopwatch.duration:F5}");
             highStopwatch.Begin();
             SanityCheck();
-            Log($"Sanity Checked: {highStopwatch.duration:F5}");
+            // Log($"Sanity Checked: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
             EnsureBirthSystemHasTi();
-            // GS2.Warn("BIRTHSTAR");
-            // Warn($"{birthStar.Name} {birthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
-            // if (forcedBirthStar == null)
-            // {
-            //     var bsInt = preferences.GetInt("birthStar", 14);
-            //     if (bsInt == 14) return;
-            //     var starType = (EStar)bsInt;
-            //     (EStarType type, ESpectrType spectr) tt = starType.Convert();
-            //     var newBirthStar = new GSStar(random.Next(), birthStar.Name, tt.spectr, tt.type, birthStar.Planets);
-            //     var bpIndex = birthStar.Planets.IndexOf(birthPlanet);
-            //     var bsIndex = GSSettings.Stars.IndexOf(birthStar);
-            //
-            //
-            // //for (var i = 0; i < 200; i++)
-            // //{
-            // //    GS2.Warn("N:"+NameGen.New(birthPlanet));
-            // //}
-            // // Warn($"END:{newBirthStar.Name} {newBirthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
-            // GSSettings.Stars[bsIndex] = newBirthStar;
-            // GSSettings.Stars[bsIndex].Planets[bpIndex] = birthPlanet;
-            // }
-            // Log("End");
+         
             Log($"Setting Birthplanet Name to {birthPlanet.Name}");
             GSSettings.BirthPlanetName = birthPlanet.Name;
             if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
@@ -127,7 +102,7 @@ namespace GalacticScale.Generators
                     CreateComet(star);
                 }
 
-            AssignStarLevels();
+            // AssignStarLevels();
             Log($"Finished in : {highStopwatch.duration:F5}");
         }
 
@@ -146,38 +121,6 @@ namespace GalacticScale.Generators
             }
         }
 
-        // private void SelectBirthPlanet()
-        // {
-        //     Log("Picking BirthPlanet");
-        //     //PickNewBirthPlanet();
-        //     Log($"Birthplanet Picked: {birthPlanet.Name} Orbiting at {birthPlanet.OrbitRadius} of star with hz: {birthStar.genData.Get("minHZ").String()}:{birthStar.genData.Get("maxHZ").String()}");
-        //     if (!preferences.GetBool("birthPlanetUnlock", true)) birthPlanet.Theme = "Mediterranean";
-        //     Log((birthPlanet != null).ToString());
-        //     GSSettings.BirthPlanetName = birthPlanet.Name;
-        //     Log("BirthPlanet Set");
-        //     if (preferences.GetBool("birthPlanetSiTi")) AddSiTiToBirthPlanet();
-        //
-        //     if (preferences.GetInt("birthPlanetSize", 400) != birthPlanet.Radius)
-        //     {
-        //         Log("Forcing BirthPlanet Size");
-        //         //int oldRadius = birthPlanet.Radius;
-        //         var newRadius = preferences.GetInt("birthPlanetSize", 400);
-        //
-        //         // if (birthPlanet.Radius < newRadius) //We have a problem with orbits!
-        //         // {
-        //         //     Log("Fixing Orbits...");
-        //         //     FixOrbitsForBirthPlanet(newRadius);
-        //         // }
-        //
-        //         birthPlanet.Radius = newRadius;
-        //         birthPlanet.Scale = 1f;
-        //     }
-        //     //Log("Logging BirthPlanet Json");
-        //     //LogJson(birthPlanet, true);
-        //     
-        // }
-
-
         private void EnsureBirthSystemHasTi()
         {
             if (!BirthSystemHasTi())
@@ -185,31 +128,19 @@ namespace GalacticScale.Generators
                 Warn("Birth System Has No Ti!");
                 if (birthStar.TelluricBodyCount < 2)
                 {
-                    // if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
-                    // {
                     Themes.AshenGelisol.Process();
                     if (!GSSettings.ThemeLibrary.ContainsKey("AshenGelisol"))
                     {
-                        // Warn("Nope" + GS2.ThemeLibrary.Count);
                         GSSettings.ThemeLibrary.Add("AshenGelisol", Themes.AshenGelisol);
                         Themes.AshenGelisol.Process();
                     }
-
-                    // GS2.Warn($"Ashen Gelisol:{GSSettings.ThemeLibrary.ContainsKey("AshenGelisol")}");
-                    // }
-                    //GS2.Warn("Adding Moon");
-                    // var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "Lol",
-                    //     510, 0.13f, 66f, 900f, 0f,
-                    //     66f, 360f, 0f, -1f));
-                    var tiPlanet = birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol", GetStarMoonSize(birthStar, birthPlanet.Radius, false), 0.02f, 69f, 42069f, 0f, 69f, 420f, 0f, -1f));
-                    //tiPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriodFromStarMass(tiPlanet.OrbitRadius, birthStar.mass);
+                    birthPlanet.Moons.Add(new GSPlanet("Titania McGrath", "AshenGelisol", GetStarMoonSize(birthStar, birthPlanet.Radius, false), 0.02f, 69f, 42069f, 0f, 69f, 420f, 0f, -1f));
                     return;
                 }
 
                 var p = birthPlanet;
                 while (p == birthPlanet) p = random.Item(birthStar.TelluricBodies);
                 p.Theme = "AshenGelisol";
-                // p.Theme = "Lol";
             }
         }
 
@@ -221,97 +152,7 @@ namespace GalacticScale.Generators
             return false;
         }
 
-        //private void FixOrbitsForBirthPlanet(int newRadius)
-        //{
-        //    var radiusDifference = newRadius - birthPlanet.Radius;
-        //    var newRadiusAU = newRadius * 0.000025f;
-        //    var auRadiusDifference = radiusDifference * 0.000025f;
-        //    if (birthPlanet.MoonCount > 0)
-        //        for (var i = 0; i < birthPlanet.MoonCount; i++)
-        //            if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
-        //            {
-        //                birthPlanet.Moons.RemoveRange(0, i + 1);
-        //                Log($"Fixed birthplanet orbits by removing {i + 1} moons");
-        //                return;
-        //            }
-
-        //    //Is the birthPlanet a moon?
-        //    if (birthPlanetIsMoon)
-        //    {
-        //        //Can we solve this by removing sub moons?
-        //        if (birthPlanet.MoonCount > 0)
-        //            for (var i = 0; i < birthPlanet.MoonCount; i++)
-        //                if (birthPlanet.Moons[i].OrbitRadius + birthPlanet.Moons[i].SystemRadius > newRadiusAU)
-        //                {
-        //                    birthPlanet.Moons.RemoveRange(0, i + 1);
-        //                    Log($"Fixed birthplanet orbits by removing {i + 1} sub moons");
-        //                    return;
-        //                }
-
-        //        //Can we solve this by removing host moons?
-        //        if (birthPlanetHost.MoonCount > 1)
-        //        {
-        //            var cumulativeSystemRadii = 0.0;
-        //            for (var i = birthPlanetIndex - 1; i > 0; i--)
-        //            {
-        //                // check in towards the host
-        //                cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
-        //                if (cumulativeSystemRadii > auRadiusDifference)
-        //                {
-        //                    birthPlanetHost.Moons.RemoveRange(i, birthPlanetIndex - i);
-        //                    birthPlanet.OrbitRadius -= auRadiusDifference;
-        //                    Log($"Fixed birthplanet orbits by removing {birthPlanetIndex - i} host moons on inside");
-        //                }
-        //            }
-
-        //            cumulativeSystemRadii = 0.0;
-        //            for (var i = birthPlanetIndex + 1; i < birthPlanetHost.MoonCount; i++)
-        //            {
-        //                // check out away from the host
-        //                cumulativeSystemRadii += birthPlanetHost.Moons[i].SystemRadius;
-        //                if (cumulativeSystemRadii > auRadiusDifference)
-        //                {
-        //                    birthPlanetHost.Moons.RemoveRange(birthPlanetIndex + 1, i - birthPlanetIndex);
-        //                    birthPlanet.OrbitRadius -= auRadiusDifference;
-        //                    Log($"Fixed birthplanet orbits by removing {i - birthPlanetIndex} host moons on outside");
-        //                }
-        //            }
-        //        }
-
-        //        //Can we solve this by making the host smaller?
-        //        if (birthPlanetHost.Scale == 1f && birthPlanetHost.RadiusAU > auRadiusDifference)
-        //        {
-        //            birthPlanetHost.Radius -= radiusDifference;
-        //            Log("Fixed birthplanet orbits by making host planet smaller");
-        //            return;
-        //        }
-
-        //        if (birthPlanetHost.Scale == 10f && birthPlanetHost.RadiusAU > auRadiusDifference)
-        //        {
-        //            var reduction = Mathf.Max(Utils.ParsePlanetSize(radiusDifference / 10), 10);
-        //            birthPlanetHost.Radius -= reduction;
-        //            Warn("Fixed birthplanet orbits by making host planet smaller");
-        //            return;
-        //        }
-        //    }
-
-        //    //Is the birthPlanet a planet?
-        //    if (!birthPlanetIsMoon)
-        //    {
-        //        //Fix by moving all orbits out
-        //        for (var i = birthPlanetIndex; i < birthStar.PlanetCount; i++)
-        //        {
-        //            birthStar.Planets[i].OrbitRadius += 2 * auRadiusDifference;
-        //            birthPlanet.OrbitRadius -= auRadiusDifference;
-        //        }
-
-        //        Log(
-        //            $"Fixed birthplanet orbits by adding size difference to orbit radius for all planets at or above index {birthPlanetIndex}");
-        //        return;
-        //    }
-
-        //    Error("Failed to adjust orbits for birthPlanet Increased Size");
-        //}
+     
 
         public void SetGalaxyDensity(int density)
         {
@@ -391,30 +232,7 @@ namespace GalacticScale.Generators
 
        
 
-        private int ClampedNormalSize(GS2.Random random, int min, int max, int bias)
-        {
-            var range = max - min;
-            var average = bias / 100f * range + min;
-            var sdHigh = (max - average) / 3;
-            var sdLow = (average - min) / 3;
-            var sd = Math.Max(sdLow, sdHigh);
-            var fResult = random.Normal(average, sd);
-            var result = Mathf.Clamp(Utils.ParsePlanetSize(fResult), min, max);
-            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
-            return result;
-        }
-        private int ClampedNormalSizeGas(GS2.Random random, int min, int max, int bias)
-        {
-            var range = max - min;
-            var average = bias / 100f * range + min;
-            var sdHigh = (max - average) / 3;
-            var sdLow = (average - min) / 3;
-            var sd = Math.Max(sdLow, sdHigh);
-            var fResult = random.Normal(average, sd);
-            var result = Mathf.Clamp(Utils.ParseGasSize(fResult), min, max);
-            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
-            return result;
-        }
+
 
         private void AddSiTiToBirthPlanet()
         {

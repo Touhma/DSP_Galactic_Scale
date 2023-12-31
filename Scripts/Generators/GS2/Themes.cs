@@ -90,6 +90,16 @@ namespace GalacticScale.Generators
             var moltenworld = new GSTheme("MoltenWorld", "Molten World".Translate(), "Lava");
             var redforest = new GSTheme("RedForest", "Red Forest".Translate(), "OceanicJungle");
             var beach = new GSTheme("Beach", "Beach".Translate(), "OceanWorld");
+            var pandora = GSSettings.ThemeLibrary.Find("PandoraSwamp").Clone();
+            
+            pandora.Name = "Pandora";
+            pandora.Habitable = true;
+            pandora.WaterHeight = 0f;
+            pandora.WaterItemId = 1000;
+            pandora.DisplayName = "Pandora".Translate();
+            pandora.Algo = 1;
+            pandora.Process();
+            
             beach.VeinSettings = new GSVeinSettings
             {
                 Algorithm = "GS2",

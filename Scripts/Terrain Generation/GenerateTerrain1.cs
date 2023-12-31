@@ -13,21 +13,21 @@ namespace GalacticScale
             }
 
             random = new GS2.Random(gsPlanet.Seed);
-            GS2.Log($"USING GSTA1 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            // GS2.Log($"USING GSTA1 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
-            GS2.Log("Generate Terrain for " + gsPlanet.Name + " ");
+            // GS2.Log("Generate Terrain for " + gsPlanet.Name + " ");
             var seed1 = random.Next();
             var seed2 = random.Next();
             var simplexNoise1 = new SimplexNoise(seed1);
             var simplexNoise2 = new SimplexNoise(seed2);
             if (gsPlanet.planetData == null)
             {
-                GS2.Warn("gsPlanet.planetData Null");
+                // GS2.Warn("gsPlanet.planetData Null");
                 return;
             }
 
             var data = gsPlanet.planetData.data;
-            GS2.Log("GenerateTerrain1|" + gsPlanet.Name + "|" + (data == null));
+            // GS2.Log("GenerateTerrain1|" + gsPlanet.Name + "|" + (data == null));
             var maxHD = -999;
             var minHD = 999999;
             var maxBH = -999;
@@ -61,8 +61,8 @@ namespace GalacticScale
                 if (bh < minBH) minBH = bh;
             }
 
-            GS2.Log("--------------------");
-            GS2.Log("R:" + gsPlanet.Radius + " Planet : " + gsPlanet.Name + " minHD:" + minHD + " maxHD:" + maxHD + " minBH:" + minBH + "maxBH:" + maxBH);
+            // GS2.Log("--------------------");
+            // GS2.Log("R:" + gsPlanet.Radius + " Planet : " + gsPlanet.Name + " minHD:" + minHD + " maxHD:" + maxHD + " minBH:" + minBH + "maxBH:" + maxBH);
         }
     }
 }

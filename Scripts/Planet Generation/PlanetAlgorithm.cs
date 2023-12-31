@@ -11,17 +11,17 @@
         public GS2PlanetAlgorithm(GSPlanet gsPlanet)
         {
             //GS2.Log("GS2PlanetAlgorithm|Constructor|Begin");
-            GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
-            GS2.Log("GS2PlanetAlgorithm|Constructor|Selecting Theme " + gsPlanet.Theme);
+            // GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING CUSTOM PLANET ALGORITHM FOR " + gsPlanet.Name);
+            // GS2.Log("GS2PlanetAlgorithm|Constructor|Selecting Theme " + gsPlanet.Theme);
             var gSTheme = GSSettings.ThemeLibrary.Find(gsPlanet.Theme);
             // GS2.Log("GS2PlanetAlgorithm|Constructor|Selected Theme");
             this.gsPlanet = gsPlanet;
             planet = gsPlanet.planetData;
             seed = gsPlanet.Seed;
             //GS2.Log("GS2PlanetAlgorithm|Constructor|planetRawData exists?=" + (planet.data != null));
-            GS2.Log("GS2PlanetAlgorithm|Constructor|Getting Base Algo");
+            // GS2.Log("GS2PlanetAlgorithm|Constructor|Getting Base Algo");
             baseAlgorithm = GetBaseAlgo(gsTheme.Algo);
-            GS2.Log("GS2PlanetAlgorithm|Constructor|Resetting Base Algo|" + (gsPlanet.planetData == null));
+            // GS2.Log("GS2PlanetAlgorithm|Constructor|Resetting Base Algo|" + (gsPlanet.planetData == null));
             baseAlgorithm.Reset(gsPlanet.Seed, gsPlanet.planetData);
             // GS2.Log($"GS2PlanetAlgorithm|Constructor|Custom Generation:{gsPlanet.GsTheme.CustomGeneration} Terrain Algo: " + gsTheme.TerrainSettings.Algorithm + " Vein Algo: " + gsTheme.VeinSettings.Algorithm + " Vege Algo: " + gsTheme.VegeSettings.Algorithm);
 
@@ -46,7 +46,7 @@
                 //         if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
                 //     };
                 // else
-                GS2.Log($"Selecting vein algo {gsTheme.VeinSettings.Algorithm} for {gsPlanet.Name}");
+                // GS2.Log($"Selecting vein algo {gsTheme.VeinSettings.Algorithm} for {gsPlanet.Name}");
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsTheme.VeinSettings.Algorithm);
             }
             else
@@ -60,7 +60,7 @@
                 //         if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateVeins();
                 //     };
                 // else
-                GS2.Log($"Selecting vein algo {gsTheme.VeinSettings.Algorithm} for {gsPlanet.Name}");
+                // GS2.Log($"Selecting vein algo {gsTheme.VeinSettings.Algorithm} for {gsPlanet.Name}");
                     veinAlgo = GS2.VeinAlgorithmLibrary.Find(gsPlanet.veinSettings.Algorithm);
             }
 

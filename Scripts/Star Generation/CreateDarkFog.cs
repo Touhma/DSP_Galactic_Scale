@@ -6,88 +6,89 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        private static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
+        {
+	        starData.hivePatternLevel = 0;
+	        starData.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
+	        var maxDensity = gameDesc.combatSettings.maxDensity;
+	        float initialColonize = gameDesc.combatSettings.initialColonize;
+	        Log($"Setting up Birth Star Hive System for {starData.name} Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+
+
+	        starData.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
+	        starData.maxHiveCount = Mathf.Clamp(starData.maxHiveCount, 1, 8);
+	        starData.initialHiveCount = Mathf.Clamp(starData.initialHiveCount, 1, starData.maxHiveCount);
+	        if (initialColonize < 0.015f)
+	        {
+		        Log("Preventing Birth System from having a Hive");
+		        starData.initialHiveCount = 0;
+	        }
+	        Log($"Birth System ({starData.name}) Hive Settings Applied : " + starData.initialHiveCount + " / " + starData.maxHiveCount);
+	    }
+
+        public static void ConfigureStarHiveSettings(Random random, StarData star)
+        {
+	        float initialColonize = gameDesc.combatSettings.initialColonize;
+	        var maxDensity = gameDesc.combatSettings.maxDensity;
+	        // Log("Generating Hive Settings to " + star.name + "");
+	        var level = star.level;
+	        bool epic = star.type == EStarType.BlackHole || star.type == EStarType.NeutronStar;
+	        star.hivePatternLevel = 0;
+	        star.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
+	        if (epic) star.safetyFactor = 1;
+	        star.safetyFactor *= (maxDensity / 3f);
+	        star.safetyFactor = Mathf.Clamp01(star.safetyFactor);
+	        
+	        
+			star.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
+			star.maxHiveCount += Mathf.RoundToInt(4f*level);
+	        
+	        
+	        // Log($"Setting up Star Hive System for {star.name} {star.typeString} {star.spectr} Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+
+	        if (epic) star.maxHiveCount += 2;
+	        
+	        
+	        if (initialColonize < 0.015f)
+	        {
+		        // Log("Preventing System from having a Hive");
+		        star.initialHiveCount = 0;
+	        }
+	        else
+	        {
+		        star.initialHiveCount = Mathf.RoundToInt(initialColonize/2 * (star.maxHiveCount -0.2f));
+		        star.initialHiveCount += Mathf.RoundToInt(level * 2f);
+		        
+		        
+	        }
+	        star.maxHiveCount = Mathf.Clamp(star.maxHiveCount, 0, 8);
+	        star.initialHiveCount = Mathf.Clamp(star.initialHiveCount, 0, star.maxHiveCount);
+	        // Log($"Level {star.level} System ({star.name} {star.typeString} {star.spectr}) Hive Settings Applied : " + star.initialHiveCount + " / " + star.maxHiveCount +$"Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+        }
+        
         private static void CreateDarkFogHive(StarData star, Random random)
         {
-
-
-
-            
-            
-            
-            
+	        Log($"Generating Hive Orbits For {star.name}");
             GSStar gsStar = GetGSStar(star);
+
+
+            // if (gsStar == GSSettings.BirthStar)
+            // {
+            //     star.initialHiveCount = 1;
+            //     star.maxHiveCount = 2;
+            //     star.hivePatternLevel = 1;
+            // }
+            var possibleHiveOrbits = GeneratePossibleHiveOrbits(gsStar);
+
+            var hiveCount = 8;
             if (gsStar.Decorative || gsStar.PlanetCount == 0)
             {
-                star.initialHiveCount = 0;
-                star.maxHiveCount = 0;
-                star.hivePatternLevel = 0;
-                star.hiveAstroOrbits = new AstroOrbitData[] { };
-                return;
+	            star.initialHiveCount = 0;
+	            star.maxHiveCount = 0;
+	            star.hivePatternLevel = 0;
+	            // star.hiveAstroOrbits = new AstroOrbitData[] { };
+	            // return;
             }
-            // for (int m = 0; m < star.planetCount; m++)
-            // {
-            //     PlanetData planetData = star.planets[m];
-            //     GSPlanet gsPlanet = GetGSPlanet(planetData);
-            //
-            //     Log($"Galaxy BirthPlanetId is set to {galaxy.birthPlanetId}");
-            //     //Looks like we are setting every planets 'orbit index' false. However GS2 doesnt use orbit indexes. The plot thickens.
-            //     int orbitIndex6 = planetData.orbitIndex;
-            //     int orbitAroundOrbitIndex = (planetData.orbitAroundPlanet != null) ? planetData.orbitAroundPlanet.orbitIndex : 0;
-            //     StarGen.SetHiveOrbitConditionFalse(orbitIndex6, orbitAroundOrbitIndex, planetData.sunDistance / star.orbitScaler, star.index);
-            // }
-            // var possibleHiveOrbits = Utils.DeSerialize<List<float>>(gsStar.genData.Get("hiveOrbits"));
-            // LogJson(possibleHiveOrbits);
-            // if (possibleHiveOrbits == null || possibleHiveOrbits == new List<float>())
-            // {
-               var possibleHiveOrbits = GeneratePossibleHiveOrbits(gsStar);
-               // LogJson(possibleHiveOrbits);
-            // }
-            // star.hiveAstroOrbits = new AstroOrbitData[8];
-            
-            // int numHives = 0;
-            // for (int n = 0; n < StarGen.hiveOrbitCondition.Length; n++)
-            // {
-            //     if (StarGen.hiveOrbitCondition[n])
-            //     {
-            //         numHives++;
-            //     }
-            // }
-            //
-            // for (int i = 0; i < 8; i++)
-            // {
-            //     double r1 = random.NextDouble() * 2.0 - 1.0;
-            //     double r2 = random.NextDouble();
-            //     double r3 = random.NextDouble();
-            //     r1 = (double)Math.Sign(r1) * Math.Pow(Math.Abs(r1), 0.7) * 90.0;
-            //     r2 *= 360.0;
-            //     r3 *= 360.0;
-            //     float num27 = 0.3f;
-            //     Assert.Positive(numHives);
-            //     if (numHives > 0)
-            //     {
-            //         int num28 = (star.index != 0) ? 5 : 2;
-            //         num28 = ((numHives > num28) ? num28 : numHives);
-            //         int num29 = num28 * 100;
-            //         int num30 = num29 * 100;
-            //         int num31 = random.Next(num29);
-            //         int num32 = num31 * num31 / num30;
-            //         for (int num33 = 0; num33 < StarGen.hiveOrbitCondition.Length; num33++)
-            //         {
-            //             if (StarGen.hiveOrbitCondition[num33])
-            //             {
-            //                 if (num32 == 0)
-            //                 {
-            //                     num27 = StarGen.hiveOrbitRadius[num33];
-            //                     StarGen.hiveOrbitCondition[num33] = false;
-            //                     numHives--;
-            //                     break;
-            //                 }
-            //
-            //                 num32--;
-            //             }
-            //         }
-            //     }
-            var hiveCount = 8;
             star.hiveAstroOrbits = new AstroOrbitData[hiveCount];
             AstroOrbitData[] hiveAstroOrbits = star.hiveAstroOrbits;
             for (int i = 0; i < hiveCount; i++)
@@ -95,7 +96,7 @@ namespace GalacticScale
                 hiveAstroOrbits[i] = new AstroOrbitData();
                 var orbit = random.ItemAndRemove(possibleHiveOrbits);
                 hiveAstroOrbits[i].orbitRadius = orbit;
-                // Warn($"Created Hive Orbit at {star.name} {hiveAstroOrbits[i].orbitRadius}");
+                Warn($"Created Hive Orbit at {star.name} {Utils.Round2DP(hiveAstroOrbits[i].orbitRadius)}");
                 hiveAstroOrbits[i].orbitInclination = random.NextFloat();
                 hiveAstroOrbits[i].orbitLongitude = random.NextFloat();
                 hiveAstroOrbits[i].orbitPhase = random.NextFloat();
@@ -105,15 +106,13 @@ namespace GalacticScale
                                                        Vector3.forward);
                 hiveAstroOrbits[i].orbitNormal =
                     Maths.QRotateLF(hiveAstroOrbits[i].orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
-                // Log("Created Hive Orbit.");
-                // Log($"Orbit Radius: {hiveAstroOrbits[i].orbitRadius}");
             }
             Log($"Darkfog Hive Orbits Generated for {gsStar.Name}");
         }
 
         private static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)
         {
-            if (gsStar.PlanetCount == 0 || gsStar.Decorative) return default;
+            if (gsStar.PlanetCount == 0 || gsStar.Decorative) return new List<float>{1f,2f,3f,4f,5f,6f,7f,8f};
             List<(float inner, float outer)> ExistingOrbits = new();
             List<(float inner, float outer)> ExistingGaps = new();
             List<float> PossibleOrbits = new();
@@ -140,7 +139,7 @@ namespace GalacticScale
                 {
                     // GS2.Error($"No Existing Gaps! Cycle:{i}/{count} Possible Orbits: {PossibleOrbits.Count} Existing Orbits: {ExistingOrbits.Count} Existing Gaps: {ExistingGaps.Count}");
                     // LogJson(ExistingOrbits);
-                    GS2.Warn("Adding Extra Orbit Gap");
+                    // GS2.Warn("Adding Extra Orbit Gap");
                     var oldMaxOrbit = MaxOrbit;
                     MaxOrbit += 5f;
                     ExistingGaps.Add((oldMaxOrbit, MaxOrbit));

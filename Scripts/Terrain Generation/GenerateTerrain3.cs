@@ -14,9 +14,9 @@ namespace GalacticScale
             }
 
             random = new GS2.Random(gsPlanet.Seed);
-            GS2.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            // GS2.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet?.GsTheme.TerrainSettings;
-            GS2.Log("Generate Terrain for " + gsPlanet.Name + " 3 ");
+            // GS2.Log("Generate Terrain for " + gsPlanet.Name + " 3 ");
             var planet = gsPlanet.planetData;
             if (planet == null)
             {
@@ -66,7 +66,7 @@ namespace GalacticScale
                 data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.BiomeHeightMulti + t.BiomeHeightModifier), 0.0f, 200f);
             }
 
-            GS2.Log("--------------------");
+            // GS2.Log("--------------------");
         }
     }
 }

@@ -342,13 +342,14 @@ namespace GalacticScale
 					}
 					var f = Utils.GetPlanetFactoryFromPlanetData(__instance.planet);
 					var baseCount = f?.enemySystem?.bases?.count ?? 0;
-					if (baseCount > 0)
+					var relayCount = Utils.GetRelaysTargettingPlanet(__instance.planet) - baseCount;
+					if (relayCount > 0)
 					{
 						UIResAmountEntry entry9 = __instance.GetEntry();
 						__instance.entries.Add(entry9);
 						entry9.SetInfo(num13, "Darkfog Bases".Translate(), null, "", false, false, "");
 						__instance.speedTipEntry = entry9;
-						__instance.speedTipEntry.valueString = baseCount.ToString();
+						__instance.speedTipEntry.valueString = relayCount.ToString();
 						num13++;
 					}
 				}
@@ -576,15 +577,16 @@ namespace GalacticScale
 						__instance.speedTipEntry.valueString = "";
 						num13++;
 					}
-					var factory = Utils.GetPlanetFactoryFromPlanetData(__instance.planet);
-					var baseCount = factory?.enemySystem?.bases?.count ?? 0;
-					if (baseCount > 0)
+					var f = Utils.GetPlanetFactoryFromPlanetData(__instance.planet);
+					var baseCount = f?.enemySystem?.bases?.count ?? 0;
+					var relayCount = Utils.GetRelaysTargettingPlanet(__instance.planet) - baseCount;
+					if (relayCount > 0)
 					{
 						UIResAmountEntry entry9 = __instance.GetEntry();
 						__instance.entries.Add(entry9);
 						entry9.SetInfo(num13, "Darkfog Bases".Translate(), null, "", false, false, "");
 						__instance.speedTipEntry = entry9;
-						__instance.speedTipEntry.valueString = baseCount.ToString();
+						__instance.speedTipEntry.valueString = relayCount.ToString();
 						num13++;
 					}
 				}

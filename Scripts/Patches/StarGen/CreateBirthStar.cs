@@ -6,6 +6,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(StarGen), "CreateBirthStar")]
+        // This is never actually called by GS2, but it is called by vanilla (main menu)
         public static bool CreateBirthStar(GalaxyData galaxy, int seed)
         {
             if (GS2.Vanilla)

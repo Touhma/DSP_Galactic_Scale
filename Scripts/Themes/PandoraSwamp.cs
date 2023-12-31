@@ -20,7 +20,7 @@ namespace GalacticScale
             MaterialPath = "Universe/Materials/Planets/Desert 11/",
             Temperature = 0f,
             Distribute = EThemeDistribute.Interstellar,
-            Habitable = true,
+            Habitable = false,
             ModX = new Vector2(1f, 1f),
             ModY = new Vector2(3f, 3f),
             VeinSettings = new GSVeinSettings

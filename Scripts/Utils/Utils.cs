@@ -853,7 +853,30 @@ namespace GalacticScale
             }
             return relayCount;
         }
-
+        public static int ClampedNormalSizeTelluric(GS2.Random random, int min, int max, int bias)
+        {
+            var range = max - min;
+            var average = bias / 100f * range + min;
+            var sdHigh = (max - average) / 3;
+            var sdLow = (average - min) / 3;
+            var sd = Math.Max(sdLow, sdHigh);
+            var fResult = random.Normal(average, sd);
+            var result = Mathf.Clamp(ParsePlanetSize(fResult), min, max);
+            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            return result;
+        }
+        public static int ClampedNormalSizeGas(GS2.Random random, int min, int max, int bias)
+        {
+            var range = max - min;
+            var average = bias / 100f * range + min;
+            var sdHigh = (max - average) / 3;
+            var sdLow = (average - min) / 3;
+            var sd = Math.Max(sdLow, sdHigh);
+            var fResult = random.Normal(average, sd);
+            var result = Mathf.Clamp(ParseGasSize(fResult), min, max);
+            //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
+            return result;
+        }
         public static float Round2DP(float num)
         {
             return Mathf.Round(num * 100f) / 100f;
@@ -861,26 +884,60 @@ namespace GalacticScale
         public static void LogDFInfo(StarData starData)
         {
             GSStar star = GetGSStar(starData);
-            LogTop();
-            LogMid(String.Format("{0,-40} {1,8} {2,8} {3,8}", star.Name, star.Type, star.Spectr, star.radius));
-            LogMid($"Darkfog Hives: {starData.initialHiveCount}/{starData.maxHiveCount}");
+            LogTop(80);
+
+            string[] headers = { "Name", "Type", "Spectr", "Radius" };
+            string[] values = { star.Name, star.Type.ToString(), star.Spectr.ToString(), Round2DP( star.radius).ToString() };
+            int[] columnWidths = { 30, 20, 15, 10 };
+            Alignment[] alignments = { Alignment.Left, Alignment.Right, Alignment.Right, Alignment.Right };
+            LogMid(FormatTableHeader(headers,  columnWidths, alignments), 80);
+            LogMid(FormatTable(values,  columnWidths, alignments), 80);
+            
+            // LogMid(String.Format("{0,-40} {1,8} {2,8} {3,8}", star.Name, star.Type, star.Spectr, star.radius));
+            // headers = null;
+             alignments = new[]{ Alignment.Left, Alignment.Right, Alignment.Right, Alignment.Left };
+            values = new [] { "","Darkfog Hives:",  starData.initialHiveCount +" of" , starData.maxHiveCount.ToString() };
+            // formattedTable = FormatTable(values, columnWidths, alignments);
+            // LogMid(FormatTableHeader(headers,  columnWidths, alignments), 120);
+            LogMid(FormatTable(values,  columnWidths, alignments), 80);
+            // LogMid($"Darkfog Hives: {starData.initialHiveCount}/{starData.maxHiveCount}");
+            var hiveCount = 0;
+            
             foreach (var d in GameMain.spaceSector.dfHives)
             {
                 if (d != null && d.starData != null && d.starData == starData)
                 {
-                    LogMid(String.Format("{0,10}{1,20}{2,20}{3,20}", "Hive", "Threat:" + d.evolve.maxThreat,
-                        "Units:" + d.units?.count, "Orbit:" + Round2DP((float)d.orbitRadius)));
+                    hiveCount++;
+                    
+                    headers = new[] {"Hive #", "Threat", "Units", "Orbit" };
+                    if (hiveCount ==1) LogMid(FormatTableHeader(headers,  columnWidths, alignments), 80);
+                    values = new string[] {
+                        hiveCount.ToString(), d.evolve.maxThreat.ToString(), d.units.count.ToString(),
+                        Round2DP((float)d.orbitRadius).ToString()
+                    };
+                    // formattedTable = FormatTable(values, columnWidths, alignments);
+                    // LogMid(FormatTableHeader(headers,  columnWidths, alignments), 120);
+                    LogMid(FormatTable(values,  columnWidths, alignments), 80);
+                    // LogMid(String.Format("{0,10}{1,20}{2,20}{3,20}", "Hive", "Threat:" + d.evolve.maxThreat,
+                    //     "Units:" + d.units?.count, "Orbit:" + Round2DP((float)d.orbitRadius)));
                 }
             }
-
+            headers = new[] {"Planet", "Theme", "Radius", "Bases" };
+            alignments = new[]{ Alignment.Left, Alignment.Right, Alignment.Right, Alignment.Right };
+            LogMid(FormatTableHeader(headers,  columnWidths, alignments), 80);
             foreach (var p in starData.planets)
             {
                 var factory = GetPlanetFactoryFromPlanetData(p);
                 var baseCount = factory?.enemySystem?.bases?.count ?? 0;
                 var relayCount = GetRelaysTargettingPlanet(p) - baseCount;
-
-                LogMid(String.Format("{0,40}{1,10}{2,10}{3,10}", p.name, GetGSPlanet(p).Theme, p.realRadius,
-                    baseCount));
+                
+                
+                values = new string[] { p.name, GetGSPlanet(p).Theme,p.realRadius.ToString(),relayCount.ToString() };
+                
+                LogMid(FormatTable(values,  columnWidths, alignments), 80);
+                //
+                // LogMid(String.Format("{0,40}{1,10}{2,10}{3,10}", p.name, GetGSPlanet(p).Theme, p.realRadius,
+                //     baseCount));
                 if (baseCount > 0)
                 {
                     for (var i = 0; i <= baseCount; i++)
@@ -888,21 +945,29 @@ namespace GalacticScale
                         var b = factory?.enemySystem?.bases[i];
                         if (b != null)
                         {
-                            LogMid(String.Format("{0,10}{1,10}{2,10}{3,10}", (i).ToString(),
-                                "Units:" + b.totalUnitCount, "Raiders:" + b.currentReadyRaiderCount,
-                                "Rangers:" + b.currentReadyRangerCount));
+                            headers = new[] {"Base#", "Units", "Raiders", "Rangers" };
+                            alignments = new[]{ Alignment.Right, Alignment.Right, Alignment.Right, Alignment.Right };
+                            values = new string[] {1.ToString(), b.totalUnitCount.ToString(), b.currentReadyRaiderCount.ToString(), b.currentReadyRangerCount.ToString()};
+                            LogMid(FormatTableHeader(headers,  columnWidths, alignments), 80);
+                            LogMid(FormatTable(values,  columnWidths, alignments), 80);
+                            
+                            
+                            
+                            // LogMid(String.Format("{0,10}{1,10}{2,10}{3,10}", (i).ToString(),
+                            //     "Units:" + b.totalUnitCount, "Raiders:" + b.currentReadyRaiderCount,
+                            //     "Rangers:" + b.currentReadyRangerCount));
                         }
 
                     }
                 }
 
-                if (relayCount > 0)
-                {
-                        LogMid(String.Format("{0,10}{1,30}", relayCount.ToString(), "Unrealized Relay(s)"));
-                }
+                // if (relayCount > 0)
+                // {
+                //         LogMid(String.Format("{0,10}{1,30}", relayCount.ToString(), "Detected Relay(s)"));
+                // }
             }
 
-            LogBot();
+            LogBot(80);
         }
     }
 }

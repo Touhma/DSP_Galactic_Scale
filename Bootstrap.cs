@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.8")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.14")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -41,6 +41,7 @@ namespace GalacticScale
             BCE.Console.Init();
             Logger = new ManualLogSource("GS2");
             BepInEx.Logging.Logger.Sources.Add(Logger);
+            
             GS2.ConsoleSplash();
         }
 
@@ -65,8 +66,9 @@ namespace GalacticScale
             try
             {
                 var harmony = new Harmony("dsp.galactic-scale.2");
-                harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
+                harmony.PatchAll((typeof(PlanetSizeTranspiler)));
                 Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
+                harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
                 harmony.PatchAll(typeof(PatchOnBlueprintUtils));
                 harmony.PatchAll(typeof(PatchOnBuildingGizmo));
                 harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintCopy));
@@ -76,6 +78,8 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnBuildTool_Path));
                 harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
                 harmony.PatchAll(typeof(PatchOnCloudSimulator));
+                harmony.PatchAll(typeof(PatchOnDigitalSystem));
+                harmony.PatchAll(typeof(PatchOnEnemyDFHiveSystem));
                 harmony.PatchAll(typeof(PatchOnFactoryModel));
                 harmony.PatchAll(typeof(PatchOnGalaxyData));
                 harmony.PatchAll(typeof(PatchOnGameAbnormalityData));
@@ -103,6 +107,8 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnPlayerMove_Fly));
                 harmony.PatchAll(typeof(PatchOnPlayerMove_Sail));
                 harmony.PatchAll(typeof(PatchOnPowerSystem));
+                harmony.PatchAll(typeof(PatchOnSectorModel));
+                harmony.PatchAll(typeof(PatchOnSpaceSector));
                 harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
                 harmony.PatchAll(typeof(PatchOnStarGen));
                 harmony.PatchAll(typeof(PatchOnStationComponent));

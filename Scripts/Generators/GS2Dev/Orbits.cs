@@ -134,14 +134,20 @@ namespace GalacticScale.Generators
                 if (actualBirthPlanetOrHost != null) break;
             }
 
-            if (star == birthStar && actualBirthPlanetOrHost == null) GS2.Error("Failed to find Actual BirthPlanet or Host");
-            else GS2.Log($"Found Actual BirthPlanet or Host = {actualBirthPlanetOrHost.Name}");
+            if (star == birthStar)
+            {
+                if (actualBirthPlanetOrHost == null)
+                {
+                    GS2.Error("Failed to find Actual BirthPlanet or Host");
+                }
+                else GS2.Log($"Found Actual BirthPlanet or Host = {actualBirthPlanetOrHost?.Name}");
+            }
             //Warn("Orbit Count 0");
             // GS2.Log($"BirthStar = {birthStar.Name} {(birthPlanet != null ? birthPlanet.Name : "null")}");
             if (star == birthStar)
             {
                 var birthRadius = Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)), star.RadiusAU * 1.5f, 100f);
-                GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
+                // GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(actualBirthPlanetOrHost);
                 actualBirthPlanetOrHost.OrbitRadius = birthRadius;
@@ -247,15 +253,14 @@ namespace GalacticScale.Generators
                 star.Planets.Remove(brokenPlanet);
             }
 
-            GS2.Warn($"***** Free orbit count = {freeOrbitRanges.Count}");
-            var hiveOrbitCount = 1;
+            // GS2.Warn($"***** Free orbit count = {freeOrbitRanges.Count}");
             var possibleHiveOrbits = new List<float>();
             var count = 0;
             while (count < 20)
             {
                 foreach (var f in freeOrbitRanges)
                 {
-                    GS2.Log($"Free Orbit Range:{f.inner}:{f.outer}");
+                    // GS2.Log($"Free Orbit Range:{f.inner}:{f.outer}");
                     possibleHiveOrbits.Add(random.ClampedNormal(Mathf.Max(star.RadiusAU+0.1f,f.inner), f.outer, 50));
                 }
                 count++;
@@ -263,8 +268,8 @@ namespace GalacticScale.Generators
 
             var possibleHiveOrbitsJson = Utils.Serialize(possibleHiveOrbits,false);
             star.genData.Add("hiveOrbits", possibleHiveOrbitsJson);
-            GS2.Log("Possible Hive Orbits:");
-            GS2.LogJson(possibleHiveOrbits);
+            // GS2.Log("Possible Hive Orbits:");
+            // GS2.LogJson(possibleHiveOrbits);
             
             
             starOrbits[star] = orbits;
