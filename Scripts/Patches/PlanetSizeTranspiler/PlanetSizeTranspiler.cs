@@ -54,6 +54,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(LocalLaserContinuous), "TickSkillLogic")]
         [HarmonyPatch(typeof(PowerSystem), "CalculateGeothermalStrenth")]
         [HarmonyPatch(typeof(BuildTool_Path), "UpdateRaycast")]
+        [HarmonyPatch(typeof(SpaceCapsule), nameof(SpaceCapsule.LateUpdate))]
         [HarmonyPatch(typeof(SkillSystem), "AddSpaceEnemyHatred", new[]
         {
             typeof(EnemyDFHiveSystem), typeof(EnemyData), typeof(ETargetType), typeof(int), typeof(int)
@@ -72,8 +73,12 @@ namespace GalacticScale
                         return (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
                                (Convert.ToSingle(i.operand ?? 0f) == 196f ||
                                 Convert.ToSingle(i.operand ?? 0f) == 200f ||
+                                Convert.ToSingle(i.operand ?? 0f) == 200.0 ||
                                 Convert.ToSingle(i.operand ?? 0f) == 212f ||
                                 Convert.ToSingle(i.operand ?? 0f) == 225f ||
+                                Convert.ToSingle(i.operand ?? 0f) == 255f ||
+                                Convert.ToSingle(i.operand ?? 0f) == 228f ||
+                                Convert.ToSingle(i.operand ?? 0f) == 225.0 ||
                                 Convert.ToSingle(i.operand ?? 0f) == 200.5f ||
                                 Convert.ToSingle(i.operand ?? 0f) == 202f ||
                                 Convert.ToSingle(i.operand ?? 0f) == 206f ||
