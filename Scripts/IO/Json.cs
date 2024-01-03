@@ -200,7 +200,7 @@ namespace GalacticScale
 
         private static bool CheckJsonFileExists(string path)
         {
-            Log("Checking if Json File Exists");
+            // Log("Checking if Json File Exists");
             if (File.Exists(path)) return true;
 
             Log("Json file does not exist at " + path);

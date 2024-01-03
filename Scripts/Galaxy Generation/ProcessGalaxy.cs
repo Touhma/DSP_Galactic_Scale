@@ -22,7 +22,7 @@ namespace GalacticScale
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported && sketchOnly)
                 {
-                    Log("Start");
+                    // Log("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
                     // Warn(LDB._themes.dataArray.Length.ToString());
                     if (LDB._themes.dataArray != null && LDB._themes.dataArray.Length > 128) Array.Resize(ref LDB._themes.dataArray, 128);
@@ -39,13 +39,13 @@ namespace GalacticScale
                     ActiveGenerator.Generate(gameDesc.starCount);
                     GSSettings.Instance.galaxyParams.resourceMulti = gameDesc.resourceMultiplier;
                     GSSettings.Instance.generatorGUID = ActiveGenerator.GUID;
-                    Log("Final Seed = " + GSSettings.Seed);
-                    Log("End");
+                    // Log("Final Seed = " + GSSettings.Seed);
+                    // Log("End");
                     // WarnJson(GSSettings.ThemeLibrary.Select(x=>x.Key).ToList());
                 }
                 else
                 {
-                    Warn("**************************");
+                    // Warn("**************************");
                     Log($"Settings Loaded From Save File {GSSettings.BirthPlanet.Name} {GSSettings.Instance.stars.Count} {GSSettings.StarCount}");
                     gameDesc.resourceMultiplier = GSSettings.Instance.galaxyParams.resourceMulti;
                     // Log($"RM1:{gameDesc.resourceMultiplier}");
@@ -54,10 +54,10 @@ namespace GalacticScale
                 
                 Log($"Galaxy Loaded: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
-                Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
+                // Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
                 var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
-                Log($"TempPoses Generated: {highStopwatch.duration:F5}");
+                // Log($"TempPoses Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
                 // Log("Creating new GalaxyData");
@@ -71,10 +71,10 @@ namespace GalacticScale
                     return galaxy;
                 }
 
-                Log("Initializing AstroPoses");
+                // Log("Initializing AstroPoses");
                 CreateStarPlanetsAstroPoses(random);
                 var bs = galaxy.stars[galaxy.birthStarId - 1];
-                Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
+                // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 Log($"Astroposes Initialized: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
@@ -102,7 +102,7 @@ namespace GalacticScale
                 Log($"Resource Coefficients Set: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
-                Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
+                // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 Log($"Stargraph Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 

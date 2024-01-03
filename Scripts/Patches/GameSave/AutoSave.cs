@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using HarmonyLib;
 
@@ -14,13 +15,20 @@ namespace GalacticScale
             var text3 = GameConfig.gameSaveFolder + GameSave.AutoSave1 + ".gs2";
             var text4 = GameConfig.gameSaveFolder + GameSave.AutoSave2 + ".gs2";
             var text5 = GameConfig.gameSaveFolder + GameSave.AutoSave3 + ".gs2";
-            if (File.Exists(text))
+            try
             {
-                if (File.Exists(text5)) File.Delete(text5);
-                if (File.Exists(text4)) File.Move(text4, text5);
-                if (File.Exists(text3)) File.Move(text3, text4);
-                if (File.Exists(text2)) File.Move(text2, text3);
-                File.Move(text, text2);
+                if (File.Exists(text))
+                {
+                    if (File.Exists(text5)) File.Delete(text5);
+                    if (File.Exists(text4)) File.Move(text4, text5);
+                    if (File.Exists(text3)) File.Move(text3, text4);
+                    if (File.Exists(text2)) File.Move(text2, text3);
+                    File.Move(text, text2);
+                }
+            }
+            catch(Exception e)
+            {
+                GS2.Warn($"The write operation could not be performed because the file is locked. {e.GetType().Name}");
             }
         }
     }

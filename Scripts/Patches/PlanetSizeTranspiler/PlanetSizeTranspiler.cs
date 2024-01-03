@@ -53,7 +53,12 @@ namespace GalacticScale
         [HarmonyPatch(typeof(LocalLaserOneShot), "TickSkillLogic")]
         [HarmonyPatch(typeof(LocalLaserContinuous), "TickSkillLogic")]
         [HarmonyPatch(typeof(PowerSystem), "CalculateGeothermalStrenth")]
+        [HarmonyPatch(typeof(BuildTool_Reform), "UpdateRaycast")]
+        [HarmonyPatch(typeof(BuildTool_Upgrade), "UpdateRaycast")]
         [HarmonyPatch(typeof(BuildTool_Path), "UpdateRaycast")]
+        [HarmonyPatch(typeof(BuildTool_Path), "GetGridWidth")]
+        [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.GetReshapeData))]
+        [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.Reshape))]
         [HarmonyPatch(typeof(SpaceCapsule), nameof(SpaceCapsule.LateUpdate))]
         [HarmonyPatch(typeof(SkillSystem), "AddSpaceEnemyHatred", new[]
         {
@@ -89,8 +94,8 @@ namespace GalacticScale
                 )
                 .Repeat(matcher =>
                 {
-                    Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at " + matcher.Pos + " type " +
-                                             matcher.Operand?.GetType());
+                    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at " + matcher.Pos + " type " +
+                    //                          matcher.Operand?.GetType());
                     var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
                     matcher.Advance(1);
                     // if (matcher.Instruction.opcode != Call)

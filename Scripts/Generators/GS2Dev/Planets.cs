@@ -633,8 +633,8 @@ namespace GalacticScale.Generators
             var singlePlanet = starBodyCount == 1;
             if (singlePlanet)
             {
-                GS2.Log(
-                    $"Single Planet. Ignoring Settings. Original: starBodyCount:{starBodyCount} gasCount:{gasCount} telluricCount:{telluricCount} moonCount:{moonCount} startOnMoon:{startOnMoon}");
+                // GS2.Log(
+                //     $"Single Planet. Ignoring Settings. Original: starBodyCount:{starBodyCount} gasCount:{gasCount} telluricCount:{telluricCount} moonCount:{moonCount} startOnMoon:{startOnMoon}");
                 if (isBirthStar)
                 {
                     gasCount = 0;
@@ -669,30 +669,30 @@ namespace GalacticScale.Generators
 
             for (var i = 0; i < moonCount - (isBirthStar && startOnMoon ? 1 : 0); i++)
             {
-                GS2.Log(
-                    $"Adding Moon {i + 1}/{moonCount} with bias {moonBias}. Available Hosts:{gasPlanets.Count} Gas / {telPlanets.Count}");
+                // GS2.Log(
+                    // $"Adding Moon {i + 1}/{moonCount} with bias {moonBias}. Available Hosts:{gasPlanets.Count} Gas / {telPlanets.Count}");
                 GSPlanet randomPlanet;
                 var hostGas = random.NextPick(moonBias / 100f);
 
                 if (gasPlanets.Count > 0 && hostGas)
                 {
-                    GS2.Log($"Picking Host Gas Planet {gasPlanets.Count}/{telPlanets.Count}");
+                    // GS2.Log($"Picking Host Gas Planet {gasPlanets.Count}/{telPlanets.Count}");
                     randomPlanet = random.Item(gasPlanets);
                 }
                 else if (telPlanets.Count > 0)
                 {
-                    GS2.Log("Picking Host Telluric Planet");
+                    // GS2.Log("Picking Host Telluric Planet");
                     randomPlanet = random.Item(telPlanets);
                 }
                 else if (gasPlanets.Count > 0)
                 {
-                    GS2.Log("Picking Host Gas Planet Due to no Telluric Planets");
+                    // GS2.Log("Picking Host Gas Planet Due to no Telluric Planets");
                     randomPlanet = random.Item(gasPlanets);
                 }
                 else
                 {
                     var radius = GetStarPlanetSize(star);
-                    GS2.Log("Picking No Host Planet");
+                    // GS2.Log("Picking No Host Planet");
                     randomPlanet = new GSPlanet("planet_" + i, "Barren", radius, -1, -1, -1, -1, -1, -1, -1, -1,
                         new GSPlanets());
                     randomPlanet.genData.Add("hosttype", "star");
@@ -706,7 +706,7 @@ namespace GalacticScale.Generators
                 moon.genData.Add("hosttype", "planet");
                 moon.genData.Add("hostname", randomPlanet.Name);
                 moons.Add(moon);
-                GS2.Log($"Added {moon} to {randomPlanet}");
+                // GS2.Log($"Added {moon} to {randomPlanet}");
             }
             if (isBirthStar)
             {

@@ -8,12 +8,12 @@
         {
             public static void LoadEnabledThemes()
             {
-                LogJson(Config.ExternalThemeNames);
+                // LogJson(Config.ExternalThemeNames);
                 externalThemes = new ThemeLibrary();
-                Warn(GSSettings.ThemeLibrary.Count.ToString());
+                // Warn(GSSettings.ThemeLibrary.Count.ToString());
                 foreach (var name in Config.ExternalThemeNames)
                 {
-                    Log($"Loading {name}");
+                    // Log($"Loading {name}");
                     var fragments = name.Split('|');
                     var group = fragments[0];
                     var item = fragments[1];

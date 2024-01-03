@@ -789,24 +789,24 @@ namespace GalacticScale
 
         public static void InitHelpText(UIGalaxySelect __instance)
         {
-            GS2.Log("1");
+            // GS2.Log("1");
             var leftGroup = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/");
             leftGroup.SetActive(true);
-            GS2.Log("2");
+            // GS2.Log("2");
             var helpTextObject = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/left-group/icarus-box/Text");
             
-            GS2.Log("3");
+            // GS2.Log("3");
             helpTextObject.SetActive(true);
             helpTextObject.transform.parent.gameObject.SetActive(true);
             var helpText = helpTextObject.GetComponent<Text>();
-            GS2.Log("4");
+            // GS2.Log("4");
             if (leftGroup.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(leftGroup.GetComponentInChildren<Localizer>());
             helpText.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
             helpText.alignment = TextAnchor.LowerLeft;
             leftGroup.SetActive(true);
-            GS2.Log("5");
+            // GS2.Log("5");
             var leftGroupRect = leftGroup.GetComponent<RectTransform>();
-            GS2.Log("6");
+            // GS2.Log("6");
             leftGroupRect.anchorMax = leftGroupRect.anchorMin = leftGroupRect.pivot = Vector2.zero;
             leftGroupRect.offsetMin = new Vector2(0, 1);
             leftGroupRect.offsetMax = new Vector2(300, 20);

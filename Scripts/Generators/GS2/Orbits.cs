@@ -89,7 +89,7 @@ namespace GalacticScale.Generators
             // GS2.Warn($"--{star.Name}-----------------------------------------------------------------------------");
             // GS2.Warn($"--{star.displayType}-----------------------------------------------------------------------------");
             // GS2.Warn($"Assigning Planet Orbits for {star.Name}:{star.Planets.Count} planets to assign");
-            minOrbit = preferences.GetFloat("orbitSpacing", 0.05f);
+            orbitSpacing = preferences.GetFloat("orbitSpacing", 0.05f);
             var r = new GS2.Random(star.Seed);
             var orbits = new List<Orbit>();
             ref var planets = ref star.Planets;
@@ -156,7 +156,7 @@ namespace GalacticScale.Generators
                     //GS2.Warn($"No Orbit Ranges found for planet {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} radius:{planet.SystemRadius}");
                     var success = false;
                     foreach (var existingOrbit in orbits)
-                        if (existingOrbit.hasRoom && existingOrbit.SystemRadius > planet.SystemRadius)
+                        if (existingOrbit.hasRoom && existingOrbit.SystemRadius > (planet.SystemRadius+2*orbitSpacing))
                         {
                             //GS2.Warn($"Existing orbit {existingOrbit.radius} used for planet {planet.Name}");
                             existingOrbit.planets.Add(planet);
@@ -300,7 +300,7 @@ namespace GalacticScale.Generators
                     foreach (var planet in planets)
                         if (planet.SystemRadius > largestRadius)
                             largestRadius = planet.SystemRadius;
-                    largestRadius += minOrbit;
+                    largestRadius += orbitSpacing;
                     var circumference = radius * 2 * Mathf.PI;
                     // GS2.Log($"HasRoom Circumference = {circumference} largestRadius = {largestRadius} Planet Count = {planets.Count}");
                     if (largestRadius * 2 * planets.Count < circumference) return true;

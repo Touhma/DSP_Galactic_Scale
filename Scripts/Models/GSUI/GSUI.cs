@@ -468,12 +468,16 @@ namespace GalacticScale
                     var value = Generator.Export().Get(key);
                     // GS2.Log($"{key} Value:{value} is null?:{value == null}");
                     if (value == null)
+                    {
                         // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
                         value = DefaultValue;
+                    }
 
                     if (value != null)
-                        // GS2.Warn($"Setting non null value for {key} to {value}");
+                    {
+                        // if (key == "Generator") GS2.Warn($"Setting non null value for {key} to {value}");
                         Set(value);
+                    }
                     else GS2.Log($"Caution: Preference value for {Label} not found.");
                 }
 

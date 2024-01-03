@@ -11,10 +11,10 @@ namespace GalacticScale
     public class PatchOnCloudSimulator
     {
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(CloudSimulator), "OnEnable")]
+        [HarmonyPatch(typeof(CloudSimulator), nameof(CloudSimulator.OnEnable))]
         public static void OnEnable(CloudSimulator __instance)
         {
-            GS2.Log($"CloudSim.OnEnable for {__instance.planet.name}: cloudHeight = {__instance.cloudHeight}, realRadius = {__instance.planet.realRadius}, atmosphereHeight = {__instance.planet.atmosphereHeight} atmosMaterialPlanetRadius = {__instance.planet.atmosMaterial.GetVector("_PlanetRadius").z} nephogram.localScale: {__instance.nephogram.transform.localScale}");
+            // GS2.Log($"CloudSim.OnEnable for {__instance.planet.name}: cloudHeight = {__instance.cloudHeight}, realRadius = {__instance.planet.realRadius}, atmosphereHeight = {__instance.planet.atmosphereHeight} atmosMaterialPlanetRadius = {__instance.planet.atmosMaterial.GetVector("_PlanetRadius").z} nephogram.localScale: {__instance.nephogram.transform.localScale}");
             
         }
     }

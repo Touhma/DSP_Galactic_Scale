@@ -2,8 +2,11 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
-NOTE: innominata has lost his discord account. currently using Substantia account.
-
+- Version 2.12.19 - Fix for gravity on moons orbiting huge gas giants. Fix can be reverted via toggle in GS Settings/Debug. Improved the code for the fix in 2.12.18 to increase performance.
+- Version 2.12.18 - Fix for enemy units clipping through large planets. Not tested on smaller planets. Please let me know if it breaks anything.
+- Version 2.12.17 - Revert csd fix which made things worse
+- Version 2.12.16 - Fixed issue with resetting generator. Fixed settings not being saved. Fixed Generator Settings defaulting to GS2. Prevented a bunch of logspam.
+- Version 2.12.15 - Fixed issue with comma seperated decimals. Fixed issue with GS2 Dev Generation. Ignored error when autosaving over locked gs2 files.
 - Version 2.12.14 - Fixed issue loading saves
 - Version 2.12.13 - Fixed Pandora Planet
 - Version 2.12.12 - Update to newest DSP Version. Some new features may be bugged, only tested that the game works.

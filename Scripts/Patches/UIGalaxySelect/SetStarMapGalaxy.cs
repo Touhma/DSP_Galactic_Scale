@@ -22,32 +22,32 @@ namespace GalacticScale
 
             GSSettings.lobbyReceivedUpdateValues = false;
 
-            GS2.Log("Start");
+            // GS2.Log("Start");
             if (__instance.gameDesc != null && __instance.gameDesc.starCount <= 0) __instance.gameDesc.starCount = 1;
 
             GalaxyData galaxy; // = __instance.starmap.galaxyData;
 
-            if (GS2.Vanilla)
-                galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
-            else
-                GS2.Warn("Processing Galaxy");
+            // if (GS2.Vanilla)
+            //     galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
+            // else
+                // GS2.Warn("Processing Galaxy");
                 galaxy = GS2.ProcessGalaxy(__instance.gameDesc, true); //sp00ktober you probably want to alter this instead
 
-            GS2.Warn("Done");
+            // GS2.Warn("Done");
             if (__instance.starmap == null) GS2.Warn("Starmap Null");
             if (__instance.starmap.galaxyData == null) GS2.Warn("starmapgalaxydata Null");
-            GS2.Warn("TESTING1");
+            // GS2.Warn("TESTING1");
             if (__instance.starmap.galaxyData != null)
             {
-                GS2.Warn("TESTING2");
-                GS2.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
+                // GS2.Warn("TESTING2");
+                // GS2.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
                 __instance.starmap.galaxyData.Free();
             }
 
             if (galaxy == null) GS2.Warn("galaxy Null");
-            else GS2.Warn("Galaxy not null");
+            // else GS2.Warn("Galaxy not null");
             __instance.starmap.galaxyData = galaxy;
-            GS2.Warn("TESTING3");
+            // GS2.Warn("TESTING3");
             // GameMain.data.galaxy = galaxy; // this line is important to let the client load into the correct galaxy lol
 
             // __instance.UpdateUIDisplay(__instance.starmap.galaxyData);
@@ -56,12 +56,12 @@ namespace GalacticScale
             __instance.autoCameraYaw = true;
             __instance.lastCameraYaw = __instance.cameraPoser.yawWanted;
             __instance.autoRotateSpeed = 0.0f;
-            GS2.Warn("TESTING4");
+            // GS2.Warn("TESTING4");
             if (GS2.ActiveGenerator.Config == null) GS2.Warn("GS2.generator.Config Null");
-            GS2.Warn("TESTING5");
+            // GS2.Warn("TESTING5");
             if (GS2.ActiveGenerator.Config.DisableStarCountSlider)
             {
-                GS2.Log("Disabling StarCountSlider");
+                // GS2.Log("Disabling StarCountSlider");
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText == null) GS2.Warn("starcounttext null");
                 if (starCountText == null) starCountText = CreateStarCountText(__instance.starCountSlider);
@@ -70,16 +70,16 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log("Enabling StarCountSlider");
+                // GS2.Log("Enabling StarCountSlider");
                 var starCountText = GameObject.Find("GS Star Count");
                 if (starCountText != null) starCountText.SetActive(false);
 
                 __instance.starCountSlider.gameObject.SetActive(true);
             }
-            GS2.Warn("TESTING6");
+            // GS2.Warn("TESTING6");
             if (GS2.ActiveGenerator.Config.DisableSeedInput)
             {
-                GS2.Log("Disabling SeedInput");
+                // GS2.Log("Disabling SeedInput");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/setting-group/galaxy-seed/InputField");
                 inputField.transform.parent.GetComponent<Text>().enabled = false;
                 inputField.GetComponentInChildren<Text>().enabled = false;
@@ -87,14 +87,14 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log("Enabling SeedInput");
+                // GS2.Log("Enabling SeedInput");
                 var inputField = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/setting-group/galaxy-seed/InputField");
                 inputField.transform.parent.GetComponent<Text>().enabled = true;
                 inputField.GetComponentInChildren<Text>().enabled = true;
                 inputField.GetComponent<Image>().enabled = true;
             }
 
-            GS2.Log("End");
+            // GS2.Log("End");
             return false;
         }
 

@@ -28,7 +28,7 @@ namespace GalacticScale
                 // GS2.Warn($"Tried creating planetAlgorithm for planet that cannot be found. {planet.name}");
                 return false;
             }
-            GS2.Log(gsPlanet?.Theme);
+            // GS2.Log(gsPlanet?.Theme);
             var gsTheme = GSSettings.ThemeLibrary.Find(gsPlanet?.Theme);
             // GS2.Log("Use Custom Generation? " + gsTheme.CustomGeneration);
             if (!gsTheme.CustomGeneration)

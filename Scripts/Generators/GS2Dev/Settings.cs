@@ -7,7 +7,7 @@ namespace GalacticScale.Generators
     public partial class GS2Generator3
     {
         private static bool loaded;
-        public static float minOrbit = 0.05f;
+        public static float orbitSpacing = 0.05f;
 
         private readonly string[] typeDesc =
         {
@@ -177,7 +177,7 @@ namespace GalacticScale.Generators
 
         private void InitPreferences()
         {
-            Log("InitPreferences");
+            // Log("InitPreferences");
             GetHz();
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
             preferences.Set("birthStar", 14);

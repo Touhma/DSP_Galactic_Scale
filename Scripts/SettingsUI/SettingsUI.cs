@@ -135,8 +135,17 @@ namespace GalacticScale
             var generatorNames = GS2.Generators.ConvertAll(iGen => { return iGen.Name; });
             // LogJson(generatorNames);
             for (var i = 0; i < generatorNames.Count; i++)
-                if (generatorNames[i] == ActiveGenerator.Name)
+            {
+                // Log($"Testing {i} {generatorNames[i]}. Is it {ActiveGenerator.Name}?");
+                // if (generatorNames[i] == ActiveGenerator.Name)
+                    // Log($"Testing {i} {generatorNames[i]}. Is it {Config.GeneratorID}?");
+                if (generatorNames[i] == GetGeneratorByID(Config.GeneratorID).Name)
+                {
+                    // Log("Yes it is");
                     GeneratorIndex = i;
+                    ActiveGenerator = GetGeneratorByID(Config.GeneratorID);
+                }
+            }
             // Log("Got this far");
         }
 
@@ -189,12 +198,12 @@ namespace GalacticScale
                 //for each canvas
                 var canvas = Object.Instantiate(sp, scrollContentRect, false).GetComponent<RectTransform>();
 
-                canvas.anchoredPosition = new Vector2(anchorX + 550, anchorY);
+                canvas.anchoredPosition = new Vector2(anchorX + 350, anchorY);
                 GeneratorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
                 if (currentGenIndex == i)
                 {
-                    // GS2.Log("Setting canvas active");
+                    // GS2.Log($"Setting canvas {i} active {canvas.name} currentGenindes:{currentGenIndex}");
                     canvas.gameObject.SetActive(true);
                     Canvas.ForceUpdateCanvases();
                 }

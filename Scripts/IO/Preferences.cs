@@ -11,29 +11,29 @@ namespace GalacticScale
 
         public static void SavePreferences()
         {
-            Warn("SavePreferences");
+            // Warn("SavePreferences");
             Preferences.version = PreferencesVersion;
             Preferences.MainSettings = Config.Export();
-            foreach (var x in Preferences.MainSettings) GS2.Warn($"Key:{x.Key} Value:{x.Value}");
+            // foreach (var x in Preferences.MainSettings) GS2.Warn($"Key:{x.Key} Value:{x.Value}");
             foreach (var g in Plugins)
                 if (g is iConfigurablePlugin)
                 {
                     var plugin = g;
-                    Log("Trying to get plugin preferences for " + plugin.Name);
+                    // Log("Trying to get plugin preferences for " + plugin.Name);
                     var prefs = plugin.Export();
                     Preferences.PluginPreferences[plugin.GUID] = prefs;
-                    Log("Finished updating preferences for " + plugin.Name);
+                    // Log("Finished updating preferences for " + plugin.Name);
                 }
-
-            if (ActiveGenerator is iConfigurableGenerator)
-                Preferences.Save(ActiveGenerator as iConfigurableGenerator);
-            else GSPreferences.WriteToDisk(Preferences);
-            Log("End");
+            foreach (var g in Generators) Preferences.Save(g as iConfigurableGenerator); 
+            // if (ActiveGenerator is iConfigurableGenerator) Preferences.Save(ActiveGenerator as iConfigurableGenerator);
+            // else GSPreferences.WriteToDisk(Preferences);
+            GSPreferences.WriteToDisk(Preferences);
+            Log("Preferences Saved");
         }
 
         public static void LoadPreferences(bool debug = false)
         {
-            Log("LoadPreferences");
+            // Log("LoadPreferences");
             //var path = Path.Combine(DataDir, "Preferences.json");
             //if (!CheckJsonFileExists(path)) return;
 
@@ -59,21 +59,21 @@ namespace GalacticScale
                 Config.Import(Preferences.MainSettings);
             // debugOn = preferences.debug;
             Log("Preferences loaded");
-            Log("End");
+            // Log("End");
         }
 
         private static void ParsePreferences(GSPreferences p)
         {
-            Log("Start");
+            // Log("Start");
             Config.Import(p.MainSettings);
             if (p.GeneratorPreferences != null)
                 foreach (var generatorPreferences in p.GeneratorPreferences)
                 {
-                    Log("Generator Preferences for " + generatorPreferences.Key + "found");
+                    // Log("Generator Preferences for " + generatorPreferences.Key + "found");
                     var gen = GetGeneratorByID(generatorPreferences.Key) as iConfigurableGenerator;
                     if (gen != null)
                     {
-                        Log(gen.Name + "'s preferences exported to generator");
+                        // Log(gen.Name + "'s preferences exported to generator");
                         gen.Import(generatorPreferences.Value);
                     }
                 }
@@ -81,16 +81,16 @@ namespace GalacticScale
             if (p.PluginPreferences != null)
                 foreach (var pluginPreferences in p.PluginPreferences)
                 {
-                    Log("Plugin Preferences for " + pluginPreferences.Key + "found");
+                    // Log("Plugin Preferences for " + pluginPreferences.Key + "found");
                     var plugin = GetPluginByID(pluginPreferences.Key);
                     if (plugin != null)
                     {
-                        Log(plugin.Name + "'s plugin preferences exported");
+                        // Log(plugin.Name + "'s plugin preferences exported");
                         plugin.Import(pluginPreferences.Value);
                     }
                 }
 
-            Log("End");
+            // Log("End");
         }
 
         private class GSPreferences
@@ -104,7 +104,7 @@ namespace GalacticScale
 
             public static bool WriteToDisk(GSPreferences preferences)
             {
-                Warn("WriteToDisk");
+                // Warn("WriteToDisk");
 
                 var serializer = new fsSerializer();
                 var fsResult = serializer.TrySerialize(Preferences, out var data);
@@ -132,7 +132,7 @@ namespace GalacticScale
 
             public static GSPreferences ReadFromDisk()
             {
-                Log("ReadFromDisk");
+                // Log("ReadFromDisk");
                 var path = Path.Combine(DataDir, "Preferences.json");
                 if (!CheckJsonFileExists(path))
                 {
@@ -169,12 +169,12 @@ namespace GalacticScale
                 return preferences;
             }
 
-            public bool Save(iConfigurableGenerator generator)
+            public void Save(iConfigurableGenerator generator)
             {
-                Log($"Save (Generator) {generator.GUID}");
+                // Log($"Save (Generator) {generator.GUID}");
                 var generatorPreferences = generator.Export();
                 GeneratorPreferences[generator.GUID] = generatorPreferences;
-                return WriteToDisk(this);
+                // return WriteToDisk(this);
             }
 
             public GSGenPreferences Load(iConfigurableGenerator generator, bool fromFile = false)

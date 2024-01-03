@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using static GalacticScale.GS2;
 
@@ -7,7 +8,7 @@ namespace GalacticScale.Generators
     public partial class GS2Generator2
     {
         private static bool loaded;
-        public static float minOrbit = 0.05f;
+        public static float orbitSpacing = 0.05f;
 
         private readonly string[] typeDesc =
         {
@@ -145,12 +146,19 @@ namespace GalacticScale.Generators
 
         private void Reset(Val o)
         {
+            Log("Resetting GS2 Generator Preferences");
             preferences = new GSGenPreferences();
             InitPreferences();
             foreach (var ui in UI)
             {
                 Log($"Resetting {ui.Key}");
-                if (GSUI.Settables.Contains(ui.Value.Type)) ui.Value.Set(preferences.Get(ui.Key));
+                var value = preferences.Get(ui.Key);
+                if (String.IsNullOrEmpty(value))
+                {
+                    Warn($"Value is null or empty: {ui.Key}");
+                }
+
+                if (GSUI.Settables.Contains(ui.Value.Type)) ui.Value.Set(value);
             }
         }
 
@@ -177,7 +185,7 @@ namespace GalacticScale.Generators
 
         private void InitPreferences()
         {
-            Log("InitPreferences");
+            // Log("InitPreferences");
             GetHz();
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
             preferences.Set("birthStar", 14);
@@ -190,6 +198,7 @@ namespace GalacticScale.Generators
             preferences.Set("defaultStarCount", 64);
             preferences.Set("starSizeMulti", 10);
             preferences.Set("binaryChance", 0);
+            preferences.Set("binaryDistanceMulti", 1);
             preferences.Set("birthPlanetSize", 200);
             preferences.Set("birthPlanetMoon", false);
             preferences.Set("birthPlanetGasMoon", false);
@@ -205,6 +214,13 @@ namespace GalacticScale.Generators
             preferences.Set("limitPlanetSize300", false);
             preferences.Set("limitPlanetSize400", false);
             preferences.Set("limitPlanetSize500", false);
+            preferences.Set("limitGasSize200", false);
+            preferences.Set("limitGasSize500", false);
+            preferences.Set("limitGasSize1000", false);
+            preferences.Set("limitGasSize2000", false);
+            preferences.Set("limitGasSize3000", false);
+            preferences.Set("limitGasSize4000", false);
+            preferences.Set("limitGasSize5000", false);
             preferences.Set("moonsAreSmall", true);
             preferences.Set("moonBias", 50);
             preferences.Set("hugeGasGiants", true);

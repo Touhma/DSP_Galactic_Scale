@@ -22,6 +22,7 @@ namespace GalacticScale
         public Dictionary<string, GSUI> ThemeCheckboxes = new();
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
         public bool DebugMode => Preferences.GetBool("Debug Log");
+        public bool NewGravity => Preferences.GetBool("New Gravity", false);
         public float VirtualStarmapPlanetScaleFactor => Preferences.GetFloat("VSPlanetScaleFactor", 5f);
         public float VirtualStarmapStarScaleFactor => Preferences.GetFloat("VSStarScaleFactor", 0.5f);
         public float VirtualStarmapOrbitScaleFactor => Preferences.GetFloat("VSOrbitScaleFactor", 5f);
@@ -84,7 +85,7 @@ namespace GalacticScale
         {
             Preferences.Set("Generator ID", ActiveGenerator.GUID);
             Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
-            foreach (var x in Preferences) GS2.Log($"Key:{x.Key} Value:{x.Value}");
+            // foreach (var x in Preferences) GS2.Log($"Key:{x.Key} Value:{x.Value}");
             return Preferences;
         }
 
@@ -101,13 +102,13 @@ namespace GalacticScale
             // GS2.Log("*");
 
             var id = Preferences.GetString("Generator ID", "space.customizing.generators.gs2DevActual");
-            // GS2.Log("*");
+            // GS2.Log($"* { id}");
 
             ActiveGenerator = GetGeneratorByID(id);
-            // GS2.Log("*");
-
+            // GS2.Log($"* {ActiveGenerator.Name}");
+            // LogJson(_generatorNames);
             Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
-            // GS2.Log("*");
+            // GS2.Log($"* {_generatorNames.IndexOf(ActiveGenerator.Name)}");
 
             if (!filenames.Contains(Preferences.GetString("Import Filename", null))) Preferences.Set("Import Filename", filenames[0]);
             // GS2.Log("*");
@@ -115,7 +116,7 @@ namespace GalacticScale
 
         public void Init()
         {
-            // GS2.Warn("!");
+            GS2.Warn("!");
             _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
             // GS2.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback, "Try them all!".Translate()));
@@ -154,6 +155,7 @@ namespace GalacticScale
             // DebugOptions.Add(GSUI.Button("Debug", "Go", (o) => { GS2.Warn(GameMain.localPlanet.runtimePosition + " " + GameMain.localStar.uPosition); }, null, null));
             DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("New Gravity Mechanics".Translate(), false, "New Gravity", null, "Large planets attract a lot more. Can cause issues with large planets".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));
             DebugOptions.Add(GSUI.Slider("Mecha Scale".Translate(), 0.1f, 1f, 10f, 0.1f, "MechaScale", ScaleMecha, "How big Icarus should be. 1 = default".Translate()));
@@ -408,21 +410,21 @@ namespace GalacticScale
 
         private static void GeneratorCallback(Val result)
         {
-            if (GameMain.isPaused && result == 0)
-            {
-                UIMessageBox.Show("Note".Translate(), "You cannot change the generator to vanilla while in game.".Translate(), "Of course not!".Translate(), 2);
-                var genIndex = GS2.Generators.IndexOf(ActiveGenerator);
-                SettingsUI.GeneratorIndex = (int)result;
-
-                return;
-            }
+            // if (GameMain.isPaused && result == 0)
+            // {
+            //     UIMessageBox.Show("Note".Translate(), "You cannot change the generator to vanilla while in game.".Translate(), "Of course not!".Translate(), 2);
+            //     var genIndex = GS2.Generators.IndexOf(ActiveGenerator);
+            //     SettingsUI.GeneratorIndex = (int)result;
+            //
+            //     return;
+            // }
 
             ActiveGenerator = GS2.Generators[(int)result];
             GSEvents.GeneratorChange(ActiveGenerator);
             UpdateNebulaSettings();
 
 
-            Warn("Active Generator = " + ActiveGenerator.Name);
+            // Warn("Active Generator = " + ActiveGenerator.Name);
             foreach (var canvas in SettingsUI.GeneratorCanvases)
                 canvas.gameObject.SetActive(false);
             // GS2.Warn("They have been set inactive");

@@ -68,7 +68,7 @@ namespace GalacticScale
         
         private static void CreateDarkFogHive(StarData star, Random random)
         {
-	        Log($"Generating Hive Orbits For {star.name}");
+	        // Log($"Generating Hive Orbits For {star.name}");
             GSStar gsStar = GetGSStar(star);
 
 
@@ -96,7 +96,7 @@ namespace GalacticScale
                 hiveAstroOrbits[i] = new AstroOrbitData();
                 var orbit = random.ItemAndRemove(possibleHiveOrbits);
                 hiveAstroOrbits[i].orbitRadius = orbit;
-                Warn($"Created Hive Orbit at {star.name} {Utils.Round2DP(hiveAstroOrbits[i].orbitRadius)}");
+                // Warn($"Created Hive Orbit at {star.name} {Utils.Round2DP(hiveAstroOrbits[i].orbitRadius)}");
                 hiveAstroOrbits[i].orbitInclination = random.NextFloat();
                 hiveAstroOrbits[i].orbitLongitude = random.NextFloat();
                 hiveAstroOrbits[i].orbitPhase = random.NextFloat();
@@ -107,7 +107,7 @@ namespace GalacticScale
                 hiveAstroOrbits[i].orbitNormal =
                     Maths.QRotateLF(hiveAstroOrbits[i].orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
             }
-            Log($"Darkfog Hive Orbits Generated for {gsStar.Name}");
+            // Log($"Darkfog Hive Orbits Generated for {gsStar.Name}");
         }
 
         private static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)

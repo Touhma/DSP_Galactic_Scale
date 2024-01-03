@@ -29,7 +29,7 @@ namespace GalacticScale
             CreateDarkFogHive(star, random);
 
 
-            Log($"End|{star.name}");
+            // Log($"End|{star.name}");
         }
 
         

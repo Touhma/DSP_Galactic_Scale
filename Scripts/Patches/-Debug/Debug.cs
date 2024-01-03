@@ -15,15 +15,181 @@ namespace GalacticScale
 {
     public class PatchOnUnspecified_Debug
     {
-	    [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.SetForNewCreate))]
-	    public static bool SetForNewCreate(ref EnemyDFHiveSystem __instance)
-	    {
-		    Log($"{__instance.starData == null} {__instance.starData.hiveAstroOrbits == null}");
-		    Log($"{__instance.hiveOrbitIndex.ToString()}/{__instance.starData.hiveAstroOrbits.Length}");
-		    Log($"--{__instance.starData.index * 8 + __instance.hiveOrbitIndex + 1}/{__instance.sector.astros.Length}");
-		    Log(":)");
-		    return true;
-	    }
+	[HarmonyPrefix]
+	[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.ApplyGravity))]
+	private static bool ApplyGravity(ref PlayerController __instance)
+	{
+		if (Config.NewGravity) return true;
+		VectorLF3 v = VectorLF3.zero;
+		if (GameMain.localStar != null)
+		{
+			StarData localStar = GameMain.localStar;
+			double num = 0.0;
+			VectorLF3 lhs = VectorLF3.zero;
+			for (int i = 0; i < localStar.planetCount; i++)
+			{
+				PlanetData planetData = localStar.planets[i];
+				VectorLF3 lhs2 = planetData.uPosition - __instance.player.uPosition;
+				double magnitude = lhs2.magnitude;
+				if (magnitude > 1.0)
+				{
+					double y = (double)Math.Max((800f - (float)magnitude) / 150f, 0f);
+					double num2 = Math.Pow(10.0, y);
+					VectorLF3 lhs3 = lhs2 / magnitude;
+					double num3 = magnitude / (double)planetData.realRadius;
+					double num4 = num3 * 0.800000011920929;
+					double num5 = ((num3 < 1.0) ? num3 : (1.0 / (num4 * num4)));
+					if (num5 > 1.0)
+					{
+						num5 = 1.0;
+					}
+					double num6 = Math.Sqrt((double)planetData.realRadius) * 3.5;
+					lhs += lhs3 * (num6 * num5 * num2);
+					num += num2;
+				}
+			}
+			VectorLF3 lhs4 = localStar.uPosition - __instance.player.uPosition;
+			double magnitude2 = lhs4.magnitude;
+			if (magnitude2 > 1.0)
+			{
+				double num7 = 1.0;
+				VectorLF3 lhs5 = lhs4 / magnitude2;
+				double num8 = magnitude2 / (double)(localStar.orbitScaler * 800f);
+				double num9 = num8 * 0.10000000149011612;
+				double num10 = ((num8 < 1.0) ? num8 : (1.0 / (num9 * num9)));
+				if (num10 > 1.0)
+				{
+					num10 = 1.0;
+				}
+				double num11 = 26.7;
+				lhs += lhs5 * (num11 * num10 * num7);
+				num += num7;
+			}
+			v = lhs / num;
+		}
+		if (v.sqrMagnitude > 1E-06)
+		{
+			__instance.universalGravity = v;
+			__instance.localGravity = Maths.QInvRotateLF(__instance.gameData.relativeRot, v);
+		}
+		else
+		{
+			__instance.universalGravity = VectorLF3.zero;
+			__instance.localGravity = Vector3.zero;
+		}
+		if (!__instance.player.sailing && !__instance.gameData.disableController && __instance.player.isAlive)
+		{
+			__instance.AddLocalForce(__instance.localGravity);
+		}
+		Debug.DrawRay(__instance.transform.localPosition, __instance.localGravity * 0.1f, Color.white);
+		if (__instance.gameData.localPlanet != null)
+		{
+			Vector3 forward = __instance.transform.forward;
+			Vector3 normalized = __instance.transform.localPosition.normalized;
+			Vector3 normalized2 = Vector3.Cross(Vector3.Cross(normalized, forward).normalized, normalized).normalized;
+			__instance.transform.localRotation = Quaternion.LookRotation(normalized2, normalized);
+			return false;
+		}
+		__instance.transform.localRotation = Quaternion.identity;
+		return false;
+	}
+	//     private static bool ApplyGravity(ref PlayerController __instance)
+	//     {
+	// 	    // return false;
+	// 	VectorLF3 vectorLF = VectorLF3.zero;
+	// 	if (GameMain.localStar != null)
+	// 	{
+	// 		StarData localStar = GameMain.localStar;
+	// 		double num = 0.0;
+	// 		VectorLF3 vectorLF2 = VectorLF3.zero;
+	// 		// for (int i = 0; i < localStar.planetCount; i++)
+	// 		// {
+	// 		// 	PlanetData planetData = localStar.planets[i];
+	// 		// 	VectorLF3 vectorLF3 = planetData.uPosition - __instance.player.uPosition;
+	// 		// 	double magnitude = vectorLF3.magnitude;
+	// 		// 	if (magnitude > 1.0)
+	// 		// 	{
+	// 		// 		double num2 = (double)Math.Max((5000f + planetData.realRadius - (float)magnitude) / 2500f, 0f);
+	// 		// 		double num3 = Math.Pow(11.0, num2) - 1.0;
+	// 		// 		VectorLF3 vectorLF4 = vectorLF3 / magnitude;
+	// 		// 		double num4 = magnitude / (double)planetData.realRadius;
+	// 		// 		double num5 = num4 * 0.800000011920929;
+	// 		// 		double num6 = ((num4 < 1.0) ? num4 : (1.0 / (num5 * num5)));
+	// 		// 		if (num6 > 1.0)
+	// 		// 		{
+	// 		// 			num6 = 1.0;
+	// 		// 		}
+	// 		// 		double num7 = Math.Sqrt((double)planetData.realRadius) * 3.5;
+	// 		// 		vectorLF2 += vectorLF4 * (num7 * num6 * num3);
+	// 		// 		num += num3;
+	// 		// 	}
+	// 		// }
+	// 		VectorLF3 vectorLF5 = localStar.uPosition - __instance.player.uPosition;
+	// 		double num8 = vectorLF5.magnitude;
+	// 		if (num8 > 1.0)
+	// 		{
+	// 			double num9 = 1.0;
+	// 			VectorLF3 vectorLF6 = vectorLF5 / num8;
+	// 			double num10 = 64000000000000.0 * (double)localStar.mass * 1.3538551990520382E-06 * 4.0;
+	// 			if (num8 < (double)localStar.physicsRadius)
+	// 			{
+	// 				num8 = (double)localStar.physicsRadius;
+	// 			}
+	// 			VectorLF3 vectorLF7 = vectorLF6 * (num10 / (num8 * num8));
+	// 			vectorLF2 += vectorLF7;
+	// 			num += num9;
+	// 		}
+	// 		vectorLF = vectorLF2 / num;
+	// 	}
+	// 	if (vectorLF.sqrMagnitude > 1E-06)
+	// 	{
+	// 		__instance.universalGravity = vectorLF;
+	// 		__instance.localGravity = Maths.QInvRotateLF(__instance.gameData.relativeRot, vectorLF);
+	// 	}
+	// 	else
+	// 	{
+	// 		__instance.universalGravity = VectorLF3.zero;
+	// 		__instance.localGravity = Vector3.zero;
+	// 	}
+	// 	if (!__instance.player.sailing && !__instance.gameData.disableController && __instance.player.isAlive)
+	// 	{
+	// 		__instance.universalGravity = VectorLF3.zero;
+	// 		__instance.localGravity = Vector3.zero;
+	// 		__instance.AddLocalForce(__instance.localGravity);
+	// 	}
+	// 	// Debug.DrawRay(base.transform.localPosition, __instance.localGravity * 0.1f, Color.white);
+	// 	if (__instance.gameData.localPlanet != null)
+	// 	{
+	// 		Vector3 forward = __instance.transform.forward;
+	// 		Vector3 normalized = __instance.transform.localPosition.normalized;
+	// 		Vector3 normalized2 = Vector3.Cross(Vector3.Cross(normalized, forward).normalized, normalized).normalized;
+	// 		__instance.transform.localRotation = Quaternion.LookRotation(normalized2, normalized);
+	// 		return false;
+	// 	}
+	// 	__instance.transform.localRotation = Quaternion.identity;
+	// 	return false;
+	// 	
+	// }
+	    // [HarmonyPostfix,
+	    //  HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.RunBehavior_Engage_GRaider))]
+	    // public static void RunBehavior_Engage_GRaider(ref EnemyUnitComponent __instance, PlanetFactory factory, ref EnemyData enemy)
+	    // {
+		   //  foreach (var e in factory.enemySystem.units.buffer)
+		   //  {
+			  //   var pos =  factory.enemyPool[e.enemyId].pos;
+			  //   var mag = pos.magnitude;
+			  //   if (mag < 300f && mag != 0) factory.enemyPool[e.enemyId].pos *= 1.01f;
+		   //  }
+	    // }
+	    //  [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.SetForNewCreate))]
+	   //  public static bool SetForNewCreate(ref EnemyDFHiveSystem __instance)
+	   //  {
+		  //   Log($"{__instance.starData == null} {__instance.starData.hiveAstroOrbits == null}");
+		  //   Log($"{__instance.hiveOrbitIndex.ToString()}/{__instance.starData.hiveAstroOrbits.Length}");
+		  //   Log($"--{__instance.starData.index * 8 + __instance.hiveOrbitIndex + 1}/{__instance.sector.astros.Length}");
+		  //   Log(":)");
+		  //   return true;
+	   //  }
 	    
  //        [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.CreateNativeRelays))]
  //        public static bool CreateNativeRelays(ref EnemyDFHiveSystem __instance)
