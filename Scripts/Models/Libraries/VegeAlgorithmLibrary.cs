@@ -10,7 +10,7 @@ namespace GalacticScale
         {
             return new VegeAlgorithmLibrary
             {
-                ["GS2"] = VegeAlgorithms.GenerateVeges1
+                ["GS3"] = VegeAlgorithms.GenerateVeges1
             };
         }
 
@@ -18,7 +18,7 @@ namespace GalacticScale
         {
             if (!ContainsKey(name))
             {
-                GS2.Warn("VegeAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
+                GS3.Warn("VegeAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
                 return VegeAlgorithms.GenerateVeges1;
             }
 

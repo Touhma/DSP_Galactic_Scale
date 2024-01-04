@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static StarData CreateStar(int index, Random random)
         {
@@ -24,7 +24,7 @@ namespace GalacticScale
             starData.index = index;
             starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
             starData.id = id;
-            //GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
+            //GS3.Warn($"Creating star {star.Name} with id:{id} and index {index}");
             starData.seed = star.Seed;
             starData.position = star.position;
             starData.uPosition = starData.position * 2400000.0;
@@ -52,7 +52,7 @@ namespace GalacticScale
             if (star == GSSettings.BirthStar)
             {
 	            galaxy.birthStarId = starData.id;
-	            // GS2.Log($"Applying Birth Hive Settings to {star.Name}");
+	            // GS3.Log($"Applying Birth Hive Settings to {star.Name}");
 	            ConfigureBirthStarHiveSettings(random, starData);
             }
             else ConfigureStarHiveSettings(random, starData);

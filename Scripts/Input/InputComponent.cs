@@ -8,27 +8,27 @@ namespace GalacticScale
     {
         // public void Awake()
         // {
-        //     GS2.Warn("Input component Awake");
+        //     GS3.Warn("Input component Awake");
         // }
 
         public void FixedUpdate()
         {
-            // GS2.Log("FU");
-            if (VFInput.alt && VFInput.control && VFInput._openMechLight) GS2.WarnJson(HandleLocalStarPlanets.TransitionRadii); //alt ctrl L
-            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode(); //ctrl alt shift d
+            // GS3.Log("FU");
+            if (VFInput.alt && VFInput.control && VFInput._openMechLight) GS3.WarnJson(HandleLocalStarPlanets.TransitionRadii); //alt ctrl L
+            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS3.Config.EnableDevMode(); //ctrl alt shift d
             else if (VFInput.control && VFInput.shift && VFInput._moveRight) Utils.LogDFInfo(GameMain.localStar); //ctrl shift d
             if (VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null) // ctrl shift R
             {
-                GS2.Warn("*");
-                var filename = Path.Combine(GS2.DataDir, "WorkingTheme.json");
+                GS3.Warn("*");
+                var filename = Path.Combine(GS3.DataDir, "WorkingTheme.json");
                 if (!File.Exists(filename))
                 {
-                    var oldTheme = GS2.GetGSPlanet(GameMain.localPlanet).GsTheme;
+                    var oldTheme = GS3.GetGSPlanet(GameMain.localPlanet).GsTheme;
                     var fs = new fsSerializer();
                     fs.TrySerialize(oldTheme, out var data);
                     var json = fsJsonPrinter.PrettyJson(data);
                     File.WriteAllText(filename, json);
-                    GS2.ShowMessage("WorkingTheme.json has been exported. Use the same key combination to reload it");
+                    GS3.ShowMessage("WorkingTheme.json has been exported. Use the same key combination to reload it");
                     return;
                 }
 
@@ -37,11 +37,11 @@ namespace GalacticScale
                 GameCamera.instance.SyncForSailMode();
 
                 var p = GameMain.localStar.planets[GameMain.localPlanet.index];
-                var gsPlanet = GS2.GetGSPlanet(p);
-                GS2.GetGSStar(p.star).counter = p.index;
+                var gsPlanet = GS3.GetGSPlanet(p);
+                GS3.GetGSStar(p.star).counter = p.index;
 
-                var newTheme = GS2.LoadJsonTheme(filename);
-                GS2.Warn($"LOADED THEME {newTheme.Name} CustomGen:{newTheme.CustomGeneration} TA:{newTheme.TerrainSettings.Algorithm}");
+                var newTheme = GS3.LoadJsonTheme(filename);
+                GS3.Warn($"LOADED THEME {newTheme.Name} CustomGen:{newTheme.CustomGeneration} TA:{newTheme.TerrainSettings.Algorithm}");
                 newTheme.Process();
                 gsPlanet.Theme = newTheme.Name;
 
@@ -53,7 +53,7 @@ namespace GalacticScale
                 p.atmosMaterial = null;
                 p.atmosMaterialLate = null;
                 p.minimapMaterial = null;
-                GS2.SetPlanetTheme(p, gsPlanet);
+                GS3.SetPlanetTheme(p, gsPlanet);
                 GameMain.localStar.planets[p.index] = p;
                 gsPlanet.planetData = p;
                 PlanetModelingManager.RequestLoadPlanet(p);

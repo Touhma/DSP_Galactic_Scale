@@ -50,7 +50,7 @@ namespace GalacticScale
             [EVeinType.Stone] = "Stone"
         };
 
-        public static GS2.Random random = new(GSSettings.Seed);
+        public static GS3.Random random = new(GSSettings.Seed);
         public int generate;
 
         [NonSerialized] public PlanetData planet;

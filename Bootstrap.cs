@@ -9,13 +9,13 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public partial class GS2
+    public partial class GS3
     {
-        public static int PreferencesVersion = 2104;
+        public static int PreferencesVersion = 30004;
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.20")]
+    [BepInPlugin("dsp.galactic-scale.3", "Galactic Scale 3 Plug-In", "3.0.0")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -34,21 +34,21 @@ namespace GalacticScale
 
         private void InitializeLogger()
         {
-            AppDomain.CurrentDomain.UnhandledException += (o, e) => GS2.LogError(o,e);
+            AppDomain.CurrentDomain.UnhandledException += (o, e) => GS3.LogError(o,e);
             var v = Assembly.GetExecutingAssembly().GetName().Version;
             var a = Assembly.GetAssembly(typeof(GSStar));
-            GS2.Version = $"{v.Major}.{v.Minor}.{v.Build}";
+            GS3.Version = $"{v.Major}.{v.Minor}.{v.Build}";
             BCE.Console.Init();
-            Logger = new ManualLogSource("GS2");
+            Logger = new ManualLogSource("GS3");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             
-            GS2.ConsoleSplash();
+            GS3.ConsoleSplash();
         }
 
         private void InitializeComponents()
         {
-            if (GS2.TP == null) GS2.TP = gameObject.AddComponent<TeleportComponent>();
-            if (GS2.InputComponent == null) GS2.InputComponent = gameObject.AddComponent<InputComponent>();
+            if (GS3.TP == null) GS3.TP = gameObject.AddComponent<TeleportComponent>();
+            if (GS3.InputComponent == null) GS3.InputComponent = gameObject.AddComponent<InputComponent>();
         }
 
         private void ApplyHarmonyPatches()
@@ -60,95 +60,87 @@ namespace GalacticScale
                     file.Delete();
                 }
 
-                Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
-                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
+                
             // }
             try
             {
-                var harmony = new Harmony("dsp.galactic-scale.2");
-                harmony.PatchAll((typeof(PlanetSizeTranspiler)));
-                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
-                harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
-                harmony.PatchAll(typeof(PatchOnBlueprintUtils));
-                harmony.PatchAll(typeof(PatchOnBuildingGizmo));
-                harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintCopy));
-                harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintPaste));
-                harmony.PatchAll(typeof(PatchOnBuildTool_Click));
-                harmony.PatchAll(typeof(PatchOnBuildTool_Inserter));
-                harmony.PatchAll(typeof(PatchOnBuildTool_Path));
-                harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
-                harmony.PatchAll(typeof(PatchOnCloudSimulator));
-                harmony.PatchAll(typeof(PatchOnDigitalSystem));
-                harmony.PatchAll(typeof(PatchOnEnemyDFGroundSystem));
-                harmony.PatchAll(typeof(PatchOnEnemyDFHiveSystem));
-                harmony.PatchAll(typeof(PatchOnFactoryModel));
-                harmony.PatchAll(typeof(PatchOnGalaxyData));
-                harmony.PatchAll(typeof(PatchOnGameAbnormalityData));
-                harmony.PatchAll(typeof(PatchOnGameAchievementData));
-                harmony.PatchAll(typeof(PatchOnGameData));
-                harmony.PatchAll(typeof(PatchOnGameDesc));
-                harmony.PatchAll(typeof(PatchOnGameHistoryData));
-                harmony.PatchAll(typeof(PatchOnGameLoader));
-                harmony.PatchAll(typeof(PatchOnGameMain));
-                harmony.PatchAll(typeof(PatchOnGameOption));
-                harmony.PatchAll(typeof(PatchOnGameSave));
-                harmony.PatchAll(typeof(PatchOnGraticulePoser));
-                harmony.PatchAll(typeof(PatchOnGuideMissionStandardMode));
-                harmony.PatchAll(typeof(PatchOnNearColliderLogic));
-                harmony.PatchAll(typeof(PatchOnPlanetAlgorithm));
-                harmony.PatchAll(typeof(PatchOnPlanetAtmoBlur));
-                harmony.PatchAll(typeof(PatchOnPlanetAuxData));
-                harmony.PatchAll(typeof(PatchOnPlanetData));
-                harmony.PatchAll(typeof(PatchOnPlanetFactory));
-                harmony.PatchAll(typeof(PatchOnPlanetGrid));
-                harmony.PatchAll(typeof(PatchOnPlanetModelingManager));
-                harmony.PatchAll(typeof(PatchOnPlanetRawData));
-                harmony.PatchAll(typeof(PatchOnPlanetSimulator));
-                harmony.PatchAll(typeof(PatchOnPlatformSystem));
-                harmony.PatchAll(typeof(PatchOnPlayerFootsteps));
-                harmony.PatchAll(typeof(PatchOnPlayerMove_Fly));
-                harmony.PatchAll(typeof(PatchOnPlayerMove_Sail));
-                harmony.PatchAll(typeof(PatchOnPowerSystem));
-                harmony.PatchAll(typeof(PatchOnSectorModel));
-                harmony.PatchAll(typeof(PatchOnSpaceSector));
-                harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
-                harmony.PatchAll(typeof(PatchOnStarGen));
-                harmony.PatchAll(typeof(PatchOnStationComponent));
-                harmony.PatchAll(typeof(PatchOnThemeProto));
-                harmony.PatchAll(typeof(PatchOnTrashSystem));
-                harmony.PatchAll(typeof(PatchOnUIAchievementPanel));
-                harmony.PatchAll(typeof(PatchOnUIAdvisorTip));
-                harmony.PatchAll(typeof(PatchOnUIBuildingGrid));
-                harmony.PatchAll(typeof(PatchOnUIEscMenu));
-                harmony.PatchAll(typeof(PatchOnUIGalaxySelect));
-                harmony.PatchAll(typeof(PatchOnUIGame));
-                harmony.PatchAll(typeof(PatchOnUIGameLoadingSplash));
-                harmony.PatchAll(typeof(PatchOnUILoadGameWindow));
-                harmony.PatchAll(typeof(PatchOnUIMainMenu));
-                harmony.PatchAll(typeof(PatchOnUIOptionWindow));
-                harmony.PatchAll(typeof(PatchOnUIPlanetDetail));
-                // harmony.PatchAll(typeof(PatchOnUIReplicatorWindow));
-                harmony.PatchAll(typeof(PatchOnUIResearchResultsWindow));
-                harmony.PatchAll(typeof(PatchOnUIRoot));
-                harmony.PatchAll(typeof(PatchOnUISaveGameWindow));
-                harmony.PatchAll(typeof(PatchOnUISpaceGuide));
-                harmony.PatchAll(typeof(PatchOnUISpaceGuideEntry));
-                harmony.PatchAll(typeof(PatchOnUIStarDetail));
-                harmony.PatchAll(typeof(PatchOnUIStarmap));
-                harmony.PatchAll(typeof(PatchOnUIStarmapPlanet));
-                harmony.PatchAll(typeof(PatchOnUIStarmapStar));
-                harmony.PatchAll(typeof(PatchOnUITutorialTip));
-                harmony.PatchAll(typeof(PatchOnUIVeinDetail));
-                harmony.PatchAll(typeof(PatchOnUIVersionText));
-                harmony.PatchAll(typeof(PatchOnUIVirtualStarmap));
-                harmony.PatchAll(typeof(PatchOnUniverseGen));
-                harmony.PatchAll(typeof(PatchOnUniverseSimulator));
-                harmony.PatchAll(typeof(PatchOnVFPreload));
-                harmony.PatchAll(typeof(PatchOnWarningSystem));
+                var harmony = new Harmony("dsp.galactic-scale.3");
+                harmony.PatchAll((typeof(Patches.PlanetSizeTranspiler)));
+                harmony.PatchAll(typeof(Patches.PatchOnUnspecified_Debug));
+                harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Click));
+                harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Inserter));
+                harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Path));
+                Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
+                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
+                harmony.PatchAll(typeof(Patches.PatchOnBuildTool_PathAddon));
+                // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
+
+                harmony.PatchAll(typeof(Patches.PatchOnDigitalSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnEnemyDFGroundSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnEnemyDFHiveSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnFactoryModel));
+                harmony.PatchAll(typeof(Patches.PatchOnGalaxyData));
+                harmony.PatchAll(typeof(Patches.PatchOnGameAbnormalityData));
+                harmony.PatchAll(typeof(Patches.PatchOnGameAchievementData));
+                harmony.PatchAll(typeof(Patches.PatchOnGameData));
+                harmony.PatchAll(typeof(Patches.PatchOnGameDesc));
+                harmony.PatchAll(typeof(Patches.PatchOnGameHistoryData));
+                harmony.PatchAll(typeof(Patches.PatchOnGameLoader));
+                harmony.PatchAll(typeof(Patches.PatchOnGameMain));
+                harmony.PatchAll(typeof(Patches.PatchOnGameOption));
+                harmony.PatchAll(typeof(Patches.PatchOnGameSave));
+                harmony.PatchAll(typeof(Patches.PatchOnGraticulePoser));
+                harmony.PatchAll(typeof(Patches.PatchOnGuideMissionStandardMode));
+                harmony.PatchAll(typeof(Patches.PatchOnNearColliderLogic));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetAlgorithm));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetAtmoBlur));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetAuxData));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetData));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetFactory));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetGrid));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetModelingManager));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetRawData));
+                harmony.PatchAll(typeof(Patches.PatchOnPlanetSimulator));
+                harmony.PatchAll(typeof(Patches.PatchOnPlatformSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnPlayerController));
+                harmony.PatchAll(typeof(Patches.PatchOnPlayerFootsteps));
+                harmony.PatchAll(typeof(Patches.PatchOnPowerSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnSectorModel));
+                harmony.PatchAll(typeof(Patches.PatchOnSpaceSector));
+                harmony.PatchAll(typeof(Patches.PatchOnStationComponent));
+                harmony.PatchAll(typeof(Patches.PatchOnThemeProto));
+                harmony.PatchAll(typeof(Patches.PatchOnTrashSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnUIAchievementPanel));
+                harmony.PatchAll(typeof(Patches.PatchOnUIAdvisorTip));
+                harmony.PatchAll(typeof(Patches.PatchOnUIBuildingGrid));
+                harmony.PatchAll(typeof(Patches.PatchOnUIEscMenu));
+                harmony.PatchAll(typeof(Patches.PatchOnUIGalaxySelect));
+                harmony.PatchAll(typeof(Patches.PatchOnUIGame));
+                harmony.PatchAll(typeof(Patches.PatchOnUIGameLoadingSplash));
+                harmony.PatchAll(typeof(Patches.PatchOnUILoadGameWindow));
+                harmony.PatchAll(typeof(Patches.PatchOnUIMainMenu));
+                harmony.PatchAll(typeof(Patches.PatchOnUIOptionWindow));
+                harmony.PatchAll(typeof(Patches.PatchOnUIPlanetDetail));
+                harmony.PatchAll(typeof(Patches.PatchOnUIResearchResultsWindow));
+                harmony.PatchAll(typeof(Patches.PatchOnUIRoot));
+                harmony.PatchAll(typeof(Patches.PatchOnUISaveGameWindow));
+                harmony.PatchAll(typeof(Patches.PatchOnUISpaceGuide));
+                harmony.PatchAll(typeof(Patches.PatchOnUIStarDetail));
+                harmony.PatchAll(typeof(Patches.PatchOnUIStarmap));
+                harmony.PatchAll(typeof(Patches.PatchOnUIStarmapPlanet));
+                harmony.PatchAll(typeof(Patches.PatchOnUIStarmapStar));
+                harmony.PatchAll(typeof(Patches.PatchOnUITutorialTip));
+                harmony.PatchAll(typeof(Patches.PatchOnUIVeinDetail));
+                harmony.PatchAll(typeof(Patches.PatchOnUIVersionText));
+                harmony.PatchAll(typeof(Patches.PatchOnUIVirtualStarmap));
+                harmony.PatchAll(typeof(Patches.PatchOnUniverseGen));
+                harmony.PatchAll(typeof(Patches.PatchOnUniverseSimulator));
+                harmony.PatchAll(typeof(Patches.PatchOnVFPreload));
+                harmony.PatchAll(typeof(Patches.PatchOnWarningSystem));
             }
             catch (System.Exception e)
             {
-                GS2.Error(e.ToString());
+                GS3.Error(e.ToString());
             }
         }
 

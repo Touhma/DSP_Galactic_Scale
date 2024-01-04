@@ -38,7 +38,7 @@ namespace GalacticScale
 
         private static void RandomPoses(int seed, int maxCount, double minDist, double minStepLen, double maxStepLen, double flatten)
         {
-            var random = new GS2.Random(GSSettings.Seed);
+            var random = new GS3.Random(GSSettings.Seed);
             var num1 = random.NextDouble();
             tmp_poses.Add(VectorLF3.zero);
             var num2 = 6;
@@ -49,8 +49,8 @@ namespace GalacticScale
 
             var num4 = (int)(num1 * (num3 - num2) + num2);
             var max = 256;
-            //if (GS2.gameDesc.starCount > 512) max = 512;
-            if (GS2.gameDesc.starCount > 1024) max = 1024;
+            //if (GS3.gameDesc.starCount > 512) max = 512;
+            if (GS3.gameDesc.starCount > 1024) max = 1024;
 
             for (var index = 0; index < num4; ++index)
             {

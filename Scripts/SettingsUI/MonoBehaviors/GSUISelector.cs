@@ -32,7 +32,7 @@ namespace GalacticScale
             get => Items[_index];
             set
             {
-                if (!Items.Contains(value)) GS2.Error($"Trying to set an invalid value of {value}");
+                if (!Items.Contains(value)) GS3.Error($"Trying to set an invalid value of {value}");
                 else _index = Items.IndexOf(value);
                 UpdateItem();
             }

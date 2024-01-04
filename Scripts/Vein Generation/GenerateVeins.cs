@@ -24,13 +24,13 @@ namespace GalacticScale
 
     public static partial class VeinAlgorithms
     {
-        private static GS2.Random random;
+        private static GS3.Random random;
 
         private static void GenBirthPoints(GSPlanet gsPlanet)
         {
-            random = new GS2.Random(GSSettings.Seed);
+            random = new GS3.Random(GSSettings.Seed);
             var planet = gsPlanet.planetData;
-            // GS2.Log("GenBirthPoints");
+            // GS3.Log("GenBirthPoints");
             Pose pose;
             var n = 85.0 / planet.orbitalPeriod + planet.orbitPhase / 360.0;
             var n2 = (int)(n + 0.1);
@@ -102,7 +102,7 @@ namespace GalacticScale
 
                 if (flag) break;
             }
-            // GS2.Log("Finished Birthpoints");
+            // GS3.Log("Finished Birthpoints");
         }
 
         private static void GenerateNodeVectors(List<Vector2> nodeVectors, int maxCount)
@@ -159,7 +159,7 @@ namespace GalacticScale
         private static void AddVeinToPlanet(int amount, EVeinType veinType, Vector3 position, short groupIndex, PlanetData planet)
         {
             groupIndex++;
-            // GS2.Log($"Adding Vein {veinType} GroupIndex = "+groupIndex);
+            // GS3.Log($"Adding Vein {veinType} GroupIndex = "+groupIndex);
             var vein = new VeinData
             {
                 amount = amount,
@@ -175,7 +175,7 @@ namespace GalacticScale
             planet.veinGroups[groupIndex].count++;
             planet.veinGroups[groupIndex].amount += vein.amount;
             planet.data.AddVeinData(vein); //add to the planets rawdata veinpool
-            // GS2.Warn("Added");
+            // GS3.Warn("Added");
         }
 
         private static void EraseVegetableAtPoint(Vector3 position, PlanetData planet)
@@ -207,7 +207,7 @@ namespace GalacticScale
 
         private static void InitBirthVeinVectors(GSPlanet gsPlanet)
         {
-            GS2.Warn("Initializing Birth Veins");
+            GS3.Warn("Initializing Birth Veins");
             var planet = gsPlanet.planetData;
             gsPlanet.veinData.types[0] = EVeinType.Iron;
             gsPlanet.veinData.vectors[0] = planet.birthResourcePoint0;
@@ -218,7 +218,7 @@ namespace GalacticScale
 
         private static Vector3 InitVeinGroupVector(PlanetData planet, bool birth)
         {
-            //random = new GS2.Random(GSSettings.Seed);
+            //random = new GS3.Random(GSSettings.Seed);
             Vector3 groupVector;
             if (birth)
             {
@@ -268,11 +268,11 @@ namespace GalacticScale
                         break;
                 }
 
-                if (GS2.Config.ForceRare) disabled[i] = false;
+                if (GS3.Config.ForceRare) disabled[i] = false;
             }
 
-            // GS2.Warn($"{gsPlanet.Name} chance of rare = {gsPlanet.rareChance} where -1f is default (13% chance of rare) and 0 is 0% chance, 1 is 100% chance");
-            // GS2.WarnJson(disabled);
+            // GS3.Warn($"{gsPlanet.Name} chance of rare = {gsPlanet.rareChance} where -1f is default (13% chance of rare) and 0 is 0% chance, 1 is 100% chance");
+            // GS3.WarnJson(disabled);
             return disabled;
         }
     }

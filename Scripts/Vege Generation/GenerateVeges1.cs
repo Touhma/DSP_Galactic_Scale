@@ -5,26 +5,26 @@ namespace GalacticScale
 {
     public static class VegeAlgorithms
     {
-        private static GS2.Random random = new(GSSettings.Seed);
+        private static GS3.Random random = new(GSSettings.Seed);
 
         public static void GenerateVeges1(GSPlanet gsPlanet)
         {
-            //GS2.Log("GenerateVeges1|" + gsPlanet.Name);
-            //GS2.Warn($"USING GS2 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            //GS3.Log("GenerateVeges1|" + gsPlanet.Name);
+            //GS3.Warn($"USING GS3 Vege FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var planet = gsPlanet.planetData;
             if (planet == null) return;
             var themeProto = LDB.themes.Select(planet.theme);
             if (themeProto == null) return;
-            random = new GS2.Random(GSSettings.Seed);
+            random = new GS3.Random(GSSettings.Seed);
             //TODO convert veges in GSTheme
-            //GS2.Log("GenerateVeges1|" + gsPlanet.Name+"1");
+            //GS3.Log("GenerateVeges1|" + gsPlanet.Name+"1");
             var vegetables = themeProto.Vegetables0;
             var vegetables2 = themeProto.Vegetables1;
             var vegetables3 = themeProto.Vegetables2;
             var vegetables4 = themeProto.Vegetables3;
             var vegetables5 = themeProto.Vegetables4;
             var vegetables6 = themeProto.Vegetables5;
-            //GS2.Log("GenerateVeges1|" + gsPlanet.Name + "2");
+            //GS3.Log("GenerateVeges1|" + gsPlanet.Name + "2");
             var num = 1.3f;
             var num2 = -0.5f;
             var num3 = 2.5f;
@@ -46,12 +46,12 @@ namespace GalacticScale
             var stride = data.stride;
             var num11 = stride / 2;
             var num12 = planet.radius * 3.14159f * 2f / (data.precision * 4f);
-            //GS2.Log("GenerateVeges1|" + gsPlanet.Name + "3");
+            //GS3.Log("GenerateVeges1|" + gsPlanet.Name + "3");
             var vege = default(VegeData);
             var vegeProtos = PlanetModelingManager.vegeProtos;
             var vegeScaleRanges = PlanetModelingManager.vegeScaleRanges;
             var vegeHps = PlanetModelingManager.vegeHps;
-            //GS2.Log("GenerateVeges1|" + gsPlanet.Name + "4");
+            //GS3.Log("GenerateVeges1|" + gsPlanet.Name + "4");
             for (var i = 0; i < data.dataLength; i++)
             {
                 var num13 = i % stride;

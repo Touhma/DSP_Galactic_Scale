@@ -22,7 +22,7 @@ namespace GalacticScale
         {
             if (!ContainsKey(name))
             {
-                GS2.Warn("TerrainAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
+                GS3.Warn("TerrainAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
                 return TerrainAlgorithms.GenerateTerrain1;
             }
 

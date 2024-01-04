@@ -8,11 +8,11 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.12.20</Version>
+        <Version>3.0.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
-        <OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale\</OutDir>
+        <OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale3\</OutDir>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,7 +20,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
-        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.28.21172-r.0" IncludeAssets="compile" />
+        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.28.21196-r.0" IncludeAssets="compile" />
         <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
     </ItemGroup>
 
@@ -29,14 +29,8 @@
     </ItemGroup>
 
     <ItemGroup>
-<!--        <Reference Include="Assembly-CSharp">-->
-<!--          <HintPath>d:\Assembly-CSharp-nstrip.dll</HintPath>-->
-<!--        </Reference>-->
         <Reference Include="GSUI">
             <HintPath>Package\GSUI.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UI">
-          <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -53,5 +47,11 @@
     <ItemGroup>
         <None Remove="Assets\galaxy.json" />
         <EmbeddedResource Include="Assets\galaxy.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Scripts\Patches\Prefix" />
+      <Folder Include="Scripts\Patches\Transpilers" />
+      <Folder Include="Scripts\Transpilers" />
     </ItemGroup>
 </Project>

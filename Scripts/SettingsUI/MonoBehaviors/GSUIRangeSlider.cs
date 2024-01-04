@@ -116,7 +116,7 @@ namespace GalacticScale
 
         public void OnSliderValueChange(float LowValue, float HighValue)
         {
-            // GS2.Log($"SliderValChange(Range) { LowValue} {HighValue}");
+            // GS3.Log($"SliderValChange(Range) { LowValue} {HighValue}");
             var lowValue = (int)(LowValue * 100f) / 100f;
             var highValue = (int)(HighValue * 100f) / 100f;
             _lowValueText.text = lowValue.ToString();
@@ -129,7 +129,7 @@ namespace GalacticScale
 
         public void initialize(GSUI options)
         {
-            // GS2.Log("Initializing");
+            // GS3.Log("Initializing");
             Label = options.Label;
             Hint = options.Hint;
             var sc = (GSRangeSliderConfig)options.Data;

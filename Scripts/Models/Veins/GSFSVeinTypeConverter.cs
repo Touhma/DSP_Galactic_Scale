@@ -8,13 +8,13 @@ namespace GalacticScale
     {
         public override object CreateInstance(fsData data, Type storageType)
         {
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             return new GSVeinType();
         }
 
         protected override fsResult DoSerialize(GSVeinType model, Dictionary<string, fsData> serialized)
         {
-            // GS2.Log("Start");
+            // GS3.Log("Start");
             var list = new List<fsData>();
             var dict = new Dictionary<string, int>();
             if (model.veins.Count > 0)
@@ -28,10 +28,10 @@ namespace GalacticScale
                 }
             else
                 return fsResult.Success;
-            // GS2.WarnJson(model);
+            // GS3.WarnJson(model);
 
             foreach (var kvp in dict) list.Add(new fsData(kvp.Value + "x" + kvp.Key));
-            //GS2.Warn("-----"+list.Count);
+            //GS3.Warn("-----"+list.Count);
             //for (var i = 0; i < model.veins.Count; i++)
             //{
             //    list.Add(new fsData(model.veins[i].count + "@" + model.veins[i].richness));
@@ -48,27 +48,27 @@ namespace GalacticScale
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSVeinType model)
         {
-            // GS2.Log("Start");
+            // GS3.Log("Start");
             var result = fsResult.Success;
             model = new GSVeinType();
             // Deserialize name mainly manually (helper methods CheckKey and CheckType)
             fsData veinData;
             if (CheckKey(data, "veins", out veinData).Succeeded)
             {
-                // GS2.Log("processing veins");
+                // GS3.Log("processing veins");
                 if ((result += CheckType(veinData, fsDataType.Array)).Failed) return result;
-                // GS2.Log("VeinData is Array");
+                // GS3.Log("VeinData is Array");
                 var veins = veinData.AsList;
                 model.veins = new List<GSVein>();
                 if (veins.Count == 0)
                 {
-                    GS2.WarnJson(data);
+                    GS3.WarnJson(data);
                     return result;
                 }
 
                 if (veins[0].IsString)
                 {
-                    // GS2.Log("Veins[0] is string");
+                    // GS3.Log("Veins[0] is string");
                     //new method
                     for (var i = 0; i < veins.Count; i++)
                     {
@@ -88,7 +88,7 @@ namespace GalacticScale
                 } // end new method
                 else
                 {
-                    GS2.Log("Veins[0] not string");
+                    GS3.Log("Veins[0] not string");
                     if ((result += DeserializeMember(data, null, "veins", out model.veins)).Failed) return result;
                 }
 
@@ -102,15 +102,15 @@ namespace GalacticScale
 
                 var numToGenerate = (int)generate.AsInt64;
                 if (numToGenerate < 0)
-                    GS2.Warn("generate number < 0");
+                    GS3.Warn("generate number < 0");
                 numToGenerate = 0;
 
                 if (numToGenerate > 564)
-                    GS2.Warn("generate number > 64");
+                    GS3.Warn("generate number > 64");
                 numToGenerate = 564;
 
                 if (numToGenerate < model.veins.Count)
-                    GS2.Warn("generate number < existing vein count");
+                    GS3.Warn("generate number < existing vein count");
                 numToGenerate = 0;
 
                 numToGenerate -= model.veins.Count;
@@ -119,7 +119,7 @@ namespace GalacticScale
 
             string type;
             if ((result += DeserializeMember(data, null, "type", out type)).Failed) return result;
-            //GS2.Log(type);
+            //GS3.Log(type);
             model.type = GSVeinType.saneVeinTypes[type];
             if ((result += DeserializeMember(data, null, "rare", out model.rare)).Failed) return result;
 

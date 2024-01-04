@@ -1,6 +1,6 @@
 ﻿namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         // public static void CheatModeCallback(Val o)
         // {
@@ -21,7 +21,7 @@
 
         // private static void UnlockTechRecursive(int techId, GameHistoryData history)
         // {
-        //     //GS2.Warn($"UnlockTechRecursive {techId} {history != null}");
+        //     //GS3.Warn($"UnlockTechRecursive {techId} {history != null}");
         //     var state = history.TechState(techId);
         //     var proto = LDB.techs.Select(techId);
         //     try

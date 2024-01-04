@@ -51,7 +51,7 @@ namespace GalacticScale
             else
                 this.postfix = postfix;
             Hint = tip;
-            //GS2.Warn("Created GSUI " + label);
+            //GS3.Warn("Created GSUI " + label);
         }
 
         public GSUI(iConfigurableGenerator generator, string key, string label, string type, object data, GSOptionCallback callback, GSOptionPostfix postfix = null, string hint = "")
@@ -94,7 +94,7 @@ namespace GalacticScale
             get
             {
                 if (generator != null) return generator;
-                GS2.Error($"GSUI ${Label} Tried accessing Generator instance when Generator = null." + GS2.GetCaller() + GS2.GetCaller(1));
+                GS3.Error($"GSUI ${Label} Tried accessing Generator instance when Generator = null." + GS3.GetCaller() + GS3.GetCaller(1));
                 return null;
             }
         }
@@ -104,7 +104,7 @@ namespace GalacticScale
             get
             {
                 if (plugin != null) return plugin;
-                GS2.Error($"GSUI ${Label} Tried accessing Plugin instance when Generator = null." + GS2.GetCaller() + GS2.GetCaller(1));
+                GS3.Error($"GSUI ${Label} Tried accessing Plugin instance when Generator = null." + GS3.GetCaller() + GS3.GetCaller(1));
                 return null;
             }
         }
@@ -130,30 +130,30 @@ namespace GalacticScale
                     case "Checkbox":
                         var bresult = GetBool(Data);
                         if (bresult.succeeded) return bresult.value;
-                        GS2.Warn($"No default value found for Checkbox {Label}");
+                        GS3.Warn($"No default value found for Checkbox {Label}");
                         return false;
                     case "Button":
-                        GS2.Error("Trying to get default value for button {label}");
+                        GS3.Error("Trying to get default value for button {label}");
                         return null;
                     case "Input":
                         return Data.ToString();
                     case "Combobox":
-                        // GS2.Warn($"Combo {Label} {Data}");
+                        // GS3.Warn($"Combo {Label} {Data}");
                         // var cbresult = GetInt(Data);
                         // if (cbresult.succeeded) return cbresult.value;
                         if (comboDefault >= 0) return comboDefault;
-                        GS2.Warn($"No default value found for Combobox {Label}");
+                        GS3.Warn($"No default value found for Combobox {Label}");
                         return false;
                     case "Selector":
                         var list = Data as List<string>;
                         if (comboDefault >= 0)
                             if (list.Count > comboDefault)
                                 return list[comboDefault];
-                        GS2.Warn($"No default value found for Combobox {Label}");
+                        GS3.Warn($"No default value found for Combobox {Label}");
                         return false;
                 }
 
-                GS2.Error($"Failed to return default value for {Type} {Label}");
+                GS3.Error($"Failed to return default value for {Type} {Label}");
                 return null;
             }
         }
@@ -164,7 +164,7 @@ namespace GalacticScale
 
         private (bool succeeded, float value) GetFloat(object o)
         {
-            //GS2.Warn(label);
+            //GS3.Warn(label);
             if (o is float) return (true, (float)o);
             //float result;
             var success = float.TryParse(o.ToString(), out var result);
@@ -173,7 +173,7 @@ namespace GalacticScale
 
         private (bool succeeded, int value) GetInt(object o)
         {
-            // GS2.Warn(Label);
+            // GS3.Warn(Label);
             if (o is int) return (true, (int)o);
             var success = int.TryParse(o.ToString(), out var result);
             return (success, result);
@@ -203,10 +203,10 @@ namespace GalacticScale
 
         public bool Disable()
         {
-            //GS2.Warn("Disabling element" + label);
+            //GS3.Warn("Disabling element" + label);
             if (Disabled)
             {
-                GS2.Warn("Trying to disable UI Element that is already disabled");
+                GS3.Warn("Trying to disable UI Element that is already disabled");
                 return false;
             }
 
@@ -219,7 +219,7 @@ namespace GalacticScale
                 i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a / 2);
             }
 
-            GS2.Warn("Set Image Done");
+            GS3.Warn("Set Image Done");
             switch (Type)
             {
                 case "List":
@@ -227,35 +227,35 @@ namespace GalacticScale
                     Disabled = true;
                     return true;
                 case "Checkbox":
-                    GS2.Warn("Disabling Checkbox");
+                    GS3.Warn("Disabling Checkbox");
 
                     RectTransform.GetComponent<Toggle>().interactable = false;
-                    //GS2.Warn("!");
+                    //GS3.Warn("!");
                     Disabled = true;
-                    //GS2.Warn("!!");
+                    //GS3.Warn("!!");
                     return true;
                 case "Combobox":
-                    GS2.Warn("Disabling Combobox");
+                    GS3.Warn("Disabling Combobox");
                     RectTransform.GetComponentInChildren<Dropdown>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Button":
-                    GS2.Warn("Disabling Button");
+                    GS3.Warn("Disabling Button");
                     RectTransform.GetComponentInChildren<Button>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Input":
-                    GS2.Warn("Disabling Input");
+                    GS3.Warn("Disabling Input");
                     RectTransform.GetComponentInChildren<InputField>().interactable = false;
                     Disabled = true;
                     return true;
                 case "Slider":
-                    GS2.Warn("Disabling Slider");
+                    GS3.Warn("Disabling Slider");
                     RectTransform.GetComponentInChildren<Slider>().interactable = false;
                     Disabled = true;
                     return true;
                 case "RangeSlider":
-                    GS2.Warn("Disabling RangeSlider");
+                    GS3.Warn("Disabling RangeSlider");
                     RectTransform.GetComponentInChildren<GSUIRangeSlider>().interactable = false;
                     Disabled = true;
                     return true;
@@ -266,10 +266,10 @@ namespace GalacticScale
 
         public bool Enable()
         {
-            //GS2.Warn("Enabling element" + label);
+            //GS3.Warn("Enabling element" + label);
             if (!Disabled)
             {
-                GS2.Warn("Trying to disable UI Element that is already enabled");
+                GS3.Warn("Trying to disable UI Element that is already enabled");
                 return false;
             }
 
@@ -325,7 +325,7 @@ namespace GalacticScale
         {
             return o =>
             {
-                // GS2.Warn("*");
+                // GS3.Warn("*");
 
                 if (o.ToString().Split(':').Length > 1)
                 {
@@ -341,14 +341,14 @@ namespace GalacticScale
                     var value = 0.1f;
                     if (!float.TryParse(o.ToString(), out value))
                     {
-                        GS2.Error($"Failed to parse increment {o} for slider {instance.Label}");
+                        GS3.Error($"Failed to parse increment {o} for slider {instance.Label}");
                     }
                     else
                     {
                         var cfg = (GSSliderConfig)instance.Data;
                         if (value >= cfg.maxValue - increment / 2)
                         {
-                            //GS2.Warn($"Max hit on {label}");
+                            //GS3.Warn($"Max hit on {label}");
 
                             var iMax = cfg.maxValue;
                             instance.Set(iMax);
@@ -356,11 +356,11 @@ namespace GalacticScale
                         }
                         else
                         {
-                            //GS2.Warn($"Executing increment test of {increment} on {label}");
+                            //GS3.Warn($"Executing increment test of {increment} on {label}");
                             // existingCallback(value - value % increment);
                             // if (value - value % increment != value)
                             // {
-                            //     GS2.Warn($"Increment thing {value} [] { value%increment} ");
+                            //     GS3.Warn($"Increment thing {value} [] { value%increment} ");
                             //     instance.Set(value - value % increment);
                             // }
                             existingCallback(value);
@@ -374,12 +374,12 @@ namespace GalacticScale
         {
             return o =>
             {
-                // GS2.Warn("*");
+                // GS3.Warn("*");
 
                 var value = 200;
                 if (!int.TryParse(o.ToString(), out value))
                 {
-                    GS2.Error($"Failed to parse planet size {o} for slider {instance.Label}");
+                    GS3.Error($"Failed to parse planet size {o} for slider {instance.Label}");
                 }
                 else
                 {
@@ -394,7 +394,7 @@ namespace GalacticScale
         {
             return o =>
             {
-                // GS2.Warn("*");
+                // GS3.Warn("*");
                 var value = o.FloatFloat();
                 float parsedLow = Utils.ParsePlanetSize(value.low);
                 float parsedHigh = Utils.ParsePlanetSize(value.high);
@@ -406,7 +406,7 @@ namespace GalacticScale
         {
             return o =>
             {
-                // GS2.Warn("*");
+                // GS3.Warn("*");
                 var value = o.FloatFloat();
                 float parsedLow = Utils.ParseGasSize(value.low);
                 float parsedHigh = Utils.ParseGasSize(value.high);
@@ -417,12 +417,12 @@ namespace GalacticScale
 
         private GSOptionCallback CreateDefaultCallback(GSOptionCallback callback = null)
         {
-            // GS2.Warn("Creating default callback for "+Label);
+            // GS3.Warn("Creating default callback for "+Label);
             return o =>
             {
                 if (generator is null && plugin == null)
                 {
-                    GS2.Error($"{Label} Trying to create Default Callback when Generator = null");
+                    GS3.Error($"{Label} Trying to create Default Callback when Generator = null");
                     return;
                 }
 
@@ -433,7 +433,7 @@ namespace GalacticScale
                     // p.Set(key, o);
                     // generator.Import(p);
                     generator.OnUpdate(key, o);
-                    // GS2.Warn($"Test setting {key} to {o}");
+                    // GS3.Warn($"Test setting {key} to {o}");
                     if (callback is GSOptionCallback) callback(o);
                 }
                 else
@@ -441,10 +441,10 @@ namespace GalacticScale
                     // var p = plugin.Export();
                     //
                     // p.Set(key, o);
-                    // // GS2.Log($"Callback for {Label} exporting etc");
+                    // // GS3.Log($"Callback for {Label} exporting etc");
                     // plugin.Import(p);
                     plugin.OnUpdate(key, o);
-                    // GS2.Warn($"Test setting {key} to {o}");
+                    // GS3.Warn($"Test setting {key} to {o}");
                     if (callback is GSOptionCallback) callback(o);
                 }
             };
@@ -452,47 +452,47 @@ namespace GalacticScale
 
         private GSOptionPostfix CreateDefaultPostfix()
         {
-            // GS2.Warn("Creating DefaultPostfix for {Label}");
+            // GS3.Warn("Creating DefaultPostfix for {Label}");
             return () =>
             {
-                // GS2.Warn($"Executing DefaultPostfix for {Label}");
+                // GS3.Warn($"Executing DefaultPostfix for {Label}");
 
                 if (generator is null && plugin is null)
                 {
-                    GS2.Error($"{Label} Trying to create Default Postfix when Generator = null");
+                    GS3.Error($"{Label} Trying to create Default Postfix when Generator = null");
                     return;
                 }
 
                 if (generator != null)
                 {
                     var value = Generator.Export().Get(key);
-                    // GS2.Log($"{key} Value:{value} is null?:{value == null}");
+                    // GS3.Log($"{key} Value:{value} is null?:{value == null}");
                     if (value == null)
                     {
-                        // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                        // GS3.Warn($"Setting value which was null for {key} to {DefaultValue}");
                         value = DefaultValue;
                     }
 
                     if (value != null)
                     {
-                        // if (key == "Generator") GS2.Warn($"Setting non null value for {key} to {value}");
+                        // if (key == "Generator") GS3.Warn($"Setting non null value for {key} to {value}");
                         Set(value);
                     }
-                    else GS2.Log($"Caution: Preference value for {Label} not found.");
+                    else GS3.Log($"Caution: Preference value for {Label} not found.");
                 }
 
                 if (plugin != null)
                 {
                     var value = plugin.Export().Get(key);
-                    // GS2.Log($"{key} Value:{value} is null?:{value == null}");
+                    // GS3.Log($"{key} Value:{value} is null?:{value == null}");
                     if (value == null)
-                        // GS2.Warn($"Setting value which was null for {key} to {DefaultValue}");
+                        // GS3.Warn($"Setting value which was null for {key} to {DefaultValue}");
                         value = DefaultValue;
 
                     if (value != null)
-                        // GS2.Warn($"Setting non null value for {key} to {value}");
+                        // GS3.Warn($"Setting non null value for {key} to {value}");
                         Set(value);
-                    else GS2.Log($"Caution: Preference value for {Label} not found.");
+                    else GS3.Log($"Caution: Preference value for {Label} not found.");
                 }
             };
         }

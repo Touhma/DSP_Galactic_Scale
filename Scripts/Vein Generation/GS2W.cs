@@ -2,9 +2,9 @@
 {
     public static partial class VeinAlgorithms
     {
-        public static void GenerateVeinsGS2W(GSPlanet gsPlanet) 
+        public static void GenerateVeinsGS3W(GSPlanet gsPlanet) 
         {
-            random = new GS2.Random(gsPlanet.Seed);
+            random = new GS3.Random(gsPlanet.Seed);
             
             InitializeFromVeinSettings(gsPlanet);
             if (GSSettings.BirthPlanet == gsPlanet) GenBirthPoints(gsPlanet);
@@ -13,7 +13,7 @@
             gsPlanet.veinData.Clear();
             
             if (GSSettings.BirthPlanet == gsPlanet) InitBirthVeinVectors(gsPlanet);
-            AddVeinsToPlanetGS2(gsPlanet, CalculateVectorsGS2(gsPlanet, false, false));
+            AddVeinsToPlanetGS3(gsPlanet, CalculateVectorsGS3(gsPlanet, false, false));
         }
     }
 }

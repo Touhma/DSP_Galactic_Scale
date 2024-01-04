@@ -53,7 +53,7 @@ namespace GalacticScale
 
         public void OnSliderValueChange(Slider slider)
         {
-            // GS2.Warn($"{slider.value} -> {Mathf.RoundToInt(slider.value * 100f)}");
+            // GS3.Warn($"{slider.value} -> {Mathf.RoundToInt(slider.value * 100f)}");
             var value = Mathf.RoundToInt(slider.value * 100f) / 100f;
             _valueText.text = value.ToString();
             if (negativeLabel != "" && value < 0) _valueText.text = negativeLabel;
@@ -86,7 +86,7 @@ namespace GalacticScale
 
         public void initialize(GSUI options)
         {
-            // GS2.Log("Initializing");
+            // GS3.Log("Initializing");
 
             var sc = (GSSliderConfig)options.Data;
             //_dropdown.AddOptions(options.Data as List<string>);

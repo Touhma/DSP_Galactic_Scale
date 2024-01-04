@@ -40,7 +40,7 @@
                 case EStar.WhiteDwarf: return (EStarType.WhiteDwarf, ESpectrType.X);
             }
 
-            GS2.Warn($"Failed to convert EStar {star}");
+            GS3.Warn($"Failed to convert EStar {star}");
             return (EStarType.WhiteDwarf, ESpectrType.X);
         }
     }

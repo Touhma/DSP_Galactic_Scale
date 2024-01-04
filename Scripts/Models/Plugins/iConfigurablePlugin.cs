@@ -16,7 +16,7 @@
         public void OnUpdate(string key, Val val);
     }
 
-    public static partial class GS2
+    public static partial class GS3
     {
         public static iConfigurablePlugin GetPluginByID(string guid)
         {

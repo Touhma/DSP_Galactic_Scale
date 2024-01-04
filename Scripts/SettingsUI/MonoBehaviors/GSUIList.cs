@@ -58,7 +58,7 @@ namespace GalacticScale
 
         public GameObject AddItem(GSUITemplate template)
         {
-            // GS2.Log($"Adding Item Template Null?:{template == null} ListContents Null?{ListContents == null}");
+            // GS3.Log($"Adding Item Template Null?:{template == null} ListContents Null?{ListContents == null}");
             var newItem = Instantiate(template.gameObject, ListContents.transform, false);
             Contents.Add(newItem);
             return newItem;
@@ -134,7 +134,7 @@ namespace GalacticScale
 
         internal GSUIToggleList AddToggleList()
         {
-            if (templates.togglelist == null) GS2.Error("No ToggleList");
+            if (templates.togglelist == null) GS3.Error("No ToggleList");
             var go = AddItem(templates.togglelist);
             go.SetActive(true);
             return go.GetComponent<GSUIToggleList>();

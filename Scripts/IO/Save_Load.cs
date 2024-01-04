@@ -4,7 +4,7 @@ using GSSerializer;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static void Export(BinaryWriter w) // Export Settings to Save Game
         {
@@ -35,7 +35,7 @@ namespace GalacticScale
             var parseResult = fsJsonParser.Parse(json, out data2);
             if (parseResult.Failed)
             {
-                Warn("DSV Contained No GS2 Data.");
+                Warn("DSV Contained No GS3 Data.");
                 Warn(parseResult.FormattedMessages);
                 r.BaseStream.Position = position;
                 if (SaveOrLoadWindowOpen) return true;
@@ -92,7 +92,7 @@ namespace GalacticScale
             //     if (Force == "") return false;
             // }
 
-            if (Vanilla) ActiveGenerator = GetGeneratorByID("space.customizing.generators.gs2dev");
+            ActiveGenerator = GetGeneratorByID("space.customizing.generators.gs3");
             // if (Force == "") GSSettings.Instance = result;
             Warn($"StarCount3 : {GSSettings.StarCount}");
             GSSettings.Instance.imported = true;

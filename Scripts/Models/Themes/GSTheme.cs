@@ -120,7 +120,7 @@ namespace GalacticScale
 
         public GSVeinSettings VeinSettings = new()
         {
-            Algorithm = "GS2",
+            Algorithm = "GS3",
             VeinTypes = new GSVeinTypes()
         };
 
@@ -143,12 +143,12 @@ namespace GalacticScale
             if (baseName != null && GSSettings.ThemeLibrary.ContainsKey(baseName))
             {
                 BaseName = baseName;
-                // GS2.Log("About to Copy From");
+                // GS3.Log("About to Copy From");
                 CopyFrom(baseTheme);
             }
             else if (baseName != null)
             {
-                GS2.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
+                GS3.Error("Error creating theme '" + name + "': Base Theme '" + baseName + "' not found in theme library");
             }
         }
 
@@ -163,11 +163,11 @@ namespace GalacticScale
             get
             {
                 if (BaseName != "" && BaseName != null)
-                    // GS2.Log($"{Name} initializing from base theme: " + BaseName);
+                    // GS3.Log($"{Name} initializing from base theme: " + BaseName);
 
 
                     if (!GSSettings.ThemeLibrary.ContainsKey(BaseName))
-                        GS2.Warn($"Theme {BaseName} not found");
+                        GS3.Warn($"Theme {BaseName} not found");
 
                 return BaseName != "" && BaseName != null ? GSSettings.ThemeLibrary.ContainsKey(BaseName) ? GSSettings.ThemeLibrary[BaseName] : Themes.Mediterranean : null;
             }
@@ -184,13 +184,13 @@ namespace GalacticScale
 
         public void Process()
         {
-            //GS2.Log("-Start "+Name + " " + GS2.GetCaller());
+            //GS3.Log("-Start "+Name + " " + GS3.GetCaller());
             Init();
-            // GS2.Log("Adding to Library " + Name + " " + DisplayName);
+            // GS3.Log("Adding to Library " + Name + " " + DisplayName);
             AddToLibrary();
-            //GS2.LogJson(GS2.ThemeLibrary);
-            //GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap?.GetInstanceID());
-            //GS2.Log("End");
+            //GS3.LogJson(GS3.ThemeLibrary);
+            //GS3.Log("Cubemap instance = " + ambientDesc?.reflectionMap?.GetInstanceID());
+            //GS3.Log("End");
         }
 
         public void Init()
@@ -208,12 +208,12 @@ namespace GalacticScale
                 }
                 else
                 {
-                    // GS2.Log("Setting CubeMap for " + Name);
-                    // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
+                    // GS3.Log("Setting CubeMap for " + Name);
+                    // GS3.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
                     AmbientSettings.ToTheme(this);
-                    // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
+                    // GS3.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
                 }
-                //GS2.Log("Finished Processing Ambient Settings for " + Name);
+                //GS3.Log("Finished Processing Ambient Settings for " + Name);
             // }
             // else
             // {
@@ -247,24 +247,24 @@ namespace GalacticScale
 
         public void ConvertVegeData()
         {
-            //GS2.Log("Converting Vege Data for " + Name + " Group 1");
+            //GS3.Log("Converting Vege Data for " + Name + " Group 1");
             Vegetables0 = GSVegeSettings.ToIDArray(VegeSettings.Group1);
-            //GS2.Log("Converting Vege Data for " + Name + " Group 2"); 
+            //GS3.Log("Converting Vege Data for " + Name + " Group 2"); 
             Vegetables1 = GSVegeSettings.ToIDArray(VegeSettings.Group2);
-            //GS2.Log("Converting Vege Data for " + Name + " Group 3");
+            //GS3.Log("Converting Vege Data for " + Name + " Group 3");
             Vegetables2 = GSVegeSettings.ToIDArray(VegeSettings.Group3);
-            //GS2.Log("Converting Vege Data for " + Name + " Group 4");
+            //GS3.Log("Converting Vege Data for " + Name + " Group 4");
             Vegetables3 = GSVegeSettings.ToIDArray(VegeSettings.Group4);
-            //GS2.Log("Converting Vege Data for " + Name + " Group 5"); 
+            //GS3.Log("Converting Vege Data for " + Name + " Group 5"); 
             Vegetables4 = GSVegeSettings.ToIDArray(VegeSettings.Group5);
-            //GS2.Log("Converting Vege Data for " + Name + " Group 6");
+            //GS3.Log("Converting Vege Data for " + Name + " Group 6");
             Vegetables5 = GSVegeSettings.ToIDArray(VegeSettings.Group6);
         }
 
         public void ConvertVeinData()
         {
-            //GS2.Log("Start "+Name);
-            //GS2.Log(Name + "-" + VeinSpot.Length.ToString());
+            //GS3.Log("Start "+Name);
+            //GS3.Log(Name + "-" + VeinSpot.Length.ToString());
             var _rareSettings = new List<float>();
             var _rareVeins = new List<int>();
             var veinArrayLength = 25;
@@ -277,16 +277,16 @@ namespace GalacticScale
             for (var i = 0; i < VeinSettings.VeinTypes.Count; i++)
             {
                 // For each EVeinType
-                //GS2.Log("Getting VeinType");
+                //GS3.Log("Getting VeinType");
                 var vt = VeinSettings.VeinTypes[i];
                 var type = vt.type;
                 float opacity = 0;
                 float count = 0;
                 var veinCount = vt.veins.Count;
-                //GS2.Log("Type:" + type + " veinCount:" + veinCount);
+                //GS3.Log("Type:" + type + " veinCount:" + veinCount);
                 for (var j = 0; j < veinCount; j++)
                 {
-                    //GS2.Log("Getting Vein");
+                    //GS3.Log("Getting Vein");
                     var v = vt.veins[j];
                     count += v.count;
                     opacity += v.richness;
@@ -297,7 +297,7 @@ namespace GalacticScale
                     var specialOpacity = opacity / veinCount;
                     var specialCount = veinCount;
                     _rareVeins.Add((int)type);
-                    if (GS2.Config.ForceRare)
+                    if (GS3.Config.ForceRare)
                         _rareSettings.Add(1);
                     else
                         _rareSettings.Add(0); //Chance to spawn on birth star planet (Should be 0, 1 for testing)
@@ -308,11 +308,11 @@ namespace GalacticScale
                 }
                 else
                 {
-                    //GS2.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)=" + (int)type);
+                    //GS3.Log("Not Rare. Index:" + ((int)type - 1) + " for Type: " + type + " (int)=" + (int)type);
                     VeinOpacity[(int)type - 1] = opacity / veinCount;
                     VeinCount[(int)type - 1] = count / 25 / veinCount;
                     VeinSpot[(int)type - 1] = veinCount;
-                    //GS2.Log(type.ToString() + "| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
+                    //GS3.Log(type.ToString() + "| Set Spot:" + veinCount + " Count to" + VeinCount[(int)type - 1] + " Opacity to " + VeinOpacity[(int)type - 1]);
                 }
             }
 
@@ -322,7 +322,7 @@ namespace GalacticScale
 
         public void PopulateVeinData()
         {
-            // GS2.Log($"Populating VeinData for {Name}");
+            // GS3.Log($"Populating VeinData for {Name}");
             for (var vType = 0; vType < VeinSpot.Length; vType++)
             {
                 if (VeinSpot[vType] == 0) continue;
@@ -381,7 +381,7 @@ namespace GalacticScale
         /// <param name="baseTheme"></param>
         public void CopyFrom(GSTheme baseTheme)
         {
-            //GS2.Log("Copying from " + baseTheme.Name);
+            //GS3.Log("Copying from " + baseTheme.Name);
             if (!baseTheme.initialized) baseTheme.InitMaterials();
 
             Algo = baseTheme.Algo;
@@ -394,7 +394,7 @@ namespace GalacticScale
             MaxRadius = baseTheme.MaxRadius;
             ThemeType = baseTheme.ThemeType;
             CustomGeneration = baseTheme.CustomGeneration;
-            //GS2.Log(Name+" ThemeType:" + ThemeType.ToString());
+            //GS3.Log(Name+" ThemeType:" + ThemeType.ToString());
             Habitable = baseTheme.Habitable;
             ModX = new Vector2(baseTheme.ModX.x, baseTheme.ModX.y);
             ModY = new Vector2(baseTheme.ModY.x, baseTheme.ModY.y);
@@ -438,9 +438,9 @@ namespace GalacticScale
             minimapMat = baseTheme.minimapMat != null ? Object.Instantiate(baseTheme.minimapMat) : null;
             ambientDesc = baseTheme.ambientDesc != null ? Object.Instantiate(baseTheme.ambientDesc) : null;
 
-            //GS2.Warn($"Ambient Desc for {Name} {Utils.AddressHelper.GetAddress(ambientDesc)} {Utils.AddressHelper.GetAddress(baseTheme.ambientDesc)}");
+            //GS3.Warn($"Ambient Desc for {Name} {Utils.AddressHelper.GetAddress(ambientDesc)} {Utils.AddressHelper.GetAddress(baseTheme.ambientDesc)}");
             ambientSfx = baseTheme.ambientSfx != null ? Object.Instantiate(baseTheme.ambientSfx) : null;
-            //GS2.Log("Copying ambientSettings for " + Name);
+            //GS3.Log("Copying ambientSettings for " + Name);
             if (PlanetType != EPlanetType.Gas)
             {
                 if (baseTheme.AmbientSettings == null)
@@ -450,9 +450,9 @@ namespace GalacticScale
                 }
 
                 if (baseTheme.AmbientSettings != null)
-                    //GS2.Log($"Cloning {DisplayName}");
+                    //GS3.Log($"Cloning {DisplayName}");
                     AmbientSettings = baseTheme.AmbientSettings.Clone();
-                //GS2.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
+                //GS3.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
             }
             if (ambientDesc == null)
             {
@@ -462,7 +462,7 @@ namespace GalacticScale
                 // AmbientSettings.ToTheme(this);
                 if (ambientDesc == null)
                 {
-                    GS2.Error("AmbientDesc Still Null");
+                    GS3.Error("AmbientDesc Still Null");
                 }
             }
         }
@@ -470,11 +470,11 @@ namespace GalacticScale
         public GSTheme Clone()
         {
             var clone = new GSTheme();
-            //GS2.Log($"Clone Address:{ Utils.AddressHelper.GetAddress(clone)} OriginalAddress: { Utils.AddressHelper.GetAddress(this)}");
+            //GS3.Log($"Clone Address:{ Utils.AddressHelper.GetAddress(clone)} OriginalAddress: { Utils.AddressHelper.GetAddress(this)}");
             clone.Name = Name;
             clone.DisplayName = DisplayName;
             clone.CopyFrom(this);
-            //GS2.Log($"Clone Address:{ Utils.AddressHelper.GetAddress(clone)} OriginalAddress: { Utils.AddressHelper.GetAddress(this)}");
+            //GS3.Log($"Clone Address:{ Utils.AddressHelper.GetAddress(clone)} OriginalAddress: { Utils.AddressHelper.GetAddress(this)}");
             return clone;
         }
 
@@ -557,16 +557,16 @@ namespace GalacticScale
             if (!added) return AddToThemeProtoSet();
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
-            // GS2.Log($"Adding {Name}");
+            // GS3.Log($"Adding {Name}");
             // terrainMat.SetFloat("_Radius", 100f); //TODO:see if this did anything
             LDB._themes.dataArray[LDB._themes.dataIndices[LDBThemeId]] = ToProto();
-            GS2.Log($"UpdateThemeProtoSet Took {highStopwatch.duration:F5}s");
+            GS3.Log($"UpdateThemeProtoSet Took {highStopwatch.duration:F5}s");
             return LDBThemeId;
         }
 
         private bool CreateMaterial(GSMaterialSettings settings, out Material material)
         {
-            // GS2.Log("Start|" + Name);
+            // GS3.Log("Start|" + Name);
             var materialType = "terrain";
             if (settings == oceanMaterial) materialType = "ocean";
 
@@ -582,35 +582,35 @@ namespace GalacticScale
 
             if (settings.CopyFrom == null)
             {
-                //GS2.Log("Not Copying From Another Theme");
+                //GS3.Log("Not Copying From Another Theme");
                 Material tempMat;
                 if (settings.Path == null)
                 {
-                    //GS2.Log("Creating Material from MaterialPath Resource @ " + MaterialPath + materialType);
+                    //GS3.Log("Creating Material from MaterialPath Resource @ " + MaterialPath + materialType);
                     //tempMat = Resources.Load<Material>(MaterialPath + materialType);
                     var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) tempMat = matArray[0];
                     else tempMat = null;
-                    // GS2.Log((tempMat == null).ToString());
+                    // GS3.Log((tempMat == null).ToString());
                 }
                 else
                 {
-                    //GS2.Log("Creating Material from Settings Defined Resource @ " + settings.Path);
+                    //GS3.Log("Creating Material from Settings Defined Resource @ " + settings.Path);
                     //tempMat = Resources.Load<Material>(settings.Path);
                     var matArray = Utils.ResourcesLoadArray<Material>(settings.Path, "{0}-{1}", true);
                     if (matArray != null) tempMat = matArray[0];
                     else tempMat = null;
-                    // GS2.Log((tempMat == null).ToString());
+                    // GS3.Log((tempMat == null).ToString());
                 }
 
                 if (tempMat != null)
                 {
-                    //GS2.Log("Creating Material");
+                    //GS3.Log("Creating Material");
                     material = Object.Instantiate(tempMat);
                 }
                 else
                 {
-                    //GS2.Log("Failed to Create Material|" + Name);
+                    //GS3.Log("Failed to Create Material|" + Name);
                     //material = Resources.Load<Material>(MaterialPath + materialType);
                     var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) material = matArray[0];
@@ -619,11 +619,11 @@ namespace GalacticScale
             }
             else
             {
-                // GS2.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
+                // GS3.Log($"Copying {materialType} from Theme: {settings.CopyFrom}");
                 var copyFrom = settings.CopyFrom.Split('.');
                 if (copyFrom.Length != 2 || copyFrom[0] == null || copyFrom[0] == "" || copyFrom[1] == null || copyFrom[1] == "")
                 {
-                    GS2.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
+                    GS3.Error("Copyfrom Parameter for Theme Material cannot be parsed. Please ensure it is in the format ThemeName.terrainMat etc");
                     // material = Resources.Load<Material>(MaterialPath + materialType);
                     var matArray = Utils.ResourcesLoadArray<Material>(MaterialPath + materialType, "{0}-{1}", true);
                     if (matArray != null) material = matArray[0];
@@ -631,7 +631,7 @@ namespace GalacticScale
                 }
                 else
                 {
-                    //GS2.Warn($"Copying {Name} {materialType} material from Theme {settings.CopyFrom}");
+                    //GS3.Warn($"Copying {Name} {materialType} material from Theme {settings.CopyFrom}");
                     var materialBaseTheme = GSSettings.ThemeLibrary.Find(copyFrom[0]);
                     var materialName = copyFrom[1];
                     material = Object.Instantiate((Material)typeof(GSTheme).GetField(materialName).GetValue(materialBaseTheme));
@@ -639,65 +639,65 @@ namespace GalacticScale
                 }
             }
 
-            //if (settings.Textures.Count>0) GS2.Log("Setting Textures for " + Name + " with " + settings.Textures.Count + " texture items in list");
+            //if (settings.Textures.Count>0) GS3.Log("Setting Textures for " + Name + " with " + settings.Textures.Count + " texture items in list");
             foreach (var kvp in settings.Textures)
             {
                 var value = kvp.Value.Split('|');
                 var location = value[0];
                 var path = value[1];
                 var name = kvp.Key;
-                // GS2.Log("Setting Texture " + name + " from " + location + " / " + path);
+                // GS3.Log("Setting Texture " + name + " from " + location + " / " + path);
                 Texture tex = null;
-                if (location == "GS2") tex = Utils.GetTextureFromBundle(path);
+                if (location == "GS3") tex = Utils.GetTextureFromBundle(path);
 
-                if (location == "FILE") tex = Utils.GetTextureFromFile(Path.Combine(GS2.DataDir, path));
+                if (location == "FILE") tex = Utils.GetTextureFromFile(Path.Combine(GS3.DataDir, path));
 
                 if (location == "RESOURCE") tex = Utils.GetTextureFromResource(path);
 
                 if (location == "BUNDLE") tex = Utils.GetTextureFromExternalBundle(path);
 
                 if (tex == null)
-                    GS2.Error("Texture not found, or method not implemented");
+                    GS3.Error("Texture not found, or method not implemented");
                 else
-                    // GS2.Log("Assigning Texture");
+                    // GS3.Log("Assigning Texture");
                     material.SetTexture(name, tex);
             }
 
-            //GS2.Warn($"Material null? {material == null}");
+            //GS3.Warn($"Material null? {material == null}");
             return false;
         }
 
         public void InitMaterials()
         {
-            // GS2.Log("Start");
+            // GS3.Log("Start");
             if (initialized) return;
-            // GS2.Log("Creating Terrain Material");
+            // GS3.Log("Creating Terrain Material");
             CreateMaterial(terrainMaterial, out terrainMat);
-            // GS2.Log("Creating Ocean Material");
+            // GS3.Log("Creating Ocean Material");
             CreateMaterial(oceanMaterial, out oceanMat);
-            // GS2.Log("Creating Nephogram Material");
+            // GS3.Log("Creating Nephogram Material");
             CreateMaterial(nephogramMaterial, out nephogramMat);
-            // GS2.Log("Creating Atmosphere Material");
+            // GS3.Log("Creating Atmosphere Material");
             CreateMaterial(cloudMaterial, out cloudMat);
-            // GS2.Log("Creating Atmosphere Material");
+            // GS3.Log("Creating Atmosphere Material");
             CreateMaterial(atmosphereMaterial, out atmosMat);
-            // GS2.Log("Creating Minimap Material");
+            // GS3.Log("Creating Minimap Material");
             CreateMaterial(minimapMaterial, out minimapMat);
-            // GS2.Log("Creating Thumb Material");
+            // GS3.Log("Creating Thumb Material");
             CreateMaterial(thumbMaterial, out thumbMat);
-            // GS2.Log("Initializing AmbientDesc");
+            // GS3.Log("Initializing AmbientDesc");
             if (PlanetType != EPlanetType.Gas)
             {
                 if (AmbientSettings.ResourcePath != null && AmbientSettings.ResourcePath != "")
                 {
-                    // GS2.Log("Loading AmbientDesc from AmbientSettings.ResourcePath" + AmbientSettings.ResourcePath);
+                    // GS3.Log("Loading AmbientDesc from AmbientSettings.ResourcePath" + AmbientSettings.ResourcePath);
                     //Resources.Load<AmbientDesc>(AmbientSettings.ResourcePath);
                     var ambientDescArray = Utils.ResourcesLoadArray<AmbientDesc>(AmbientSettings.ResourcePath, "{0}-{1}", true);
                     if (ambientDescArray != null) ambientDesc = ambientDescArray[0];
                 }
                 else if (ambient == null)
                 {
-                    // GS2.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
+                    // GS3.Log("Loading AmbientDesc from MaterialPath = " + MaterialPath + "ambient");
                     //ambientDesc = Resources.Load<AmbientDesc>(MaterialPath + "ambient");
                     var ambientDescArray = Utils.ResourcesLoadArray<AmbientDesc>(MaterialPath + "ambient", "{0}-{1}", true);
                     if (ambientDescArray != null) ambientDesc = ambientDescArray[0];
@@ -706,7 +706,7 @@ namespace GalacticScale
 
                 else
                 {
-                    // GS2.Log("Loading AmbientDesc from base theme = "+ambient);
+                    // GS3.Log("Loading AmbientDesc from base theme = "+ambient);
                     ambientDesc = GSSettings.ThemeLibrary.Find(ambient).ambientDesc;
 
                     //ambientSfx = Resources.Load<AudioClip>(SFXPath);
@@ -717,7 +717,7 @@ namespace GalacticScale
             }
 
             initialized = true;
-            // GS2.Log("About to process tints for "+Name);
+            // GS3.Log("About to process tints for "+Name);
             ProcessTints();
             ProcessMaterialSettings();
             SaveAtmosphereHeight();
@@ -729,9 +729,9 @@ namespace GalacticScale
         }
         public void ProcessMaterialSettings()
         {
-            //GS2.Log("Processing MaterialSettings for " + Name);
+            //GS3.Log("Processing MaterialSettings for " + Name);
             foreach (var kvp in terrainMaterial?.Colors)
-                //GS2.Log("Setting Terrain Material Color " + kvp.Key + " to " + kvp.Value.ToString() + " for " + Name);
+                //GS3.Log("Setting Terrain Material Color " + kvp.Key + " to " + kvp.Value.ToString() + " for " + Name);
                 terrainMat.SetColor(kvp.Key, kvp.Value);
             foreach (var kvp in oceanMaterial?.Colors) oceanMat.SetColor(kvp.Key, kvp.Value);
 
@@ -792,11 +792,11 @@ namespace GalacticScale
         public void ProcessTints()
         {
             //TODO: Tint for clouds?
-            //GS2.Log("Processing Terrain Tint for " + Name);
+            //GS3.Log("Processing Terrain Tint for " + Name);
             if (terrainMaterial.Tint != new Color()) TintTerrain(terrainMaterial.Tint);
-            //GS2.Log("Processing Ocean Tint for " + Name);
+            //GS3.Log("Processing Ocean Tint for " + Name);
             if (oceanMaterial.Tint != new Color())
-                //GS2.Log("Color Found");
+                //GS3.Log("Color Found");
                 TintOcean(oceanMaterial.Tint);
 
             if (atmosphereMaterial.Tint != new Color()) TintAtmosphere(atmosphereMaterial.Tint);
@@ -896,9 +896,9 @@ namespace GalacticScale
         public void TintOcean(Color c)
         {
             //TODO: IceLake now has a different shader with new params
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             if (oceanMat == null)
-                // GS2.Warn("oceanMat Null for " + Name);
+                // GS3.Warn("oceanMat Null for " + Name);
                 return;
 
             SetColor(oceanMat, "_CausticsColor", c); //Highlights
@@ -912,7 +912,7 @@ namespace GalacticScale
             SetColor(oceanMat, "_SpeclColor", c);
             SetColor(oceanMat, "_SpeclColor1", c);
             SetColor(oceanMat, "_ReflectionColor", c);
-            //GS2.Log("End");
+            //GS3.Log("End");
             //oceanMat.SetColor("_DepthFactor", new Color(.4f, .5f, .4f, 0.1f));
             //Used as Vector4 in the shader
             //X 0.1alpha seems best, really just determines height of ripples. 0.9 looks terrible.

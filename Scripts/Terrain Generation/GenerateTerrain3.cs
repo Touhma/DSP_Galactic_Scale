@@ -9,25 +9,25 @@ namespace GalacticScale
         {
             if (gsPlanet == null)
             {
-                GS2.Warn("gsPlanet Null");
+                GS3.Warn("gsPlanet Null");
                 return;
             }
 
-            random = new GS2.Random(gsPlanet.Seed);
-            // GS2.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            random = new GS3.Random(gsPlanet.Seed);
+            // GS3.Log($"USING GSTA3 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet?.GsTheme.TerrainSettings;
-            // GS2.Log("Generate Terrain for " + gsPlanet.Name + " 3 ");
+            // GS3.Log("Generate Terrain for " + gsPlanet.Name + " 3 ");
             var planet = gsPlanet.planetData;
             if (planet == null)
             {
-                GS2.Warn("planet Null");
+                GS3.Warn("planet Null");
                 return;
             }
 
             var num1 = 0.007;
             var num2 = 0.007;
             var num3 = 0.007;
-            //GS2.Random random = new GS2.Random(planet.seed);
+            //GS3.Random random = new GS3.Random(planet.seed);
             var seed1 = random.Next();
             var seed2 = random.Next();
             var simplexNoise1 = new SimplexNoise(seed1);
@@ -47,7 +47,7 @@ namespace GalacticScale
                 var num12 = simplexNoise2.Noise3DFBM(num7 * num1 * 6.0, num8 * num2 * 12.0, num9 * num3 * 6.0, 2) * 2.0;
                 var num13 = simplexNoise2.Noise3DFBM(num7 * num1 * 0.8, num8 * num2 * 0.8, num9 * num3 * 0.8, 2) * 2.0;
                 var f = num10 * 2.0 + 0.92 + Mathf.Clamp01((float)(num11 * Mathf.Abs((float)num13 + 0.5f) - 0.35) * 1f);
-                //GS2.Log(f.ToString());
+                //GS3.Log(f.ToString());
                 if (f < 0.0) f *= 2.0;
 
                 var num14 = Maths.Levelize2(f);
@@ -66,7 +66,7 @@ namespace GalacticScale
                 data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.BiomeHeightMulti + t.BiomeHeightModifier), 0.0f, 200f);
             }
 
-            // GS2.Log("--------------------");
+            // GS3.Log("--------------------");
         }
     }
 }

@@ -9,7 +9,7 @@ using NGPT;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static GalacticScale.GS2;
+using static GalacticScale.GS3;
 using Path = System.IO.Path;
 
 namespace GalacticScale
@@ -105,12 +105,12 @@ namespace GalacticScale
         private static void ImportCustomGeneratorOptions()
         {
             Config.Generate(0);
-            for (var i = 0; i < GS2.Generators.Count; i++)
+            for (var i = 0; i < GS3.Generators.Count; i++)
             {
                 var pluginOptions = new List<GSUI>();
-                //GS2.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS2.generators[i].Name);
-                if (GS2.Generators[i] is iConfigurableGenerator gen)
-                    //GS2.Log(gen.Name + " is configurable"); 
+                //GS3.Log("IMPORT CUSTOM GENERATOR OPTIONS : " + GS3.generators[i].Name);
+                if (GS3.Generators[i] is iConfigurableGenerator gen)
+                    //GS3.Log(gen.Name + " is configurable"); 
                     for (var j = 0; j < gen.Options.Count; j++)
                         // (GSUI o in gen.Options) {
                         if (!(gen.Options[j] is GSUI))
@@ -120,7 +120,7 @@ namespace GalacticScale
                         else
                         {
                             var o = gen.Options[j];
-                            //GS2.Warn(o.Label);
+                            //GS3.Warn(o.Label);
                             pluginOptions.Add(o);
                         }
 
@@ -132,7 +132,7 @@ namespace GalacticScale
         {
             // Log("CreateGeneratorOptionsPostFix");
 
-            var generatorNames = GS2.Generators.ConvertAll(iGen => { return iGen.Name; });
+            var generatorNames = GS3.Generators.ConvertAll(iGen => { return iGen.Name; });
             // LogJson(generatorNames);
             for (var i = 0; i < generatorNames.Count; i++)
             {
@@ -151,7 +151,7 @@ namespace GalacticScale
 
         private static void CreateOptionsUI()
         {
-            var gsuipath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "GSUI.dll");
+            var gsuipath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS3)).Location), "GSUI.dll");
             if (!File.Exists(gsuipath))
             {
                 ShowMessage("Missing GSUI.DLL".Translate(), "Error".Translate(), "Ok".Translate());
@@ -200,10 +200,10 @@ namespace GalacticScale
 
                 canvas.anchoredPosition = new Vector2(anchorX + 350, anchorY);
                 GeneratorCanvases.Add(canvas);
-                canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
+                canvas.name = "generatorCanvas-" + GS3.Generators[i].Name;
                 if (currentGenIndex == i)
                 {
-                    // GS2.Log($"Setting canvas {i} active {canvas.name} currentGenindes:{currentGenIndex}");
+                    // GS3.Log($"Setting canvas {i} active {canvas.name} currentGenindes:{currentGenIndex}");
                     canvas.gameObject.SetActive(true);
                     Canvas.ForceUpdateCanvases();
                 }
@@ -212,13 +212,13 @@ namespace GalacticScale
                     canvas.gameObject.SetActive(false);
                 }
 
-                // GS2.Log($"Creating Generator Plugin UIElements for {i}");
-                AddGeneratorPluginUIElements(canvas, i, GS2.Generators[i].Name);
+                // GS3.Log($"Creating Generator Plugin UIElements for {i}");
+                AddGeneratorPluginUIElements(canvas, i, GS3.Generators[i].Name);
             }
 
             // Warn("Creating Main Settings");
             for (var i = 0; i < options.Count; i++) // Main Settings
-                // GS2.Warn($"Creating {options[i].Label}");
+                // GS3.Warn($"Creating {options[i].Label}");
                 CreateUIElement(options[i], SettingsPanel.contents);
         }
 
@@ -232,9 +232,9 @@ namespace GalacticScale
         /// Iterate through all the plugins that have elements to add to the UI, add them,// then add their postfixes to the event listener
         private static void AddGeneratorPluginUIElements(RectTransform canvas, int genIndex, string name = "-")
         {
-            // GS2.Log("AddGeneratorPluginUIElements: " + GS2.Generators[genIndex].Name);
+            // GS3.Log("AddGeneratorPluginUIElements: " + GS3.Generators[genIndex].Name);
             var generatorPluginOption = generatorPluginOptions[genIndex];
-            // GS2.Log(GS2.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
+            // GS3.Log(GS3.Generators[genIndex].Name + " option count = " + generatorPluginOption.Count);
             var list = canvas.GetComponentInChildren<GSUIPanel>().contents;
             CreateUIElement(GSUI.Header(name),list);
             for (var i = 0; i < generatorPluginOption.Count; i++)
@@ -251,7 +251,7 @@ namespace GalacticScale
                 case "Group":
                     if (option.callback == null)
                     {
-                        // GS2.Log($"Adding normal list {option.Label}");
+                        // GS3.Log($"Adding normal list {option.Label}");
                         var newlist = list.AddList();
                         option.RectTransform = newlist.GetComponent<RectTransform>();
                         newlist.Initialize(option);
@@ -259,7 +259,7 @@ namespace GalacticScale
                     }
                     else
                     {
-                        // GS2.Log($"Adding toggle list {option.Label}");
+                        // GS3.Log($"Adding toggle list {option.Label}");
                         var newlist = list.AddToggleList();
                         option.RectTransform = newlist.GetComponent<RectTransform>();
                         newlist.Initialize(option);

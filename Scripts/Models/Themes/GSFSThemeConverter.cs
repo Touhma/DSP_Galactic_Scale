@@ -14,22 +14,22 @@ namespace GalacticScale
 
         protected override fsResult DoSerialize(GSTheme model, Dictionary<string, fsData> serialized)
         {
-            //GS2.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
+            //GS3.Log("GSFSThemeConverter|DoSerialize|" + model.Name);
             var based = model.BaseName != null && model.BaseName != "";
             SerializeMember(serialized, null, "Name", model.Name);
             var baseTheme = GSSettings.ThemeLibrary["Mediterranean"];
             if (based)
             {
                 if (!GSSettings.ThemeLibrary.ContainsKey(model.BaseName))
-                    GS2.Error($"Theme Missing: {model.BaseName}");
+                    GS3.Error($"Theme Missing: {model.BaseName}");
                 else baseTheme = GSSettings.ThemeLibrary[model.BaseName];
             }
-            // var baseTheme = based ? GS2.ThemeLibrary[model.BaseName] : GS2.ThemeLibrary["Mediterranean"];
+            // var baseTheme = based ? GS3.ThemeLibrary[model.BaseName] : GS3.ThemeLibrary["Mediterranean"];
 
-            // GS2.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
-            if (GS2.Config.MinifyJson)
+            // GS3.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
+            if (GS3.Config.MinifyJson)
             {
-                // GS2.Log("Minifying");
+                // GS3.Log("Minifying");
                 if (!based || model.PlanetType != baseTheme.PlanetType)
                     SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 if (!based || model.ThemeType != baseTheme.ThemeType)
@@ -166,19 +166,19 @@ namespace GalacticScale
                 SerializeMember(serialized, null, "AmbientSettings", model.AmbientSettings);
             }
 
-            //GS2.Log("GSFSThemeConverter|DoSerialize|End");
+            //GS3.Log("GSFSThemeConverter|DoSerialize|End");
             return fsResult.Success;
         }
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref GSTheme model)
         {
-            //GS2.Log("GSFSThemeConverter|DoDeserialize");
+            //GS3.Log("GSFSThemeConverter|DoDeserialize");
             var result = fsResult.Success;
             model = new GSTheme();
 
             DeserializeMember(data, null, "BaseName", out model.BaseName);
             if (model.baseTheme != null) model.CopyFrom(model.baseTheme);
-            //GS2.Log("ThemeConverter Deserialization CopyFrom Finished");
+            //GS3.Log("ThemeConverter Deserialization CopyFrom Finished");
             if (data.ContainsKey("Name"))
                 DeserializeMember(data, null, "Name", out model.Name);
             else
@@ -270,7 +270,7 @@ namespace GalacticScale
                 DeserializeMember(data, null, "AmbientSettings", out model.AmbientSettings);
 
             model.Init();
-            //GS2.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
+            //GS3.Log("Finished initializing " + model.Name + " custom gen? :" + model.CustomGeneration);
             return result;
         }
     }

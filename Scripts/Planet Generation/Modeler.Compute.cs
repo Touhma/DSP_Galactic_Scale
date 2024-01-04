@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.Rendering;
-using static GalacticScale.GS2;
+using static GalacticScale.GS3;
 using static PlanetModelingManager;
 
 namespace GalacticScale

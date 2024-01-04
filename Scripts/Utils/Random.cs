@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public class Random : Pcg
         {
@@ -61,7 +61,7 @@ namespace GalacticScale
                 }
 
                 var result = base.NextFloat(min, max);
-                //GS2.Warn(result.ToString());
+                //GS3.Warn(result.ToString());
                 return result;
             }
 

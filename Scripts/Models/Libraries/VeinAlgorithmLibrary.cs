@@ -11,17 +11,17 @@ namespace GalacticScale
             return new VeinAlgorithmLibrary
             {
                 ["Vanilla"] = VeinAlgorithms.GenerateVeinsVanilla,
-                ["GS2"] = VeinAlgorithms.GenerateVeinsGS2,
-                ["GS2R"] = VeinAlgorithms.GenerateVeinsGS2,
-                ["GS2W"] = VeinAlgorithms.GenerateVeinsGS2W
+                ["GS3"] = VeinAlgorithms.GenerateVeinsGS3,
+                ["GS3R"] = VeinAlgorithms.GenerateVeinsGS3,
+                ["GS3W"] = VeinAlgorithms.GenerateVeinsGS3W
             };
         }
 
         public GSVeinAlgorithm Find(string name)
         {
             if (!ContainsKey(name))
-                // GS2.Warn("VeinAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
-                return VeinAlgorithms.GenerateVeinsGS2;
+                // GS3.Warn("VeinAlgorithmLibrary|Find|Algorithm '" + name + "' Not Found. Using Default");
+                return VeinAlgorithms.GenerateVeinsGS3;
 
             return this[name];
         }

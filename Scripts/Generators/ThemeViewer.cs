@@ -33,7 +33,7 @@ namespace GalacticScale.Generators
 
         public void Generate(int starCount, StarData birthStar = null)
         {
-            var random = new GS2.Random(GSSettings.Seed);
+            var random = new GS3.Random(GSSettings.Seed);
             var p = new GSPlanets();
             // var i = 0;
             // foreach (var kvp in ThemeTestLibrary)
@@ -63,26 +63,26 @@ namespace GalacticScale.Generators
 
         private void themeselect(Val o)
         {
-            GS2.Warn(o);
+            GS3.Warn(o);
             themename = themeNames[o];
         }
 
         public void CaptureThemes(Val o)
         {
-            GS2.Log("Start");
+            GS3.Log("Start");
             if (GSSettings.ThemeLibrary == null || GSSettings.ThemeLibrary.Count == 0)
             {
-                GS2.Warn("No Themes Captured");
+                GS3.Warn("No Themes Captured");
                 return;
             }
 
             ThemeTestLibrary = GSSettings.ThemeLibrary;
             themeNames = ThemeTestLibrary.Select(x => { return x.Key; }).ToList();
-            GS2.Log("Updating" + (uiList == null));
-            GS2.Warn((uiList.RectTransform == null).ToString());
+            GS3.Log("Updating" + (uiList == null));
+            GS3.Warn((uiList.RectTransform == null).ToString());
             uiList.SetItems(themeNames);
-            GS2.WarnJson(themeNames);
-            GS2.Log("End");
+            GS3.WarnJson(themeNames);
+            GS3.Log("End");
         }
     }
 }

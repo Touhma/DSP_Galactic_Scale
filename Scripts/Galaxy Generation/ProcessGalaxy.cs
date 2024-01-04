@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static GalaxyData ProcessGalaxy(GameDesc desc, bool sketchOnly = false)
         {
@@ -19,7 +19,7 @@ namespace GalacticScale
                 Log($"Generating Galaxy of {GSSettings.StarCount}|{gameDesc.starCount} stars");
                 // Warn($"GSSettings.BirthPlanet.Name:{GSSettings.BirthPlanet?.Name} ID:{GSSettings.BirthPlanetId}");
                 Failed = false;
-                PatchOnUIGalaxySelect.StartButton?.SetActive(true);
+                Patches.PatchOnUIGalaxySelect.StartButton?.SetActive(true);
                 if (!GSSettings.Instance.imported && sketchOnly)
                 {
                     // Log("Start");
@@ -27,9 +27,9 @@ namespace GalacticScale
                     // Warn(LDB._themes.dataArray.Length.ToString());
                     if (LDB._themes.dataArray != null && LDB._themes.dataArray.Length > 128) Array.Resize(ref LDB._themes.dataArray, 128);
                     // Warn(LDB._themes.dataArray.Length.ToString());
-                    // GS2.LogJson(gameDesc);
-                    // GS2.Warn(gameDesc.resourceMultiplier.ToString());
-                    // GS2.Warn(GSSettings.Instance.galaxyParams.resourceMulti.ToString());
+                    // GS3.LogJson(gameDesc);
+                    // GS3.Warn(gameDesc.resourceMultiplier.ToString());
+                    // GS3.Warn(GSSettings.Instance.galaxyParams.resourceMulti.ToString());
                     Log("Seed From gameDesc = " + GSSettings.Seed);
                     gsPlanets.Clear();
                     gsStars.Clear();

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static PlanetData CreatePlanet(ref StarData star, GSPlanet gsPlanet, Random random, PlanetData host = null)
         {
@@ -22,7 +22,7 @@ namespace GalacticScale
                 Error($"Star Index {star.index} does not exist in GSSettings.Stars");
 
             var index = GSSettings.Stars[star.index].counter;
-            // GS2.Log("Creating PlanetData");
+            // GS3.Log("Creating PlanetData");
             var planet = new PlanetData();
             var counter = GSSettings.Stars[star.index].counter;
             planet.index = index;
@@ -61,7 +61,7 @@ namespace GalacticScale
 
             roman += RomanNumbers.roman[index + 1];
             planet.name = gsPlanet.Name != "" ? gsPlanet.Name : star.name + " " + roman;
-            // GS2.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
+            // GS3.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
             planet.orbitRadius = gsPlanet.OrbitRadius;
             if (planet.orbitRadius < 0)
             {
@@ -82,18 +82,18 @@ namespace GalacticScale
             planet.radius = gsPlanet.Radius;
             planet.segment = 5;
             var segments = (int)(planet.radius / 4f + 0.1f) * 4;
-            if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) SetLuts(segments, planet.radius);
-            PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
+            if (!Patches.PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) SetLuts(segments, planet.radius);
+                Patches.PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
             // Log($"Start2 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
             planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planet.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
             planet.runtimeSystemRotation = planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
-            //GS2.Log("Trying to apply theme " + gsPlanet.Theme);
+            //GS3.Log("Trying to apply theme " + gsPlanet.Theme);
             // Log($"OrbitRotation for {planet.name} took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
 
             planet.type = GSSettings.ThemeLibrary.Find(gsPlanet.Theme).PlanetType;
-            //GS2.Log("Applied");
+            //GS3.Log("Applied");
             //Patch.Debug("Type set to " + planetData.type);
             planet.scale = 1f;
             if (planet.type == EPlanetType.Gas) planet.scale = 10f;
@@ -102,12 +102,12 @@ namespace GalacticScale
 
             planet.precision = gsPlanet.Radius;
             gsPlanet.planetData = planet;
-            //GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
+            //GS3.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
             planet.luminosity = gsPlanet.Luminosity;
 
 
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
-            //GS2.DumpObjectToJson(GS2.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
+            //GS3.DumpObjectToJson(GS3.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
             //Log("Setting Theme|"+gsPlanet.Name);
             // Log($"ThemeLibrary? for {planet.name} took {highStopwatch.duration:F5} s\r\n");
             // highStopwatch.Begin();
@@ -120,7 +120,7 @@ namespace GalacticScale
 
             if (star.galaxy.astrosData.Length <= planet.id)
                 Error($"Astroposes does not contain index {planet.id} when trying to set planet uRadius");
-            //GS2.Warn($"Setting astropose for {planet.name}");
+            //GS3.Warn($"Setting astropose for {planet.name}");
             star.galaxy.astrosData[planet.id].uRadius = planet.realRadius;
             if (star.planets.Length <= counter)
                 Error($"star.planets length of {star.planets.Length} <= counter {counter}");
@@ -133,24 +133,24 @@ namespace GalacticScale
             if (gsPlanet.MoonsCount > 0) CreateMoons(ref planet, gsPlanet, random);
             //Log("PLANET RADIUS "+planetData.radius);
             //Log("End|" + gsPlanet.Name);
-            //GS2.Log("Setting Singularities");
-            //GS2.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id} rotation:{planet.rotationPeriod} orbit:{planet.orbitalPeriod} obliq:{planet.obliquity} bodies:{gsPlanet.Bodies.Count}");
-            if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod) < 1f) //GS2.Log("Setting TidalLock"); 
+            //GS3.Log("Setting Singularities");
+            //GS3.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id} rotation:{planet.rotationPeriod} orbit:{planet.orbitalPeriod} obliq:{planet.obliquity} bodies:{gsPlanet.Bodies.Count}");
+            if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod) < 1f) //GS3.Log("Setting TidalLock"); 
                 planet.singularity |= EPlanetSingularity.TidalLocked;
-            if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod * 2) < 1f) //GS2.Log("Setting TidalLock2"); 
+            if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod * 2) < 1f) //GS3.Log("Setting TidalLock2"); 
                 planet.singularity |= EPlanetSingularity.TidalLocked2;
-            if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod * 4) < 1f) //GS2.Log("Setting TidalLock4");
+            if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod * 4) < 1f) //GS3.Log("Setting TidalLock4");
                 planet.singularity |= EPlanetSingularity.TidalLocked4;
-            if (gsPlanet.Bodies.Count > 2) //GS2.Log("Setting Multisatellite");
+            if (gsPlanet.Bodies.Count > 2) //GS3.Log("Setting Multisatellite");
                 planet.singularity |= EPlanetSingularity.MultipleSatellites;
-            if (planet.obliquity > 75 || planet.obliquity < -75) //GS2.Log("Setting LaySide"); 
+            if (planet.obliquity > 75 || planet.obliquity < -75) //GS3.Log("Setting LaySide"); 
                 planet.singularity |= EPlanetSingularity.LaySide;
 
             if (planet.rotationPeriod < 0)
-                //GS2.Log("Setting ReverseRotation");
+                //GS3.Log("Setting ReverseRotation");
                 planet.singularity |= EPlanetSingularity.ClockwiseRotate;
 
-            // GS2.Warn(planet.singularityString + " " + planet.singularity);
+            // GS3.Warn(planet.singularityString + " " + planet.singularity);
             // Log($"{planet.name} created in {highStopwatch.duration:F5} s\r\n");
             return planet;
         }

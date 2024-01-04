@@ -7,7 +7,7 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSThemeLibraryConverter))]
     public class ThemeLibrary : Dictionary<string, GSTheme>
     {
-        private readonly GS2.Random random = new(GSSettings.Seed);
+        private readonly GS3.Random random = new(GSSettings.Seed);
 
         public List<string> Habitable
         {
@@ -26,18 +26,18 @@ namespace GalacticScale
         {
             // if (name == "BlueLava")
             // {
-            // GS2.Warn($"Adding {name},{theme == null} {GS2.GetCaller()}");
-            // GS2.Warn(GS2.GetCaller(1));
-            // GS2.Warn(GS2.GetCaller(2));
-            // GS2.Warn(GS2.GetCaller(3));
-            // GS2.Warn(GS2.GetCaller(4));
-            // GS2.Warn(GS2.GetCaller(5));
+            // GS3.Warn($"Adding {name},{theme == null} {GS3.GetCaller()}");
+            // GS3.Warn(GS3.GetCaller(1));
+            // GS3.Warn(GS3.GetCaller(2));
+            // GS3.Warn(GS3.GetCaller(3));
+            // GS3.Warn(GS3.GetCaller(4));
+            // GS3.Warn(GS3.GetCaller(5));
             // }
             if (theme == null) return null;
             if (string.IsNullOrEmpty(name)) name = theme.Name ?? "Hmm";
             if (ContainsKey(name))
             {
-                // GS2.Warn("Theme already exists. Updating.");
+                // GS3.Warn("Theme already exists. Updating.");
                 this[name] = theme;
                 return theme;
             }
@@ -48,10 +48,10 @@ namespace GalacticScale
 
         public ThemeLibrary AddRange(ThemeLibrary values)
         {
-            // GS2.Warn("Adding Range " + GS2.GetCaller() + GS2.GetCaller(1) + GS2.GetCaller(2) + GS2.GetCaller(3));
-            // GS2.WarnJson(values.Select(p => p.Key).ToList());
+            // GS3.Warn("Adding Range " + GS3.GetCaller() + GS3.GetCaller(1) + GS3.GetCaller(2) + GS3.GetCaller(3));
+            // GS3.WarnJson(values.Select(p => p.Key).ToList());
             foreach (var theme in values)
-                if (ContainsKey(theme.Key)) // GS2.Warn("Adding Duplicate Theme " + theme.Key);
+                if (ContainsKey(theme.Key)) // GS3.Warn("Adding Duplicate Theme " + theme.Key);
                     this[theme.Key] = theme.Value;
                 else Add(theme.Key, theme.Value);
             return this;
@@ -111,9 +111,9 @@ namespace GalacticScale
             if (string.IsNullOrEmpty(name)) return null;
             if (!ContainsKey(name))
             {
-                var s = GS2.GetCaller();
-                GS2.Error("Failed to find theme " + name + " in Theme Library. Using Default. > " + s);
-                GS2.WarnJson(GSSettings.ThemeLibrary.Select(x => x.Key).ToList());
+                var s = GS3.GetCaller();
+                GS3.Error("Failed to find theme " + name + " in Theme Library. Using Default. > " + s);
+                GS3.WarnJson(GSSettings.ThemeLibrary.Select(x => x.Key).ToList());
                 return Themes.Mediterranean;
             }
 
@@ -125,19 +125,19 @@ namespace GalacticScale
             return this["Mediterranean"];
         }
 
-        public string Query(GS2.Random random, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
+        public string Query(GS3.Random random, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default, bool habitable = false)
         {
             var themes = Query(type, heat, radius, distribute, habitable);
             return random.Item(themes);
         }
 
-        public string Query(GS2.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        public string Query(GS3.Random random, EStar starType, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = Query(starType, type, heat, radius, distribute);
             return random.Item(themes);
         }
 
-        public string Query(GS2.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
+        public string Query(GS3.Random random, List<EStar> starTypes, EThemeType type, EThemeHeat heat, int radius, EThemeDistribute distribute = EThemeDistribute.Default)
         {
             var themes = Query(starTypes, type, heat, radius, distribute);
             return random.Item(themes);
@@ -212,13 +212,13 @@ namespace GalacticScale
             var results = q.ToList();
             if (habitable)
                 results = (from theme in results where theme.Habitable select theme).ToList();
-            //GS2.WarnJson(results.Select(o => o.Name).ToList());
+            //GS3.WarnJson(results.Select(o => o.Name).ToList());
 
             if (results.Count == 0)
             {
-                GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+                GS3.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
                 foreach (var k in this)
-                    GS2.Warn($"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
+                    GS3.Warn($"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
                 if (type == EThemeType.Gas)
                     switch (heat)
                     {
@@ -255,8 +255,8 @@ namespace GalacticScale
                     }
             }
 
-            // GS2.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
-            // GS2.WarnJson((from result in results select result.Name).ToList());
+            // GS3.Warn($"Selected Themes for EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
+            // GS3.WarnJson((from result in results select result.Name).ToList());
             return results;
         }
 

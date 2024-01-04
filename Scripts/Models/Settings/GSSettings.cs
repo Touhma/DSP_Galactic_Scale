@@ -35,9 +35,9 @@ namespace GalacticScale
 
         public GSSettings(int seed)
         {
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             this.seed = seed;
-            //GS2.Log("End");
+            //GS3.Log("End");
         }
 
         public static GSSettings Instance { get; set; } = new(0);
@@ -79,63 +79,56 @@ namespace GalacticScale
             get
             {
                 if (birthPlanet != null) return birthPlanet;
-                if (GS2.Vanilla)
-                {
-                    GS2.Log("Getting BirthPlanet For Vanilla");
-                    birthPlanet = FindPlanet(GameMain.galaxy.birthPlanetId);
-                    return birthPlanet;
-                }
-
-                GS2.Warn($"BirthPlanet Requested by {GS2.GetCaller(1)} {GS2.GetCaller(2)} {GS2.GetCaller(3)}");
+                GS3.Warn($"BirthPlanet Requested by {GS3.GetCaller(1)} {GS3.GetCaller(2)} {GS3.GetCaller(3)}");
                 if (birthPlanetId > 100)
                 {
-                    GS2.Warn($"Trying to find GSPlanet for id {birthPlanetId} on behalf of {GS2.GetCaller()}");
+                    GS3.Warn($"Trying to find GSPlanet for id {birthPlanetId} on behalf of {GS3.GetCaller()}");
                     var p = FindPlanet(birthPlanetId);
                     if (p != null)
                     {
-                        GS2.Log($"Found birth planet by ID. {p.Name}");
+                        GS3.Log($"Found birth planet by ID. {p.Name}");
                         birthPlanet = p;
                         return p;
                     }
                 }
                 else
                 {
-                    GS2.Warn("BirthPlanetID < 100");
+                    GS3.Warn("BirthPlanetID < 100");
 
                     if (BirthPlanetName != null && BirthPlanetName != string.Empty)
                     {
-                        GS2.Warn($"Trying to get birthPlanet by name of '{BirthPlanetName}'");
+                        GS3.Warn($"Trying to get birthPlanet by name of '{BirthPlanetName}'");
                         var p = FindPlanet(BirthPlanetName);
                         if (p == null)
                         {
-                            GS2.Error($"BirthPlanet '{BirthPlanetName}' returned null");
+                            GS3.Error($"BirthPlanet '{BirthPlanetName}' returned null");
                         }
                         else
                         {
-                            GS2.Log($"Found birth planet by name: {birthPlanet}");
+                            GS3.Log($"Found birth planet by name: {birthPlanet}");
                             birthPlanet = p;
                             return p;
                         }
                     }
                 }
 
-                GS2.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
-                GS2.Log($"BirthPlanetName:{birthPlanetName}");
+                GS3.Log("Could Not Get Birth Planet From ID or Name. Using Random Habitable Planet.");
+                GS3.Log($"BirthPlanetName:{birthPlanetName}");
 
                 if (Stars.HabitablePlanets.Count > 0)
                 {
-                    GS2.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");
-                    var randomPlanet = Stars.HabitablePlanets[new GS2.Random(Seed).Next(Stars.HabitablePlanets.Count)];
+                    GS3.Log($"Picking one of {Stars.HabitablePlanets.Count} at random");
+                    var randomPlanet = Stars.HabitablePlanets[new GS3.Random(Seed).Next(Stars.HabitablePlanets.Count)];
                     birthPlanet = randomPlanet;
-                    GS2.Log($"Selected {birthPlanet.Name}");
+                    GS3.Log($"Selected {birthPlanet.Name}");
                     return randomPlanet;
                 }
 
-                GS2.Log("Could not find any habitable planets. Trying to use first planet.");
+                GS3.Log("Could not find any habitable planets. Trying to use first planet.");
                 if (StarCount > 0 && PlanetCount > 0) return Stars[0].Planets[0];
 
-                GS2.Error("Could not find birthplanet as there are no stars or planets.");
-                GS2.AbortGameStart("Could not find birthplanet as there are no stars or planets.".Translate());
+                GS3.Error("Could not find birthplanet as there are no stars or planets.");
+                GS3.AbortGameStart("Could not find birthplanet as there are no stars or planets.".Translate());
                 return null;
             }
         }
@@ -159,7 +152,7 @@ namespace GalacticScale
                     }
                 }
                 else return birthStar;
-                GS2.Error($"Could not find BirthStar when requested by {GS2.GetCaller()}");
+                GS3.Error($"Could not find BirthStar when requested by {GS3.GetCaller()}");
                 return null;
             }
         }
@@ -169,7 +162,7 @@ namespace GalacticScale
             get => BirthPlanet != null ? BirthPlanet.planetData.id : -1;
             set
             {
-                GS2.Log($"BirthPlanetID set to {value} by {GS2.GetCaller()}");
+                GS3.Log($"BirthPlanetID set to {value} by {GS3.GetCaller()}");
                 birthPlanet = FindPlanet(value);
                 birthPlanetId = value;
             }
@@ -180,7 +173,7 @@ namespace GalacticScale
             get => birthPlanetName;
             set
             {
-                GS2.Log($"BirthPlanetName set to {value} by {GS2.GetCaller()}");
+                GS3.Log($"BirthPlanetName set to {value} by {GS3.GetCaller()}");
                 birthPlanet = FindPlanet(value);
                 birthPlanetName = value;
             }
@@ -201,7 +194,7 @@ namespace GalacticScale
                 }
             }
 
-            GS2.Error($"FindPlanet Failed to Find {name}. Searched {i} bodies");
+            GS3.Error($"FindPlanet Failed to Find {name}. Searched {i} bodies");
             foreach (var star in Stars) star.DebugStarData();
             return null;
         }
@@ -216,7 +209,7 @@ namespace GalacticScale
                 if (planet.planetData.id == id) return planet;
             }
 
-            GS2.Error($"FindPlanet Failed to Find {id}. Searched {i} bodies");
+            GS3.Error($"FindPlanet Failed to Find {id}. Searched {i} bodies");
             return null;
         }
 
@@ -241,7 +234,7 @@ namespace GalacticScale
         public static string Serialize()
         {
             var data = Utils.Serialize(Instance, false);
-            //GS2.DumpObjectToJson(Path.Combine(GS2.DataDir, "data.json"), data);
+            //GS3.DumpObjectToJson(Path.Combine(GS3.DataDir, "data.json"), data);
             return data;
         }
 
@@ -258,22 +251,22 @@ namespace GalacticScale
         public static bool FromString(string json)
         {
             Reset(0);
-            GS2.Warn("Loading Data From External String");
+            GS3.Warn("Loading Data From External String");
             var serializer = new fsSerializer();
             var result = Instance;
             var data2 = fsJsonParser.Parse(json);
             var success = serializer.TryDeserialize(data2, ref result).Succeeded;
             if (result.version != Instance.version)
-                GS2.Warn("Version mismatch: " + Instance.version + " trying to load " + result.version + " savedata");
+                GS3.Warn("Version mismatch: " + Instance.version + " trying to load " + result.version + " savedata");
             Instance = result;
             Instance.imported = true;
-            GS2.Warn("Loaded Data From External String");
+            GS3.Warn("Loaded Data From External String");
             return success;
         }
 
         public static void Reset(int seed)
         {
-            GS2.Log("Start");
+            GS3.Log("Start");
             Instance = new GSSettings(seed);
             GalaxyParams = new GSGalaxyParams();
             Stars.Clear();
@@ -281,11 +274,11 @@ namespace GalacticScale
             BirthPlanetName = null;
             birthPlanet = null;
             //birthStarId = -1;
-            GS2.gsPlanets.Clear();
-            GS2.gsStars.Clear();
+            GS3.gsPlanets.Clear();
+            GS3.gsStars.Clear();
             ThemeLibrary = ThemeLibrary.Vanilla();
-            // ThemeLibrary = GS2.ThemeLibrary;
-            //GS2.Log("End");
+            // ThemeLibrary = GS3.ThemeLibrary;
+            //GS3.Log("End");
         }
 
         private int getPlanetCount()

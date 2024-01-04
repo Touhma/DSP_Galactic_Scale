@@ -16,7 +16,7 @@ namespace NebulaCompatibility
 
             if (galaxyData == null)
             {
-                galaxyData = GS2.Vanilla ? UniverseGen.CreateGalaxy(gameDesc) : GS2.ProcessGalaxy(gameDesc, true);
+                galaxyData = GS3.ProcessGalaxy(gameDesc, true);
 
                 UIRoot.instance.galaxySelect.starmap.galaxyData = galaxyData;
             }
@@ -37,7 +37,7 @@ namespace NebulaCompatibility
             galaxyData = UIRoot.instance.galaxySelect.starmap.galaxyData;
             for (var i = 0; i < packet.Names.Length; i++)
             {
-                GS2.Warn($"{packet.Names[i]} {packet.StarIds[i]} {packet.PlanetIds[i]}");
+                GS3.Warn($"{packet.Names[i]} {packet.StarIds[i]} {packet.PlanetIds[i]}");
                 if (packet.StarIds[i] != NebulaModAPI.STAR_NONE)
                 {
                     var star = galaxyData.StarById(packet.StarIds[i]);

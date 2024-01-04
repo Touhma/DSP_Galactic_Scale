@@ -14,23 +14,23 @@ namespace GalacticScale
         {
             ticker++;
             if (ticker > 60)
-                // GS2.Warn(
+                // GS3.Warn(
                 // $"FU: TP:{TargetPlanet != null} TS:{TargetStar != null} TE:{TeleportEnabled} LS:{GameMain.localStar != null} LSL{GameMain.localStar?.loaded}");
                 ticker = 0;
             else return;
-            if (!GS2.Config.CheatMode) return;
+            if (!GS3.Config.CheatMode) return;
             if (DSPGame.IsMenuDemo) return;
             if (TargetStar == null && TargetPlanet == null || TeleportEnabled == false || !(GameMain.localStar != null && GameMain.localStar.loaded)) return;
             if (TargetPlanet != null)
             {
-                GS2.Warn($"TP to Planet {TargetPlanet?.name} of star {TargetPlanet?.star?.name}");
+                GS3.Warn($"TP to Planet {TargetPlanet?.name} of star {TargetPlanet?.star?.name}");
 
                 GameMain.data.ArriveStar(TargetPlanet?.star);
                 StartCoroutine(Teleport(TargetPlanet));
             }
             else if (TargetStar != null)
             {
-                GS2.Warn($"TP to Star {TargetStar?.name}");
+                GS3.Warn($"TP to Star {TargetStar?.name}");
                 GameMain.data.ArriveStar(TargetStar);
                 StartCoroutine(Teleport(TargetStar));
             }
@@ -38,7 +38,7 @@ namespace GalacticScale
 
         private IEnumerator Teleport(PlanetData planet)
         {
-            GS2.Warn($"Teleporting to {planet.name}");
+            GS3.Warn($"Teleporting to {planet.name}");
             yield return new WaitForEndOfFrame();
             GameMain.mainPlayer.uPosition = planet.uPosition + VectorLF3.unit_z * planet.realRadius;
             yield return new WaitForEndOfFrame();
@@ -46,7 +46,7 @@ namespace GalacticScale
             yield return new WaitForEndOfFrame();
             GameCamera.instance.FrameLogic();
             yield return new WaitForEndOfFrame();
-            GameMain.mainPlayer.transform.localScale = Vector3.one * GS2.Config.MechaScale;
+            GameMain.mainPlayer.transform.localScale = Vector3.one * GS3.Config.MechaScale;
             if (GameMain.localPlanet == planet)
             {
                 TargetPlanet = null;
@@ -68,7 +68,7 @@ namespace GalacticScale
             yield return new WaitForEndOfFrame();
             GameCamera.instance.FrameLogic();
             yield return new WaitForEndOfFrame();
-            GameMain.mainPlayer.transform.localScale = Vector3.one * GS2.Config.MechaScale;
+            GameMain.mainPlayer.transform.localScale = Vector3.one * GS3.Config.MechaScale;
             if (GameMain.localStar == star)
             {
                 TargetPlanet = null;
@@ -79,17 +79,17 @@ namespace GalacticScale
 
         public bool NavArrowClick(UIStarmap starmap)
         {
-            if (starmap.focusStar != null && VFInput.control && GS2.Config.CheatMode)
+            if (starmap.focusStar != null && VFInput.control && GS3.Config.CheatMode)
             {
-                GS2.TP.TargetStar = starmap.focusStar.star;
-                GS2.TP.TeleportEnabled = true;
+                GS3.TP.TargetStar = starmap.focusStar.star;
+                GS3.TP.TeleportEnabled = true;
                 return false;
             }
 
-            if (starmap.focusPlanet != null && VFInput.control && GS2.Config.CheatMode)
+            if (starmap.focusPlanet != null && VFInput.control && GS3.Config.CheatMode)
             {
-                GS2.TP.TargetPlanet = starmap.focusPlanet.planet;
-                GS2.TP.TeleportEnabled = true;
+                GS3.TP.TargetPlanet = starmap.focusPlanet.planet;
+                GS3.TP.TeleportEnabled = true;
                 return false;
             }
 

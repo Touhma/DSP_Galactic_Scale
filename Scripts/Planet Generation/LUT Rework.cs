@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static Dictionary<int, int[]> keyedLUTs = new();
 
         public static void SetLuts(int segments, float planetRadius)
         {
-            if (!DSPGame.IsMenuDemo && !Vanilla) // Prevent special LUT's being created in main menu
+            if (!DSPGame.IsMenuDemo) // Prevent special LUT's being created in main menu
             {
-                if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
+                if (keyedLUTs.ContainsKey(segments) && Patches.PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
                 var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 var lut = new int[numSegments];
                 var segmentAngle = Mathf.PI / 2f / numSegments; //quarter circle divided by num segments is the angle per segment
@@ -22,7 +22,7 @@ namespace GalacticScale
 
                 var classicLUT = new int[512];
                 classicLUT[0] = 1;
-                // GS2.Warn("Start");
+                // GS3.Warn("Start");
                 for (var cnt = 0; cnt < numSegments; cnt++)
                 {
                     var ringradius = Mathf.Cos(cnt * segmentAngle) * planetRadius; //cos of the nth segment is the x-distance of the point in a 2d circle
@@ -41,7 +41,7 @@ namespace GalacticScale
                     classicLUT[classicIdx] = lastMajorRadiusCount;
                 }
 
-                // GS2.Warn("Mid");
+                // GS3.Warn("Mid");
                 var last = 1;
                 for (var oldlLutIdx = 1; oldlLutIdx < 512; oldlLutIdx++)
                     if (classicLUT[oldlLutIdx] > last)
@@ -588,7 +588,7 @@ namespace GalacticScale
 
                 //Fill all Look Up Tables (Dictionaries really)
                 if (!keyedLUTs.ContainsKey(segments)) keyedLUTs.Add(segments, lut);
-                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
+                if (!Patches.PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) Patches.PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
             }
         }
     }

@@ -5,11 +5,11 @@ using GSSerializer;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static void LoadExternalThemes(string path)
         {
-            // GS2.Log($"Loading External Themes from: {path}");
+            // GS3.Log($"Loading External Themes from: {path}");
             var tl = new ThemeLibrary();
             availableExternalThemes.Clear();
             if (!Directory.Exists(path))
@@ -27,7 +27,7 @@ namespace GalacticScale
             foreach (var directory in directories)
             {
                 var DirName = new DirectoryInfo(directory).Name;
-                // GS2.Log($"Searching directory:{directory}");
+                // GS3.Log($"Searching directory:{directory}");
                 if (availableExternalThemes.ContainsKey(DirName))
                     availableExternalThemes[DirName] = LoadDirectoryJsonThemes(directory);
                 else availableExternalThemes.Add(DirName, LoadDirectoryJsonThemes(directory));
@@ -51,7 +51,7 @@ namespace GalacticScale
         public static ThemeLibrary LoadDirectoryJsonThemes(string path)
         {
             var tl = new ThemeLibrary();
-            // GS2.Log("Loading directory themes and created a new themelibrary with the following contents:");
+            // GS3.Log("Loading directory themes and created a new themelibrary with the following contents:");
             // LogJson(tl.Select(o=>o.Key).ToList());
             var directories = Directory.GetDirectories(path);
             var files = Directory.GetFiles(path);
@@ -74,7 +74,7 @@ namespace GalacticScale
         {
             // Log("Loading JSON Theme " + filename);
             if (new FileInfo(filename).Extension != ".json")
-                // GS2.Warn($"Non Json File Skipped: {filename}");
+                // GS3.Warn($"Non Json File Skipped: {filename}");
                 return null;
             var json = File.ReadAllText(filename);
             var result = new GSTheme();

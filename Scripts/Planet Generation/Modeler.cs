@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.Rendering;
-using static GalacticScale.GS2;
+using static GalacticScale.GS3;
 using static PlanetModelingManager;
 
 namespace GalacticScale
@@ -167,7 +167,7 @@ namespace GalacticScale
             if (currentModelingPlanet != null)
                 try
                 {
-                    // GS2.Warn($"Modelling {currentModelingPlanet.name}");
+                    // GS3.Warn($"Modelling {currentModelingPlanet.name}");
                     ModelingPlanetMain(currentModelingPlanet);
                 }
                 catch (Exception message)

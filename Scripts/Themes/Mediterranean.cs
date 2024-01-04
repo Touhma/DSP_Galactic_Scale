@@ -30,7 +30,7 @@ namespace GalacticScale
             },
             VeinSettings = new GSVeinSettings
             {
-                Algorithm = "GS2",
+                Algorithm = "GS3",
                 VeinTypes = new GSVeinTypes()
             },
             AmbientSettings = new GSAmbientSettings
@@ -59,7 +59,7 @@ namespace GalacticScale
             },
             VegeSettings = new GSVegeSettings
             {
-                Algorithm = "GS2",
+                Algorithm = "GS3",
                 Group1 = new List<string>
                 {
                     // Highlands

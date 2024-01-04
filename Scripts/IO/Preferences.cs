@@ -5,7 +5,7 @@ using GSSerializer;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         private static GSPreferences Preferences = new();
 
@@ -14,7 +14,7 @@ namespace GalacticScale
             // Warn("SavePreferences");
             Preferences.version = PreferencesVersion;
             Preferences.MainSettings = Config.Export();
-            // foreach (var x in Preferences.MainSettings) GS2.Warn($"Key:{x.Key} Value:{x.Value}");
+            // foreach (var x in Preferences.MainSettings) GS3.Warn($"Key:{x.Key} Value:{x.Value}");
             foreach (var g in Plugins)
                 if (g is iConfigurablePlugin)
                 {
@@ -49,7 +49,7 @@ namespace GalacticScale
             //    var newName = "Preferences.Old." + DateTime.Now.ToString("yyMMddHHmmss");
             //    if (File.Exists(Path.Combine(DataDir, newName))) File.Delete(Path.Combine(DataDir, newName));
             //    File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir, newName));
-            //    updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
+            //    updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS3\r\n";
             //    return;
             //}
             Preferences = GSPreferences.ReadFromDisk();
@@ -162,7 +162,7 @@ namespace GalacticScale
                 //     var newName = "Preferences.Old." + DateTime.Now.ToString("yyMMddHHmmss");
                 //     if (File.Exists(Path.Combine(DataDir, newName))) File.Delete(Path.Combine(DataDir, newName));
                 //     File.Move(Path.Combine(DataDir, "Preferences.json"), Path.Combine(DataDir, newName));
-                //     updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS2\r\n";
+                //     updateMessage += "\r\nPreferences.json version is incompatible. It has been renamed to " + newName + "\r\nPlease reconfigure GS3\r\n";
                 //     return new GSPreferences();
                 // }
 

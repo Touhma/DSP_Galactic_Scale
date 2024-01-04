@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static void CreateStarPlanetsAstroPoses(Random random)
         {
@@ -32,17 +32,17 @@ namespace GalacticScale
                         }
 
                         // Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
-                        // GS2.Warn("Setting Binary Star Position");
+                        // GS3.Warn("Setting Binary Star Position");
                         galaxy.stars[binary.assignedIndex].position = binary.position = star.position + binary.position;
                         galaxy.stars[binary.assignedIndex].uPosition =
                             galaxy.stars[binary.assignedIndex].position * 2400000.0;
-                        // GS2.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
+                        // GS3.Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position }");
                     }
                 }
             }
             // Log("2 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
 
-            //for (var i = 0; i < galaxy.stars.Length; i++) GS2.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
+            //for (var i = 0; i < galaxy.stars.Length; i++) GS3.Warn($"Star {galaxy.stars[i].index} id:{galaxy.stars[i].id} name:{galaxy.stars[i].name} GSSettings:{GSSettings.Stars[i].Name}");
             Log($"Stars Created in {highStopwatch.duration:F5}s");
             highStopwatch.Begin();
             Log("Creating Planets");

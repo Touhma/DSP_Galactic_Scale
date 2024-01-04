@@ -23,7 +23,7 @@ namespace GalacticScale
             Habitable = false,
             ModX = new Vector2(0f, 0f),
             ModY = new Vector2(0f, 0f),
-            VeinSettings = new GSVeinSettings { Algorithm = "GS2" },
+            VeinSettings = new GSVeinSettings { Algorithm = "GS3" },
             TerrainSettings = new GSTerrainSettings { BrightnessFix = true },
 
             //AmbientSettings 1

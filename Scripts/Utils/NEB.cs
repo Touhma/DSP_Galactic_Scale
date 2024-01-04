@@ -26,7 +26,7 @@ namespace GalacticScale
                 if (!disabled)
                     nebulaPatcher.GetMethod("EnterGame_Prefix", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { __instance });
                 else
-                    GS2.Log("Couldn't run nebula EnterGame method");
+                    GS3.Log("Couldn't run nebula EnterGame method");
             }
 
         }

@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public class GSStars : List<GSStar>
     {
-        private readonly GS2.Random random = new(GSSettings.Seed);
+        private readonly GS3.Random random = new(GSSettings.Seed);
 
         public GSStars(IEnumerable<GSStar> i) : base(i)
         {
@@ -13,7 +13,7 @@ namespace GalacticScale
 
         public GSStars()
         {
-            random = new GS2.Random(GSSettings.Seed);
+            random = new GS3.Random(GSSettings.Seed);
         }
 
         public GSPlanets HabitablePlanets
@@ -30,9 +30,9 @@ namespace GalacticScale
         {
             get
             {
-                //GS2.Warn($"Star Count:{this.Count} random:{random.Id}");
+                //GS3.Warn($"Star Count:{this.Count} random:{random.Id}");
                 if (Count == 1) return this[0];
-                if (Count == 0) GS2.Error("No Stars To Pick From!");
+                if (Count == 0) GS3.Error("No Stars To Pick From!");
                 return this[random.Next(Count)];
             }
         }

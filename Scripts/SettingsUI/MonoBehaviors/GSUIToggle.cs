@@ -27,20 +27,20 @@ namespace GalacticScale
         {
             get => _Toggle.isOn;
             set =>
-                // GS2.Warn($"Setting Value for {Label} to {value}"); 
+                // GS3.Warn($"Setting Value for {Label} to {value}"); 
                 _Toggle.isOn = value;
         }
 
         public void _OnToggleChange(bool value)
         {
-            // GS2.Log(value.ToString());
+            // GS3.Log(value.ToString());
             Value = value;
             OnChange?.Invoke(value);
         }
 
         public void initialize(GSUI options)
         {
-            // GS2.Log($"Initializing {Label} {options.Data} {options.DefaultValue} {(options.postfix == null)}");
+            // GS3.Log($"Initializing {Label} {options.Data} {options.DefaultValue} {(options.postfix == null)}");
             //Value = (bool) options.Data;
             Label = options.Label;
             Hint = options.Hint;

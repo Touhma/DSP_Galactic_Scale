@@ -32,7 +32,7 @@ namespace GalacticScale
                 if (!disabled)
                     t.GetMethod("Write", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { s, c });
                 else
-                    GS2.Log(s);
+                    GS3.Log(s);
             }
 
             public static void WriteLine(string s, ConsoleColor c)

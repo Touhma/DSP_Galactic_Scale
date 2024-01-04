@@ -45,7 +45,7 @@ namespace GalacticScale
 
         public FloatPair FloatFloat()
         {
-            // GS2.Warn(val.ToString() + " " + GS2.GetCaller(0)+ GS2.GetCaller(1)+ GS2.GetCaller(2)+ GS2.GetCaller(3)+ GS2.GetCaller(4));
+            // GS3.Warn(val.ToString() + " " + GS3.GetCaller(0)+ GS3.GetCaller(1)+ GS3.GetCaller(2)+ GS3.GetCaller(3)+ GS3.GetCaller(4));
             var v = val.ToString().Split(':');
             if (v.Length < 2) return new FloatPair(-99, -99);
             float.TryParse(v[0], out var i);
@@ -56,7 +56,7 @@ namespace GalacticScale
         public int Int(int def = -1)
         {
             if (int.TryParse(ToString(), out var i)) return i;
-            GS2.Error($"Failed to parse int: {ToString()}");
+            GS3.Error($"Failed to parse int: {ToString()}");
             return def;
         }
 
@@ -65,28 +65,28 @@ namespace GalacticScale
             if (float.TryParse(ToString(), out var f)) return f;
             if (double.TryParse(ToString(), out var d)) return (float)d;
             if (int.TryParse(ToString(), out var i)) return i;
-            GS2.Error("Failed to parse float " + val);
+            GS3.Error("Failed to parse float " + val);
             return def;
         }
 
         public double Double(double def = -1.0)
         {
             if (double.TryParse(ToString(), out var i)) return i;
-            GS2.Error("Failed to parse double");
+            GS3.Error("Failed to parse double");
             return def;
         }
 
         public bool Bool(bool def = false)
         {
             if (bool.TryParse(ToString(), out var i)) return i;
-            GS2.Error("Failed to parse bool");
+            GS3.Error("Failed to parse bool");
             return def;
         }
 
         public GSSliderConfig GSSliderConfig(GSSliderConfig def = new())
         {
             if (val is GSSliderConfig) return (GSSliderConfig)val;
-            GS2.Error("Failed to parse GSSliderConfig");
+            GS3.Error("Failed to parse GSSliderConfig");
             return def;
         }
 

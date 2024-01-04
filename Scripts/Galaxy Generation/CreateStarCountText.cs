@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public partial class PatchOnUIGalaxySelect
+    public static partial class Utils
     {
         public static GameObject CreateStarCountText(Slider slider)
         {

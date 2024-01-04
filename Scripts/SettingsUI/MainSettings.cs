@@ -2,11 +2,11 @@
 using System.IO;
 using GSSerializer;
 using UnityEngine;
-using static GalacticScale.GS2;
+using static GalacticScale.GS3;
 
 namespace GalacticScale
 {
-    public class GS2MainSettings : iConfigurableGenerator
+    public class GS3MainSettings : iConfigurableGenerator
 
     {
         private static GSUI _generatorsCombobox;
@@ -43,7 +43,7 @@ namespace GalacticScale
         }
 
         public bool FixCopyPaste => true; //Preferences.GetBool("Fix CopyPaste", true);
-        public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
+        public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.gs3");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
 
         public Dictionary<int, bool> VeinTips
@@ -85,40 +85,40 @@ namespace GalacticScale
         {
             Preferences.Set("Generator ID", ActiveGenerator.GUID);
             Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
-            // foreach (var x in Preferences) GS2.Log($"Key:{x.Key} Value:{x.Value}");
+            // foreach (var x in Preferences) GS3.Log($"Key:{x.Key} Value:{x.Value}");
             return Preferences;
         }
 
         public void Generate(int starCount, StarData birthStar = null)
         {
-            _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
+            _generatorNames = GS3.Generators.ConvertAll(iGen => iGen.Name);
             _generatorsCombobox?.SetItems(_generatorNames);
         }
 
         public void Import(GSGenPreferences preferences)
         {
-            // GS2.Log("*");
+            // GS3.Log("*");
             Preferences = preferences;
-            // GS2.Log("*");
+            // GS3.Log("*");
 
-            var id = Preferences.GetString("Generator ID", "space.customizing.generators.gs2DevActual");
-            // GS2.Log($"* { id}");
+            var id = Preferences.GetString("Generator ID", "space.customizing.generators.gs3");
+            // GS3.Log($"* { id}");
 
             ActiveGenerator = GetGeneratorByID(id);
-            // GS2.Log($"* {ActiveGenerator.Name}");
+            // GS3.Log($"* {ActiveGenerator.Name}");
             // LogJson(_generatorNames);
             Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
-            // GS2.Log($"* {_generatorNames.IndexOf(ActiveGenerator.Name)}");
+            // GS3.Log($"* {_generatorNames.IndexOf(ActiveGenerator.Name)}");
 
             if (!filenames.Contains(Preferences.GetString("Import Filename", null))) Preferences.Set("Import Filename", filenames[0]);
-            // GS2.Log("*");
+            // GS3.Log("*");
         }
 
         public void Init()
         {
-            GS2.Warn("!");
-            _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
-            // GS2.LogJson(_generatorNames, true);
+            GS3.Warn("!");
+            _generatorNames = GS3.Generators.ConvertAll(iGen => iGen.Name);
+            // GS3.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback, "Try them all!".Translate()));
             RefreshFileNames();
 
@@ -152,7 +152,7 @@ namespace GalacticScale
             Options.Add(GSUI.Spacer());
 
             var DebugOptions = new GSOptions();
-            // DebugOptions.Add(GSUI.Button("Debug", "Go", (o) => { GS2.Warn(GameMain.localPlanet.runtimePosition + " " + GameMain.localStar.uPosition); }, null, null));
+            // DebugOptions.Add(GSUI.Button("Debug", "Go", (o) => { GS3.Warn(GameMain.localPlanet.runtimePosition + " " + GameMain.localStar.uPosition); }, null, null));
             DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
             DebugOptions.Add(GSUI.Checkbox("New Gravity Mechanics".Translate(), false, "New Gravity", null, "Large planets attract a lot more. Can cause issues with large planets".Translate()));
@@ -168,20 +168,20 @@ namespace GalacticScale
 
             DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", o =>
             {
-                // GS2.WarnJson(gameDesc);
+                // GS3.WarnJson(gameDesc);
                 gameDesc.resourceMultiplier = 100;
                 GSSettings.GalaxyParams.resourceMulti = 100;
-                //GS2.WarnJson(gameDesc.resourceMultiplier);
+                //GS3.WarnJson(gameDesc.resourceMultiplier);
             }, null, "Will need to be saved and loaded to apply".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Revert Scarlet Ice Lake".Translate(), false, "RevertScarlet", null, "2.2.0.23 Had a bug where Ice Lake had no terrain. Enable this to fix issues with saves started prior to .24".Translate()));
             // DebugOptions.Add(GSUI.Button("Test", "Now", (o) =>
             // {
             //     Warn("ExternalThemes:");
-            //     GS2.WarnJson(externalThemes.Select(p=>p.Key).ToList());
-            //     Warn("GS2.ThemeLibrary:");
-            //     GS2.WarnJson(GS2.ThemeLibrary.Select(p=>p.Key).ToList());
+            //     GS3.WarnJson(externalThemes.Select(p=>p.Key).ToList());
+            //     Warn("GS3.ThemeLibrary:");
+            //     GS3.WarnJson(GS3.ThemeLibrary.Select(p=>p.Key).ToList());
             //     Warn("GSSettings.ThemeLibrary:");
-            //     GS2.WarnJson(GSSettings.ThemeLibrary.Select(p=>p.Key).ToList());
+            //     GS3.WarnJson(GSSettings.ThemeLibrary.Select(p=>p.Key).ToList());
             // }));
             DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Button("Reset Logistic Bot Speed".Translate(), "Reset",
@@ -256,7 +256,7 @@ namespace GalacticScale
 
         public void ResetBinaryStars(Val o)
         {
-            var random = new GS2.Random(GSSettings.Seed);
+            var random = new GS3.Random(GSSettings.Seed);
             foreach (var star in GSSettings.Stars)
                 if (star.BinaryCompanion != null)
                 {
@@ -270,7 +270,7 @@ namespace GalacticScale
                     var offset = star.genData.Get("binaryOffset", (star.RadiusLY * 2 + binary.RadiusLY * 2) * Preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f));
                     binary.position = new VectorLF3(offset, 0, 0);
                     Log($"Moving Companion Star {star.BinaryCompanion} who has offset {binary.position}");
-                    // GS2.Warn("Setting Binary Star Position");
+                    // GS3.Warn("Setting Binary Star Position");
                     galaxy.stars[binary.assignedIndex].position = binary.position = star.position + binary.position;
                     galaxy.stars[binary.assignedIndex].uPosition = galaxy.stars[binary.assignedIndex].position * 2400000.0;
                     Log($"Host ({star.Name})Position:{star.position} . Companion ({binary.Name}) Position {binary.position}");
@@ -290,7 +290,7 @@ namespace GalacticScale
 
         public void SetExternalTheme(string folder, string name, bool value)
         {
-            // GS2.Warn($"Setting External Theme:{folder}|{name} to {value}");
+            // GS3.Warn($"Setting External Theme:{folder}|{name} to {value}");
             var ExternalThemesList = Preferences.GetStringList("External Themes", new List<string>());
             var key = $"{folder}|{name}";
             if (ExternalThemesList.Contains(key))
@@ -300,7 +300,7 @@ namespace GalacticScale
             else
             {
                 if (value)
-                    // GS2.Warn("*****Adding ExternalTheme*******" + key);
+                    // GS3.Warn("*****Adding ExternalTheme*******" + key);
                     ExternalThemesList.Add(key);
             }
 
@@ -313,8 +313,8 @@ namespace GalacticScale
             {
                 GSUI.Button("Export All Themes".Translate(), "Export".Translate(), ExportAllThemes)
             };
-            // GS2.Warn("ExternalThemeNames");
-            // GS2.WarnJson(ExternalThemeNames);
+            // GS3.Warn("ExternalThemeNames");
+            // GS3.WarnJson(ExternalThemeNames);
             foreach (var themelibrary in availableExternalThemes)
             {
                 var Folder = themelibrary.Key;
@@ -324,22 +324,22 @@ namespace GalacticScale
                     foreach (var theme in Library)
                     {
                         var key = $"{Folder}|{theme.Key}";
-                        // GS2.Warn("Checking Key");
+                        // GS3.Warn("Checking Key");
                         var def = false;
                         if (ExternalThemeNames.Contains(key)) def = true;
                         else Log($"Doesnt Contain {key}");
-                        // GS2.Log($"Setting {key} to {def}");
+                        // GS3.Log($"Setting {key} to {def}");
                         GSOptionCallback callback = o =>
                         {
-                            // GS2.Log(key + " " + o); 
+                            // GS3.Log(key + " " + o); 
                             SetExternalTheme(Folder, theme.Key, o);
                         };
                         GSUI checkbox = null;
                         GSOptionPostfix postfix = () =>
                         {
-                            // GS2.Log($"Executing Postfix for {key}");
+                            // GS3.Log($"Executing Postfix for {key}");
                             ThemeCheckboxes[key].RectTransform.GetComponent<GSUIToggle>().Value = def;
-                            // GS2.Log($"Now the value is {ThemeCheckboxes[key]?.RectTransform.GetComponent<GSUIToggle>().Value}");
+                            // GS3.Log($"Now the value is {ThemeCheckboxes[key]?.RectTransform.GetComponent<GSUIToggle>().Value}");
                         };
                         checkbox = GSUI.Checkbox(theme.Key.Translate(), def, callback, postfix);
                         if (!ThemeCheckboxes.ContainsKey(key)) ThemeCheckboxes.Add(key, checkbox);
@@ -356,13 +356,13 @@ namespace GalacticScale
                         if (ExternalThemeNames.Contains(key)) def = true;
                         GSOptionPostfix postfix = () =>
                         {
-                            // GS2.Log($"Executing Postfix for {key}");
+                            // GS3.Log($"Executing Postfix for {key}");
                             ThemeCheckboxes[key].RectTransform.GetComponent<GSUIToggle>().Value = def;
-                            // GS2.Log($"Now the value is {ThemeCheckboxes[key]?.RectTransform.GetComponent<GSUIToggle>().Value}");
+                            // GS3.Log($"Now the value is {ThemeCheckboxes[key]?.RectTransform.GetComponent<GSUIToggle>().Value}");
                         };
                         var checkbox = GSUI.Checkbox("  " + theme.Key, def, o =>
                         {
-                            // GS2.Log(Folder + "|" + theme.Key + " " + o);
+                            // GS3.Log(Folder + "|" + theme.Key + " " + o);
                             SetExternalTheme(Folder, theme.Key, o);
                         }, postfix);
                         if (!ThemeCheckboxes.ContainsKey(key)) ThemeCheckboxes.Add(key, checkbox);
@@ -413,13 +413,13 @@ namespace GalacticScale
             // if (GameMain.isPaused && result == 0)
             // {
             //     UIMessageBox.Show("Note".Translate(), "You cannot change the generator to vanilla while in game.".Translate(), "Of course not!".Translate(), 2);
-            //     var genIndex = GS2.Generators.IndexOf(ActiveGenerator);
+            //     var genIndex = GS3.Generators.IndexOf(ActiveGenerator);
             //     SettingsUI.GeneratorIndex = (int)result;
             //
             //     return;
             // }
 
-            ActiveGenerator = GS2.Generators[(int)result];
+            ActiveGenerator = GS3.Generators[(int)result];
             GSEvents.GeneratorChange(ActiveGenerator);
             UpdateNebulaSettings();
 
@@ -427,16 +427,16 @@ namespace GalacticScale
             // Warn("Active Generator = " + ActiveGenerator.Name);
             foreach (var canvas in SettingsUI.GeneratorCanvases)
                 canvas.gameObject.SetActive(false);
-            // GS2.Warn("They have been set inactive");
+            // GS3.Warn("They have been set inactive");
             //Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set " + (int)result);
             SettingsUI.GeneratorCanvases[(int)result].gameObject.SetActive(true);
-            // GS2.Warn("Correct one set active");
+            // GS3.Warn("Correct one set active");
             SettingsUI.GeneratorIndex = (int)result;
-            // GS2.Warn("Gen Index Set");
+            // GS3.Warn("Gen Index Set");
             //SettingsUI.UpdateContentRect();
-            // GS2.Warn("Updated ContentRect");
+            // GS3.Warn("Updated ContentRect");
             // SavePreferences();
-            // GS2.Warn("Preferences Saved");
+            // GS3.Warn("Preferences Saved");
         }
 
         private void ExportJsonGalaxy(Val o)
@@ -466,8 +466,8 @@ namespace GalacticScale
 
         public void SetExternalThemes(ExternalThemeSelector e)
         {
-            // GS2.Warn("Setting External Themes");
-            // GS2.WarnJson(e.Get());
+            // GS3.Warn("Setting External Themes");
+            // GS3.WarnJson(e.Get());
             // var themeNames = e.Get();
             // Preferences.Set("External Themes", themeNames);
         }
@@ -495,30 +495,30 @@ namespace GalacticScale
             LoadSettingsFromJson(path);
             Log("Generator:Json|Generate|End");
             GSSettings.Instance.imported = true;
-            // GS2.gameDesc.playerProto = 2;
+            // GS3.gameDesc.playerProto = 2;
             //WarnJson(GSSettings.Instance.galaxyParams);
             //WarnJson(GSSettings.StarCount);
             gsStars.Clear();
             gsPlanets.Clear();
             //Warn(GSSettings.StarCount.ToString());
 
-            // GS2.galaxy = new GalaxyData();
+            // GS3.galaxy = new GalaxyData();
             var gameDesc = new GameDesc();
             gameDesc.SetForNewGame(UniverseGen.algoVersion, 1, 1, 1, 1f);
-            if (GS2.Config.SkipPrologue) DSPGame.StartGameSkipPrologue(gameDesc);
+            if (GS3.Config.SkipPrologue) DSPGame.StartGameSkipPrologue(gameDesc);
             else DSPGame.StartGame(gameDesc);
-            // UniverseGen.CreateGalaxy(GS2.gameDesc);
+            // UniverseGen.CreateGalaxy(GS3.gameDesc);
         }
 
         public void RefreshFileNames()
         {
-            //GS2.Log("Refreshing Filenames");
+            //GS3.Log("Refreshing Filenames");
             var customGalaxiesPath = Path.Combine(DataDir, "CustomGalaxies");
             if (!Directory.Exists(customGalaxiesPath)) Directory.CreateDirectory(customGalaxiesPath);
 
             filenames = new List<string>(Directory.GetFiles(customGalaxiesPath, "*.json")).ConvertAll(Path.GetFileNameWithoutExtension);
             if (filenames.Count == 0)
-                filenames.Add("No Files Found"); //foreach (string n in filenames) GS2.Log("File:" + n);
+                filenames.Add("No Files Found"); //foreach (string n in filenames) GS3.Log("File:" + n);
             if (JsonGalaxies != null) JsonGalaxies.RectTransform.GetComponentInChildren<GSUIDropdown>().Items = filenames;
         }
 

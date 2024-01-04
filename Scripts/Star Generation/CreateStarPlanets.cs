@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static void CreateStarPlanets(ref StarData star, GameDesc gameDesc, Random random)
         {

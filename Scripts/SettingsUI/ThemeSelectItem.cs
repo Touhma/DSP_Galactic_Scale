@@ -27,7 +27,7 @@ namespace GalacticScale
         // public void Click()
         // {
         //     if (!themeSelector.masterToggle.isOn && toggle.isOn) themeSelector.masterToggle.isOn = true;
-        //     GS2.Config.SetExternalThemes(themeSelector);
+        //     GS3.Config.SetExternalThemes(themeSelector);
         // }
     }
 }

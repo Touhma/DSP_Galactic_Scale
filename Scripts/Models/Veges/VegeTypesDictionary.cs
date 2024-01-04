@@ -31,10 +31,10 @@ namespace GalacticScale
 
         public static int Find(string s)
         {
-            if (s == null) GS2.Warn("Vege code null");
+            if (s == null) GS3.Warn("Vege code null");
             if (Instance.ContainsKey(s)) return Instance[s];
 
-            GS2.Warn("Vege ID for " + s + " not found");
+            GS3.Warn("Vege ID for " + s + " not found");
             return 9999;
         }
 

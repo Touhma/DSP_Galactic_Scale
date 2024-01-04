@@ -5,27 +5,27 @@ namespace GalacticScale
 {
     public static partial class TerrainAlgorithms
     {
-        private static GS2.Random random;
+        private static GS3.Random random;
 
         public static void GenerateTerrain5(GSPlanet gsPlanet, double modX = 0.0, double modY = 0.0)
         {
             if (gsPlanet == null)
             {
-                GS2.Warn("gsPlanet Null");
+                GS3.Warn("gsPlanet Null");
                 return;
             }
 
-            random = new GS2.Random(gsPlanet.Seed);
-            // GS2.Log($"USING GSTA5 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            random = new GS3.Random(gsPlanet.Seed);
+            // GS3.Log($"USING GSTA5 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
-            // GS2.Log("Generate 2 Terrain ");
+            // GS3.Log("Generate 2 Terrain ");
             var seed = random.Next();
             var seed2 = random.Next();
             var simplexNoise = new SimplexNoise(seed);
             var simplexNoise2 = new SimplexNoise(seed2);
             if (gsPlanet.planetData == null)
             {
-                // GS2.Warn("gsPlanet.planetData Null");
+                // GS3.Warn("gsPlanet.planetData Null");
                 return;
             }
 

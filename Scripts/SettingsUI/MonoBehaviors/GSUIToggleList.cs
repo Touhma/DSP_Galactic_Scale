@@ -13,13 +13,13 @@ namespace GalacticScale
         {
             get => toggle.isOn;
             set =>
-                // GS2.Warn($"Setting Value for {Label} to {value}"); 
+                // GS3.Warn($"Setting Value for {Label} to {value}"); 
                 toggle.isOn = value;
         }
 
         public void _OnToggleChange(bool value)
         {
-            // GS2.Log(value.ToString());
+            // GS3.Log(value.ToString());
             Value = value;
             OnChange?.Invoke(value);
         }

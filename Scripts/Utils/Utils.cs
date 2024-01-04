@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,14 +7,110 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using GSSerializer;
 using UnityEngine;
-using static GalacticScale.GS2;
+using static GalacticScale.GS3;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
 namespace GalacticScale
 {
-    public static class Utils
+    public static partial class Utils
     {
+        public static Delayer delayer;
+        
+        public class Delayer : MonoBehaviour
+        {
+            public bool active;
+            public bool mouseDown;
+
+            public void Update()
+            {
+                mouseDown = Input.GetMouseButton(0);
+            }
+
+            public void Wait()
+            {
+                if (!active)
+                {
+                    active = true;
+                    StartCoroutine(WaitAWhile());
+                    StartCoroutine(WaitUntilMouseUp());
+                }
+            }
+
+            public IEnumerator WaitAWhile()
+            {
+                yield return new WaitForSecondsRealtime(1f);
+                if (active)
+                {
+                    UIRoot.instance.galaxySelect.SetStarmapGalaxy();
+                    active = false;
+                }
+            }
+
+            public IEnumerator WaitUntilMouseUp()
+            {
+                yield return new WaitUntil(() => !mouseDown);
+                if (active)
+                {
+                    UIRoot.instance.galaxySelect.SetStarmapGalaxy();
+                    active = false;
+                }
+            }
+        }
+        private static readonly Dictionary<PlanetRawData, float> FactoredRadius = new();
+        public static float GetScaleFactored(this PlanetData planet)
+        {
+            if (planet == null)
+            {
+                GS3.Error("Trying to get factored scale while planet is null");
+                return 1f;
+            }
+
+            if (planet.type == EPlanetType.Gas) return planet.radius / 80;
+
+            return planet.radius / 200;
+        }
+        public static void AddFactoredRadius(this PlanetRawData planetRawData, PlanetData planet)
+        {
+            //GS3.Log("PlanetRawDataExtension|AddFactoredRadius|" + planet.name + " planetRawData:" + ((planetRawData != null)?"PlanetRawData Exists":"PlanetRawData Null"));
+            if (planet == null)
+            {
+                GS3.Warn("planet Null");
+                return;
+            }
+
+            if (planetRawData == null)
+            {
+                if (!UIRoot.instance.backToMainMenu) GS3.Warn($"RawData Null for planet {planet.name} of radius {planet.radius}");
+                return;
+            }
+
+            var scaleFactored = planet.GetScaleFactored();
+            //GS3.Log($"Trying to add to dict:{scaleFactored}");
+            try
+            {
+                FactoredRadius[planetRawData] = scaleFactored;
+            }
+            catch (Exception e)
+            {
+                GS3.Error(e.Message);
+            }
+        }
+
+        public static float GetFactoredScale(this PlanetRawData planetRawData)
+        {
+            //GS3.Warn($"Trying to get factored scale. {FactoredRadius.TryGetValue(planetRawData, out var result)}");
+            return FactoredRadius.TryGetValue(planetRawData, out var result) ? result : 1f; //return FactoredRadius.TryGetValue(planetRawData, out var result) ? result : 1f;
+        }
+
+        public static int GetModPlaneInt(this PlanetRawData planetRawData, int index)
+        {
+            float baseHeight = 20;
+
+            baseHeight += planetRawData.GetFactoredScale() * 20000;
+
+            return (int)(((planetRawData.modData[index >> 1] >> (((index & 1) << 2) + 2)) & 3) * 133 + baseHeight);
+        }
         private static Vector3[][] originalMk2MinerEffectVertices;
 
         public static Dictionary<PlanetData, PlanetFactory> PlanetFactories = new();
@@ -30,6 +127,11 @@ namespace GalacticScale
             return PlanetFactories.ContainsKey(planet) ? PlanetFactories[planet] : null;
         }
 
+        public static float GetPlanetSizeRatio2()
+        {
+            return GameMain.localPlanet.realRadius / 100f;
+        }
+        
         public static float getPlanetSize(float mod = 0)
         {
             var planet = GameMain.localPlanet;
@@ -41,7 +143,7 @@ namespace GalacticScale
             var serializer = new fsSerializer();
             serializer.TrySerialize(value, out var data);
             if (!pretty)
-                // GS2.Warn(fsJsonPrinter.CompressedJson(data));
+                // GS3.Warn(fsJsonPrinter.CompressedJson(data));
                 return fsJsonPrinter.CompressedJson(data);
 
             return fsJsonPrinter.PrettyJson(data);
@@ -49,14 +151,20 @@ namespace GalacticScale
 
         public static T FixRadius<T>(T t)
         {
+            var negative = false;
             var num = GameMain.localPlanet?.realRadius ?? 200f;
             float orig = Convert.ToSingle(t);
-            if (num == orig || num > 226f || num < 196f) return (T)Convert.ChangeType(num, typeof(T));
+            if (num < 0)
+            {
+                negative = true;
+                num *= -1;
+            }
             var diff = orig - 200f;
             num += diff;
+            if (negative) num *= -1;
             if (VFInput.alt)
-                GS2.Log(
-                    $"GetRadius Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{orig} returning {num}");
+                GS3.Log(
+                    $"GetRadius Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{orig} returning {num}");
             return (T)Convert.ChangeType(num, typeof(T));
         }
 
@@ -88,9 +196,9 @@ namespace GalacticScale
 
             var t = Resources.Load<T>(path);
             if (t == null)
-                //GS2.Log("Resource returned null, exiting");
+                //GS3.Log("Resource returned null, exiting");
                 return null;
-            //GS2.Log("Resource loaded");
+            //GS3.Log("Resource loaded");
             var num = 0;
             if (t != null)
             {
@@ -130,9 +238,9 @@ namespace GalacticScale
             return false;
         }
 
-        public static Vector3 RandomDirection(GS2.Random random)
+        public static Vector3 RandomDirection(GS3.Random random)
         {
-            //random = new GS2.Random(GSSettings.Seed);
+            //random = new GS3.Random(GSSettings.Seed);
             var randomVector = Vector3.zero;
             randomVector.x =
                 (float)random.NextDouble() * 2f - 1f; //Tiny Vector3 made up of Random numbers between -0.5 and 0.5
@@ -151,20 +259,20 @@ namespace GalacticScale
                 {
                     localPlanets++;
                     containsLocalPlanet = true;
-                    //GS2.Warn("Contains Local Planet");
+                    //GS3.Warn("Contains Local Planet");
                 }
                 else
                 {
                     otherPlanets++;
                 }
 
-            //GS2.Warn($"Checking Planets while in System {GameMain.localStar.name}. {localPlanets} planets in queue are local, {otherPlanets} planets are from other stars.");
+            //GS3.Warn($"Checking Planets while in System {GameMain.localStar.name}. {localPlanets} planets in queue are local, {otherPlanets} planets are from other stars.");
             return containsLocalPlanet;
         }
 
         public static bool PlanetInStar(PlanetData planet, StarData star)
         {
-            //GS2.Warn($"Checking if {planet.name} is in star {star.name}");
+            //GS3.Warn($"Checking if {planet.name} is in star {star.name}");
             var planetIsLocal = false;
             foreach (var p in star.planets)
                 if (p == planet)
@@ -173,7 +281,7 @@ namespace GalacticScale
                     break;
                 }
 
-            //GS2.Warn($"PlanetIsLocal:{planetIsLocal}");
+            //GS3.Warn($"PlanetIsLocal:{planetIsLocal}");
             return planetIsLocal;
         }
 
@@ -212,7 +320,7 @@ namespace GalacticScale
         public static iConfigurableGenerator GetConfigurableGeneratorInstance(Type t)
         {
             if (Config.GetType() == t) return Config;
-            foreach (var g in GS2.Generators)
+            foreach (var g in GS3.Generators)
                 if (g.GetType() == t)
                 {
                     if (g is iConfigurableGenerator)
@@ -272,7 +380,7 @@ namespace GalacticScale
         public static Cubemap TintCubeMap(Cubemap input, Color color)
         {
             // return input; //Kills performance too much to use!
-            //GS2.Log("Tinting Cubemap");
+            //GS3.Log("Tinting Cubemap");
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
 
@@ -326,8 +434,8 @@ namespace GalacticScale
 
             output.SetPixels(tinted, CubemapFace.NegativeZ);
 
-            //GS2.Log("End");
-            // GS2.Log($"TintCubeMap Took {highStopwatch.duration:F5}s");
+            //GS3.Log("End");
+            // GS3.Log($"TintCubeMap Took {highStopwatch.duration:F5}s");
 
             return output;
         }
@@ -390,7 +498,7 @@ namespace GalacticScale
 
             radius = Mathf.Clamp(radius, 10, 510) / 10;
             radius = Mathf.RoundToInt(radius) * 10;
-            //GS2.Warn(radius.ToString());
+            //GS3.Warn(radius.ToString());
             return (int)radius;
         }
 
@@ -400,7 +508,7 @@ namespace GalacticScale
 
             radius = Mathf.Clamp(radius, 100, 5100) / 100;
             radius = Mathf.RoundToInt(radius) * 100;
-            //GS2.Warn(radius.ToString());
+            //GS3.Warn(radius.ToString());
             return (int)radius;
         }
 
@@ -412,8 +520,8 @@ namespace GalacticScale
             foreach (var planet in gsStar.Planets) output += "\r\n" + GetGSPlanetDetail(planet);
 
             var sa = output.Split(new[] { "\r\n" }, StringSplitOptions.None);
-            // GS2.WarnJson(sa);
-            // GS2.Warn(sa.Length.ToString());
+            // GS3.WarnJson(sa);
+            // GS3.Warn(sa.Length.ToString());
             if (sa.Length > 50)
             {
                 output = "";
@@ -430,22 +538,22 @@ namespace GalacticScale
                 for (var i = 0; i < 50; i++)
                 {
                     var j = i + 50;
-                    // GS2.Warn(i + " " + (j) + " "+sa.Length);
+                    // GS3.Warn(i + " " + (j) + " "+sa.Length);
                     if (sa.Length > j)
                     {
-                        // GS2.Log(i.ToString() + " " + j.ToString());
+                        // GS3.Log(i.ToString() + " " + j.ToString());
                         var a = string.Format("{0,30}", sa[i]);
                         var b = string.Format("{0,-30}", sa[j]);
                         output += $"\r\n{a}  {b}";
                     }
                     else
                     {
-                        // GS2.Warn(i.ToString());
+                        // GS3.Warn(i.ToString());
                         output += $"\r\n{string.Format("{0,30}", sa[i])}";
                     }
                 }
 
-                // GS2.Log(output);
+                // GS3.Log(output);
                 return output;
             }
 
@@ -770,7 +878,7 @@ namespace GalacticScale
                     //GetIndices returns vertex indices of each triangle in the submesh, but triangles can share vertices, so iterate across distinct vertex indices.
                     foreach (var k in mesh.GetIndices(j).Distinct())
                     {
-                        //GS2.Log($"Adjusting submodel {j}: vertex at index: {k} by {adjustVertexY} from {adjustedVertices[k].y} to {adjustedVertices[k].y + adjustVertexY}");
+                        //GS3.Log($"Adjusting submodel {j}: vertex at index: {k} by {adjustVertexY} from {adjustedVertices[k].y} to {adjustedVertices[k].y + adjustVertexY}");
                         adjustedVertices[k].y += adjustVertexY;
                     }
                 }
@@ -853,7 +961,7 @@ namespace GalacticScale
             }
             return relayCount;
         }
-        public static int ClampedNormalSizeTelluric(GS2.Random random, int min, int max, int bias)
+        public static int ClampedNormalSizeTelluric(GS3.Random random, int min, int max, int bias)
         {
             var range = max - min;
             var average = bias / 100f * range + min;
@@ -865,7 +973,7 @@ namespace GalacticScale
             //Warn($"ClampedNormal min:{min} max:{max} bias:{bias} range:{range} average:{average} sdHigh:{sdHigh} sdLow:{sdLow} sd:{sd} fResult:{fResult} result:{result}");
             return result;
         }
-        public static int ClampedNormalSizeGas(GS2.Random random, int min, int max, int bias)
+        public static int ClampedNormalSizeGas(GS3.Random random, int min, int max, int bias)
         {
             var range = max - min;
             var average = bias / 100f * range + min;

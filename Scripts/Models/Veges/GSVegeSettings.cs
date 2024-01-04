@@ -28,12 +28,12 @@ namespace GalacticScale
         public static List<string> FromIDArray(int[] a)
         {
             var l = new List<string>();
-            //GS2.Log("Working here");
+            //GS3.Log("Working here");
             if (a.Length == 0) return l;
 
             for (var i = 0; i < a.Length; i++)
-                //GS2.Log(i + " " + a.Length + " " + a[i]);
-                //GS2.Log(GS2.Utils.ReverseLookup(GS2.VegeTypesDictionary, a[i]));
+                //GS3.Log(i + " " + a.Length + " " + a[i]);
+                //GS3.Log(GS3.Utils.ReverseLookup(GS3.VegeTypesDictionary, a[i]));
                 l.Add(VegeTypesDictionary.Find(a[i]));
             return l;
         }
@@ -42,8 +42,8 @@ namespace GalacticScale
         {
             var a = new int[l.Count];
             if (l.Count == 0) return a;
-            //GS2.LogJson(l);
-            //GS2.Log(l.Count.ToString());
+            //GS3.LogJson(l);
+            //GS3.Log(l.Count.ToString());
             for (var i = 0; i < l.Count; i++) a[i] = VegeTypesDictionary.Find(l[i]);
 
             return a;

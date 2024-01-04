@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static GalacticScale.GS2;
+using static GalacticScale.GS3;
 
 
 namespace GalacticScale
@@ -89,7 +89,7 @@ namespace GalacticScale
                     }
                 }
 
-                //GS2.Log($"localPlanet:{localPlanet?.name} closestPlanet:{closestPlanet?.name}");
+                //GS3.Log($"localPlanet:{localPlanet?.name} closestPlanet:{closestPlanet?.name}");
                 return false;
             }
 
@@ -148,7 +148,7 @@ namespace GalacticScale
             {
                 resetCamera = true;
                 LogStatus($"Arriving at Star {closestStar.name}");
-                if (GS2.Config.DebugMode) Utils.LogDFInfo(closestStar);
+                if (GS3.Config.DebugMode) Utils.LogDFInfo(closestStar);
                 GameMain.data.ArriveStar(closestStar);
             }
 
@@ -159,7 +159,7 @@ namespace GalacticScale
         {
             if (closestStar.loaded) LogStatus($"Ensure {closestStar.name} still local...");
             if (!(DistanceTo(closestStar) > TransitionDistance(closestStar))) return;
-            // GS2.Log(
+            // GS3.Log(
             //     $"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransisionDistance(closestStar) / 40000}AU");
             GameMain.data.LeaveStar();
             closestStar = null;
@@ -167,7 +167,7 @@ namespace GalacticScale
 
         private static void EnsurePlanetStillLocal()
         {
-            // GS2.Log($"{DistanceTo(closestPlanet)} > {TransisionDistance(closestPlanet)}?");
+            // GS3.Log($"{DistanceTo(closestPlanet)} > {TransisionDistance(closestPlanet)}?");
             if (!(DistanceTo(closestPlanet) > TransitionDistance(closestPlanet))) return;
 
             closestPlanet = null;
@@ -180,7 +180,7 @@ namespace GalacticScale
                 var planet = closestStar.planets[i];
                 if (DistanceTo(planet) < TransitionDistance(planet))
                 {
-                    // GS2.Log($"Switching to {planet.name}");
+                    // GS3.Log($"Switching to {planet.name}");
                     closestPlanet = planet;
                     break;
                 }
@@ -210,7 +210,7 @@ namespace GalacticScale
 
         public static double DistanceTo(PlanetData planet)
         {
-            // GS2.Log((GameMain.mainPlayer.uPosition - planet.uPosition).magnitude.ToString());
+            // GS3.Log((GameMain.mainPlayer.uPosition - planet.uPosition).magnitude.ToString());
             return (GameMain.mainPlayer.uPosition - planet.uPosition).magnitude - planet.realRadius;
         }
 
@@ -238,7 +238,7 @@ namespace GalacticScale
         //     // var distanceBetweenSurfaces = distanceBetweenMoonAndHost - host.realRadius - moon.planetData.realRadius;
         //     var calcDistanceForMoon = distanceBetweenMoonAndHost / 2 - 100f;
         //     if (calcDistanceForMoon < currentDistance)
-        //         //GS2.Log($"1 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
+        //         //GS3.Log($"1 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
         //         TransitionRadii[moon.planetData] = calcDistanceForMoon;
         //     if (gsHost.MoonCount > 1)
         //     {
@@ -251,7 +251,7 @@ namespace GalacticScale
         //             var differenceBetweenPreviousMoon = moon.OrbitRadius - prvMoonSystemOrbit;
         //             calcDistanceForMoon = differenceBetweenPreviousMoon / 2 - 100f;
         //             if (calcDistanceForMoon < currentDistance)
-        //                 //GS2.Log($"2 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
+        //                 //GS3.Log($"2 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
         //                 TransitionRadii[moon.planetData] = calcDistanceForMoon;
         //         }
         //
@@ -263,7 +263,7 @@ namespace GalacticScale
         //             var differenceBetweenNextMoon = nextMoonSystemOrbit - moon.OrbitRadius;
         //             calcDistanceForMoon = differenceBetweenNextMoon / 2 - 100f;
         //             if (calcDistanceForMoon < currentDistance)
-        //                 GS2.Log($"3 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
+        //                 GS3.Log($"3 Adjusting TransitionDistance of {moon.Name} to {calcDistanceForMoon}");
         //                 // TransitionRadii[moon.planetData] = calcDistanceForMoon;
         //         }
         //     }

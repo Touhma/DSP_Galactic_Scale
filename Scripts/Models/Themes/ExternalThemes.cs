@@ -1,6 +1,6 @@
 ﻿namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static ThemeLibrary externalThemes = new();
 
@@ -21,7 +21,7 @@
                     {
                         externalThemes.Add(item, availableExternalThemes[group][item]);
                         Log($"Added {name}");
-                        // GS2.WarnJson(externalThemes.Select(o=>o.Key).ToList());
+                        // GS3.WarnJson(externalThemes.Select(o=>o.Key).ToList());
                     }
                     else
                     {
@@ -29,22 +29,22 @@
                     }
                     // if (group == "Root")
                     // {
-                    //     if (!GS2.availableExternalThemes.ContainsKey("Root"))
+                    //     if (!GS3.availableExternalThemes.ContainsKey("Root"))
                     //     {
-                    //         GS2.Log("No loose themes loaded!");
+                    //         GS3.Log("No loose themes loaded!");
                     //         continue;
                     //     }
-                    //     ThemeLibrary tl = GS2.availableExternalThemes["Root"];
-                    //     if (tl.ContainsKey(item)) GS2.externalThemes.Add(item, tl[item]);
+                    //     ThemeLibrary tl = GS3.availableExternalThemes["Root"];
+                    //     if (tl.ContainsKey(item)) GS3.externalThemes.Add(item, tl[item]);
                     // }
-                    // else if (GS2.availableExternalThemes.ContainsKey(group))
+                    // else if (GS3.availableExternalThemes.ContainsKey(group))
                     // {
-                    //     GS2.externalThemes.AddRange(GS2.availableExternalThemes[group]);
+                    //     GS3.externalThemes.AddRange(GS3.availableExternalThemes[group]);
                     // }
                 }
-                // GS2.Warn("External Themes:");
-                // GS2.LogJson(GS2.externalThemes.Keys.ToList());
-                // GS2.Warn("End External Themes");
+                // GS3.Warn("External Themes:");
+                // GS3.LogJson(GS3.externalThemes.Keys.ToList());
+                // GS3.Warn("End External Themes");
             }
         }
     }

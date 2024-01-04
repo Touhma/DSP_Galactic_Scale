@@ -36,10 +36,10 @@ namespace GalacticScale
 
         public void FromTheme(GSTheme theme)
         {
-            //GS2.Log("Start " + (theme.ambientDesc == null));
+            //GS3.Log("Start " + (theme.ambientDesc == null));
             if (theme.ambientDesc == null)
             {
-                GS2.Warn(theme.Name + " has no AmbientDesc");
+                GS3.Warn(theme.Name + " has no AmbientDesc");
                 return;
             }
 
@@ -64,58 +64,58 @@ namespace GalacticScale
             LutContribution = theme.ambientDesc.lutContribution;
             ReflectionMap = theme.ambientDesc.reflectionMap;
             LutTexture = theme.ambientDesc.lutTexture;
-            //GS2.Log(".....");
+            //GS3.Log(".....");
             if (ReflectionMap?.name?.Split('_')[0] == "def")
                 CubeMap = "Vanilla";
-            //GS2.Log("___");
+            //GS3.Log("___");
             else
                 CubeMap = ReflectionMap?.name;
 
-            //GS2.Log("_");
+            //GS3.Log("_");
         }
 
         public void ToTheme(GSTheme theme)
         {
             // var highStopwatch = new HighStopwatch();highStopwatch.Begin();
 
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             // This should already been defaulted by the base theme if that exists
             if (CubeMap == "Vanilla" || CubeMap == null)
             {
-                //GS2.Log("Vanilla");
+                //GS3.Log("Vanilla");
                 //do nothing
             } //////////// FIX RARE SPAWNING IN THEME
             else
             {
-                // GS2.Log(CubeMap);
-                // GS2.Log(Reflections.ToString());
+                // GS3.Log(CubeMap);
+                // GS3.Log(Reflections.ToString());
                 //Should move this out of here
-                //AssetBundle bundle = GS2.bundle;
-                //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location), "galacticbundle"));
-                if (CubeMap == "GS2")
+                //AssetBundle bundle = GS3.bundle;
+                //if (bundle == null) bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS3)).Location), "galacticbundle"));
+                if (CubeMap == "GS3")
                 {
-                    var x = GS2.Bundle.LoadAsset<Cubemap>("cube2");
+                    var x = GS3.Bundle.LoadAsset<Cubemap>("cube2");
                     if (Reflections.a != 0)
                         ReflectionMap = Utils.TintCubeMap(x, Reflections);
-                    // GS2.Log("Set Reflection Map to Tinted One");
+                    // GS3.Log("Set Reflection Map to Tinted One");
                     else
                         ReflectionMap = x;
                 }
             }
 
-            //GS2.Log("Processing AmbientDesc for ");
-            //GS2.Log(theme.Name);
+            //GS3.Log("Processing AmbientDesc for ");
+            //GS3.Log(theme.Name);
             //theme.ambientDesc = new AmbientDesc();
-            theme.ambientDesc.ambientColor0 = Color1; //GS2.Log("Processing AmbientDesc1");
-            theme.ambientDesc.ambientColor1 = Color2; //GS2.Log("Processing AmbientDesc2");
-            theme.ambientDesc.ambientColor2 = Color3; //GS2.Log("Processing AmbientDesc3");
-            theme.ambientDesc.waterAmbientColor0 = WaterColor1; //GS2.Log("Processing AmbientDesc4");
-            theme.ambientDesc.waterAmbientColor1 = WaterColor2; //GS2.Log("Processing AmbientDesc5");
-            theme.ambientDesc.waterAmbientColor2 = WaterColor3; //GS2.Log("Processing AmbientDesc6");
-            theme.ambientDesc.biomoColor0 = BiomeColor1; //GS2.Log("Processing AmbientDesc7");
-            theme.ambientDesc.biomoColor1 = BiomeColor2; //GS2.Log("Processing AmbientDesc8");
-            theme.ambientDesc.biomoColor2 = BiomeColor3; //GS2.Log("Processing AmbientDesc9");
-            theme.ambientDesc.biomoDustColor0 = DustColor1; //GS2.Log("Processing AmbientDesc10");
+            theme.ambientDesc.ambientColor0 = Color1; //GS3.Log("Processing AmbientDesc1");
+            theme.ambientDesc.ambientColor1 = Color2; //GS3.Log("Processing AmbientDesc2");
+            theme.ambientDesc.ambientColor2 = Color3; //GS3.Log("Processing AmbientDesc3");
+            theme.ambientDesc.waterAmbientColor0 = WaterColor1; //GS3.Log("Processing AmbientDesc4");
+            theme.ambientDesc.waterAmbientColor1 = WaterColor2; //GS3.Log("Processing AmbientDesc5");
+            theme.ambientDesc.waterAmbientColor2 = WaterColor3; //GS3.Log("Processing AmbientDesc6");
+            theme.ambientDesc.biomoColor0 = BiomeColor1; //GS3.Log("Processing AmbientDesc7");
+            theme.ambientDesc.biomoColor1 = BiomeColor2; //GS3.Log("Processing AmbientDesc8");
+            theme.ambientDesc.biomoColor2 = BiomeColor3; //GS3.Log("Processing AmbientDesc9");
+            theme.ambientDesc.biomoDustColor0 = DustColor1; //GS3.Log("Processing AmbientDesc10");
             theme.ambientDesc.biomoDustColor1 = DustColor2;
             theme.ambientDesc.biomoDustColor2 = DustColor3;
             theme.ambientDesc.biomoDustStrength0 = DustStrength1;
@@ -126,10 +126,10 @@ namespace GalacticScale
             theme.ambientDesc.biomoSound2 = BiomeSound3;
             theme.ambientDesc.lutContribution = LutContribution;
             if (ReflectionMap != null)
-                //GS2.Log("Processing ReflectionMap");
+                //GS3.Log("Processing ReflectionMap");
                 theme.ambientDesc.reflectionMap = ReflectionMap;
             if (LutTexture != null) theme.ambientDesc.lutTexture = LutTexture;
-            // GS2.Log($"Ambient Took {highStopwatch.duration:F5}s");
+            // GS3.Log($"Ambient Took {highStopwatch.duration:F5}s");
         }
 
         public GSAmbientSettings Clone()
@@ -140,7 +140,7 @@ namespace GalacticScale
 
             if (ReflectionMap != null && ReflectionMap.name.Split('_')[0] == "def") a.ReflectionMap = ReflectionMap;
 
-            //GS2.Log("*");
+            //GS3.Log("*");
             if (LutTexture != null) a.LutTexture = LutTexture;
 
             return a;

@@ -1,6 +1,6 @@
 ﻿namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static bool IsPlanetOfStar(GSStar star, GSPlanet planet)
         {

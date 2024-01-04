@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         private static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
         {
@@ -137,9 +137,9 @@ namespace GalacticScale
             {
                 if (ExistingGaps.Count == 0)
                 {
-                    // GS2.Error($"No Existing Gaps! Cycle:{i}/{count} Possible Orbits: {PossibleOrbits.Count} Existing Orbits: {ExistingOrbits.Count} Existing Gaps: {ExistingGaps.Count}");
+                    // GS3.Error($"No Existing Gaps! Cycle:{i}/{count} Possible Orbits: {PossibleOrbits.Count} Existing Orbits: {ExistingOrbits.Count} Existing Gaps: {ExistingGaps.Count}");
                     // LogJson(ExistingOrbits);
-                    // GS2.Warn("Adding Extra Orbit Gap");
+                    // GS3.Warn("Adding Extra Orbit Gap");
                     var oldMaxOrbit = MaxOrbit;
                     MaxOrbit += 5f;
                     ExistingGaps.Add((oldMaxOrbit, MaxOrbit));

@@ -8,24 +8,24 @@ namespace GalacticScale
     {
         public override object CreateInstance(fsData data, Type storageType)
         {
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             var t = new ThemeLibrary();
             return t;
         }
 
         protected override fsResult DoSerialize(ThemeLibrary model, Dictionary<string, fsData> serialized)
         {
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             foreach (var kvp in model)
-                if (!kvp.Value.Base || !GS2.Config.MinifyJson)
+                if (!kvp.Value.Base || !GS3.Config.MinifyJson)
                     SerializeMember(serialized, null, kvp.Key, kvp.Value);
-            //GS2.Log("End");
+            //GS3.Log("End");
             return fsResult.Success;
         }
 
         protected override fsResult DoDeserialize(Dictionary<string, fsData> data, ref ThemeLibrary model)
         {
-            //GS2.Log("Start");
+            //GS3.Log("Start");
             model = ThemeLibrary.Vanilla();
             var result = fsResult.Success;
             foreach (var kvp in data)
@@ -38,7 +38,7 @@ namespace GalacticScale
                     model.Add(kvp.Key, theme);
             }
 
-            //GS2.Log("End");
+            //GS3.Log("End");
             return result;
         }
     }

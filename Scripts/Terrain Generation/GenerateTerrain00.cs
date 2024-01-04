@@ -6,14 +6,14 @@
         {
             if (gsPlanet == null)
             {
-                GS2.Warn("gsPlanet Null");
+                GS3.Warn("gsPlanet Null");
                 return;
             }
 
-            //GS2.Log($"USING GSTA00 FOR {gsPlanet.Name}");
+            //GS3.Log($"USING GSTA00 FOR {gsPlanet.Name}");
             if (gsPlanet.planetData == null)
             {
-                GS2.Warn("gsPlanet.planetData Null");
+                GS3.Warn("gsPlanet.planetData Null");
                 return;
             }
 

@@ -34,21 +34,21 @@ namespace GalacticScale
 
         public void OnInputChange(string value)
         {
-            // GS2.Log(value);
+            // GS3.Log(value);
             Value = value;
             OnChange?.Invoke(value);
         }
 
         public void OnInputEndEdit(string value)
         {
-            // GS2.Log(value);
+            // GS3.Log(value);
             Value = value;
             OnEndEdit?.Invoke(value);
         }
 
         public void initialize(GSUI options)
         {
-            //GS2.Log("Initializing");
+            //GS3.Log("Initializing");
             Label = options.Label;
             Hint = options.Hint;
             // Value = (string)options.Data;

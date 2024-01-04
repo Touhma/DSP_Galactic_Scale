@@ -8,12 +8,12 @@ using UnityEngine.UI;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static string Version;
-        private static readonly string AssemblyPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS2)).Location);
+        private static readonly string AssemblyPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(GS3)).Location);
         private static readonly string OldDataDir = Path.Combine(AssemblyPath, "config");
-        public static readonly string DataDir = Path.Combine(Paths.ConfigPath, "GalacticScale2");
+        public static readonly string DataDir = Path.Combine(Paths.ConfigPath, "GalacticScale3");
         public static bool Failed = false;
         public static string updateMessage = "";
         public static bool ModellingDone = true;
@@ -24,16 +24,13 @@ namespace GalacticScale
         public static bool Initialized = false;
         public static bool MenuHasLoaded;
 
-        //Temp until GS2Cheats workaround
-        public static bool ResearchUnlocked = false;
-
         public static TeleportComponent TP;
         public static InputComponent InputComponent;
 
         public static TerrainAlgorithmLibrary TerrainAlgorithmLibrary = TerrainAlgorithmLibrary.Init();
         public static VeinAlgorithmLibrary VeinAlgorithmLibrary = VeinAlgorithmLibrary.Init();
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
-        public static GS2MainSettings Config = new();
+        public static GS3MainSettings Config = new();
 
         public static GalaxyData galaxy;
 
@@ -47,7 +44,6 @@ namespace GalacticScale
         private static Button.ButtonClickedEvent origLoad;
 
         public static bool IsMenuDemo => DSPGame.IsMenuDemo || !Initialized;
-        public static bool Vanilla => ActiveGenerator.GUID == "space.customizing.generators.vanilla";
 
         public static AssetBundle Bundle
         {
@@ -59,7 +55,7 @@ namespace GalacticScale
                     var path2 = Path.Combine(AssemblyPath, "galactic.bundle");
                     if (File.Exists(path)) bundle = AssetBundle.LoadFromFile(path);
                     else bundle = AssetBundle.LoadFromFile(path2);
-                    // foreach (var name in _bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
+                    // foreach (var name in _bundle.GetAllAssetNames()) GS3.Warn("Bundle Contents:" + name);
                 }
 
                 if (bundle == null)
@@ -79,26 +75,26 @@ namespace GalacticScale
             var loadButton = GameObject.Find("UI Root/Overlay Canvas/Main Menu/multiplayer-menu/button-new/");
             if (hostButton != null)
             {
-                if (ActiveGenerator.GUID == "space.customizing.generators.vanilla")
-                {
-                    var button = hostButton.GetComponent<Button>();
-                    var button2 = loadButton.GetComponent<Button>();
-                    // button.enabled = false;
-                    origHost = button.onClick;
-                    origLoad = button2.onClick;
-                    button.onClick = new Button.ButtonClickedEvent();
-                    button2.onClick = new Button.ButtonClickedEvent();
-                    button.onClick.AddListener(() => ShowMessage("Cannot Host a GS2 Game using Vanilla Generator", "Warning", "OK".Translate()));
-                    button2.onClick.AddListener(() => ShowMessage("Cannot Host a GS2 Game using Vanilla Generator", "Warning", "OK".Translate()));
-                }
-                else
-                {
+                // if (ActiveGenerator.GUID == "space.customizing.generators.vanilla")
+                // {
+                //     var button = hostButton.GetComponent<Button>();
+                //     var button2 = loadButton.GetComponent<Button>();
+                //     // button.enabled = false;
+                //     origHost = button.onClick;
+                //     origLoad = button2.onClick;
+                //     button.onClick = new Button.ButtonClickedEvent();
+                //     button2.onClick = new Button.ButtonClickedEvent();
+                //     button.onClick.AddListener(() => ShowMessage("Cannot Host a GS3 Game using Vanilla Generator", "Warning", "OK".Translate()));
+                //     button2.onClick.AddListener(() => ShowMessage("Cannot Host a GS3 Game using Vanilla Generator", "Warning", "OK".Translate()));
+                // }
+                // else
+                // {
                     var button = hostButton.GetComponent<Button>();
                     var button2 = loadButton.GetComponent<Button>();
                     // button.enabled =  true;
                     if (origHost != null) button.onClick = origHost;
                     if (origLoad != null) button2.onClick = origLoad;
-                }
+                // }
             }
         }
 
@@ -111,10 +107,9 @@ namespace GalacticScale
             // Warn($"Vanilla Theme Count: {LDB._themes.dataArray.Length.ToString()}");
             if (File.Exists(Path.Combine(AssemblyPath, "icon.png")))
             {
-                if (ActiveGenerator != null && ActiveGenerator.GUID == "space.customizing.generators.vanilla") updateMessage += "BACKUP YOUR SAVES. This version has potentially BREAKING CHANGES.\r\nNote: Settings for this mod are in the settings menu. Make sure to change the Generator to get the full Galactic Scale experience.\r\n".Translate();
-                updateMessage += "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease Click GS2 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
+                // if (ActiveGenerator != null && ActiveGenerator.GUID == "space.customizing.generators.vanilla") updateMessage += "BACKUP YOUR SAVES. This version has potentially BREAKING CHANGES.\r\nNote: Settings for this mod are in the settings menu. Make sure to change the Generator to get the full Galactic Scale experience.\r\n".Translate();
+                updateMessage += "Update Detected. Please do not save over existing saves \r\nuntil you are sure you can load saves saved with this version!\r\nPlease Click GS3 Help and click the link to join our community on discord for preview builds and to help shape the mod going forward".Translate();
                 File.Delete(Path.Combine(AssemblyPath, "icon.png"));
-                updateMessage += "The latest DSP update has added additional planet themes which are yet to be included in GS2. \r\nI'm working on getting them added to the GS2 themeset, as well as implementing their new subtheme system".Translate();
             }
 
             // Warn("Step2");
@@ -122,7 +117,7 @@ namespace GalacticScale
             {
                 Warn($"Moving Configs from {OldDataDir} to {DataDir}");
                 Directory.Move(OldDataDir, DataDir);
-                updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
+                updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale3 \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
 
             // Warn("Step3");

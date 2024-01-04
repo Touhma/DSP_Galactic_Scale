@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         public static void ConsoleSplash()
         {

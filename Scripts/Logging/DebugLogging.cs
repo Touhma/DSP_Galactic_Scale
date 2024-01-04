@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public static partial class GS2
+    public static partial class GS3
     {
         private static bool DebugOn => Config?.DebugMode ?? false;
 

@@ -4,7 +4,7 @@
     {
         public NullAlgorithm()
         {
-            GS2.Log("GS2PlanetAlgorithm|Constructor|CREATING NULL ALGORITHM");
+            GS3.Log("GS3PlanetAlgorithm|Constructor|CREATING NULL ALGORITHM");
             
         }
 

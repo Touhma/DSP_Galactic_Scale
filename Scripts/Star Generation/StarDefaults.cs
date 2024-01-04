@@ -4,14 +4,14 @@ namespace GalacticScale
 {
     public static class StarDefaults
     {
-        private static GS2.Random random;
+        private static GS3.Random random;
 
         public static float Age(GSStar star)
         {
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole:
@@ -41,7 +41,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(48f, 75f);
@@ -71,7 +71,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(0.9f, 0.97f);
@@ -101,7 +101,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(0.005f, 0.0075f);
@@ -143,15 +143,15 @@ namespace GalacticScale
 
         public static float Lifetime(GSStar star)
         {
-            // GS2.Log("Lifetime");
-            // GS2.Log(GS2.GetCaller());
-            // GS2.Log(GS2.GetCaller(1));
-            // GS2.Log((star == null).ToString());
-            // GS2.Log(star?.Name);
+            // GS3.Log("Lifetime");
+            // GS3.Log(GS3.GetCaller());
+            // GS3.Log(GS3.GetCaller(1));
+            // GS3.Log((star == null).ToString());
+            // GS3.Log(star?.Name);
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(17f, 36f);
@@ -194,7 +194,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(3.45f, 4.6f);
@@ -224,7 +224,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(0.69f, 0.76f);
@@ -266,7 +266,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return 0f;
@@ -310,7 +310,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            random = new GS2.Random(star.Seed);
+            random = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(2.48f, 2.73f);
@@ -354,7 +354,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            //  r = new GS2.Random(star.Seed);
+            //  r = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(2.0f, 2.5f);
@@ -396,7 +396,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
 
-            //  r = new GS2.Random(star.Seed);
+            //  r = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return random.NextFloat(1.0f, 1.35f);
@@ -426,7 +426,7 @@ namespace GalacticScale
             var t = star.Type;
             var s = star.Spectr;
             var habitableRadius = Mathf.Pow(1.7f, 2f + ClassFactor(star)) + 0.25f * Mathf.Min(1f, OrbitScaler(star));
-            //  r = new GS2.Random(star.Seed);
+            //  r = new GS3.Random(star.Seed);
             switch (t)
             {
                 case EStarType.BlackHole: return 0f;
@@ -438,9 +438,9 @@ namespace GalacticScale
             return habitableRadius;
         }
 
-        public static GSStar Random(GS2.Random random, int seed = -1, string name = null, bool special = false)
+        public static GSStar Random(GS3.Random random, int seed = -1, string name = null, bool special = false)
         {
-            //if (seed == -1) seed = GS2.random.Next();
+            //if (seed == -1) seed = GS3.random.Next();
             if (seed == -1) seed = GSSettings.Seed;
 
             if (name == null) name = "Star-" + seed;

@@ -8,7 +8,7 @@ namespace GalacticScale
     {
         public static void GenerateVeinsVanilla(GSPlanet gsPlanet) //, bool sketchOnly)
         {
-            random = new GS2.Random(gsPlanet.Seed);
+            random = new GS3.Random(gsPlanet.Seed);
             var themeProto = LDB.themes.Select(gsPlanet.planetData.theme);
             if (themeProto == null) return;
 
@@ -54,7 +54,7 @@ namespace GalacticScale
 
         private static void AddVeinsToPlanetVanilla(GSPlanet gsPlanet, float num2Point1Fdivbyplanetradius, float[] veinCounts, float[] veinOpacity, bool birth)
         {
-            //random = new GS2.Random(GSSettings.Seed);
+            //random = new GS3.Random(GSSettings.Seed);
             var resourceCoef = gsPlanet.planetData.star.resourceCoef;
             if (birth) resourceCoef *= 2f / 3f;
 
@@ -88,9 +88,9 @@ namespace GalacticScale
 
                 for (var k = 0; k < nodeVectors.Count; k++)
                 {
-                    //GS2.Log(node_vectors[k] + " is the node_vector[k]");
+                    //GS3.Log(node_vectors[k] + " is the node_vector[k]");
                     var vector5 = (nodeVectors[k].x * vectorRight + nodeVectors[k].y * vectorForward) * num2Point1Fdivbyplanetradius;
-                    //GS2.Log("and its vector5 is " + vector5);
+                    //GS3.Log("and its vector5 is " + vector5);
                     if (gsPlanet.planetData.veinGroups[i].type != EVeinType.Oil)
                         veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
 
@@ -99,7 +99,7 @@ namespace GalacticScale
                     if (infiniteResources && veinType != EVeinType.Oil) veinAmount = 1000000000;
 
                     var veinPosition = normalized + vector5;
-                    //GS2.Log("veinPosition = " + veinPosition);
+                    //GS3.Log("veinPosition = " + veinPosition);
                     if (veinType == EVeinType.Oil) SnapToGrid(ref veinPosition, gsPlanet.planetData);
 
                     EraseVegetableAtPoint(veinPosition, gsPlanet.planetData);
@@ -114,12 +114,12 @@ namespace GalacticScale
 
         private static void CalculateVectorsVanilla(GSPlanet gsPlanet, float planetRadiusFactor, int[] veinSpots)
         {
-            //random = new GS2.Random(GSSettings.Seed);
+            //random = new GS3.Random(GSSettings.Seed);
             var birth = gsPlanet.planetData.id == GSSettings.BirthPlanetId;
             var spawnVector = InitVeinGroupVector(gsPlanet.planetData, birth); //Random Vector, unless its birth planet.
             for (var k = 1; k < 15; k++) //for each of the vein types
             {
-                //GS2.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
+                //GS3.Log("For loop " + k + " " + veinVectors.Length + " " + veinVectorCount);
                 if (gsPlanet.veinData.count >= gsPlanet.veinData.vectors.Length) break; //If Greater than 1024 quit
 
                 var eVeinType = (EVeinType)k;
@@ -158,7 +158,7 @@ namespace GalacticScale
 
                     if (succeeded)
                     {
-                        //GS2.Log("Found a vector");
+                        //GS3.Log("Found a vector");
                         gsPlanet.veinData.vectors[gsPlanet.veinData.count] = potentialVector;
                         gsPlanet.veinData.types[gsPlanet.veinData.count] = eVeinType;
                         gsPlanet.veinData.count++;
@@ -166,7 +166,7 @@ namespace GalacticScale
                     }
                     else
                     {
-                        GS2.Warn(eVeinType + " vein unable to be placed on planet " + gsPlanet.planetData.name);
+                        GS3.Warn(eVeinType + " vein unable to be placed on planet " + gsPlanet.planetData.name);
                     }
                 }
             }
@@ -174,7 +174,7 @@ namespace GalacticScale
 
         private static float InitSpecials(GSPlanet gsPlanet, int[] veinSpots, float[] veinCounts, float[] veinOpacity)
         {
-            //random = new GS2.Random(GSSettings.Seed);
+            //random = new GS3.Random(GSSettings.Seed);
             var p = 1f;
             var starSpectr = gsPlanet.planetData.star.spectr;
             switch (gsPlanet.planetData.star.type)
@@ -278,7 +278,7 @@ namespace GalacticScale
 
         private static void InitRares(GSPlanet gsPlanet, ThemeProto themeProto, int[] veinSpots, float[] veinCounts, float[] veinOpacity, float p)
         {
-            //random = new GS2.Random(GSSettings.Seed);
+            //random = new GS3.Random(GSSettings.Seed);
             for (var n = 0; n < themeProto.RareVeins.Length; n++)
             {
                 var rareVeinId = themeProto.RareVeins[n];

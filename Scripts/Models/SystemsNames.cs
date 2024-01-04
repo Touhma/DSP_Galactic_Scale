@@ -1670,7 +1670,7 @@
 
         public static void Reset()
         {
-            var random = new GS2.Random(GSSettings.Seed);
+            var random = new GS3.Random(GSSettings.Seed);
             startIndex = random.Next(names.Length - 1);
         }
 

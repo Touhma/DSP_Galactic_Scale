@@ -28,14 +28,14 @@ namespace NebulaCompatibility
             Logger.Log(LogLevel.Message, "Loaded");
         }
 
-        public string Version => GS2.Version;
+        public string Version => GS3.Version;
 
         bool IMultiplayerMod.CheckVersion(string hostVersion, string clientVersion)
         {
-            if (GS2.ActiveGenerator.GUID == "space.customizing.generators.vanilla")
+            if (GS3.ActiveGenerator.GUID == "space.customizing.generators.vanilla")
             {
-                GS2.ShowMessage("Cannot Play Multiplayer using the Vanilla Generator", "Warning", "OK".Translate());
-                GS2.ShowMessage(GS2.ActiveGenerator.GUID, "Warning", "OK".Translate());
+                GS3.ShowMessage("Cannot Play Multiplayer using the Vanilla Generator", "Warning", "OK".Translate());
+                GS3.ShowMessage(GS3.ActiveGenerator.GUID, "Warning", "OK".Translate());
                 return false;
             }
 
@@ -52,7 +52,7 @@ namespace NebulaCompatibility
         {
             var settings = r.ReadString();
             GSSettings.DeSerialize(settings);
-            GS2.ActiveGenerator = GS2.GetGeneratorByID(GSSettings.Instance.generatorGUID);
+            GS3.ActiveGenerator = GS3.GetGeneratorByID(GSSettings.Instance.generatorGUID);
         }
     }
 
@@ -70,7 +70,7 @@ namespace NebulaCompatibility
         {
             IsMultiplayerActive = NebulaModAPI.IsMultiplayerActive;
             IsClient = NebulaModAPI.IsMultiplayerActive && NebulaModAPI.MultiplayerSession.LocalPlayer.IsClient;
-            GS2.Log($"IsMultiplayerActive:{IsMultiplayerActive} IsClient:{IsClient}");
+            GS3.Log($"IsMultiplayerActive:{IsMultiplayerActive} IsClient:{IsClient}");
         }
 
         public static void NebulaEnd()

@@ -22,7 +22,7 @@ namespace GalacticScale
         [NonSerialized] public PlanetData planetData;
 
         private int radius = -1;
-        [NonSerialized] public GS2.Random random;
+        [NonSerialized] public GS3.Random random;
         public bool randomizeVeinAmounts = true;
         public bool randomizeVeinCounts = true;
         public float rareChance = -1f;
@@ -170,8 +170,8 @@ namespace GalacticScale
         {
             get
             {
-                //GS2.Warn($"Checking Habitable {Name} {GsTheme.Name} {GsTheme.PlanetType} {GsTheme.WaterItemId} {Radius}");
-                //GS2.Warn($"{(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone))}");
+                //GS3.Warn($"Checking Habitable {Name} {GsTheme.Name} {GsTheme.PlanetType} {GsTheme.WaterItemId} {Radius}");
+                //GS3.Warn($"{(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Oil))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Iron))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Copper))} {(!GsTheme.VeinSettings.VeinTypes.ContainsVein(EVeinType.Stone))}");
                 if (GsTheme.PlanetType != EPlanetType.Ocean) return false;
 
                 if (Radius < 50) return false;
@@ -240,7 +240,7 @@ namespace GalacticScale
         {
             get
             {
-                if (Moons == null) GS2.Error("MOONS NULL!?");
+                if (Moons == null) GS3.Error("MOONS NULL!?");
 
                 if (Moons.Count == 0) return this;
                 return Moons[Moons.Count - 1].MostDistantSatellite;
@@ -255,14 +255,14 @@ namespace GalacticScale
             {
                 var mds = MostDistantSatellite;
                 if (mds == this)
-                    //GS2.Log($"{Name} Most Distant is itself");
+                    //GS3.Log($"{Name} Most Distant is itself");
                     return RadiusAU;
                 var p = this;
                 var c = 0;
                 float rad = 0;
                 while (p != mds || c < 99)
                 {
-                    //GS2.Log($"p:{p.Name} while. MDS:{mds.Name} MoonCount : {p.MoonCount} {p.MoonsCount} {p.Moons.Count}");
+                    //GS3.Log($"p:{p.Name} while. MDS:{mds.Name} MoonCount : {p.MoonCount} {p.MoonsCount} {p.Moons.Count}");
                     c++;
                     var moon = p.Moons[p.MoonCount - 1];
                     rad += moon.OrbitRadius;
@@ -270,7 +270,7 @@ namespace GalacticScale
                     if (p == mds) break;
                 }
 
-                //GS2.Log($"{Name} most distant:{mds.Name} its RadiusAU:{mds.RadiusAU} its OrbitRadius:{mds.OrbitRadius}");
+                //GS3.Log($"{Name} most distant:{mds.Name} its RadiusAU:{mds.RadiusAU} its OrbitRadius:{mds.OrbitRadius}");
                 return rad + mds.RadiusAU;
             }
         }
@@ -322,7 +322,7 @@ namespace GalacticScale
 
         private float InitOrbitRadius()
         {
-            if (random == null) random = new GS2.Random(GSSettings.Seed);
+            if (random == null) random = new GS3.Random(GSSettings.Seed);
 
             orbitRadius = -1; // random.Next(10);
             return orbitRadius;

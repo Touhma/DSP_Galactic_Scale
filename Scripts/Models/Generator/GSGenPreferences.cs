@@ -36,27 +36,27 @@ namespace GalacticScale
 
         public List<string> GetStringList(string key, List<string> Default)
         {
-            // GS2.Warn("Getting StringList " + key);
+            // GS3.Warn("Getting StringList " + key);
             if (!ContainsKey(key)) return Default;
-            // GS2.Warn("Didnt return default");
+            // GS3.Warn("Didnt return default");
             var fsSerializer = new fsSerializer();
             var parsedResult = new List<string>();
             var result = fsJsonParser.Parse(this[key], out var data);
             if (result.Failed)
             {
-                GS2.Warn("Failed to parse StringList " + key);
+                GS3.Warn("Failed to parse StringList " + key);
                 return Default;
             }
 
             var deserializedResult = fsSerializer.TryDeserialize(data, ref parsedResult);
             if (deserializedResult.Failed)
             {
-                GS2.Warn("Failed to deserialize StringList " + key);
+                GS3.Warn("Failed to deserialize StringList " + key);
                 return Default;
             }
 
-            // GS2.Warn("Returning:");
-            // GS2.WarnJson(parsedResult);
+            // GS3.Warn("Returning:");
+            // GS3.WarnJson(parsedResult);
             return parsedResult;
         }
 
@@ -81,17 +81,17 @@ namespace GalacticScale
                 var result = fs.TrySerialize(value, out var data);
                 if (result.Failed)
                 {
-                    GS2.Warn("Failed to Serialize " + key);
+                    GS3.Warn("Failed to Serialize " + key);
                     return;
                 }
 
                 var stringResult = fsJsonPrinter.CompressedJson(data);
-                //if (value is FloatPair) GS2.Warn(stringResult);
+                //if (value is FloatPair) GS3.Warn(stringResult);
                 this[key] = stringResult;
             }
             else
             {
-                // GS2.Log($"Setting {key} to {value}");
+                // GS3.Log($"Setting {key} to {value}");
                 this[key] = value.ToString();
             }
         }

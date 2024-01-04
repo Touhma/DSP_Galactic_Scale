@@ -9,14 +9,14 @@ namespace GalacticScale
         {
             if (gsPlanet == null)
             {
-                GS2.Warn("gsPlanet Null");
+                GS3.Warn("gsPlanet Null");
                 return;
             }
 
-            random = new GS2.Random(gsPlanet.Seed);
-            // GS2.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
+            random = new GS3.Random(gsPlanet.Seed);
+            // GS3.Log($"USING GSTA6 FOR {gsPlanet.Name} with seed {GSSettings.Seed}");
             var t = gsPlanet.GsTheme.TerrainSettings;
-            // GS2.Log("Generate Terrain for "+gsPlanet.Name + " " + t.landModifier );
+            // GS3.Log("Generate Terrain for "+gsPlanet.Name + " " + t.landModifier );
             var xPrecision = t.xFactor;
             var yPrecision = t.yFactor;
             var zPrecision = t.zFactor;
@@ -27,14 +27,14 @@ namespace GalacticScale
             var biomeHeightModifier = t.BiomeHeightModifier;
 
 
-            //GS2.Random random = new GS2.Random(gsPlanet.Seed);
+            //GS3.Random random = new GS3.Random(gsPlanet.Seed);
             var seed1 = random.Next();
             var seed2 = random.Next();
             var simplexNoise1 = new SimplexNoise(seed1);
             var simplexNoise2 = new SimplexNoise(seed2);
             if (gsPlanet.planetData == null)
             {
-                GS2.Warn("gsPlanet.planetData Null");
+                GS3.Warn("gsPlanet.planetData Null");
                 return;
             }
 

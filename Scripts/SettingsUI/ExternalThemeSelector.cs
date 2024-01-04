@@ -16,22 +16,22 @@ namespace GalacticScale
         // // Start is called before the first frame update
         // private void Start()
         // {
-        //     if (GS2.availableExternalThemes.Count == 0)
+        //     if (GS3.availableExternalThemes.Count == 0)
         //     {
         //         gameObject.SetActive(false);
-        //         // GS2.Warn(gameObject.name);
+        //         // GS3.Warn(gameObject.name);
         //
         //         return;
         //     }
         //
         //     itemTemplate.gameObject.SetActive(false);
         //     groupTemplate.gameObject.SetActive(false);
-        //     // GS2.LogJson(GS2.availableExternalThemes);
-        //     GS2.themeSelector = this;
-        //     if (GS2.availableExternalThemes.ContainsKey("Root"))
-        //         foreach (var t in GS2.availableExternalThemes["Root"])
+        //     // GS3.LogJson(GS3.availableExternalThemes);
+        //     GS3.themeSelector = this;
+        //     if (GS3.availableExternalThemes.ContainsKey("Root"))
+        //         foreach (var t in GS3.availableExternalThemes["Root"])
         //         {
-        //             GS2.Warn($"Adding {t.Key}");
+        //             GS3.Warn($"Adding {t.Key}");
         //             var item = Instantiate(itemTemplate, itemList, false);
         //             var tsi = item.GetComponent<ThemeSelectItem>();
         //             tsi.label = t.Value.DisplayName;
@@ -40,10 +40,10 @@ namespace GalacticScale
         //             items.Add(tsi);
         //         }
         //
-        //     foreach (var td in GS2.availableExternalThemes)
+        //     foreach (var td in GS3.availableExternalThemes)
         //     {
         //         if (td.Key == "Root") continue;
-        //         // GS2.Warn($"Adding {td.Key}");
+        //         // GS3.Warn($"Adding {td.Key}");
         //         var item = Instantiate(groupTemplate, itemList, false);
         //         var tsg = item.GetComponent<ThemeSelectGroup>();
         //         tsg.label = td.Key;
@@ -52,18 +52,18 @@ namespace GalacticScale
         //         groups.Add(tsg);
         //     }
         //
-        //     var names = GS2.Config.ExternalThemeNames;
+        //     var names = GS3.Config.ExternalThemeNames;
         //     // var groupNames = new List<string>();
         //     // var itemNames = new List<string>();
         //     if (names.Count > 0)
         //     {
         //         masterToggle.isOn = true;
-        //         GS2.Config.SetUseExternalThemes(true);
+        //         GS3.Config.SetUseExternalThemes(true);
         //     }
         //     else
         //     {
         //         masterToggle.isOn = false;
-        //         GS2.Config.SetUseExternalThemes(false);
+        //         GS3.Config.SetUseExternalThemes(false);
         //         
         //     }
         //
@@ -89,7 +89,7 @@ namespace GalacticScale
         //
         // public void Init()
         // {
-        //     foreach (var theme in GS2.availableExternalThemes) Debug.Log("Test" + theme.Value);
+        //     foreach (var theme in GS3.availableExternalThemes) Debug.Log("Test" + theme.Value);
         // }
         //
         // public void CollapseAll()
@@ -104,7 +104,7 @@ namespace GalacticScale
         //
         // public void CheckAll()
         // {
-        //     // GS2.Warn("CheckAll");
+        //     // GS3.Warn("CheckAll");
         //     foreach (var t in items) t.Set(true);
         // }
         //
@@ -116,14 +116,14 @@ namespace GalacticScale
         //
         // public void ToggleAll()
         // {
-        //     // GS2.Warn("Toggle");
+        //     // GS3.Warn("Toggle");
         //     if (!masterToggle.isOn) UnCheckAll();
         //     else CheckAll();
         // }
         //
         // public void UnCheckAll()
         // {
-        //     // GS2.Warn("Uncheck All");
+        //     // GS3.Warn("Uncheck All");
         //     foreach (var t in items) t.Set(false);
         // }
         //
@@ -141,7 +141,7 @@ namespace GalacticScale
         // {
         //     // Debug.Log("Click");
         //     Debug.Log(masterToggle.isOn.ToString());
-        //     GS2.Config.SetUseExternalThemes(masterToggle.isOn);
+        //     GS3.Config.SetUseExternalThemes(masterToggle.isOn);
         // }
     }
 }
