@@ -90,14 +90,18 @@ namespace GalacticScale.Generators
             var moltenworld = new GSTheme("MoltenWorld", "Molten World".Translate(), "Lava");
             var redforest = new GSTheme("RedForest", "Red Forest".Translate(), "OceanicJungle");
             var beach = new GSTheme("Beach", "Beach".Translate(), "OceanWorld");
-            var pandora = GSSettings.ThemeLibrary.Find("PandoraSwamp").Clone();
-            
+            var pandora = new GSTheme("Pandora", "Pandora".Translate(), "PandoraSwamp");
+            Themes.Mediterranean.InitMaterials();
+            Themes.OceanicJungle.InitMaterials();
+            Themes.PandoraSwamp.InitMaterials();
+            Themes.Lava.InitMaterials();
             pandora.Name = "Pandora";
             pandora.Habitable = true;
             pandora.WaterHeight = 0f;
             pandora.WaterItemId = 1000;
-            pandora.DisplayName = "Pandora".Translate();
             pandora.Algo = 1;
+            pandora.oceanMaterial.CopyFrom = "Mediterranean.oceanMat";
+            pandora.oceanMaterial.Tint = new Color(0.15f, 0, 0.3f, 0.5f);
             pandora.Process();
             
             beach.VeinSettings = new GSVeinSettings
@@ -148,8 +152,7 @@ namespace GalacticScale.Generators
             giganticforest.Habitable = true;
             giganticforest.CustomGeneration = true;
             giganticforest.TerrainSettings.Algorithm = "GSTA6";
-            Themes.Mediterranean.InitMaterials();
-            Themes.OceanicJungle.InitMaterials();
+
             giganticforest.oceanMat = Themes.Mediterranean.oceanMat;
 
             //moltenworld.IonHeight = Themes.OceanicJungle.IonHeight;

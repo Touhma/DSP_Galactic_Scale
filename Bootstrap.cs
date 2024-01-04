@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.20")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.21")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin

@@ -50,7 +50,7 @@ namespace GalacticScale
                 ))
                 .Repeat(matcher =>
                 {
-                    Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at " + matcher.Pos);
+                    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at " + matcher.Pos);
                     matcher.SetInstructionAndAdvance(new CodeInstruction(Call, calcMethod));
                 }).InstructionEnumeration();
 
