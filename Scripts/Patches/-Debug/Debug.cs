@@ -15,6 +15,6 @@ namespace GalacticScale.Patches
 {
     public class PatchOnUnspecified_Debug
     {
-
+        
     }
 }

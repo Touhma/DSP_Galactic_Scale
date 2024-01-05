@@ -51,7 +51,5 @@
 
     <ItemGroup>
       <Folder Include="Scripts\Patches\Prefix" />
-      <Folder Include="Scripts\Patches\Transpilers" />
-      <Folder Include="Scripts\Transpilers" />
     </ItemGroup>
 </Project>

@@ -1,6 +1,8 @@
-﻿using HarmonyLib;
+﻿using System.IO;
+using HarmonyLib;
 using NebulaAPI;
 using NebulaCompatibility;
+
 
 namespace GalacticScale.Patches
 {
@@ -11,7 +13,7 @@ namespace GalacticScale.Patches
         public static bool EnterGame(ref GameDesc ___gameDesc, ref UIGalaxySelect __instance)
         {
             GS3.Warn("Entergame...");
-            
+
             
             
             UIRoot.instance.uiGame.planetDetail.gameObject.SetActive(false);
@@ -25,6 +27,7 @@ namespace GalacticScale.Patches
             if (GS3.Config.SkipPrologue && !NebulaCompat.IsMultiplayerActive)
             {
                 GS3.Warn("Starting Game, Skipping Prologue.");
+                
                 DSPGame.StartGameSkipPrologue(___gameDesc);
             }
             else if (!NebulaCompat.IsMultiplayerActive)

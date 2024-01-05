@@ -6,6 +6,10 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using static System.Reflection.Emit.OpCodes;
 
 namespace GalacticScale
 {
@@ -66,6 +70,8 @@ namespace GalacticScale
             {
                 var harmony = new Harmony("dsp.galactic-scale.3");
                 harmony.PatchAll((typeof(Patches.PlanetSizeTranspiler)));
+                harmony.PatchAll((typeof(Patches.EnemyUnitComponentTranspiler)));
+                harmony.PatchAll((typeof(Patches.TurretComponentTranspiler)));
                 harmony.PatchAll(typeof(Patches.PatchOnUnspecified_Debug));
                 harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Click));
                 harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Inserter));
@@ -75,6 +81,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(Patches.PatchOnBuildTool_PathAddon));
                 // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
 
+                harmony.PatchAll(typeof(Patches.PatchOnDefenseSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnDigitalSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnEnemyDFGroundSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnEnemyDFHiveSystem));
@@ -176,6 +183,100 @@ namespace GalacticScale
         {
            yield return new WaitUntil(()=>t());
            u();
+        }
+
+        public static void DumpInstructions(IEnumerable<CodeInstruction> instructions,string method, int start = 0, int count = 0, [CallerLineNumber] int lineNumber = 0)
+        {
+            var list = instructions.ToList();
+            var caller = $"IL for {method} - {GS3.GetCallerMethod()} on line {lineNumber}";
+            var len = Mathf.Max(caller.Length + 2, 120);
+            var pad = len - caller.Length;
+            pad /= 2;
+            if (list.Count == 0) BCE.Console.WriteLine($"Dumpinstructions: List is empty | {GS3.GetCallerMethod()} on line {lineNumber}", ConsoleColor.Red);
+            if (count == 0) count = list.Count;
+            if (start > list.Count) start = 0;
+            
+            
+            for (var i = start; i < count+start && i < list.Count; i++)
+            {
+                var z = list[i];
+                var opcode = string.Format("{0,-10}", z.opcode);
+                var operand = string.Format("{0,-60}", z.operand);
+                BCE.Console.Write($"  {i}  {opcode} {operand}", ConsoleColor.DarkGray);
+                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+            }
+        }
+
+        public static void DumpMatcherPre(CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+        {
+            _DumpMatcher(_matcher, lines, pre, post, lineNumber, 1, GS3.GetCallerMethod());
+        }
+        public static void DumpMatcherPost(CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+        {
+            _DumpMatcher(_matcher, lines, pre, post, lineNumber, 2, GS3.GetCallerMethod());
+        }
+        public static void DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+        {
+            _DumpMatcher(_matcher, lines, pre, post, lineNumber, 0, GS3.GetCallerMethod());
+        }
+        private static void _DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5,int post = 5, [CallerLineNumber] int lineNumber = 0, int type = 0, string callerMethod = "")
+        {
+            // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
+            if (callerMethod == "") callerMethod = GS3.GetCallerMethod();
+            var prefix = type == 1?"Pre":type == 2?"Post":"";
+            var caller = $"{prefix}Transpile IL for {callerMethod} on line {lineNumber}";
+            
+            
+            var len = Mathf.Max(caller.Length + 2, 120);
+            var pad = len - caller.Length;
+            pad /= 2;
+            GS3.LogTop(len);
+
+            BCE.Console.WriteLine(string.Format("{0,"+pad+"}{1,"+pad+"}","",caller), ConsoleColor.DarkCyan);
+            var matcher = _matcher.Clone();
+            var step = lines + pre;
+            while (matcher.Pos > 0 && step > 1)
+            {
+                matcher.Advance(-1);
+                step--;
+            }
+
+            step = pre;
+            while (matcher.Remaining > 0 && step > 0)
+            {
+                var z = matcher.Instruction;
+
+                var opcode = string.Format("{0,-10}", z.opcode);
+                var operand = string.Format("{0,-50}", z.operand);
+                BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.DarkGray);
+                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+                matcher.Advance(1);
+                step--;
+            }
+            step = lines;
+            while (matcher.Remaining > 0 && step > 0)
+            {
+                var z = matcher.Instruction;
+                var opcode = string.Format("{0,-10}", z.opcode);
+                var operand = string.Format("{0,-50}", z.operand);
+                BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.White);
+                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+                matcher.Advance(1);
+                step--;
+            }
+            step = post;
+            while (matcher.Remaining > 0 && step > 0)
+            {
+                var z = matcher.Instruction;
+                var opcode = string.Format("{0,-10}", z.opcode);
+                var operand = string.Format("{0,-50}", z.operand);
+                BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.DarkGray);
+                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+                matcher.Advance(1);
+                step--;
+            }
+            // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
+            GS3.LogBot(len);
         }
     }
 

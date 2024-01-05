@@ -3,7 +3,7 @@ using PowerNetworkStructures;
 
 namespace GalacticScale.Patches
 {
-    public class PatchOnPowerSystem
+    public partial class PatchOnPowerSystem
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PowerSystem), nameof(PowerSystem.line_arragement_for_add_node))]

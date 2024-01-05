@@ -70,13 +70,22 @@ namespace GalacticScale
                 // astroPoses[galaxy.stars[index].id * 100].uPos = astroPoses[galaxy.stars[index].id * 100].uPosNext = galaxy.stars[index].uPosition;
                 // astroPoses[galaxy.stars[index].id * 100].uRot = astroPoses[galaxy.stars[index].id * 100].uRotNext = Quaternion.identity;
                 // astroPoses[galaxy.stars[index].id * 100].uRadius = galaxy.stars[index].physicsRadius;
-                
-                int astroId = galaxy.stars[index].astroId;
+                var star = galaxy.stars[index];
+                int astroId = star.astroId;
                 astroPoses[astroId].id = astroId;
                 astroPoses[astroId].type = EAstroType.Star;
                 astroPoses[astroId].uPos = (astroPoses[astroId].uPosNext = galaxy.stars[index].uPosition);
                 astroPoses[astroId].uRot = (astroPoses[astroId].uRotNext = Quaternion.identity);
                 astroPoses[astroId].uRadius = galaxy.stars[index].physicsRadius;
+                
+                for (var index2 = 0;index2<galaxy.stars[index].planetCount;index2++)
+                {
+                    var planetData = star.planets[index2];
+                    star.galaxy.astrosData[planetData.id].id = planetData.id;
+                    star.galaxy.astrosData[planetData.id].type = EAstroType.Planet;
+                    star.galaxy.astrosData[planetData.id].parentId = planetData.star.astroId;
+                    star.galaxy.astrosData[planetData.id].uRadius = planetData.realRadius;
+                }
                 //end 0.10
             }
 
@@ -92,8 +101,16 @@ namespace GalacticScale
                 if (galaxy.stars[i] == null) Error($"GalaxyStars[{i}] null");
                 galaxy.stars[i].planetCount = galaxy.stars[i].planets.Length;
                 for (var j = 0; j < galaxy.stars[i].planets.Length; j++)
-                    if (galaxy.stars[i].planets[j] == null) Error($"GalaxyStars[{i}].planets[{j}] null");
-                    else galaxy.stars[i].planets[j].UpdateRuntimePose(0.0);
+                {
+                    if (galaxy.stars[i].planets[j] == null)
+                    {
+                        Error($"GalaxyStars[{i}].planets[{j}] null");
+                    }
+                    else
+                    {
+                        galaxy.stars[i].planets[j].UpdateRuntimePose(0.0);
+                    }
+                }
             }
             // Log("6 Created Star " + galaxy.stars[0].name + " with id " + galaxy.stars[0].id + " and index " + galaxy.stars[0].index + "Hives:" + galaxy.stars[0].initialHiveCount + "/" + galaxy.stars[0].maxHiveCount);
 

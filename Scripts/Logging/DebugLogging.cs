@@ -170,18 +170,51 @@ namespace GalacticScale
             if (stackTrace.FrameCount <= depth) return "";
 
             var methodName = stackTrace.GetFrame(depth).GetMethod().Name;
+            BCE.Console.WriteLine(methodName.ToString(), ConsoleColor.Yellow);
+            
             var reflectedType = stackTrace.GetFrame(depth).GetMethod().ReflectedType;
+            
             if (reflectedType != null)
             {
+                BCE.Console.WriteLine(reflectedType.ToString(), ConsoleColor.Yellow);
                 var classPath = reflectedType.ToString().Split('.');
                 var className = classPath[classPath.Length - 1];
+                if (className.Contains("+")) className = className.Split('+')[0];
                 if (methodName == ".ctor") methodName = "<Constructor>";
+                else
+                {
+                    if (methodName.Contains(">")) methodName = methodName.Split('>')[0];
+                    methodName = methodName.Replace("<", "");
+                }
                 return className + "|" + methodName + "|";
             }
 
             return "ERROR GETTING CALLER";
         }
+        public static string GetCallerMethod()
+        {
+            var depth = 2;
+            var stackTrace = new StackTrace();
+            if (stackTrace.FrameCount <= depth) return "";
 
+            var methodName = stackTrace.GetFrame(depth).GetMethod().Name;
+            var reflectedType = stackTrace.GetFrame(depth).GetMethod().ReflectedType;
+            if (reflectedType != null)
+            {
+                var classPath = reflectedType.ToString().Split('.');
+                var className = classPath[classPath.Length - 1];
+                if (className.Contains("+")) className = className.Split('+')[0];
+                if (methodName == ".ctor") methodName = "<Constructor>";
+                else
+                {
+                    if (methodName.Contains(">")) methodName = methodName.Split('>')[0];
+                    methodName = methodName.Replace("<", "");
+                }
+                return className + ":" + methodName;
+            }
+
+            return "ERROR GETTING CALLER";
+        }
         public static void LogError(object sender, UnhandledExceptionEventArgs e, [CallerLineNumber] int lineNumber = 0)
         {
             Error($"{lineNumber} {GetCaller(0)}");

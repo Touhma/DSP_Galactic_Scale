@@ -16,49 +16,6 @@ namespace GalacticScale.Patches
         [HarmonyPatch(typeof(BlueprintUtils), nameof(BlueprintUtils.GetExtendedGratBox),typeof(BPGratBox), typeof(float), typeof(float))]
         [HarmonyPatch(typeof(BuildTool_BlueprintPaste), nameof(BuildTool_BlueprintPaste.CheckBuildConditions))]
         [HarmonyPatch(typeof(BuildTool_Path), nameof(BuildTool_Path.GetGridWidth))]
-        [HarmonyPatch(typeof(EnemyData), nameof(EnemyData.Formation),
-            new Type[]
-            {
-                typeof(int), 
-                typeof(EnemyData), 
-                typeof(float), 
-                typeof(VectorLF3), 
-                typeof(Quaternion),
-                typeof(Vector3)
-            },
-            new ArgumentType[]
-            {
-                ArgumentType.Normal, 
-                ArgumentType.Ref, 
-                ArgumentType.Normal, 
-                ArgumentType.Ref, 
-                ArgumentType.Ref,
-                ArgumentType.Ref
-            })]
-        [HarmonyPatch(typeof(TurretComponent),  nameof(TurretComponent.CheckEnemyIsInAttackRange))]
-        [HarmonyPatch(typeof(TurretComponent),  nameof(TurretComponent.SetStateToAim_Default))]
-        [HarmonyPatch(typeof(TurretComponent),  nameof(TurretComponent.Shoot_Plasma))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.ApproachToTargetPoint_SLancer))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.Attack_SLancer))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Engage_GRaider))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Engage_GRanger))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Engage_SHumpback))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_OrbitTarget_SLancer))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Engage_GRaider))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Defense_Ground))]
-        [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Engage_GRaider))]
-        [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_SAttackLaser_Large))]
-        [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_AttackLaser_Ground))]
-        [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_AttackPlasma_Ground))]
-        [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_DefenseShield_Ground))]
-        [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_SAttackPlasma_Small))]
-        [HarmonyPatch(typeof(GrowthTool_Node_DFGround),  nameof(GrowthTool_Node_DFGround.CreateNode7))]
-        [HarmonyPatch(typeof(DFRelayComponent),  nameof(DFRelayComponent.RelaySailLogic))]
-        [HarmonyPatch(typeof(DFSTurretComponent),  nameof(DFSTurretComponent.Shoot_Plasma))]
-        [HarmonyPatch(typeof(DFGTurretComponent),  nameof(DFSTurretComponent.Aim))]
-        [HarmonyPatch(typeof(DFGTurretComponent),  nameof(DFSTurretComponent.Shoot_Plasma))]
-        [HarmonyPatch(typeof(DFTinderComponent),  nameof(DFTinderComponent.TinderSailLogic))]
-        [HarmonyPatch(typeof(FleetComponent),  nameof(FleetComponent.GetUnitOrbitingAstroPose))]
         [HarmonyPatch(typeof(PlayerNavigation),  nameof(PlayerNavigation.Init))]
         [HarmonyPatch(typeof(PlayerNavigation),  nameof(PlayerNavigation.DetermineArrive))]
         [HarmonyPatch(typeof(PlanetEnvironment),  nameof(PlanetEnvironment.LateUpdate))]
@@ -66,8 +23,6 @@ namespace GalacticScale.Patches
         [HarmonyPatch(typeof(PlayerAction_Combat),  nameof(PlayerAction_Combat.Shoot_Plasma))]
         [HarmonyPatch(typeof(PlayerAction_Plant),  nameof(PlayerAction_Plant.UpdateRaycast))]
         [HarmonyPatch(typeof(PlayerAction_Navigate),  nameof(PlayerAction_Navigate.GameTick))]
-        [HarmonyPatch(typeof(LocalLaserOneShot),  nameof(LocalLaserOneShot.TickSkillLogic))]
-        [HarmonyPatch(typeof(LocalLaserContinuous),  nameof(LocalLaserContinuous.TickSkillLogic))]
         [HarmonyPatch(typeof(PowerSystem),  nameof(PowerSystem.CalculateGeothermalStrenth))]
         [HarmonyPatch(typeof(BuildTool_Reform),  nameof(BuildTool_Reform.UpdateRaycast))]
         [HarmonyPatch(typeof(BuildTool_Upgrade),  nameof(BuildTool_Upgrade.UpdateRaycast))]
@@ -76,21 +31,7 @@ namespace GalacticScale.Patches
         [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.GetReshapeData))]
         [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.Reshape))]
         [HarmonyPatch(typeof(SpaceCapsule), nameof(SpaceCapsule.LateUpdate))]
-        [HarmonyPatch(typeof(SkillSystem),  nameof(SkillSystem.AddSpaceEnemyHatred), new[]
-        {
-            typeof(EnemyDFHiveSystem), 
-            typeof(EnemyData), 
-            typeof(ETargetType), 
-            typeof(int), 
-            typeof(int)
-        }, new[]
-        {
-            ArgumentType.Normal, 
-            ArgumentType.Ref, 
-            ArgumentType.Normal, 
-            ArgumentType.Normal, 
-            ArgumentType.Normal
-        })]
+
         public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
         {
             var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.FixRadius));

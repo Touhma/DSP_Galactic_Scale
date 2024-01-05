@@ -237,8 +237,8 @@ namespace GalacticScale
             JsonGalaxies = JsonOptions.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
             JsonOptions.Add(GSUI.Button("Load Custom Galaxy".Translate(), "Load", LoadJsonGalaxy, null, "Will end current game".Translate()));
             DebugOptions.Add(GSUI.Spacer());
-
-            Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
+            DebugOptions.Add(GSUI.Button("Dump Astros Arrays", "Dump", DumpAstros, null));
+                ;            Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
         }
 
         public void EnableDevMode()
@@ -407,6 +407,23 @@ namespace GalacticScale
             UIMessageBox.Show("Error".Translate(), "Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings.".Translate(), "D'oh!".Translate(), 2);
         }
 
+        private static void DumpAstros(Val o)
+        {
+            string a = "";
+            for (var i = 0;i<GameMain.data.spaceSector.astros.Length;i++)
+            {
+                var z = GameMain.data.spaceSector.astros[i];
+                if (z.id != 0) a += $"index:{i} id:{z.id} parent:{z.parentId} {z.type}\r";
+            }
+            GS3.DumpObjectToText(Path.Combine(GS3.DataDir, "sectorastros.txt"), a);
+            a = "";
+            for (var i = 0;i<GameMain.data.galaxy.astrosData.Length;i++)
+            {
+                var z = GameMain.data.galaxy.astrosData[i];
+                if (z.id != 0) a += $"index:{i} id:{z.id} parent:{z.parentId} {z.type}\r";
+            }
+            GS3.DumpObjectToText(Path.Combine(GS3.DataDir, "galaxyastros.txt"), a);
+        }
 
         private static void GeneratorCallback(Val result)
         {

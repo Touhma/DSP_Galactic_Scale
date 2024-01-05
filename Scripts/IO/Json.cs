@@ -140,7 +140,11 @@ namespace GalacticScale
             File.WriteAllText(path, json);
             // Log("End");
         }
-
+        public static void DumpObjectToText(string path, string text)
+        {
+            File.WriteAllText(path, text);
+            // Log("End");
+        }
         public static void DumpException(Exception e)
         {
             Error($"{e.Message} {GetCaller(1)} {GetCaller(2)} {GetCaller(3)} {GetCaller(4)} {GetCaller(5)}");
