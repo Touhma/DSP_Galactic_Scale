@@ -9,17 +9,6 @@ namespace GalacticScale.Patches
 {
     public class UnitComponentTranspiler
     {
-
-        public static T GetRadiusFromMecha<T>(T t, Mecha mecha)
-        {
-            var num = mecha?.player?.planetData.realRadius ?? 200f;
-            float orig = Convert.ToSingle(t);
-            var diff = orig - 200f;
-            num += diff;
-            if (VFInput.alt) GS3.Log($"GetRadiusFromMecha Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{orig} returning {num}");
-            return (T)Convert.ChangeType(num, typeof(T));
-        }
-        
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_AttackLaser_Ground))] //225f 212f
         [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_AttackPlasma_Ground))]//225f 212f
@@ -60,7 +49,7 @@ namespace GalacticScale.Patches
         [HarmonyPatch(typeof(UnitComponent),  nameof(UnitComponent.RunBehavior_Engage_SAttackPlasma_Small))]//
         public static IEnumerable<CodeInstruction> Fix200(IEnumerable<CodeInstruction> instructions)
         {
-            var methodInfo = AccessTools.Method(typeof(UnitComponentTranspiler), nameof(UnitComponentTranspiler.GetRadiusFromMecha));
+            // var methodInfo = AccessTools.Method(typeof(UnitComponentTranspiler), nameof(Utils.GetRadiusFromMecha));
             
             instructions = new CodeMatcher(instructions)
                 .MatchForward(
@@ -70,7 +59,8 @@ namespace GalacticScale.Patches
                 .Repeat(matcher =>
                 {
                     // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
-                    var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+                    // var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+                    var mi = matcher.GetRadiusFromMecha();
                     matcher.Advance(1);
                     matcher.InsertAndAdvance(new CodeInstruction(Ldarg_2));
                     matcher.InsertAndAdvance(new CodeInstruction(Call, mi));

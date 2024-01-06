@@ -9,6 +9,7 @@ namespace GalacticScale
     {
         public static MethodInfo GetRadiusFromAstroId(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAstroId)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromLocalPlanet(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromLocalPlanet)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+        public static MethodInfo GetRadiusFromMecha(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromMecha)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromEnemyData(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromEnemyData)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         
         public static MethodInfo GetRadiusFromFactory(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromFactory)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
@@ -59,6 +60,17 @@ namespace GalacticScale
             var realRadius = ModifyRadius(Convert.ToDouble(t), Convert.ToDouble(alt));
             return (T)Convert.ChangeType(realRadius, typeof(T));
         }
+        public static T GetRadiusFromMecha<T>(T t, Mecha mecha)
+        {
+            // var num = mecha?.player?.planetData?.realRadius ?? 200f;
+            var realRadius = ModifyRadius(Convert.ToDouble(t), mecha?.player?.planetData?.realRadius ?? 200.0);
+            // float orig = Convert.ToSingle(t);
+            // var diff = orig - 200f;
+            // num += diff;
+            // if (VFInput.alt) GS3.Log($"GetRadiusFromMecha Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{orig} returning {num}");
+            return (T)Convert.ChangeType(realRadius, typeof(T));
+        }
+        
         // public static T GetRadiusFromEnemyData<T>(T t, ref EnemyData enemyData)
         // {
         //     float orig = Convert.ToSingle(t);

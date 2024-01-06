@@ -12,10 +12,11 @@ namespace GalacticScale.Patches
     {
         [HarmonyTranspiler]   
         [HarmonyPatch(typeof(LocalLaserOneShot),  nameof(LocalLaserOneShot.TickSkillLogic))]
-        public static IEnumerable<CodeInstruction> Aim_Transpiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> TickSkillLogic_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             try
             {
+                instructions.Log("TickSkillLogic_Transpiler");
                 var matcher = new CodeMatcher(instructions)
                     .MatchForward(
                         true,
@@ -34,7 +35,7 @@ namespace GalacticScale.Patches
                         matcher.InsertAndAdvance(new CodeInstruction(Ldarg_0));
                         matcher.InsertAndAdvance(Utils.LoadField(typeof(LocalLaserOneShot), nameof(LocalLaserOneShot.astroId)));
                         matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
-                        matcher.LogILPre(4);
+                        matcher.LogILPost(4);
                     });
                     instructions = matcher.InstructionEnumeration();
                     return instructions;
