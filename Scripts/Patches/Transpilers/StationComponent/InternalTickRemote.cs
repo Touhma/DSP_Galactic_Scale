@@ -12,7 +12,7 @@ namespace GalacticScale
         //    Makes planets near huge stars reachable by ship.
         // [HarmonyDebug]
         [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
+        [HarmonyPatch(typeof(StationComponent), nameof(StationComponent.InternalTickRemote))]
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false, new CodeMatch(op => op.opcode == OpCodes.Ldc_I4_S && op.OperandIs(10))); // Search for ldc.i4.s 10

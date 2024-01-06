@@ -12,7 +12,7 @@ using Random = System.Random;
 
 namespace GalacticScale
 {
-    public static class Utils
+    public static partial class Utils
     {
         private static Vector3[][] originalMk2MinerEffectVertices;
 
@@ -140,7 +140,10 @@ namespace GalacticScale
             randomVector.z = (float)random.NextDouble() * 2f - 1f;
             return randomVector;
         }
-
+         public static float GetPlanetSizeRatio2()
+         {
+             return GameMain.localPlanet.realRadius / 100f;
+         }
         public static bool ContainsLocalStarPlanet(IEnumerable<PlanetData> genPlanetReqList)
         {
             var containsLocalPlanet = false;

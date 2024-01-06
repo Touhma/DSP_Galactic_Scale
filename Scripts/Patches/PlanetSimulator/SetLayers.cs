@@ -6,7 +6,7 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetSimulator), "SetLayers")]
-        public static bool SetLayers(PlanetSimulator __instance) //Temporary to fix existing scarlet ice lakes. Can be removed for GS3
+        public static bool SetLayers(PlanetSimulator __instance) //Temporary to fix existing scarlet ice lakes. Can be removed for GS2
         {
             if (!__instance.layerSet)
             {

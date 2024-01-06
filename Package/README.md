@@ -2,7 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
-- Version 2.12.23 - Remove force garbage collect when building. Massive performance improvement. Thanks to starfish for the code.
+- Version 2.12.23 - Remove force garbage collect when building. Massive performance improvement. Thanks to starfish for the code. Fixed Enemies on other planets. Fixed some errors. Fixed some logspam.
 - Version 2.12.22 - Recompile for DSP .21219
 - Version 2.12.21 - Fix for water on Pandora
 - Version 2.12.20 - Prevent fix for clipping enemies turning off (Hopefully)

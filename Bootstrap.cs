@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using BepInEx;
 using BepInEx.Logging;
+using GalacticScale;
 using HarmonyLib;
 using UnityEngine;
 
@@ -62,15 +63,18 @@ namespace GalacticScale
                     file.Delete();
                 }
 
-                Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
-                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
+                // Environment.SetEnvironmentVariable("MONOMOD_DMD_TYPE", "cecil");
+                // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "./mmdump");
             // }
             try
             {
                 var harmony = new Harmony("dsp.galactic-scale.2");
+                harmony.PatchAll(typeof(EnemyUnitComponentTranspiler));
                 harmony.PatchAll(typeof(PlanetSizeTranspiler));
+                harmony.PatchAll(typeof(TurretComponentTranspiler));
+                harmony.PatchAll(typeof(UnitComponentTranspiler));
                 harmony.PatchAll(typeof(LagFixTranspiler));
-                Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
+                // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
                 harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
                 harmony.PatchAll(typeof(PatchOnBlueprintUtils));
                 harmony.PatchAll(typeof(PatchOnBuildingGizmo));
@@ -81,6 +85,9 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnBuildTool_Path));
                 harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
                 harmony.PatchAll(typeof(PatchOnCloudSimulator));
+                harmony.PatchAll(typeof(PatchOnDefenseSystem));
+                harmony.PatchAll(typeof(PatchOnDFGTurretComponent));
+                harmony.PatchAll(typeof(PatchOnDFRelayComponent));
                 harmony.PatchAll(typeof(PatchOnDigitalSystem));
                 harmony.PatchAll(typeof(PatchOnEnemyDFGroundSystem));
                 harmony.PatchAll(typeof(PatchOnEnemyDFHiveSystem));
@@ -97,6 +104,8 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnGameSave));
                 harmony.PatchAll(typeof(PatchOnGraticulePoser));
                 harmony.PatchAll(typeof(PatchOnGuideMissionStandardMode));
+                harmony.PatchAll(typeof(PatchOnLocalLaserContinuous));
+                harmony.PatchAll(typeof(PatchOnLocalLaserOneShot));
                 harmony.PatchAll(typeof(PatchOnNearColliderLogic));
                 harmony.PatchAll(typeof(PatchOnPlanetAlgorithm));
                 harmony.PatchAll(typeof(PatchOnPlanetAtmoBlur));
@@ -119,6 +128,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnStationComponent));
                 harmony.PatchAll(typeof(PatchOnThemeProto));
                 harmony.PatchAll(typeof(PatchOnTrashSystem));
+                
                 harmony.PatchAll(typeof(PatchOnUIAchievementPanel));
                 harmony.PatchAll(typeof(PatchOnUIAdvisorTip));
                 harmony.PatchAll(typeof(PatchOnUIBuildingGrid));

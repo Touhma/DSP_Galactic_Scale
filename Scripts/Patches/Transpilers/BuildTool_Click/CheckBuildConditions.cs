@@ -8,7 +8,7 @@ namespace GalacticScale
 {
     public partial class PatchOnBuildTool_Click
     {
-        [HarmonyPatch(typeof(BuildTool_Click), "CheckBuildConditions")]
+        [HarmonyPatch(typeof(BuildTool_Click), nameof(BuildTool_Click.CheckBuildConditions))]
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {

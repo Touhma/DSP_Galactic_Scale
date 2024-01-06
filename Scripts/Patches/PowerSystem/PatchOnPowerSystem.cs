@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GalacticScale
 {
-    public class PatchOnPowerSystem
+    public partial class PatchOnPowerSystem
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PowerSystem), "line_arragement_for_add_node")]
