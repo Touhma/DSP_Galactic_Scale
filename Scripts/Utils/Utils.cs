@@ -149,24 +149,7 @@ namespace GalacticScale
             return fsJsonPrinter.PrettyJson(data);
         }
 
-        public static T FixRadius<T>(T t)
-        {
-            var negative = false;
-            var num = GameMain.localPlanet?.realRadius ?? 200f;
-            float orig = Convert.ToSingle(t);
-            if (num < 0)
-            {
-                negative = true;
-                num *= -1;
-            }
-            var diff = orig - 200f;
-            num += diff;
-            if (negative) num *= -1;
-            if (VFInput.alt)
-                GS3.Log(
-                    $"GetRadius Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{orig} returning {num}");
-            return (T)Convert.ChangeType(num, typeof(T));
-        }
+
 
         public static T DeSerialize<T>(string json)
         {
@@ -1077,5 +1060,7 @@ namespace GalacticScale
 
             LogBot(80);
         }
+
+
     }
 }

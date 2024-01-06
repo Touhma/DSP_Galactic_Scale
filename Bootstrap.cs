@@ -18,6 +18,21 @@ namespace GalacticScale
         public static int PreferencesVersion = 30004;
     }
 
+    public static class MatcherExtensions
+    {
+        public static void LogILPre(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+        {
+            Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 1, GS3.GetCallerMethod());
+        }
+        public static void LogILPost(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+        {
+            Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 2, GS3.GetCallerMethod());
+        }
+        public static void LogIL(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+        {
+            Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 0, GS3.GetCallerMethod());
+        }
+    }
 
     [BepInPlugin("dsp.galactic-scale.3", "Galactic Scale 3 Plug-In", "3.0.0")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
@@ -69,10 +84,13 @@ namespace GalacticScale
             try
             {
                 var harmony = new Harmony("dsp.galactic-scale.3");
-                harmony.PatchAll((typeof(Patches.PlanetSizeTranspiler)));
-                harmony.PatchAll((typeof(Patches.EnemyUnitComponentTranspiler)));
-                harmony.PatchAll((typeof(Patches.TurretComponentTranspiler)));
+                harmony.PatchAll(typeof(Patches.PlanetSizeTranspiler));
+                harmony.PatchAll(typeof(Patches.EnemyUnitComponentTranspiler));
+                harmony.PatchAll(typeof(Patches.UnitComponentTranspiler));
+                harmony.PatchAll(typeof(Patches.TurretComponentTranspiler));
+                
                 harmony.PatchAll(typeof(Patches.PatchOnUnspecified_Debug));
+                
                 harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Click));
                 harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Inserter));
                 harmony.PatchAll(typeof(Patches.PatchOnBuildTool_Path));
@@ -82,9 +100,11 @@ namespace GalacticScale
                 // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
 
                 harmony.PatchAll(typeof(Patches.PatchOnDefenseSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnDFGTurretComponent));
+                
+                harmony.PatchAll(typeof(Patches.PatchOnDFRelayComponent));
                 harmony.PatchAll(typeof(Patches.PatchOnDigitalSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnEnemyDFGroundSystem));
-                harmony.PatchAll(typeof(Patches.PatchOnEnemyDFHiveSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnFactoryModel));
                 harmony.PatchAll(typeof(Patches.PatchOnGalaxyData));
                 harmony.PatchAll(typeof(Patches.PatchOnGameAbnormalityData));
@@ -98,10 +118,11 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(Patches.PatchOnGameSave));
                 harmony.PatchAll(typeof(Patches.PatchOnGraticulePoser));
                 harmony.PatchAll(typeof(Patches.PatchOnGuideMissionStandardMode));
+                harmony.PatchAll(typeof(Patches.PatchOnLocalLaserOneShot));
+                harmony.PatchAll(typeof(Patches.PatchOnLocalLaserContinuous));
                 harmony.PatchAll(typeof(Patches.PatchOnNearColliderLogic));
                 harmony.PatchAll(typeof(Patches.PatchOnPlanetAlgorithm));
                 harmony.PatchAll(typeof(Patches.PatchOnPlanetAtmoBlur));
-                harmony.PatchAll(typeof(Patches.PatchOnPlanetAuxData));
                 harmony.PatchAll(typeof(Patches.PatchOnPlanetData));
                 harmony.PatchAll(typeof(Patches.PatchOnPlanetFactory));
                 harmony.PatchAll(typeof(Patches.PatchOnPlanetGrid));
@@ -207,19 +228,8 @@ namespace GalacticScale
             }
         }
 
-        public static void DumpMatcherPre(CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
-        {
-            _DumpMatcher(_matcher, lines, pre, post, lineNumber, 1, GS3.GetCallerMethod());
-        }
-        public static void DumpMatcherPost(CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
-        {
-            _DumpMatcher(_matcher, lines, pre, post, lineNumber, 2, GS3.GetCallerMethod());
-        }
-        public static void DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
-        {
-            _DumpMatcher(_matcher, lines, pre, post, lineNumber, 0, GS3.GetCallerMethod());
-        }
-        private static void _DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5,int post = 5, [CallerLineNumber] int lineNumber = 0, int type = 0, string callerMethod = "")
+        
+        public static void _DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5,int post = 5, [CallerLineNumber] int lineNumber = 0, int type = 0, string callerMethod = "")
         {
             // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
             if (callerMethod == "") callerMethod = GS3.GetCallerMethod();

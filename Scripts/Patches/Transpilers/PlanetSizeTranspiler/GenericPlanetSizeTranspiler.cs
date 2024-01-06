@@ -34,7 +34,7 @@ namespace GalacticScale.Patches
 
         public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
         {
-            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.FixRadius));
+            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromLocalPlanet));
             instructions = new CodeMatcher(instructions)
                 .MatchForward(
                     true,

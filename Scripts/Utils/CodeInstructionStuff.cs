@@ -202,5 +202,7 @@ namespace GalacticScale
             if (index < 256) return new CodeInstruction(OpCodes.Starg_S, Convert.ToByte(index));
             else return new CodeInstruction(OpCodes.Starg, index);
         }
+
+
     }
 }
