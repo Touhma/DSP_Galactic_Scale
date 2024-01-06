@@ -18,24 +18,24 @@ namespace GalacticScale
         public static int PreferencesVersion = 30004;
     }
 
-    public static class MatcherExtensions
-    {
-        public static void LogILPre(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
-        {
-            Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 1, GS3.GetCallerMethod());
-        }
-        public static void LogILPost(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
-        {
-            Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 2, GS3.GetCallerMethod());
-        }
-        public static void LogIL(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
-        {
-            Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 0, GS3.GetCallerMethod());
-        }
-    }
+    // public static class MatcherExtensions
+    // {
+    //     public static void LogILPre(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+    //     {
+    //         Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 1, GS3.GetCallerMethod());
+    //     }
+    //     public static void LogILPost(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+    //     {
+    //         Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 2, GS3.GetCallerMethod());
+    //     }
+    //     public static void LogIL(this CodeMatcher _matcher, int lines = 1, int pre = 5, int post = 5, [CallerLineNumber] int lineNumber = 0)
+    //     {
+    //         Bootstrap._DumpMatcher(_matcher, lines, pre, post, lineNumber, 0, GS3.GetCallerMethod());
+    //     }
+    // }
 
     [BepInPlugin("dsp.galactic-scale.3", "Galactic Scale 3 Plug-In", "3.0.0")]
-    [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
@@ -57,7 +57,7 @@ namespace GalacticScale
             var v = Assembly.GetExecutingAssembly().GetName().Version;
             var a = Assembly.GetAssembly(typeof(GSStar));
             GS3.Version = $"{v.Major}.{v.Minor}.{v.Build}";
-            BCE.Console.Init();
+            // console.Init();
             Logger = new ManualLogSource("GS3");
             BepInEx.Logging.Logger.Sources.Add(Logger);
             
@@ -206,88 +206,88 @@ namespace GalacticScale
            u();
         }
 
-        public static void DumpInstructions(IEnumerable<CodeInstruction> instructions,string method, int start = 0, int count = 0, [CallerLineNumber] int lineNumber = 0)
-        {
-            var list = instructions.ToList();
-            var caller = $"IL for {method} - {GS3.GetCallerMethod()} on line {lineNumber}";
-            var len = Mathf.Max(caller.Length + 2, 120);
-            var pad = len - caller.Length;
-            pad /= 2;
-            if (list.Count == 0) BCE.Console.WriteLine($"Dumpinstructions: List is empty | {GS3.GetCallerMethod()} on line {lineNumber}", ConsoleColor.Red);
-            if (count == 0) count = list.Count;
-            if (start > list.Count) start = 0;
-            
-            
-            for (var i = start; i < count+start && i < list.Count; i++)
-            {
-                var z = list[i];
-                var opcode = string.Format("{0,-10}", z.opcode);
-                var operand = string.Format("{0,-60}", z.operand);
-                BCE.Console.Write($"  {i}  {opcode} {operand}", ConsoleColor.DarkGray);
-                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
-            }
-        }
+        // public static void DumpInstructions(IEnumerable<CodeInstruction> instructions,string method, int start = 0, int count = 0, [CallerLineNumber] int lineNumber = 0)
+        // {
+        //     var list = instructions.ToList();
+        //     var caller = $"IL for {method} - {GS3.GetCallerMethod()} on line {lineNumber}";
+        //     var len = Mathf.Max(caller.Length + 2, 120);
+        //     var pad = len - caller.Length;
+        //     pad /= 2;
+        //     if (list.Count == 0) BCE.Console.WriteLine($"Dumpinstructions: List is empty | {GS3.GetCallerMethod()} on line {lineNumber}", ConsoleColor.Red);
+        //     if (count == 0) count = list.Count;
+        //     if (start > list.Count) start = 0;
+        //     
+        //     
+        //     for (var i = start; i < count+start && i < list.Count; i++)
+        //     {
+        //         var z = list[i];
+        //         var opcode = string.Format("{0,-10}", z.opcode);
+        //         var operand = string.Format("{0,-60}", z.operand);
+        //         BCE.Console.Write($"  {i}  {opcode} {operand}", ConsoleColor.DarkGray);
+        //         BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+        //     }
+        // }
 
         
-        public static void _DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5,int post = 5, [CallerLineNumber] int lineNumber = 0, int type = 0, string callerMethod = "")
-        {
-            // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
-            if (callerMethod == "") callerMethod = GS3.GetCallerMethod();
-            var prefix = type == 1?"Pre":type == 2?"Post":"";
-            var caller = $"{prefix}Transpile IL for {callerMethod} on line {lineNumber}";
-            
-            
-            var len = Mathf.Max(caller.Length + 2, 120);
-            var pad = len - caller.Length;
-            pad /= 2;
-            GS3.LogTop(len);
-
-            BCE.Console.WriteLine(string.Format("{0,"+pad+"}{1,"+pad+"}","",caller), ConsoleColor.DarkCyan);
-            var matcher = _matcher.Clone();
-            var step = lines + pre;
-            while (matcher.Pos > 0 && step > 1)
-            {
-                matcher.Advance(-1);
-                step--;
-            }
-
-            step = pre;
-            while (matcher.Remaining > 0 && step > 0)
-            {
-                var z = matcher.Instruction;
-
-                var opcode = string.Format("{0,-10}", z.opcode);
-                var operand = string.Format("{0,-50}", z.operand);
-                BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.DarkGray);
-                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
-                matcher.Advance(1);
-                step--;
-            }
-            step = lines;
-            while (matcher.Remaining > 0 && step > 0)
-            {
-                var z = matcher.Instruction;
-                var opcode = string.Format("{0,-10}", z.opcode);
-                var operand = string.Format("{0,-50}", z.operand);
-                BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.White);
-                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
-                matcher.Advance(1);
-                step--;
-            }
-            step = post;
-            while (matcher.Remaining > 0 && step > 0)
-            {
-                var z = matcher.Instruction;
-                var opcode = string.Format("{0,-10}", z.opcode);
-                var operand = string.Format("{0,-50}", z.operand);
-                BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.DarkGray);
-                BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
-                matcher.Advance(1);
-                step--;
-            }
-            // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
-            GS3.LogBot(len);
-        }
+        // public static void _DumpMatcher(CodeMatcher _matcher, int lines = 1, int pre = 5,int post = 5, [CallerLineNumber] int lineNumber = 0, int type = 0, string callerMethod = "")
+        // {
+        //     // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
+        //     if (callerMethod == "") callerMethod = GS3.GetCallerMethod();
+        //     var prefix = type == 1?"Pre":type == 2?"Post":"";
+        //     var caller = $"{prefix}Transpile IL for {callerMethod} on line {lineNumber}";
+        //     
+        //     
+        //     var len = Mathf.Max(caller.Length + 2, 120);
+        //     var pad = len - caller.Length;
+        //     pad /= 2;
+        //     GS3.LogTop(len);
+        //
+        //     BCE.Console.WriteLine(string.Format("{0,"+pad+"}{1,"+pad+"}","",caller), ConsoleColor.DarkCyan);
+        //     var matcher = _matcher.Clone();
+        //     var step = lines + pre;
+        //     while (matcher.Pos > 0 && step > 1)
+        //     {
+        //         matcher.Advance(-1);
+        //         step--;
+        //     }
+        //
+        //     step = pre;
+        //     while (matcher.Remaining > 0 && step > 0)
+        //     {
+        //         var z = matcher.Instruction;
+        //
+        //         var opcode = string.Format("{0,-10}", z.opcode);
+        //         var operand = string.Format("{0,-50}", z.operand);
+        //         BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.DarkGray);
+        //         BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+        //         matcher.Advance(1);
+        //         step--;
+        //     }
+        //     step = lines;
+        //     while (matcher.Remaining > 0 && step > 0)
+        //     {
+        //         var z = matcher.Instruction;
+        //         var opcode = string.Format("{0,-10}", z.opcode);
+        //         var operand = string.Format("{0,-50}", z.operand);
+        //         BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.White);
+        //         BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+        //         matcher.Advance(1);
+        //         step--;
+        //     }
+        //     step = post;
+        //     while (matcher.Remaining > 0 && step > 0)
+        //     {
+        //         var z = matcher.Instruction;
+        //         var opcode = string.Format("{0,-10}", z.opcode);
+        //         var operand = string.Format("{0,-50}", z.operand);
+        //         BCE.Console.Write($"  {matcher.Pos}  {opcode} {operand}", ConsoleColor.DarkGray);
+        //         BCE.Console.WriteLine($" // {z.operand?.GetType()}", ConsoleColor.DarkGreen);
+        //         matcher.Advance(1);
+        //         step--;
+        //     }
+        //     // BCE.Console.WriteLine("__________________________________________________________", ConsoleColor.DarkGray);
+        //     GS3.LogBot(len);
+        // }
     }
 
     public delegate bool TestFunction();

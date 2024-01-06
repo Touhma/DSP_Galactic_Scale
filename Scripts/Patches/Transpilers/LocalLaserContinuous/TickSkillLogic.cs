@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BCE;
 using HarmonyLib;
-using UnityEngine;
 using static System.Reflection.Emit.OpCodes;
 
 namespace GalacticScale.Patches

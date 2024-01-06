@@ -33,7 +33,11 @@
             <HintPath>Package\GSUI.dll</HintPath>
         </Reference>
     </ItemGroup>
-
+    <ItemGroup>
+        <Reference Include="BCE">
+            <HintPath>Package\BCE.dll</HintPath>
+        </Reference>
+    </ItemGroup>
     <ItemGroup>
         <None Update="LICENSE">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

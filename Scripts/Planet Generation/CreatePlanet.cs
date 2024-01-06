@@ -189,59 +189,5 @@ namespace GalacticScale
                 moon.orbitAroundPlanet = planetData;
             }
         }
-
-        public static void DebugPlanet(PlanetData planet)
-        {
-            BCE.Console.WriteLine("Creating Planet " + planet.id, ConsoleColor.Red);
-            BCE.Console.WriteLine("Index " + planet.index, ConsoleColor.Green);
-            BCE.Console.WriteLine("OrbitAround " + planet.orbitAround, ConsoleColor.Green);
-            BCE.Console.WriteLine("Seed " + planet.seed, ConsoleColor.Green);
-            BCE.Console.WriteLine("Period " + planet.orbitalPeriod, ConsoleColor.Green);
-            BCE.Console.WriteLine("Inclination " + planet.orbitInclination, ConsoleColor.Green);
-            BCE.Console.WriteLine("Orbit Index " + planet.orbitIndex, ConsoleColor.Green);
-            BCE.Console.WriteLine("Orbit Longitude " + planet.orbitLongitude, ConsoleColor.Green);
-            BCE.Console.WriteLine("Orbit Phase " + planet.orbitPhase, ConsoleColor.Green);
-            BCE.Console.WriteLine("Orbit Radius " + planet.orbitRadius, ConsoleColor.Green);
-            BCE.Console.WriteLine("Precision " + planet.precision, ConsoleColor.Green);
-            BCE.Console.WriteLine("Radius " + planet.radius, ConsoleColor.Green);
-            BCE.Console.WriteLine("Rotation Period " + planet.rotationPeriod, ConsoleColor.Green);
-            BCE.Console.WriteLine("Rotation Phase " + planet.rotationPhase, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeLocalSunDirection " + planet.runtimeLocalSunDirection, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeOrbitPhase " + planet.runtimeOrbitPhase, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeOrbitRotation " + planet.runtimeOrbitRotation, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimePosition " + planet.runtimePosition, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimePositionNext " + planet.runtimePositionNext, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeRotation " + planet.runtimeRotation, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeRotationNext " + planet.runtimeRotationNext, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeRotationPhase " + planet.runtimeRotationPhase, ConsoleColor.Green);
-            BCE.Console.WriteLine("RuntimeSystemRotation " + planet.runtimeSystemRotation, ConsoleColor.Green);
-            BCE.Console.WriteLine("SingularityString " + planet.singularityString, ConsoleColor.Green);
-            BCE.Console.WriteLine("Sundistance " + planet.sunDistance, ConsoleColor.Green);
-            BCE.Console.WriteLine("TemperatureBias " + planet.temperatureBias, ConsoleColor.Green);
-            BCE.Console.WriteLine("Theme " + planet.theme, ConsoleColor.Green);
-            BCE.Console.WriteLine("Type " + planet.type, ConsoleColor.Green);
-            BCE.Console.WriteLine("uPosition " + planet.uPosition, ConsoleColor.Green);
-            BCE.Console.WriteLine("uPositionNext " + planet.uPositionNext, ConsoleColor.Green);
-            BCE.Console.WriteLine("Wanted " + planet.wanted, ConsoleColor.Green);
-            BCE.Console.WriteLine("WaterHeight " + planet.waterHeight, ConsoleColor.Green);
-            BCE.Console.WriteLine("WaterItemID " + planet.waterItemId, ConsoleColor.Green);
-            BCE.Console.WriteLine("WindStrength " + planet.windStrength, ConsoleColor.Green);
-            BCE.Console.WriteLine("Number " + planet.number, ConsoleColor.Green);
-            BCE.Console.WriteLine("Obliquity " + planet.obliquity, ConsoleColor.Green);
-            BCE.Console.WriteLine("Name " + planet.name, ConsoleColor.Green);
-            BCE.Console.WriteLine("mod_y " + planet.mod_y, ConsoleColor.Green);
-            BCE.Console.WriteLine("mod_x " + planet.mod_x, ConsoleColor.Green);
-            BCE.Console.WriteLine("Luminosity " + planet.luminosity, ConsoleColor.Green);
-            BCE.Console.WriteLine("Levelized " + planet.levelized, ConsoleColor.Green);
-            BCE.Console.WriteLine("Land% " + planet.landPercent, ConsoleColor.Green);
-            BCE.Console.WriteLine("Ion Height " + planet.ionHeight, ConsoleColor.Green);
-            BCE.Console.WriteLine("HabitableBias " + planet.habitableBias, ConsoleColor.Green);
-            BCE.Console.WriteLine("GasTotalHeat " + planet.gasTotalHeat, ConsoleColor.Green);
-            BCE.Console.WriteLine("BirthResourcePoint1 " + planet.birthResourcePoint1, ConsoleColor.Green);
-            BCE.Console.WriteLine("BirthResourcePoint0 " + planet.birthResourcePoint0, ConsoleColor.Green);
-            BCE.Console.WriteLine("BirthPoint " + planet.birthPoint, ConsoleColor.Green);
-            BCE.Console.WriteLine("Algo ID " + planet.algoId, ConsoleColor.Green);
-            BCE.Console.WriteLine("---------------------", ConsoleColor.Red);
-        }
     }
 }

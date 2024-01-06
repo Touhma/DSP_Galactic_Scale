@@ -16,7 +16,6 @@ namespace NebulaCompatibility
         private void Awake()
         {
             NebulaModAPI.RegisterPackets(Assembly.GetExecutingAssembly());
-            BCE.Console.Init();
             if (NebulaModAPI.NebulaIsInstalled)
             {
                 NebulaModAPI.OnMultiplayerGameStarted += NebulaCompat.NebulaStart;

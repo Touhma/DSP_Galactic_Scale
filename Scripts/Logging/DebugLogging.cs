@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using BCE;
 using BepInEx.Logging;
 using GSSerializer;
 using HarmonyLib;
@@ -20,67 +21,55 @@ namespace GalacticScale
 
         public static void LogTop(int width = 80)
         {
-            if (BCE.disabled)
-            {
-                Log("-----");
-                return;
-            }
-
             var insert = width - 21;
             var insertLeft = Mathf.FloorToInt(insert / 2) - 2;
             var insertRight = insert - insertLeft - 4;
-            BCE.Console.Write("\r\n╔═", ConsoleColor.White);
-            BCE.Console.Write("═", ConsoleColor.Gray);
-            BCE.Console.Write("═", ConsoleColor.DarkGray);
-            BCE.Console.Write(SpaceString(insertLeft), ConsoleColor.Green);
-            BCE.Console.Write("*", ConsoleColor.Yellow);
-            BCE.Console.Write(".·", ConsoleColor.Gray);
-            BCE.Console.Write(":", ConsoleColor.DarkGray);
-            BCE.Console.Write("·.", ConsoleColor.Gray);
-            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
-            BCE.Console.Write(" ✦ ", ConsoleColor.Cyan);
-            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
-            BCE.Console.Write(".·", ConsoleColor.Gray);
-            BCE.Console.Write(":", ConsoleColor.DarkGray);
-            BCE.Console.Write("·.", ConsoleColor.Gray);
-            BCE.Console.Write("*", ConsoleColor.Yellow);
-            BCE.Console.Write(SpaceString(insertRight), ConsoleColor.Green);
-            BCE.Console.Write("═", ConsoleColor.DarkGray);
-            BCE.Console.Write("═", ConsoleColor.Gray);
-            BCE.Console.Write("═╗\r\n", ConsoleColor.White);
+            console.Write("\r\n╔═", ConsoleColor.White);
+            console.Write("═", ConsoleColor.Gray);
+            console.Write("═", ConsoleColor.DarkGray);
+            console.Write(SpaceString(insertLeft), ConsoleColor.Green);
+            console.Write("*", ConsoleColor.Yellow);
+            console.Write(".·", ConsoleColor.Gray);
+            console.Write(":", ConsoleColor.DarkGray);
+            console.Write("·.", ConsoleColor.Gray);
+            console.Write("✧", ConsoleColor.DarkCyan);
+            console.Write(" ✦ ", ConsoleColor.Cyan);
+            console.Write("✧", ConsoleColor.DarkCyan);
+            console.Write(".·", ConsoleColor.Gray);
+            console.Write(":", ConsoleColor.DarkGray);
+            console.Write("·.", ConsoleColor.Gray);
+            console.Write("*", ConsoleColor.Yellow);
+            console.Write(SpaceString(insertRight), ConsoleColor.Green);
+            console.Write("═", ConsoleColor.DarkGray);
+            console.Write("═", ConsoleColor.Gray);
+            console.Write("═╗\r\n", ConsoleColor.White);
         }
 
         public static void LogBot(int width = 80)
         {
-            if (BCE.disabled)
-            {
-                Log("-----");
-                return;
-            }
-
             var insert = width - 21;
             var insertLeft = Mathf.FloorToInt(insert / 2) - 2;
             var insertRight = insert - insertLeft - 4;
-            BCE.Console.Write("╚═", ConsoleColor.White);
-            BCE.Console.Write("═", ConsoleColor.Gray);
-            BCE.Console.Write("═", ConsoleColor.DarkGray);
-            BCE.Console.Write(SpaceString(insertLeft), ConsoleColor.Green);
-            BCE.Console.Write("*", ConsoleColor.Yellow);
-            BCE.Console.Write(".·", ConsoleColor.Gray);
-            BCE.Console.Write(":", ConsoleColor.DarkGray);
-            BCE.Console.Write("·.", ConsoleColor.Gray);
-            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
-            BCE.Console.Write(" ✦ ", ConsoleColor.Cyan);
-            BCE.Console.Write("✧", ConsoleColor.DarkCyan);
-            BCE.Console.Write(".·", ConsoleColor.Gray);
-            BCE.Console.Write(":", ConsoleColor.DarkGray);
-            BCE.Console.Write("·.", ConsoleColor.Gray);
-            BCE.Console.Write("*", ConsoleColor.Yellow);
-            BCE.Console.Write(SpaceString(insertRight), ConsoleColor.Green);
+            console.Write("╚═", ConsoleColor.White);
+            console.Write("═", ConsoleColor.Gray);
+            console.Write("═", ConsoleColor.DarkGray);
+            console.Write(SpaceString(insertLeft), ConsoleColor.Green);
+            console.Write("*", ConsoleColor.Yellow);
+            console.Write(".·", ConsoleColor.Gray);
+            console.Write(":", ConsoleColor.DarkGray);
+            console.Write("·.", ConsoleColor.Gray);
+            console.Write("✧", ConsoleColor.DarkCyan);
+            console.Write(" ✦ ", ConsoleColor.Cyan);
+            console.Write("✧", ConsoleColor.DarkCyan);
+            console.Write(".·", ConsoleColor.Gray);
+            console.Write(":", ConsoleColor.DarkGray);
+            console.Write("·.", ConsoleColor.Gray);
+            console.Write("*", ConsoleColor.Yellow);
+            console.Write(SpaceString(insertRight), ConsoleColor.Green);
 
-            BCE.Console.Write("═", ConsoleColor.DarkGray);
-            BCE.Console.Write("═", ConsoleColor.Gray);
-            BCE.Console.WriteLine("═╝", ConsoleColor.White);
+            console.Write("═", ConsoleColor.DarkGray);
+            console.Write("═", ConsoleColor.Gray);
+            console.WriteLine("═╝", ConsoleColor.White);
         }
 
 //─── ･ ｡ﾟ☆: *.☽ .* :☆ﾟ. ───
@@ -100,13 +89,7 @@ namespace GalacticScale
                     LogMid(line, width);
                 }
             }
-
-            if (BCE.disabled)
-            {
-                Log(text);
-                return;
-            }
-
+            
             if (text.Length < width - 4) LogMidLine(text, width);
             else
             {
@@ -122,9 +105,9 @@ namespace GalacticScale
 
         public static void LogMidLine(string text, int width = 80)
         {
-            BCE.Console.Write("║ ", ConsoleColor.White);
-            BCE.Console.Write(String.Format("{0," + (width - 4) + "}", text), ConsoleColor.Green);
-            BCE.Console.Write(" ║\r\n", ConsoleColor.White);
+            console.Write("║ ", ConsoleColor.White);
+            console.Write(String.Format("{0," + (width - 4) + "}", text), ConsoleColor.Green);
+            console.Write(" ║\r\n", ConsoleColor.White);
         }
 
         public static void LogSpace(int lineCount = 1)
@@ -170,13 +153,13 @@ namespace GalacticScale
             if (stackTrace.FrameCount <= depth) return "";
 
             var methodName = stackTrace.GetFrame(depth).GetMethod().Name;
-            BCE.Console.WriteLine(methodName.ToString(), ConsoleColor.Yellow);
+            console.WriteLine(methodName.ToString(), ConsoleColor.Yellow);
             
             var reflectedType = stackTrace.GetFrame(depth).GetMethod().ReflectedType;
             
             if (reflectedType != null)
             {
-                BCE.Console.WriteLine(reflectedType.ToString(), ConsoleColor.Yellow);
+                console.WriteLine(reflectedType.ToString(), ConsoleColor.Yellow);
                 var classPath = reflectedType.ToString().Split('.');
                 var className = classPath[classPath.Length - 1];
                 if (className.Contains("+")) className = className.Split('+')[0];
@@ -279,7 +262,6 @@ namespace GalacticScale
                 Right,
                 Center
             }
-
 
             public static IEnumerable<CodeInstruction> LogTranspilerError(IEnumerable<CodeInstruction> instructions, string text)
             {

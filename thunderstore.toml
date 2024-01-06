@@ -25,6 +25,9 @@ target = "./GalacticScale.dll"
 source = "./Package/GSUI.dll"
 target = "./GSUI.dll"
 [[build.copy]]
+source = "./Package/BCE.dll"
+target = "./BCE.dll"
+[[build.copy]]
 source = "./Package/3rdPartyLicenses.md"
 target = "./3rdPartyLicenses.md"
 [[build.copy]]
