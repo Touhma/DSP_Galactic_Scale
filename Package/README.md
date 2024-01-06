@@ -2,6 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.23 - Remove force garbage collect when building. Massive performance improvement. Thanks to starfish for the code.
+- Version 2.12.22 - Recompile for DSP .21219
 - Version 2.12.21 - Fix for water on Pandora
 - Version 2.12.20 - Prevent fix for clipping enemies turning off (Hopefully)
 - Version 2.12.19 - Fix for gravity on moons orbiting huge gas giants. Fix can be reverted via toggle in GS Settings/Debug. Improved the code for the fix in 2.12.18 to increase performance.

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Emit;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -15,7 +17,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.21")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.23")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -66,7 +68,8 @@ namespace GalacticScale
             try
             {
                 var harmony = new Harmony("dsp.galactic-scale.2");
-                harmony.PatchAll((typeof(PlanetSizeTranspiler)));
+                harmony.PatchAll(typeof(PlanetSizeTranspiler));
+                harmony.PatchAll(typeof(LagFixTranspiler));
                 Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
                 harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
                 harmony.PatchAll(typeof(PatchOnBlueprintUtils));
@@ -185,6 +188,11 @@ namespace GalacticScale
            yield return new WaitUntil(()=>t());
            u();
         }
+
+
+
+        
+        
     }
 
     public delegate bool TestFunction();
