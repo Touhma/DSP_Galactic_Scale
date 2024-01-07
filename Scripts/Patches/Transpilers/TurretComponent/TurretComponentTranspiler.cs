@@ -13,8 +13,7 @@ namespace GalacticScale
 
         public static float GetRadius(ref TurretComponent turret)
         {
-            if (!Radii.ContainsKey(turret)) return 200f;
-            return Radii[turret];
+            return !Radii.ContainsKey(turret) ? 200f : Radii[turret];
         }
 
         public static void AddTurret(DefenseSystem defenseSystem, ref TurretComponent turret)
@@ -40,7 +39,7 @@ namespace GalacticScale
                 .InstructionEnumeration();
             return instructions;
         }
-
+        
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(TurretComponent), nameof(TurretComponent.CheckEnemyIsInAttackRange))]
         [HarmonyPatch(typeof(TurretComponent), nameof(TurretComponent.Shoot_Plasma))]
