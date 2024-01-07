@@ -5,7 +5,7 @@ using static System.Reflection.Emit.OpCodes;
 namespace GalacticScale.Patches
 
 {
-    public class PatchOnDefenseSystem
+    public partial class PatchOnDefenseSystem
     {
 
         [HarmonyTranspiler]

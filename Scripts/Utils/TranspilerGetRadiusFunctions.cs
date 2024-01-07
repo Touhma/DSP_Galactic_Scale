@@ -33,26 +33,26 @@ namespace GalacticScale
         public static T GetRadiusFromFactory<T>(T t, PlanetFactory factory)
         {
             var realRadius = ModifyRadius(Convert.ToDouble(t), factory?.planet?.realRadius ?? 200.0);
-            if (VFInput.alt) GS3.Log($"GetRadiusFromFactory Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
+            // if (VFInput.alt) GS3.Log($"GetRadiusFromFactory Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
             return (T)Convert.ChangeType(realRadius, typeof(T));
         }
         public static T GetRadiusFromAstroId<T>(T t, int id)
         {
             var realRadius = ModifyRadius(Convert.ToDouble(t), GameMain.data.galaxy?.astrosFactory[id]?.planet?.realRadius ?? 200.0);
-            if (VFInput.alt) GS3.Log($"GetRadiusFromAstroId Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} returning {realRadius}");
+            // if (VFInput.alt) GS3.Log($"GetRadiusFromAstroId Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} returning {realRadius}");
             return (T)Convert.ChangeType(realRadius, typeof(T));
         }
 
         public static T GetRadiusFromLocalPlanet<T>(T t)
         {
             var realRadius = ModifyRadius(Convert.ToDouble(t), GameMain.localPlanet?.realRadius ?? 200.0);
-            if (VFInput.alt) GS3.Log($"GetRadius Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
+            // if (VFInput.alt) GS3.Log($"GetRadius Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
             return (T)Convert.ChangeType(realRadius, typeof(T));
         }
         public static T GetRadiusFromEnemyData<T>(T t, ref EnemyData enemyData)
         {
             var realRadius = ModifyRadius(Convert.ToDouble(t), GameMain.galaxy.PlanetById(enemyData.astroId)?.realRadius??200.0);
-            if (VFInput.alt) GS3.Log($"GetRadiusFromFactory Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
+            // if (VFInput.alt) GS3.Log($"GetRadiusFromFactory Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
             return (T)Convert.ChangeType(realRadius, typeof(T));
         }
         public static T GetRadiusFromAltitude<T>(T t, float alt) //Original / Altitude
@@ -62,12 +62,7 @@ namespace GalacticScale
         }
         public static T GetRadiusFromMecha<T>(T t, Mecha mecha)
         {
-            // var num = mecha?.player?.planetData?.realRadius ?? 200f;
             var realRadius = ModifyRadius(Convert.ToDouble(t), mecha?.player?.planetData?.realRadius ?? 200.0);
-            // float orig = Convert.ToSingle(t);
-            // var diff = orig - 200f;
-            // num += diff;
-            // if (VFInput.alt) GS3.Log($"GetRadiusFromMecha Called By {GS3.GetCaller(0)} {GS3.GetCaller(1)} {GS3.GetCaller(2)} orig:{orig} returning {num}");
             return (T)Convert.ChangeType(realRadius, typeof(T));
         }
         
