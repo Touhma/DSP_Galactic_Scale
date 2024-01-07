@@ -7,8 +7,9 @@ namespace GalacticScale
     [fsObject(Converter = typeof(GSFSSettingsConverter))]
     public class GSSettings
     {
+        [NonSerialized] public bool GenerationComplete = false;
         public static GSVein BirthIron = new(6, 0.1f);
-
+        
         public static GSVein BirthCopper = new(6, 0.1f);
 
         // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }

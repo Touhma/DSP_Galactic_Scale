@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale
@@ -17,6 +18,12 @@ namespace GalacticScale
         private float _lightBalanceRadius = -1;
         private float _luminosity = -1;
         private float _mass = -1;
+        private int _initialHiveCount = -1;
+        private int _maxHiveCount = -1;
+        private int _hivePatternLevel = -1;
+        private float _safetyFactor = -1;
+        private bool _birthStar = false;
+
         [NonSerialized] private float _physicsRadius = -1;
         private VectorLF3 _pos;
         private float _radius = -1;
@@ -38,6 +45,7 @@ namespace GalacticScale
         [SerializeField] public float orbitScaler = 1;
 
         public GSPlanets Planets = new();
+        public AstroOrbitData[] _hiveOrbits = new AstroOrbitData[8];
         public int Seed;
         public ESpectrType Spectr;
         public EStarType Type;
@@ -87,12 +95,14 @@ namespace GalacticScale
 
         public void DebugStarData()
         {
-            Debug.Log(String.Format("|{0,10}|{1,10}|{2,10}|{3,10}|", this.Name, this.Type, this.Spectr,this.radius));
+            Debug.Log(String.Format("|{0,10}|{1,10}|{2,10}|{3,10}|", this.Name, this.Type, this.Spectr, this.radius));
             foreach (var b in this.Bodies)
             {
-                Debug.Log(String.Format("|{0,10}|{1,10}|{2,10}|{3,10}|",b.genData.Get("birthPlanet", false)?"X":"-", b.Name, b.Radius,b.Theme));
+                Debug.Log(String.Format("|{0,10}|{1,10}|{2,10}|{3,10}|",
+                    b.genData.Get("birthPlanet", false) ? "X" : "-", b.Name, b.Radius, b.Theme));
             }
         }
+
         public GSPlanets TelluricBodies
         {
             get
@@ -107,6 +117,342 @@ namespace GalacticScale
 
         public int TelluricBodyCount => TelluricBodies.Count;
 
+        [SerializeField]
+        public bool birthStar
+        {
+            get
+            {
+                if (GSSettings.Instance.GenerationComplete)
+                {
+                    if (GSSettings.BirthStar == this)
+                    {
+                        _birthStar = true;
+                    }
+                    else
+                    {
+                        _birthStar = false;
+                    }
+
+                    return _birthStar;
+                }
+
+                GS3.Error($"birthStar field accessed before generation complete by {GS3.GetCaller()}");
+                return false;
+            }
+           
+        }
+    
+        [SerializeField]
+        public AstroOrbitData[] hiveAstroOrbits
+        {
+            get => _hiveOrbits == null ? InitHiveAstroOrbits() : _hiveOrbits;
+            set => _hiveOrbits = value;
+        }
+
+        private AstroOrbitData[] InitHiveAstroOrbits()
+        {
+            var data = new AstroOrbitData[8];
+            var random = new GS3.Random(Seed);
+            var possibleOrbits = GS3.GeneratePossibleHiveOrbits(this, 10, random);
+            for (var i = 0; i < 8; i++)
+            {
+                data[i] = new AstroOrbitData();
+                var orbit = random.ItemAndRemove(possibleOrbits);
+                data[i].orbitRadius = orbit;
+                GS3.Warn($"Created Hive Orbit at {Name} {Utils.Round2DP(hiveAstroOrbits[i].orbitRadius)}");
+                data[i].orbitInclination = random.NextFloat();
+                data[i].orbitLongitude = random.NextFloat();
+                data[i].orbitPhase = random.NextFloat();
+                data[i].orbitalPeriod = Utils.CalculateOrbitPeriod(hiveAstroOrbits[i].orbitRadius);
+                data[i].orbitRotation = Quaternion.AngleAxis(hiveAstroOrbits[i].orbitLongitude, Vector3.up) *
+                                        Quaternion.AngleAxis(hiveAstroOrbits[i].orbitInclination,
+                                            Vector3.forward);
+                data[i].orbitNormal =
+                    Maths.QRotateLF(hiveAstroOrbits[i].orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
+            }
+
+            return data;
+        }
+
+
+        [SerializeField]
+        public int initialHiveCount
+        {
+            get => _initialHiveCount < 0 ? InitInitialHiveCount() : _initialHiveCount;
+            set => _initialHiveCount = value < 0 ? InitInitialHiveCount() : (int)value;
+        }
+
+        private int InitInitialHiveCount()
+        {
+            if (!GSSettings.Instance.GenerationComplete)
+            {
+                GS3.Error($"initialHiveCount accessed before generation complete by {GS3.GetCaller()}");
+                return 0;
+            }
+            if (GS3.gameDesc.combatSettings.initialColonize < 0.015f || Decorative || PlanetCount == 0)
+            {
+                _initialHiveCount = 0;
+            }
+            else
+            {
+                _initialHiveCount = CalculateInitialHiveCount();
+            }
+            return _initialHiveCount;
+        }
+
+        private int CalculateInitialHiveCount()
+        {
+            if (birthStar) return CalcInitialHiveCountBirthStar();
+            float initialColonize = GS3.gameDesc.combatSettings.initialColonize;
+            int count;
+            var r = new GS3.Random(Seed);
+
+            
+                
+                float difficultyFactor = Mathf.Pow(Mathf.Clamp01(safetyFactor - 0.2f), 0.86f);
+                float typeFactor = Mathf.Clamp01(1f - difficultyFactor - (maxHiveCount - 1) * 0.05f) * (1.1f - maxHiveCount * 0.1f);
+                if (initialColonize <= 1f)
+                {
+                    typeFactor *= initialColonize;
+                }
+                else
+                {
+                    typeFactor = Mathf.Lerp(typeFactor, 1f + (initialColonize - 1f) * 0.2f, (initialColonize - 1f) * 0.5f);
+                }
+
+                switch (Type)
+                {
+                    case EStarType.GiantStar:
+                        typeFactor *= 1.2f;
+                        break;
+                    case EStarType.WhiteDwarf:
+                        typeFactor *= 1.4f;
+                        break;
+                    case EStarType.NeutronStar:
+                        typeFactor *= 1.6f;
+                        break;
+                    case EStarType.BlackHole:
+                        typeFactor *= 1.8f;
+                        break;
+                    default:
+                    {
+                        if (Spectr == ESpectrType.O)
+                        {
+                            typeFactor *= 1.1f;
+                        }
+
+                        break;
+                    }
+                }
+
+                var proposed = typeFactor * maxHiveCount;
+                if (proposed > maxHiveCount + 0.75f)
+                {
+                    proposed = maxHiveCount + 0.75f;
+                }
+
+                var standardDeviation = 0.5f;
+                if (proposed <= 0.01)
+                {
+                    standardDeviation = 0f;
+                }
+                else
+                    standardDeviation = proposed switch
+                    {
+                        < 1f => Mathf.Sqrt(proposed) * 0.29f + 0.21f,
+                        > 1f => 0.3f + 0.2f * proposed,
+                        _ => standardDeviation
+                    };
+
+                int iterations = 64;
+                do
+                {
+                    count = (int)(StarGen.RandNormal(proposed, standardDeviation, r.NextDouble(), r.NextDouble()) + 0.5);
+                } while (iterations-- > 0 && (count < 0 || count > maxHiveCount));
+
+                if (count < 0)
+                {
+                    count = 0;
+                }
+                else if (count > maxHiveCount)
+                {
+                    count = maxHiveCount;
+                }
+            
+
+            if (Type == EStarType.BlackHole)
+            {
+                int epicHiveCount = (int)(GS3.gameDesc.combatSettings.maxDensity * 1000f + r.NextFloat(1000f) + 0.5f) / 1000;
+                if (count < epicHiveCount)
+                {
+                    count = epicHiveCount;
+                }
+
+                if (count < 1)
+                {
+                    count = 1;
+                }
+            }
+
+            return count;
+        }
+    
+
+        private int CalcInitialHiveCountBirthStar()
+        {
+            var count = 0;
+            var r = new GS3.Random(Seed);
+            var initialColonize = GS3.gameDesc.combatSettings.initialColonize;
+            int num18 = ((initialColonize * (float)maxHiveCount < 0.7f) ? 0 : 1);
+            float proposed = 0.6f * initialColonize * (float)maxHiveCount;
+            float standardDeviation = 0.5f;
+            if (proposed < 1f)
+            {
+                standardDeviation = Mathf.Sqrt(proposed) * 0.29f + 0.21f;
+            }
+            else if (proposed > (float)maxHiveCount)
+            {
+                proposed = (float)maxHiveCount;
+            }
+            int iterations = 16;
+            do
+            {
+                count = (int)((double)StarGen.RandNormal(proposed, standardDeviation,  r.NextDouble(),  r.NextDouble()) + 0.5);
+            }
+            while (iterations-- > 0 && (count < 0 || count > maxHiveCount));
+                
+            if (count < num18)
+            {
+                count = num18;
+            }
+            else if (count > maxHiveCount)
+            {
+                count = maxHiveCount;
+            }
+
+            return count;
+        }
+        [SerializeField]
+        public int maxHiveCount
+        {
+            get => _maxHiveCount < 0 ? InitMaxHiveCount() : _maxHiveCount;
+            set => _maxHiveCount = value < 0 ? InitMaxHiveCount() : (int)value;
+        }
+
+        private int InitMaxHiveCount()
+        {
+            if (!GSSettings.Instance.GenerationComplete)
+            {
+                GS3.Error($"maxHiveCount accessed before generation complete by {GS3.GetCaller()}");
+                return 0;
+            }
+
+            if (Decorative || PlanetCount == 0)
+            {
+                _maxHiveCount = 0;
+            }
+            else
+            {
+                var r = new GS3.Random(Seed);
+                _maxHiveCount = (int)(GS3.gameDesc.combatSettings.maxDensity * 1000f + (float)r.Next(1000) + 0.5f) /
+                                1000;
+                _maxHiveCount = Mathf.Clamp(_maxHiveCount, 1, 8);
+            }
+            return _maxHiveCount;
+        }
+
+        [SerializeField]
+        public float safetyFactor
+        {
+            get => _safetyFactor < 0 ? InitSafetyFactor() : _safetyFactor;
+            set => _safetyFactor = value < 0 ? InitSafetyFactor() : value;
+        }
+
+        private float InitSafetyFactor()
+        {
+            if (!GSSettings.Instance.GenerationComplete)
+            {
+                GS3.Error($"Safety Factor accessed before generation complete by {GS3.GetCaller()}");
+                return 0;
+            }
+            var r = new GS3.Random(Seed);
+            if (birthStar) _safetyFactor = 0.847f + r.NextFloat() * 0.026f;
+            else
+            {
+                var distanceFactor = Mathf.Clamp((float)(distanceFromBirthStar - 2.0) / 20f, 0.0f, 2.5f);
+                var colorFactor = Mathf.Pow(color, 1.3f);
+                switch (Type)
+                {
+                    case EStarType.BlackHole:
+                        colorFactor = 5f;
+                        break;
+                    case EStarType.NeutronStar:
+                        colorFactor = 1.7f;
+                        break;
+                    case EStarType.WhiteDwarf:
+                        colorFactor = 1.2f;
+                        break;
+                    case EStarType.GiantStar:
+                        colorFactor = Mathf.Max(0.6f, colorFactor);
+                        break;
+                }
+
+                if (Spectr == ESpectrType.O) _safetyFactor += 0.05f;
+                colorFactor *= 0.9f;
+                colorFactor += 0.07f;
+                _safetyFactor = Mathf.Clamp01(1f - Mathf.Pow(colorFactor, 0.73f) * Mathf.Pow(distanceFactor, 0.27f) + (float)r.NextFloat() * 0.08f - 0.04f);
+            }
+            return _safetyFactor;            
+        }
+        [NonSerialized]
+        private double _distanceFromBirthStar = -1;
+
+        public double distanceFromBirthStar
+        {
+            get
+            {
+                if (_distanceFromBirthStar < 0)
+                {
+                    if (!GSSettings.Instance.GenerationComplete)
+                    {
+                        GS3.Error($"distanceFromBirthStar accessed before generation complete by {GS3.GetCaller()}");
+                        return 0;
+                    }
+
+                    if (birthStar)
+                    {
+                        _distanceFromBirthStar = 0;
+                    }
+                    else _distanceFromBirthStar = (position - GSSettings.BirthStar.position).magnitude;
+                }
+                return _distanceFromBirthStar;
+            }
+        }
+        
+        [SerializeField]
+        public int hivePatternLevel
+        {
+            get => _hivePatternLevel < 0 ? InitHivePatternLevel() : _hivePatternLevel;
+            set => _hivePatternLevel = value < 0 ? InitHivePatternLevel() : (int)value;
+        }
+        private int InitHivePatternLevel()
+        {
+            if (safetyFactor >= 0.7f)
+            {
+                _hivePatternLevel = 0;
+            }
+            else if (safetyFactor >= 0.3f)
+            {
+                _hivePatternLevel = 1;
+            }
+            else
+            {
+                _hivePatternLevel = 2;
+            }
+
+            return _hivePatternLevel;
+        }
+        
         [SerializeField]
         public float age
         {

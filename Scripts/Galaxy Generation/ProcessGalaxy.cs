@@ -51,12 +51,13 @@ namespace GalacticScale
                     // Log($"RM1:{gameDesc.resourceMultiplier}");
                     // Log(gameDesc.resourceMultiplier.ToString());
                 }
-                
+
+                GSSettings.Instance.GenerationComplete = true;
                 Log($"Galaxy Loaded: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
                 // Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
-                var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
+                // var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
                 // Log($"TempPoses Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
@@ -73,31 +74,31 @@ namespace GalacticScale
 
                 // Log("Initializing AstroPoses");
                 CreateStarPlanetsAstroPoses(random);
-                var bs = galaxy.stars[galaxy.birthStarId - 1];
+                // var bs = galaxy.stars[galaxy.birthStarId - 1];
                 // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 Log($"Astroposes Initialized: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 
                 // Log("AstroPoses Initialized");
                 //SetupBirthPlanet();
-                Warn($"Setting up birthPlanet {GSSettings.BirthPlanetId}");
-                galaxy.birthPlanetId = GSSettings.BirthPlanetId;
-                galaxy.birthStarId = GSSettings.BirthStarId;
+                // Warn($"Setting up birthPlanet {GSSettings.BirthPlanetId}");
+                // galaxy.birthPlanetId = GSSettings.BirthPlanetId;
+                // galaxy.birthStarId = GSSettings.BirthStarId;
                 
-                Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
+                // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 //if (createPlanets) {
-                var birthStar = galaxy.StarById(galaxy.birthStarId);
-                AssignStarLevels(GSSettings.BirthStar);
-                for (var i = 0; i < galaxy.starCount && galaxy.starCount > 1; i++)
-                {
-                    var star = galaxy.stars[i];
-                    // star.level = Mathf.Abs(star.index - birthStar.index) / (float)(galaxy.starCount - 1) * 2f;
-                    var num1 = (float)(star.position - birthStar.position).magnitude / 32f;
-                    if (num1 > 1.0)
-                        num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
-                    var rc = Mathf.Pow(7f, num1) * 0.6f;
-                    star.resourceCoef = rc;
-                }
+                // var birthStar = galaxy.StarById(galaxy.birthStarId);
+                // AssignStarLevels(GSSettings.BirthStar);
+                // for (var i = 0; i < galaxy.starCount && galaxy.starCount > 1; i++)
+                // {
+                //     var star = galaxy.stars[i];
+                //     // star.level = Mathf.Abs(star.index - birthStar.index) / (float)(galaxy.starCount - 1) * 2f;
+                //     var num1 = (float)(star.position - birthStar.position).magnitude / 32f;
+                //     if (num1 > 1.0)
+                //         num1 = Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(Mathf.Log(num1) + 1f) + 1f) + 1f) + 1f) + 1f;
+                //     var rc = Mathf.Pow(7f, num1) * 0.6f;
+                //     star.resourceCoef = rc;
+                // }
 
                 Log($"Resource Coefficients Set: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
@@ -113,7 +114,7 @@ namespace GalacticScale
                 Log($"birthStarName: {galaxy.stars[galaxy.birthStarId - 1].name} Radius:{galaxy.PlanetById(galaxy.birthPlanetId).radius} Scale:{galaxy.PlanetById(galaxy.birthPlanetId).scale}");
                 if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemesPost.json"), LDB._themes.dataArray);
                 Log("Galaxy Generated");
-                Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
+                // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 return galaxy;
             }
             catch (Exception e)
@@ -128,29 +129,29 @@ namespace GalacticScale
                 return null;
             }
         }
-        public static void AssignStarLevels(GSStar birthStar)
-        {
-            birthStar.level = 0;
-            var maxDistance = 0f;
-            foreach (GSStar s in GSSettings.Stars)
-            {
-                float m = (float)s.position.magnitude - (float)birthStar.position.magnitude;
-                if (m > maxDistance) maxDistance = m;
-            }
-            foreach (GSStar s in GSSettings.Stars)
-            {
-                var m = (float)s.position.magnitude- (float)birthStar.position.magnitude;;
-                s.level = m / maxDistance;
-            }
-        }
-        public static void GenerateVeins(bool SketchOnly)
-        {
-            for (var i = 1; i < galaxy.starCount; ++i)
-            {
-                var star = galaxy.stars[i];
-                for (var j = 0; j < star.planetCount; ++j)
-                    PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins();
-            }
-        }
+        // public static void AssignStarLevels(GSStar birthStar)
+        // {
+        //     birthStar.level = 0;
+        //     var maxDistance = 0f;
+        //     foreach (GSStar s in GSSettings.Stars)
+        //     {
+        //         float m = (float)s.position.magnitude - (float)birthStar.position.magnitude;
+        //         if (m > maxDistance) maxDistance = m;
+        //     }
+        //     foreach (GSStar s in GSSettings.Stars)
+        //     {
+        //         var m = (float)s.position.magnitude- (float)birthStar.position.magnitude;;
+        //         s.level = m / maxDistance;
+        //     }
+        // }
+        // public static void GenerateVeins(bool SketchOnly)
+        // {
+        //     for (var i = 1; i < galaxy.starCount; ++i)
+        //     {
+        //         var star = galaxy.stars[i];
+        //         for (var j = 0; j < star.planetCount; ++j)
+        //             PlanetModelingManager.Algorithm(star.planets[j]).GenerateVeins();
+        //     }
+        // }
     }
 }

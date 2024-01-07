@@ -153,13 +153,13 @@ namespace GalacticScale
             if (stackTrace.FrameCount <= depth) return "";
 
             var methodName = stackTrace.GetFrame(depth).GetMethod().Name;
-            console.WriteLine(methodName.ToString(), ConsoleColor.Yellow);
+            // console.WriteLine(methodName.ToString(), ConsoleColor.Yellow);
             
             var reflectedType = stackTrace.GetFrame(depth).GetMethod().ReflectedType;
             
             if (reflectedType != null)
             {
-                console.WriteLine(reflectedType.ToString(), ConsoleColor.Yellow);
+                // console.WriteLine(reflectedType.ToString(), ConsoleColor.Yellow);
                 var classPath = reflectedType.ToString().Split('.');
                 var className = classPath[classPath.Length - 1];
                 if (className.Contains("+")) className = className.Split('+')[0];

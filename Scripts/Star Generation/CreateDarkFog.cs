@@ -6,65 +6,65 @@ namespace GalacticScale
 {
     public static partial class GS3
     {
-        private static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
-        {
-	        starData.hivePatternLevel = 0;
-	        starData.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
-	        var maxDensity = gameDesc.combatSettings.maxDensity;
-	        float initialColonize = gameDesc.combatSettings.initialColonize;
-	        Log($"Setting up Birth Star Hive System for {starData.name} Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+     //    private static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
+     //    {
+	    //     starData.hivePatternLevel = 0;
+	    //     starData.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
+	    //     var maxDensity = gameDesc.combatSettings.maxDensity;
+	    //     float initialColonize = gameDesc.combatSettings.initialColonize;
+	    //     Log($"Setting up Birth Star Hive System for {starData.name} Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+     //
+     //
+	    //     starData.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
+	    //     starData.maxHiveCount = Mathf.Clamp(starData.maxHiveCount, 1, 8);
+	    //     starData.initialHiveCount = Mathf.Clamp(starData.initialHiveCount, 1, starData.maxHiveCount);
+	    //     if (initialColonize < 0.015f)
+	    //     {
+		   //      Log("Preventing Birth System from having a Hive");
+		   //      starData.initialHiveCount = 0;
+	    //     }
+	    //     Log($"Birth System ({starData.name}) Hive Settings Applied : " + starData.initialHiveCount + " / " + starData.maxHiveCount);
+	    // }
 
-
-	        starData.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
-	        starData.maxHiveCount = Mathf.Clamp(starData.maxHiveCount, 1, 8);
-	        starData.initialHiveCount = Mathf.Clamp(starData.initialHiveCount, 1, starData.maxHiveCount);
-	        if (initialColonize < 0.015f)
-	        {
-		        Log("Preventing Birth System from having a Hive");
-		        starData.initialHiveCount = 0;
-	        }
-	        Log($"Birth System ({starData.name}) Hive Settings Applied : " + starData.initialHiveCount + " / " + starData.maxHiveCount);
-	    }
-
-        public static void ConfigureStarHiveSettings(Random random, StarData star)
-        {
-	        float initialColonize = gameDesc.combatSettings.initialColonize;
-	        var maxDensity = gameDesc.combatSettings.maxDensity;
-	        // Log("Generating Hive Settings to " + star.name + "");
-	        var level = star.level;
-	        bool epic = star.type == EStarType.BlackHole || star.type == EStarType.NeutronStar;
-	        star.hivePatternLevel = 0;
-	        star.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
-	        if (epic) star.safetyFactor = 1;
-	        star.safetyFactor *= (maxDensity / 3f);
-	        star.safetyFactor = Mathf.Clamp01(star.safetyFactor);
-	        
-	        
-			star.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
-			star.maxHiveCount += Mathf.RoundToInt(4f*level);
-	        
-	        
-	        // Log($"Setting up Star Hive System for {star.name} {star.typeString} {star.spectr} Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
-
-	        if (epic) star.maxHiveCount += 2;
-	        
-	        
-	        if (initialColonize < 0.015f)
-	        {
-		        // Log("Preventing System from having a Hive");
-		        star.initialHiveCount = 0;
-	        }
-	        else
-	        {
-		        star.initialHiveCount = Mathf.RoundToInt(initialColonize/2 * (star.maxHiveCount -0.2f));
-		        star.initialHiveCount += Mathf.RoundToInt(level * 2f);
-		        
-		        
-	        }
-	        star.maxHiveCount = Mathf.Clamp(star.maxHiveCount, 0, 8);
-	        star.initialHiveCount = Mathf.Clamp(star.initialHiveCount, 0, star.maxHiveCount);
-	        // Log($"Level {star.level} System ({star.name} {star.typeString} {star.spectr}) Hive Settings Applied : " + star.initialHiveCount + " / " + star.maxHiveCount +$"Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
-        }
+   //      public static void ConfigureStarHiveSettings(Random random, StarData star)
+   //      {
+	  //       float initialColonize = gameDesc.combatSettings.initialColonize;
+	  //       var maxDensity = gameDesc.combatSettings.maxDensity;
+	  //       // Log("Generating Hive Settings to " + star.name + "");
+	  //       var level = star.level;
+	  //       bool epic = star.type == EStarType.BlackHole || star.type == EStarType.NeutronStar;
+	  //       star.hivePatternLevel = 0;
+	  //       star.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
+	  //       if (epic) star.safetyFactor = 1;
+	  //       star.safetyFactor *= (maxDensity / 3f);
+	  //       star.safetyFactor = Mathf.Clamp01(star.safetyFactor);
+	  //       
+	  //       
+			// star.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
+			// star.maxHiveCount += Mathf.RoundToInt(4f*level);
+	  //       
+	  //       
+	  //       // Log($"Setting up Star Hive System for {star.name} {star.typeString} {star.spectr} Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+   //
+	  //       if (epic) star.maxHiveCount += 2;
+	  //       
+	  //       
+	  //       if (initialColonize < 0.015f)
+	  //       {
+		 //        // Log("Preventing System from having a Hive");
+		 //        star.initialHiveCount = 0;
+	  //       }
+	  //       else
+	  //       {
+		 //        star.initialHiveCount = Mathf.RoundToInt(initialColonize/2 * (star.maxHiveCount -0.2f));
+		 //        star.initialHiveCount += Mathf.RoundToInt(level * 2f);
+		 //        
+		 //        
+	  //       }
+	  //       star.maxHiveCount = Mathf.Clamp(star.maxHiveCount, 0, 8);
+	  //       star.initialHiveCount = Mathf.Clamp(star.initialHiveCount, 0, star.maxHiveCount);
+	  //       // Log($"Level {star.level} System ({star.name} {star.typeString} {star.spectr}) Hive Settings Applied : " + star.initialHiveCount + " / " + star.maxHiveCount +$"Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
+   //      }
         
         private static void CreateDarkFogHive(StarData star, Random random)
         {
@@ -81,14 +81,14 @@ namespace GalacticScale
             var possibleHiveOrbits = GeneratePossibleHiveOrbits(gsStar);
 
             var hiveCount = 8;
-            if (gsStar.Decorative || gsStar.PlanetCount == 0)
-            {
-	            star.initialHiveCount = 0;
-	            star.maxHiveCount = 0;
-	            star.hivePatternLevel = 0;
-	            // star.hiveAstroOrbits = new AstroOrbitData[] { };
-	            // return;
-            }
+            // if (gsStar.Decorative || gsStar.PlanetCount == 0)
+            // {
+	           //  star.initialHiveCount = 0;
+	           //  star.maxHiveCount = 0;
+	           //  star.hivePatternLevel = 0;
+	           //  // star.hiveAstroOrbits = new AstroOrbitData[] { };
+	           //  // return;
+            // }
             star.hiveAstroOrbits = new AstroOrbitData[hiveCount];
             AstroOrbitData[] hiveAstroOrbits = star.hiveAstroOrbits;
             for (int i = 0; i < hiveCount; i++)
@@ -110,7 +110,7 @@ namespace GalacticScale
             // Log($"Darkfog Hive Orbits Generated for {gsStar.Name}");
         }
 
-        private static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)
+        public static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)
         {
             if (gsStar.PlanetCount == 0 || gsStar.Decorative) return new List<float>{1f,2f,3f,4f,5f,6f,7f,8f};
             List<(float inner, float outer)> ExistingOrbits = new();

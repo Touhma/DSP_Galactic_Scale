@@ -53,9 +53,15 @@ namespace GalacticScale
             {
 	            galaxy.birthStarId = starData.id;
 	            // GS3.Log($"Applying Birth Hive Settings to {star.Name}");
-	            ConfigureBirthStarHiveSettings(random, starData);
+	            // ConfigureBirthStarHiveSettings(random, starData);
             }
-            else ConfigureStarHiveSettings(random, starData);
+            // else ConfigureStarHiveSettings(random, starData);
+            starData.safetyFactor = star.safetyFactor;
+            starData.maxHiveCount = star.maxHiveCount;
+            starData.hiveAstroOrbits = star.hiveAstroOrbits;
+            starData.initialHiveCount = star.initialHiveCount;
+ 
+            
             //end 0.10
             return starData;
         }
