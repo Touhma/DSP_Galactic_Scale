@@ -13,6 +13,7 @@ namespace GalacticScale
 
         public static float GetRadius(ref TurretComponent turret)
         {
+            if (!Radii.ContainsKey(turret)) return 200f;
             return Radii[turret];
         }
 

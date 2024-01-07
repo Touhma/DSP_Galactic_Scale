@@ -15,6 +15,21 @@ namespace GalacticScale
 {
     public class PatchOnUnspecified_Debug
     {
+	    [HarmonyPostfix]
+	    [HarmonyPatch(typeof(DefenseSystem), nameof(DefenseSystem.AfterTurretsImport))]
+	    private static void AfterTurretsImport(ref DefenseSystem __instance)
+	    {
+		    int cursor = __instance.turrets.cursor;
+		    TurretComponent[] buffer = __instance.turrets.buffer;
+		    for (int i = 1; i < cursor; i++)
+		    {
+			    ref TurretComponent ptr = ref buffer[i];
+			    if (ptr.id == 1) TurretComponentTranspiler.AddTurret(__instance, ref ptr);
+			    
+		    }
+	    }
+	    
+	    
 	[HarmonyPrefix]
 	[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.ApplyGravity))]
 	private static bool ApplyGravity(ref PlayerController __instance)

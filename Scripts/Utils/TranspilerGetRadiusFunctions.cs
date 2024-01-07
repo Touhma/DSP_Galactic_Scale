@@ -10,7 +10,8 @@ namespace GalacticScale
         public static MethodInfo GetRadiusFromAstroId(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAstroId)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromLocalPlanet(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromLocalPlanet)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromEnemyData(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromEnemyData)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
-        
+        public static MethodInfo GetRadiusFromMecha(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromMecha)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+ 
         public static MethodInfo GetRadiusFromFactory(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromFactory)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromAltitude(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAltitude)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
     }
@@ -28,6 +29,11 @@ namespace GalacticScale
             realRadius += diff;
             if (negative) realRadius *= -1;
             return realRadius;
+        }
+        public static T GetRadiusFromMecha<T>(T t, Mecha mecha)
+        {
+            var realRadius = ModifyRadius(Convert.ToDouble(t), mecha?.player?.planetData?.realRadius ?? 200.0);
+            return (T)Convert.ChangeType(realRadius, typeof(T));
         }
         public static T GetRadiusFromFactory<T>(T t, PlanetFactory factory)
         {
