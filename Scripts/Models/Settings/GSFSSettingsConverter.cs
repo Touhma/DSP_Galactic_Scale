@@ -15,7 +15,7 @@ namespace GalacticScale
 
         protected override fsResult DoSerialize(GSSettings model, Dictionary<string, fsData> serialized)
         {
-            //GS3.Log("Start" + GS3.GetCaller());
+            GS3.Log("Start" + GS3.GetCaller());
             SerializeMember(serialized, null, "Seed", GSSettings.Seed);
             SerializeMember(serialized, null, "GalaxyParams", GSSettings.GalaxyParams);
             SerializeMember(serialized, null, "Stars", GSSettings.Stars);
@@ -27,7 +27,7 @@ namespace GalacticScale
                 SerializeMember(serialized, null, "BirthCopper", GSSettings.BirthCopper);
             }
 
-            //GS3.Log("End");
+            GS3.Log("End");
             return fsResult.Success;
         }
 

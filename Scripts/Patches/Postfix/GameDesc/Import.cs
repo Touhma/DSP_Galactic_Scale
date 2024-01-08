@@ -19,17 +19,17 @@ namespace GalacticScale.Patches
                 if (VFInput.shift && File.Exists(ForceFile))
                 {
                     GS3.Warn("LOADING GALAXY DESC FROM ForceImport.json");
-                    GS3.Import(r, ForceFile);
+                    GS3.Import(ForceFile);
                 }
                 else if (File.Exists(GSSave))
                 {
                     GS3.Log("Loading GS3 Save Data");
-                    GS3.Import(r, GSSave);
+                    GS3.Import(GSSave);
                 }
  
-                GS3.Log("Unsetting Cheatmode");
-                GS3.Log("Setting option");
-                if (GS3.Config?.CheatMode != null) GS3.Config.DisableCheatMode();
+                // GS3.Log("Unsetting Cheatmode");
+                // GS3.Log("Setting option");
+                // if (GS3.Config?.CheatMode != null) GS3.Config.DisableCheatMode();
                 GS3.Log("Returning");
                 return;
             }

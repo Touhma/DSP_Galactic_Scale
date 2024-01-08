@@ -17,7 +17,7 @@ namespace GalacticScale.Patches
             if (accountData.isNull) accountData = AccountData.me;
             r.ReadString();
             new GameDesc().Import(r);
-            GS3.Import(r);
+            // GS3.Import(r);
             GS3.Warn("Imported GS3 Data");
             r.ReadInt64();
             if (num >= 7)

@@ -59,6 +59,7 @@ namespace GalacticScale
             starData.safetyFactor = star.safetyFactor;
             starData.maxHiveCount = star.maxHiveCount;
             starData.hiveAstroOrbits = star.hiveAstroOrbits;
+            GS3.LogJson(star.hiveAstroOrbits);
             starData.initialHiveCount = star.initialHiveCount;
  
             

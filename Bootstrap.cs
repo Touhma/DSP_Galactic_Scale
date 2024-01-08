@@ -105,6 +105,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(Patches.PatchOnDFRelayComponent));
                 harmony.PatchAll(typeof(Patches.PatchOnDigitalSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnEnemyDFGroundSystem));
+                harmony.PatchAll(typeof(Patches.PatchOnEnemyDFHiveSystem));
                 harmony.PatchAll(typeof(Patches.PatchOnFactoryModel));
                 harmony.PatchAll(typeof(Patches.PatchOnGalaxyData));
                 harmony.PatchAll(typeof(Patches.PatchOnGameAbnormalityData));

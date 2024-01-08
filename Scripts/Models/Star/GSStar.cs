@@ -45,7 +45,7 @@ namespace GalacticScale
         [SerializeField] public float orbitScaler = 1;
 
         public GSPlanets Planets = new();
-        public AstroOrbitData[] _hiveOrbits = new AstroOrbitData[8];
+        [NonSerialized] public AstroOrbitData[] _hiveOrbits = null;
         public int Seed;
         public ESpectrType Spectr;
         public EStarType Type;
@@ -151,26 +151,28 @@ namespace GalacticScale
 
         private AstroOrbitData[] InitHiveAstroOrbits()
         {
+            GS3.LogMagenta("InitHiveAstroOrbits");
             var data = new AstroOrbitData[8];
             var random = new GS3.Random(Seed);
             var possibleOrbits = GS3.GeneratePossibleHiveOrbits(this, 10, random);
+            GS3.LogJson(possibleOrbits);
             for (var i = 0; i < 8; i++)
             {
                 data[i] = new AstroOrbitData();
                 var orbit = random.ItemAndRemove(possibleOrbits);
                 data[i].orbitRadius = orbit;
-                GS3.Warn($"Created Hive Orbit at {Name} {Utils.Round2DP(hiveAstroOrbits[i].orbitRadius)}");
                 data[i].orbitInclination = random.NextFloat();
                 data[i].orbitLongitude = random.NextFloat();
                 data[i].orbitPhase = random.NextFloat();
-                data[i].orbitalPeriod = Utils.CalculateOrbitPeriod(hiveAstroOrbits[i].orbitRadius);
-                data[i].orbitRotation = Quaternion.AngleAxis(hiveAstroOrbits[i].orbitLongitude, Vector3.up) *
-                                        Quaternion.AngleAxis(hiveAstroOrbits[i].orbitInclination,
+                data[i].orbitalPeriod = Utils.CalculateOrbitPeriod(data[i].orbitRadius);
+                data[i].orbitRotation = Quaternion.AngleAxis(data[i].orbitLongitude, Vector3.up) *
+                                        Quaternion.AngleAxis(data[i].orbitInclination,
                                             Vector3.forward);
                 data[i].orbitNormal =
-                    Maths.QRotateLF(hiveAstroOrbits[i].orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
+                    Maths.QRotateLF(data[i].orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
             }
-
+            GS3.LogJson(data);
+            _hiveOrbits = data;
             return data;
         }
 

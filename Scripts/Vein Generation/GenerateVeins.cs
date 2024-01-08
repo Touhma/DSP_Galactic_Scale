@@ -235,6 +235,7 @@ namespace GalacticScale
                 groupVector *= (float)(random.NextDouble() * 0.4 + 0.2);
             }
 
+            planet.veinBiasVector = groupVector;
             return groupVector;
         }
 
