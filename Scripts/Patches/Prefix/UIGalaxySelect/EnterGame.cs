@@ -38,6 +38,11 @@ namespace GalacticScale.Patches
                 if (advisorTips != DSPGame.globalOption.advisorTips)
                 {
                     UIAdvisorTip.showAdvisorTips = DSPGame.globalOption.advisorTips;
+                    if (GS3.Config.SkipTutorials)
+                    {
+                        DSPGame.globalOption.advisorTips = false;
+                        UIAdvisorTip.showAdvisorTips = false;
+                    }
                     DSPGame.globalOption.SaveGlobal();
                 }
 

@@ -127,7 +127,18 @@ namespace GalacticScale
         {
             Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Warning, true);
         }
-
+        public static void LogCyan(string message, [CallerLineNumber] int lineNumber = 0)
+        {
+            console.WriteLine($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", ConsoleColor.DarkCyan);
+        }
+        public static void LogGreen(string message, [CallerLineNumber] int lineNumber = 0)
+        {
+            console.WriteLine($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", ConsoleColor.Green);
+        }
+        public static void LogMagenta(string message, [CallerLineNumber] int lineNumber = 0)
+        {
+            console.WriteLine($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", ConsoleColor.Magenta);
+        }
         public static void LogJson(object o, bool force = false)
         {
             if (!DebugOn && !force) return;

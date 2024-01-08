@@ -57,7 +57,7 @@ namespace GalacticScale
                 highStopwatch.Begin();
                 // Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");
                 gameDesc.starCount = GSSettings.StarCount;
-                // var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
+                var tempPoses = StarPositions.GenerateTempPoses(random.Next(), GSSettings.StarCount, GSSettings.GalaxyParams.iterations, GSSettings.GalaxyParams.minDistance, GSSettings.GalaxyParams.minStepLength, GSSettings.GalaxyParams.maxStepLength, GSSettings.GalaxyParams.flatten);
                 // Log($"TempPoses Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
 

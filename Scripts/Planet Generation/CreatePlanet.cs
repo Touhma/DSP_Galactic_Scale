@@ -12,9 +12,13 @@ namespace GalacticScale
                 Error($"Create Planet failed: Star '{star.name}' already has 99 bodies");
                 return null;
             }
-            // var highStopwatch = new HighStopwatch();
-
-            // highStopwatch.Begin();
+            var highStopwatch = new HighStopwatch();
+            if (GSSettings.BirthPlanet == gsPlanet)
+            {
+                LogCyan($"Creating Birth Planet {gsPlanet.Name}");
+                star.galaxy.birthPlanetId = star.id * 100 + GSSettings.Stars[star.index].counter + 1;
+            }
+            highStopwatch.Begin();
 
             // Log("CreatePlanet|" + gsPlanet.Name);
             var isMoon = host != null;
@@ -55,13 +59,13 @@ namespace GalacticScale
                 roman = RomanNumbers.roman[host.number + 1] + " - ";
             }
 
-            // Log($"Start1 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
-            // highStopwatch.Begin();
+            Log($"Start1 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
+            highStopwatch.Begin();
             if (RomanNumbers.roman.Length <= index + 1) Error($"Roman Number Conversion Error for {index + 1}");
 
             roman += RomanNumbers.roman[index + 1];
             planet.name = gsPlanet.Name != "" ? gsPlanet.Name : star.name + " " + roman;
-            // GS3.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
+            GS3.Log($"Creating Planet {planet.name} with seed:{planet.seed}");
             planet.orbitRadius = gsPlanet.OrbitRadius;
             if (planet.orbitRadius < 0)
             {
@@ -84,8 +88,8 @@ namespace GalacticScale
             var segments = (int)(planet.radius / 4f + 0.1f) * 4;
             if (!Patches.PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) SetLuts(segments, planet.radius);
                 Patches.PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
-            // Log($"Start2 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
-            // highStopwatch.Begin();
+            Log($"Start2 of {planet.name} creation took {highStopwatch.duration:F5} s\r\n");
+            highStopwatch.Begin();
             planet.runtimeOrbitRotation = Quaternion.AngleAxis(planet.orbitLongitude, Vector3.up) * Quaternion.AngleAxis(planet.orbitInclination, Vector3.forward); // moon gsPlanet.runtimeOrbitRotation = gsPlanet.orbitAroundPlanet.runtimeOrbitRotation * gsPlanet.runtimeOrbitRotation;
             planet.runtimeSystemRotation = planet.runtimeOrbitRotation * Quaternion.AngleAxis(planet.obliquity, Vector3.forward);
             //GS3.Log("Trying to apply theme " + gsPlanet.Theme);
@@ -109,8 +113,8 @@ namespace GalacticScale
             //Patch.Debug("Setting Theme " + gsPlanet.Theme + " " + gsPlanet.Theme.theme);
             //GS3.DumpObjectToJson(GS3.DataDir + "\\Planet" + planetData.id + ".json", gsPlanet);
             //Log("Setting Theme|"+gsPlanet.Name);
-            // Log($"ThemeLibrary? for {planet.name} took {highStopwatch.duration:F5} s\r\n");
-            // highStopwatch.Begin();
+            Log($"ThemeLibrary? for {planet.name} took {highStopwatch.duration:F5} s\r\n");
+            highStopwatch.Begin();
             SetPlanetTheme(planet, gsPlanet);
             planet.temperatureBias = gsPlanet.GsTheme.AtmoHeight;
             // Log($"Theme Set for {planet.name} took {highStopwatch.duration:F5} s\r\n");
@@ -134,7 +138,7 @@ namespace GalacticScale
             //Log("PLANET RADIUS "+planetData.radius);
             //Log("End|" + gsPlanet.Name);
             //GS3.Log("Setting Singularities");
-            //GS3.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id} rotation:{planet.rotationPeriod} orbit:{planet.orbitalPeriod} obliq:{planet.obliquity} bodies:{gsPlanet.Bodies.Count}");
+            GS3.Log($"Added Planet {planet.name} to galaxy with id:{planet.id} and index:{planet.index} star:{planet.star.name} with id:{planet.star.id} rotation:{planet.rotationPeriod} orbit:{planet.orbitalPeriod} obliq:{planet.obliquity} bodies:{gsPlanet.Bodies.Count}");
             if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod) < 1f) //GS3.Log("Setting TidalLock"); 
                 planet.singularity |= EPlanetSingularity.TidalLocked;
             if (Math.Abs(planet.orbitalPeriod - planet.rotationPeriod * 2) < 1f) //GS3.Log("Setting TidalLock2"); 
@@ -151,7 +155,7 @@ namespace GalacticScale
                 planet.singularity |= EPlanetSingularity.ClockwiseRotate;
 
             // GS3.Warn(planet.singularityString + " " + planet.singularity);
-            // Log($"{planet.name} created in {highStopwatch.duration:F5} s\r\n");
+            Log($"{planet.name} created in {highStopwatch.duration:F5} s\r\n");
             return planet;
         }
 
