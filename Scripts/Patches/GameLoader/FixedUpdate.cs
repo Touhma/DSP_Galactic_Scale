@@ -18,41 +18,41 @@ namespace GalacticScale
         {
             // GS2.Warn($"Start {__instance.frame}");
             if (GS2.IsMenuDemo || GS2.Vanilla) return true;
-            // GS2.Warn("Not Vanilla");
+            GS2.Dev("Not Vanilla");
             if (__instance.frame == 1)
             {
-                // GS2.Warn("FRAME 1");
+                GS2.Dev("FRAME 1");
                 DSPGame.CreateGameMainObject();
                 DSPGame.Game.isMenuDemo = DSPGame.IsMenuDemo;
             }
 
-            // GS2.Warn(".");
+            GS2.Dev(".");
             if (__instance.frame == 3 && GameMain.isNull)
             {
-                // GS2.Warn("FRAME 3");
+                GS2.Dev("FRAME 3");
                 __instance.LoadFailed();
                 __instance.frame = 3;
             }
 
-            // GS2.Warn(".");
+            GS2.Dev(".");
             if (__instance.frame == 5 && GameMain.localStar != null)
             {
-                // GS2.Warn($"FRAME 5 {GameMain.mainPlayer != null} {GameMain.gameTick == 0L} {GS2.Config.SkipPrologue}");
-                // GS2.Warn($"{GameMain.localStar?.name}");
+                GS2.Dev($"FRAME 5 {GameMain.mainPlayer != null} {GameMain.gameTick == 0L} {GS2.Config.SkipPrologue}");
+                GS2.Dev($"{GameMain.localStar?.name}");
                 if (GameMain.mainPlayer != null && GameMain.gameTick == 0L && GS2.Config.SkipPrologue)
                 {
-                    // GS2.Warn($"Setting uPosition");
+                    GS2.Dev($"Setting uPosition");
                     GameMain.mainPlayer.uPosition = GameMain.localPlanet.uPosition;
                 }
 
-                // GS2.Warn($"{GameMain.localPlanet == null}");
+                GS2.Dev($"{GameMain.localPlanet == null}");
                 GameMain.localPlanet?.Load();
                 GameMain.localStar?.Load();
             }
 
             if (__instance.frame >= 7)
             {
-                // GS2.Warn("FRAME 7");
+                GS2.Dev("FRAME 7");
                 // if (!GS2.Config.SkipPrologue) if (GameMain.localStar != null && !GameMain.localStar.loaded) __instance.frame = 7;
                 //     else
                 //     {
@@ -63,12 +63,12 @@ namespace GalacticScale
 
             if (__instance.frame == 8)
             {
-                // GS2.Warn($"FRAME 8 {__instance.gameObject.GetInstanceID()}");
+                GS2.Dev($"FRAME 8 {__instance.gameObject.GetInstanceID()}");
                 if (GameMain.gameTick == 0L)
                 {
                     if (GameMain.data == null)
                     {
-                        // GS2.Warn("GameMain.data null");
+                        GS2.Dev("GameMain.data null");
                         return false;
                     }
 
@@ -78,16 +78,16 @@ namespace GalacticScale
                     }
                     else
                     {
-                        GS2.Warn("Starting standard mode guide");
+                        GS2.Dev("Starting standard mode guide");
                         GameMain.data.StartStandardModeGuide();
                     }
                 }
-                // GS2.Warn("FRAME 8.5");
+                GS2.Warn("FRAME 8.5");
 
                 GameMain.data.SetReady();
                 if (GameCamera.instance == null)
                 {
-                    // GS2.Warn("Camera null setting frame 9");
+                    GS2.Dev("Camera null setting frame 9");
                     __instance.frame = 9;
                     return false;
                 }
@@ -95,28 +95,28 @@ namespace GalacticScale
                 GameCamera.instance.SetReady();
 
                 GameMain.preferences.LateRestore();
-                // GS2.Warn("All good, Setting Frame 10");
+                GS2.Dev("All good, Setting Frame 10");
                 __instance.frame = 10;
             }
 
             if (__instance.frame == 9)
             {
-                // GS2.Warn("Frame 9");
+                GS2.Dev("Frame 9");
                 if (GameCamera.instance == null)
                 {
-                    // GS2.Warn("Camera null, setting 9");
+                    GS2.Warn("Camera null, setting 9");
                     __instance.frame = 9;
                     return false;
                 }
 
-                // GS2.Warn("All good on frame 9");
+                GS2.Dev("All good on frame 9");
                 GameCamera.instance.SetReady();
                 GameMain.preferences.LateRestore();
             }
 
             if (__instance.frame == 10)
             {
-                // GS2.Warn($"FRAME 10 {!GameMain.instance?.isMenuDemo} {__instance.GetInstanceID()}");
+                GS2.Dev($"FRAME 10 {!GameMain.instance?.isMenuDemo} {__instance.GetInstanceID()}");
                 GameMain.Begin();
                 __instance.SelfDestroy();
                 if (!GameMain.instance.isMenuDemo)
@@ -134,12 +134,12 @@ namespace GalacticScale
                 // {
                 //     __instance.onLoadComplete();
                 // }
-                var x = AccessTools.Method(typeof(GameLoader), "onLoadComplete");
-                    if (x != null) x.Invoke(__instance, new object[]{}); //Test?
+                // var x = AccessTools.Method(typeof(GameLoader), "onLoadComplete");
+                //     if (x != null) x.Invoke(__instance, new object[]{}); //Test?
 
             }
 
-            //GS2.Warn("Increasing Frame");
+            GS2.Dev("Increasing Frame");
             __instance.frame++;
             return false;
         }

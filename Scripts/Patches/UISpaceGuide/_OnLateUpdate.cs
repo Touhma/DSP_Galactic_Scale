@@ -161,16 +161,27 @@ namespace GalacticScale
                         }
                     }
                 }
-
+                if (__instance.gameData.localStar != null && __instance.gameData.gameDesc.isCombatMode && __instance.gameData.guideComplete)
+                {
+                    if (__instance.sector.dfHives.Length < __instance.gameData.localStar.index - 1)
+                    {
+                        GS2.Error("DFHives length is less than localStar index");
+                        
+                    }
+                    else
+                    {
+                        ProcessHiveStuff(ref __instance, ref _guidecnt);
+                    }
+                }
                 Array.Clear(__instance.shipDistArray, 0, 1024);
                 if (__instance.uiGame.dfSpaceGuideOn && __instance.shipRenderer != null)
                 {
                     var num5 = 0;
-                    var num6 = __instance.shipRenderer.shipCount;
-                    if (num6 > 1024) num6 = 1024;
+                    var shipCount = __instance.shipRenderer.shipCount;
+                    if (shipCount > 1024) shipCount = 1024;
                     var shipsArr = __instance.shipRenderer.shipsArr;
                     var num7 = float.MaxValue;
-                    for (var index3 = 0; index3 < num6; index3++)
+                    for (var index3 = 0; index3 < shipCount; index3++)
                         if (shipsArr[index3].anim.z > 0.95f)
                         {
                             __instance.shipDistArray[index3] = shipsArr[index3].pos.sqrMagnitude;
@@ -205,50 +216,72 @@ namespace GalacticScale
 
                 //Added this chunk after 0.9.25 update
                 if (GameMain.gameScenario != null)
-                {
-                    var cosmicMessageManager = GameMain.gameScenario.cosmicMessageManager;
-                    var messages = cosmicMessageManager.messages;
-                    for (var l = 1; l < messages.Length; l++)
-                    {
-                        var cosmicMessageData = messages[l];
-                        if (cosmicMessageData != null && cosmicMessageData.protoId != 0)
-                        {
-                            var flag7 = false;
-                            var protoId = cosmicMessageData.protoId;
-                            if (__instance.uiGame.dfSpaceGuideOnFinal && !flag7 && __instance.history.GetMessagePin(protoId) == EPin.Show) flag7 = true;
-
-                            var vectorLF5 = cosmicMessageData.uPosition - camUPos;
-                            var num12 = directionOfView.x * vectorLF5.x + directionOfView.y * vectorLF5.y + directionOfView.z * vectorLF5.z;
-                            if (!flag7 && cosmicMessageManager.IsMessageVisible(protoId))
-                            {
-                                flag7 = true;
-                                if ((cosmicMessageData.uPosition - __instance.gameData.mainPlayer.uPosition).magnitude < 500.0) flag7 = false;
-
-                                if (flag7 && __instance.history.GetMessagePin(protoId) == EPin.Hide) flag7 = false;
-
-                                if (!flag7 && num12 > 0.0)
-                                {
-                                    num12 /= vectorLF5.magnitude;
-                                    if (num12 > 0.999) flag7 = true;
-                                }
-                            }
-
-                            if (!flag7 && __instance.gameData.mainPlayer.navigation.indicatorMsgId == protoId && num12 > 0.0)
-                            {
-                                num12 /= vectorLF5.magnitude;
-                                if (num12 > 0.999) flag7 = true;
-                            }
-
-                            if (__instance.mouseInMessage == protoId) flag7 = true;
-
-                            if (flag7)
-                            {
-                                var vec = Maths.QInvRotateLF(__instance.relRot, cosmicMessageData.uPosition - __instance.relPos);
-                                __instance.SetEntry(ref _guidecnt, ESpaceGuideType.CosmicMessage, protoId, 0, vec, 1f);
-                            }
-                        }
-                    }
-                }
+		{
+			CosmicMessageManager cosmicMessageManager = GameMain.gameScenario.cosmicMessageManager;
+			CosmicMessageData[] messages = cosmicMessageManager.messages;
+			for (int l = 1; l < messages.Length; l++)
+			{
+				CosmicMessageData cosmicMessageData = messages[l];
+				if (cosmicMessageData != null && cosmicMessageData.protoId != 0)
+				{
+					bool showMessage = false;
+					int protoId = cosmicMessageData.protoId;
+					LDB.cosmicMessages.Select(cosmicMessageData.protoId);
+					if (__instance.uiGame.dfSpaceGuideOnFinal && !showMessage && __instance.history.GetMessagePin(protoId) == EPin.Show)
+					{
+						showMessage = true;
+					}
+					VectorLF3 difference = cosmicMessageData.uPosition - camUPos;
+					double distance = directionOfView.x * difference.x + directionOfView.y * difference.y + directionOfView.z * difference.z;
+					if (!showMessage && cosmicMessageManager.IsMessageVisible(protoId))
+					{
+						showMessage = true;
+						if ((cosmicMessageData.uPosition - __instance.gameData.mainPlayer.uPosition).magnitude < 500.0)
+						{
+							showMessage = false;
+						}
+						if (showMessage && __instance.history.GetMessagePin(protoId) == EPin.Hide)
+						{
+							showMessage = false;
+						}
+						if (!showMessage && distance > 0.0)
+						{
+							distance /= difference.magnitude;
+							if (distance > 0.999)
+							{
+								showMessage = true;
+							}
+						}
+						if (cosmicMessageData.doodadProtoId == 5)
+						{
+							showMessage = __instance.uiGame.dfSpaceGuideOnFinal;
+						}
+					}
+					if (!showMessage && __instance.gameData.mainPlayer.navigation.indicatorMsgId == protoId && distance > 0.0)
+					{
+						distance /= difference.magnitude;
+						if (distance > 0.999)
+						{
+							showMessage = true;
+						}
+					}
+					if (__instance.mouseInMessage == protoId)
+					{
+						showMessage = true;
+					}
+					if (showMessage)
+					{
+						showMessage = __instance.CheckVisible(pId0, 0, cosmicMessageData.uPosition, camUPos);
+					}
+					if (showMessage)
+					{
+						VectorLF3 vectorLF8 = Maths.QInvRotateLF(__instance.relRot, cosmicMessageData.uPosition - __instance.relPos);
+						ESpaceGuideType espaceGuideType = ((LDB.doodads.Select(cosmicMessageData.doodadProtoId).ID != 5) ? ESpaceGuideType.CosmicMessage : ESpaceGuideType.DFCommunicator);
+                        __instance.SetEntry(ref _guidecnt, espaceGuideType, protoId, 0, vectorLF8, 1f);
+					}
+				}
+			}
+		}
             }
             //end 0.9.25 update
 
@@ -256,6 +289,70 @@ namespace GalacticScale
             for (var index5 = 0; index5 < __instance.entryOpenedCount; index5++)
                 __instance.entryPool[index5]._LateUpdate();
             return false;
+        }
+
+        private static void ProcessHiveStuff(ref UISpaceGuide __instance, ref int _guidecnt)
+        {
+            var position = __instance.gameCamera.transform.position;
+            var camUPos = __instance.relPos + Maths.QRotateLF(__instance.relRot, position);
+            var directionOfView = Maths.QRotateLF(__instance.relRot, __instance.gameCamera.ScreenPointToRay(Input.mousePosition).direction);
+            var localStarID = __instance.gameData.localStar == null ? 0 : __instance.gameData.localStar.id * 100;
+            var flag2 = VFInput.onGUI || VFInput.onGUIOperate;
+            
+            EnemyDFHiveSystem enemyDFHiveSystem = __instance.sector.dfHives[__instance.gameData.localStar.index];
+            int num9 = 0;
+            while (enemyDFHiveSystem != null)
+            {
+                if (!enemyDFHiveSystem.isEmpty)
+                {
+                    int hiveId = enemyDFHiveSystem.hiveAstroId - 1000000;
+                    Vector3 hiveMarkerPos = Vector3.zero;
+                    if (!__instance.uiGame.dfSpaceGuideOnFinal && !flag2)
+                    {  
+                        
+                            VectorLF3 hiveRelPos = __instance.sector.astros[hiveId].uPos - camUPos;
+                            double distanceToHive = directionOfView.x * hiveRelPos.x +
+                                                    directionOfView.y * hiveRelPos.y +
+                                                    directionOfView.z * hiveRelPos.z;
+                            if (distanceToHive > 0.0)
+                            {
+                                distanceToHive /= hiveRelPos.magnitude;
+                                if (distanceToHive > 0.9999)
+                                {
+                                }
+                            }
+                        
+
+                    }
+           
+                        bool hasAnyStructureOrUnit = enemyDFHiveSystem.hasAnyStructureOrUnit;
+                        if (hasAnyStructureOrUnit)
+                        {
+                            hiveMarkerPos = Maths.QInvRotateLF(__instance.relRot,
+                                __instance.sector.astros[hiveId].uPos - __instance.relPos);
+                            if ((double)hiveMarkerPos.magnitude >
+                                (double)(__instance.gameData.localStar.systemRadius * 6f) * 40000.0)
+                            {
+                                hasAnyStructureOrUnit = false;
+                            }
+                        }
+
+                        if (hasAnyStructureOrUnit)
+                        {
+                            hasAnyStructureOrUnit = __instance.CheckVisible(localStarID, hiveId, __instance.sector.astros[hiveId].uPos, camUPos);
+                        }
+
+                        if (hasAnyStructureOrUnit)
+                        {
+                            __instance.SetEntry(ref _guidecnt, ESpaceGuideType.DFHive, 0, 0, hiveMarkerPos, 0f);
+                        }
+                    
+
+                    num9++;
+                }
+
+                enemyDFHiveSystem = enemyDFHiveSystem.nextSibling;
+            }
         }
     }
 }

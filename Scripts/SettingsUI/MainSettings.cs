@@ -41,8 +41,8 @@ namespace GalacticScale
             get => Preferences.GetBool("Minify JSON");
             set => Preferences.Set("Minify JSON", value);
         }
-
-        public bool FixCopyPaste => true; //Preferences.GetBool("Fix CopyPaste", true);
+        public float FixCopyPasteSize => Preferences.GetFloat("FixCopyPasteSize", 0f);
+        public bool FixCopyPaste => Preferences.GetBool("FixCopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
 
@@ -155,6 +155,9 @@ namespace GalacticScale
             // DebugOptions.Add(GSUI.Button("Debug", "Go", (o) => { GS2.Warn(GameMain.localPlanet.runtimePosition + " " + GameMain.localStar.uPosition); }, null, null));
             DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("Fix CopyPaste".Translate(), false, "FixCopyPaste", null, "Help Inserters to be aligned on huge planets".Translate()));
+            DebugOptions.Add(GSUI.Slider("Fix CopyPaste Tweak Size".Translate(), -1f, 0.15f, 1f, 0.01f, "FixCopyPasteSize", null, "Try 0.15f".Translate()));
+
             DebugOptions.Add(GSUI.Checkbox("New Gravity Mechanics".Translate(), false, "New Gravity", null, "Large planets attract a lot more. Can cause issues with large planets".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));

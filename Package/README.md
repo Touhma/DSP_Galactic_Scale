@@ -2,6 +2,9 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.27 - Fixed copy/paste not working properly. Inserters should now work properly on all planet sizes. Let me know on discord if there are any issues.
+- Version 2.12.26 - Fix Hives so they DONT show in starmap. Fixed them so they show in normal play. Fixed Dark Fog Communicator not being labelled.
+- Version 2.12.25 - Fix Hives not showing in starmap. Fixed not being able to reach logistics stations. Increased reach distance in general by a few meters.
 - Version 2.12.24 - Fix some bugs introduced last patch.
 - Version 2.12.23 - Remove force garbage collect when building. Massive performance improvement. Thanks to starfish for the code. Fixed Enemies on other planets. Fixed some errors. Fixed some logspam.
 - Version 2.12.22 - Recompile for DSP .21219
