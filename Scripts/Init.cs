@@ -130,6 +130,8 @@ namespace GalacticScale
             // Warn("Step4");
             CleanErrorLogs();
 
+            LoadShaders();
+
             Config.Init();
             // Warn("Step5");
             LoadPreferences(true);
@@ -202,6 +204,12 @@ namespace GalacticScale
             UpdateNebulaSettings();
             // Warn("Step9");
             Utils.InitMk2MinerEffectVertices();
+        }
+
+        public static void LoadShaders()
+        {
+            var planetATFieldShader = Bundle.LoadAsset<Shader>("Assets/shaders/Planet ATField Shape REPLACE.shader");
+            Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
         }
     }
 }
