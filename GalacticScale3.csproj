@@ -52,8 +52,4 @@
         <None Remove="Assets\galaxy.json" />
         <EmbeddedResource Include="Assets\galaxy.json" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Scripts\Patches\Prefix" />
-    </ItemGroup>
 </Project>

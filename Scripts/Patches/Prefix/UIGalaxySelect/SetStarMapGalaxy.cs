@@ -30,17 +30,17 @@ namespace GalacticScale.Patches
             // if (GS3.Vanilla)
             //     galaxy = UniverseGen.CreateGalaxy(__instance.gameDesc);
             // else
-                // GS3.Warn("Processing Galaxy");
+                GS3.Warn("Processing Galaxy");
                 galaxy = GS3.ProcessGalaxy(__instance.gameDesc, true); //sp00ktober you probably want to alter this instead
 
-            // GS3.Warn("Done");
+            GS3.Warn("Done");
             if (__instance.starmap == null) GS3.Warn("Starmap Null");
             if (__instance.starmap.galaxyData == null) GS3.Warn("starmapgalaxydata Null");
             // GS3.Warn("TESTING1");
             if (__instance.starmap.galaxyData != null)
             {
                 // GS3.Warn("TESTING2");
-                // GS3.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
+                GS3.Warn("Freeing GalaxyData!!!!!!!!!!!!!!!!!!!");
                 __instance.starmap.galaxyData.Free();
             }
 
