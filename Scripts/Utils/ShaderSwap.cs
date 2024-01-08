@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.TerrainAPI;
 
 namespace GalacticScale
 {
@@ -20,7 +21,7 @@ namespace GalacticScale
         internal static void AddSwapShaderMapping(string oriShaderName, Shader replacementShader)
         {
             if (replacementShader == null)
-                throw new ArgumentNullException(nameof(replacementShader));
+                GS2.Error("replacementShader is null");
         
             ReplaceShaderMap.Add(oriShaderName, replacementShader);
         }

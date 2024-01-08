@@ -208,8 +208,12 @@ namespace GalacticScale
 
         public static void LoadShaders()
         {
-            var planetATFieldShader = Bundle.LoadAsset<Shader>("Assets/shaders/Planet ATField Shape REPLACE.shader");
-            Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
+            var filepath = "Assets/shaders/Planet ATField Shape REPLACE.shader";
+            var planetATFieldShader = Bundle.LoadAsset<Shader>(filepath);
+            if (planetATFieldShader == null)
+                Error($"{filepath} not found");
+            else
+                Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
         }
     }
 }
