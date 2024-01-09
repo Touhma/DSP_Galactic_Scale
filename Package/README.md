@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.28 - Fix Planetary Shield on small/large planets. Thanks karki!
 - Version 2.12.27 - Fixed copy/paste not working properly. Inserters should now work properly on all planet sizes. Let me know on discord if there are any issues.
 - Version 2.12.26 - Fix Hives so they DONT show in starmap. Fixed them so they show in normal play. Fixed Dark Fog Communicator not being labelled.
 - Version 2.12.25 - Fix Hives not showing in starmap. Fixed not being able to reach logistics stations. Increased reach distance in general by a few meters.
