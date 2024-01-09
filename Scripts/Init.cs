@@ -59,7 +59,7 @@ namespace GalacticScale
                     var path2 = Path.Combine(AssemblyPath, "galactic.bundle");
                     if (File.Exists(path)) bundle = AssetBundle.LoadFromFile(path);
                     else bundle = AssetBundle.LoadFromFile(path2);
-                    // foreach (var name in _bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
+                    // foreach (var name in bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
                 }
 
                 if (bundle == null)
@@ -129,6 +129,8 @@ namespace GalacticScale
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             // Warn("Step4");
             CleanErrorLogs();
+
+            LoadShaders();
 
             Config.Init();
             // Warn("Step5");
@@ -202,6 +204,16 @@ namespace GalacticScale
             UpdateNebulaSettings();
             // Warn("Step9");
             Utils.InitMk2MinerEffectVertices();
+        }
+
+        public static void LoadShaders()
+        {
+            var filepath = "assets/planet_atfield_shape.shader";
+            var planetATFieldShader = Bundle.LoadAsset<Shader>(filepath);
+            if (planetATFieldShader == null)
+                Error($"{filepath} not found");
+            else
+                Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
         }
     }
 }
