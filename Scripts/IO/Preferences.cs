@@ -7,7 +7,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        private static GSPreferences Preferences = new();
+        public static GSPreferences Preferences = new();
 
         public static void SavePreferences()
         {
@@ -93,7 +93,7 @@ namespace GalacticScale
             // Log("End");
         }
 
-        private class GSPreferences
+        public class GSPreferences
         {
             public readonly Dictionary<string, GSGenPreferences> GeneratorPreferences = new();
             public readonly Dictionary<string, GSGenPreferences> PluginPreferences = new();

@@ -22,12 +22,14 @@ namespace GalacticScale
         public Dictionary<string, GSUI> ThemeCheckboxes = new();
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
         public bool DebugMode => Preferences.GetBool("Debug Log");
+        public bool GenLog => Preferences.GetBool("Generator Log");
         public bool NewGravity => Preferences.GetBool("New Gravity", false);
         public float VirtualStarmapPlanetScaleFactor => Preferences.GetFloat("VSPlanetScaleFactor", 5f);
         public float VirtualStarmapStarScaleFactor => Preferences.GetFloat("VSStarScaleFactor", 0.5f);
         public float VirtualStarmapOrbitScaleFactor => Preferences.GetFloat("VSOrbitScaleFactor", 5f);
         public float VirtualStarmapClickTolerance => Preferences.GetFloat("VSClickTolerance", 3f);
         public bool Dev => Preferences.GetBool("Dev");
+        public bool DevMode => Preferences.GetBool("DevMode");
         public string ImportFilename => Preferences.GetString("Import Filename");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
@@ -41,8 +43,8 @@ namespace GalacticScale
             get => Preferences.GetBool("Minify JSON");
             set => Preferences.Set("Minify JSON", value);
         }
-        public float FixCopyPasteSize => Preferences.GetFloat("FixCopyPasteSize", 0f);
-        public bool FixCopyPaste => Preferences.GetBool("FixCopyPaste", true);
+        // public float FixCopyPasteSize => Preferences.GetFloat("FixCopyPasteSize", 0f);
+        // public bool FixCopyPaste => Preferences.GetBool("FixCopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
         public bool UseExternalThemes => Preferences.GetBool("Use External Themes");
 
@@ -152,12 +154,10 @@ namespace GalacticScale
             Options.Add(GSUI.Spacer());
 
             var DebugOptions = new GSOptions();
-            // DebugOptions.Add(GSUI.Button("Debug", "Go", (o) => { GS2.Warn(GameMain.localPlanet.runtimePosition + " " + GameMain.localStar.uPosition); }, null, null));
             DebugOptions.Add(GSUI.Spacer());
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
-            DebugOptions.Add(GSUI.Checkbox("Fix CopyPaste".Translate(), false, "FixCopyPaste", null, "Help Inserters to be aligned on huge planets".Translate()));
-            DebugOptions.Add(GSUI.Slider("Fix CopyPaste Tweak Size".Translate(), -1f, 0.15f, 1f, 0.01f, "FixCopyPasteSize", null, "Try 0.15f".Translate()));
-
+            DebugOptions.Add(GSUI.Checkbox("Dev Log".Translate(), false, "Dev", null, "Print stupid amount of logs to BepInEx console (SLOW)".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("Generation Log".Translate(), false, "Generator Log", null, "Print generation logs to BepInEx console (SLOW)".Translate()));
             DebugOptions.Add(GSUI.Checkbox("New Gravity Mechanics".Translate(), false, "New Gravity", null, "Large planets attract a lot more. Can cause issues with large planets".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));
@@ -168,67 +168,13 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Slider("GalaxySelect Star ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSStarScaleFactor", null, "How big star should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Orbit ScaleFactor".Translate(), 0.1f, 5f, 100f, 0.1f, "VSOrbitScaleFactor", null, "How spaced orbits should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Click Tolerance".Translate(), 1f, 3f, 10f, 0.1f, "VSClickTolerance", null, "How close to a star/planet your mouse needs to be to register a click".Translate()));
-
+            DebugOptions.Add(GSUI.Checkbox("Dev Mode".Translate(), false, "DevMode", null, "Enable Keybinds for Refreshing Working Theme".Translate()));
             DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", o =>
             {
-                // GS2.WarnJson(gameDesc);
                 gameDesc.resourceMultiplier = 100;
                 GSSettings.GalaxyParams.resourceMulti = 100;
-                //GS2.WarnJson(gameDesc.resourceMultiplier);
             }, null, "Will need to be saved and loaded to apply".Translate()));
-            DebugOptions.Add(GSUI.Checkbox("Revert Scarlet Ice Lake".Translate(), false, "RevertScarlet", null, "2.2.0.23 Had a bug where Ice Lake had no terrain. Enable this to fix issues with saves started prior to .24".Translate()));
-            // DebugOptions.Add(GSUI.Button("Test", "Now", (o) =>
-            // {
-            //     Warn("ExternalThemes:");
-            //     GS2.WarnJson(externalThemes.Select(p=>p.Key).ToList());
-            //     Warn("GS2.ThemeLibrary:");
-            //     GS2.WarnJson(GS2.ThemeLibrary.Select(p=>p.Key).ToList());
-            //     Warn("GSSettings.ThemeLibrary:");
-            //     GS2.WarnJson(GSSettings.ThemeLibrary.Select(p=>p.Key).ToList());
-            // }));
-            DebugOptions.Add(GSUI.Spacer());
-            DebugOptions.Add(GSUI.Button("Reset Logistic Bot Speed".Translate(), "Reset",
-                (_) =>
-                {
-                    GameMain.data.history.logisticCourierSpeed = Configs.freeMode.logisticCourierSpeed;
-                    GameMain.data.history.logisticCourierSpeedScale = 1f;
-                    GameMain.data.history.logisticCourierCarries = Configs.freeMode.logisticCourierCarries;
-                    GameMain.data.history.dispenserDeliveryMaxAngle = Configs.freeMode.dispenserDeliveryMaxAngle;
-                    if (GameMain.data.history.techStates[3401].unlocked)
-                    {
-                        GameMain.data.history.logisticCourierSpeedScale += 0.1f;
-                    }
-                    if (GameMain.data.history.techStates[3402].unlocked)
-                    {
-                        GameMain.data.history.logisticCourierSpeedScale += 0.1f;
-                    }
-                    if (GameMain.data.history.techStates[3403].unlocked)
-                    {
-                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
-                    }
-                    if (GameMain.data.history.techStates[3404].unlocked)
-                    {
-                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
-                    }
-                    if (GameMain.data.history.techStates[3405].unlocked)
-                    {
-                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
-                    }
-                    if (GameMain.data.history.techStates[3406].unlocked)
-                    {
-                        GameMain.data.history.logisticCourierSpeedScale += 0.15f;
-                    }
-                    GameMain.data.history.logisticCourierSpeedScale += 0.2f * (float)(GameMain.data.history.techStates[3407].curLevel - 7);
-                    for (int num12 = 3501; num12 <= 3507; num12++)
-                    {
-                        if (GameMain.data.history.techStates[num12].unlocked)
-                        {
-                            GameMain.data.history.logisticCourierCarries++;
-                        }
-                    }
-                }, null, "Fix games created on 2.8.0"));
-        
-            
+           
             Options.Add(GSUI.Group("Debug Options".Translate(), DebugOptions, "Useful for testing galaxies/themes".Translate()));
             Options.Add(GSUI.Spacer());
 
@@ -237,7 +183,7 @@ namespace GalacticScale
             JsonOptions.Add(GSUI.Input("Export Filename".Translate(), "My First Custom Galaxy", "Export Filename", null, "Excluding .json".Translate()));
             JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes".Translate()));
             _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File".Translate()));
-            JsonGalaxies = JsonOptions.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix));
+            JsonGalaxies = JsonOptions.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix, "Select a custom galaxy to load"));
             JsonOptions.Add(GSUI.Button("Load Custom Galaxy".Translate(), "Load", LoadJsonGalaxy, null, "Will end current game".Translate()));
             DebugOptions.Add(GSUI.Spacer());
 
@@ -433,6 +379,11 @@ namespace GalacticScale
             // GS2.Warn("They have been set inactive");
             //Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set " + (int)result);
             SettingsUI.GeneratorCanvases[(int)result].gameObject.SetActive(true);
+            Devlog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
+            SettingsUI.GeneratorCanvases[(int)result].anchoredPosition = new Vector2(
+                500,
+                SettingsUI.GeneratorCanvases[(int)result].anchoredPosition.y);
+            Devlog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
             // GS2.Warn("Correct one set active");
             SettingsUI.GeneratorIndex = (int)result;
             // GS2.Warn("Gen Index Set");

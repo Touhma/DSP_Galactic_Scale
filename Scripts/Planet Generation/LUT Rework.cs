@@ -10,9 +10,16 @@ namespace GalacticScale
 
         public static void SetLuts(int segments, float planetRadius)
         {
+            GS2.Log($"{segments}, {planetRadius}");
             if (!DSPGame.IsMenuDemo && !Vanilla) // Prevent special LUT's being created in main menu
             {
                 if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
+
+                if (segments < 4 || planetRadius < 5)
+                {
+                    planetRadius = GameMain.data.localPlanet.realRadius;
+                    segments = Mathf.CeilToInt(GameMain.data.localPlanet.radius / 4f + 0.1f) * 4;
+                }
                 var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 var lut = new int[numSegments];
                 var segmentAngle = Mathf.PI / 2f / numSegments; //quarter circle divided by num segments is the angle per segment

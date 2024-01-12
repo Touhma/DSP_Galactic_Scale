@@ -142,6 +142,7 @@ namespace GalacticScale
 
         public static implicit operator bool(Val v)
         {
+            if (v == null) return false;
             return v.Bool();
         }
 

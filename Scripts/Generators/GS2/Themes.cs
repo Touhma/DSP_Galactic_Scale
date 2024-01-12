@@ -487,7 +487,7 @@ namespace GalacticScale.Generators
             comet.ThemeType = EThemeType.Private;
             comet.TerrainSettings = new GSTerrainSettings();
             comet.TerrainSettings.Algorithm = "GSTA1";
-            comet.TerrainSettings.BaseHeight = -7.13f;
+            comet.TerrainSettings.BaseHeight = -1f;
             comet.TerrainSettings.BiomeHeightModifier = 1;
             comet.TerrainSettings.HeightMulti = 2f;
             comet.TerrainSettings.LandModifier = 4f;

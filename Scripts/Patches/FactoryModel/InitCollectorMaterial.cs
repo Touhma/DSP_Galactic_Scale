@@ -14,8 +14,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(FactoryModel), "InitCollectorMaterial")]
         public static void InitCollectorMaterial(ref FactoryModel __instance)
         {
-            if (GS2.Vanilla) return;
-
+           
+            GS2.Log($"Initializing Collector Material for planet.{__instance.planet?.name}");
             const float standardRadius = 200f;
             const float standardPlanetCurveOffset = 0.3f;
 
@@ -28,8 +28,7 @@ namespace GalacticScale
             planetCurveOffset = planetCurveOffset > 0.9 ? 0.9f : planetCurveOffset;
             adjustVertexY += planetCurveOffset - standardPlanetCurveOffset;
 
-            if (!Utils.AdjustMk2MinerEffectVertices(adjustVertexY))
-                GS2.Error("Failed to adjust mining effect for planet.");
+            if (!Utils.AdjustMk2MinerEffectVertices(adjustVertexY)) GS2.Error("Failed to adjust mining effect for planet.");
 
         }
     }

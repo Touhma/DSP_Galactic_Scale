@@ -7,14 +7,15 @@ using static System.Reflection.Emit.OpCodes;
 namespace GalacticScale
 
 {
+    
     public class PlanetSizeTranspiler
     {
-        [HarmonyTranspiler]
+       [HarmonyTranspiler]
         [HarmonyPatch(typeof(BlueprintUtils), nameof(BlueprintUtils.GetNormalizedDir))]
         [HarmonyPatch(typeof(BlueprintUtils), nameof(BlueprintUtils.GetNormalizedPos))]
         [HarmonyPatch(typeof(BlueprintUtils), nameof(BlueprintUtils.GetExtendedGratBox),typeof(BPGratBox), typeof(float))]
         [HarmonyPatch(typeof(BlueprintUtils), nameof(BlueprintUtils.GetExtendedGratBox),typeof(BPGratBox), typeof(float), typeof(float))]
-        [HarmonyPatch(typeof(BuildTool_BlueprintPaste), nameof(BuildTool_BlueprintPaste.CheckBuildConditions))]
+        [HarmonyPatch(typeof(BuildTool_BlueprintPaste), nameof(BuildTool_BlueprintPaste.GenerateBlueprintGratBoxes))]
         [HarmonyPatch(typeof(BuildTool_Path), nameof(BuildTool_Path.GetGridWidth))]
         [HarmonyPatch(typeof(PlayerNavigation),  nameof(PlayerNavigation.Init))]
         [HarmonyPatch(typeof(PlayerNavigation),  nameof(PlayerNavigation.DetermineArrive))]
@@ -42,16 +43,16 @@ namespace GalacticScale
                     {
                         return (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
                                (
-                                   Convert.ToDouble(i.operand ?? 0.0) == 196.0 ||
+                                    Convert.ToDouble(i.operand ?? 0.0) == 196.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 197.5 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 197.6 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 198.5 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 200.0 ||
+                                    Convert.ToDouble(i.operand ?? 0.0) == 200.22 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 200.5 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 202.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 206.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 212.0 ||
-                                    Convert.ToDouble(i.operand ?? 0.0) == 225.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 225.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 228.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 255.0 

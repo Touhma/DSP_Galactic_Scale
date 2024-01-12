@@ -14,10 +14,16 @@ namespace GalacticScale
         public void FixedUpdate()
         {
             // GS2.Log("FU");
-            if (VFInput.alt && VFInput.control && VFInput._openMechLight) GS2.WarnJson(HandleLocalStarPlanets.TransitionRadii); //alt ctrl L
-            if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode(); //ctrl alt shift d
-            else if (VFInput.control && VFInput.shift && VFInput._moveRight) Utils.LogDFInfo(GameMain.localStar); //ctrl shift d
-            if (VFInput.control && VFInput.shift && VFInput._rotate && GameMain.localPlanet != null) // ctrl shift R
+            if (VFInput.alt && VFInput.control && VFInput._openMechLight && GS2.Config.DevMode)
+            {
+                GS2.debugtool.Label = "Transition Distance";
+                GS2.debugtool.Value = HandleLocalStarPlanets.TransitionRadii.ToString(); //alt ctrl L
+            }
+
+            // if (VFInput.control && VFInput.alt && VFInput.shift && VFInput._moveRight) GS2.Config.EnableDevMode(); //ctrl alt shift d
+            // else if (VFInput.control && VFInput.shift && VFInput._moveRight) Utils.LogDFInfo(GameMain.localStar); //ctrl shift d
+            if (VFInput.control && VFInput.shift && GS2.Config.DevMode && VFInput._rotate &&
+                GameMain.localPlanet != null) // ctrl shift R
             {
                 GS2.Warn("*");
                 var filename = Path.Combine(GS2.DataDir, "WorkingTheme.json");
@@ -41,7 +47,8 @@ namespace GalacticScale
                 GS2.GetGSStar(p.star).counter = p.index;
 
                 var newTheme = GS2.LoadJsonTheme(filename);
-                GS2.Warn($"LOADED THEME {newTheme.Name} CustomGen:{newTheme.CustomGeneration} TA:{newTheme.TerrainSettings.Algorithm}");
+                GS2.Warn(
+                    $"LOADED THEME {newTheme.Name} CustomGen:{newTheme.CustomGeneration} TA:{newTheme.TerrainSettings.Algorithm}");
                 newTheme.Process();
                 gsPlanet.Theme = newTheme.Name;
 

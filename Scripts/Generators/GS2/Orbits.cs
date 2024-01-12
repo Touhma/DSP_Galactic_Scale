@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GalacticScale.Generators
@@ -83,6 +84,16 @@ namespace GalacticScale.Generators
                 }
         }
 
+        private GSPlanet GetMajorBirthHost()
+        {
+            foreach (var s in GSSettings.Stars)
+            foreach (var p in s.Planets)
+            {
+                if (p.Bodies.Contains(birthPlanet)) return p;
+            }
+            GS2.Error("Couldn't get BirthPlanets MajorHost");
+            return birthPlanet;
+        }
         private void AssignPlanetOrbits(GSStar star)
         {
             // GS2.Warn("-------------------------------------------------------------------------------");
@@ -99,24 +110,38 @@ namespace GalacticScale.Generators
             CalculateHabitableZone(star);
             var minimumOrbit = CalculateMinimumOrbit(star);
             var maximumOrbit = CalculateMaximumOrbit(star);
-            // GS2.Warn($"Minimum Orbit:{minimumOrbit} Maximum Orbit:{maximumOrbit}");
+            // GS2.Warn($"Minimum Orbit:{minimumOrbit} Maximum Orbit:{maximumOrbit} {birthPlanet?.genData?.Get("IsMoon", false)}");
             var freeOrbitRanges = new List<(float inner, float outer)>();
-
+            var birthPlanetMajorHost = (star == birthStar)?birthPlanet.genData.Get("IsMoon", false)?GetMajorBirthHost():null:null;
             //Warn("Orbit Count 0");
             // GS2.Log($"BirthStar = {birthStar.Name} {(birthPlanet != null ? birthPlanet.Name : "null")}");
             if (star == birthStar)
             {
                 var birthRadius = Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)), star.RadiusAU * 1.5f, 100f);
-                GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
+                // GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(birthPlanet);
-                birthPlanet.OrbitRadius = birthRadius;
-                birthPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanet.OrbitRadius);
-                orbits.Add(orbit);
-                freeOrbitRanges.Clear();
+                if (birthPlanet.genData.Get("IsMoon", false))
+                {
+                    
+                    birthPlanetMajorHost.OrbitRadius = birthRadius;
+                    birthPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanetMajorHost.OrbitRadius);
+                    orbits.Add(orbit);
+                    freeOrbitRanges.Clear();
 
-                freeOrbitRanges.Add((minimumOrbit, birthRadius - birthPlanet.SystemRadius * 2));
-                freeOrbitRanges.Add((birthRadius + birthPlanet.SystemRadius * 2, maximumOrbit));
+                    freeOrbitRanges.Add((minimumOrbit, birthRadius - birthPlanet.SystemRadius * 2));
+                    freeOrbitRanges.Add((birthRadius + birthPlanet.SystemRadius * 2, maximumOrbit));
+                }
+                else
+                {
+                    birthPlanet.OrbitRadius = birthRadius;
+                    birthPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanet.OrbitRadius);
+                    orbits.Add(orbit);
+                    freeOrbitRanges.Clear();
+
+                    freeOrbitRanges.Add((minimumOrbit, birthRadius - birthPlanet.SystemRadius * 2));
+                    freeOrbitRanges.Add((birthRadius + birthPlanet.SystemRadius * 2, maximumOrbit));
+                }
             }
             else
             {
@@ -130,10 +155,10 @@ namespace GalacticScale.Generators
                 Orbit orbit;
                 var planet = planets[i];
                 // GS2.Log($"Finding Orbit for planet index {i} - {planet.Name}");
-                if (planet == birthPlanet)
+                if ((planet == birthPlanet) && !birthPlanet.genData.Get("IsMoon"))
                     // planet.Name += " BIRTH";
                     continue;
-
+                if (birthPlanetMajorHost != null && planet == birthPlanetMajorHost) continue;
                 // Log(planet.SystemRadius.ToString());
                 //planet.OrbitInclination = 0f;
 
@@ -169,7 +194,7 @@ namespace GalacticScale.Generators
                     //GS2.Log($"{planet.Name} orbit radius {planet.OrbitRadius}");
                     if (success) continue;
 
-                    // GS2.Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
+                    GS2.Warn($"After all that, just couldn't find an orbit for {planet.Name} {planet.genData["hosttype"]} {planet.genData["hostname"]} . Throwing planet into the sun.");
 
                     brokenPlanets.Add(planet);
 

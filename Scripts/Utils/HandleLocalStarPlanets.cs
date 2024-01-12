@@ -50,11 +50,14 @@ namespace GalacticScale
             var localPlanet = GameMain.data.localPlanet;
             closestStar = localStar;
             closestPlanet = localPlanet;
-            if (localPlanet != null && VFInput.shift && VFInput.alt)
+            if (localPlanet != null && VFInput.shift && VFInput.alt && Config.DevMode)
             {
                 var radii = TransitionRadii.ContainsKey(localPlanet) ? TransitionRadii[localPlanet].ToString() : "N/A";
 
-                Warn($"DistanceTo: {DistanceTo(localPlanet)} / {radii}");
+                
+                    GS2.debugtool.Label = "Transition Distance";
+                    GS2.debugtool.Value = radii; //alt ctrl L
+                
             }
 
             var warping = GameMain.mainPlayer.warping;

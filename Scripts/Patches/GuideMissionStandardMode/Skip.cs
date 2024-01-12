@@ -64,7 +64,7 @@ namespace GalacticScale
             //     GS2.Warn("Cheatmode Enabled. Unlocking Research");
             //     GS2.UnlockTech(null);
             // }
-
+            if (GS2.Config.DevMode) GS2.debugtool = DebugTool.Init();
             return false;
         }
     }

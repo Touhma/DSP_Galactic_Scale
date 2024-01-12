@@ -15,27 +15,159 @@ namespace GalacticScale
             var active = false;
             var uistarmapPlanet = __instance.mouseHoverPlanet;
             var uistarmapStar = __instance.mouseHoverStar;
+            UIStarmapDFHive uIStarmapDFHive = __instance.mouseHoverHive;
+            int tinderEnemyId = __instance.mouseHoverTinderEnemyId;
             if (__instance.focusPlanet != null)
             {
                 uistarmapPlanet = __instance.focusPlanet;
                 uistarmapStar = null;
+                uIStarmapDFHive = null;
+                tinderEnemyId = 0;
                 __instance.cursorFunctionGroup.SetActive(true);
                 bool active2 = GameMain.sandboxToolsEnabled && GameMain.mainPlayer.planetId != __instance.focusPlanet.planet.id && !GameMain.mainPlayer.warping;
                 __instance.fastTravelButton.gameObject.SetActive(active2);
                 var planetPin = GameMain.history.GetPlanetPin(__instance.focusPlanet.planet.id);
-                __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, planetPin == EPin.Show ? -90 : planetPin == EPin.Hide ? 90 : 0);
-                __instance.cursorFunctionText1.text = (planetPin == EPin.Show ? "天体显示标签" : planetPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
+                RectTransform rectTransform = __instance.cursorFunctionIcon1;
+                int num2;
+                switch (planetPin)
+                {
+                    default:
+                        num2 = 0;
+                        break;
+                    case EPin.Hide:
+                        num2 = 90;
+                        break;
+                    case EPin.Show:
+                        num2 = -90;
+                        break;
+                }
+                
+                __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, num2);
+                // __instance.cursorFunctionText1.text = (planetPin == EPin.Show ? "天体显示标签" : planetPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
+                object s;
+                switch (planetPin)
+                {
+                    default:
+                        s = "天体自动标签";
+                        break;
+                    case EPin.Hide:
+                        s = "天体隐藏标签";
+                        break;
+                    case EPin.Show:
+                        s = "天体显示标签";
+                        break;
+                }
+                __instance.cursorFunctionText1.text = ((string)s).Translate();
                 __instance.fastTravelButton.button.interactable = !mainPlayer.fastTravelling && mainPlayer.isAlive;
             }
             else if (__instance.focusStar != null)
             {
                 uistarmapPlanet = null;
+                uIStarmapDFHive = null;
                 uistarmapStar = __instance.focusStar;
                 __instance.cursorFunctionGroup.SetActive(true);
                 __instance.fastTravelButton.gameObject.SetActive(false);
                 var starPin = GameMain.history.GetStarPin(__instance.focusStar.star.id);
-                __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, starPin == EPin.Show ? -90 : starPin == EPin.Hide ? 90 : 0);
-                __instance.cursorFunctionText1.text = (starPin == EPin.Show ? "天体显示标签" : starPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
+                RectTransform rectTransform2 = __instance.cursorFunctionIcon1;
+                int num3;
+                switch (starPin)
+                {
+                    default:
+                        num3 = 0;
+                        break;
+                    case EPin.Hide:
+                        num3 = 90;
+                        break;
+                    case EPin.Show:
+                        num3 = -90;
+                        break;
+                }
+                __instance.cursorFunctionIcon1.localEulerAngles = new Vector3(0f, 0f, num3);
+                object s2;
+                switch (starPin)
+                {
+                    default:
+                        s2 = "天体自动标签";
+                        break;
+                    case EPin.Hide:
+                        s2 = "天体隐藏标签";
+                        break;
+                    case EPin.Show:
+                        s2 = "天体显示标签";
+                        break;
+                }
+                __instance.cursorFunctionText1.text = ((string)s2).Translate();
+                // __instance.cursorFunctionText1.text = (starPin == EPin.Show ? "天体显示标签" : starPin == EPin.Hide ? "天体隐藏标签" : "天体自动标签").Translate();
+            }
+            else if (__instance.focusHive != null)
+            {
+                if (!__instance.focusHive.active)
+                {
+                    PlayerNavigation navigation = GameMain.mainPlayer.navigation;
+                    if (navigation != null && navigation.indicatorAstroId == __instance.focusHive.hive.hiveAstroId)
+                    {
+                        navigation.indicatorAstroId = 0;
+                    }
+                    GameMain.history.SetHivePin(__instance.focusHive.hive.hiveAstroId - 1000000, EPin.Auto);
+                    __instance.focusHive = null;
+                }
+                uIStarmapDFHive = __instance.focusHive;
+                uistarmapPlanet = null;
+                uistarmapStar = null;
+                tinderEnemyId = 0;
+                __instance.cursorFunctionGroup.SetActive((__instance.focusHive != null) ? true : false);
+                if (__instance.focusHive != null)
+                {
+                    EPin hivePin = GameMain.history.GetHivePin(__instance.focusHive.hive.hiveAstroId - 1000000);
+                    RectTransform rectTransform3 = __instance.cursorFunctionIcon1;
+                    int num4;
+                    switch (hivePin)
+                    {
+                        default:
+                            num4 = 0;
+                            break;
+                        case EPin.Hide:
+                            num4 = 90;
+                            break;
+                        case EPin.Show:
+                            num4 = -90;
+                            break;
+                    }
+                    rectTransform3.localEulerAngles = new Vector3(0f, 0f, num4);
+                    var text3 = __instance.cursorFunctionText1;
+                    object s3;
+                    switch (hivePin)
+                    {
+                        default:
+                            s3 = "天体自动标签";
+                            break;
+                        case EPin.Hide:
+                            s3 = "天体隐藏标签";
+                            break;
+                        case EPin.Show:
+                            s3 = "天体显示标签";
+                            break;
+                    }
+                    text3.text = ((string)s3).Translate();
+                }
+                __instance.fastTravelButton.gameObject.SetActive(value: false);
+            }
+            else if (__instance.focusTinderEnemyId != 0)
+            {
+                if (__instance.focusTinderEnemyId < 0 || __instance.focusTinderEnemyId >= __instance.spaceSector.enemyPool.Length)
+                {
+                    __instance.focusTinderEnemyId = 0;
+                }
+                else if (__instance.spaceSector.enemyPool[__instance.focusTinderEnemyId].id == 0 || __instance.spaceSector.enemyPool[__instance.focusTinderEnemyId].dfTinderId == 0)
+                {
+                    __instance.focusTinderEnemyId = 0;
+                }
+                uIStarmapDFHive = null;
+                uistarmapPlanet = null;
+                uistarmapStar = null;
+                tinderEnemyId = __instance.focusTinderEnemyId;
+                __instance.cursorFunctionGroup.SetActive(value: false);
+                __instance.fastTravelButton.gameObject.SetActive(value: false);
             }
             else
             {
@@ -48,7 +180,7 @@ namespace GalacticScale
             {
                 active = true;
                 __instance.cursorViewTrans.anchoredPosition = uistarmapPlanet.projectedCoord;
-                if ((Object)__instance.cursorViewDisplayObject != uistarmapPlanet || __instance.forceUpdateCursorView)
+                if (__instance.cursorViewDisplayObject != uistarmapPlanet || __instance.forceUpdateCursorView)
                 {
                     var str = "";
                     var planet = uistarmapPlanet.planet;
@@ -108,7 +240,7 @@ namespace GalacticScale
             {
                 active = true;
                 __instance.cursorViewTrans.anchoredPosition = uistarmapStar.projectedCoord;
-                if ((Object)__instance.cursorViewDisplayObject != uistarmapStar || __instance.forceUpdateCursorView)
+                if (__instance.cursorViewDisplayObject != uistarmapStar || __instance.forceUpdateCursorView)
                 {
                     var str3 = "";
                     var star = uistarmapStar.star;
@@ -162,7 +294,115 @@ namespace GalacticScale
                     __instance.cursorViewDisplayObject = uistarmapStar;
                 }
             }
-
+else if (uIStarmapDFHive != null && uIStarmapDFHive.projected)
+		{
+			active = true;
+            __instance.cursorViewTrans.anchoredPosition = uIStarmapDFHive.projectedCoord;
+			if (__instance.cursorViewDisplayObject != uIStarmapDFHive || __instance.forceUpdateCursorView)
+			{
+				string text10 = "";
+				string text11 = "";
+				string text12 = "";
+				EnemyDFHiveSystem hive = uIStarmapDFHive.hive;
+				text10 = uIStarmapDFHive.nameText.text + "\r\n";
+				Player mainPlayer4 = GameMain.mainPlayer;
+				double num19 = (hive.sector.astros[hive.hiveAstroId - 1000000].uPos - mainPlayer4.uPosition).magnitude - (double)hive.sector.astros[hive.hiveAstroId - 1000000].uRadius;
+				text11 = ((num19 < 50.0) ? string.Format("已靠近".Translate()) : ((num19 < 5000.0) ? string.Format("距离米".Translate(), num19) : ((!(num19 < 2400000.0)) ? string.Format("距离光年".Translate(), num19 / 2400000.0) : string.Format("距离日距".Translate(), num19 / 40000.0))));
+				double num20 = 0.0001;
+				if (mainPlayer4.mecha.thrusterLevel >= 2)
+				{
+					num20 = mainPlayer4.mecha.maxSailSpeed;
+				}
+				if (mainPlayer4.mecha.thrusterLevel >= 3 && uIStarmapDFHive.hive.starData == GameMain.localStar)
+				{
+					num20 += (double)mainPlayer4.mecha.maxWarpSpeed * 0.03;
+				}
+				if (mainPlayer4.mecha.thrusterLevel >= 3 && uIStarmapDFHive.hive.starData != GameMain.localStar)
+				{
+					num20 += (double)mainPlayer4.mecha.maxWarpSpeed * 0.98;
+				}
+				float num21 = (float)(num19 / num20);
+				if (mainPlayer4.planetId != 0)
+				{
+					float num22 = mainPlayer4.position.magnitude - mainPlayer4.planetData.realRadius;
+					num21 += Mathf.Clamp01((800f - num22) / 800f) * 9f;
+				}
+				if (mainPlayer4.mecha.thrusterLevel >= 3 && uIStarmapDFHive.hive.starData != GameMain.localStar)
+				{
+					num21 += 20f;
+				}
+				int num23 = (int)num21 / 3600;
+				int num24 = (int)num21 / 60 % 60;
+				int num25 = (int)num21 % 60;
+				if (num19 > 5000.0)
+				{
+					text12 = ((num21 < 60f) ? string.Format("最快秒".Translate(), num25) : ((num21 < 600f) ? string.Format("最快分秒".Translate(), num24, num25) : ((num21 < 3600f) ? string.Format("最快分钟".Translate(), num24) : ((num21 < 720000f) ? string.Format("需要驱动引擎4".Translate(), num23, num24) : ((!(num19 < 2400000.0)) ? string.Format("需要驱动引擎".Translate(), 4) : string.Format("需要驱动引擎".Translate(), 2))))));
+				}
+                __instance.cursorViewText.text = text10 + text11 + text12;
+                __instance.cursorViewTrans.sizeDelta = new Vector2(__instance.cursorViewText.preferredWidth * 0.5f + 44f, __instance.cursorViewText.preferredHeight * 0.5f + 14f);
+                __instance.cursorRightDeco.sizeDelta = new Vector2(__instance.cursorViewTrans.sizeDelta.y - 12f, 5f);
+                __instance.cursorViewDisplayObject = uIStarmapDFHive;
+			}
+		}
+		else if (tinderEnemyId != 0)
+		{
+			ref EnemyData reference = ref __instance.spaceSector.enemyPool[tinderEnemyId];
+            __instance.spaceSector.TransformFromAstro_ref(reference.astroId, out var upos, ref reference.pos);
+			Vector3 worldPoint = (upos - __instance.viewTargetUPos) * 0.00025;
+			if (!UIStarmap.isChangingToMilkyWay)
+			{
+				Vector2 rectPoint;
+				bool num26 = __instance.WorldPointIntoScreen(worldPoint, out rectPoint);
+				rectPoint = new Vector2(Mathf.Round(rectPoint.x), Mathf.Round(rectPoint.y));
+				if (num26)
+				{
+                    active = true;
+                    __instance.cursorViewTrans.anchoredPosition = rectPoint;
+					if (__instance.cursorViewDisplayObject != (object)tinderEnemyId || __instance.forceUpdateCursorView)
+					{
+						string text13 = "";
+						string text14 = "";
+						string text15 = "";
+						EnemyDFHiveSystem enemyDFHiveSystem = __instance.spaceSector.dfHivesByAstro[reference.originAstroId - 1000000];
+						text13 = "火种".Translate() + "\r\n" + "火种来自".Translate() + " <color=\"#FFFFFFB0\">" + enemyDFHiveSystem.starData.displayName + "</color>\r\n";
+						int targetHiveAstroId = enemyDFHiveSystem.tinders.buffer[reference.dfTinderId].targetHiveAstroId;
+						if (targetHiveAstroId > 0)
+						{
+							text13 = text13 + "火种前往".Translate() + " <color=\"#FFFFFFB0\">" + __instance.spaceSector.dfHivesByAstro[targetHiveAstroId - 1000000].starData.displayName + "</color>\r\n";
+						}
+						Player mainPlayer5 = GameMain.mainPlayer;
+						double magnitude = (upos - mainPlayer5.uPosition).magnitude;
+						text14 = ((magnitude < 50.0) ? string.Format("已靠近".Translate()) : ((magnitude < 5000.0) ? string.Format("距离米".Translate(), magnitude) : ((!(magnitude < 2400000.0)) ? string.Format("距离光年".Translate(), magnitude / 2400000.0) : string.Format("距离日距".Translate(), magnitude / 40000.0))));
+						double num27 = 0.0001;
+						if (mainPlayer5.mecha.thrusterLevel >= 2)
+						{
+							num27 = mainPlayer5.mecha.maxSailSpeed;
+						}
+						if (mainPlayer5.mecha.thrusterLevel >= 3)
+						{
+							num27 += (double)mainPlayer5.mecha.maxWarpSpeed * 0.98;
+						}
+						float num28 = (float)(magnitude / num27);
+						if (mainPlayer5.planetId != 0)
+						{
+							float num29 = mainPlayer5.position.magnitude - mainPlayer5.planetData.realRadius;
+							num28 += Mathf.Clamp01((800f - num29) / 800f) * 9f;
+						}
+						int num30 = (int)num28 / 3600;
+						int num31 = (int)num28 / 60 % 60;
+						int num32 = (int)num28 % 60;
+						if (magnitude > 5000.0)
+						{
+							text15 = ((num28 < 60f) ? string.Format("最快秒".Translate(), num32) : ((num28 < 600f) ? string.Format("最快分秒".Translate(), num31, num32) : ((num28 < 3600f) ? string.Format("最快分钟".Translate(), num31) : ((num28 < 720000f) ? string.Format("需要驱动引擎4".Translate(), num30, num31) : ((!(magnitude < 2400000.0)) ? string.Format("需要驱动引擎".Translate(), 4) : string.Format("需要驱动引擎".Translate(), 2))))));
+						}
+						__instance.cursorViewText.text = text13 + text14 + text15 + "\r\n\r\n<color=\"#FFFFFFB0\">" + "双击方位指示".Translate() + "</color>";
+                        __instance.cursorViewTrans.sizeDelta = new Vector2(__instance.cursorViewText.preferredWidth * 0.5f + 44f, __instance.cursorViewText.preferredHeight * 0.5f + 14f);
+                        __instance.cursorRightDeco.sizeDelta = new Vector2(__instance.cursorViewTrans.sizeDelta.y - 12f, 5f);
+                        __instance.cursorViewDisplayObject = tinderEnemyId;
+					}
+				}
+			}
+		}
             __instance.forceUpdateCursorView = false;
             __instance.cursorViewTrans.gameObject.SetActive(active);
             return false;

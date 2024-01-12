@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.28")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.12.34")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -101,6 +101,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnGameSave));
                 harmony.PatchAll(typeof(PatchOnGraticulePoser));
                 harmony.PatchAll(typeof(PatchOnGuideMissionStandardMode));
+                harmony.PatchAll(typeof(PatchOnKillStatistics));
                 harmony.PatchAll(typeof(PatchOnLocalLaserContinuous));
                 harmony.PatchAll(typeof(PatchOnLocalLaserOneShot));
                 harmony.PatchAll(typeof(PatchOnNearColliderLogic));

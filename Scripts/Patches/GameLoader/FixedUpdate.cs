@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine.Experimental.UIElements;
 
 namespace GalacticScale
 {
@@ -7,6 +8,7 @@ namespace GalacticScale
     /// </summary>
     public class PatchOnGameLoader
     {
+        private static int counter;
         // [HarmonyPostfix, HarmonyPatch(typeof(GameLoader), "CreateLoader")]
         // public static void CreateLoader(GameLoader __instance)
         // {
@@ -18,57 +20,62 @@ namespace GalacticScale
         {
             // GS2.Warn($"Start {__instance.frame}");
             if (GS2.IsMenuDemo || GS2.Vanilla) return true;
-            GS2.Dev("Not Vanilla");
+            GS2.Devlog("Not Vanilla");
             if (__instance.frame == 1)
             {
-                GS2.Dev("FRAME 1");
+                GS2.Devlog("FRAME 1");
                 DSPGame.CreateGameMainObject();
                 DSPGame.Game.isMenuDemo = DSPGame.IsMenuDemo;
             }
 
-            GS2.Dev(".");
+            // GS2.Devlog(".");
             if (__instance.frame == 3 && GameMain.isNull)
             {
-                GS2.Dev("FRAME 3");
+                GS2.Devlog("FRAME 3");
                 __instance.LoadFailed();
                 __instance.frame = 3;
             }
 
-            GS2.Dev(".");
+            // GS2.Devlog(".");
             if (__instance.frame == 5 && GameMain.localStar != null)
             {
-                GS2.Dev($"FRAME 5 {GameMain.mainPlayer != null} {GameMain.gameTick == 0L} {GS2.Config.SkipPrologue}");
-                GS2.Dev($"{GameMain.localStar?.name}");
+                GS2.Devlog($"FRAME 5 {GameMain.mainPlayer != null} {GameMain.gameTick == 0L} {GS2.Config.SkipPrologue}");
+                GS2.Devlog($"{GameMain.localStar?.name}");
                 if (GameMain.mainPlayer != null && GameMain.gameTick == 0L && GS2.Config.SkipPrologue)
                 {
-                    GS2.Dev($"Setting uPosition");
+                    GS2.Devlog($"Setting uPosition");
                     GameMain.mainPlayer.uPosition = GameMain.localPlanet.uPosition;
                 }
 
-                GS2.Dev($"{GameMain.localPlanet == null}");
+                GS2.Devlog($"{GameMain.localPlanet == null}");
                 GameMain.localPlanet?.Load();
                 GameMain.localStar?.Load();
             }
 
             if (__instance.frame >= 7)
             {
-                GS2.Dev("FRAME 7");
-                // if (!GS2.Config.SkipPrologue) if (GameMain.localStar != null && !GameMain.localStar.loaded) __instance.frame = 7;
-                //     else
-                //     {
-                if (GameMain.localPlanet != null && !GameMain.localPlanet.loaded) __instance.frame = 7;
-                if (GameMain.localPlanet != null && !GameMain.localPlanet.factoryLoaded) __instance.frame = 7;
+                if (counter > 2000) __instance.LoadFailed();
+                var planet = GameMain.localPlanet;
+                counter++;
+                if (planet != null &&  counter % 100 == 0) GS2.Devlog($"FRAME 7 ({counter}) LocalStar:{GameMain.localStar?.name} Local Planet:{planet?.name} LocalPlanet Loaded:{planet.loaded} LocalPlanet FactoryLoaded:{planet.factoryLoaded}");
+                if (planet != null &&  counter % 500 == 0 && planet.loaded && !planet.factoryLoaded && !planet.factoryLoading)
+                {
+                    planet?.Unload();
+                    planet?.Load();
+                }
+                if (planet != null && !planet.loaded) __instance.frame = 7;
+                if (planet != null && !planet.factoryLoaded) __instance.frame = 7;
                 // }
             }
 
             if (__instance.frame == 8)
             {
-                GS2.Dev($"FRAME 8 {__instance.gameObject.GetInstanceID()}");
+                GS2.Devlog($"FRAME 8 {__instance.gameObject.GetInstanceID()}");
                 if (GameMain.gameTick == 0L)
                 {
                     if (GameMain.data == null)
                     {
-                        GS2.Dev("GameMain.data null");
+                        GS2.Devlog("GameMain.data null");
                         return false;
                     }
 
@@ -78,7 +85,7 @@ namespace GalacticScale
                     }
                     else
                     {
-                        GS2.Dev("Starting standard mode guide");
+                        GS2.Devlog("Starting standard mode guide");
                         GameMain.data.StartStandardModeGuide();
                     }
                 }
@@ -87,7 +94,7 @@ namespace GalacticScale
                 GameMain.data.SetReady();
                 if (GameCamera.instance == null)
                 {
-                    GS2.Dev("Camera null setting frame 9");
+                    GS2.Devlog("Camera null setting frame 9");
                     __instance.frame = 9;
                     return false;
                 }
@@ -95,13 +102,13 @@ namespace GalacticScale
                 GameCamera.instance.SetReady();
 
                 GameMain.preferences.LateRestore();
-                GS2.Dev("All good, Setting Frame 10");
+                GS2.Devlog("All good, Setting Frame 10");
                 __instance.frame = 10;
             }
 
             if (__instance.frame == 9)
             {
-                GS2.Dev("Frame 9");
+                GS2.Devlog("Frame 9");
                 if (GameCamera.instance == null)
                 {
                     GS2.Warn("Camera null, setting 9");
@@ -109,14 +116,14 @@ namespace GalacticScale
                     return false;
                 }
 
-                GS2.Dev("All good on frame 9");
+                GS2.Devlog("All good on frame 9");
                 GameCamera.instance.SetReady();
                 GameMain.preferences.LateRestore();
             }
 
             if (__instance.frame == 10)
             {
-                GS2.Dev($"FRAME 10 {!GameMain.instance?.isMenuDemo} {__instance.GetInstanceID()}");
+                GS2.Devlog($"FRAME 10 {!GameMain.instance?.isMenuDemo} {__instance.GetInstanceID()}");
                 GameMain.Begin();
                 __instance.SelfDestroy();
                 if (!GameMain.instance.isMenuDemo)
@@ -139,7 +146,7 @@ namespace GalacticScale
 
             }
 
-            GS2.Dev("Increasing Frame");
+            // GS2.Devlog("Increasing Frame");
             __instance.frame++;
             return false;
         }

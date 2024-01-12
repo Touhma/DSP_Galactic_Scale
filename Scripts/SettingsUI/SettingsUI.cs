@@ -198,9 +198,10 @@ namespace GalacticScale
                 //for each canvas
                 var canvas = Object.Instantiate(sp, scrollContentRect, false).GetComponent<RectTransform>();
 
-                canvas.anchoredPosition = new Vector2(anchorX + 350, anchorY);
+                
                 GeneratorCanvases.Add(canvas);
                 canvas.name = "generatorCanvas-" + GS2.Generators[i].Name;
+                canvas.anchoredPosition = new Vector2(500, anchorY);
                 if (currentGenIndex == i)
                 {
                     // GS2.Log($"Setting canvas {i} active {canvas.name} currentGenindes:{currentGenIndex}");
@@ -211,7 +212,7 @@ namespace GalacticScale
                 {
                     canvas.gameObject.SetActive(false);
                 }
-
+                Canvas.ForceUpdateCanvases();
                 // GS2.Log($"Creating Generator Plugin UIElements for {i}");
                 AddGeneratorPluginUIElements(canvas, i, GS2.Generators[i].Name);
             }

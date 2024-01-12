@@ -84,7 +84,7 @@ namespace GalacticScale
                 galaxy.birthPlanetId = GSSettings.BirthPlanetId;
                 galaxy.birthStarId = GSSettings.BirthStarId;
                 
-                Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
+                // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 //if (createPlanets) {
                 var birthStar = galaxy.StarById(galaxy.birthStarId);
                 AssignStarLevels(GSSettings.BirthStar);
@@ -114,6 +114,7 @@ namespace GalacticScale
                 if (Config.Dev) DumpObjectToJson(Path.Combine(DataDir, "ldbthemesPost.json"), LDB._themes.dataArray);
                 Log("Galaxy Generated");
                 Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
+                if (GSSettings.Instance.Preferences == null) GSSettings.Instance.Preferences = GS2.Preferences;
                 return galaxy;
             }
             catch (Exception e)

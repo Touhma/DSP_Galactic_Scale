@@ -316,9 +316,9 @@ namespace GalacticScale.Generators
         {
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
-            UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string> { "Linear", "InverseSquare", "None" }, "InverseSquare", "solarScheme", SetSolarScheme)));
+            UI.Add("solarScheme", sOptions.Add(GSUI.Selector("Solar Power Falloff".Translate(), new List<string> { "Linear", "InverseSquare", "None" }, "InverseSquare", "solarScheme", SetSolarScheme, "How solar power falls off with distance".Translate())));
             UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping".Translate(), 0, 0, 1f, 0.1f, "solarLerp", null, "How close to 100% the inner and outer planets will be".Translate())));
-            UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar".Translate(), 0, 10, 500, 5000, 1, "solarRange")));
+            UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar".Translate(), 0, 10, 500, 5000, 1, "solarRange", null, null,null,"Min/Max Solar Output as Percent".Translate())));
             UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
             UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme".Translate(), new List<string> { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names".Translate())));
             UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
@@ -341,7 +341,7 @@ namespace GalacticScale.Generators
             UI.Add("hz", sOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat("hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat("hz", new FloatPair(0, 3)).high, 100, 0.01f, "hz", null, HzLowCallback, HzHighCallback, "Force habitable zone between these distances".Translate())));
             UI.Add("orbitOverride", sOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, "orbitOverride", OrbitOverrideCallback, "Enable the slider below".Translate())));
             UI.Add("orbits", sOptions.Add(GSUI.RangeSlider("Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, "orbits", null, OrbitLowCallback, OrbitHighCallback, "Force the distances planets can spawn between".Translate())));
-            UI.Add("preferInnerPlanets", sOptions.Add(GSUI.Checkbox("Prefer Inner Planets".Translate(), false, "preferInnerPlanets", PreferInnerPlanetsCallback)));
+            UI.Add("preferInnerPlanets", sOptions.Add(GSUI.Checkbox("Prefer Inner Planets".Translate(), false, "preferInnerPlanets", PreferInnerPlanetsCallback, "Prefer planets closer to the star".Translate())));
             AddSpacer(sOptions);
             return sOptions;
         }
@@ -385,8 +385,8 @@ namespace GalacticScale.Generators
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
-            UI.Add("birthPlanetMoon", bOptions.Add(GSUI.Checkbox("Birth Planet is a Moon".Translate(), false, "birthPlanetMoon")));
-            UI.Add("birthPlanetGasMoon", bOptions.Add(GSUI.Checkbox("... of a Gas Giant".Translate(), false, "birthPlanetGasMoon")));
+            UI.Add("birthPlanetMoon", bOptions.Add(GSUI.Checkbox("Birth Planet is a Moon".Translate(), false, "birthPlanetMoon", null, "Start game on a moon".Translate())));
+            UI.Add("birthPlanetGasMoon", bOptions.Add(GSUI.Checkbox("... of a Gas Giant".Translate(), false, "birthPlanetGasMoon", null, "Start game on a moon of a gas giant (Need above checked)".Translate())));
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
             AddSpacer(bOptions);
             return bOptions;
@@ -469,11 +469,11 @@ namespace GalacticScale.Generators
                 UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 3)).low, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Force habitable zone between these distances".Translate())));
                 UI.Add($"{typeLetter[i]}innerPlanetDistance", tOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, $"{typeLetter[i]}innerPlanetDistance", null, "Distance forced tidal locking stops acting".Translate())));
 
-                UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider("Chance for Gas giant".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceGas")));
-                UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider("Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon")));
+                UI.Add($"{typeLetter[i]}chanceGas", tOptions.Add(GSUI.Slider("Chance for Gas giant".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceGas", null, "Percentage of planets to make Gas Giants".Translate())));
+                UI.Add($"{typeLetter[i]}chanceMoon", tOptions.Add(GSUI.Slider("Chance for Moon".Translate(), 0, 20, 99, $"{typeLetter[i]}chanceMoon", null, "Percentage of planets to make Moons".Translate())));
                 UI.Add($"{typeLetter[i]}orbitOverride", tOptions.Add(GSUI.Checkbox("Override Orbits".Translate(), false, $"{typeLetter[i]}orbitOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}orbits", tOptions.Add(GSUI.RangeSlider("Orbit Range".Translate(), 0.02f, 0.1f, 30, 99, 0.01f, $"{typeLetter[i]}orbits", null, null, null, "Force the distances planets can spawn between".Translate())));
-                UI.Add($"{typeLetter[i]}preferInnerPlanets", tOptions.Add(GSUI.Checkbox("Prefer Inner Planets".Translate(), false, $"{typeLetter[i]}preferInnerPlanets")));
+                UI.Add($"{typeLetter[i]}preferInnerPlanets", tOptions.Add(GSUI.Checkbox("Prefer Inner Planets".Translate(), false, $"{typeLetter[i]}preferInnerPlanets", null, "Bias orbits closer to star".Translate())));
 
                 UI.Add($"{typeLetter[i]}inclination", tOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, $"{typeLetter[i]}inclination", null, "Maximum angle of orbit".Translate(), "Random".Translate())));
                 UI.Add($"{typeLetter[i]}orbitLongitude", tOptions.Add(GSUI.Slider("Max Orbit Longitude".Translate(), -1, -1, 360, 1f, $"{typeLetter[i]}orbitLongitude", null, "Maximum longitude of the ascending node".Translate(), "Random".Translate())));

@@ -307,10 +307,10 @@ namespace GalacticScale
                 {
                     int hiveId = enemyDFHiveSystem.hiveAstroId - 1000000;
                     Vector3 hiveMarkerPos = Vector3.zero;
-                    if (!__instance.uiGame.dfSpaceGuideOnFinal && !flag2)
-                    {  
-                        
-                            VectorLF3 hiveRelPos = __instance.sector.astros[hiveId].uPos - camUPos;
+                    bool hasAnyStructureOrUnit = __instance.uiGame.dfSpaceGuideOnFinal;
+                    if (!hasAnyStructureOrUnit && !flag2)
+                    {
+                        VectorLF3 hiveRelPos = __instance.sector.astros[hiveId].uPos - camUPos;
                             double distanceToHive = directionOfView.x * hiveRelPos.x +
                                                     directionOfView.y * hiveRelPos.y +
                                                     directionOfView.z * hiveRelPos.z;
@@ -319,13 +319,22 @@ namespace GalacticScale
                                 distanceToHive /= hiveRelPos.magnitude;
                                 if (distanceToHive > 0.9999)
                                 {
+                                    hasAnyStructureOrUnit = true;
                                 }
                             }
                         
 
                     }
-           
-                        bool hasAnyStructureOrUnit = enemyDFHiveSystem.hasAnyStructureOrUnit;
+
+                    
+                        if (__instance.mouseInHive == enemyDFHiveSystem.hiveAstroId)
+                        {
+                            hasAnyStructureOrUnit = true;
+                        }
+                        if (!enemyDFHiveSystem.hasAnyStructureOrUnit)
+                        {
+                            hasAnyStructureOrUnit = false;
+                        }
                         if (hasAnyStructureOrUnit)
                         {
                             hiveMarkerPos = Maths.QInvRotateLF(__instance.relRot,
@@ -344,7 +353,9 @@ namespace GalacticScale
 
                         if (hasAnyStructureOrUnit)
                         {
-                            __instance.SetEntry(ref _guidecnt, ESpaceGuideType.DFHive, 0, 0, hiveMarkerPos, 0f);
+                         
+                               __instance.SetEntry(ref _guidecnt, ESpaceGuideType.DFHive, enemyDFHiveSystem.hiveAstroId, 0, hiveMarkerPos, 0f);
+                         
                         }
                     
 

@@ -593,7 +593,7 @@ namespace GalacticScale.Generators
         private void GeneratePlanetsForStar(GSStar star)
         {
             star.Planets = new GSPlanets();
-            // Warn($"Creating Planets for {star.Name}");
+            // GS2.Warn($"Creating Planets for {star.Name}");
             var random = new GS2.Random(star.Seed);
 
             var starBodyCount = GetStarPlanetCount(star);
@@ -621,7 +621,7 @@ namespace GalacticScale.Generators
             telluricCount -= moonCount;
             var secondaryMoonCount = moonCount > 1 ? Mathf.RoundToInt((moonCount - 1) * (float)subMoonChance) : 0;
             moonCount -= secondaryMoonCount;
-
+            // GS2.Log($"Creating Planets for {star.Name} with {starBodyCount} bodies");
             var gasPlanets = new GSPlanets();
             var telPlanets = new GSPlanets();
             var moons = new GSPlanets();
@@ -664,8 +664,7 @@ namespace GalacticScale.Generators
 
             for (var i = 0; i < moonCount - (isBirthStar && startOnMoon ? 1 : 0); i++)
             {
-                // GS2.Log(
-                //     $"Adding Moon {i + 1}/{moonCount} with bias {moonBias}. Available Hosts:{gasPlanets.Count} Gas / {telPlanets.Count}");
+                // GS2.Log($"Adding Moon {i + 1}/{moonCount} with bias {moonBias}. Available Hosts:{gasPlanets.Count} Gas / {telPlanets.Count}");
                 GSPlanet randomPlanet;
                 var hostGas = random.NextPick(moonBias / 100f);
 
@@ -697,7 +696,7 @@ namespace GalacticScale.Generators
                 moon.genData.Add("hosttype", "planet");
                 moon.genData.Add("hostname", randomPlanet.Name);
                 moons.Add(moon);
-                GS2.Log($"Added {moon} to {randomPlanet}");
+                // GS2.Log($"Added {moon} to {randomPlanet}");
             }
 
             for (var i = 0; i < secondaryMoonCount; i++)
@@ -715,14 +714,27 @@ namespace GalacticScale.Generators
             {
                 birthPlanet = new GSPlanet("BirthPlanet", "Mediterranean", birthPlanetSize, -1, -1, -1, -1, -1, -1, -1,
                     -1, new GSPlanets());
+                
                 if (startIsMoonOfGas)
+                {
+                    GS2.Log("BirthPlanet is moon of gas giant");
+                    birthPlanet.genData.Set("IsMoon", true);
                     random.Item(gasPlanets).Moons.Add(birthPlanet);
+                }
                 else if (startOnMoon)
+                {
+                    GS2.Log("BirthPlanet is moon");
                     random.Item(telPlanets).Moons.Add(birthPlanet);
+                    birthPlanet.genData.Set("IsMoon", true);
+                }
                 else
+                {
+                    GS2.Log("BirthPlanet is normal Planet");
                     telPlanets.Add(birthPlanet);
+                    birthPlanet.genData.Set("IsMoon", false);
+                }
 
-                GS2.Log($"Created Birth Planet in star {star.Name}: {birthPlanet}");
+                GS2.Log($"Created Birth Planet in star {star.Name}: {birthPlanet.Name}");
             }
 
             foreach (var p in telPlanets)
@@ -731,13 +743,13 @@ namespace GalacticScale.Generators
             foreach (var p in gasPlanets)
                 star.Planets.Add(p);
 
-
+            GS2.Log("TEST");
             // GS2.WarnJson((from s in star.Planets select s.Name).ToList());
-            // GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignMoonOrbits(star);
-            // GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignPlanetOrbits(star);
-            // GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
             SelectPlanetThemes(star);
             // GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
             FudgeNumbersForPlanets(star);
@@ -905,7 +917,7 @@ namespace GalacticScale.Generators
                 }
             }
             //Orbits should be set.
-            // GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
         }
 
 

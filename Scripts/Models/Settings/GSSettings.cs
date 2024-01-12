@@ -14,7 +14,7 @@ namespace GalacticScale
         // public static GSStar BirthStar { get => birthStarId>=0?Stars[birthStarId-1]:null; }
         private static GSPlanet birthPlanet;
         private static GSStar birthStar;
-
+        [SerializeField] public GS2.GSPreferences Preferences;
         private static int birthPlanetId = -1; // this is a vanilla id, not a GS Index!
         private static string birthPlanetName;
 
@@ -79,12 +79,12 @@ namespace GalacticScale
             get
             {
                 if (birthPlanet != null) return birthPlanet;
-                if (GS2.Vanilla)
-                {
-                    GS2.Log("Getting BirthPlanet For Vanilla");
-                    birthPlanet = FindPlanet(GameMain.galaxy.birthPlanetId);
-                    return birthPlanet;
-                }
+                // if (GS2.Vanilla)
+                // {
+                //     GS2.Log("Getting BirthPlanet For Vanilla");
+                //     birthPlanet = FindPlanet(GameMain.galaxy.birthPlanetId);
+                //     return birthPlanet;
+                // }
 
                 GS2.Warn($"BirthPlanet Requested by {GS2.GetCaller(1)} {GS2.GetCaller(2)} {GS2.GetCaller(3)}");
                 if (birthPlanetId > 100)

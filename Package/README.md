@@ -2,6 +2,13 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.35 - Fix for error when hovering over stars and seeds simultaneously
+- Version 2.12.34 - Fix for new DSP Update 0.10.28.21308 Starmap should be feature complete vs vanilla now.
+- Version 2.12.33 - Fix not being able to attach belts to ILS on comets
+- Version 2.12.32 - Fix error when due to large starcounts the game creates more idle relays than it has space for
+- Version 2.12.31 - Fix missing text on settings buttons. Fix issue on comets placing belts under turrets. Tidy up settings. Add missing hint text. Add dev options.
+- Version 2.12.30 - Fixed blueprinting Planetary Logistics Stations. Finally remembered to remove useless debug options from settings.
+- Version 2.12.29 - Fix Galaxy Generation where BirthPlanet is a moon. Fix error where factories array is not set higher than planetcount (Some other Mod hijacking the prefix patch?)
 - Version 2.12.28 - Fix Planetary Shield on small/large planets. Thanks karki!
 - Version 2.12.27 - Fixed copy/paste not working properly. Inserters should now work properly on all planet sizes. Let me know on discord if there are any issues.
 - Version 2.12.26 - Fix Hives so they DONT show in starmap. Fixed them so they show in normal play. Fixed Dark Fog Communicator not being labelled.

@@ -74,7 +74,7 @@ namespace GalacticScale.Generators
             // GenerateOrbits();
             highStopwatch.Begin();
             GeneratePlanets();
-
+            Warn($"Planets should be named by now. Birthplanet:{birthPlanet.Name}");
 
             Log($"Planets Generated: {highStopwatch.duration:F5}");
             // AssignOrbits();
@@ -94,9 +94,10 @@ namespace GalacticScale.Generators
             SanityCheck();
             Log($"Sanity Checked: {highStopwatch.duration:F5}");
             highStopwatch.Begin();
+            GSSettings.BirthPlanetName = birthPlanet.Name;
             EnsureBirthSystemHasTi();
             // GS2.Warn("BIRTHSTAR");
-            // Warn($"{birthStar.Name} {birthStar.Type} {birthPlanet.Name} {birthPlanetIndex} {birthPlanetHost?.Name}");
+            Warn($"{birthStar.Name} {birthStar.Type} {birthPlanet.Name}");
             // if (forcedBirthStar == null)
             // {
             //     var bsInt = preferences.GetInt("birthStar", 14);
@@ -118,7 +119,7 @@ namespace GalacticScale.Generators
             // }
             // Log("End");
             // Log($"Setting Birthplanet Name to {birthPlanet.Name}");
-            GSSettings.BirthPlanetName = birthPlanet.Name;
+            
             if (preferences.GetBool("birthRareDisable", true)) birthPlanet.rareChance = 0f;
             foreach (var star in GSSettings.Stars)
                 if (!star.Decorative && preferences.GetBool("cometsEnabled") && random.NextPick(preferences.GetFloat("cometChance", 0) / 100f) && star.PlanetCount < 100)

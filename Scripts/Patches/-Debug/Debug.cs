@@ -7,15 +7,202 @@ using System.Linq;
 using HarmonyLib;
 using static GalacticScale.GS2;
 using UnityEngine;
+using UnityEngine.UI;
 using static System.Reflection.Emit.OpCodes;
 using Logger = BepInEx.Logging.Logger;
 
 namespace GalacticScale
 
 {
-    public static class PatchOnUnspecified_Debug
-    {
+	
+    // public static class PatchOnUnspecified_Debug
+    // {
+	   //  [HarmonyPrefix]
+	   //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExpPoint))]
+	   //  public static bool AddExpPoint(ref EvolveData __instance, int _addexpp)
+	   //  {
+		  //   if (__instance.level >= 100)
+		  //   {
+			 //    if (__instance.expf != 0 || __instance.expp != 0 || __instance.level != 100)
+			 //    {
+				//     __instance.level = 100;
+				//     __instance.expf = 0;
+				//     __instance.expp = 0;
+				//     __instance.expl = EvolveData.LevelCummulativeExp(100);
+			 //    }
+			 //    return false;
+		  //   }
+		  //   if (_addexpp > 0)
+		  //   {
+			 //    __instance.expp += _addexpp;
+			 //    if (__instance.expp >= 10000)
+			 //    {
+				//     __instance.expf += __instance.expp / 10000;
+				//     __instance.expp %= 10000;
+				//     while (__instance.expf >= EvolveData.levelExps[__instance.level])
+				//     {
+				// 	    int num = EvolveData.levelExps.Length - 1;
+				// 	    __instance.expf -= EvolveData.levelExps[__instance.level];
+				// 	    __instance.expl += EvolveData.levelExps[__instance.level];
+				// 	    __instance.level++;
+				// 	    if (__instance.level >= num)
+				// 	    {
+				// 		    __instance.level = num;
+				// 		    __instance.expf = 0;
+				// 		    __instance.expp = 0;
+				// 		    return false;
+				// 	    }
+				//     }
+			 //    }
+		  //   }
+    //
+		  //   return false;
+	   //  }
+	   //  [HarmonyPrefix]
+	   //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExp))]
+	   //  public static bool AddExp(ref EvolveData __instance, int _addexp)
+	   //  {
+		  //   if (__instance.level >= 100)
+		  //   {
+			 //    if (__instance.expf != 0 || __instance.expp != 0 || __instance.level != 100)
+			 //    {
+				//     __instance.level = 100;
+				//     __instance.expf = 0;
+				//     __instance.expp = 0;
+				//     __instance.expl = EvolveData.LevelCummulativeExp(100);
+			 //    }
+			 //    return false;
+		  //   }
+		  //   __instance.expf += _addexp;
+		  //   while (__instance.expf >= EvolveData.levelExps[__instance.level])
+		  //   {
+			 //    int num = EvolveData.levelExps.Length - 1;
+			 //    __instance.expf -= EvolveData.levelExps[__instance.level];
+			 //    __instance.expl += EvolveData.levelExps[__instance.level];
+			 //    __instance.level++;
+			 //    if (__instance.level >= num)
+			 //    {
+				//     __instance.level = num;
+				//     __instance.expf = 0;
+				//     return false;
+			 //    }
+		  //   }
+    //
+		  //   return false;
+	   //  }
+	    
+	    [HarmonyPrefix, HarmonyPatch(typeof(UISpaceGuideEntry), "OnObjectChange")]
+	    public static bool OnObjectChange(ref UISpaceGuideEntry __instance, ESpaceGuideType ___guideType,
+		    float ___radius, int ___objId, GalaxyData ___galaxy, ref RectTransform ___rectTrans, ref Text ___nameText,
+		    ref Image ___markIcon)
+	    {
 
+		    __instance.galaxy = __instance.parent.galaxy;
+		    __instance.gameCamera = __instance.parent.gameCamera;
+		    __instance.parentRectTrans = __instance.parent.rectTrans;
+		    __instance.playerTrans = __instance.parent.player.transform;
+		    if (__instance.guideType == ESpaceGuideType.Star)
+		    {
+			    StarData starData = __instance.galaxy.StarById(__instance.objId);
+			    __instance.nameText.text = ((starData != null) ? starData.displayName : "Star");
+			    float preferredWidth = __instance.nameText.preferredWidth;
+			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth + 42f, 80f);
+			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth * 0.4f + 40f, 0f);
+			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth * 0.4f + 60f, 0f);
+			    __instance.markIcon.sprite = __instance.starSprite;
+			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.25f);
+			    __instance.collImage.raycastTarget = true;
+		    }
+		    else if (__instance.guideType == ESpaceGuideType.Planet)
+		    {
+			    PlanetData planetData = __instance.galaxy.PlanetById(__instance.objId);
+			    __instance.nameText.text = ((planetData != null)
+				    ? ((__instance.radius > 0f)
+					    ? planetData.displayName
+					    : (planetData.displayName + " - " + planetData.star.displayName))
+				    : "Planet");
+			    float preferredWidth2 = __instance.nameText.preferredWidth;
+			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth2 + 42f, 80f);
+			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth2 * 0.4f + 40f, 0f);
+			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth2 * 0.4f + 60f, 0f);
+			    __instance.markIcon.sprite = __instance.circleSprite;
+			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.5f);
+			    __instance.collImage.raycastTarget = true;
+		    }
+		    else if (__instance.guideType == ESpaceGuideType.Ship)
+		    {
+			    ItemProto itemProto = LDB.items.Select(__instance.itemId);
+			    __instance.nameText.text = ((itemProto != null) ? itemProto.name : "运输船".Translate());
+			    __instance.markIcon.sprite = __instance.shipSprite;
+			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
+			    __instance.collImage.raycastTarget = false;
+		    }
+		    else if (__instance.guideType == ESpaceGuideType.DFHive)
+		    {
+			    GS2.Devlog(__instance.objId + "/" +GameMain.data.spaceSector.dfHivesByAstro.Length + " " + __instance.hivecodes.Length );
+			    EnemyDFHiveSystem enemyDFHiveSystem = GameMain.data.spaceSector.dfHivesByAstro[__instance.objId - 1000000];
+			    Devlog(GameMain.data.spaceSector.dfHivesByAstro.Length + " " + " " + enemyDFHiveSystem.hiveOrbitIndex.ToString() + __instance.hivecodes.Length );
+			    __instance.nameText.text = " " + __instance.hivecodes[enemyDFHiveSystem.hiveOrbitIndex % __instance.hivecodes.Length] + " " + "巢穴简称".Translate();
+			    float preferredWidth3 = __instance.nameText.preferredWidth;
+			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth3 + 42f, 80f);
+			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth3 * 0.4f + 40f, 0f);
+			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth3 * 0.4f + 60f, 0f);
+			    __instance.markIcon.sprite = __instance.hiveSprite;
+			    __instance.markIcon.color = __instance.enemyColor;
+			    __instance.collImage.raycastTarget = true;
+		    }
+		    else if (__instance.guideType == ESpaceGuideType.DFCarrier)
+		    {
+			    __instance.nameText.text = "黑雾运输船".Translate();
+			    __instance.markIcon.sprite = __instance.shipSprite;
+			    __instance.markIcon.color = __instance.enemyColor;
+			    __instance.collImage.raycastTarget = true;
+		    }
+		    else if (__instance.guideType == ESpaceGuideType.Rocket)
+		    {
+			    __instance.nameText.text = "火箭".Translate();
+			    __instance.markIcon.sprite = __instance.rocketSprite;
+			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
+			    __instance.collImage.raycastTarget = false;
+		    }
+		    else if (__instance.guideType == ESpaceGuideType.CosmicMessage ||
+		             __instance.guideType == ESpaceGuideType.DFCommunicator)
+		    {
+			    __instance.nameText.text = ((__instance.guideType == ESpaceGuideType.CosmicMessage)
+				    ? "宇宙讯息".Translate()
+				    : "黑雾通讯器".Translate());
+			    float preferredWidth4 = __instance.nameText.preferredWidth;
+			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth4 + 42f, 80f);
+			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth4 * 0.4f + 40f, 0f);
+			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth4 * 0.4f + 60f, 0f);
+			    __instance.markIcon.sprite = __instance.msgSpite;
+			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
+			    __instance.collImage.raycastTarget = true;
+		    }
+
+		    Color color =
+			    ((__instance.guideType == ESpaceGuideType.DFHive || __instance.guideType == ESpaceGuideType.DFCarrier)
+				    ? __instance.enemyTextColor
+				    : __instance.normalTextColor);
+		    __instance.nameText.color = color;
+		    __instance.distText.color = color;
+		    __instance.UpdatePinButtonRotation();
+		    return false;
+	    }
+
+	    [HarmonyPostfix]
+	    [HarmonyPatch(typeof(EnemyDFHiveSystem),nameof(EnemyDFHiveSystem.Init))]
+	    [HarmonyPatch(typeof(EnemyDFHiveSystem),nameof(EnemyDFHiveSystem.Import))]
+	    public static void EnemyDFHiveSystemInitImport(ref EnemyDFHiveSystem __instance)
+	    {
+		    if (__instance.idleRelayIds.Length < 2048)
+		    {
+			    var newArray = new int[2048];
+			    Array.Copy(__instance.idleRelayIds,newArray, __instance.idleRelayIds.Length);
+			    __instance.idleRelayIds = newArray;
+		    }
+	    }
+	    
 	    [HarmonyPostfix, HarmonyPatch(typeof(PlayerAction_Inspect),nameof(PlayerAction_Inspect.GetObjectSelectDistance))]
 	    public static void GetObjectSelectDistance(ref PlayerAction_Inspect __instance, ref float __result, EObjectType objType, int objid)
 	    {

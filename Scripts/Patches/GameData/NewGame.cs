@@ -8,9 +8,9 @@ namespace GalacticScale
         [HarmonyPostfix]
         public static void NewGame(GameDesc _gameDesc, ref PlanetFactory[] ___factories)
         {
-            if (GS2.Vanilla || DSPGame.IsMenuDemo) return;
+            if (DSPGame.IsMenuDemo) return;
 
-            ___factories = new PlanetFactory[GSSettings.PlanetCount *2];
+            ___factories = new PlanetFactory[GSSettings.PlanetCount +1];
         }
         //[HarmonyPatch(typeof(GameData), "SetForNewGame"), HarmonyPostfix]
         //public static void SetForNewGame_Postfix(GameData __instance)

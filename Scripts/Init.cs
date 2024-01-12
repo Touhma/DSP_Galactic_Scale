@@ -24,6 +24,7 @@ namespace GalacticScale
         public static bool Initialized = false;
         public static bool MenuHasLoaded;
 
+        public static DebugTool debugtool;
         //Temp until GS2Cheats workaround
         public static bool ResearchUnlocked = false;
 
@@ -59,9 +60,9 @@ namespace GalacticScale
                     var path2 = Path.Combine(AssemblyPath, "galactic.bundle");
                     if (File.Exists(path)) bundle = AssetBundle.LoadFromFile(path);
                     else bundle = AssetBundle.LoadFromFile(path2);
-                    // foreach (var name in bundle.GetAllAssetNames()) GS2.Warn("Bundle Contents:" + name);
+                    // foreach (var name in bundle.GetAllAssetNames()) GS2.Devlog("Bundle Contents:" + name);
                 }
-
+                // foreach (var name in bundle.GetAllAssetNames()) GS2.Log("Bundle Contents:" + name);
                 if (bundle == null)
                 {
                     Error("Failed to load AssetBundle!".Translate());
@@ -215,5 +216,6 @@ namespace GalacticScale
             else
                 Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
         }
+        
     }
 }
