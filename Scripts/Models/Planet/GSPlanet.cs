@@ -84,8 +84,15 @@ namespace GalacticScale
         [SerializeField]
         public string Theme
         {
-            get => theme == null ? InitTheme() : theme;
-            set => theme = value;
+            get {
+            if (theme == null) theme = InitTheme();
+            // GS2.LogGen($"Theme string requested for {this.Name} by {GS2.GetCaller()} {GS2.GetCaller(1)} {GS2.GetCaller(2)} returning {theme}");
+            return theme;
+            }
+            set {
+                // GS2.LogGen($"Theme string set by {this.Name} by {GS2.GetCaller()} {GS2.GetCaller(1)} {GS2.GetCaller(2)} returning {theme}");
+            theme = value;
+        }
         }
 
         public GSTheme GsTheme => string.IsNullOrEmpty(Theme) ? null : GSSettings.ThemeLibrary.Find(Theme);

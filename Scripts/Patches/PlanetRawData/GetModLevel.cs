@@ -16,7 +16,7 @@ namespace GalacticScale
             }
             catch (Exception e)
             {
-                GS2.Devlog("modData Index " + index + " doesn't exist: " + e);
+                GS2.DevLog("modData Index " + index + " doesn't exist: " + e);
                 __result = 0;
                 return false;
             }

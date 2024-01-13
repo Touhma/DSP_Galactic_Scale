@@ -144,7 +144,11 @@ namespace GalacticScale
         {
             Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Warning, true);
         }
-        public static void Devlog(string message, [CallerLineNumber] int lineNumber = 0)
+        public static void LogGen(string message, [CallerLineNumber] int lineNumber = 0)
+        {
+            if (Config.GenLog) Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Warning, true);
+        }
+        public static void DevLog(string message, [CallerLineNumber] int lineNumber = 0)
         {
             if (Config.Dev) Bootstrap.Debug($"{lineNumber.ToString().PadLeft(4)}:{GetCaller()}{message}", LogLevel.Warning, true);
         }

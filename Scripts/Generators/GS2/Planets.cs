@@ -743,13 +743,13 @@ namespace GalacticScale.Generators
             foreach (var p in gasPlanets)
                 star.Planets.Add(p);
 
-            GS2.Log("TEST");
+            // GS2.Log("TEST");
             // GS2.WarnJson((from s in star.Planets select s.Name).ToList());
-            GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.LogGen($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignMoonOrbits(star);
-            GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.LogGen($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignPlanetOrbits(star);
-            GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.LogGen($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
             SelectPlanetThemes(star);
             // GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
             FudgeNumbersForPlanets(star);
@@ -939,16 +939,18 @@ namespace GalacticScale.Generators
                 }
                 else
                 {
-                    // GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
+                    GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
                     var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric,
                         EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default,
                         true);
-                    if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
+                    if (preferences.GetString("birthTheme","") != "") planet.Theme = preferences.GetString("birthTheme");
+                    else if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
                     else planet.Theme = "Mediterranean";
+                    GS2.DevLog("SELECTED "+planet.Theme);
                     planet.Scale = 1f;
                 }
 
-                //GS2.Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
+                // GS2.Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
                 foreach (var body in planet.Bodies)
                     if (body != planet)
                     {
@@ -962,14 +964,15 @@ namespace GalacticScale.Generators
                                 EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200),
                                 EThemeDistribute.Default,
                                 true);
-                            if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
+                            if (preferences.GetString("birthTheme","") != "") planet.Theme = preferences.GetString("birthTheme");
+                            else if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
                             else body.Theme = "Mediterranean";
                             body.Scale = 1f;
                         }
                     }
                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
             }
-            // GS2.Log($"Themes Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            GS2.Log($"Themes Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
         }
 
         public bool CalculateIsGas(GSStar star)

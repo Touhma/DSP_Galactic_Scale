@@ -10,7 +10,7 @@ namespace GalacticScale
 
         public static void SetLuts(int segments, float planetRadius)
         {
-            GS2.Log($"{segments}, {planetRadius}");
+            // GS2.Log($"{segments}, {planetRadius}");
             if (!DSPGame.IsMenuDemo && !Vanilla) // Prevent special LUT's being created in main menu
             {
                 if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;

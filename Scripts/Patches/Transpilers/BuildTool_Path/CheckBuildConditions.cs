@@ -596,7 +596,7 @@ namespace GalacticScale
 // 								goto IL_1976;
 // 							}
 // 						}
-// 						GS2.Devlog($"SphericalAngleAOBInRad:{sphericalAngleAobInRad} SphericalSlopeRatio:{sphericalSlopeRatio}");
+// 						GS2.DevLog($"SphericalAngleAOBInRad:{sphericalAngleAobInRad} SphericalSlopeRatio:{sphericalSlopeRatio}");
 // 						if (sphericalAngleAobInRad < 2.5f && sphericalSlopeRatio > 0.1f)
 // 						{
 // 							buildPreview2.condition = EBuildCondition.TooBendToLift;
@@ -869,7 +869,7 @@ namespace GalacticScale
                 new CodeMatch(i=>i.opcode == Ldloc_S && i.operand.ToString().Contains("106")),
                 new CodeMatch(i=>i.opcode == Ldc_R4 && Math.Abs(Convert.ToSingle(i.operand) - 0.1f) < 0.001f)
                 );
-                GS2.Error((!codeMatcher2.IsInvalid).ToString());
+                // GS2.Error((!codeMatcher2.IsInvalid).ToString());
                 // codeMatcher2.LogILPre();
                 codeMatcher2.SetInstruction(new CodeInstruction(Ldc_R4, 0.3f));
                 // codeMatcher2.LogILPost();

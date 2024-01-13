@@ -12,7 +12,7 @@ namespace GalacticScale
             if (!DSPGame.IsMenuDemo)
                 if (!GS2.Vanilla)
                 {
-                    // GS2.Devlog($"latIdx:{latitudeIndex}, segment:{segment}");
+                    // GS2.DevLog($"latIdx:{latitudeIndex}, segment:{segment}");
                     if (segment < 4) segment = 4;
                     if (!GS2.keyedLUTs.ContainsKey(segment))
                         GS2.SetLuts(segment, segment);

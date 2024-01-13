@@ -16,7 +16,7 @@ namespace GalacticScale
         {
             if (label == null || value == null)
             {
-                GS2.Devlog("Error, label or value null");
+                GS2.DevLog("Error, label or value null");
                 return;
             }
             label.text = Label;

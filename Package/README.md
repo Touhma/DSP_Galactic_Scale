@@ -2,6 +2,10 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.39 - Remove BCE dependency
+- Version 2.12.38 - Fix projectiles not working on small planets. Thanks starfish!
+- Version 2.12.37 - Fixed log spam breaking new game
+- Version 2.12.36 - Added Birth Planet Selector. Might not work if your birthplanet is a moon... Let me know if it doesn't work for you.
 - Version 2.12.35 - Fix for error when hovering over stars and seeds simultaneously
 - Version 2.12.34 - Fix for new DSP Update 0.10.28.21308 Starmap should be feature complete vs vanilla now.
 - Version 2.12.33 - Fix not being able to attach belts to ILS on comets

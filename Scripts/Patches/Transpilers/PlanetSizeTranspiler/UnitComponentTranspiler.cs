@@ -68,7 +68,7 @@ namespace GalacticScale
                     matcher.InsertAndAdvance(new CodeInstruction(Ldarg_2));
                     matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
                 }).InstructionEnumeration();
-
+        
             return instructions;
         }
         

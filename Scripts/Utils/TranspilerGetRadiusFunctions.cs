@@ -11,9 +11,9 @@ namespace GalacticScale
         public static MethodInfo GetRadiusFromLocalPlanet(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromLocalPlanet)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromEnemyData(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromEnemyData)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromMecha(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromMecha)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
- 
         public static MethodInfo GetRadiusFromFactory(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromFactory)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
         public static MethodInfo GetRadiusFromAltitude(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAltitude)).MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+        public static MethodInfo GetSquareRadiusFromAstroFactoryId(this CodeMatcher matcher) => AccessTools.Method(typeof(Utils), nameof(Utils.GetSquareRadiusFromAstroFactoryId));
     }
     public static partial class Utils
     {
@@ -40,6 +40,13 @@ namespace GalacticScale
             var realRadius = ModifyRadius(Convert.ToDouble(t), factory?.planet?.realRadius ?? 200.0);
             // if (VFInput.alt) GS2.Log($"GetRadiusFromFactory Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} orig:{Convert.ToDouble(t)} returning {realRadius}");
             return (T)Convert.ChangeType(realRadius, typeof(T));
+        }
+        public static float GetSquareRadiusFromAstroFactoryId(int id)
+        {
+            var factory = GameMain.data.spaceSector.skillSystem.astroFactories[id];
+            var realRadius = factory.planet.realRadius * factory.planet.realRadius;
+            if (VFInput.alt) GS2.Log($"GetRadiusSquareFromFactory Called By {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)} returning {realRadius}");
+            return realRadius;
         }
         public static T GetRadiusFromAstroId<T>(T t, int id)
         {

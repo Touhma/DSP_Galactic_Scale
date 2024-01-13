@@ -21,15 +21,15 @@ namespace GalacticScale
         public GSGenPreferences Preferences = new();
         public Dictionary<string, GSUI> ThemeCheckboxes = new();
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
-        public bool DebugMode => Preferences.GetBool("Debug Log");
-        public bool GenLog => Preferences.GetBool("Generator Log");
+        public bool DebugMode => Preferences.GetBool("Debug Log",false);
+        public bool GenLog => Preferences.GetBool("Generator Log",false);
         public bool NewGravity => Preferences.GetBool("New Gravity", false);
         public float VirtualStarmapPlanetScaleFactor => Preferences.GetFloat("VSPlanetScaleFactor", 5f);
         public float VirtualStarmapStarScaleFactor => Preferences.GetFloat("VSStarScaleFactor", 0.5f);
         public float VirtualStarmapOrbitScaleFactor => Preferences.GetFloat("VSOrbitScaleFactor", 5f);
         public float VirtualStarmapClickTolerance => Preferences.GetFloat("VSClickTolerance", 3f);
-        public bool Dev => Preferences.GetBool("Dev");
-        public bool DevMode => Preferences.GetBool("DevMode");
+        public bool Dev => Preferences.GetBool("Dev", false);
+        public bool DevMode => Preferences.GetBool("DevMode", false);
         public string ImportFilename => Preferences.GetString("Import Filename");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
@@ -379,11 +379,11 @@ namespace GalacticScale
             // GS2.Warn("They have been set inactive");
             //Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set " + (int)result);
             SettingsUI.GeneratorCanvases[(int)result].gameObject.SetActive(true);
-            Devlog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
+            DevLog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
             SettingsUI.GeneratorCanvases[(int)result].anchoredPosition = new Vector2(
                 500,
                 SettingsUI.GeneratorCanvases[(int)result].anchoredPosition.y);
-            Devlog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
+            DevLog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
             // GS2.Warn("Correct one set active");
             SettingsUI.GeneratorIndex = (int)result;
             // GS2.Warn("Gen Index Set");

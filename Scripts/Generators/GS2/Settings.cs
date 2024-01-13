@@ -189,6 +189,7 @@ namespace GalacticScale.Generators
             GetHz();
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
             preferences.Set("birthStar", 14);
+            preferences.Set("birthTheme", "Mediterranean");
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("allowResonances", true);
@@ -379,8 +380,13 @@ namespace GalacticScale.Generators
                 "Random"
             };
             AddSpacer(bOptions);
+            SetupBaseThemes();
+            InitThemes();
+
+            var themes = GSSettings.ThemeLibrary.Where(t=>t.Value.Habitable).Select(t=>t.Key).ToList();
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
+            UI.Add("birthTheme", bOptions.Add(GSUI.Selector("Birth Planet Theme", themes, "Mediterranean", "birthTheme", null, "Starting Planet Theme".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));

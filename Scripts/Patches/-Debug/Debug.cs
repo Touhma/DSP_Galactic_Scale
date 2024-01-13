@@ -10,13 +10,51 @@ using UnityEngine;
 using UnityEngine.UI;
 using static System.Reflection.Emit.OpCodes;
 using Logger = BepInEx.Logging.Logger;
-
+// using BCE;
 namespace GalacticScale
 
 {
 	
-    // public static class PatchOnUnspecified_Debug
-    // {
+    public static class PatchOnUnspecified_Debug
+    {
+	    [HarmonyTranspiler]
+	    [HarmonyPatch(typeof(LocalGeneralProjectile),  nameof(LocalGeneralProjectile.TickSkillLogic))] //225f 212f
+	    public static IEnumerable<CodeInstruction> Fix39000(IEnumerable<CodeInstruction> instructions)
+	    {
+		    // var methodInfo = AccessTools.Method(typeof(EnemyUnitComponentTranspiler), nameof(Utils.GetRadiusFromFactory));
+            
+		    var matcher = new CodeMatcher(instructions)
+			    .MatchForward(
+				    true,
+				    new CodeMatch(i =>
+				    {
+					    return (i.opcode == Ldc_R4 ) &&
+					           (
+						           Math.Abs(Convert.ToDouble(i.operand ?? 0.0) - 39006.25) < 1 
+
+					           );
+				    })
+			    );
+		    if (matcher.IsInvalid) GS2.Error("Nope");
+			   matcher.Repeat(matcher =>
+			    {
+				    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
+				    // var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+				    // var mi = matcher.GetRadiusFromFactory();
+				    // matcher.LogILPre();
+				    matcher.InsertAndAdvance(new CodeInstruction(Ldarg_0));
+				    matcher.InsertAndAdvance(new CodeInstruction(Utils.LoadField(typeof(LocalGeneralProjectile),
+					    nameof(LocalGeneralProjectile.astroId))));
+				    matcher.SetInstruction(new CodeInstruction(Call, matcher.GetSquareRadiusFromAstroFactoryId()));
+				    // matcher.LogILPost(3);
+			    });
+
+				   instructions = matcher.InstructionEnumeration();
+
+		    return instructions;
+	    }
+	    
+	    
 	   //  [HarmonyPrefix]
 	   //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExpPoint))]
 	   //  public static bool AddExpPoint(ref EvolveData __instance, int _addexpp)
@@ -139,9 +177,9 @@ namespace GalacticScale
 		    }
 		    else if (__instance.guideType == ESpaceGuideType.DFHive)
 		    {
-			    GS2.Devlog(__instance.objId + "/" +GameMain.data.spaceSector.dfHivesByAstro.Length + " " + __instance.hivecodes.Length );
+			    GS2.DevLog(__instance.objId + "/" +GameMain.data.spaceSector.dfHivesByAstro.Length + " " + __instance.hivecodes.Length );
 			    EnemyDFHiveSystem enemyDFHiveSystem = GameMain.data.spaceSector.dfHivesByAstro[__instance.objId - 1000000];
-			    Devlog(GameMain.data.spaceSector.dfHivesByAstro.Length + " " + " " + enemyDFHiveSystem.hiveOrbitIndex.ToString() + __instance.hivecodes.Length );
+			    DevLog(GameMain.data.spaceSector.dfHivesByAstro.Length + " " + " " + enemyDFHiveSystem.hiveOrbitIndex.ToString() + __instance.hivecodes.Length );
 			    __instance.nameText.text = " " + __instance.hivecodes[enemyDFHiveSystem.hiveOrbitIndex % __instance.hivecodes.Length] + " " + "巢穴简称".Translate();
 			    float preferredWidth3 = __instance.nameText.preferredWidth;
 			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth3 + 42f, 80f);
