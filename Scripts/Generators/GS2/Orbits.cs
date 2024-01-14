@@ -118,6 +118,11 @@ namespace GalacticScale.Generators
             if (star == birthStar)
             {
                 var birthRadius = Mathf.Clamp(r.NextFloat(star.genData.Get("minHZ").Float(0f), star.genData.Get("maxHZ").Float(100f)), star.RadiusAU * 1.5f, 100f);
+                if (preferences.GetFloat("birthPlanetOrbit", -1f) >= 0f)
+                {
+                    birthRadius = preferences.GetFloat("birthPlanetOrbit", 0f);
+                    // GS2.Warn($"BirthPlanetOrbit = {birthRadius}");
+                }
                 // GS2.Warn($"Selected Orbit {birthRadius} for planet {birthPlanet.Name}. Hz:{star.genData.Get("minHZ").Float(0f)}-{star.genData.Get("maxHZ").Float(100f)}");
                 var orbit = new Orbit(birthRadius);
                 orbit.planets.Add(birthPlanet);

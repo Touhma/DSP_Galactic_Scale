@@ -190,6 +190,7 @@ namespace GalacticScale.Generators
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
             preferences.Set("birthStar", 14);
             preferences.Set("birthTheme", "Mediterranean");
+            preferences.Set("birthPlanetOrbit", -1f);
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("allowResonances", true);
@@ -250,10 +251,10 @@ namespace GalacticScale.Generators
             preferences.Set("chanceGas", 20);
             preferences.Set("chanceMoon", 20);
             preferences.Set("chanceMoonMoon", 5);
-            preferences.Set("orbitOverride", false);
-            preferences.Set("hzOverride", false);
-            preferences.Set("hz", new FloatPair(0.9f, 2));
-            preferences.Set("orbits", new FloatPair(0.1f, 10));
+            preferences.Set("orbitOverride", true);
+            preferences.Set("hzOverride", true);
+            preferences.Set("hz", new FloatPair(1f, 2));
+            preferences.Set("orbits", new FloatPair(0f, 10));
             preferences.Set("inclination", -1);
             preferences.Set("orbitLongitude", -1);
             preferences.Set("rareChance", -1f);
@@ -385,6 +386,7 @@ namespace GalacticScale.Generators
 
             var themes = GSSettings.ThemeLibrary.Where(t=>t.Value.Habitable).Select(t=>t.Key).ToList();
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
+            UI.Add("birthPlanetOrbit", bOptions.Add(GSUI.Slider("Starting Planet Orbit".Translate(), -1, -1, 100, 0.1f, "birthPlanetOrbit", null, "How far from the star your starting planet is".Translate(), "Default")));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthTheme", bOptions.Add(GSUI.Selector("Birth Planet Theme", themes, "Mediterranean", "birthTheme", null, "Starting Planet Theme".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));

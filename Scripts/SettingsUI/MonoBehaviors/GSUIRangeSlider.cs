@@ -142,6 +142,7 @@ namespace GalacticScale
             OnHighChange = sc.callbackHigh;
             OnChange = options.callback;
             _slider.WholeNumbers = options.increment % 1f == 0;
+            // OnNumClick();
             // options.postfix?.Invoke();
         }
     }

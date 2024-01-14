@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.40 - Fix BP error. Add Birth Planet Orbit setting to GS2 Generator. Better defaults for orbit and hz override which are enabled by default. New splashscreen. 
 - Version 2.12.39 - Remove BCE dependency
 - Version 2.12.38 - Fix projectiles not working on small planets. Thanks starfish!
 - Version 2.12.37 - Fixed log spam breaking new game

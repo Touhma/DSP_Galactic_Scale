@@ -99,6 +99,7 @@ namespace GalacticScale
             minValue = sc.minValue;
             maxValue = sc.maxValue;
             OnChange = options.callback;
+            // OnNumClick();
             //options.postfix?.Invoke();
         }
     }

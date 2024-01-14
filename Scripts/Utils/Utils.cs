@@ -257,7 +257,7 @@ namespace GalacticScale
         public static Sprite GetSplashSprite()
         {
             var r = new Random();
-            var i = r.Next(15);
+            var i = r.Next(16);
             var spriteName = "s14";
             if (i > 0) spriteName = "s" + i;
             // switch (i)
