@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -17,6 +18,29 @@ namespace GalacticScale
 	
     public static class PatchOnUnspecified_Debug
     {
+	    [HarmonyTranspiler]
+	    [HarmonyPatch(typeof(SpaceColliderLogic), nameof(SpaceColliderLogic.Init))]
+	    public static IEnumerable<CodeInstruction> InitTranspiler(IEnumerable<CodeInstruction> instructions)
+	    {
+		    var matcher = new CodeMatcher(instructions)
+			    .MatchForward(false,
+				    new CodeMatch(i=>i.opcode == Ldc_I4 && Convert.ToInt32(i.operand) == 512)
+			    );
+		    if (matcher.IsValid)
+		    {
+			    matcher.Repeat(matcher =>
+			    {
+				    matcher.SetOperandAndAdvance(8192);
+			    });
+		    }
+		    else
+		    {
+			    Error("Failed to patch SpaceColliderLogic.Init");
+		    }
+		    return instructions;
+	    }
+	    
+	    
 	    [HarmonyTranspiler]
 	    [HarmonyPatch(typeof(LocalGeneralProjectile),  nameof(LocalGeneralProjectile.TickSkillLogic))] //225f 212f
 	    public static IEnumerable<CodeInstruction> Fix39000(IEnumerable<CodeInstruction> instructions)

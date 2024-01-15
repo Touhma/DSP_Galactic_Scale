@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.41 - Fix BP error. For real this time. Well, at least one of them. Drastically increased the size of some SectorLogic arrays, hopefully it stops the game breaking when you have a lot of stars/hives
 - Version 2.12.40 - Fix BP error. Add Birth Planet Orbit setting to GS2 Generator. Better defaults for orbit and hz override which are enabled by default. New splashscreen. 
 - Version 2.12.39 - Remove BCE dependency
 - Version 2.12.38 - Fix projectiles not working on small planets. Thanks starfish!
