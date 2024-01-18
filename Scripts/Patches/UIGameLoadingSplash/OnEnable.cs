@@ -20,7 +20,8 @@ namespace GalacticScale
                     if (splash != null) image.sprite = splash;
 
                     image.color = Color.white;
-                    image.color = new Color(255,255,255,0.5f);
+                    image.color = new Color(255,255,255,1f);
+                    image.preserveAspect = true;
                 }
                 else if (image.name == "bg" || image.name == "dots" || image.name == "dsp")
                 {

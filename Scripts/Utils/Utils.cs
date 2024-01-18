@@ -7,8 +7,9 @@ using System.Runtime.InteropServices;
 using GSSerializer;
 using UnityEngine;
 using static GalacticScale.GS2;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
-using Random = System.Random;
+
 
 namespace GalacticScale
 {
@@ -256,7 +257,16 @@ namespace GalacticScale
 
         public static Sprite GetSplashSprite()
         {
-            var r = new Random();
+            Log($"Getting Splash Sprite {SplashSprites.Count}");
+            int seed = DateTime.Now.Millisecond;
+            var r = new GS2.Random(seed);
+            
+            if (SplashSprites.Count > 0)
+            {
+                Log("Getting Splash Image From File");
+                var sprite = r.Item(SplashSprites);
+                return sprite;
+            }
             var i = r.Next(16);
             var spriteName = "s14";
             if (i > 0) spriteName = "s" + i;
@@ -356,6 +366,30 @@ namespace GalacticScale
             t.LoadImage(data);
 
             return t;
+        }
+
+        public static void LoadSplashImagesFromDirectory()
+        {
+            Log($"Loading Splash Images from {Path.Combine(DataDir,"Splash")}");
+            var directory = Path.Combine(DataDir,"Splash");
+            foreach (var file in Directory.GetFiles(directory))
+            {
+                var name = Path.GetFileNameWithoutExtension(file);
+                
+                var ext = Path.GetExtension(file);
+                Log($"Loading Splash Image {name}.{ext}");
+                if (ext != ".png" && ext != ".jpg")
+                {
+                    Log("Skipped");
+                    continue;
+                }
+                var texture = GetTextureFromFile(file);
+                if (texture == null) continue;
+                var sprite = Sprite.Create(texture as Texture2D, new Rect(0, 0, texture.width, texture.height),
+                    new Vector2(0.5f, 0.5f));
+                sprite.name = name;
+                SplashSprites.Add(sprite);
+            }
         }
 
         public static Texture GetTextureFromResource(string path)

@@ -21,8 +21,8 @@ namespace GalacticScale
         public GSGenPreferences Preferences = new();
         public Dictionary<string, GSUI> ThemeCheckboxes = new();
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
-        public bool DebugMode => Preferences.GetBool("Debug Log",false);
-        public bool GenLog => Preferences.GetBool("Generator Log",false);
+        public bool DebugMode => Preferences.GetBool("Debug Log", false);
+        public bool GenLog => Preferences.GetBool("Generator Log", false);
         public bool NewGravity => Preferences.GetBool("New Gravity", false);
         public float VirtualStarmapPlanetScaleFactor => Preferences.GetFloat("VSPlanetScaleFactor", 5f);
         public float VirtualStarmapStarScaleFactor => Preferences.GetFloat("VSStarScaleFactor", 0.5f);
@@ -43,6 +43,7 @@ namespace GalacticScale
             get => Preferences.GetBool("Minify JSON");
             set => Preferences.Set("Minify JSON", value);
         }
+
         // public float FixCopyPasteSize => Preferences.GetFloat("FixCopyPasteSize", 0f);
         // public bool FixCopyPaste => Preferences.GetBool("FixCopyPaste", true);
         public string GeneratorID => Preferences.GetString("Generator ID", "space.customizing.generators.vanilla");
@@ -89,6 +90,11 @@ namespace GalacticScale
             Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
             // foreach (var x in Preferences) GS2.Log($"Key:{x.Key} Value:{x.Value}");
             return Preferences;
+        }
+
+        public void Save()
+        {
+            GS2.SavePreferences();
         }
 
         public void Generate(int starCount, StarData birthStar = null)
@@ -174,7 +180,7 @@ namespace GalacticScale
                 gameDesc.resourceMultiplier = 100;
                 GSSettings.GalaxyParams.resourceMulti = 100;
             }, null, "Will need to be saved and loaded to apply".Translate()));
-           
+
             Options.Add(GSUI.Group("Debug Options".Translate(), DebugOptions, "Useful for testing galaxies/themes".Translate()));
             Options.Add(GSUI.Spacer());
 
@@ -184,10 +190,300 @@ namespace GalacticScale
             JsonOptions.Add(GSUI.Checkbox("Minify Exported JSON".Translate(), false, "Minify JSON", null, "Only save changes".Translate()));
             _exportButton = JsonOptions.Add(GSUI.Button("Export Custom Galaxy".Translate(), "Export".Translate(), ExportJsonGalaxy, null, "Save Galaxy to File".Translate()));
             JsonGalaxies = JsonOptions.Add(GSUI.Combobox("Custom Galaxy".Translate(), filenames, CustomFileSelectorCallback, CustomFileSelectorPostfix, "Select a custom galaxy to load"));
+            var CombatSettings = new GSOptions();
+            CombatSettings.Add(GSUI.Checkbox("Enable Dark Fog".Translate(), true, "Combat", null, "Enable Enemies".Translate()));
+            CombatSettings.Add(GSUI.Slider("Aggressiveness".Translate(), 0, 1, 5, 0.5f, "Aggressiveness", null, "How aggressive the AI is".Translate()));
+            CombatSettings.Add(GSUI.Slider("Initial Level".Translate(), 0, 0, 10, 1, "Initial Level", null, "How strong the AI is at the start".Translate()));
+            CombatSettings.Add(GSUI.Slider("Initial Growth".Translate(), 0, 1, 6, 1, "Initial Growth", null, "How fast the AI grows at the start".Translate()));
+            CombatSettings.Add(GSUI.Slider("Initial Colonize".Translate(), 0, 1, 6, 1, "Initial Colonize", null, "How fast the AI colonizes at the start".Translate()));
+            CombatSettings.Add(GSUI.Slider("Max Density".Translate(), 1f, 1f, 3f, 0.5f, "Max Density", null, "How dense the AI can get".Translate()));
+            CombatSettings.Add(GSUI.Slider("Growth Speed Factor".Translate(), 0f, 1f, 4f, 0.5f, "Growth Speed Factor", null, "How fast the AI grows".Translate()));
+            CombatSettings.Add(GSUI.Slider("Power Threat Factor".Translate(), 0, 1, 8, 1, "Power Threat Factor", null, "How much the AI cares about power".Translate()));
+            CombatSettings.Add(GSUI.Slider("Battle Threat Factor".Translate(), 0, 1, 8, 1, "Battle Threat Factor", null, "How much the AI cares about battle".Translate()));
+            CombatSettings.Add(GSUI.Slider("Battle Exp Factor".Translate(), 0, 1, 8, 1, "Battle Exp Factor", null, "How much the AI cares about battle experience".Translate()));
+            JsonOptions.Add(GSUI.Group("Combat Settings".Translate(), CombatSettings, "How the AI behaves".Translate()));
             JsonOptions.Add(GSUI.Button("Load Custom Galaxy".Translate(), "Load", LoadJsonGalaxy, null, "Will end current game".Translate()));
             DebugOptions.Add(GSUI.Spacer());
 
             Options.Add(GSUI.Group("Custom Galaxy Export/Import".Translate(), JsonOptions, "Export available once in game".Translate()));
+        }
+
+        public void LoadJsonGalaxy(Val o)
+        {
+            Save();
+            var ImportFilename = Preferences.GetString("Import Filename", null);
+            if (o != "Click") ImportFilename = "Pasta";
+            if (string.IsNullOrEmpty(ImportFilename))
+            {
+                UIMessageBox.Show("Error".Translate(), "To use the Custom JSON Generator you must select a file to load.".Translate(), "Ok".Translate(), 1);
+                RefreshFileNames();
+                return;
+            }
+
+            GSSettings.Reset(GSSettings.Seed);
+            var path = Path.Combine(Path.Combine(DataDir, "CustomGalaxies"), ImportFilename + ".json");
+            GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
+            //Warn(GSSettings.StarCount.ToString());
+            LoadSettingsFromJson(path);
+            Log("Generator:Json|Generate|End");
+            GSSettings.Instance.imported = true;
+            // GS2.gameDesc.playerProto = 2;
+            //WarnJson(GSSettings.Instance.galaxyParams);
+            //WarnJson(GSSettings.StarCount);
+            gsStars.Clear();
+            gsPlanets.Clear();
+            //Warn(GSSettings.StarCount.ToString());
+
+            // GS2.galaxy = new GalaxyData();
+            var gameDesc = new GameDesc();
+            gameDesc.SetForNewGame(UniverseGen.algoVersion, 1, 1, 1, 1f);
+            gameDesc.combatSettings = new CombatSettings();
+            gameDesc.combatSettings.aggressiveness = Preferences.GetFloat("Aggressiveness", 1f);
+            gameDesc.combatSettings.initialLevel = Preferences.GetFloat("Initial Level", 0f);
+            gameDesc.combatSettings.initialGrowth = Preferences.GetFloat("Initial Growth", 1f);
+            gameDesc.combatSettings.initialColonize = Preferences.GetFloat("Initial Colonize", 1f);
+            gameDesc.combatSettings.maxDensity = Preferences.GetFloat("Max Density", 1f);
+            gameDesc.combatSettings.growthSpeedFactor = Preferences.GetFloat("Growth Speed Factor", 1f);
+            gameDesc.combatSettings.powerThreatFactor = Preferences.GetFloat("Power Threat Factor", 1f);
+            gameDesc.combatSettings.battleThreatFactor = Preferences.GetFloat("Battle Threat Factor", 1f);
+            gameDesc.combatSettings.battleExpFactor = Preferences.GetFloat("Battle Exp Factor", 1f);
+            if (gameDesc.combatSettings.aggressiveness < 0.5f)
+            {
+                gameDesc.combatSettings.aggressiveness = -1f;
+            }
+            else if (gameDesc.combatSettings.aggressiveness < 1.5f)
+            {
+                gameDesc.combatSettings.aggressiveness = 0f;
+            }
+            else if (gameDesc.combatSettings.aggressiveness < 2.5f)
+            {
+                gameDesc.combatSettings.aggressiveness = 0.5f;
+            }
+            else if (gameDesc.combatSettings.aggressiveness < 3.5f)
+            {
+                gameDesc.combatSettings.aggressiveness = 1f;
+            }
+            else if (gameDesc.combatSettings.aggressiveness < 4.5f)
+            {
+                gameDesc.combatSettings.aggressiveness = 2f;
+            }
+            else
+            {
+                gameDesc.combatSettings.aggressiveness = 3f;
+            }
+
+            if (gameDesc.combatSettings.initialGrowth < 0.5f)
+            {
+                gameDesc.combatSettings.initialGrowth = 0f;
+            }
+            else if (gameDesc.combatSettings.initialGrowth < 1.5f)
+            {
+                gameDesc.combatSettings.initialGrowth = 0.25f;
+            }
+            else if (gameDesc.combatSettings.initialGrowth < 2.5f)
+            {
+                gameDesc.combatSettings.initialGrowth = 0.5f;
+            }
+            else if (gameDesc.combatSettings.initialGrowth < 3.5f)
+            {
+                gameDesc.combatSettings.initialGrowth = 0.75f;
+            }
+            else if (gameDesc.combatSettings.initialGrowth < 4.5f)
+            {
+                gameDesc.combatSettings.initialGrowth = 1f;
+            }
+            else if (gameDesc.combatSettings.initialGrowth < 5.5f)
+            {
+                gameDesc.combatSettings.initialGrowth = 1.5f;
+            }
+            else
+            {
+                gameDesc.combatSettings.initialGrowth = 2f;
+            }
+
+            if (gameDesc.combatSettings.initialColonize < 0.5f)
+            {
+                gameDesc.combatSettings.initialColonize = 0.01f;
+            }
+            else if (gameDesc.combatSettings.initialColonize < 1.5f)
+            {
+                gameDesc.combatSettings.initialColonize = 0.25f;
+            }
+            else if (gameDesc.combatSettings.initialColonize < 2.5f)
+            {
+                gameDesc.combatSettings.initialColonize = 0.5f;
+            }
+            else if (gameDesc.combatSettings.initialColonize < 3.5f)
+            {
+                gameDesc.combatSettings.initialColonize = 0.75f;
+            }
+            else if (gameDesc.combatSettings.initialColonize < 4.5f)
+            {
+                gameDesc.combatSettings.initialColonize = 1f;
+            }
+            else if (gameDesc.combatSettings.initialColonize < 5.5f)
+            {
+                gameDesc.combatSettings.initialColonize = 1.5f;
+            }
+            else
+            {
+                gameDesc.combatSettings.initialColonize = 2f;
+            }
+
+            if (gameDesc.combatSettings.growthSpeedFactor < 0.5f)
+            {
+                gameDesc.combatSettings.growthSpeedFactor = 0.25f;
+            }
+            else if (gameDesc.combatSettings.growthSpeedFactor < 1.5f)
+            {
+                gameDesc.combatSettings.growthSpeedFactor = 0.5f;
+            }
+            else if (gameDesc.combatSettings.growthSpeedFactor < 2.5f)
+            {
+                gameDesc.combatSettings.growthSpeedFactor = 1f;
+            }
+            else if (gameDesc.combatSettings.growthSpeedFactor < 3.5f)
+            {
+                gameDesc.combatSettings.growthSpeedFactor = 2f;
+            }
+            else
+            {
+                gameDesc.combatSettings.growthSpeedFactor = 3f;
+            }
+
+            if (gameDesc.combatSettings.powerThreatFactor < 0.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 0.01f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 1.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 0.1f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 2.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 0.2f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 3.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 0.5f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 4.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 1f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 5.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 2f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 6.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 5f;
+            }
+            else if (gameDesc.combatSettings.powerThreatFactor < 7.5f)
+            {
+                gameDesc.combatSettings.powerThreatFactor = 8f;
+            }
+            else
+            {
+                gameDesc.combatSettings.powerThreatFactor = 10f;
+            }
+
+            if (gameDesc.combatSettings.battleThreatFactor < 0.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 0.01f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 1.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 0.1f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 2.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 0.2f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 3.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 0.5f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 4.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 1f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 5.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 2f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 6.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 5f;
+            }
+            else if (gameDesc.combatSettings.battleThreatFactor < 7.5f)
+            {
+                gameDesc.combatSettings.battleThreatFactor = 8f;
+            }
+            else
+            {
+                gameDesc.combatSettings.battleThreatFactor = 10f;
+            }
+
+            if (gameDesc.combatSettings.battleExpFactor < 0.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 0.01f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 1.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 0.1f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 2.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 0.2f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 3.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 0.5f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 4.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 1f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 5.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 2f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 6.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 5f;
+            }
+            else if (gameDesc.combatSettings.battleExpFactor < 7.5f)
+            {
+                gameDesc.combatSettings.battleExpFactor = 8f;
+            }
+            else
+            {
+                gameDesc.combatSettings.battleExpFactor = 10f;
+            }
+
+            if (Preferences.GetBool("Combat", true)) gameDesc.isPeaceMode = false;
+            else gameDesc.isPeaceMode = true;
+            // var random = new GS2.Random(1);
+
+
+            if (GS2.Config.SkipPrologue) DSPGame.StartGameSkipPrologue(gameDesc);
+            else DSPGame.StartGame(gameDesc);
+            // UniverseGen.CreateGalaxy(GS2.gameDesc);
+            // foreach (var star in galaxy.stars)
+            // {
+            //     if (GetGSStar(star) == GSSettings.BirthStar)
+            //     {
+            //         
+            //         ConfigureBirthStarHiveSettings(random, star);
+            //         CreateDarkFogHive(star, random);
+            //     }
+            //     else
+            //     {
+            //         ConfigureStarHiveSettings(random, star);
+            //         CreateDarkFogHive(star, random);
+            //     }
+            // }
         }
 
         public void EnableDevMode()
@@ -431,38 +727,6 @@ namespace GalacticScale
             Preferences.Set("Use External Themes", val);
         }
 
-        public void LoadJsonGalaxy(Val o)
-        {
-            var ImportFilename = Preferences.GetString("Import Filename", null);
-            if (o != "Click") ImportFilename = "Pasta";
-            if (string.IsNullOrEmpty(ImportFilename))
-            {
-                UIMessageBox.Show("Error".Translate(), "To use the Custom JSON Generator you must select a file to load.".Translate(), "Ok".Translate(), 1);
-                RefreshFileNames();
-                return;
-            }
-
-            GSSettings.Reset(GSSettings.Seed);
-            var path = Path.Combine(Path.Combine(DataDir, "CustomGalaxies"), ImportFilename + ".json");
-            GSSettings.ThemeLibrary = ThemeLibrary.Vanilla();
-            //Warn(GSSettings.StarCount.ToString());
-            LoadSettingsFromJson(path);
-            Log("Generator:Json|Generate|End");
-            GSSettings.Instance.imported = true;
-            // GS2.gameDesc.playerProto = 2;
-            //WarnJson(GSSettings.Instance.galaxyParams);
-            //WarnJson(GSSettings.StarCount);
-            gsStars.Clear();
-            gsPlanets.Clear();
-            //Warn(GSSettings.StarCount.ToString());
-
-            // GS2.galaxy = new GalaxyData();
-            var gameDesc = new GameDesc();
-            gameDesc.SetForNewGame(UniverseGen.algoVersion, 1, 1, 1, 1f);
-            if (GS2.Config.SkipPrologue) DSPGame.StartGameSkipPrologue(gameDesc);
-            else DSPGame.StartGame(gameDesc);
-            // UniverseGen.CreateGalaxy(GS2.gameDesc);
-        }
 
         public void RefreshFileNames()
         {

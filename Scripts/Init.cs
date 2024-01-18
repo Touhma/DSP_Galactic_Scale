@@ -28,6 +28,7 @@ namespace GalacticScale
         //Temp until GS2Cheats workaround
         public static bool ResearchUnlocked = false;
 
+        public static List<Sprite> SplashSprites = new();
         public static TeleportComponent TP;
         public static InputComponent InputComponent;
 
@@ -106,6 +107,7 @@ namespace GalacticScale
         public static void Init()
 
         {
+            Config.Preferences.Set("Debug Log", true);
             // Warn("Init");
             // Warn("Init2");
             // Warn($"Init {LDB._themes == null}");
@@ -125,9 +127,10 @@ namespace GalacticScale
                 Directory.Move(OldDataDir, DataDir);
                 updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
-
+            
             // Warn("Step3");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
+            if (Directory.Exists(Path.Combine(DataDir, "Splash"))) Utils.LoadSplashImagesFromDirectory();
             // Warn("Step4");
             CleanErrorLogs();
 

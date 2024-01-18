@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using BepInEx.Logging;
 using GSSerializer;
 using HarmonyLib;
 using UnityEngine;
+using BepInEx.Logging;
+
 
 namespace GalacticScale
 {
     public static partial class GS2
     {
-        private static bool DebugOn => Config?.DebugMode ?? false;
+        private static bool DebugOn => Config?.DebugMode ?? true;
 
         public static void Log(string s, [CallerLineNumber] int lineNumber = 0)
         {

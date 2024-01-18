@@ -27,7 +27,7 @@ namespace GalacticScale
 
             instructions = matcher.Advance(1).InsertAndAdvance(Transpilers.EmitDelegate<Func<string, string>>(text =>
             {
-                text = $"Galactic Scale v {GS2.Version}\r\n{text}";
+                text = $"Galactic Scale 2 v {GS2.Version}\r\n{text}";
                 //if (!GS2.IsMenuDemo && GS2.Config.DebugMode) text += $"\r\n{GameMain.data.factories.Length} Factories\r\n{GameMain.data.warningSystem.tmpEntityPools.Length} tmpEntityPools";
                 return text;
             })).InstructionEnumeration();

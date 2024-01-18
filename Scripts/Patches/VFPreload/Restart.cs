@@ -10,6 +10,7 @@ namespace GalacticScale
         public static void Restart(VFPreload __instance)
         {
             GS2.splashImage.sprite = Utils.GetSplashSprite() ?? null;
+            GS2.splashImage.preserveAspect = true;
         }
     }
 }

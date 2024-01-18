@@ -49,9 +49,9 @@ namespace GalacticScale
                     Log($"Settings Loaded From Save File {GSSettings.BirthPlanet.Name} {GSSettings.Instance.stars.Count} {GSSettings.StarCount}");
                     gameDesc.resourceMultiplier = GSSettings.Instance.galaxyParams.resourceMulti;
                     // Log($"RM1:{gameDesc.resourceMultiplier}");
-                    // Log(gameDesc.resourceMultiplier.ToString());
+                    
                 }
-                
+                LogJson(gameDesc.combatSettings);
                 Log($"Galaxy Loaded: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
                 // Log($"Galaxy of GSSettings:{GSSettings.StarCount} stars Generated... or is it gameDesc :{gameDesc.starCount}");

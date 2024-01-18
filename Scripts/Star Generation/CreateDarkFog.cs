@@ -6,7 +6,7 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
-        private static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
+        public static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
         {
 	        starData.hivePatternLevel = 0;
 	        starData.safetyFactor = 0.847f + (float)random.NextDouble() * 0.026f;
@@ -17,6 +17,7 @@ namespace GalacticScale
 
 	        starData.maxHiveCount = Mathf.RoundToInt(maxDensity * 4f / 3f);
 	        starData.maxHiveCount = Mathf.Clamp(starData.maxHiveCount, 1, 8);
+	        starData.initialHiveCount = Mathf.RoundToInt(initialColonize/2 * (starData.maxHiveCount -0.2f));
 	        starData.initialHiveCount = Mathf.Clamp(starData.initialHiveCount, 1, starData.maxHiveCount);
 	        if (initialColonize < 0.015f)
 	        {
@@ -30,7 +31,7 @@ namespace GalacticScale
         {
 	        float initialColonize = gameDesc.combatSettings.initialColonize;
 	        var maxDensity = gameDesc.combatSettings.maxDensity;
-	        // Log("Generating Hive Settings to " + star.name + "");
+	        Log("Generating Hive Settings to " + star.name + "");
 	        var level = star.level;
 	        bool epic = star.type == EStarType.BlackHole || star.type == EStarType.NeutronStar;
 	        star.hivePatternLevel = 0;
@@ -66,9 +67,9 @@ namespace GalacticScale
 	        // Log($"Level {star.level} System ({star.name} {star.typeString} {star.spectr}) Hive Settings Applied : " + star.initialHiveCount + " / " + star.maxHiveCount +$"Initial Colonize: {initialColonize} MaxDensity: {gameDesc.combatSettings.maxDensity}");
         }
         
-        private static void CreateDarkFogHive(StarData star, Random random)
+        public static void CreateDarkFogHive(StarData star, Random random)
         {
-	        // Log($"Generating Hive Orbits For {star.name}");
+	        Log($"Generating Hive Orbits For {star.name}");
             GSStar gsStar = GetGSStar(star);
 
 

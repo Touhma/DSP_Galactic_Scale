@@ -24,6 +24,7 @@ namespace GalacticScale
                     if (splash != null) image.sprite = splash;
                     GS2.splashImage = image;
                     image.color = Color.white;
+                    image.preserveAspect = true;
                 }
                 else if (image.name == "bg" || image.name == "logo" || image.name == "dsp" || image.name == "dots" || image.name == "health-advice")
                 {

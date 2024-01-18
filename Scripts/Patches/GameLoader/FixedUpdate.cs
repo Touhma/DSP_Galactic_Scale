@@ -20,7 +20,7 @@ namespace GalacticScale
         {
             // GS2.Warn($"Start {__instance.frame}");
             if (GS2.IsMenuDemo || GS2.Vanilla) return true;
-            GS2.DevLog("Not Vanilla");
+            // GS2.DevLog("Not Vanilla");
             if (__instance.frame == 1)
             {
                 GS2.DevLog("FRAME 1");
