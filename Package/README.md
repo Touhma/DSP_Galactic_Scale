@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.12.44 - Hopefully Fix loading on xbox GamePass
 - Version 2.12.43 - Enable Darkfog Settings in JSON Galaxy Import (In Settings). Enjoy! Fixed Birth System Dark Fog Spawn
 - Version 2.12.42 - Enable loading Splash Images from config/Splash folder. Preserve aspect ratio set for all splash images to avoid stretching on widescreens.
 - Version 2.12.41 - Fix BP error. For real this time. Well, at least one of them. Drastically increased the size of some SectorLogic arrays, hopefully it stops the game breaking when you have a lot of stars/hives

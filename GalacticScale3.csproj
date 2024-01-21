@@ -8,7 +8,7 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.12.43</Version>
+        <Version>2.12.44</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
@@ -21,7 +21,7 @@
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2018.4.12" IncludeAssets="compile" />
 <!--        <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.28.21247-r.0" IncludeAssets="compile" />-->
-        <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="*" IncludeAssets="compile" />
+        <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="1.3.1" IncludeAssets="compile" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">

@@ -7,7 +7,7 @@ namespace GalacticScale
         public static void ConsoleSplash()
         {
             GlobalObject.LoadVersions();
-            var DSPVersion = $"{GameConfig.gameVersion}.{GlobalObject.versionList[GlobalObject.versionList.Count - 1].Build}";
+            string dspVersion = GameConfig.gameVersion.ToString();
             
             if (!BCE.disabled)
             {
@@ -16,7 +16,7 @@ namespace GalacticScale
                 BCE.Console.Write("  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                ", ConsoleColor.White);
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.Write("│", ConsoleColor.Red);
-                BCE.Console.Write($"  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤  DSP Version  {DSPVersion, 17} ", ConsoleColor.Gray);
+                BCE.Console.Write($"  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤  DSP Version  {dspVersion, 17} ", ConsoleColor.Gray);
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.Write("│", ConsoleColor.Red);
                 GlobalObject.LoadVersions();
@@ -32,7 +32,7 @@ namespace GalacticScale
                 Bootstrap.Debug(".─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─_─."); // Failsafe if BCE not present
                 Bootstrap.Debug("│  ╔═╗┌─┐┬  ┌─┐┌─┐┌┬┐┬┌─┐  ╔═╗┌─┐┌─┐┬  ┌─┐                                │");
                 
-                Bootstrap.Debug($"│  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤  DSP Version  {DSPVersion, 17} │");
+                Bootstrap.Debug($"│  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤  DSP Version  {dspVersion, 17} │");
                 Bootstrap.Debug($"│  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ Version  {Version,8} Initializing │");
                 Bootstrap.Debug("└──────https://discord.gg/NbpBn6gM6d──────────────────────────────────────┘");
             }

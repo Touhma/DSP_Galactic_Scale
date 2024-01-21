@@ -130,7 +130,7 @@ namespace GalacticScale.Generators
                 {
                     
                     birthPlanetMajorHost.OrbitRadius = birthRadius;
-                    birthPlanet.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanetMajorHost.OrbitRadius);
+                    birthPlanetMajorHost.OrbitalPeriod = Utils.CalculateOrbitPeriod(birthPlanetMajorHost.OrbitRadius);
                     orbits.Add(orbit);
                     freeOrbitRanges.Clear();
 
