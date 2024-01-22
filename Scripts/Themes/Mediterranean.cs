@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Mediterranean",
             Base = true,
-            DisplayName = "Mediterranean".Translate(),
+            DisplayName = "Mariterra".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
 

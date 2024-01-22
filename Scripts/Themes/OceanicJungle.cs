@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "OceanicJungle",
             Base = true,
-            DisplayName = "Oceanic Jungle".Translate(),
+            DisplayName = "Tropicana".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
 

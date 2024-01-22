@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "AshenGelisol",
             Base = true,
-            DisplayName = "Ashen Gelisol".Translate(),
+            DisplayName = "Geloterra".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

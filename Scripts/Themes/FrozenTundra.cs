@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "FrozenTundra",
             Base = true,
-            DisplayName = "Frozen Tundra".Translate(),
+            DisplayName = "Icefrostia".Translate(),
             PlanetType = EPlanetType.Ice,
             ThemeType = EThemeType.Telluric,
 

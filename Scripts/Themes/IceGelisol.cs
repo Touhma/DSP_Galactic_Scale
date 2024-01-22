@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "IceGelisol",
             Base = true,
-            DisplayName = "Ice Field Gelisol".Translate(),
+            DisplayName = "Glacieon".Translate(),
             PlanetType = EPlanetType.Ice,
             ThemeType = EThemeType.Telluric,
             LDBThemeId = 10,

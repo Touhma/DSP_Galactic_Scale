@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "CrystalDesert",
             Base = true,
-            DisplayName = "Crystal Desert".Translate(),
+            DisplayName = "Onyxtopia".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

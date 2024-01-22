@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "RedStone",
             Base = true,
-            DisplayName = "Red Stone".Translate(),
+            DisplayName = "Crimsonis".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
 

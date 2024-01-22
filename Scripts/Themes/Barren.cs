@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Barren",
             Base = true,
-            DisplayName = "Barren Desert".Translate(),
+            DisplayName = "Desolus".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

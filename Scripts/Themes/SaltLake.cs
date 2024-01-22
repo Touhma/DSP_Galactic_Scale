@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "SaltLake",
             Base = true,
-            DisplayName = "Rocky Salt Lake".Translate(),
+            DisplayName = "Halitum".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

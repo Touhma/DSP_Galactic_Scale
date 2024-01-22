@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "AridDesert",
             Base = true,
-            DisplayName = "Arid Desert".Translate(),
+            DisplayName = "Scorchedia".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

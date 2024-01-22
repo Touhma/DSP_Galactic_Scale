@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "IceLake",
             Base = true,
-            DisplayName = "Scarlet Ice Lake".Translate(),
+            DisplayName = "Maroonfrost".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 

@@ -9,7 +9,7 @@ namespace GalacticScale
         {
             Name = "Hurricane",
             Base = true,
-            DisplayName = "Hurricane Stone Forest".Translate(),
+            DisplayName = "Cyclonius".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
 
