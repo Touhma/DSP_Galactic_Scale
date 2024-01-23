@@ -20,6 +20,10 @@ namespace GalacticScale
         public GSUI JsonGalaxies;
         public GSGenPreferences Preferences = new();
         public Dictionary<string, GSUI> ThemeCheckboxes = new();
+        // DisableStarmapBatches DisableSectorUpdate
+        public bool DisableStarmapBatches => Preferences.GetBool("DisableStarmapBatches");
+        public bool DisableSectorUpdate => Preferences.GetBool("DisableSectorUpdate");
+        public bool DisableSpaceSector => Preferences.GetBool("DisableSpaceSector");
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
         public bool DebugMode => Preferences.GetBool("Debug Log", false);
         public bool GenLog => Preferences.GetBool("Generator Log", false);
@@ -36,7 +40,8 @@ namespace GalacticScale
         public bool ScarletRevert => Preferences.GetBool("RevertScarlet");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
         public float MechaScale => Preferences.GetFloat("MechaScale", 1f);
-
+        public bool SkipDFHiveLogic => Preferences.GetBool("SkipDFHiveLogic", false);
+        public float SkipDFHiveDistance => Preferences.GetFloat("SkipDFHiveDistance", 0f);
         // public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
         public bool MinifyJson
         {
@@ -161,6 +166,11 @@ namespace GalacticScale
 
             var DebugOptions = new GSOptions();
             DebugOptions.Add(GSUI.Spacer());
+            // DebugOptions.Add(GSUI.Checkbox("Disable SpaceSector".Translate(), false, "DisableSpaceSector", null, "Skip DF Turn".Translate()));
+            // DebugOptions.Add(GSUI.Checkbox("Disable Starmap Batches".Translate(), false, "DisableStarmapBatches", null, "Skip DF Render".Translate()));
+            // DebugOptions.Add(GSUI.Checkbox("Disable Sector Update".Translate(), false, "DisableSectorUpdate", null, "Skip DF Render".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("Pause DarkFog".Translate(), false, "SkipDFHiveLogic", null, "Skip DF Hive Logic".Translate()));
+            DebugOptions.Add(GSUI.Slider("Distance to start Pausing(LY)".Translate(), 0, 25, 200, "SkipDFHiveDistance", null, "Distance (LY) before skipping".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Debug Log".Translate(), false, "Debug Log", null, "Print extra logs to BepInEx console".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Dev Log".Translate(), false, "Dev", null, "Print stupid amount of logs to BepInEx console (SLOW)".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Generation Log".Translate(), false, "Generator Log", null, "Print generation logs to BepInEx console (SLOW)".Translate()));
