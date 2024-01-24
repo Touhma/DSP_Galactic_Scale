@@ -1,7 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
-
+- Version 2.12.46 - Modify clearance value that logistics vessels use to avoid stars. They might fly through them now, but hopefully not. At least they should arrive instead of flying in circles
 - Version 2.12.45 - Add debug option to suspend processing of Darkfog at a certain lightyear distance from the player (For those with major performance issues)
 - Version 2.12.44 - Hopefully Fix loading on xbox GamePass
 - Version 2.12.43 - Enable Darkfog Settings in JSON Galaxy Import (In Settings). Enjoy! Fixed Birth System Dark Fog Spawn

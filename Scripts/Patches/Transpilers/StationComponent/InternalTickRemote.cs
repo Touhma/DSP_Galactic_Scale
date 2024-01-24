@@ -41,7 +41,7 @@ namespace GalacticScale
             }
 
             instructions = codeMatcher.Repeat(z => z // Repeat for all occurences
-                    .Set(OpCodes.Ldc_R4, 1.0f)) // Replace operand with 1.0f
+                    .Set(OpCodes.Ldc_R4, 0.5f)) // Replace operand with 0.05f
                 .InstructionEnumeration();
 
             return instructions;
