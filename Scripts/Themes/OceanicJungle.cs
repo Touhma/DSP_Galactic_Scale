@@ -12,7 +12,8 @@ namespace GalacticScale
             DisplayName = "Tropicana".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-
+            BriefIntroduction = "\u6d77\u6d0b\u4e1b\u6797\u4ecb\u7ecd",
+            Eigenbit = 4,
             LDBThemeId = 8,
             Algo = 1,
             MinRadius = 30,

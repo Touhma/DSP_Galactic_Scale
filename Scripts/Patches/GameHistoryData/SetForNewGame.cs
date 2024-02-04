@@ -44,7 +44,10 @@ namespace GalacticScale
             __instance.solarSailLife = Configs.freeMode.solarSailLife;
             __instance.solarEnergyLossRate = Configs.freeMode.solarEnergyLossRate;
             __instance.useIonLayer = Configs.freeMode.useIonLayer;
-            __instance.inserterStackCount = Configs.freeMode.inserterStackCount;
+            __instance.inserterStackCountObsolete = 1;
+            __instance.inserterStackInput = 2;
+            __instance.inserterStackOutput = 1;
+            __instance.inserterBidirectional = false;
             __instance.constructionDroneSpeed = Configs.freeMode.droneSpeed;
             __instance.constructionDroneMovement = Configs.freeMode.droneMovement;
             __instance.autoReconstructSpeed = 0;

@@ -12,7 +12,8 @@ namespace GalacticScale
             DisplayName = "Halitum".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-
+            BriefIntroduction = "\u9ed1\u77f3\u5ca9\u6ee9\u4ecb\u7ecd",
+            Eigenbit = 13,
             LDBThemeId = 17,
             Algo = 2,
             MinRadius = 5,

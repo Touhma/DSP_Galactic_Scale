@@ -13,6 +13,8 @@ namespace GalacticScale
             PlanetType = EPlanetType.Gas,
             LDBThemeId = 3,
             Algo = 0,
+            BriefIntroduction = "\u6c14\u5de8\u661f\u4ecb\u7ecd5",
+            Eigenbit = 0,
             MinRadius = 5,
             MaxRadius = 510,
             ThemeType = EThemeType.Gas,

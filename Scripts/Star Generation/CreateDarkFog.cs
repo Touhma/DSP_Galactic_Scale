@@ -111,13 +111,13 @@ namespace GalacticScale
             // Log($"Darkfog Hive Orbits Generated for {gsStar.Name}");
         }
 
-        private static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)
+        public static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)
         {
             if (gsStar.PlanetCount == 0 || gsStar.Decorative) return new List<float>{1f,2f,3f,4f,5f,6f,7f,8f};
             List<(float inner, float outer)> ExistingOrbits = new();
             List<(float inner, float outer)> ExistingGaps = new();
             List<float> PossibleOrbits = new();
-            var MaxOrbit = gsStar.luminosity * 2f;
+            var MaxOrbit = gsStar.SystemRadius;//gsStar.luminosity * 2f;
             if (random == null) random = new Random(Mathf.CeilToInt( gsStar.luminosity*gsStar.age*gsStar.SystemRadius));
             foreach (GSPlanet p in gsStar.Planets)
             {

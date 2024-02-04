@@ -12,7 +12,8 @@ namespace GalacticScale
             DisplayName = "Desolus".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-
+BriefIntroduction = "\u8d2b\u7620\u8352\u6f20\u4ecb\u7ecd",
+Eigenbit = 7,
             LDBThemeId = 11,
             Algo = 4,
             MinRadius = 5,

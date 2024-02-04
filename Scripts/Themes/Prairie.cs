@@ -15,6 +15,8 @@ namespace GalacticScale
             CustomGeneration = true,
             LDBThemeId = 15,
             Algo = 6,
+            BriefIntroduction = "\u8349\u539f\u4ecb\u7ecd",
+            Eigenbit = 11,
             MinRadius = 5,
             MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Ocean 4/",

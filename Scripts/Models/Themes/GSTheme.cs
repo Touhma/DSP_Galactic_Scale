@@ -65,6 +65,7 @@ namespace GalacticScale
         public int[] Musics = { 9 };
 
         public string Name;
+        [SerializeField] public int Eigenbit = 1;
 
         //public string terrainMaterial;
         //public Color terrainTint;
@@ -152,6 +153,19 @@ namespace GalacticScale
             }
         }
 
+        [NonSerialized] public string briefIntroduction;
+
+        [SerializeField] public string BriefIntroduction
+        {
+            get => String.IsNullOrEmpty(briefIntroduction) ? GetBriefIntroduction() : briefIntroduction;
+            set => briefIntroduction = value;
+        }
+        public string GetBriefIntroduction()
+        {
+            briefIntroduction = "This is a planet.";
+        
+        return briefIntroduction;
+        }
         public EThemeType ThemeType
         {
             get => themeType != EThemeType.Null ? themeType : GetThemeType();
@@ -201,19 +215,19 @@ namespace GalacticScale
 
             // if (PlanetType != EPlanetType.Gas)
             // {
-                if (AmbientSettings == null)
-                {
-                    AmbientSettings = new GSAmbientSettings();
-                    AmbientSettings.FromTheme(this);
-                }
-                else
-                {
-                    // GS2.Log("Setting CubeMap for " + Name);
-                    // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
-                    AmbientSettings.ToTheme(this);
-                    // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
-                }
-                //GS2.Log("Finished Processing Ambient Settings for " + Name);
+            if (AmbientSettings == null)
+            {
+                AmbientSettings = new GSAmbientSettings();
+                AmbientSettings.FromTheme(this);
+            }
+            else
+            {
+                // GS2.Log("Setting CubeMap for " + Name);
+                // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
+                AmbientSettings.ToTheme(this);
+                // GS2.Log("Cubemap instance = " + ambientDesc?.reflectionMap.GetInstanceID());
+            }
+            //GS2.Log("Finished Processing Ambient Settings for " + Name);
             // }
             // else
             // {
@@ -384,6 +398,8 @@ namespace GalacticScale
             //GS2.Log("Copying from " + baseTheme.Name);
             if (!baseTheme.initialized) baseTheme.InitMaterials();
 
+            Eigenbit = baseTheme.Eigenbit;
+            BriefIntroduction = baseTheme.BriefIntroduction;
             Algo = baseTheme.Algo;
             PlanetType = baseTheme.PlanetType;
             LDBThemeId = 1;
@@ -454,6 +470,7 @@ namespace GalacticScale
                     AmbientSettings = baseTheme.AmbientSettings.Clone();
                 //GS2.Warn($"AmbientSettings for {Name} {Utils.AddressHelper.GetAddress(AmbientSettings)} {Utils.AddressHelper.GetAddress(baseTheme.AmbientSettings)}");
             }
+
             if (ambientDesc == null)
             {
                 ambientDesc = CommonUtils.ResourcesLoadArray<AmbientDesc>("Universe/Materials/Planets/Ocean 1/" + "ambient", "{0}-{1}", true)[0];
@@ -487,6 +504,8 @@ namespace GalacticScale
             if (PlanetType != EPlanetType.Gas) AmbientSettings.ToTheme(this);
             var tp = new ThemeProto
             {
+                EigenBit = Eigenbit,
+                BriefIntroduction = BriefIntroduction,
                 name = Name,
                 Name = Name,
                 sid = "",
@@ -727,6 +746,7 @@ namespace GalacticScale
         {
             AtmoHeight = atmosMat.GetVector("_PlanetRadius").z - atmosMat.GetVector("_PlanetRadius").x;
         }
+
         public void ProcessMaterialSettings()
         {
             //GS2.Log("Processing MaterialSettings for " + Name);

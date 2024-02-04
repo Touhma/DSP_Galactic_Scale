@@ -596,6 +596,8 @@ namespace GalacticScale
                 lines.Add(" ");
                 lines.Add($"         LDBThemeId = {t.ID},");
                 lines.Add($"         Algo = {t.Algos[0]},");
+                lines.Add($"         BriefIntroduction = {t.BriefIntroduction},");
+                lines.Add($"         EigenBit = {t.EigenBit},");
                 lines.Add("         MinRadius = 5,");
                 lines.Add("         MaxRadius = 510,");
                 lines.Add($"         MaterialPath = \"{t.MaterialPath}\",");

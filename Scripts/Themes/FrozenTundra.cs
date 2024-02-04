@@ -12,7 +12,8 @@ namespace GalacticScale
             DisplayName = "Icefrostia".Translate(),
             PlanetType = EPlanetType.Ice,
             ThemeType = EThemeType.Telluric,
-
+            BriefIntroduction = "\u6781\u5bd2\u51bb\u571f\u4ecb\u7ecd",
+            Eigenbit = 18,
             LDBThemeId = 24,
             Algo = 12,
             MinRadius = 5,

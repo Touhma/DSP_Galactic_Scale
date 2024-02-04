@@ -11,952 +11,1289 @@ using UnityEngine;
 using UnityEngine.UI;
 using static System.Reflection.Emit.OpCodes;
 using Logger = BepInEx.Logging.Logger;
+
 // using BCE;
-namespace GalacticScale{
-
-public static class PatchOnUnspecified_Debug
+namespace GalacticScale
 {
+    public static class PatchOnUnspecified_Debug
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(SpaceSector), nameof(SpaceSector.Import))]
+        public static bool Import(ref SpaceSector __instance, BinaryReader r)
+        {
+            if (GS2.IsMenuDemo) return true;
+            int num = r.ReadInt32();
+            int astroCapacity = r.ReadInt32();
+            __instance.SetAstroCapacity(astroCapacity);
+            __instance.astroCursor = r.ReadInt32();
+            for (int i = 1; i < __instance.astroCursor; i++)
+            {
+                __instance.astros[i].id = r.ReadInt32();
+                if (__instance.astros[i].id > 0)
+                {
+                    __instance.astros[i].type = (EAstroType)r.ReadInt32();
+                    __instance.astros[i].parentId = r.ReadInt32();
+                    __instance.astros[i].uPos.x = r.ReadDouble();
+                    __instance.astros[i].uPos.y = r.ReadDouble();
+                    __instance.astros[i].uPos.z = r.ReadDouble();
+                    __instance.astros[i].uPosNext.x = r.ReadDouble();
+                    __instance.astros[i].uPosNext.y = r.ReadDouble();
+                    __instance.astros[i].uPosNext.z = r.ReadDouble();
+                    __instance.astros[i].uRot.x = r.ReadSingle();
+                    __instance.astros[i].uRot.y = r.ReadSingle();
+                    __instance.astros[i].uRot.z = r.ReadSingle();
+                    __instance.astros[i].uRot.w = r.ReadSingle();
+                    __instance.astros[i].uRotNext.x = r.ReadSingle();
+                    __instance.astros[i].uRotNext.y = r.ReadSingle();
+                    __instance.astros[i].uRotNext.z = r.ReadSingle();
+                    __instance.astros[i].uRotNext.w = r.ReadSingle();
+                    __instance.astros[i].uRadius = r.ReadSingle();
+                }
+                else
+                {
+                    __instance.astros[i].SetEmpty();
+                }
+            }
 
-	// [HarmonyPrefix]
-	// [HarmonyPatch(typeof(SpaceSector), nameof(SpaceSector.GameTick))]
-	// public static bool SSGameTick()
-	// {
-	// 	if (Config.DisableSpaceSector) return false;
-	// 	return true;
-	// }
-	// static int u = 0;
-	// [HarmonyPrefix]
-	// [HarmonyPatch(typeof(CombatSpaceSystem), nameof(CombatSpaceSystem.GameTick))]
-	// public static bool CSSGameTick(ref CombatSpaceSystem __instance,long tick)
-	// {
-	// 	int s = 0;
-	// 	int t = 0;
-	// 	int v = 0;
-	// 	GameHistoryData history = __instance.gameData.history;
-	// 	EnemyData[] enemyPool = __instance.spaceSector.enemyPool;
-	// 	ref CombatSettings combatSettings = ref __instance.gameData.history.combatSettings;
-	// 	bool flag = __instance.spaceSector.model == null || __instance.spaceSector.model.disableFleet;
-	// 	SpaceObjectRenderer[] objectRenderers = __instance.spaceSector.model.gpuiManager.objectRenderers;
-	// 	__instance.spaceSector.model.craftDirty = true;
-	// 	int num = (int)(tick % 60L);
-	// 	UnitComponent.gameTick = tick;
-	// 	CombatUpgradeData combatUpgradeData = default(CombatUpgradeData);
-	// 	history.GetCombatUpgradeData(ref combatUpgradeData);
-	// 	ref VectorLF3 ptr = ref __instance.gameData.relativePos;
-	// 	ref Quaternion ptr2 = ref __instance.gameData.relativeRot;
-	// 	Vector3 vector = new Vector3(0f, 0f, 0f);
-	// 	Quaternion identity = Quaternion.identity;
-	// 	bool inStarmap = __instance.inStarmap;
-	// 	FleetComponent[] buffer = __instance.fleets.buffer;
-	// 	int cursor = __instance.fleets.cursor;
-	// 	for (int i = 1; i < cursor; i++)
-	// 	{
-	// 		ref FleetComponent ptr3 = ref buffer[i];
-	// 		if (ptr3.id == i)
-	// 		{
-	// 			v++;
-	// 			ref CraftData ptr4 = ref __instance.spaceSector.craftPool[ptr3.craftId];
-	// 			if ((GameMain.spaceSector.astros[ptr4.astroId].uPos - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
-	// 			{
-	// 				s++;
-	// 				continue;
-	// 			}
-	// 			PrefabDesc pdesc = SpaceSector.PrefabDescByModelIndex[(int)ptr4.modelIndex];
-	// 			if (i % 60 == num)
-	// 			{
-	// 				ptr3.SensorLogic_Space(ref ptr4, pdesc, __instance.spaceSector, tick);
-	// 			}
-	//
-	// 			ptr3.InternalUpdate_Space(ref ptr4, ref __instance.spaceSector.craftAnimPool[ptr4.id], pdesc, __instance.spaceSector, __instance.mecha);
-	// 			ptr3.AssembleUnits_Space(ref ptr4, ref combatUpgradeData, pdesc, __instance.mecha, __instance.spaceSector, tick);
-	// 			ptr3.DetermineCraftAstroId(__instance.spaceSector, ref ptr4);
-	// 			if (ptr3.DeterminActiveEnemyUnits(true, tick))
-	// 			{
-	// 				ptr3.ActiveEnemyUnits_Space(__instance.spaceSector, pdesc);
-	// 			}
-	//
-	// 			if (flag)
-	// 			{
-	// 				__instance.spaceSector.craftAnimPool[ptr4.id].state = 0U;
-	// 			}
-	//
-	// 			SpaceDynamicRenderer spaceDynamicRenderer = objectRenderers[(int)ptr4.modelIndex] as SpaceDynamicRenderer;
-	// 			if (spaceDynamicRenderer != null)
-	// 			{
-	// 				ref SPACEOBJECT ptr5 = ref spaceDynamicRenderer.instPool[ptr4.modelId];
-	// 				ptr5.astroId = (uint)ptr4.astroId;
-	// 				if (ptr5.astroId == 0U)
-	// 				{
-	// 					if (inStarmap && UIGame.viewModeReady)
-	// 					{
-	// 						ref VectorLF3 ptr6 = ref __instance.gameData.starmapViewPos;
-	// 						ptr5.posx = (float)((ptr4.pos.x - ptr6.x) * 0.00025);
-	// 						ptr5.posy = (float)((ptr4.pos.y - ptr6.y) * 0.00025);
-	// 						ptr5.posz = (float)((ptr4.pos.z - ptr6.z) * 0.00025);
-	// 						ptr5.rotx = ptr4.rot.x;
-	// 						ptr5.roty = ptr4.rot.y;
-	// 						ptr5.rotz = ptr4.rot.z;
-	// 						ptr5.rotw = ptr4.rot.w;
-	// 					}
-	// 					else
-	// 					{
-	// 						VectorLF3 vectorLF;
-	// 						vectorLF.x = ptr4.pos.x - ptr.x;
-	// 						vectorLF.y = ptr4.pos.y - ptr.y;
-	// 						vectorLF.z = ptr4.pos.z - ptr.z;
-	// 						Maths.QInvRotateLF_ref(ref ptr2, ref vectorLF, ref vector);
-	// 						ptr5.posx = vector.x;
-	// 						ptr5.posy = vector.y;
-	// 						ptr5.posz = vector.z;
-	// 						Maths.QInvMultiply_ref(ref ptr2, ref ptr4.rot, out identity);
-	// 						ptr5.rotx = identity.x;
-	// 						ptr5.roty = identity.y;
-	// 						ptr5.rotz = identity.z;
-	// 						ptr5.rotw = identity.w;
-	// 					}
-	// 				}
-	// 				else
-	// 				{
-	// 					ptr5.posx = (float)ptr4.pos.x;
-	// 					ptr5.posy = (float)ptr4.pos.y;
-	// 					ptr5.posz = (float)ptr4.pos.z;
-	// 					ptr5.rotx = ptr4.rot.x;
-	// 					ptr5.roty = ptr4.rot.y;
-	// 					ptr5.rotz = ptr4.rot.z;
-	// 					ptr5.rotw = ptr4.rot.w;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	UnitComponent[] buffer2 = __instance.units.buffer;
-	// 	int cursor2 = __instance.units.cursor;
-	// 	for (int j = 1; j < cursor2; j++)
-	// 	{
-	// 		ref UnitComponent ptr7 = ref buffer2[j];
-	//
-	// 		if (ptr7.id == j)
-	// 		{
-	// 			v++;
-	// 			ref CraftData ptr8 = ref __instance.spaceSector.craftPool[ptr7.craftId];
-	// 			if ((GameMain.spaceSector.astros[ptr8.astroId].uPos - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
-	// 			{
-	// 				t++;
-	// 				continue;
-	// 			}
-	// 			PrefabDesc pdesc2 = SpaceSector.PrefabDescByModelIndex[(int)ptr8.modelIndex];
-	// 			if (j % 60 == num)
-	// 			{
-	// 				ptr7.hatred.Fade(0.75f, 5);
-	// 				ptr7.SensorLogic_Space(ref ptr8, pdesc2, __instance.spaceSector);
-	// 			}
-	//
-	// 			ptr7.AssistTeammates_Space(ref ptr8, __instance.spaceSector, __instance.mecha);
-	// 			ptr7.UpdateFireCondition(ptr8.isSpace, pdesc2, ref combatUpgradeData);
-	// 			int orbitAstroId = 0;
-	// 			bool flag2 = false;
-	// 			bool flag3 = false;
-	// 			if (ptr8.owner > 0)
-	// 			{
-	// 				ref CraftData ptr9 = ref __instance.spaceSector.craftPool[(int)ptr8.owner];
-	// 				if (ptr9.id != 0 && ptr9.fleetId > 0)
-	// 				{
-	// 					ref FleetComponent ptr10 = ref __instance.fleets.buffer[ptr9.fleetId];
-	// 					orbitAstroId = FleetComponent.DetermineOrbitingAstro(__instance.spaceSector, ref ptr9);
-	// 					ptr7.DetermineBehavior(ref ptr10.target, ref ptr10.targetPos, orbitAstroId, ptr10.dispatch);
-	// 					flag2 = true;
-	// 					if (ptr9.owner < 0 && __instance.mecha.player.isAlive)
-	// 					{
-	// 						flag3 = !ptr7.UpdateMechaEnergy(__instance.mecha, pdesc2, ptr8.isSpace);
-	// 						if (flag3)
-	// 						{
-	// 							ptr7.behavior = EUnitBehavior.Recycled;
-	// 						}
-	// 					}
-	// 				}
-	// 			}
-	//
-	// 			if (flag2)
-	// 			{
-	// 				switch (ptr7.behavior)
-	// 				{
-	// 					case EUnitBehavior.None:
-	// 						ptr7.RunBehavior_None();
-	// 						break;
-	// 					case EUnitBehavior.Initialize:
-	// 						ptr7.RunBehavior_Initialize_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatUpgradeData, orbitAstroId, history.fighterInitializeSpeedScale);
-	// 						break;
-	// 					case EUnitBehavior.Recycled:
-	// 						ptr7.RunBehavior_Recycled_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatSettings, ref combatUpgradeData, orbitAstroId, flag3);
-	// 						break;
-	// 					case EUnitBehavior.KeepForm:
-	// 						ptr7.RunBehavior_KeepForm(ref ptr8);
-	// 						break;
-	// 					case EUnitBehavior.SeekForm:
-	// 						ptr7.RunBehavior_SeekForm_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatUpgradeData);
-	// 						break;
-	// 					case EUnitBehavior.Engage:
-	// 						ptr7.RunBehavior_Engage_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatSettings, ref combatUpgradeData);
-	// 						break;
-	// 					case EUnitBehavior.Orbiting:
-	// 						ptr7.RunBehavior_Orbiting(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatUpgradeData, orbitAstroId);
-	// 						break;
-	// 				}
-	// 			}
-	// 			else
-	// 			{
-	// 				__instance.spaceSector.RemoveCraftDeferred(ptr7.craftId);
-	// 			}
-	//
-	// 			ptr7.DetermineCraftAstroId(__instance.spaceSector, ref ptr8);
-	// 			SpaceDynamicRenderer spaceDynamicRenderer2 = objectRenderers[(int)ptr8.modelIndex] as SpaceDynamicRenderer;
-	// 			if (spaceDynamicRenderer2 != null)
-	// 			{
-	// 				ref SPACEOBJECT ptr11 = ref spaceDynamicRenderer2.instPool[ptr8.modelId];
-	// 				ptr11.astroId = (uint)ptr8.astroId;
-	// 				if (ptr11.astroId == 0U)
-	// 				{
-	// 					if (inStarmap && UIGame.viewModeReady)
-	// 					{
-	// 						ref VectorLF3 ptr12 = ref __instance.gameData.starmapViewPos;
-	// 						ptr11.posx = (float)((ptr8.pos.x - ptr12.x) * 0.00025);
-	// 						ptr11.posy = (float)((ptr8.pos.y - ptr12.y) * 0.00025);
-	// 						ptr11.posz = (float)((ptr8.pos.z - ptr12.z) * 0.00025);
-	// 						ptr11.rotx = ptr8.rot.x;
-	// 						ptr11.roty = ptr8.rot.y;
-	// 						ptr11.rotz = ptr8.rot.z;
-	// 						ptr11.rotw = ptr8.rot.w;
-	// 					}
-	// 					else
-	// 					{
-	// 						VectorLF3 vectorLF2;
-	// 						vectorLF2.x = ptr8.pos.x - ptr.x;
-	// 						vectorLF2.y = ptr8.pos.y - ptr.y;
-	// 						vectorLF2.z = ptr8.pos.z - ptr.z;
-	// 						Maths.QInvRotateLF_ref(ref ptr2, ref vectorLF2, ref vector);
-	// 						ptr11.posx = vector.x;
-	// 						ptr11.posy = vector.y;
-	// 						ptr11.posz = vector.z;
-	// 						Maths.QInvMultiply_ref(ref ptr2, ref ptr8.rot, out identity);
-	// 						ptr11.rotx = identity.x;
-	// 						ptr11.roty = identity.y;
-	// 						ptr11.rotz = identity.z;
-	// 						ptr11.rotw = identity.w;
-	// 					}
-	// 				}
-	// 				else
-	// 				{
-	// 					ptr11.posx = (float)ptr8.pos.x;
-	// 					ptr11.posy = (float)ptr8.pos.y;
-	// 					ptr11.posz = (float)ptr8.pos.z;
-	// 					ptr11.rotx = ptr8.rot.x;
-	// 					ptr11.roty = ptr8.rot.y;
-	// 					ptr11.rotz = ptr8.rot.z;
-	// 					ptr11.rotw = ptr8.rot.w;
-	// 					Vector4[] extraPool = spaceDynamicRenderer2.extraPool;
-	// 					int modelId = ptr8.modelId;
-	// 					extraPool[modelId].x = ptr7.anim;
-	// 					extraPool[modelId].z = ptr7.steering;
-	// 					extraPool[modelId].w = ptr7.speed;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	u++;
-	// 	if (u > 1000)
-	// 	{
-	// 		Log($"Skipped {s} fleets and {t} units of {v} total");
-	// 		u = 0;
-	// 	}
-	// 	return false;
-	// }
+            astroCapacity = r.ReadInt32();
+            __instance.SetEnemyCapacity(astroCapacity);
+            __instance.enemyCursor = r.ReadInt32();
+            __instance.enemyRecycleCursor = r.ReadInt32();
+            for (int j = 1; j < __instance.enemyCursor; j++)
+            {
+                __instance.enemyPool[j].Import(r);
+            }
+
+            for (int k = 0; k < __instance.enemyRecycleCursor; k++)
+            {
+                __instance.enemyRecycle[k] = r.ReadInt32();
+            }
+
+            for (int l = 1; l < __instance.enemyCursor; l++)
+            {
+                __instance.enemyAnimPool[l].time = r.ReadSingle();
+                __instance.enemyAnimPool[l].prepare_length = r.ReadSingle();
+                __instance.enemyAnimPool[l].working_length = r.ReadSingle();
+                __instance.enemyAnimPool[l].state = r.ReadUInt32();
+                __instance.enemyAnimPool[l].power = r.ReadSingle();
+            }
+
+            astroCapacity = r.ReadInt32();
+            __instance.SetCraftCapacity(astroCapacity);
+            __instance.craftCursor = r.ReadInt32();
+            __instance.craftRecycleCursor = r.ReadInt32();
+            for (int m = 1; m < __instance.craftCursor; m++)
+            {
+                __instance.craftPool[m].Import(r);
+            }
+
+            for (int n = 0; n < __instance.craftRecycleCursor; n++)
+            {
+                __instance.craftRecycle[n] = r.ReadInt32();
+            }
+
+            for (int num2 = 1; num2 < __instance.craftCursor; num2++)
+            {
+                __instance.craftAnimPool[num2].time = r.ReadSingle();
+                __instance.craftAnimPool[num2].prepare_length = r.ReadSingle();
+                __instance.craftAnimPool[num2].working_length = r.ReadSingle();
+                __instance.craftAnimPool[num2].state = r.ReadUInt32();
+                __instance.craftAnimPool[num2].power = r.ReadSingle();
+            }
+
+            if (num >= 1)
+            {
+                __instance.spaceRuins.Import(r);
+            }
+
+            __instance.skillSystem.Import(r);
+            int num3 = r.ReadInt32();
+            if (num3 > 0)
+            {
+                if (num3 > 65535)
+                {
+                    throw new Exception("invalid dfcnt!");
+                }
+                GS2.Random ra = new GS2.Random(num3);
+                __instance.dfHives = new EnemyDFHiveSystem[num3];
+                for (int num4 = 0; num4 < num3; num4++)
+                {
+                    __instance.dfHives[num4] = null;
+                    var possibleOrbits = GS2.GeneratePossibleHiveOrbits(GetGSStar(__instance.galaxy.stars[num4]));
+                    EnemyDFHiveSystem enemyDFHiveSystem = null;
+                    while (r.ReadInt32() == 19884)
+                    {
+                        EnemyDFHiveSystem enemyDFHiveSystem2 = new EnemyDFHiveSystem();
+                        enemyDFHiveSystem2.Init(__instance.gameData, __instance.galaxy.stars[num4].id, 0);
+                        enemyDFHiveSystem2.Import(r);
+                        if (enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius > __instance.galaxy.stars[num4].systemRadius)
+                        {
+                            Warn($"DFHive orbit radius is larger than {__instance.galaxy.stars[num4].name} system radius {enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius} > {__instance.galaxy.stars[num4].systemRadius}");
+                            var orbit = ra.ItemAndRemove(possibleOrbits);
+                            Warn($"New Orbit Radius = {orbit}");
+                            enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius = orbit;
+                        }
+                        
+
+                            if (enemyDFHiveSystem == null)
+                            {
+                                __instance.dfHives[num4] = enemyDFHiveSystem2;
+                            }
+                            else
+                            {
+                                enemyDFHiveSystem.nextSibling = enemyDFHiveSystem2;
+                            }
+
+                            enemyDFHiveSystem2.prevSibling = enemyDFHiveSystem;
+                            enemyDFHiveSystem = enemyDFHiveSystem2;
+                        
+                    }
+                }
+            }
+
+            __instance.combatSpaceSystem = new CombatSpaceSystem(__instance);
+            __instance.combatSpaceSystem.Import(r);
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TrashSystem), nameof(TrashSystem.AddTrashOnPlanet))]
+        public static bool AddTrashOnPlanet(ref TrashSystem __instance, int itemId, int count, int inc, int objId, PlanetData planet)
+        {
+            ItemProto itemProto = LDB.items.Select(itemId);
+            if (itemProto != null && (objId != 0 && planet != null && ((objId > 0 && planet.factory.entityPool[objId].id == objId) || (objId < 0 && planet.factory.prebuildPool[-objId].id == -objId))))
+            {
+                VectorLF3 vectorLF = (objId > 0) ? planet.factory.entityPool[objId].pos : planet.factory.prebuildPool[-objId].pos;
+                vectorLF += vectorLF.normalized;
+                if (vectorLF.magnitude < planet.realRadius - 30)
+                {
+                    return false;
+                }
+
+                VectorLF3 normalized = Maths.QRotateLF(planet.runtimeRotation, vectorLF).normalized;
+                VectorLF3 lhs = Maths.QRotateLF(planet.runtimeRotation, vectorLF) + planet.uPosition;
+                int astroId = planet.star.astroId;
+                double starGravity = __instance.GetStarGravity(planet.star.id);
+                WarningSystem warningSystem = __instance.gameData.warningSystem;
+                int num = 500;
+                while (count > 0 && num > 0)
+                {
+                    int num2 = (count < itemProto.StackSize) ? count : itemProto.StackSize;
+                    int inc2 = __instance.split_inc(ref count, ref inc, num2);
+                    TrashData trashData = default(TrashData);
+                    trashData.landPlanetId = 0;
+                    trashData.nearPlanetId = 0;
+                    trashData.nearStarId = astroId;
+                    trashData.nearStarGravity = starGravity;
+                    trashData.lPos = Vector3.zero;
+                    trashData.lRot = Quaternion.identity;
+                    trashData.uPos = lhs + RandomTable.SphericNormal(ref __instance.randSeed, 0.2);
+                    trashData.uRot = Quaternion.LookRotation(RandomTable.SphericNormal(ref __instance.randSeed, 1.0).normalized);
+                    trashData.uVel = planet.GetUniversalVelocityAtLocalPoint(GameMain.gameTime, vectorLF) + normalized * 15.0 + RandomTable.SphericNormal(ref __instance.randSeed, 4.0);
+                    trashData.uAgl = RandomTable.SphericNormal(ref __instance.randSeed, 0.03);
+                    TrashObject trashObj = new TrashObject(itemId, num2, inc2, Maths.QInvRotateLF(__instance.gameData.relativeRot, trashData.uPos - __instance.gameData.relativePos), Quaternion.Inverse(__instance.gameData.relativeRot) * trashData.uRot);
+                    int objectId = __instance.container.NewTrash(trashObj, trashData);
+                    if (trashData.warningId > 0)
+                    {
+                        warningSystem.warningPool[trashData.warningId].objectId = objectId;
+                        warningSystem.warningPool[trashData.warningId].detailId = itemId;
+                    }
+
+                    num--;
+                }
+            }
+
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TrashSystem), nameof(TrashSystem.AddTrashFromGroundEnemy))]
+        public static bool AddTrashFromGroundEnemy(ref int __result, ref TrashSystem __instance, int itemId, int count, int life, int enemyId, PlanetFactory factory)
+        {
+            if (__instance.enemyDropBans.Contains(itemId))
+            {
+                __result = 0;
+                return false;
+            }
+
+            ItemProto itemProto = LDB.items.Select(itemId);
+            if (itemProto == null || (factory == null || enemyId <= 0 || factory.enemyPool[enemyId].id != enemyId))
+            {
+                __result = 0;
+                return false;
+            }
+
+            ref EnemyData ptr = ref factory.enemyPool[enemyId];
+            float num = SkillSystem.RoughHeightByModelIndex[(int)ptr.modelIndex];
+            VectorLF3 v = ptr.pos + ptr.pos.normalized * (double)(num * 0.6f);
+            if (v.magnitude < factory.planet.realRadius - 30)
+            {
+                __result = 0;
+                return false;
+            }
+
+            PlanetData planet = factory.planet;
+            VectorLF3 lhs = Maths.QRotateLF(planet.runtimeRotation, v);
+            VectorLF3 normalized = lhs.normalized;
+            VectorLF3 lhs2 = lhs + planet.uPosition;
+            Vector3 vel = ptr.vel;
+            vel.x *= 0.7f;
+            vel.y *= 0.7f;
+            vel.z *= 0.7f;
+            Vector3 vec;
+            __instance.galaxy.astrosData[planet.astroId].VelocityL2U(ref v, ref vel, out vec);
+            int astroId = planet.star.astroId;
+            double starGravity = __instance.GetStarGravity(planet.star.id);
+            int cnt = (count < itemProto.StackSize) ? count : itemProto.StackSize;
+            int trashCount = __instance.trashCount;
+            float num2 = (float)(500 / (trashCount + 100));
+            TrashData trashData = default(TrashData);
+            trashData.warningId = 0;
+            trashData.landPlanetId = 0;
+            trashData.nearPlanetId = 0;
+            trashData.nearStarId = astroId;
+            trashData.nearStarGravity = starGravity;
+            trashData.life = life / 3 + (int)((double)((float)life * num2 * 2f / 3f) + 0.5);
+            trashData.lPos = Vector3.zero;
+            trashData.lRot = Quaternion.identity;
+            trashData.uPos = lhs2 + RandomTable.SphericNormal(ref __instance.randSeed, 0.2);
+            trashData.uRot = Quaternion.LookRotation(RandomTable.SphericNormal(ref __instance.randSeed, 1.0).normalized);
+            trashData.uVel = (VectorLF3)vec + normalized * 10.0 + RandomTable.SphericNormal(ref __instance.randSeed, 3.0);
+            trashData.uAgl = RandomTable.SphericNormal(ref __instance.randSeed, 0.03);
+            TrashObject trashObj = new TrashObject(itemId, cnt, 0, Maths.QInvRotateLF(__instance.gameData.relativeRot, trashData.uPos - __instance.gameData.relativePos), Quaternion.Inverse(__instance.gameData.relativeRot) * trashData.uRot);
+            __result = __instance.container.NewTrash(trashObj, trashData);
+            return false;
+        }
 
 
-	    [HarmonyPrefix]
-	    [HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.GameTickLogic))]
-	    [HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.KeyTickLogic))]
-	    public static bool EDFHGTL(ref EnemyDFHiveSystem __instance)
-	    {
-		    if (Config.SkipDFHiveLogic)
-		    {
-			    if ((__instance.starData.uPosition - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
-			    {
-				    return false;
-			    }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TrashSystem), nameof(TrashSystem.AddTrash))]
+        public static bool AddTrash(ref TrashSystem __instance, int itemId, int count, int inc, int objId, int life = 0)
+        {
+            ItemProto itemProto = LDB.items.Select(itemId);
+            if (itemProto != null)
+            {
+                PlanetData localPlanet = __instance.gameData.localPlanet;
+                VectorLF3 vectorLF = Maths.QRotateLF(__instance.player.uRotation, new VectorLF3(0f, 1f, 0f));
+                VectorLF3 lhs = __instance.player.uPosition;
+                int nearStarId = (__instance.gameData.localStar != null) ? __instance.gameData.localStar.astroId : 0;
+                double nearStarGravity = (__instance.gameData.localStar != null) ? __instance.GetStarGravity(__instance.gameData.localStar.id) : 0.0;
+                bool flag = objId != 0 && localPlanet != null && localPlanet.factoryLoaded && ((objId > 0 && localPlanet.factory.entityPool[objId].id == objId) || (objId < 0 && localPlanet.factory.prebuildPool[-objId].id == -objId));
+                if (flag)
+                {
+                    VectorLF3 vectorLF2 = (objId > 0) ? localPlanet.factory.entityPool[objId].pos : localPlanet.factory.prebuildPool[-objId].pos;
+                    vectorLF2 += vectorLF2.normalized;
+                    if (vectorLF2.magnitude < localPlanet.realRadius - 30)
+                    {
+                        flag = false;
+                    }
 
-			    // return false;
-		    }
+                    if (flag)
+                    {
+                        lhs = Maths.QRotateLF(localPlanet.runtimeRotation, vectorLF2) + localPlanet.uPosition;
+                    }
+                    else
+                    {
+                        lhs = __instance.player.uPosition + vectorLF * (__instance.player.sailing ? 1.0 : 2.5);
+                    }
+                }
 
-		    return true;
-	    }
-	    [HarmonyPrefix]
-	    [HarmonyPatch(typeof(EnemyDFGroundSystem), nameof(EnemyDFGroundSystem.GameTickLogic))]
-	    [HarmonyPatch(typeof(EnemyDFGroundSystem), nameof(EnemyDFGroundSystem.KeyTickLogic))]
-	    public static bool EDFHGTL(ref EnemyDFGroundSystem __instance)
-	    {
-		    if (Config.SkipDFHiveLogic)
-		    {
-			    if ((__instance.planet.uPosition - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
-			    {
-				    return false;
-			    }
+                WarningSystem warningSystem = __instance.gameData.warningSystem;
+                int num = 500;
+                int num2 = count;
+                while (count > 0 && num > 0)
+                {
+                    int num3 = (count < itemProto.StackSize) ? count : itemProto.StackSize;
+                    int inc2 = __instance.split_inc(ref count, ref inc, num3);
+                    TrashObject trashObj = new TrashObject(itemId, num3, inc2, Vector3.zero, Quaternion.identity);
+                    TrashData trashData = default(TrashData);
+                    trashData.landPlanetId = 0;
+                    trashData.nearPlanetId = 0;
+                    trashData.nearStarId = nearStarId;
+                    trashData.nearStarGravity = nearStarGravity;
+                    trashData.life = life;
+                    if (flag)
+                    {
+                        trashData.lPos = Vector3.zero;
+                        trashData.lRot = Quaternion.identity;
+                        trashData.uPos = lhs + RandomTable.SphericNormal(ref __instance.randSeed, 0.2);
+                        trashData.uRot = Quaternion.LookRotation(RandomTable.SphericNormal(ref __instance.randSeed, 1.0).normalized, vectorLF);
+                        trashData.uVel = __instance.player.uVelocity + RandomTable.SphericNormal(ref __instance.randSeed, 4.0) + vectorLF * 15.0;
+                        trashData.uAgl = RandomTable.SphericNormal(ref __instance.randSeed, 0.03);
+                    }
+                    else
+                    {
+                        trashData.lPos = Vector3.zero;
+                        trashData.lRot = Quaternion.identity;
+                        trashData.uPos = lhs + RandomTable.SphericNormal(ref __instance.randSeed, 0.3);
+                        trashData.uRot = Quaternion.LookRotation(RandomTable.SphericNormal(ref __instance.randSeed, 1.0).normalized, vectorLF);
+                        trashData.uVel = __instance.player.uVelocity + RandomTable.SphericNormal(ref __instance.randSeed, __instance.player.sailing ? 0.2 : 4.5) + vectorLF * (__instance.player.sailing ? 0.0 : 20.0);
+                        trashData.uAgl = RandomTable.SphericNormal(ref __instance.randSeed, 0.03);
+                    }
 
-			    // return false;
-		    }
+                    int objectId = __instance.container.NewTrash(trashObj, trashData);
+                    if (trashData.warningId > 0)
+                    {
+                        warningSystem.warningPool[trashData.warningId].objectId = objectId;
+                        warningSystem.warningPool[trashData.warningId].detailId = itemId;
+                    }
 
-		    return true;
-	    }
-	    
-	    [HarmonyTranspiler]
-	    [HarmonyPatch(typeof(SpaceColliderLogic), nameof(SpaceColliderLogic.Init))]
-	    public static IEnumerable<CodeInstruction> InitTranspiler(IEnumerable<CodeInstruction> instructions)
-	    {
-		    var matcher = new CodeMatcher(instructions)
-			    .MatchForward(false,
-				    new CodeMatch(i=>i.opcode == Ldc_I4 && Convert.ToInt32(i.operand) == 512)
-			    );
-		    if (matcher.IsValid)
-		    {
-			    matcher.Repeat(matcher =>
-			    {
-				    matcher.SetOperandAndAdvance(8192);
-			    });
-		    }
-		    else
-		    {
-			    Error("Failed to patch SpaceColliderLogic.Init");
-		    }
-		    return instructions;
-	    }
-	    
-	    
-	    [HarmonyTranspiler]
-	    [HarmonyPatch(typeof(LocalGeneralProjectile),  nameof(LocalGeneralProjectile.TickSkillLogic))] //225f 212f
-	    public static IEnumerable<CodeInstruction> Fix39000(IEnumerable<CodeInstruction> instructions)
-	    {
-		    // var methodInfo = AccessTools.Method(typeof(EnemyUnitComponentTranspiler), nameof(Utils.GetRadiusFromFactory));
-            
-		    var matcher = new CodeMatcher(instructions)
-			    .MatchForward(
-				    true,
-				    new CodeMatch(i =>
-				    {
-					    return (i.opcode == Ldc_R4 ) &&
-					           (
-						           Math.Abs(Convert.ToDouble(i.operand ?? 0.0) - 39006.25) < 1 
+                    num--;
+                }
 
-					           );
-				    })
-			    );
-		    if (matcher.IsInvalid) GS2.Error("Nope");
-			   matcher.Repeat(matcher =>
-			    {
-				    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
-				    // var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
-				    // var mi = matcher.GetRadiusFromFactory();
-				    // matcher.LogILPre();
-				    matcher.InsertAndAdvance(new CodeInstruction(Ldarg_0));
-				    matcher.InsertAndAdvance(new CodeInstruction(Utils.LoadField(typeof(LocalGeneralProjectile),
-					    nameof(LocalGeneralProjectile.astroId))));
-				    matcher.SetInstruction(new CodeInstruction(Call, matcher.GetSquareRadiusFromAstroFactoryId()));
-				    // matcher.LogILPost(3);
-			    });
+                if (GameMain.gameScenario != null)
+                {
+                    GameMain.gameScenario.NotifyOnAddTrash(itemId, num2 - count);
+                }
+            }
 
-				   instructions = matcher.InstructionEnumeration();
+            return false;
+        }
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(SpaceSector), nameof(SpaceSector.GameTick))]
+        // public static bool SSGameTick()
+        // {
+        // 	if (Config.DisableSpaceSector) return false;
+        // 	return true;
+        // }
+        // static int u = 0;
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(CombatSpaceSystem), nameof(CombatSpaceSystem.GameTick))]
+        // public static bool CSSGameTick(ref CombatSpaceSystem __instance,long tick)
+        // {
+        // 	int s = 0;
+        // 	int t = 0;
+        // 	int v = 0;
+        // 	GameHistoryData history = __instance.gameData.history;
+        // 	EnemyData[] enemyPool = __instance.spaceSector.enemyPool;
+        // 	ref CombatSettings combatSettings = ref __instance.gameData.history.combatSettings;
+        // 	bool flag = __instance.spaceSector.model == null || __instance.spaceSector.model.disableFleet;
+        // 	SpaceObjectRenderer[] objectRenderers = __instance.spaceSector.model.gpuiManager.objectRenderers;
+        // 	__instance.spaceSector.model.craftDirty = true;
+        // 	int num = (int)(tick % 60L);
+        // 	UnitComponent.gameTick = tick;
+        // 	CombatUpgradeData combatUpgradeData = default(CombatUpgradeData);
+        // 	history.GetCombatUpgradeData(ref combatUpgradeData);
+        // 	ref VectorLF3 ptr = ref __instance.gameData.relativePos;
+        // 	ref Quaternion ptr2 = ref __instance.gameData.relativeRot;
+        // 	Vector3 vector = new Vector3(0f, 0f, 0f);
+        // 	Quaternion identity = Quaternion.identity;
+        // 	bool inStarmap = __instance.inStarmap;
+        // 	FleetComponent[] buffer = __instance.fleets.buffer;
+        // 	int cursor = __instance.fleets.cursor;
+        // 	for (int i = 1; i < cursor; i++)
+        // 	{
+        // 		ref FleetComponent ptr3 = ref buffer[i];
+        // 		if (ptr3.id == i)
+        // 		{
+        // 			v++;
+        // 			ref CraftData ptr4 = ref __instance.spaceSector.craftPool[ptr3.craftId];
+        // 			if ((GameMain.spaceSector.astros[ptr4.astroId].uPos - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
+        // 			{
+        // 				s++;
+        // 				continue;
+        // 			}
+        // 			PrefabDesc pdesc = SpaceSector.PrefabDescByModelIndex[(int)ptr4.modelIndex];
+        // 			if (i % 60 == num)
+        // 			{
+        // 				ptr3.SensorLogic_Space(ref ptr4, pdesc, __instance.spaceSector, tick);
+        // 			}
+        //
+        // 			ptr3.InternalUpdate_Space(ref ptr4, ref __instance.spaceSector.craftAnimPool[ptr4.id], pdesc, __instance.spaceSector, __instance.mecha);
+        // 			ptr3.AssembleUnits_Space(ref ptr4, ref combatUpgradeData, pdesc, __instance.mecha, __instance.spaceSector, tick);
+        // 			ptr3.DetermineCraftAstroId(__instance.spaceSector, ref ptr4);
+        // 			if (ptr3.DeterminActiveEnemyUnits(true, tick))
+        // 			{
+        // 				ptr3.ActiveEnemyUnits_Space(__instance.spaceSector, pdesc);
+        // 			}
+        //
+        // 			if (flag)
+        // 			{
+        // 				__instance.spaceSector.craftAnimPool[ptr4.id].state = 0U;
+        // 			}
+        //
+        // 			SpaceDynamicRenderer spaceDynamicRenderer = objectRenderers[(int)ptr4.modelIndex] as SpaceDynamicRenderer;
+        // 			if (spaceDynamicRenderer != null)
+        // 			{
+        // 				ref SPACEOBJECT ptr5 = ref spaceDynamicRenderer.instPool[ptr4.modelId];
+        // 				ptr5.astroId = (uint)ptr4.astroId;
+        // 				if (ptr5.astroId == 0U)
+        // 				{
+        // 					if (inStarmap && UIGame.viewModeReady)
+        // 					{
+        // 						ref VectorLF3 ptr6 = ref __instance.gameData.starmapViewPos;
+        // 						ptr5.posx = (float)((ptr4.pos.x - ptr6.x) * 0.00025);
+        // 						ptr5.posy = (float)((ptr4.pos.y - ptr6.y) * 0.00025);
+        // 						ptr5.posz = (float)((ptr4.pos.z - ptr6.z) * 0.00025);
+        // 						ptr5.rotx = ptr4.rot.x;
+        // 						ptr5.roty = ptr4.rot.y;
+        // 						ptr5.rotz = ptr4.rot.z;
+        // 						ptr5.rotw = ptr4.rot.w;
+        // 					}
+        // 					else
+        // 					{
+        // 						VectorLF3 vectorLF;
+        // 						vectorLF.x = ptr4.pos.x - ptr.x;
+        // 						vectorLF.y = ptr4.pos.y - ptr.y;
+        // 						vectorLF.z = ptr4.pos.z - ptr.z;
+        // 						Maths.QInvRotateLF_ref(ref ptr2, ref vectorLF, ref vector);
+        // 						ptr5.posx = vector.x;
+        // 						ptr5.posy = vector.y;
+        // 						ptr5.posz = vector.z;
+        // 						Maths.QInvMultiply_ref(ref ptr2, ref ptr4.rot, out identity);
+        // 						ptr5.rotx = identity.x;
+        // 						ptr5.roty = identity.y;
+        // 						ptr5.rotz = identity.z;
+        // 						ptr5.rotw = identity.w;
+        // 					}
+        // 				}
+        // 				else
+        // 				{
+        // 					ptr5.posx = (float)ptr4.pos.x;
+        // 					ptr5.posy = (float)ptr4.pos.y;
+        // 					ptr5.posz = (float)ptr4.pos.z;
+        // 					ptr5.rotx = ptr4.rot.x;
+        // 					ptr5.roty = ptr4.rot.y;
+        // 					ptr5.rotz = ptr4.rot.z;
+        // 					ptr5.rotw = ptr4.rot.w;
+        // 				}
+        // 			}
+        // 		}
+        // 	}
+        //
+        // 	UnitComponent[] buffer2 = __instance.units.buffer;
+        // 	int cursor2 = __instance.units.cursor;
+        // 	for (int j = 1; j < cursor2; j++)
+        // 	{
+        // 		ref UnitComponent ptr7 = ref buffer2[j];
+        //
+        // 		if (ptr7.id == j)
+        // 		{
+        // 			v++;
+        // 			ref CraftData ptr8 = ref __instance.spaceSector.craftPool[ptr7.craftId];
+        // 			if ((GameMain.spaceSector.astros[ptr8.astroId].uPos - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
+        // 			{
+        // 				t++;
+        // 				continue;
+        // 			}
+        // 			PrefabDesc pdesc2 = SpaceSector.PrefabDescByModelIndex[(int)ptr8.modelIndex];
+        // 			if (j % 60 == num)
+        // 			{
+        // 				ptr7.hatred.Fade(0.75f, 5);
+        // 				ptr7.SensorLogic_Space(ref ptr8, pdesc2, __instance.spaceSector);
+        // 			}
+        //
+        // 			ptr7.AssistTeammates_Space(ref ptr8, __instance.spaceSector, __instance.mecha);
+        // 			ptr7.UpdateFireCondition(ptr8.isSpace, pdesc2, ref combatUpgradeData);
+        // 			int orbitAstroId = 0;
+        // 			bool flag2 = false;
+        // 			bool flag3 = false;
+        // 			if (ptr8.owner > 0)
+        // 			{
+        // 				ref CraftData ptr9 = ref __instance.spaceSector.craftPool[(int)ptr8.owner];
+        // 				if (ptr9.id != 0 && ptr9.fleetId > 0)
+        // 				{
+        // 					ref FleetComponent ptr10 = ref __instance.fleets.buffer[ptr9.fleetId];
+        // 					orbitAstroId = FleetComponent.DetermineOrbitingAstro(__instance.spaceSector, ref ptr9);
+        // 					ptr7.DetermineBehavior(ref ptr10.target, ref ptr10.targetPos, orbitAstroId, ptr10.dispatch);
+        // 					flag2 = true;
+        // 					if (ptr9.owner < 0 && __instance.mecha.player.isAlive)
+        // 					{
+        // 						flag3 = !ptr7.UpdateMechaEnergy(__instance.mecha, pdesc2, ptr8.isSpace);
+        // 						if (flag3)
+        // 						{
+        // 							ptr7.behavior = EUnitBehavior.Recycled;
+        // 						}
+        // 					}
+        // 				}
+        // 			}
+        //
+        // 			if (flag2)
+        // 			{
+        // 				switch (ptr7.behavior)
+        // 				{
+        // 					case EUnitBehavior.None:
+        // 						ptr7.RunBehavior_None();
+        // 						break;
+        // 					case EUnitBehavior.Initialize:
+        // 						ptr7.RunBehavior_Initialize_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatUpgradeData, orbitAstroId, history.fighterInitializeSpeedScale);
+        // 						break;
+        // 					case EUnitBehavior.Recycled:
+        // 						ptr7.RunBehavior_Recycled_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatSettings, ref combatUpgradeData, orbitAstroId, flag3);
+        // 						break;
+        // 					case EUnitBehavior.KeepForm:
+        // 						ptr7.RunBehavior_KeepForm(ref ptr8);
+        // 						break;
+        // 					case EUnitBehavior.SeekForm:
+        // 						ptr7.RunBehavior_SeekForm_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatUpgradeData);
+        // 						break;
+        // 					case EUnitBehavior.Engage:
+        // 						ptr7.RunBehavior_Engage_Space(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatSettings, ref combatUpgradeData);
+        // 						break;
+        // 					case EUnitBehavior.Orbiting:
+        // 						ptr7.RunBehavior_Orbiting(__instance.spaceSector, __instance.mecha, pdesc2, ref ptr8, ref combatUpgradeData, orbitAstroId);
+        // 						break;
+        // 				}
+        // 			}
+        // 			else
+        // 			{
+        // 				__instance.spaceSector.RemoveCraftDeferred(ptr7.craftId);
+        // 			}
+        //
+        // 			ptr7.DetermineCraftAstroId(__instance.spaceSector, ref ptr8);
+        // 			SpaceDynamicRenderer spaceDynamicRenderer2 = objectRenderers[(int)ptr8.modelIndex] as SpaceDynamicRenderer;
+        // 			if (spaceDynamicRenderer2 != null)
+        // 			{
+        // 				ref SPACEOBJECT ptr11 = ref spaceDynamicRenderer2.instPool[ptr8.modelId];
+        // 				ptr11.astroId = (uint)ptr8.astroId;
+        // 				if (ptr11.astroId == 0U)
+        // 				{
+        // 					if (inStarmap && UIGame.viewModeReady)
+        // 					{
+        // 						ref VectorLF3 ptr12 = ref __instance.gameData.starmapViewPos;
+        // 						ptr11.posx = (float)((ptr8.pos.x - ptr12.x) * 0.00025);
+        // 						ptr11.posy = (float)((ptr8.pos.y - ptr12.y) * 0.00025);
+        // 						ptr11.posz = (float)((ptr8.pos.z - ptr12.z) * 0.00025);
+        // 						ptr11.rotx = ptr8.rot.x;
+        // 						ptr11.roty = ptr8.rot.y;
+        // 						ptr11.rotz = ptr8.rot.z;
+        // 						ptr11.rotw = ptr8.rot.w;
+        // 					}
+        // 					else
+        // 					{
+        // 						VectorLF3 vectorLF2;
+        // 						vectorLF2.x = ptr8.pos.x - ptr.x;
+        // 						vectorLF2.y = ptr8.pos.y - ptr.y;
+        // 						vectorLF2.z = ptr8.pos.z - ptr.z;
+        // 						Maths.QInvRotateLF_ref(ref ptr2, ref vectorLF2, ref vector);
+        // 						ptr11.posx = vector.x;
+        // 						ptr11.posy = vector.y;
+        // 						ptr11.posz = vector.z;
+        // 						Maths.QInvMultiply_ref(ref ptr2, ref ptr8.rot, out identity);
+        // 						ptr11.rotx = identity.x;
+        // 						ptr11.roty = identity.y;
+        // 						ptr11.rotz = identity.z;
+        // 						ptr11.rotw = identity.w;
+        // 					}
+        // 				}
+        // 				else
+        // 				{
+        // 					ptr11.posx = (float)ptr8.pos.x;
+        // 					ptr11.posy = (float)ptr8.pos.y;
+        // 					ptr11.posz = (float)ptr8.pos.z;
+        // 					ptr11.rotx = ptr8.rot.x;
+        // 					ptr11.roty = ptr8.rot.y;
+        // 					ptr11.rotz = ptr8.rot.z;
+        // 					ptr11.rotw = ptr8.rot.w;
+        // 					Vector4[] extraPool = spaceDynamicRenderer2.extraPool;
+        // 					int modelId = ptr8.modelId;
+        // 					extraPool[modelId].x = ptr7.anim;
+        // 					extraPool[modelId].z = ptr7.steering;
+        // 					extraPool[modelId].w = ptr7.speed;
+        // 				}
+        // 			}
+        // 		}
+        // 	}
+        //
+        // 	u++;
+        // 	if (u > 1000)
+        // 	{
+        // 		Log($"Skipped {s} fleets and {t} units of {v} total");
+        // 		u = 0;
+        // 	}
+        // 	return false;
+        // }
 
-		    return instructions;
-	    }
-	    
-	    
-	   //  [HarmonyPrefix]
-	   //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExpPoint))]
-	   //  public static bool AddExpPoint(ref EvolveData __instance, int _addexpp)
-	   //  {
-		  //   if (__instance.level >= 100)
-		  //   {
-			 //    if (__instance.expf != 0 || __instance.expp != 0 || __instance.level != 100)
-			 //    {
-				//     __instance.level = 100;
-				//     __instance.expf = 0;
-				//     __instance.expp = 0;
-				//     __instance.expl = EvolveData.LevelCummulativeExp(100);
-			 //    }
-			 //    return false;
-		  //   }
-		  //   if (_addexpp > 0)
-		  //   {
-			 //    __instance.expp += _addexpp;
-			 //    if (__instance.expp >= 10000)
-			 //    {
-				//     __instance.expf += __instance.expp / 10000;
-				//     __instance.expp %= 10000;
-				//     while (__instance.expf >= EvolveData.levelExps[__instance.level])
-				//     {
-				// 	    int num = EvolveData.levelExps.Length - 1;
-				// 	    __instance.expf -= EvolveData.levelExps[__instance.level];
-				// 	    __instance.expl += EvolveData.levelExps[__instance.level];
-				// 	    __instance.level++;
-				// 	    if (__instance.level >= num)
-				// 	    {
-				// 		    __instance.level = num;
-				// 		    __instance.expf = 0;
-				// 		    __instance.expp = 0;
-				// 		    return false;
-				// 	    }
-				//     }
-			 //    }
-		  //   }
-    //
-		  //   return false;
-	   //  }
-	   //  [HarmonyPrefix]
-	   //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExp))]
-	   //  public static bool AddExp(ref EvolveData __instance, int _addexp)
-	   //  {
-		  //   if (__instance.level >= 100)
-		  //   {
-			 //    if (__instance.expf != 0 || __instance.expp != 0 || __instance.level != 100)
-			 //    {
-				//     __instance.level = 100;
-				//     __instance.expf = 0;
-				//     __instance.expp = 0;
-				//     __instance.expl = EvolveData.LevelCummulativeExp(100);
-			 //    }
-			 //    return false;
-		  //   }
-		  //   __instance.expf += _addexp;
-		  //   while (__instance.expf >= EvolveData.levelExps[__instance.level])
-		  //   {
-			 //    int num = EvolveData.levelExps.Length - 1;
-			 //    __instance.expf -= EvolveData.levelExps[__instance.level];
-			 //    __instance.expl += EvolveData.levelExps[__instance.level];
-			 //    __instance.level++;
-			 //    if (__instance.level >= num)
-			 //    {
-				//     __instance.level = num;
-				//     __instance.expf = 0;
-				//     return false;
-			 //    }
-		  //   }
-    //
-		  //   return false;
-	   //  }
-	    
-	    [HarmonyPrefix, HarmonyPatch(typeof(UISpaceGuideEntry), "OnObjectChange")]
-	    public static bool OnObjectChange(ref UISpaceGuideEntry __instance, ESpaceGuideType ___guideType,
-		    float ___radius, int ___objId, GalaxyData ___galaxy, ref RectTransform ___rectTrans, ref Text ___nameText,
-		    ref Image ___markIcon)
-	    {
 
-		    __instance.galaxy = __instance.parent.galaxy;
-		    __instance.gameCamera = __instance.parent.gameCamera;
-		    __instance.parentRectTrans = __instance.parent.rectTrans;
-		    __instance.playerTrans = __instance.parent.player.transform;
-		    if (__instance.guideType == ESpaceGuideType.Star)
-		    {
-			    StarData starData = __instance.galaxy.StarById(__instance.objId);
-			    __instance.nameText.text = ((starData != null) ? starData.displayName : "Star");
-			    float preferredWidth = __instance.nameText.preferredWidth;
-			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth + 42f, 80f);
-			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth * 0.4f + 40f, 0f);
-			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth * 0.4f + 60f, 0f);
-			    __instance.markIcon.sprite = __instance.starSprite;
-			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.25f);
-			    __instance.collImage.raycastTarget = true;
-		    }
-		    else if (__instance.guideType == ESpaceGuideType.Planet)
-		    {
-			    PlanetData planetData = __instance.galaxy.PlanetById(__instance.objId);
-			    __instance.nameText.text = ((planetData != null)
-				    ? ((__instance.radius > 0f)
-					    ? planetData.displayName
-					    : (planetData.displayName + " - " + planetData.star.displayName))
-				    : "Planet");
-			    float preferredWidth2 = __instance.nameText.preferredWidth;
-			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth2 + 42f, 80f);
-			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth2 * 0.4f + 40f, 0f);
-			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth2 * 0.4f + 60f, 0f);
-			    __instance.markIcon.sprite = __instance.circleSprite;
-			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.5f);
-			    __instance.collImage.raycastTarget = true;
-		    }
-		    else if (__instance.guideType == ESpaceGuideType.Ship)
-		    {
-			    ItemProto itemProto = LDB.items.Select(__instance.itemId);
-			    __instance.nameText.text = ((itemProto != null) ? itemProto.name : "运输船".Translate());
-			    __instance.markIcon.sprite = __instance.shipSprite;
-			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
-			    __instance.collImage.raycastTarget = false;
-		    }
-		    else if (__instance.guideType == ESpaceGuideType.DFHive)
-		    {
-			    GS2.DevLog(__instance.objId + "/" +GameMain.data.spaceSector.dfHivesByAstro.Length + " " + __instance.hivecodes.Length );
-			    EnemyDFHiveSystem enemyDFHiveSystem = GameMain.data.spaceSector.dfHivesByAstro[__instance.objId - 1000000];
-			    DevLog(GameMain.data.spaceSector.dfHivesByAstro.Length + " " + " " + enemyDFHiveSystem.hiveOrbitIndex.ToString() + __instance.hivecodes.Length );
-			    __instance.nameText.text = " " + __instance.hivecodes[enemyDFHiveSystem.hiveOrbitIndex % __instance.hivecodes.Length] + " " + "巢穴简称".Translate();
-			    float preferredWidth3 = __instance.nameText.preferredWidth;
-			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth3 + 42f, 80f);
-			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth3 * 0.4f + 40f, 0f);
-			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth3 * 0.4f + 60f, 0f);
-			    __instance.markIcon.sprite = __instance.hiveSprite;
-			    __instance.markIcon.color = __instance.enemyColor;
-			    __instance.collImage.raycastTarget = true;
-		    }
-		    else if (__instance.guideType == ESpaceGuideType.DFCarrier)
-		    {
-			    __instance.nameText.text = "黑雾运输船".Translate();
-			    __instance.markIcon.sprite = __instance.shipSprite;
-			    __instance.markIcon.color = __instance.enemyColor;
-			    __instance.collImage.raycastTarget = true;
-		    }
-		    else if (__instance.guideType == ESpaceGuideType.Rocket)
-		    {
-			    __instance.nameText.text = "火箭".Translate();
-			    __instance.markIcon.sprite = __instance.rocketSprite;
-			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
-			    __instance.collImage.raycastTarget = false;
-		    }
-		    else if (__instance.guideType == ESpaceGuideType.CosmicMessage ||
-		             __instance.guideType == ESpaceGuideType.DFCommunicator)
-		    {
-			    __instance.nameText.text = ((__instance.guideType == ESpaceGuideType.CosmicMessage)
-				    ? "宇宙讯息".Translate()
-				    : "黑雾通讯器".Translate());
-			    float preferredWidth4 = __instance.nameText.preferredWidth;
-			    __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth4 + 42f, 80f);
-			    __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth4 * 0.4f + 40f, 0f);
-			    __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth4 * 0.4f + 60f, 0f);
-			    __instance.markIcon.sprite = __instance.msgSpite;
-			    __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
-			    __instance.collImage.raycastTarget = true;
-		    }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.GameTickLogic))]
+        [HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.KeyTickLogic))]
+        public static bool EDFHGTL(ref EnemyDFHiveSystem __instance)
+        {
+            if (Config.SkipDFHiveLogic)
+            {
+                if ((__instance.starData.uPosition - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
+                {
+                    return false;
+                }
 
-		    Color color =
-			    ((__instance.guideType == ESpaceGuideType.DFHive || __instance.guideType == ESpaceGuideType.DFCarrier)
-				    ? __instance.enemyTextColor
-				    : __instance.normalTextColor);
-		    __instance.nameText.color = color;
-		    __instance.distText.color = color;
-		    __instance.UpdatePinButtonRotation();
-		    return false;
-	    }
+                // return false;
+            }
 
-	    [HarmonyPostfix]
-	    [HarmonyPatch(typeof(EnemyDFHiveSystem),nameof(EnemyDFHiveSystem.Init))]
-	    [HarmonyPatch(typeof(EnemyDFHiveSystem),nameof(EnemyDFHiveSystem.Import))]
-	    public static void EnemyDFHiveSystemInitImport(ref EnemyDFHiveSystem __instance)
-	    {
-		    if (__instance.idleRelayIds.Length < 2048)
-		    {
-			    var newArray = new int[2048];
-			    Array.Copy(__instance.idleRelayIds,newArray, __instance.idleRelayIds.Length);
-			    __instance.idleRelayIds = newArray;
-		    }
-	    }
-	    
-	    [HarmonyPostfix, HarmonyPatch(typeof(PlayerAction_Inspect),nameof(PlayerAction_Inspect.GetObjectSelectDistance))]
-	    public static void GetObjectSelectDistance(ref PlayerAction_Inspect __instance, ref float __result, EObjectType objType, int objid)
-	    {
-		    if (objid == 0)
-		    {
-			    return;
-		    }
-		    if (__instance.player.factory == null)
-		    {
-			    return;
-		    }
+            return true;
+        }
 
-		    if (objType != EObjectType.Entity) return;
-		    var id = __instance.player.factory.entityPool[objid].protoId;
-		    if (id == 2107 || id == 2103 || id == 2104) __result = 2000f;
-		    if (id == 2105) __result = 15000f;
-		    if (__result == 35f) __result = 50f;
-	    }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(EnemyDFGroundSystem), nameof(EnemyDFGroundSystem.GameTickLogic))]
+        [HarmonyPatch(typeof(EnemyDFGroundSystem), nameof(EnemyDFGroundSystem.KeyTickLogic))]
+        public static bool EDFHGTL(ref EnemyDFGroundSystem __instance)
+        {
+            if (Config.SkipDFHiveLogic)
+            {
+                if ((__instance.planet.uPosition - GameMain.mainPlayer.uPosition).magnitude > Config.SkipDFHiveDistance * 2400000f)
+                {
+                    return false;
+                }
 
-	    
-	    [HarmonyPostfix]
-	    [HarmonyPatch(typeof(DefenseSystem), nameof(DefenseSystem.AfterTurretsImport))]
-	    private static void AfterTurretsImport(ref DefenseSystem __instance)
-	    {
-		    int cursor = __instance.turrets.cursor;
-		    TurretComponent[] buffer = __instance.turrets.buffer;
-		    for (int i = 1; i < cursor; i++)
-		    {
-			    ref TurretComponent ptr = ref buffer[i];
-			    if (ptr.id == 1) TurretComponentTranspiler.AddTurret(__instance, ref ptr);
-			    
-		    }
-	    }
-	    
-	    
-	[HarmonyPrefix]
-	[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.ApplyGravity))]
-	private static bool ApplyGravity(ref PlayerController __instance)
-	{
-		if (Config.NewGravity) return true;
-		VectorLF3 v = VectorLF3.zero;
-		if (GameMain.localStar != null)
-		{
-			StarData localStar = GameMain.localStar;
-			double num = 0.0;
-			VectorLF3 lhs = VectorLF3.zero;
-			for (int i = 0; i < localStar.planetCount; i++)
-			{
-				PlanetData planetData = localStar.planets[i];
-				VectorLF3 lhs2 = planetData.uPosition - __instance.player.uPosition;
-				double magnitude = lhs2.magnitude;
-				if (magnitude > 1.0)
-				{
-					double y = (double)Math.Max((800f - (float)magnitude) / 150f, 0f);
-					double num2 = Math.Pow(10.0, y);
-					VectorLF3 lhs3 = lhs2 / magnitude;
-					double num3 = magnitude / (double)planetData.realRadius;
-					double num4 = num3 * 0.800000011920929;
-					double num5 = ((num3 < 1.0) ? num3 : (1.0 / (num4 * num4)));
-					if (num5 > 1.0)
-					{
-						num5 = 1.0;
-					}
-					double num6 = Math.Sqrt((double)planetData.realRadius) * 3.5;
-					lhs += lhs3 * (num6 * num5 * num2);
-					num += num2;
-				}
-			}
-			VectorLF3 lhs4 = localStar.uPosition - __instance.player.uPosition;
-			double magnitude2 = lhs4.magnitude;
-			if (magnitude2 > 1.0)
-			{
-				double num7 = 1.0;
-				VectorLF3 lhs5 = lhs4 / magnitude2;
-				double num8 = magnitude2 / (double)(localStar.orbitScaler * 800f);
-				double num9 = num8 * 0.10000000149011612;
-				double num10 = ((num8 < 1.0) ? num8 : (1.0 / (num9 * num9)));
-				if (num10 > 1.0)
-				{
-					num10 = 1.0;
-				}
-				double num11 = 26.7;
-				lhs += lhs5 * (num11 * num10 * num7);
-				num += num7;
-			}
-			v = lhs / num;
-		}
-		if (v.sqrMagnitude > 1E-06)
-		{
-			__instance.universalGravity = v;
-			__instance.localGravity = Maths.QInvRotateLF(__instance.gameData.relativeRot, v);
-		}
-		else
-		{
-			__instance.universalGravity = VectorLF3.zero;
-			__instance.localGravity = Vector3.zero;
-		}
-		if (!__instance.player.sailing && !__instance.gameData.disableController && __instance.player.isAlive)
-		{
-			__instance.AddLocalForce(__instance.localGravity);
-		}
-		Debug.DrawRay(__instance.transform.localPosition, __instance.localGravity * 0.1f, Color.white);
-		if (__instance.gameData.localPlanet != null)
-		{
-			Vector3 forward = __instance.transform.forward;
-			Vector3 normalized = __instance.transform.localPosition.normalized;
-			Vector3 normalized2 = Vector3.Cross(Vector3.Cross(normalized, forward).normalized, normalized).normalized;
-			__instance.transform.localRotation = Quaternion.LookRotation(normalized2, normalized);
-			return false;
-		}
-		__instance.transform.localRotation = Quaternion.identity;
-		return false;
-	}
-	//     private static bool ApplyGravity(ref PlayerController __instance)
-	//     {
-	// 	    // return false;
-	// 	VectorLF3 vectorLF = VectorLF3.zero;
-	// 	if (GameMain.localStar != null)
-	// 	{
-	// 		StarData localStar = GameMain.localStar;
-	// 		double num = 0.0;
-	// 		VectorLF3 vectorLF2 = VectorLF3.zero;
-	// 		// for (int i = 0; i < localStar.planetCount; i++)
-	// 		// {
-	// 		// 	PlanetData planetData = localStar.planets[i];
-	// 		// 	VectorLF3 vectorLF3 = planetData.uPosition - __instance.player.uPosition;
-	// 		// 	double magnitude = vectorLF3.magnitude;
-	// 		// 	if (magnitude > 1.0)
-	// 		// 	{
-	// 		// 		double num2 = (double)Math.Max((5000f + planetData.realRadius - (float)magnitude) / 2500f, 0f);
-	// 		// 		double num3 = Math.Pow(11.0, num2) - 1.0;
-	// 		// 		VectorLF3 vectorLF4 = vectorLF3 / magnitude;
-	// 		// 		double num4 = magnitude / (double)planetData.realRadius;
-	// 		// 		double num5 = num4 * 0.800000011920929;
-	// 		// 		double num6 = ((num4 < 1.0) ? num4 : (1.0 / (num5 * num5)));
-	// 		// 		if (num6 > 1.0)
-	// 		// 		{
-	// 		// 			num6 = 1.0;
-	// 		// 		}
-	// 		// 		double num7 = Math.Sqrt((double)planetData.realRadius) * 3.5;
-	// 		// 		vectorLF2 += vectorLF4 * (num7 * num6 * num3);
-	// 		// 		num += num3;
-	// 		// 	}
-	// 		// }
-	// 		VectorLF3 vectorLF5 = localStar.uPosition - __instance.player.uPosition;
-	// 		double num8 = vectorLF5.magnitude;
-	// 		if (num8 > 1.0)
-	// 		{
-	// 			double num9 = 1.0;
-	// 			VectorLF3 vectorLF6 = vectorLF5 / num8;
-	// 			double num10 = 64000000000000.0 * (double)localStar.mass * 1.3538551990520382E-06 * 4.0;
-	// 			if (num8 < (double)localStar.physicsRadius)
-	// 			{
-	// 				num8 = (double)localStar.physicsRadius;
-	// 			}
-	// 			VectorLF3 vectorLF7 = vectorLF6 * (num10 / (num8 * num8));
-	// 			vectorLF2 += vectorLF7;
-	// 			num += num9;
-	// 		}
-	// 		vectorLF = vectorLF2 / num;
-	// 	}
-	// 	if (vectorLF.sqrMagnitude > 1E-06)
-	// 	{
-	// 		__instance.universalGravity = vectorLF;
-	// 		__instance.localGravity = Maths.QInvRotateLF(__instance.gameData.relativeRot, vectorLF);
-	// 	}
-	// 	else
-	// 	{
-	// 		__instance.universalGravity = VectorLF3.zero;
-	// 		__instance.localGravity = Vector3.zero;
-	// 	}
-	// 	if (!__instance.player.sailing && !__instance.gameData.disableController && __instance.player.isAlive)
-	// 	{
-	// 		__instance.universalGravity = VectorLF3.zero;
-	// 		__instance.localGravity = Vector3.zero;
-	// 		__instance.AddLocalForce(__instance.localGravity);
-	// 	}
-	// 	// Debug.DrawRay(base.transform.localPosition, __instance.localGravity * 0.1f, Color.white);
-	// 	if (__instance.gameData.localPlanet != null)
-	// 	{
-	// 		Vector3 forward = __instance.transform.forward;
-	// 		Vector3 normalized = __instance.transform.localPosition.normalized;
-	// 		Vector3 normalized2 = Vector3.Cross(Vector3.Cross(normalized, forward).normalized, normalized).normalized;
-	// 		__instance.transform.localRotation = Quaternion.LookRotation(normalized2, normalized);
-	// 		return false;
-	// 	}
-	// 	__instance.transform.localRotation = Quaternion.identity;
-	// 	return false;
-	// 	
-	// }
-	    // [HarmonyPostfix,
-	    //  HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.RunBehavior_Engage_GRaider))]
-	    // public static void RunBehavior_Engage_GRaider(ref EnemyUnitComponent __instance, PlanetFactory factory, ref EnemyData enemy)
-	    // {
-		   //  foreach (var e in factory.enemySystem.units.buffer)
-		   //  {
-			  //   var pos =  factory.enemyPool[e.enemyId].pos;
-			  //   var mag = pos.magnitude;
-			  //   if (mag < 300f && mag != 0) factory.enemyPool[e.enemyId].pos *= 1.01f;
-		   //  }
-	    // }
-	    //  [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.SetForNewCreate))]
-	   //  public static bool SetForNewCreate(ref EnemyDFHiveSystem __instance)
-	   //  {
-		  //   Log($"{__instance.starData == null} {__instance.starData.hiveAstroOrbits == null}");
-		  //   Log($"{__instance.hiveOrbitIndex.ToString()}/{__instance.starData.hiveAstroOrbits.Length}");
-		  //   Log($"--{__instance.starData.index * 8 + __instance.hiveOrbitIndex + 1}/{__instance.sector.astros.Length}");
-		  //   Log(":)");
-		  //   return true;
-	   //  }
-	    
- //        [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.CreateNativeRelays))]
- //        public static bool CreateNativeRelays(ref EnemyDFHiveSystem __instance)
-	// {
-	// 	int num = 2 - __instance.starData.initialHiveCount;//num is the number of relays to create?
-	// 	if (num < 0)
-	// 	{
-	// 		num = (num - 2) / 2;
-	// 	}
-	// 	else
-	// 	{
-	// 		num *= 2;
-	// 	}
-	// 	if (num < -3)
-	// 	{
-	// 		num = -3;
-	// 	}
-	// 	float virtualHiveMatterDamandByTicks = EnemyDFConfigs.VirtualHiveMatterDamandByTicks(__instance.TicksToBuildChances(__instance.ticks));
-	// 	float sixtyf = 60f;
-	// 	float safetyFactor = ((1f - __instance.starData.safetyFactor) * 0.6f + 0.8f) * (1f + 0.125f * (__instance.history.combatSettings.maxDensity - 1f));
-	// 	int totalRelays = Mathf.CeilToInt((virtualHiveMatterDamandByTicks + 20f) / sixtyf * safetyFactor) + __instance.ticks / 54000 + num;//num5 is the number of relays to create?
-	// 	
-	// 	int maxHiveCount = __instance.starData.maxHiveCount;
-	// 	int relaysPerPlanet = ((maxHiveCount > 5) ? (12 - maxHiveCount) : 7); //num6 is the number of relays to create?
-	// 	if (relaysPerPlanet < 1)
-	// 	{
-	// 		relaysPerPlanet = 1;
-	// 	}
-	// 	int num7 = (__instance.ticks - 300) / 600; //num7 is the number of relays to create?
-	// 	int idleRelaysToCreate = num7 - totalRelays;
-	// 	if (idleRelaysToCreate < 0)
-	// 	{
-	// 		idleRelaysToCreate = 0;
-	// 		totalRelays = num7;
-	// 	}
-	// 	else if (idleRelaysToCreate > __instance.relayDocks.Length)
-	// 	{
-	// 		idleRelaysToCreate = __instance.relayDocks.Length;
-	// 	}
-	// 	
-	// 	GS2.Log("Creating Relays: " + totalRelays + " idleRelaysToCreate:" + idleRelaysToCreate + " num7:" + num7 + " relaysPerPlanet:" + relaysPerPlanet + " num:" + num 
-	// 	        + " safetyFactor:" + safetyFactor + " vhmdbt:" + virtualHiveMatterDamandByTicks + " ticks:" + __instance.ticks + __instance.starData.maxHiveCount + " " + __instance.starData.initialHiveCount 
-	// 	        + " " + __instance.starData.id + " " + __instance.starData.name + " " + __instance.starData.planetCount + " " + __instance.starData.type + " " + __instance.starData.resourceCoef + " " + __instance.starData.orbitScaler + " " + __instance.starData.dysonRadius + " " + __instance.starData.acdiskRadius + " " + __instance.starData.habitableRadius + " " + __instance.starData.lightBalanceRadius + " " + __instance.starData.luminosity + " " + __instance.starData.temperature + " " + __instance.starData.mass + " " + __instance.starData.radius + " " + __instance.starData.age + " " + __instance.starData.lifetime + " " + __instance.starData.color + " " + __instance.starData.classFactor + " " + __instance.starData.spectr);
-	// 	
-	// 	var random = new GS2.Random(__instance.seed);
-	// 	for (int i = 0; i < __instance.starData.planetCount; i++) //Do this for every planet
-	// 	{
-	// 		PlanetData planetData = __instance.starData.planets[i];
-	// 		if (planetData.type != EPlanetType.Gas) //as long as its not a gas planet
-	// 		{
-	// 			bool lastPlanet = i == __instance.starData.planetCount - 1;
-	// 			bool birthStar = __instance.galaxy.birthStarId == __instance.starData.id;
-	// 			bool birthPlanet = __instance.galaxy.birthPlanetId == planetData.id;
-	// 			int relaysToCreate = (birthPlanet ? 1 : (lastPlanet ? totalRelays : ((totalRelays + 1) / 2)));//num9 is the number of relays to create?
-	// 			if (relaysToCreate > relaysPerPlanet)
-	// 			{
-	// 				relaysToCreate = relaysPerPlanet;
-	// 			}
-	// 			if (relaysToCreate > num7)
-	// 			{
-	// 				relaysToCreate = num7;
-	// 			}
-	// 			totalRelays -= relaysToCreate;
-	// 			int num10 = 0;
-	// 			VectorLF3 vectorLF = VectorLF3.zero;
-	// 			for (int j = 0; j < relaysToCreate; j++)
-	// 			{
-	// 				double r1 = random.NextDouble();
-	// 				double r2 = random.NextDouble();
-	// 				int attempts = 0;//num13 is the number of times we've tried to find a valid position
-	// 				double relayXpos = 0.0;//num14 is the x position of the relay
-	// 				double relayYpos = 0.0;//num15 is the y position of the relay
-	// 				double relayZpos = 0.0;//num16 is the z position of the relay
-	// 				bool validRelayPositionFound = false;
-	// 				do
-	// 				{
-	// 					attempts++;
-	// 					double distToPlanetCenter = 0.0;//num17 is the distance from the center of the planet
-	// 					while (distToPlanetCenter == 0.0 || distToPlanetCenter > 1.0)//while the distance is 0 or greater than 1
-	// 					{
-	// 						relayXpos = random.NextDouble() * 2.0 - 1.0;
-	// 						relayYpos = random.NextDouble() * 2.0 - 1.0;
-	// 						relayZpos = random.NextDouble() * 2.0 - 1.0;
-	// 						distToPlanetCenter = relayXpos * relayXpos + relayYpos * relayYpos + relayZpos * relayZpos;
-	// 					}
-	// 					if ((double)planetData.veinBiasVector.sqrMagnitude < 0.1)
-	// 					{
-	// 						planetData.GenVeinBiasVector();
-	// 					}
-	// 					VectorLF3 vectorLF2 = (birthPlanet ? (planetData.veinBiasVector * 2f) : (planetData.veinBiasVector * 0.97f));
-	// 					relayXpos -= vectorLF2.x;
-	// 					relayYpos -= vectorLF2.y;
-	// 					relayZpos -= vectorLF2.z;
-	// 					distToPlanetCenter = relayXpos * relayXpos + relayYpos * relayYpos + relayZpos * relayZpos;
-	// 					distToPlanetCenter = Math.Sqrt(distToPlanetCenter);
-	// 					vectorLF = -vectorLF2.normalized;
-	// 					double relayHeightCoef = (double)(planetData.realRadius + 70f) / distToPlanetCenter; 
-	// 					relayXpos *= relayHeightCoef;
-	// 					relayYpos *= relayHeightCoef;
-	// 					relayZpos *= relayHeightCoef;
-	// 					if (!__instance.CheckPositionCollideRelay(planetData.astroId, relayXpos, relayYpos, relayZpos))
-	// 					{
-	// 						validRelayPositionFound = true;
-	// 					}
-	// 					if (attempts >= 80)
-	// 					{
-	// 						Debug.LogWarning(string.Format("生成 Relay 经过多次随机仍无法找到坐标 planetId = {0}", planetData.id));
-	// 					}
-	// 				}
-	// 				while (!validRelayPositionFound && attempts < 80);
-	// 				if (validRelayPositionFound)
-	// 				{
-	// 					VectorLF3 vectorLF3 = new VectorLF3(relayXpos, relayYpos, relayZpos);
-	// 					int enemyFinal = __instance.sector.CreateEnemyFinal(__instance, 8116, planetData.astroId, vectorLF3, Maths.SphericalRotation(vectorLF3, (float)r2 * 360f));
-	// 					int dfRelayId = __instance.sector.enemyPool[enemyFinal].dfRelayId;
-	// 					DFRelayComponent dfrelayComponent = __instance.relays.buffer[dfRelayId];
-	// 					Assert.True(dfrelayComponent != null && dfRelayId > 0 && dfRelayId == dfrelayComponent.id);
-	// 					if (dfrelayComponent != null)
-	// 					{
-	// 						dfrelayComponent.SetDockIndex(num10++);
-	// 						dfrelayComponent.hiveAstroId = __instance.hiveAstroId;
-	// 						dfrelayComponent.targetAstroId = planetData.astroId;
-	// 						dfrelayComponent.targetLPos = vectorLF3;
-	// 						dfrelayComponent.targetYaw = (float)r2 * 360f;
-	// 						dfrelayComponent.baseState = 1;
-	// 						dfrelayComponent.baseId = 0;
-	// 						double num20 = VectorLF3.Dot(vectorLF3.normalized, vectorLF);
-	// 						num20 = Maths.Clamp01((num20 + 1.0) * 0.5);
-	// 						num20 = Math.Pow(num20, 0.5);
-	// 						if (birthPlanet)
-	// 						{
-	// 							dfrelayComponent.baseTicks = (int)(3000f * (float)(r1 * 0.05 + 0.12) + 120.5f);
-	// 						}
-	// 						else if (birthStar)
-	// 						{
-	// 							dfrelayComponent.baseTicks = (int)(3000f * (float)(Math.Pow(r1 * 0.5 + 0.5, 1.5) * num20) + 150.5f);
-	// 						}
-	// 						else
-	// 						{
-	// 							dfrelayComponent.baseTicks = (int)(6400f * (float)(Math.Pow(r1, 2.0) * num20) + 200.5f);
-	// 						}
-	// 						dfrelayComponent.baseEvolve = __instance.evolve;
-	// 						dfrelayComponent.baseEvolve.threat = 0;
-	// 						dfrelayComponent.baseEvolve.waves = (birthPlanet ? 0 : 1);
-	// 						dfrelayComponent.direction = 0;
-	// 						dfrelayComponent.stage = 2;
-	// 						int num21 = random.Next(180001) * 100;
-	// 						int builderId = dfrelayComponent.builderId;
-	// 						__instance.builders.buffer[builderId].energy = __instance.builders.buffer[builderId].maxEnergy + num21;
-	// 						__instance.sector.enemyAnimPool[enemyFinal].time = 1f;
-	// 						__instance.sector.enemyAnimPool[enemyFinal].state = 1U;
-	// 						__instance.sector.enemyAnimPool[enemyFinal].power = -1f;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	__instance.idleRelayCount = 0;
-	// 	for (int k = 0; k < idleRelaysToCreate; k++)
-	// 	{
-	// 		ref DFDock ptr = ref __instance.relayDocks[k % __instance.relayDocks.Length];
-	// 		int enemyId = __instance.sector.CreateEnemyFinal(__instance, 8116, __instance.hiveAstroId, ptr.pos, ptr.rot);
-	// 		int dfRelayId2 = __instance.sector.enemyPool[enemyId].dfRelayId;
-	// 		DFRelayComponent dfrelayComponent2 = __instance.relays.buffer[dfRelayId2];
-	// 		Assert.True(dfrelayComponent2 != null && dfRelayId2 > 0 && dfRelayId2 == dfrelayComponent2.id);
-	// 		if (dfrelayComponent2 != null)
-	// 		{
-	// 			dfrelayComponent2.SetDockIndex(k);
-	// 			int[] array = __instance.idleRelayIds;
-	// 			int oldIdleRelayCount = __instance.idleRelayCount;
-	// 			__instance.idleRelayCount = oldIdleRelayCount + 1;
-	// 			array[oldIdleRelayCount] = dfRelayId2;
-	// 		}
-	// 	}
- //
-	// 	return false;
-	// }
-        
-   //      [HarmonyPrefix, HarmonyPatch(typeof(KillStatistics), "RegisterFactoryKillStat")]
-   //      public static bool  RegisterFactoryKillStat(ref KillStatistics __instance, int factoryIndex, int modelIndex)
-   //      {
-			// if (factoryIndex < __instance.factoryKillStatPool.Length - 1) return false;
-   //          ref AstroKillStat ptr = ref __instance.factoryKillStatPool[factoryIndex];
-   //          if (ptr == null)
-   //          {
-   //              ptr = new AstroKillStat();
-   //              ptr.Init();
-   //          }
-   //          ptr.killRegister[modelIndex]++;
-   //          return false;
-   //      }
-        
+                // return false;
+            }
+
+            return true;
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(SpaceColliderLogic), nameof(SpaceColliderLogic.Init))]
+        public static IEnumerable<CodeInstruction> InitTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var matcher = new CodeMatcher(instructions)
+                .MatchForward(false,
+                    new CodeMatch(i => i.opcode == Ldc_I4 && Convert.ToInt32(i.operand) == 512)
+                );
+            if (matcher.IsValid)
+            {
+                matcher.Repeat(matcher => { matcher.SetOperandAndAdvance(8192); });
+            }
+            else
+            {
+                Error("Failed to patch SpaceColliderLogic.Init");
+            }
+
+            return instructions;
+        }
+
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(LocalGeneralProjectile), nameof(LocalGeneralProjectile.TickSkillLogic))] //225f 212f
+        public static IEnumerable<CodeInstruction> Fix39000(IEnumerable<CodeInstruction> instructions)
+        {
+            // var methodInfo = AccessTools.Method(typeof(EnemyUnitComponentTranspiler), nameof(Utils.GetRadiusFromFactory));
+
+            var matcher = new CodeMatcher(instructions)
+                .MatchForward(
+                    true,
+                    new CodeMatch(i =>
+                    {
+                        return (i.opcode == Ldc_R4) &&
+                               (
+                                   Math.Abs(Convert.ToDouble(i.operand ?? 0.0) - 39006.25) < 1
+                               );
+                    })
+                );
+            if (matcher.IsInvalid) GS2.Error("Nope");
+            matcher.Repeat(matcher =>
+            {
+                // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
+                // var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
+                // var mi = matcher.GetRadiusFromFactory();
+                // matcher.LogILPre();
+                matcher.InsertAndAdvance(new CodeInstruction(Ldarg_0));
+                matcher.InsertAndAdvance(new CodeInstruction(Utils.LoadField(typeof(LocalGeneralProjectile),
+                    nameof(LocalGeneralProjectile.astroId))));
+                matcher.SetInstruction(new CodeInstruction(Call, matcher.GetSquareRadiusFromAstroFactoryId()));
+                // matcher.LogILPost(3);
+            });
+
+            instructions = matcher.InstructionEnumeration();
+
+            return instructions;
+        }
+
+
+        //  [HarmonyPrefix]
+        //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExpPoint))]
+        //  public static bool AddExpPoint(ref EvolveData __instance, int _addexpp)
+        //  {
+        //   if (__instance.level >= 100)
+        //   {
+        //    if (__instance.expf != 0 || __instance.expp != 0 || __instance.level != 100)
+        //    {
+        //     __instance.level = 100;
+        //     __instance.expf = 0;
+        //     __instance.expp = 0;
+        //     __instance.expl = EvolveData.LevelCummulativeExp(100);
+        //    }
+        //    return false;
+        //   }
+        //   if (_addexpp > 0)
+        //   {
+        //    __instance.expp += _addexpp;
+        //    if (__instance.expp >= 10000)
+        //    {
+        //     __instance.expf += __instance.expp / 10000;
+        //     __instance.expp %= 10000;
+        //     while (__instance.expf >= EvolveData.levelExps[__instance.level])
+        //     {
+        // 	    int num = EvolveData.levelExps.Length - 1;
+        // 	    __instance.expf -= EvolveData.levelExps[__instance.level];
+        // 	    __instance.expl += EvolveData.levelExps[__instance.level];
+        // 	    __instance.level++;
+        // 	    if (__instance.level >= num)
+        // 	    {
+        // 		    __instance.level = num;
+        // 		    __instance.expf = 0;
+        // 		    __instance.expp = 0;
+        // 		    return false;
+        // 	    }
+        //     }
+        //    }
+        //   }
+        //
+        //   return false;
+        //  }
+        //  [HarmonyPrefix]
+        //  [HarmonyPatch(typeof(EvolveData), nameof(EvolveData.AddExp))]
+        //  public static bool AddExp(ref EvolveData __instance, int _addexp)
+        //  {
+        //   if (__instance.level >= 100)
+        //   {
+        //    if (__instance.expf != 0 || __instance.expp != 0 || __instance.level != 100)
+        //    {
+        //     __instance.level = 100;
+        //     __instance.expf = 0;
+        //     __instance.expp = 0;
+        //     __instance.expl = EvolveData.LevelCummulativeExp(100);
+        //    }
+        //    return false;
+        //   }
+        //   __instance.expf += _addexp;
+        //   while (__instance.expf >= EvolveData.levelExps[__instance.level])
+        //   {
+        //    int num = EvolveData.levelExps.Length - 1;
+        //    __instance.expf -= EvolveData.levelExps[__instance.level];
+        //    __instance.expl += EvolveData.levelExps[__instance.level];
+        //    __instance.level++;
+        //    if (__instance.level >= num)
+        //    {
+        //     __instance.level = num;
+        //     __instance.expf = 0;
+        //     return false;
+        //    }
+        //   }
+        //
+        //   return false;
+        //  }
+        //
+        // [HarmonyPrefix, HarmonyPatch(typeof(UISpaceGuideEntry), "OnObjectChange")]
+        // public static bool OnObjectChange(ref UISpaceGuideEntry __instance, ESpaceGuideType ___guideType,
+        //     float ___radius, int ___objId, GalaxyData ___galaxy, ref RectTransform ___rectTrans, ref Text ___nameText,
+        //     ref Image ___markIcon)
+        // {
+        //     __instance.galaxy = __instance.parent.galaxy;
+        //     __instance.gameCamera = __instance.parent.gameCamera;
+        //     __instance.parentRectTrans = __instance.parent.rectTrans;
+        //     __instance.playerTrans = __instance.parent.player.transform;
+        //     if (__instance.guideType == ESpaceGuideType.Star)
+        //     {
+        //         StarData starData = __instance.galaxy.StarById(__instance.objId);
+        //         __instance.nameText.text = ((starData != null) ? starData.displayName : "Star");
+        //         float preferredWidth = __instance.nameText.preferredWidth;
+        //         __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth + 42f, 80f);
+        //         __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth * 0.4f + 40f, 0f);
+        //         __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth * 0.4f + 60f, 0f);
+        //         __instance.markIcon.sprite = __instance.starSprite;
+        //         __instance.markIcon.color = new Color(1f, 1f, 1f, 0.25f);
+        //         __instance.collImage.raycastTarget = true;
+        //     }
+        //     else if (__instance.guideType == ESpaceGuideType.Planet)
+        //     {
+        //         PlanetData planetData = __instance.galaxy.PlanetById(__instance.objId);
+        //         __instance.nameText.text = ((planetData != null)
+        //             ? ((__instance.radius > 0f)
+        //                 ? planetData.displayName
+        //                 : (planetData.displayName + " - " + planetData.star.displayName))
+        //             : "Planet");
+        //         float preferredWidth2 = __instance.nameText.preferredWidth;
+        //         __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth2 + 42f, 80f);
+        //         __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth2 * 0.4f + 40f, 0f);
+        //         __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth2 * 0.4f + 60f, 0f);
+        //         __instance.markIcon.sprite = __instance.circleSprite;
+        //         __instance.markIcon.color = new Color(1f, 1f, 1f, 0.5f);
+        //         __instance.collImage.raycastTarget = true;
+        //     }
+        //     else if (__instance.guideType == ESpaceGuideType.Ship)
+        //     {
+        //         ItemProto itemProto = LDB.items.Select(__instance.itemId);
+        //         __instance.nameText.text = ((itemProto != null) ? itemProto.name : "运输船".Translate());
+        //         __instance.markIcon.sprite = __instance.shipSprite;
+        //         __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
+        //         __instance.collImage.raycastTarget = false;
+        //     }
+        //     else if (__instance.guideType == ESpaceGuideType.DFHive)
+        //     {
+        //         GS2.DevLog(__instance.objId + "/" + GameMain.data.spaceSector.dfHivesByAstro.Length + " " + __instance.hivecodes.Length);
+        //         EnemyDFHiveSystem enemyDFHiveSystem = GameMain.data.spaceSector.dfHivesByAstro[__instance.objId - 1000000];
+        //         DevLog(GameMain.data.spaceSector.dfHivesByAstro.Length + " " + " " + enemyDFHiveSystem.hiveOrbitIndex.ToString() + __instance.hivecodes.Length);
+        //         __instance.nameText.text = " " + __instance.hivecodes[enemyDFHiveSystem.hiveOrbitIndex % __instance.hivecodes.Length] + " " + "巢穴简称".Translate();
+        //         float preferredWidth3 = __instance.nameText.preferredWidth;
+        //         __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth3 + 42f, 80f);
+        //         __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth3 * 0.4f + 40f, 0f);
+        //         __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth3 * 0.4f + 60f, 0f);
+        //         __instance.markIcon.sprite = __instance.hiveSprite;
+        //         __instance.markIcon.color = __instance.enemyColor;
+        //         __instance.collImage.raycastTarget = true;
+        //     }
+        //     else if (__instance.guideType == ESpaceGuideType.DFCarrier)
+        //     {
+        //         __instance.nameText.text = "黑雾运输船".Translate();
+        //         __instance.markIcon.sprite = __instance.shipSprite;
+        //         __instance.markIcon.color = __instance.enemyColor;
+        //         __instance.collImage.raycastTarget = true;
+        //     }
+        //     else if (__instance.guideType == ESpaceGuideType.Rocket)
+        //     {
+        //         __instance.nameText.text = "火箭".Translate();
+        //         __instance.markIcon.sprite = __instance.rocketSprite;
+        //         __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
+        //         __instance.collImage.raycastTarget = false;
+        //     }
+        //     else if (__instance.guideType == ESpaceGuideType.CosmicMessage ||
+        //              __instance.guideType == ESpaceGuideType.DFCommunicator)
+        //     {
+        //         __instance.nameText.text = ((__instance.guideType == ESpaceGuideType.CosmicMessage)
+        //             ? "宇宙讯息".Translate()
+        //             : "黑雾通讯器".Translate());
+        //         float preferredWidth4 = __instance.nameText.preferredWidth;
+        //         __instance.nameText.rectTransform.sizeDelta = new Vector2(preferredWidth4 + 42f, 80f);
+        //         __instance.pinRectTrans.anchoredPosition = new Vector2(preferredWidth4 * 0.4f + 40f, 0f);
+        //         __instance.indicatorRectTrans.anchoredPosition = new Vector2(preferredWidth4 * 0.4f + 60f, 0f);
+        //         __instance.markIcon.sprite = __instance.msgSpite;
+        //         __instance.markIcon.color = new Color(1f, 1f, 1f, 0.8f);
+        //         __instance.collImage.raycastTarget = true;
+        //     }
+        //
+        //     Color color =
+        //         ((__instance.guideType == ESpaceGuideType.DFHive || __instance.guideType == ESpaceGuideType.DFCarrier)
+        //             ? __instance.enemyTextColor
+        //             : __instance.normalTextColor);
+        //     __instance.nameText.color = color;
+        //     __instance.distText.color = color;
+        //     __instance.UpdatePinButtonRotation();
+        //     return false;
+        // }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.Init))]
+        [HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.Import))]
+        public static void EnemyDFHiveSystemInitImport(ref EnemyDFHiveSystem __instance)
+        {
+            if (__instance.idleRelayIds.Length < 2048)
+            {
+                var newArray = new int[2048];
+                Array.Copy(__instance.idleRelayIds, newArray, __instance.idleRelayIds.Length);
+                __instance.idleRelayIds = newArray;
+            }
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(PlayerAction_Inspect), nameof(PlayerAction_Inspect.GetObjectSelectDistance))]
+        public static void GetObjectSelectDistance(ref PlayerAction_Inspect __instance, ref float __result, EObjectType objType, int objid)
+        {
+            if (objid == 0)
+            {
+                return;
+            }
+
+            if (__instance.player.factory == null)
+            {
+                return;
+            }
+
+            if (objType != EObjectType.Entity) return;
+            var id = __instance.player.factory.entityPool[objid].protoId;
+            if (id == 2107 || id == 2103 || id == 2104) __result = 2000f;
+            if (id == 2105) __result = 15000f;
+            if (__result == 35f) __result = 50f;
+        }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(DefenseSystem), nameof(DefenseSystem.AfterTurretsImport))]
+        private static void AfterTurretsImport(ref DefenseSystem __instance)
+        {
+            int cursor = __instance.turrets.cursor;
+            TurretComponent[] buffer = __instance.turrets.buffer;
+            for (int i = 1; i < cursor; i++)
+            {
+                ref TurretComponent ptr = ref buffer[i];
+                if (ptr.id == 1) TurretComponentTranspiler.AddTurret(__instance, ref ptr);
+            }
+        }
+
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlayerController), nameof(PlayerController.ApplyGravity))]
+        private static bool ApplyGravity(ref PlayerController __instance)
+        {
+            if (Config.NewGravity) return true;
+            VectorLF3 v = VectorLF3.zero;
+            if (GameMain.localStar != null)
+            {
+                StarData localStar = GameMain.localStar;
+                double num = 0.0;
+                VectorLF3 lhs = VectorLF3.zero;
+                for (int i = 0; i < localStar.planetCount; i++)
+                {
+                    PlanetData planetData = localStar.planets[i];
+                    VectorLF3 lhs2 = planetData.uPosition - __instance.player.uPosition;
+                    double magnitude = lhs2.magnitude;
+                    if (magnitude > 1.0)
+                    {
+                        double y = (double)Math.Max((800f - (float)magnitude) / 150f, 0f);
+                        double num2 = Math.Pow(10.0, y);
+                        VectorLF3 lhs3 = lhs2 / magnitude;
+                        double num3 = magnitude / (double)planetData.realRadius;
+                        double num4 = num3 * 0.800000011920929;
+                        double num5 = ((num3 < 1.0) ? num3 : (1.0 / (num4 * num4)));
+                        if (num5 > 1.0)
+                        {
+                            num5 = 1.0;
+                        }
+
+                        double num6 = Math.Sqrt((double)planetData.realRadius) * 3.5;
+                        lhs += lhs3 * (num6 * num5 * num2);
+                        num += num2;
+                    }
+                }
+
+                VectorLF3 lhs4 = localStar.uPosition - __instance.player.uPosition;
+                double magnitude2 = lhs4.magnitude;
+                if (magnitude2 > 1.0)
+                {
+                    double num7 = 1.0;
+                    VectorLF3 lhs5 = lhs4 / magnitude2;
+                    double num8 = magnitude2 / (double)(localStar.orbitScaler * 800f);
+                    double num9 = num8 * 0.10000000149011612;
+                    double num10 = ((num8 < 1.0) ? num8 : (1.0 / (num9 * num9)));
+                    if (num10 > 1.0)
+                    {
+                        num10 = 1.0;
+                    }
+
+                    double num11 = 26.7;
+                    lhs += lhs5 * (num11 * num10 * num7);
+                    num += num7;
+                }
+
+                v = lhs / num;
+            }
+
+            if (v.sqrMagnitude > 1E-06)
+            {
+                __instance.universalGravity = v;
+                __instance.localGravity = Maths.QInvRotateLF(__instance.gameData.relativeRot, v);
+            }
+            else
+            {
+                __instance.universalGravity = VectorLF3.zero;
+                __instance.localGravity = Vector3.zero;
+            }
+
+            if (!__instance.player.sailing && !__instance.gameData.disableController && __instance.player.isAlive)
+            {
+                __instance.AddLocalForce(__instance.localGravity);
+            }
+
+            Debug.DrawRay(__instance.transform.localPosition, __instance.localGravity * 0.1f, Color.white);
+            if (__instance.gameData.localPlanet != null)
+            {
+                Vector3 forward = __instance.transform.forward;
+                Vector3 normalized = __instance.transform.localPosition.normalized;
+                Vector3 normalized2 = Vector3.Cross(Vector3.Cross(normalized, forward).normalized, normalized).normalized;
+                __instance.transform.localRotation = Quaternion.LookRotation(normalized2, normalized);
+                return false;
+            }
+
+            __instance.transform.localRotation = Quaternion.identity;
+            return false;
+        }
+        //     private static bool ApplyGravity(ref PlayerController __instance)
+        //     {
+        // 	    // return false;
+        // 	VectorLF3 vectorLF = VectorLF3.zero;
+        // 	if (GameMain.localStar != null)
+        // 	{
+        // 		StarData localStar = GameMain.localStar;
+        // 		double num = 0.0;
+        // 		VectorLF3 vectorLF2 = VectorLF3.zero;
+        // 		// for (int i = 0; i < localStar.planetCount; i++)
+        // 		// {
+        // 		// 	PlanetData planetData = localStar.planets[i];
+        // 		// 	VectorLF3 vectorLF3 = planetData.uPosition - __instance.player.uPosition;
+        // 		// 	double magnitude = vectorLF3.magnitude;
+        // 		// 	if (magnitude > 1.0)
+        // 		// 	{
+        // 		// 		double num2 = (double)Math.Max((5000f + planetData.realRadius - (float)magnitude) / 2500f, 0f);
+        // 		// 		double num3 = Math.Pow(11.0, num2) - 1.0;
+        // 		// 		VectorLF3 vectorLF4 = vectorLF3 / magnitude;
+        // 		// 		double num4 = magnitude / (double)planetData.realRadius;
+        // 		// 		double num5 = num4 * 0.800000011920929;
+        // 		// 		double num6 = ((num4 < 1.0) ? num4 : (1.0 / (num5 * num5)));
+        // 		// 		if (num6 > 1.0)
+        // 		// 		{
+        // 		// 			num6 = 1.0;
+        // 		// 		}
+        // 		// 		double num7 = Math.Sqrt((double)planetData.realRadius) * 3.5;
+        // 		// 		vectorLF2 += vectorLF4 * (num7 * num6 * num3);
+        // 		// 		num += num3;
+        // 		// 	}
+        // 		// }
+        // 		VectorLF3 vectorLF5 = localStar.uPosition - __instance.player.uPosition;
+        // 		double num8 = vectorLF5.magnitude;
+        // 		if (num8 > 1.0)
+        // 		{
+        // 			double num9 = 1.0;
+        // 			VectorLF3 vectorLF6 = vectorLF5 / num8;
+        // 			double num10 = 64000000000000.0 * (double)localStar.mass * 1.3538551990520382E-06 * 4.0;
+        // 			if (num8 < (double)localStar.physicsRadius)
+        // 			{
+        // 				num8 = (double)localStar.physicsRadius;
+        // 			}
+        // 			VectorLF3 vectorLF7 = vectorLF6 * (num10 / (num8 * num8));
+        // 			vectorLF2 += vectorLF7;
+        // 			num += num9;
+        // 		}
+        // 		vectorLF = vectorLF2 / num;
+        // 	}
+        // 	if (vectorLF.sqrMagnitude > 1E-06)
+        // 	{
+        // 		__instance.universalGravity = vectorLF;
+        // 		__instance.localGravity = Maths.QInvRotateLF(__instance.gameData.relativeRot, vectorLF);
+        // 	}
+        // 	else
+        // 	{
+        // 		__instance.universalGravity = VectorLF3.zero;
+        // 		__instance.localGravity = Vector3.zero;
+        // 	}
+        // 	if (!__instance.player.sailing && !__instance.gameData.disableController && __instance.player.isAlive)
+        // 	{
+        // 		__instance.universalGravity = VectorLF3.zero;
+        // 		__instance.localGravity = Vector3.zero;
+        // 		__instance.AddLocalForce(__instance.localGravity);
+        // 	}
+        // 	// Debug.DrawRay(base.transform.localPosition, __instance.localGravity * 0.1f, Color.white);
+        // 	if (__instance.gameData.localPlanet != null)
+        // 	{
+        // 		Vector3 forward = __instance.transform.forward;
+        // 		Vector3 normalized = __instance.transform.localPosition.normalized;
+        // 		Vector3 normalized2 = Vector3.Cross(Vector3.Cross(normalized, forward).normalized, normalized).normalized;
+        // 		__instance.transform.localRotation = Quaternion.LookRotation(normalized2, normalized);
+        // 		return false;
+        // 	}
+        // 	__instance.transform.localRotation = Quaternion.identity;
+        // 	return false;
+        // 	
+        // }
+        // [HarmonyPostfix,
+        //  HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.RunBehavior_Engage_GRaider))]
+        // public static void RunBehavior_Engage_GRaider(ref EnemyUnitComponent __instance, PlanetFactory factory, ref EnemyData enemy)
+        // {
+        //  foreach (var e in factory.enemySystem.units.buffer)
+        //  {
+        //   var pos =  factory.enemyPool[e.enemyId].pos;
+        //   var mag = pos.magnitude;
+        //   if (mag < 300f && mag != 0) factory.enemyPool[e.enemyId].pos *= 1.01f;
+        //  }
+        // }
+        //  [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.SetForNewCreate))]
+        //  public static bool SetForNewCreate(ref EnemyDFHiveSystem __instance)
+        //  {
+        //   Log($"{__instance.starData == null} {__instance.starData.hiveAstroOrbits == null}");
+        //   Log($"{__instance.hiveOrbitIndex.ToString()}/{__instance.starData.hiveAstroOrbits.Length}");
+        //   Log($"--{__instance.starData.index * 8 + __instance.hiveOrbitIndex + 1}/{__instance.sector.astros.Length}");
+        //   Log(":)");
+        //   return true;
+        //  }
+
+        //        [HarmonyPrefix, HarmonyPatch(typeof(EnemyDFHiveSystem), nameof(EnemyDFHiveSystem.CreateNativeRelays))]
+        //        public static bool CreateNativeRelays(ref EnemyDFHiveSystem __instance)
+        // {
+        // 	int num = 2 - __instance.starData.initialHiveCount;//num is the number of relays to create?
+        // 	if (num < 0)
+        // 	{
+        // 		num = (num - 2) / 2;
+        // 	}
+        // 	else
+        // 	{
+        // 		num *= 2;
+        // 	}
+        // 	if (num < -3)
+        // 	{
+        // 		num = -3;
+        // 	}
+        // 	float virtualHiveMatterDamandByTicks = EnemyDFConfigs.VirtualHiveMatterDamandByTicks(__instance.TicksToBuildChances(__instance.ticks));
+        // 	float sixtyf = 60f;
+        // 	float safetyFactor = ((1f - __instance.starData.safetyFactor) * 0.6f + 0.8f) * (1f + 0.125f * (__instance.history.combatSettings.maxDensity - 1f));
+        // 	int totalRelays = Mathf.CeilToInt((virtualHiveMatterDamandByTicks + 20f) / sixtyf * safetyFactor) + __instance.ticks / 54000 + num;//num5 is the number of relays to create?
+        // 	
+        // 	int maxHiveCount = __instance.starData.maxHiveCount;
+        // 	int relaysPerPlanet = ((maxHiveCount > 5) ? (12 - maxHiveCount) : 7); //num6 is the number of relays to create?
+        // 	if (relaysPerPlanet < 1)
+        // 	{
+        // 		relaysPerPlanet = 1;
+        // 	}
+        // 	int num7 = (__instance.ticks - 300) / 600; //num7 is the number of relays to create?
+        // 	int idleRelaysToCreate = num7 - totalRelays;
+        // 	if (idleRelaysToCreate < 0)
+        // 	{
+        // 		idleRelaysToCreate = 0;
+        // 		totalRelays = num7;
+        // 	}
+        // 	else if (idleRelaysToCreate > __instance.relayDocks.Length)
+        // 	{
+        // 		idleRelaysToCreate = __instance.relayDocks.Length;
+        // 	}
+        // 	
+        // 	GS2.Log("Creating Relays: " + totalRelays + " idleRelaysToCreate:" + idleRelaysToCreate + " num7:" + num7 + " relaysPerPlanet:" + relaysPerPlanet + " num:" + num 
+        // 	        + " safetyFactor:" + safetyFactor + " vhmdbt:" + virtualHiveMatterDamandByTicks + " ticks:" + __instance.ticks + __instance.starData.maxHiveCount + " " + __instance.starData.initialHiveCount 
+        // 	        + " " + __instance.starData.id + " " + __instance.starData.name + " " + __instance.starData.planetCount + " " + __instance.starData.type + " " + __instance.starData.resourceCoef + " " + __instance.starData.orbitScaler + " " + __instance.starData.dysonRadius + " " + __instance.starData.acdiskRadius + " " + __instance.starData.habitableRadius + " " + __instance.starData.lightBalanceRadius + " " + __instance.starData.luminosity + " " + __instance.starData.temperature + " " + __instance.starData.mass + " " + __instance.starData.radius + " " + __instance.starData.age + " " + __instance.starData.lifetime + " " + __instance.starData.color + " " + __instance.starData.classFactor + " " + __instance.starData.spectr);
+        // 	
+        // 	var random = new GS2.Random(__instance.seed);
+        // 	for (int i = 0; i < __instance.starData.planetCount; i++) //Do this for every planet
+        // 	{
+        // 		PlanetData planetData = __instance.starData.planets[i];
+        // 		if (planetData.type != EPlanetType.Gas) //as long as its not a gas planet
+        // 		{
+        // 			bool lastPlanet = i == __instance.starData.planetCount - 1;
+        // 			bool birthStar = __instance.galaxy.birthStarId == __instance.starData.id;
+        // 			bool birthPlanet = __instance.galaxy.birthPlanetId == planetData.id;
+        // 			int relaysToCreate = (birthPlanet ? 1 : (lastPlanet ? totalRelays : ((totalRelays + 1) / 2)));//num9 is the number of relays to create?
+        // 			if (relaysToCreate > relaysPerPlanet)
+        // 			{
+        // 				relaysToCreate = relaysPerPlanet;
+        // 			}
+        // 			if (relaysToCreate > num7)
+        // 			{
+        // 				relaysToCreate = num7;
+        // 			}
+        // 			totalRelays -= relaysToCreate;
+        // 			int num10 = 0;
+        // 			VectorLF3 vectorLF = VectorLF3.zero;
+        // 			for (int j = 0; j < relaysToCreate; j++)
+        // 			{
+        // 				double r1 = random.NextDouble();
+        // 				double r2 = random.NextDouble();
+        // 				int attempts = 0;//num13 is the number of times we've tried to find a valid position
+        // 				double relayXpos = 0.0;//num14 is the x position of the relay
+        // 				double relayYpos = 0.0;//num15 is the y position of the relay
+        // 				double relayZpos = 0.0;//num16 is the z position of the relay
+        // 				bool validRelayPositionFound = false;
+        // 				do
+        // 				{
+        // 					attempts++;
+        // 					double distToPlanetCenter = 0.0;//num17 is the distance from the center of the planet
+        // 					while (distToPlanetCenter == 0.0 || distToPlanetCenter > 1.0)//while the distance is 0 or greater than 1
+        // 					{
+        // 						relayXpos = random.NextDouble() * 2.0 - 1.0;
+        // 						relayYpos = random.NextDouble() * 2.0 - 1.0;
+        // 						relayZpos = random.NextDouble() * 2.0 - 1.0;
+        // 						distToPlanetCenter = relayXpos * relayXpos + relayYpos * relayYpos + relayZpos * relayZpos;
+        // 					}
+        // 					if ((double)planetData.veinBiasVector.sqrMagnitude < 0.1)
+        // 					{
+        // 						planetData.GenVeinBiasVector();
+        // 					}
+        // 					VectorLF3 vectorLF2 = (birthPlanet ? (planetData.veinBiasVector * 2f) : (planetData.veinBiasVector * 0.97f));
+        // 					relayXpos -= vectorLF2.x;
+        // 					relayYpos -= vectorLF2.y;
+        // 					relayZpos -= vectorLF2.z;
+        // 					distToPlanetCenter = relayXpos * relayXpos + relayYpos * relayYpos + relayZpos * relayZpos;
+        // 					distToPlanetCenter = Math.Sqrt(distToPlanetCenter);
+        // 					vectorLF = -vectorLF2.normalized;
+        // 					double relayHeightCoef = (double)(planetData.realRadius + 70f) / distToPlanetCenter; 
+        // 					relayXpos *= relayHeightCoef;
+        // 					relayYpos *= relayHeightCoef;
+        // 					relayZpos *= relayHeightCoef;
+        // 					if (!__instance.CheckPositionCollideRelay(planetData.astroId, relayXpos, relayYpos, relayZpos))
+        // 					{
+        // 						validRelayPositionFound = true;
+        // 					}
+        // 					if (attempts >= 80)
+        // 					{
+        // 						Debug.LogWarning(string.Format("生成 Relay 经过多次随机仍无法找到坐标 planetId = {0}", planetData.id));
+        // 					}
+        // 				}
+        // 				while (!validRelayPositionFound && attempts < 80);
+        // 				if (validRelayPositionFound)
+        // 				{
+        // 					VectorLF3 vectorLF3 = new VectorLF3(relayXpos, relayYpos, relayZpos);
+        // 					int enemyFinal = __instance.sector.CreateEnemyFinal(__instance, 8116, planetData.astroId, vectorLF3, Maths.SphericalRotation(vectorLF3, (float)r2 * 360f));
+        // 					int dfRelayId = __instance.sector.enemyPool[enemyFinal].dfRelayId;
+        // 					DFRelayComponent dfrelayComponent = __instance.relays.buffer[dfRelayId];
+        // 					Assert.True(dfrelayComponent != null && dfRelayId > 0 && dfRelayId == dfrelayComponent.id);
+        // 					if (dfrelayComponent != null)
+        // 					{
+        // 						dfrelayComponent.SetDockIndex(num10++);
+        // 						dfrelayComponent.hiveAstroId = __instance.hiveAstroId;
+        // 						dfrelayComponent.targetAstroId = planetData.astroId;
+        // 						dfrelayComponent.targetLPos = vectorLF3;
+        // 						dfrelayComponent.targetYaw = (float)r2 * 360f;
+        // 						dfrelayComponent.baseState = 1;
+        // 						dfrelayComponent.baseId = 0;
+        // 						double num20 = VectorLF3.Dot(vectorLF3.normalized, vectorLF);
+        // 						num20 = Maths.Clamp01((num20 + 1.0) * 0.5);
+        // 						num20 = Math.Pow(num20, 0.5);
+        // 						if (birthPlanet)
+        // 						{
+        // 							dfrelayComponent.baseTicks = (int)(3000f * (float)(r1 * 0.05 + 0.12) + 120.5f);
+        // 						}
+        // 						else if (birthStar)
+        // 						{
+        // 							dfrelayComponent.baseTicks = (int)(3000f * (float)(Math.Pow(r1 * 0.5 + 0.5, 1.5) * num20) + 150.5f);
+        // 						}
+        // 						else
+        // 						{
+        // 							dfrelayComponent.baseTicks = (int)(6400f * (float)(Math.Pow(r1, 2.0) * num20) + 200.5f);
+        // 						}
+        // 						dfrelayComponent.baseEvolve = __instance.evolve;
+        // 						dfrelayComponent.baseEvolve.threat = 0;
+        // 						dfrelayComponent.baseEvolve.waves = (birthPlanet ? 0 : 1);
+        // 						dfrelayComponent.direction = 0;
+        // 						dfrelayComponent.stage = 2;
+        // 						int num21 = random.Next(180001) * 100;
+        // 						int builderId = dfrelayComponent.builderId;
+        // 						__instance.builders.buffer[builderId].energy = __instance.builders.buffer[builderId].maxEnergy + num21;
+        // 						__instance.sector.enemyAnimPool[enemyFinal].time = 1f;
+        // 						__instance.sector.enemyAnimPool[enemyFinal].state = 1U;
+        // 						__instance.sector.enemyAnimPool[enemyFinal].power = -1f;
+        // 					}
+        // 				}
+        // 			}
+        // 		}
+        // 	}
+        // 	__instance.idleRelayCount = 0;
+        // 	for (int k = 0; k < idleRelaysToCreate; k++)
+        // 	{
+        // 		ref DFDock ptr = ref __instance.relayDocks[k % __instance.relayDocks.Length];
+        // 		int enemyId = __instance.sector.CreateEnemyFinal(__instance, 8116, __instance.hiveAstroId, ptr.pos, ptr.rot);
+        // 		int dfRelayId2 = __instance.sector.enemyPool[enemyId].dfRelayId;
+        // 		DFRelayComponent dfrelayComponent2 = __instance.relays.buffer[dfRelayId2];
+        // 		Assert.True(dfrelayComponent2 != null && dfRelayId2 > 0 && dfRelayId2 == dfrelayComponent2.id);
+        // 		if (dfrelayComponent2 != null)
+        // 		{
+        // 			dfrelayComponent2.SetDockIndex(k);
+        // 			int[] array = __instance.idleRelayIds;
+        // 			int oldIdleRelayCount = __instance.idleRelayCount;
+        // 			__instance.idleRelayCount = oldIdleRelayCount + 1;
+        // 			array[oldIdleRelayCount] = dfRelayId2;
+        // 		}
+        // 	}
+        //
+        // 	return false;
+        // }
+
+        //      [HarmonyPrefix, HarmonyPatch(typeof(KillStatistics), "RegisterFactoryKillStat")]
+        //      public static bool  RegisterFactoryKillStat(ref KillStatistics __instance, int factoryIndex, int modelIndex)
+        //      {
+        // if (factoryIndex < __instance.factoryKillStatPool.Length - 1) return false;
+        //          ref AstroKillStat ptr = ref __instance.factoryKillStatPool[factoryIndex];
+        //          if (ptr == null)
+        //          {
+        //              ptr = new AstroKillStat();
+        //              ptr.Init();
+        //          }
+        //          ptr.killRegister[modelIndex]++;
+        //          return false;
+        //      }
+
         // [HarmonyPrefix, HarmonyPatch(typeof(PlanetAlgorithm), "CalcLandPercent")]
         // public static bool CalcLandPercent(PlanetData _planet)
         // {
@@ -1070,8 +1407,6 @@ public static class PatchOnUnspecified_Debug
 // }
 
 
-        
-
         //
         // [HarmonyPrefix, HarmonyPatch(typeof(DysonSphere), "Init")]
         // public static bool Init(DysonSphere __instance, GameData _gameData, StarData _starData)
@@ -1162,16 +1497,5 @@ public static class PatchOnUnspecified_Debug
         //     __instance.inGameRenderMaskS = -1;
         //     return false;
         // }
-
-
-
-
-
-
-
-
-
-
-
     }
 }

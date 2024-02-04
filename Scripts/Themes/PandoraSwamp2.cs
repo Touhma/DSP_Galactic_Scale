@@ -14,6 +14,8 @@ namespace GalacticScale
             ThemeType = EThemeType.Telluric,
             LDBThemeId = 25,
             Algo = 13,
+            BriefIntroduction = "\u6f58\u591a\u62c9\u6cbc\u6cfd\u4ecb\u7ecd",
+            Eigenbit = 19,
             MinRadius = 5,
             MaxRadius = 510,
             MaterialPath = "Universe/Materials/Planets/Desert 11/",

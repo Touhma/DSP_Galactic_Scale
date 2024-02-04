@@ -29,6 +29,10 @@ namespace GalacticScale
             // GS2.Warn($"Serializing. Theme:{model.Name} Base:{baseTheme.Name} Based:{based}");
             if (GS2.Config.MinifyJson)
             {
+                if (!based || model.Eigenbit != baseTheme.Eigenbit)
+                    SerializeMember(serialized, null, "Eigenbit", model.Eigenbit);
+                if (!based || model.BriefIntroduction != baseTheme.BriefIntroduction)
+                    SerializeMember(serialized, null, "BriefIntroduction", model.BriefIntroduction);
                 // GS2.Log("Minifying");
                 if (!based || model.PlanetType != baseTheme.PlanetType)
                     SerializeMember(serialized, null, "PlanetType", model.PlanetType);
@@ -123,6 +127,8 @@ namespace GalacticScale
             }
             else
             {
+                SerializeMember(serialized, null, "Eigenbit", model.Eigenbit);
+                SerializeMember(serialized, null, "BriefIntroduction", model.BriefIntroduction);
                 SerializeMember(serialized, null, "PlanetType", model.PlanetType);
                 SerializeMember(serialized, null, "Algo", model.Algo);
                 SerializeMember(serialized, null, "CustomGeneration", model.CustomGeneration);
@@ -183,7 +189,10 @@ namespace GalacticScale
                 DeserializeMember(data, null, "Name", out model.Name);
             else
                 model.Name = "Unnamed";
-
+            
+            if (data.ContainsKey("Eigenbit")) DeserializeMember(data, null, "Eigenbit", out model.Eigenbit);
+            if (data.ContainsKey("BriefIntroduction"))
+                DeserializeMember(data, null, "BriefIntroduction", out model.briefIntroduction);
             if (data.ContainsKey("PlanetType")) DeserializeMember(data, null, "PlanetType", out model.PlanetType);
             if (data.ContainsKey("StarTypes")) DeserializeMember(data, null, "StarTypes", out model.StarTypes);
             if (data.ContainsKey("Algo")) DeserializeMember(data, null, "Algo", out model.Algo);

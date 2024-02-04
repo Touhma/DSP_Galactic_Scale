@@ -12,7 +12,8 @@ namespace GalacticScale
             DisplayName = "Mariterra".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-
+            BriefIntroduction = "\u5730\u4e2d\u6d77\u4ecb\u7ecd",
+            Eigenbit = 1,
             LDBThemeId = 1,
             Algo = 1,
             MinRadius = 30,

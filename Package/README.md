@@ -1,6 +1,10 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+
+- Version 2.13.1 - Hopefully fix DF Drops not relating to planet type.
+- Version 2.13.0 - Recompile for DSP Update. Removed code for starmap, might break it. Let me know if it does.
+- Version 2.12.47 - Move Darkfog Hives that are spawned outside of system limits
 - Version 2.12.46 - Modify clearance value that logistics vessels use to avoid stars. They might fly through them now, but hopefully not. At least they should arrive instead of flying in circles
 - Version 2.12.45 - Add debug option to suspend processing of Darkfog at a certain lightyear distance from the player (For those with major performance issues)
 - Version 2.12.44 - Hopefully Fix loading on xbox GamePass

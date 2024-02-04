@@ -12,7 +12,8 @@ namespace GalacticScale
             DisplayName = "Crimsonis".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-
+BriefIntroduction = "\u7ea2\u77f3\u4ecb\u7ecd",
+Eigenbit = 10,
             LDBThemeId = 14,
             Algo = 1,
             MinRadius = 5,

@@ -23,6 +23,10 @@ namespace GalacticScale
             var rand3 = rand.NextDouble();
             var rand4 = rand.NextDouble();
             planet.theme = ThemeID;
+
+
+            var themeProto = LDB.themes.Select(ThemeID);
+            Log(gsPlanet.GsTheme.DisplayName + " " + themeProto.EigenBit.ToString() + " " +  planet.briefString);
             planet.algoId = gsTheme.Algo;
             planet.mod_x = gsTheme.ModX.x + rand3 * (gsTheme.ModX.y - (double)gsTheme.ModX.x);
             planet.mod_y = gsTheme.ModY.x + rand4 * (gsTheme.ModY.y - (double)gsTheme.ModY.x);
@@ -59,6 +63,9 @@ namespace GalacticScale
             planet.gasSpeeds = numArray2;
             planet.gasHeatValues = numArray3;
             planet.gasTotalHeat = num1;
+            
+            
+            
             //Log("End");
             // Log($"Rest of setting planetTheme {gsTheme.Name} took {highStopwatch.duration:F5} s\r\n");
         }
