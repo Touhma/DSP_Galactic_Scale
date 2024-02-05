@@ -131,6 +131,36 @@ namespace GalacticScale
 
 				string arg = "<color=\"#FD965EC0\">" + __instance.planet.singularityString + "</color>";
 				__instance.typeText.text = string.Format("{0} {1}", __instance.planet.typeString, arg);
+				
+				
+				
+				string[] array = __instance.planet.briefString.Split(new char[]
+				{
+					';'
+				});
+				ThemeProto themeProto = LDB.themes.Select(__instance.planet.theme);
+				int _num2 = themeProto.terrainMat.Length;
+				int _num3 = __instance.planet.style % themeProto.terrainMat.Length;
+				string s;
+				if (_num2 < array.Length)
+				{
+					s = array[UnityEngine.Random.Range(0, array.Length)];
+				}
+				else if (_num2 > array.Length)
+				{
+					s = array[_num3 % array.Length];
+				}
+				else
+				{
+					s = array[_num3];
+				}
+				__instance.planetBrief.text = s.Translate();
+				__instance.planetBackContentRect.sizeDelta = new Vector2(__instance.planetBackContentRect.sizeDelta.x, __instance.planetBrief.preferredHeight);
+				__instance.briefContentRect.sizeDelta = new Vector2(Mathf.Round(__instance.briefContentRect.sizeDelta.x), Mathf.Round(__instance.planetBrief.preferredHeight));
+				__instance.briefContentRect.anchoredPosition = new Vector2(Mathf.Round(__instance.briefContentRect.anchoredPosition.x), 0f);
+				
+				
+				
 				__instance.orbitRadiusValueText.text = __instance.planet.orbitRadius.ToString("0.00#") + " AU";
 				__instance.orbitRadiusValueTextEx.text = ((__instance.planet.orbitAround == 0)
 					? "环绕恒星".Translate()

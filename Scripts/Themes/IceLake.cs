@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Maroonfrost".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u7329\u7ea2\u51b0\u6e56\u4ecb\u7ecd",
+            BriefIntroduction = "猩红冰湖介绍",
             Eigenbit = 16,
             LDBThemeId = 20,
             Algo = 9,

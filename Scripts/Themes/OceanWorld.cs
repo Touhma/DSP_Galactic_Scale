@@ -13,7 +13,7 @@ namespace GalacticScale
             DisplayName = "Aquatica".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-BriefIntroduction = "\u6c34\u4e16\u754c\u4ecb\u7ecd",
+BriefIntroduction = "水世界介绍",
 Eigenbit = 12,
             LDBThemeId = 16,
             Algo = 7,

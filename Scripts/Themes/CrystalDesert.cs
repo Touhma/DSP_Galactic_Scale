@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Onyxtopia".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u6a59\u6676\u8352\u6f20\u4ecb\u7ecd",
+            BriefIntroduction = "橙晶荒漠介绍",
             Eigenbit = 17,
             LDBThemeId = 23,
             Algo = 11,

@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Pandora Swamp".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u6f58\u591a\u62c9\u6cbc\u6cfd\u4ecb\u7ecd",
+            BriefIntroduction = "潘多拉沼泽介绍A",
             Eigenbit = 19,
             LDBThemeId = 25,
             Algo = 13,

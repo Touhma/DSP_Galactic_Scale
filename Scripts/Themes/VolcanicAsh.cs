@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Sulfuria".Translate(),
             PlanetType = EPlanetType.Vocano,
             ThemeType = EThemeType.Telluric,
-BriefIntroduction = "\u706b\u5c71\u7070\u4ecb\u7ecd",
+BriefIntroduction = "火山灰介绍",
 Eigenbit = 9,
             LDBThemeId = 13,
             Algo = 3,

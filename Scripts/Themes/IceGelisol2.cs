@@ -14,7 +14,7 @@ namespace GalacticScale
             ThemeType = EThemeType.Telluric,
             LDBThemeId = 10,
             Algo = 3,
-            BriefIntroduction = "\u51b0\u539f\u51bb\u571f\u4ecb\u7ecdB",
+            BriefIntroduction = "冰原冻土介绍B",
             Eigenbit = 6,
             MinRadius = 5,
             MaxRadius = 510,

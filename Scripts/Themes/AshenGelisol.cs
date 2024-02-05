@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Geloterra".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u7070\u70ec\u51bb\u571f\u4ecb\u7ecd",
+            BriefIntroduction = "灰烬冻土介绍",
             Eigenbit = 3,
             LDBThemeId = 1,
             Algo = 2,

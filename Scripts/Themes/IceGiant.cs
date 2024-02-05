@@ -11,7 +11,7 @@ namespace GalacticScale
             Base = true,
             DisplayName = "Ice Giant".Translate(),
             PlanetType = EPlanetType.Gas,
-            BriefIntroduction = "\u51b0\u5de8\u661f\u4ecb\u7ecd7;\u51b0\u5de8\u661f\u4ecb\u7ecd9",
+            BriefIntroduction = "冰巨星介绍6",
             Eigenbit = 0,
             LDBThemeId = 4,
             Algo = 0,

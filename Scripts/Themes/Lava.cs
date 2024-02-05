@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Lava".Translate(),
             PlanetType = EPlanetType.Vocano,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u7194\u5ca9\u4ecb\u7ecd",
+            BriefIntroduction = "熔岩介绍",
             Eigenbit = 5,
             LDBThemeId = 9,
             Algo = 5,

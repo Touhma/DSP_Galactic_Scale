@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Cyclonius".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u98d3\u98ce\u77f3\u6797\u4ecb\u7ecd",
+            BriefIntroduction = "飓风石林介绍",
             Eigenbit = 15,
             LDBThemeId = 19,
             Algo = 8,

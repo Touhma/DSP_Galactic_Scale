@@ -15,7 +15,7 @@ namespace GalacticScale
             MinRadius = 5,
             MaxRadius = 510,
             ThemeType = EThemeType.Gas,
-BriefIntroduction = "\u6c14\u5de8\u661f\u4ecb\u7ecd5",
+BriefIntroduction = "气巨星介绍1",
 Eigenbit = 0,
             Algo = 0,
             MaterialPath = "Universe/Materials/Planets/Gas 1/",

@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Savanna".Translate(),
             PlanetType = EPlanetType.Ocean,
             ThemeType = EThemeType.Telluric,
-BriefIntroduction = "\u70ed\u5e26\u8349\u539f\u4ecb\u7ecd",
+BriefIntroduction = "热带草原介绍",
 Eigenbit = 11,
             LDBThemeId = 22,
             Algo = 10,

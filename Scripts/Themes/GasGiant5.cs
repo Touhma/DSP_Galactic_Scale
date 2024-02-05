@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Gas Giant V".Translate(),
             PlanetType = EPlanetType.Gas,
             ThemeType = EThemeType.Gas,
-            BriefIntroduction = "\u6c14\u5de8\u661f\u4ecb\u7ecd5",
+            BriefIntroduction = "气巨星介绍5",
             Eigenbit = 0,
             LDBThemeId = 21,
             Algo = 0,

@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Glacieon III".Translate(),
             PlanetType = EPlanetType.Ice,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u51b0\u539f\u51bb\u571f\u4ecb\u7ecdB",
+            BriefIntroduction = "冰原冻土介绍C",
             Eigenbit = 6,
             LDBThemeId = 10,
             Algo = 3,

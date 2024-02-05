@@ -12,7 +12,7 @@ namespace GalacticScale
             DisplayName = "Scorchedia".Translate(),
             PlanetType = EPlanetType.Desert,
             ThemeType = EThemeType.Telluric,
-            BriefIntroduction = "\u5e72\u65f1\u8352\u6f20\u4ecb\u7ecdA;\u5e72\u65f1\u8352\u6f20\u4ecb\u7ecdB",
+            BriefIntroduction = "干旱荒漠介绍A",
             Eigenbit = 2,
             LDBThemeId = 6,
             Algo = 2,
