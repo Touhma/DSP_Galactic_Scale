@@ -4,6 +4,7 @@ using BepInEx;
 using BepInEx.Logging;
 using GalacticScale;
 using NebulaAPI;
+using NebulaAPI.Interfaces;
 
 namespace NebulaCompatibility
 {
@@ -13,7 +14,7 @@ namespace NebulaCompatibility
     {
         public new static ManualLogSource Logger;
 
-        private void Awake()
+        public void Awake()
         {
             NebulaModAPI.RegisterPackets(Assembly.GetExecutingAssembly());
             GalacticScale.BCE.Console.Init();

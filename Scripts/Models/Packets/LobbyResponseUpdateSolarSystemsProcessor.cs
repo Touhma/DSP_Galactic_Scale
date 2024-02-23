@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using GalacticScale;
 using NebulaAPI;
+using NebulaAPI.Networking;
+using NebulaAPI.Packets;
 
 namespace NebulaCompatibility
 {
@@ -23,10 +25,8 @@ namespace NebulaCompatibility
 
             using (var ms = new MemoryStream(packet.GSSettings))
             {
-                using (var r = new BinaryReader(ms))
-                {
-                    GSSettings.FromString(r.ReadString());
-                }
+                using var r = new BinaryReader(ms);
+                GSSettings.FromString(r.ReadString());
             }
 
             GSSettings.lobbyReceivedUpdateValues = true;
