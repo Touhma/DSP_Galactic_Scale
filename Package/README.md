@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.13.2 - Nebula Compatibility
 - Version 2.13.1 - Hopefully fix DF Drops not relating to planet type. Fixed the planet theme descriptions for Vanilla Themes. GS Themes still use their base theme... for now.
 - Version 2.13.0 - Recompile for DSP Update. Removed code for starmap, might break it. Let me know if it does.
 - Version 2.12.47 - Move Darkfog Hives that are spawned outside of system limits
