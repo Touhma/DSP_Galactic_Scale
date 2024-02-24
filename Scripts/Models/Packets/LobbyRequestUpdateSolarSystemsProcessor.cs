@@ -2,6 +2,8 @@
 using System.IO;
 using GalacticScale;
 using NebulaAPI;
+using NebulaAPI.Networking;
+using NebulaAPI.Packets;
 
 namespace NebulaCompatibility
 {
@@ -34,17 +36,13 @@ namespace NebulaCompatibility
                         }
                 }
 
-            using (var ms = new MemoryStream())
-            {
-                using (var w = new BinaryWriter(ms))
-                {
-                    var data = GSSettings.Serialize();
-                    w.Write(data);
-                    w.Close();
-                    var output = ms.ToArray();
-                    conn.SendPacket(new LobbyResponseUpdateSolarSystems(output, names.ToArray(), starIds.ToArray(), planetIds.ToArray()));
-                }
-            }
+            using var ms = new MemoryStream();
+            using var w = new BinaryWriter(ms);
+            var data = GSSettings.Serialize();
+            w.Write(data);
+            w.Close();
+            var output = ms.ToArray();
+            conn.SendPacket(new LobbyResponseUpdateSolarSystems(output, names.ToArray(), starIds.ToArray(), planetIds.ToArray()));
         }
     }
 }
