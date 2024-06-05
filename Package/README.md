@@ -2,6 +2,9 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.14.0 - Update DSP Version
+- Version 2.13.4 - Even more hopfully fix bugs with rockets and spheres. Hopefully fix but with rare veins spawning on gas giants
+- Version 2.13.3 - Hopefully fix bugs with rockets and spheres
 - Version 2.13.2 - Nebula Compatibility
 - Version 2.13.1 - Hopefully fix DF Drops not relating to planet type. Fixed the planet theme descriptions for Vanilla Themes. GS Themes still use their base theme... for now.
 - Version 2.13.0 - Recompile for DSP Update. Removed code for starmap, might break it. Let me know if it does.

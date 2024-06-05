@@ -285,6 +285,7 @@ namespace GalacticScale
 
         private static void AddSpecialVeins(GSPlanet gsPlanet)
         {
+            if (gsPlanet.Scale > 5f) return;
             if (gsPlanet.rareChance == 0) return;
             var isBlackHole = gsPlanet.planetData.star.type == EStarType.BlackHole || gsPlanet.planetData.star.type == EStarType.NeutronStar;
             var isWhiteDwarf = gsPlanet.planetData.star.type == EStarType.WhiteDwarf;
