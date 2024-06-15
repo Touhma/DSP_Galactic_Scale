@@ -716,6 +716,7 @@ namespace GalacticScale.Generators
                 {
                     var gasHost = random.Item(gasPlanets);
                     gasHost.Moons.Add(birthPlanet);
+                    birthPlanet.OrbitRadius     = gasHost.Radius * 6;
                     moons.Add(birthPlanet);
                     GS2.Log($"Added Birthplanet {birthPlanet.Name} to gas host {gasHost.Name}");
                 }

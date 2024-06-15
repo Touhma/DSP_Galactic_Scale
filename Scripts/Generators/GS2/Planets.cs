@@ -181,7 +181,9 @@ namespace GalacticScale.Generators
                 {
                     GS2.Log("BirthPlanet is moon of gas giant");
                     birthPlanet.genData.Set("IsMoon", true);
-                    random.Item(gasPlanets).Moons.Add(birthPlanet);
+                    var gasHost = random.Item(gasPlanets);
+                    gasHost.Moons.Add(birthPlanet);
+                    birthPlanet.OrbitRadius = gasHost.Radius * 6;
                 }
                 else if (startOnMoon)
                 {
@@ -250,13 +252,16 @@ namespace GalacticScale.Generators
                 body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f) * random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
                 float innerPlanetDistanceForStar = GetInnerPlanetDistanceForStar(star);
-                if (GS2.IsPlanetOfStar(star, body) && body.OrbitRadius < innerPlanetDistanceForStar &&
+                if (GS2.IsPlanetOfStar(star, body) &&
+                    body.OrbitRadius < innerPlanetDistanceForStar &&
                     (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets")))
                     body.RotationPeriod = body.OrbitalPeriod; // Tidal Lock
-                else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 1.5f &&
+                else if (preferences.GetBool("allowResonances", true) &&
+                         body.OrbitRadius < 1.5f &&
                          random.NextFloat() < 0.2f)
                     body.RotationPeriod = body.OrbitalPeriod / 2; // 1:2 Resonance
-                else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 2f &&
+                else if (preferences.GetBool("allowResonances", true) &&
+                         body.OrbitRadius < 2f &&
                          random.NextFloat() < 0.1f)
                     body.RotationPeriod = body.OrbitalPeriod / 4; // 1:4 Resonance
                 if (random.NextDouble() < 0.05) // Crazy Obliquity
@@ -344,7 +349,6 @@ namespace GalacticScale.Generators
 
             //Orbits should be set.
             GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
-            
         }
 
 
