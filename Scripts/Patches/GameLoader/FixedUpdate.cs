@@ -41,8 +41,9 @@ namespace GalacticScale
             {
                 GS2.DevLog($"FRAME 5 {GameMain.mainPlayer != null} {GameMain.gameTick == 0L} {GS2.Config.SkipPrologue}");
                 GS2.DevLog($"{GameMain.localStar?.name}");
-                if (GameMain.mainPlayer != null && GameMain.gameTick == 0L && GS2.Config.SkipPrologue)
+                if (GameMain.mainPlayer != null && GameMain.localPlanet != null && GameMain.gameTick == 0L && GS2.Config.SkipPrologue)
                 {
+                    // Note: When Nebula client join, GameMain.localPlanet may be null if they login in space
                     GS2.DevLog($"Setting uPosition");
                     GameMain.mainPlayer.uPosition = GameMain.localPlanet.uPosition;
                 }

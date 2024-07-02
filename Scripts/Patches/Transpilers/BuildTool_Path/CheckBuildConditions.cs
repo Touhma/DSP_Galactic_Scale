@@ -854,26 +854,30 @@ namespace GalacticScale
                 return instructions;
             }
         }
+
         [HarmonyTranspiler, HarmonyPatch(typeof(BuildTool_Path), nameof(BuildTool_Path.CheckBuildConditions))]
         public static IEnumerable<CodeInstruction> CheckBuildConditions_Transpiler2(IEnumerable<CodeInstruction> instructions)
         {
             try
             {
+                // replace : bool flag34 = base.ObjectIsBelt(buildPreview2.coverObjId); if (num33 > 0.1f) { ... }
+                // with    : bool flag34 = base.ObjectIsBelt(buildPreview2.coverObjId); if (num33 > 0.3f) { ... }
+
                 var codeMatcher2 = new CodeMatcher(instructions);
                 codeMatcher2.MatchForward(true,
                 new CodeMatch(i=>i.opcode == Ldarg_0),
                 new CodeMatch(i=>i.opcode == Ldloc_S && i.operand.ToString().Contains("BuildPreview")),
                 new CodeMatch(i=>i.opcode == Ldfld && i.operand.ToString().Contains("coverObjId")),
                 new CodeMatch(i=>i.opcode == Call && i.operand.ToString().Contains("ObjectIsBelt")),
-                new CodeMatch(i=>i.opcode == Stloc_S && i.operand.ToString().Contains("107")),
-                new CodeMatch(i=>i.opcode == Ldloc_S && i.operand.ToString().Contains("106")),
+                new CodeMatch(i=>i.opcode == Stloc_S),
+                new CodeMatch(i=>i.opcode == Ldloc_S),
                 new CodeMatch(i=>i.opcode == Ldc_R4 && Math.Abs(Convert.ToSingle(i.operand) - 0.1f) < 0.001f)
                 );
                 // GS2.Error((!codeMatcher2.IsInvalid).ToString());
                 // codeMatcher2.LogILPre();
                 codeMatcher2.SetInstruction(new CodeInstruction(Ldc_R4, 0.3f));
                 // codeMatcher2.LogILPost();
-                    return codeMatcher2.InstructionEnumeration();
+                return codeMatcher2.InstructionEnumeration();
             }
             catch (Exception e)
             {

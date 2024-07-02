@@ -67,6 +67,7 @@ namespace GalacticScale
             {
                 var harmony = new Harmony("dsp.galactic-scale.2");
                 harmony.PatchAll(typeof(EnemyUnitComponentTranspiler));
+                harmony.PatchAll(typeof(PlanetCountTransipler));
                 harmony.PatchAll(typeof(PlanetSizeTranspiler));
                 harmony.PatchAll(typeof(TurretComponentTranspiler));
                 harmony.PatchAll(typeof(UnitComponentTranspiler));
@@ -74,6 +75,7 @@ namespace GalacticScale
                 // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
                 harmony.PatchAll(typeof(PatchOnUnspecified_Debug));
                 harmony.PatchAll(typeof(PatchOnBlueprintUtils));
+                harmony.PatchAll(typeof(PatchOnBomb));
                 harmony.PatchAll(typeof(PatchOnBuildingGizmo));
                 harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintCopy));
                 harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintPaste));
@@ -102,6 +104,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnGraticulePoser));
                 harmony.PatchAll(typeof(PatchOnGuideMissionStandardMode));
                 harmony.PatchAll(typeof(PatchOnKillStatistics));
+                harmony.PatchAll(typeof(PatchOnLocalGeneralProjectile));
                 harmony.PatchAll(typeof(PatchOnLocalLaserContinuous));
                 harmony.PatchAll(typeof(PatchOnLocalLaserOneShot));
                 harmony.PatchAll(typeof(PatchOnNearColliderLogic));
