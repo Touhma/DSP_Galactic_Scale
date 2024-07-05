@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.14.2 - Starfish fixed: Fix trash doesn't pick up by BAB soon on outer planets.  Fix throwable dealt no damage on different size planets.  Fix throwable curvature on outer planets. Fix Nebula client error when joining in space
 - Version 2.14.1 - Fix Gas Giant Moon Start
 - Version 2.14.0 - Update DSP Version
 - Version 2.13.4 - Even more hopfully fix bugs with rockets and spheres. Hopefully fix but with rare veins spawning on gas giants
