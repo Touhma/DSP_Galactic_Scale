@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.15.1 - Merge Dev Generator with GS2 Generator to fix broken moon of gas giant starts.
 - Version 2.15.0 - Update DSP Game Version 0.10.30.23292
 - Version 2.14.3 - Fixed bug where Gas Giant Moon Chance was ignored
 - Version 2.14.2 - Starfish fixed: Fix trash doesn't pick up by BAB soon on outer planets.  Fix throwable dealt no damage on different size planets.  Fix throwable curvature on outer planets. Fix Nebula client error when joining in space
