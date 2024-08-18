@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
 
 namespace GalacticScale.Generators
 {
@@ -9,13 +9,16 @@ namespace GalacticScale.Generators
     {
         private void RemoveRaresFromStartingSystem()
         {
-            foreach (GSPlanet p in birthStar.Bodies)
+            // GS2.Warn($"RemoveRares Running");
+            foreach (var p in birthStar.Bodies)
             {
+                // GS2.Warn($"RemoveRares {p.Name}");
                 if (p.veinSettings == null || p.veinSettings == new GSVeinSettings())
+                    // GS2.Warn($"RemoveRares Initializing Veins for {p.Name}");
                     p.veinSettings = p.GsTheme.VeinSettings.Clone();
 
-                GSVeinTypes newTypes = new GSVeinTypes();
-                foreach (GSVeinType v in p.veinSettings.VeinTypes)
+                var newTypes = new GSVeinTypes();
+                foreach (var v in p.veinSettings.VeinTypes)
                     switch (v.type)
                     {
                         case EVeinType.Bamboo:
@@ -24,7 +27,11 @@ namespace GalacticScale.Generators
                         case EVeinType.Fractal:
                         case EVeinType.Grat:
                         case EVeinType.Mag:
+                            GS2.Log($"RemoveRares Removing {v.type} from {p.Name}");
                             v.veins = new List<GSVein>();
+
+                            // GS2.LogJson(v);
+
                             break;
                         default:
                             newTypes.Add(v);
@@ -37,7 +44,7 @@ namespace GalacticScale.Generators
 
         private void GeneratePlanets()
         {
-            foreach (GSStar star in GSSettings.Stars)
+            foreach (var star in GSSettings.Stars)
             {
                 if (!star.Decorative) GeneratePlanetsForStar(star);
                 if (!star.Decorative) NamePlanets(star);
@@ -46,8 +53,8 @@ namespace GalacticScale.Generators
 
         private void CreateComet(GSStar star)
         {
-            GSPlanet comet = new GSPlanet();
-            comet.Name = random.Item(PlanetNames);
+            var comet = new GSPlanet();
+            comet.Name = random.Item(NameGenerator.PlanetNames);
 
             comet.Radius = Utils.ParsePlanetSize(random.NextFloat(29, 41));
             comet.Theme = random.Item(cometThemes).Name;
@@ -62,6 +69,7 @@ namespace GalacticScale.Generators
         private void GeneratePlanetsForStar(GSStar star)
         {
             star.Planets = new GSPlanets();
+            // Warn($"Creating Planets for {star.Name}");
             GS2.Random random = new GS2.Random(star.Seed);
 
             int starBodyCount = GetStarPlanetCount(star);
@@ -70,9 +78,9 @@ namespace GalacticScale.Generators
             if (starBodyCount == 1) moonChance = 0;
             double gasChance = GetGasChanceForStar(star);
             double subMoonChance = 0.0;
-            if (preferences.GetBool("secondarySatellites"))
-                subMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
+            if (preferences.GetBool("secondarySatellites")) subMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
             float moonBias = preferences.GetFloat("moonBias", 50f);
+            //moonChance = moonChance - subMoonChance;
 
             bool isBirthStar = star == birthStar;
 
@@ -88,14 +96,19 @@ namespace GalacticScale.Generators
             telluricCount -= moonCount;
             int secondaryMoonCount = moonCount > 1 ? Mathf.RoundToInt((moonCount - 1) * (float)subMoonChance) : 0;
             moonCount -= secondaryMoonCount;
+            if (moonCount == 0 && secondaryMoonCount > 0 && startOnMoon)
+            {
+                moonCount += 1;
+                secondaryMoonCount -= 1;
+            }
             GSPlanets gasPlanets = new GSPlanets();
             GSPlanets telPlanets = new GSPlanets();
             GSPlanets moons = new GSPlanets();
             bool singlePlanet = starBodyCount == 1;
             if (singlePlanet)
             {
-                GS2.Log(
-                    $"Single Planet. Ignoring Settings. Original: starBodyCount:{starBodyCount} gasCount:{gasCount} telluricCount:{telluricCount} moonCount:{moonCount} startOnMoon:{startOnMoon}");
+                // GS2.Log(
+                //     $"Single Planet. Ignoring Settings. Original: starBodyCount:{starBodyCount} gasCount:{gasCount} telluricCount:{telluricCount} moonCount:{moonCount} startOnMoon:{startOnMoon}");
                 if (isBirthStar)
                 {
                     gasCount = 0;
@@ -132,78 +145,82 @@ namespace GalacticScale.Generators
             {
                 GSPlanet randomPlanet;
                 bool hostGas = random.NextPick(moonBias / 100f);
-                GS2.Log("Is Host GAS? " + (hostGas ? "Yes" : "No") + moonBias + " " + moonBias/100f +" (Gas:" + gasPlanets.Count.ToString() + ") Tel: (" + telPlanets.Count.ToString()+")");
+
                 if (gasPlanets.Count > 0 && hostGas)
                 {
-                    GS2.Log("Selected Gas Planet " + gasPlanets.Count.ToString());
+                    // GS2.Log($"Picking Host Gas Planet {gasPlanets.Count}/{telPlanets.Count}");
                     randomPlanet = random.Item(gasPlanets);
                 }
                 else if (telPlanets.Count > 0)
                 {
-                    Debug.Log("Selected Planet (Gas:" + gasPlanets.Count.ToString() + ") Tel: (" + telPlanets.Count.ToString()+")");
+                    // GS2.Log("Picking Host Telluric Planet");
                     randomPlanet = random.Item(telPlanets);
                 }
                 else if (gasPlanets.Count > 0)
                 {
-                    Debug.Log("Selected Gas Planet (DEFAULT) " + gasPlanets.Count.ToString());
+                    // GS2.Log("Picking Host Gas Planet Due to no Telluric Planets");
                     randomPlanet = random.Item(gasPlanets);
                 }
                 else
                 {
                     int radius = GetStarPlanetSize(star);
-                    randomPlanet = new GSPlanet("planet_" + i, "Barren", radius, -1, -1, -1, -1, -1, -1, -1, -1,
-                        new GSPlanets());
+                    // GS2.Log("Picking No Host Planet");
+                    randomPlanet = new GSPlanet("planet_" + i, "Barren", radius, -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                     randomPlanet.genData.Add("hosttype", "star");
                     randomPlanet.genData.Add("hostname", star.Name);
                     telPlanets.Add(randomPlanet);
                 }
 
-                GSPlanet moon = new GSPlanet("Moon " + i, "Barren", GetStarMoonSize(star, randomPlanet.Radius, hostGas), -1,
-                    -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
+                GSPlanet moon = new GSPlanet("Moon " + i, "Barren", GetStarMoonSize(star, randomPlanet.Radius, hostGas), -1, -1, -1, -1, -1, -1, -1, -1, new GSPlanets());
                 randomPlanet.Moons.Add(moon);
                 moon.genData.Add("hosttype", "planet");
                 moon.genData.Add("hostname", randomPlanet.Name);
                 moons.Add(moon);
+                // GS2.Log($"Added {moon} to {randomPlanet}");
             }
-
+            if (isBirthStar)
+            {
+                birthPlanet = new GSPlanet("BirthPlanet", "Mediterranean", birthPlanetSize, -1, -1, -1, -1, -1, -1, -1,
+                    -1, new GSPlanets());
+                if (startIsMoonOfGas)
+                {
+                    GS2.Log("BirthPlanet is moon of gas giant");
+                    GSPlanet gasHost = random.Item(gasPlanets);
+                    gasHost.Moons.Add(birthPlanet);
+                    moons.Add(birthPlanet);
+                    birthPlanet.OrbitRadius     = gasHost.Radius * 6;
+                    GS2.Log($"Added BirthPlanet {birthPlanet.Name} to gas host {gasHost.Name}");
+                }
+                else if (startOnMoon)
+                {
+                    GSPlanet moonHost = random.Item(telPlanets);
+                        moonHost.Moons.Add(birthPlanet);
+                    moons.Add(birthPlanet);
+                    GS2.Log($"Added Birthplanet {birthPlanet.Name} to moon host {moonHost.Name}");
+                }
+                else
+                {
+                    GS2.Log($"Added Birthplanet {birthPlanet.Name} to star host {star.Name}");
+                    telPlanets.Add(birthPlanet);
+                }
+                birthPlanet.genData.Set("birthPlanet", true);
+                GS2.Log($"Created Birth Planet in star {star.Name}: {birthPlanet}");
+            }
             for (int i = 0; i < secondaryMoonCount; i++)
             {
+                // GS2.Log($"Picking Moon to host Secondary {gasPlanets.Count}/{telPlanets.Count}/{moonCount}/{secondaryMoonCount}");
                 GSPlanet randomMoon = random.Item(moons);
                 GSPlanet mm = new GSPlanet("MoonMoon" + i, "Barren", GetStarMoonSize(star, randomMoon.Radius, false), -1, -1,
                     -1, -1, -1, -1, -1, -1);
                 mm.genData.Add("hosttype", "moon");
                 mm.genData.Add("hostname", randomMoon.Name);
                 randomMoon.Moons.Add(mm);
+                if (preferences.GetBool("moonCeption", false)) moons.Add(mm);
+                
+                // GS2.Log($"Added {mm} {mm.Radius} to {randomMoon.Name}");
             }
 
-            if (isBirthStar)
-            {
-                birthPlanet = new GSPlanet("BirthPlanet", "Mediterranean", birthPlanetSize, -1, -1, -1, -1, -1, -1, -1,
-                    -1, new GSPlanets());
 
-                if (startIsMoonOfGas)
-                {
-                    GS2.Log("BirthPlanet is moon of gas giant");
-                    birthPlanet.genData.Set("IsMoon", true);
-                    var gasHost = random.Item(gasPlanets);
-                    gasHost.Moons.Add(birthPlanet);
-                    birthPlanet.OrbitRadius = gasHost.Radius * 6;
-                }
-                else if (startOnMoon)
-                {
-                    GS2.Log("BirthPlanet is moon");
-                    random.Item(telPlanets).Moons.Add(birthPlanet);
-                    birthPlanet.genData.Set("IsMoon", true);
-                }
-                else
-                {
-                    GS2.Log("BirthPlanet is normal Planet");
-                    telPlanets.Add(birthPlanet);
-                    birthPlanet.genData.Set("IsMoon", false);
-                }
-
-                GS2.Log($"Created Birth Planet in star {star.Name}: {birthPlanet.Name}");
-            }
 
             foreach (GSPlanet p in telPlanets)
                 star.Planets.Add(p);
@@ -212,106 +229,132 @@ namespace GalacticScale.Generators
                 star.Planets.Add(p);
 
 
-            GS2.LogGen($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.WarnJson((from s in star.Planets select s.Name).ToList());
+            // GS2.Warn($"Now Assigning Moon Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignMoonOrbits(star);
-            GS2.LogGen($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.Warn($"Now Assigning Planet Orbits {(birthPlanet != null ? birthPlanet.Name : "null")}");
             AssignPlanetOrbits(star);
-            GS2.LogGen($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.Warn($"Now Assigning Themes {(birthPlanet != null ? birthPlanet.Name : "null")}");
             SelectPlanetThemes(star);
+            // GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
             FudgeNumbersForPlanets(star);
+            // GS2.Warn("Done");
             AssignVeinSettings(star);
-            
-            foreach (GSPlanet p in telPlanets)
-                GS2.Log("Telluric: " + p.Name + "\n" + p.Scale + "\n" + p.Theme + "\n" + p.OrbitRadius);
-
-            foreach (GSPlanet p in gasPlanets)
-                GS2.Log("Gas: " + p.Name + "\n" + p.Scale + "\n" + p.Theme + "\n" + p.OrbitRadius);
-            
+            // GS2.Log($"Assigning Vein Settings for {star.Name}");
         }
 
         private void AssignVeinSettings(GSStar star)
         {
-            foreach (GSPlanet p in star.Bodies)
+            foreach (var p in star.Bodies)
                 if (p.veinSettings == null || p.veinSettings == new GSVeinSettings())
+                {
                     // GS2.Log($"Vein Settings missing for planet {p.Name} with theme {p.GsTheme.Name}. Cloning...");
                     p.veinSettings = p.GsTheme.VeinSettings.Clone();
+                }
         }
 
         private void FudgeNumbersForPlanets(GSStar star)
         {
-            foreach (GSPlanet body in star.Bodies)
+            // GS2.Warn($"{star.displayType} {star.radius} {star.RadiusAU} {star.luminosity}");
+            // GS2.Warn("Star RadiusAU, Star Luminance, HZMin, HZMax, HZ, Orbit Radius, LumInv, LumLin , intensity ");
+            foreach (var body in star.Bodies)
             {
                 body.RotationPhase = random.Next(360);
                 if (GS2.IsPlanetOfStar(star, body))
+                    // GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
                     body.OrbitInclination = random.NextFloat() * 4 + random.NextFloat() * 5;
                 if (!GS2.IsPlanetOfStar(star, body))
+                    // GS2.Warn($"SETTING Orbit Inclination of {body.Name} to random");
                     body.OrbitInclination = random.NextFloat() * 50f;
                 body.OrbitPhase = random.Next(360);
                 body.Obliquity = random.NextFloat() * 20;
-                float starInc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}inclination");
-                float starLong = preferences.GetFloat($"{GetTypeLetterFromStar(star)}orbitLongitude", 0);
+                var starInc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}inclination");
+                var starLong = preferences.GetFloat($"{GetTypeLetterFromStar(star)}orbitLongitude", 0);
                 if (starLong == -1)
                     body.OrbitLongitude = random.NextFloat() * 360f;
                 else
                     body.OrbitLongitude = random.NextFloat() * starLong;
+                // GS2.Log($"StarInc {starInc}");
                 if (GS2.IsPlanetOfStar(star, body) && starInc > -1)
                 {
+                    // GS2.Warn($"SETTING starInc Orbit Inclination of {star.Name} to {starInc}");
                     if (starInc > 0) body.OrbitInclination = random.NextFloat(starInc);
                     else body.OrbitInclination = 0;
                 }
 
                 body.RotationPeriod = preferences.GetFloat("rotationMulti", 1f) * random.Next(60, 3600);
                 if (random.NextDouble() < 0.02) body.OrbitalPeriod = -1 * body.OrbitalPeriod; // Clockwise Rotation
-                float innerPlanetDistanceForStar = GetInnerPlanetDistanceForStar(star);
-                if (GS2.IsPlanetOfStar(star, body) &&
-                    body.OrbitRadius < innerPlanetDistanceForStar &&
+                var innerPlanetDistanceForStar = GetInnerPlanetDistanceForStar(star);
+                // GS2.Warn($"{innerPlanetDistanceForStar} for star {star.Name} {star.displayType}");
+                if (GS2.IsPlanetOfStar(star, body) && body.OrbitRadius < innerPlanetDistanceForStar &&
                     (random.NextFloat() < 0.5f || preferences.GetBool("tidalLockInnerPlanets")))
                     body.RotationPeriod = body.OrbitalPeriod; // Tidal Lock
-                else if (preferences.GetBool("allowResonances", true) &&
-                         body.OrbitRadius < 1.5f &&
+                else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 1.5f &&
                          random.NextFloat() < 0.2f)
                     body.RotationPeriod = body.OrbitalPeriod / 2; // 1:2 Resonance
-                else if (preferences.GetBool("allowResonances", true) &&
-                         body.OrbitRadius < 2f &&
+                else if (preferences.GetBool("allowResonances", true) && body.OrbitRadius < 2f &&
                          random.NextFloat() < 0.1f)
                     body.RotationPeriod = body.OrbitalPeriod / 4; // 1:4 Resonance
                 if (random.NextDouble() < 0.05) // Crazy Obliquity
                     body.Obliquity = random.NextFloat(20f, 85f);
                 if (starInc == -1 && random.NextDouble() < 0.05) // Crazy Inclination
+                    // GS2.Warn("Setting Crazy Inclination for " + star.Name);
                     body.OrbitInclination = random.NextFloat(20f, 85f);
 
-                float rc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}rareChance");
+                var rc = preferences.GetFloat($"{GetTypeLetterFromStar(star)}rareChance");
                 if (rc > 0f) body.rareChance = rc / 100f;
                 else body.rareChance = rc;
 
+                // Force inclinations for testing
+                // body.OrbitInclination = 0f;
+                // body.OrbitPhase = 0f;
+                // body.OrbitalPeriod = 10000000f;
                 if (body == birthPlanet)
                     if (preferences.GetBool("birthTidalLock"))
                         body.RotationPeriod = body.OrbitalPeriod;
-                float oRadius = 1f;
+                var oRadius = 1f;
                 if (GS2.IsPlanetOfStar(star, body))
                     oRadius = body.OrbitRadius;
                 else
-                    foreach (GSPlanet p in star.Planets)
+                    foreach (var p in star.Planets)
                         if (GS2.IsMoonOfPlanet(p, body, true))
                             oRadius = p.OrbitRadius;
 
-                FloatPair solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
+                // var starLum = Mathf.Pow((Mathf.Pow(star.luminosity, 0.33f)*preferences.GetFloat("luminosityBoost")),3);
+                var solarRange = preferences.GetFloatFloat("solarRange", new FloatPair(1, 500));
 
+                // var minSolar = solarRange.low / 100f;
+                // var maxSolar = solarRange.high / 100f;
+                // // oRadius += star.RadiusAU;
+                // float minHZ = star.genData.Get("minHZ", 1);
+                // float maxHZ = star.genData.Get("maxHZ", 100f);
+                // var hz = (maxHZ - minHZ) / 2 + minHZ;
+                // var oSquared = oRadius * oRadius;
+                // var hzSquared = hz * hz;
+                // var distance = hzSquared / oSquared;
+                // var intensity = Mathf.Pow(distance,0.5f) * Mathf.Pow( starLum, 0.33f);
+                //
+                // //intensity1 x distance1squared = intensity2 x distance2squared
+                var minSolar = solarRange.low / 100f;
+                var maxSolar = solarRange.high / 100f;
 
-                float minSolar = solarRange.low / 100f;
-                float maxSolar = solarRange.high / 100f;
-
+                // oRadius += star.RadiusAU;
                 float minHZ = star.genData.Get("minHZ", 1);
                 float maxHZ = star.genData.Get("maxHZ", 100f);
-                float hz = (maxHZ - minHZ) / 2 + minHZ;
-                float oSquared = oRadius * oRadius;
-                float hzSquared = hz * hz;
-                float intensity = hzSquared / oSquared;
+                var hz = (maxHZ - minHZ) / 2 + minHZ;
+                var oSquared = oRadius * oRadius;
+                var hzSquared = hz * hz;
+                var intensity = hzSquared / oSquared;
+                // var intensity = Mathf.Pow(distance,0.5f) * Mathf.Pow( starLum, 0.33f);
 
-                float lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
-                float lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
-                float lumLinear = Mathf.Clamp(1 / (Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f)) / hz),
+                //1 x hzsquared = intensity2 x oRadiussquared
+                //hzSquared / oRadsquared = intensity2;
+
+                var lumInverse = Mathf.Clamp(intensity, minSolar, maxSolar);
+                var lumNone = Mathf.Clamp(star.luminosity, minSolar, maxSolar);
+                var lumLinear = Mathf.Clamp(1 / (Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f)) / hz),
                     minSolar, maxSolar);
+                // GS2.Warn($"Lerping from {oRadius} to {hz} by {preferences.GetFloat("solarLerp",  0.5f)} = {Mathf.Lerp(oRadius, hz, preferences.GetFloat("solarLerp", 0.5f))} ");
                 switch (preferences.GetString("solarScheme", "Linear"))
                 {
                     case "None":
@@ -324,12 +367,14 @@ namespace GalacticScale.Generators
                         body.Luminosity = lumLinear;
                         break;
                 }
+
+                // GS2.Warn($"{star.RadiusAU}, {starLum}, {minHZ}, {maxHZ}, {hz}, {oRadius}, {lumInverse}, {lumLinear}, {intensity}  ");
             }
         }
 
         private float GetNextAvailableOrbit(GSPlanet planet, int moonIndex)
         {
-            GSPlanets moons = planet.Moons;
+            var moons = planet.Moons;
             if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].SystemRadius;
             return moons[moonIndex - 1].SystemRadius + moons[moonIndex - 1].OrbitRadius + moons[moonIndex].SystemRadius;
         }
@@ -337,18 +382,18 @@ namespace GalacticScale.Generators
         private void AssignMoonOrbits(GSStar star)
         {
             // Now Work Backwards from secondary Satellites to Planets, creating orbits.
-            for (int planetIndex = 0; planetIndex < star.PlanetCount; planetIndex++)
+            for (var planetIndex = 0; planetIndex < star.PlanetCount; planetIndex++)
             {
-                GSPlanet planet = star.Planets[planetIndex];
+                var planet = star.Planets[planetIndex];
                 //For each Planet
-                for (int moonIndex = 0; moonIndex < planet.MoonCount; moonIndex++)
+                for (var moonIndex = 0; moonIndex < planet.MoonCount; moonIndex++)
                 {
-                    GSPlanet moon = planet.Moons[moonIndex];
+                    var moon = planet.Moons[moonIndex];
                     //For Each Moon
-                    for (int moon2Index = 0; moon2Index < moon.MoonCount; moon2Index++)
+                    for (var moon2Index = 0; moon2Index < moon.MoonCount; moon2Index++)
                     {
                         //for each subsatellite
-                        GSPlanet moon2 = moon.Moons[moon2Index];
+                        var moon2 = moon.Moons[moon2Index];
                         moon2.OrbitRadius = GetMoonOrbit() / 2f + GetNextAvailableOrbit(moon, moon2Index);
                         moon2.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon2.OrbitRadius);
                     }
@@ -357,9 +402,8 @@ namespace GalacticScale.Generators
                     moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
                 }
             }
-
             //Orbits should be set.
-            GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+            // GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
         }
 
 
@@ -370,10 +414,10 @@ namespace GalacticScale.Generators
 
         public void SelectPlanetThemes(GSStar star)
         {
-            foreach (GSPlanet planet in star.Planets)
+            foreach (var planet in star.Planets)
             {
-                EThemeHeat heat = CalculateThemeHeat(star, planet.OrbitRadius);
-                EThemeType type = EThemeType.Planet;
+                var heat = CalculateThemeHeat(star, planet.OrbitRadius);
+                var type = EThemeType.Planet;
                 if (planet != birthPlanet)
                 {
                     if (planet.Scale == 10f) type = EThemeType.Gas;
@@ -381,18 +425,17 @@ namespace GalacticScale.Generators
                 }
                 else
                 {
-                    GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
-                    string habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric,
+                    // GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
+                    var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Telluric,
                         EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default,
                         true);
-                    if (preferences.GetString("birthTheme", "") != "") planet.Theme = preferences.GetString("birthTheme");
-                    else if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
+                    if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
                     else planet.Theme = "Mediterranean";
-                    GS2.DevLog("SELECTED " + planet.Theme);
                     planet.Scale = 1f;
                 }
 
-                foreach (GSPlanet body in planet.Bodies)
+                //GS2.Warn($"Planet Theme Selected. {planet.Name}:{planet.Theme} Radius:{planet.Radius * planet.Scale} {((planet.Scale == 10f) ? EThemeType.Gas : EThemeType.Planet)}");
+                foreach (var body in planet.Bodies)
                     if (body != planet)
                     {
                         if (body != birthPlanet)
@@ -401,24 +444,31 @@ namespace GalacticScale.Generators
                         }
                         else
                         {
-                            string habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon,
+                            var habitableTheme = GSSettings.ThemeLibrary.Query(random, EThemeType.Moon,
                                 EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200),
                                 EThemeDistribute.Default,
                                 true);
-                            if (preferences.GetString("birthTheme", "") != "") planet.Theme = preferences.GetString("birthTheme");
-                            else if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
+                            if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
                             else body.Theme = "Mediterranean";
                             body.Scale = 1f;
                         }
                     }
+                //Warn($"Set Theme for {body.Name} to {body.Theme}");
             }
+            // GS2.Log($"Themes Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+        }
+
+        public bool CalculateIsGas(GSStar star)
+        {
+            var gasChance = GetGasChanceForStar(star);
+            return random.NextPick(gasChance);
         }
 
         public static EThemeHeat CalculateThemeHeat(GSStar star, float OrbitRadius)
         {
             (float min, float max) hz = (star.genData.Get("minHZ"), star.genData.Get("maxHZ"));
             (float min, float max) orbit = (star.genData.Get("minOrbit"), star.genData.Get("maxOrbit"));
-            float frozenOrbitStart = (orbit.max - hz.max) / 2 + hz.max;
+            var frozenOrbitStart = (orbit.max - hz.max) / 2 + hz.max;
             if (OrbitRadius < hz.min / 2) return EThemeHeat.Hot;
             if (OrbitRadius < hz.min) return EThemeHeat.Warm;
             if (OrbitRadius < hz.max) return EThemeHeat.Temperate;

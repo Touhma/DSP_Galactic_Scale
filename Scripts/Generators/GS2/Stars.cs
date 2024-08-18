@@ -10,8 +10,6 @@ namespace GalacticScale.Generators
     {
         public void GenerateBinaryStar(GSStar star)
         {
-            // { EStar.M, EStar.BlackHole, EStar.WhiteDwarf, EStar.G, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf, EStar.WhiteDwarf,EStar.M,EStar.M,EStar.M
-            // }).Convert();
             var availStarTypes = new List<(EStarType, ESpectrType)>();
             for (var i = 0; i < 14; i++)
             {
@@ -29,13 +27,15 @@ namespace GalacticScale.Generators
 
             binary.radius = Clamp(star.radius * .6f, 0.01f, binaryRadius);
             binary.Decorative = true;
-            var offset = (star.RadiusLY + binary.RadiusLY) * preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f);
+            var offset = (star.RadiusLY * 2 + binary.RadiusLY * 2) * preferences.GetFloat("binaryDistanceMulti", 1f) * random.NextFloat(1.1f, 1.3f);
             star.genData.Add("binaryOffset", offset);
             binary.position = new VectorLF3(offset, 0, 0);
             star.luminosity += binary.luminosity;
             binary.luminosity = 0;
         }
 
+
+        
         public void GenerateStars(int starCount, int startID = 0)
         {
             // Log("Generating Stars");
@@ -136,7 +136,7 @@ namespace GalacticScale.Generators
             var range = max - min;
             var sd = (float)range / 4;
             //int size = Utils.ParsePlanetSize(random.Next(min, max));
-            var size = Clamp(ClampedNormalSize(random, min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
+            var size = Clamp(Utils.ClampedNormalSizeTelluric(random, min, max, GetSizeBiasForStar(star)), min, GetMaxPlanetSizeForStar(star));
             //if (size > hostRadius)
             //{
             //Warn($"MoonSize {size} selected for {star.Name} moon with host size {hostRadius} avg:{average} sd:{sd} max:{max} min:{min} range:{range} hostGas:{hostGas}");
@@ -154,7 +154,7 @@ namespace GalacticScale.Generators
             var min = GetMinPlanetSizeForStar(star);
             var max = GetMaxPlanetSizeForStar(star);
             var bias = GetSizeBiasForStar(star);
-            var size = ClampedNormalSize(random, min, max, bias);
+            var size = Utils.ClampedNormalSizeTelluric(random, min, max, bias);
             return ParsePlanetSize(size);
         }
         private int GetStarGasSize(GSStar star)
@@ -163,7 +163,7 @@ namespace GalacticScale.Generators
             var min = GetMinGasSizeForStar(star);
             var max = GetMaxGasSizeForStar(star);
             var bias = GetSizeBiasForStar(star);
-            var size = ClampedNormalSizeGas(random, min, max, bias);
+            var size = Utils.ClampedNormalSizeGas(random, min, max, bias);
             return ParseGasSize(size);
         }
         private int ParsePlanetSize(int size)

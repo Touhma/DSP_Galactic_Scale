@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using static GalacticScale.GS2;
 
@@ -146,19 +145,12 @@ namespace GalacticScale.Generators
 
         private void Reset(Val o)
         {
-            Log("Resetting GS2 Generator Preferences");
             preferences = new GSGenPreferences();
             InitPreferences();
             foreach (var ui in UI)
             {
                 Log($"Resetting {ui.Key}");
-                var value = preferences.Get(ui.Key);
-                if (String.IsNullOrEmpty(value))
-                {
-                    Warn($"Value is null or empty: {ui.Key}");
-                }
-
-                if (GSUI.Settables.Contains(ui.Value.Type)) ui.Value.Set(value);
+                if (GSUI.Settables.Contains(ui.Value.Type)) ui.Value.Set(preferences.Get(ui.Key));
             }
         }
 
@@ -189,8 +181,6 @@ namespace GalacticScale.Generators
             GetHz();
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
             preferences.Set("birthStar", 14);
-            preferences.Set("birthTheme", "Mediterranean");
-            preferences.Set("birthPlanetOrbit", -1f);
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
             preferences.Set("allowResonances", true);
@@ -200,7 +190,6 @@ namespace GalacticScale.Generators
             preferences.Set("defaultStarCount", 64);
             preferences.Set("starSizeMulti", 10);
             preferences.Set("binaryChance", 0);
-            preferences.Set("binaryDistanceMulti", 1);
             preferences.Set("birthPlanetSize", 200);
             preferences.Set("birthPlanetMoon", false);
             preferences.Set("birthPlanetGasMoon", false);
@@ -216,6 +205,12 @@ namespace GalacticScale.Generators
             preferences.Set("limitPlanetSize300", false);
             preferences.Set("limitPlanetSize400", false);
             preferences.Set("limitPlanetSize500", false);
+            preferences.Set("birthTheme", "Mediterranean");
+            preferences.Set("birthPlanetOrbit", -1f);
+
+
+            preferences.Set("binaryDistanceMulti", 1);
+
             preferences.Set("limitGasSize200", false);
             preferences.Set("limitGasSize500", false);
             preferences.Set("limitGasSize1000", false);
@@ -251,10 +246,11 @@ namespace GalacticScale.Generators
             preferences.Set("chanceGas", 20);
             preferences.Set("chanceMoon", 20);
             preferences.Set("chanceMoonMoon", 5);
-            preferences.Set("orbitOverride", true);
-            preferences.Set("hzOverride", true);
-            preferences.Set("hz", new FloatPair(1f, 2));
-            preferences.Set("orbits", new FloatPair(0f, 10));
+            preferences.Set("moonCeption", true);
+            preferences.Set("orbitOverride", false);
+            preferences.Set("hzOverride", false);
+            preferences.Set("hz", new FloatPair(0.9f, 2));
+            preferences.Set("orbits", new FloatPair(0.1f, 10));
             preferences.Set("inclination", -1);
             preferences.Set("orbitLongitude", -1);
             preferences.Set("rareChance", -1f);
@@ -330,6 +326,8 @@ namespace GalacticScale.Generators
             UI.Add("moonBias", sOptions.Add(GSUI.Slider("Gas Giants Moon Bias".Translate(), 0, 50, 100, "moonBias", null, "Lower prefers telluric planets, higher gas giants".Translate())));
             UI.Add("secondarySatellites", sOptions.Add(GSUI.Checkbox("Secondary satellites".Translate(), false, "secondarySatellites", null, "Allow moons to have moons".Translate())));
             UI.Add("chanceMoonMoon", sOptions.Add(GSUI.Slider("Secondary Satellite Chance".Translate(), 0, 5, 99, "chanceMoonMoon", null, "% Chance for a moon to have a moon".Translate())));
+            UI.Add("moonCeption", sOptions.Add(GSUI.Checkbox("Recursive Moons".Translate(), true, "moonsCeption", null, "Moons of moons can have moons...".Translate())));
+
             AddSpacer(sOptions);
             sOptions.Add(GSUI.Header("Default Settings".Translate(), "Changing these will reset all star specific overrides".Translate()));
             UI.Add("planetCount", sOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, "planetCount", null, PlanetCountLow, PlanetCountHigh, "The amount of planets per star".Translate())));

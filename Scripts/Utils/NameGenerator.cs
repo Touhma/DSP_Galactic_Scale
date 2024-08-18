@@ -1,10 +1,38 @@
 using System.Collections.Generic;
 
-namespace GalacticScale.Generators
+namespace GalacticScale
 {
-    public partial class GS2Generator2
+    internal enum EAlphabet
     {
-        public static List<string> PlanetNames = new()
+        a,
+        b,
+        c,
+        d,
+        e,
+        f,
+        g,
+        h,
+        i,
+        j,
+        k,
+        l,
+        m,
+        n,
+        o,
+        p,
+        q,
+        r,
+        s,
+        t,
+        u,
+        v,
+        w,
+        x,
+        y,
+        z
+    }
+    public static class NameGenerator {
+    public static List<string> PlanetNames = new()
         {
             "Achelous",
             "Oceanu",
@@ -528,5 +556,41 @@ namespace GalacticScale.Generators
             "Talos",
             "Aella"
         };
+
+
+        private static GS2.Random r;
+    
+        private static readonly string[] cone =
+        {
+            "rn", "st", "ll", "r", "rl", "gh", "l", "t", "d", "s"
+        };
+
+        private static readonly string[] conb =
+        {
+            "c", "pl", "s", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
+        };
+
+        private static readonly string[] conm =
+        {
+            "sc", "c", "cc", "s", "ss", "b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "mn", "p", "pr", "ps", "p"
+        };
+    
+        private static readonly string[] vowel = { "o", "y", "u", "e", "ae", "i", "a" };
+
+
+        public static string New(GSPlanet planet)
+        {
+            if (r is null) r = new GS2.Random(planet.Seed);
+
+            var c = r.Next(1, 2);
+
+            var output = r.NextBool() ? r.Item(conb) : "";
+            for (var i = 0; i < c; i++) output += r.Item(vowel) + r.Item(conm);
+
+            output += r.Item(vowel);
+            output += r.NextBool() ? "" : r.Item(cone);
+
+            return output;
+        }
     }
 }
