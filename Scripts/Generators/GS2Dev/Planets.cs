@@ -605,7 +605,7 @@ namespace GalacticScale.Generators
             var subMoonChance = 0.0;
             if (preferences.GetBool("secondarySatellites"))
                 subMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
-            var moonBias = preferences.GetFloat("MoonBias", 50f);
+            var moonBias = preferences.GetFloat("moonBias", 50f);
             //moonChance = moonChance - subMoonChance;
 
             var isBirthStar = star == birthStar;

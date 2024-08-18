@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 namespace GalacticScale.Generators
 {
@@ -71,7 +72,7 @@ namespace GalacticScale.Generators
             double subMoonChance = 0.0;
             if (preferences.GetBool("secondarySatellites"))
                 subMoonChance = preferences.GetFloat("chanceMoonMoon", 5f) / 100f;
-            float moonBias = preferences.GetFloat("MoonBias", 50f);
+            float moonBias = preferences.GetFloat("moonBias", 50f);
 
             bool isBirthStar = star == birthStar;
 
@@ -131,17 +132,20 @@ namespace GalacticScale.Generators
             {
                 GSPlanet randomPlanet;
                 bool hostGas = random.NextPick(moonBias / 100f);
-
+                GS2.Log("Is Host GAS? " + (hostGas ? "Yes" : "No") + moonBias + " " + moonBias/100f +" (Gas:" + gasPlanets.Count.ToString() + ") Tel: (" + telPlanets.Count.ToString()+")");
                 if (gasPlanets.Count > 0 && hostGas)
                 {
+                    GS2.Log("Selected Gas Planet " + gasPlanets.Count.ToString());
                     randomPlanet = random.Item(gasPlanets);
                 }
                 else if (telPlanets.Count > 0)
                 {
+                    Debug.Log("Selected Planet (Gas:" + gasPlanets.Count.ToString() + ") Tel: (" + telPlanets.Count.ToString()+")");
                     randomPlanet = random.Item(telPlanets);
                 }
                 else if (gasPlanets.Count > 0)
                 {
+                    Debug.Log("Selected Gas Planet (DEFAULT) " + gasPlanets.Count.ToString());
                     randomPlanet = random.Item(gasPlanets);
                 }
                 else
@@ -216,6 +220,13 @@ namespace GalacticScale.Generators
             SelectPlanetThemes(star);
             FudgeNumbersForPlanets(star);
             AssignVeinSettings(star);
+            
+            foreach (GSPlanet p in telPlanets)
+                GS2.Log("Telluric: " + p.Name + "\n" + p.Scale + "\n" + p.Theme + "\n" + p.OrbitRadius);
+
+            foreach (GSPlanet p in gasPlanets)
+                GS2.Log("Gas: " + p.Name + "\n" + p.Scale + "\n" + p.Theme + "\n" + p.OrbitRadius);
+            
         }
 
         private void AssignVeinSettings(GSStar star)

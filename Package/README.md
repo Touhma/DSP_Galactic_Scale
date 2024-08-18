@@ -2,6 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.15.0 - Update DSP Game Version 0.10.30.23292
+- Version 2.14.3 - Fixed bug where Gas Giant Moon Chance was ignored
 - Version 2.14.2 - Starfish fixed: Fix trash doesn't pick up by BAB soon on outer planets.  Fix throwable dealt no damage on different size planets.  Fix throwable curvature on outer planets. Fix Nebula client error when joining in space
 - Version 2.14.1 - Fix Gas Giant Moon Start
 - Version 2.14.0 - Update DSP Version
@@ -322,8 +324,7 @@ the moons, planets, stars, etc
 
 This mod is and will always be free of charge for everyone.
 
-If you really want to support us, there's a donation link at the bottom of the about page on our
-website http://customizing.space
+Old Docs:  https://centrebra.in/
 
 Credits:
 

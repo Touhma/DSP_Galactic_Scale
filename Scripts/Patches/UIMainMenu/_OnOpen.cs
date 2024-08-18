@@ -31,7 +31,7 @@ namespace GalacticScale
             buttonRectTransform.anchoredPosition = new Vector2(anchoredPosition.x, anchoredPosition.y - buttonRectTransform.sizeDelta.y - 10);
             var button = buttonRectTransform.GetComponentInChildren<Button>();
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => { Application.OpenURL("http://customizing.space/"); });
+            button.onClick.AddListener(() => { Application.OpenURL("https://centrebra.in/"); });
         }
     }
 }

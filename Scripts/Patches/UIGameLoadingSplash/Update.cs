@@ -10,7 +10,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIGameLoadingSplash), "Update")]
         public static void Update(ref Text ___promptText)
         {
-            var status = "If the game fails to load it will timeout in 20s. Read the FAQ @ http://customizing.space\r\n".Translate();
+            var status = "If the game fails to load it will timeout in 20s. Read the FAQ @ https://centrebra.in/\r\n".Translate();
 
             if (!GS2.Vanilla && GameMain.localStar != null && !GameMain.localStar.loaded && GameMain.localStar.planets != null && GameMain.localStar.planets.Length > 0) GetStatusText(ref status, GameMain.localStar);
             // else
