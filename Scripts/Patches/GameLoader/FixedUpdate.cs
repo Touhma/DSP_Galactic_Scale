@@ -55,7 +55,7 @@ namespace GalacticScale
 
             if (__instance.frame >= 7)
             {
-                if (counter > 2000) __instance.LoadFailed();
+                if (counter > 2000 && GS2.Config.IgnoreAbort) __instance.LoadFailed();
                 var planet = GameMain.localPlanet;
                 counter++;
                 if (planet != null &&  counter % 100 == 0) GS2.DevLog($"FRAME 7 ({counter}) LocalStar:{GameMain.localStar?.name} Local Planet:{planet?.name} LocalPlanet Loaded:{planet.loaded} LocalPlanet FactoryLoaded:{planet.factoryLoaded}");

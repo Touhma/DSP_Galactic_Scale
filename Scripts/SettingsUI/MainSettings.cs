@@ -21,6 +21,7 @@ namespace GalacticScale
         public GSGenPreferences Preferences = new();
         public Dictionary<string, GSUI> ThemeCheckboxes = new();
         // DisableStarmapBatches DisableSectorUpdate
+        public bool IgnoreAbort => Preferences.GetBool("IgnoreAbort", false);
         public bool DisableStarmapBatches => Preferences.GetBool("DisableStarmapBatches");
         public bool DisableSectorUpdate => Preferences.GetBool("DisableSectorUpdate");
         public bool DisableSpaceSector => Preferences.GetBool("DisableSpaceSector");
@@ -159,6 +160,7 @@ namespace GalacticScale
             GameOptions.Add(GSUI.Spacer());
             GameOptions.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
             GameOptions.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
+            GameOptions.Add(GSUI.Checkbox("Ignore Load Timeout".Translate(), false, "IgnoreAbort", null, "Prevent Game Load Timeout".Translate()));
             GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
             GameOptions.Add(GSUI.Spacer());
             Options.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));

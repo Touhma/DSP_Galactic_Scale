@@ -4,8 +4,8 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Galactic_Scale"
 name = "GalacticScale"
-versionNumber = "2.15.1"
-description = "v2.15.1 Galaxy Customization. New Planets. Different Sized Planets. Up to 100 Planets/star and 1024 Stars. DF is more or less balanced. See GS Discord Server"
+versionNumber = "2.15.2"
+description = "v2.15.2 Galaxy Customization. New Planets. Different Sized Planets. Up to 100 Planets/star and 1024 Stars. DF is more or less balanced. See GS Discord Server"
 websiteUrl = "https://github.com/Touhma/DSP_Plugins"
 containsNsfwContent = false
 
