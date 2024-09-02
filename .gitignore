@@ -18,3 +18,4 @@ TCLI.bat
 **/bin/*
 DevEnv.targets
 GalacticScale2.sln.DotSettings.user
+.aider*

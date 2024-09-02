@@ -151,7 +151,7 @@ namespace GalacticScale
             {
                 resetCamera = true;
                 LogStatus($"Arriving at Star {closestStar.name}");
-                if (GS2.Config.DebugMode) Utils.LogDFInfo(closestStar);
+                if (Config.DebugMode) Utils.LogDFInfo(closestStar);
                 GameMain.data.ArriveStar(closestStar);
             }
 
@@ -162,8 +162,7 @@ namespace GalacticScale
         {
             if (closestStar.loaded) LogStatus($"Ensure {closestStar.name} still local...");
             if (!(DistanceTo(closestStar) > TransitionDistance(closestStar))) return;
-            // GS2.Log(
-            //     $"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransisionDistance(closestStar) / 40000}AU");
+            Log($"Leaving star {closestStar.name} as its too far away {DistanceTo(closestStar) / 40000}AU < {TransitionDistance(closestStar) / 40000}AU");
             GameMain.data.LeaveStar();
             closestStar = null;
         }
