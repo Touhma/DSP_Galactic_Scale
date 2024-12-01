@@ -11,8 +11,8 @@ namespace GalacticScale
         /// </summary>
         /// <param name="__instance"></param>
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(FactoryModel), "InitCollectorMaterial")]
-        public static void InitCollectorMaterial(ref FactoryModel __instance)
+        [HarmonyPatch(typeof(FactoryModel), nameof(FactoryModel.InitMaterial))]
+        public static void InitMaterial(ref FactoryModel __instance)
         {
            
             GS2.Log($"Initializing Collector Material for planet.{__instance.planet?.name}");

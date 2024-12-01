@@ -2,6 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.16.0 - Tentative update game version 0.10.31.24646
+- Version 2.15.4 - Default star size to 1x to try and prevent some pathing errors on df ships
 - Version 2.15.3 - Fix Miners on small/large planets
 - Version 2.15.2 - Enable option to ignore gameload timeout for Nebula users
 - Version 2.15.1 - Merge Dev Generator with GS2 Generator to fix broken moon of gas giant starts.

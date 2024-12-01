@@ -65,7 +65,7 @@ namespace GalacticScale
             {
                 instance.gameDesc.combatSettings.SetDefault();
             }//...0.10
-            Bootstrap.WaitUntil(() => Modeler.Idle, () => PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc, ref instance));
+            Bootstrap.WaitUntil(() => Modeler.Idle, () => PatchOnUIGalaxySelect.EnterGame(ref instance.gameDesc, ref UIRoot.instance.goalSetting, (int)EGoalLevel.Off));
         }
 
         public static void ResetView()

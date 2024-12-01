@@ -188,7 +188,7 @@ namespace GalacticScale.Generators
             preferences.Set("cometChance", 0);
             preferences.Set("galaxyDensity", 5);
             preferences.Set("defaultStarCount", 64);
-            preferences.Set("starSizeMulti", 10);
+            preferences.Set("starSizeMulti", 1);
             preferences.Set("binaryChance", 0);
             preferences.Set("birthPlanetSize", 200);
             preferences.Set("birthPlanetMoon", false);
@@ -419,7 +419,7 @@ namespace GalacticScale.Generators
             AddSpacer(gOptions);
             UI.Add("galaxyDensity", gOptions.Add(GSUI.Slider("Galaxy Spread".Translate(), 1, 5, 20, "galaxyDensity", null, "Lower = Stars are closer to each other. Default is 5".Translate())));
             UI.Add("defaultStarCount", gOptions.Add(GSUI.Slider("Default StarCount".Translate(), 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback, "How many stars should the slider default to".Translate())));
-            UI.Add("starSizeMulti", gOptions.Add(GSUI.Slider("Star Size Multiplier".Translate(), 0.5f, 5f, 20, 0.5f, "starSizeMulti", null, "GS2 uses 10x as standard. They just look cooler.".Translate())));
+            UI.Add("starSizeMulti", gOptions.Add(GSUI.Slider("Star Size Multiplier".Translate(), 0.5f, 1f, 20, 0.5f, "starSizeMulti", null, "GS2 uses 10x as standard. They just look cooler.".Translate())));
             UI.Add("luminosityBoost", gOptions.Add(GSUI.Slider("Luminosity Multiplier".Translate(), 0, 0, 10, .25f, "luminosityBoost", LuminosityBoostCallback, "Increase the luminosity of all stars by this multiplier".Translate(), "Default".Translate())));
             UI.Add("vanillaStarNames", gOptions.Add(GSUI.Checkbox("Use Vanilla Star Names".Translate(), false, "vanillaStarNames", null, "Use DSP's Name Generator".Translate())));
             AddSpacer(gOptions);
