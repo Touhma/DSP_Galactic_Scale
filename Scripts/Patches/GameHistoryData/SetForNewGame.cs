@@ -69,6 +69,7 @@ namespace GalacticScale
             __instance.labLevel = 3;
             __instance.techSpeed = Configs.freeMode.techSpeed;
             __instance.dysonNodeLatitude = 0f;
+            __instance.dysonNodeAbsorbInterval = 360;
             __instance.universeMatrixPointUploaded = 0L;
             __instance.missionAccomplished = false;
             __instance.stationPilerLevel = 1;

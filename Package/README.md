@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.16.1 - Potential Fix for Bug on New Game
 - Version 2.16.0 - Tentative update game version 0.10.31.24646
 - Version 2.15.4 - Default star size to 1x to try and prevent some pathing errors on df ships
 - Version 2.15.3 - Fix Miners on small/large planets
