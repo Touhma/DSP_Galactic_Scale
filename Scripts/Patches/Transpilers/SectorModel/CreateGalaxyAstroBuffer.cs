@@ -17,15 +17,9 @@ namespace GalacticScale
                 // Replace 25600 with the result of the CalcAstroBufferSize method
                 .MatchForward(
                     true,
-                    new CodeMatch(i =>
-                    {
-                        return i.opcode == Ldc_I4 && Convert.ToInt32(i.operand ?? 0) == 25600;
-                    }
-                ))
-                .Repeat(matcher =>
-                {
-                    matcher.SetInstructionAndAdvance(new CodeInstruction(Call, calcMethod));
-                }).InstructionEnumeration();
+                    new CodeMatch(i => { return i.opcode == Ldc_I4 && Convert.ToInt32(i.operand ?? 0) == 25600; }
+                    ))
+                .Repeat(matcher => { matcher.SetInstructionAndAdvance(new CodeInstruction(Call, calcMethod)); }).InstructionEnumeration();
 
             return instructions;
         }
@@ -33,6 +27,18 @@ namespace GalacticScale
         public static int CalcAstroBufferSize()
         {
             return GameMain.spaceSector.galaxy.starCount * 400;
+        }
+
+
+        [HarmonyPrefix, HarmonyPatch(typeof(SectorModel), nameof(SectorModel.OnCameraPostRender))]
+        public static bool PatchOnCameraPostRender(ref SectorModel __instance, Camera cam)
+        {
+            if (GameMain.mainPlayer == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
