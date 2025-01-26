@@ -2,6 +2,12 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.17.1 - Attempt to prevent star view distance from being reset 
+- Version 2.17.0 - Update Game Version
+- Version 2.16.6 - Fix Dyson Sphere Radius (New Saves. Edit the GS2 File otherwise)
+- Version 2.16.5 - Fix planet priority route function
+- Version 2.16.4 - Fix crash on starting a new game with prologue
+- Version 2.16.3 - Fix bug selecting starting planet star
 - Version 2.16.2 - Fixed error on new game
 - Version 2.16.1 - Potential Fix for Bug on New Game
 - Version 2.16.0 - Tentative update game version 0.10.31.24646

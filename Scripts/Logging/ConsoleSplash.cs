@@ -6,7 +6,7 @@ namespace GalacticScale
     {
         public static void ConsoleSplash()
         {
-            GlobalObject.LoadVersions();
+            //GlobalObject.LoadVersions();
             string dspVersion = GameConfig.gameVersion.ToString();
             
             if (!BCE.disabled)
@@ -19,7 +19,7 @@ namespace GalacticScale
                 BCE.Console.Write($"  ║ ╦├─┤│  ├─┤│   │ ││    ╚═╗│  ├─┤│  ├┤  DSP Version  {dspVersion, 17} ", ConsoleColor.Gray);
                 BCE.Console.Write("│\n", ConsoleColor.Red);
                 BCE.Console.Write("│", ConsoleColor.Red);
-                GlobalObject.LoadVersions();
+                //GlobalObject.LoadVersions();
                 BCE.Console.Write("  ╚═╝┴ ┴┴─┘┴ ┴└─┘ ┴ ┴└─┘  ╚═╝└─┘┴ ┴┴─┘└─┘ ", ConsoleColor.DarkGray);
                 BCE.Console.Write($"Version {Version,9} Initializing ", ConsoleColor.White);
                 BCE.Console.Write("│\n", ConsoleColor.Red);

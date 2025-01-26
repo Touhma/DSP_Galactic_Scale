@@ -368,14 +368,9 @@ namespace GalacticScale.Generators
             var bOptions = new GSOptions();
             var starTypes = new List<string>
             {
-                "BlackHole",
-                "WhiteDwarf",
-                "NeutronStar",
-                "O", "B", "A", "F", "G", "M", "K",
-                "BlueGiant",
-                "WhiteGiant",
-                "YellowGiant",
-                "RedGiant",
+                "Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant",
+                "Yellow Giant", "White Giant",
+                "Blue Giant", "Neutron Star", "Black Hole",
                 "Random"
             };
             AddSpacer(bOptions);
@@ -729,7 +724,8 @@ namespace GalacticScale.Generators
         {
             _forcedStars = new List<string>();
 
-            Warn(preferences.GetInt("birthStar", 14).ToString());
+            // Warn(preferences.GetInt("birthStar", 14).ToString());
+            
             for (var i = 0; i < 14; i++)
             {
                 var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
@@ -744,11 +740,18 @@ namespace GalacticScale.Generators
         private (EStarType type, ESpectrType spectr) ChooseStarType(bool birth = false)
         {
             var bsInt = preferences.GetInt("birthStar", 14);
+            // if (bsInt > 14)
+            // {
+            //     DotNet35Random random = new();
+            //     bsInt = random.Next(14);
+            // }
             if (bsInt < 14 && birth) return ((EStar)bsInt).Convert();
             var starType = "";
             if (_forcedStars.Count > 0)
             {
+                Warn("FORCED STARS!");
                 var choice = random.ItemWithIndex(_forcedStars);
+                Warn($"Chosen STAR: {choice.Item2}");
                 starType = choice.Item2;
                 _forcedStars.RemoveAt(choice.Item1);
             }
@@ -789,6 +792,41 @@ namespace GalacticScale.Generators
             }
         }
 
+        private static (EStarType type, ESpectrType spectr) GetStarTypeSpectrFromStarTypeDropdown(int listPosition)
+        {
+
+                // "B", "A", "F", "G", "M", "K",
+                // "BlueGiant",
+                // "WhiteGiant",
+                // "YellowGiant",
+                // "RedGiant",
+                // "Random"
+                if (listPosition > 13)
+                {
+                    DotNet35Random random = new();
+                    listPosition = random.Next(13);
+                }
+            switch (listPosition)
+            {
+                case 0: return GetStarTypeSpectrFromLetter("BH");
+                case 1: return GetStarTypeSpectrFromLetter("WD");
+                case 2: return GetStarTypeSpectrFromLetter("NS");
+                case 3: return GetStarTypeSpectrFromLetter("O");
+                case 4: return GetStarTypeSpectrFromLetter("B");
+                case 5: return GetStarTypeSpectrFromLetter("A");
+                case 6: return GetStarTypeSpectrFromLetter("F");
+                case 7: return GetStarTypeSpectrFromLetter("G");
+                case 8: return GetStarTypeSpectrFromLetter("M");
+                case 9: return GetStarTypeSpectrFromLetter("K");
+                case 10: return GetStarTypeSpectrFromLetter("BG");
+                case 11: return GetStarTypeSpectrFromLetter("WG");
+                case 12: return GetStarTypeSpectrFromLetter("YG");
+                default: return GetStarTypeSpectrFromLetter("RG");
+            }
+
+            
+            
+        }
         private int GetMaxPlanetCountForStar(GSStar star)
         {
             var sl = GetTypeLetterFromStar(star);

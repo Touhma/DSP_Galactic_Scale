@@ -24,7 +24,7 @@ namespace GalacticScale
             starData.index = index;
             starData.level = galaxy.starCount > 1 ? starData.index / (float)(galaxy.starCount - 1) : 0.0f;
             starData.id = id;
-            //GS2.Warn($"Creating star {star.Name} with id:{id} and index {index}");
+            // GS2.Warn($"Creating star {star.Name} with id:{id} and index {index} dyson radius {star.dysonRadius} lum:{star.luminosity}");
             starData.seed = star.Seed;
             starData.position = star.position;
             starData.uPosition = starData.position * 2400000.0;
@@ -45,6 +45,7 @@ namespace GalacticScale
             starData.lightBalanceRadius = star.lightBalanceRadius;
             starData.orbitScaler = star.orbitScaler;
             starData.dysonRadius = star.dysonRadius;
+                // GS2.Warn($"Set Radius for {star.Name} to {star.dysonRadius}.");
             starData.type = star.Type;
             starData.spectr = star.Spectr;
             // Log($"BirthPlanet:{GSSettings.BirthPlanet.Name}");

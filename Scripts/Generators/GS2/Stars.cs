@@ -31,6 +31,7 @@ namespace GalacticScale.Generators
             star.genData.Add("binaryOffset", offset);
             binary.position = new VectorLF3(offset, 0, 0);
             star.luminosity += binary.luminosity;
+            GS2.Warn("Zeroing Binary Luminosity.");
             binary.luminosity = 0;
         }
 
@@ -52,12 +53,11 @@ namespace GalacticScale.Generators
                     star.radius *= preferences.GetFloat("starSizeMulti", 2f);
                 // star.dysonRadius =
                 //     star.dysonRadius * Mathf.Clamp(preferences.GetFloat("starSizeMulti", 10f), 0.5f, 100f);
-                star.dysonRadius = (float)(star.physicsRadius * 1.5f / 40000.0);
-                // Warn($"Dyson Radius for {star.Name}:{star.dysonRadius}");
-                star.dysonRadius = Clamp(star.dysonRadius, 0.1f, 100f);
+
                 //Warn($"Habitable zone for {star.Name} {Utils.CalculateHabitableZone(star.luminosity)}");
                 star.Seed = random.Next();
                 GSSettings.Stars.Add(star);
+                // Warn($"Generated star {star.Type.ToString()} {(int)star.Type} {starName} birthIndex {birthIndex} index:{i}");
                 if (preferences.GetInt("binaryChance") != -1)
                 {
                     var chance = preferences.GetInt("binaryChance") / 100.0;
@@ -74,7 +74,11 @@ namespace GalacticScale.Generators
                     var lum = Round((float)Math.Pow(star.luminosity, 0.33000001311302185) * 1000f) / 1000f;
                     lum *= GetLuminosityBoostForStar(star);
                     star.luminosity = (float)Math.Pow(lum, 3.0);
+                    // GS2.Warn($"{star.luminosity} is now the boosted luminosity Boost:{GetLuminosityBoostForStar(star)}");
                 }
+                // star.dysonRadius = (float)(star.physicsRadius * 1.5f / 40000.0);
+                // Warn($"Dyson Radius for {star.Name}:{star.dysonRadius}");
+                star.dysonRadius = Clamp(star.dysonRadius, 0.4f, 100f);
             }
 
             var bsInt = preferences.GetInt("birthStar", 14);

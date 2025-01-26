@@ -8,7 +8,7 @@ namespace GalacticScale
 {
     public class PatchOnUIStarDetail
     {
-        private static int actualLevel = 5;
+        private static int actualLevel = GameMain.history.universeObserveLevel;
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
@@ -22,7 +22,11 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         private static bool OnStarDataSet(StarData ____star, InputField ___nameInput, Text ___typeText, RectTransform ___paramGroup, Text ___massValueText, Text ___spectrValueText, Text ___radiusValueText, Text ___luminoValueText, Text ___temperatureValueText, Text ___ageValueText, Sprite ___unknownResIcon, GameObject ___trslBg, GameObject ___imgBg, UIResAmountEntry ___tipEntry, UIResAmountEntry ___entryPrafab, ref UIStarDetail __instance)
         {
-            if (!SystemDisplay.inGalaxySelect) return true;
+            if (!SystemDisplay.inGalaxySelect)
+            {
+                GameMain.history.universeObserveLevel = actualLevel;
+                return true;
+            }
             actualLevel = GameMain.history.universeObserveLevel;
             GameMain.history.universeObserveLevel = 4;
             return true;

@@ -75,6 +75,7 @@ namespace GalacticScale
             // PlanetModelingManager.PrepareWorks();
             __instance.darkFogToggle.isOn = __instance.gameDesc.isCombatMode;//0.10
             __instance.uiCombat.gameDesc = __instance.gameDesc;//0.10
+            __instance.GoalSetting.gameDesc = __instance.gameDesc;
             var grids = GameObject.Find("UI Root/Galaxy Select Starmap/grids");
             if (grids != null)
                 for (var i = 0; i < grids.transform.childCount; i++)

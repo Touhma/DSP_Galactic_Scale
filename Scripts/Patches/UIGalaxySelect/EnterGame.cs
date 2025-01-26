@@ -15,59 +15,83 @@ namespace GalacticScale
             
             
             UIRoot.instance.uiGame.planetDetail.gameObject.SetActive(false);
+            // GS2.Warn("2");
             UIRoot.instance.uiGame.starDetail.gameObject.SetActive(false);
-            
+            // GS2.Warn("3");
             
             if (!GS2.Vanilla && !NebulaCompat.IsMultiplayerActive) SystemDisplay.ResetView();
             
-
+            // GS2.Warn("4");
             
             if (GS2.Config.SkipPrologue && !NebulaCompat.IsMultiplayerActive)
             {
+                // GS2.Warn("5");
                 GS2.Warn("Starting Game, Skipping Prologue.");
                 DSPGame.StartGameSkipPrologue(___gameDesc);
+                // GS2.Warn("6");
             }
             else if (!NebulaCompat.IsMultiplayerActive)
             {
+                // GS2.Warn("7");
                 __instance.level = (EGoalLevel)_data;
+                // GS2.Warn("8");
                 if (__instance.galaxySelect.active)
                 {
+                    // GS2.Warn("9");
+                    // GS2.Warn($"__instance.gamedesc {__instance.gameDesc == null}");
+                    // GS2.Warn($"goalLevel {__instance.gameDesc?.goalLevel == null}");
+                    // GS2.Warn($"instance.level {__instance.level}");
                     __instance.gameDesc.goalLevel = __instance.level;
+                    // GS2.Warn("10");
                     if (UIGalaxySelect.isPlayCutScene)
                     {
+                        // GS2.Warn("11");
                         UIRoot.instance.StartCombatCutscene(__instance.gameDesc);
+                        // GS2.Warn("12");
                         return false;
                     }
+                    // GS2.Warn("13");
                     DSPGame.StartGame(__instance.gameDesc);
                     return false;
                 }
-                else
+
+                if (__instance.loadGameWindow.active)
                 {
-                    if (__instance.loadGameWindow.active)
-                    {
-                        __instance.loadGameWindow.loadWithGoalLevel = __instance.level;
-                        __instance.CloseSettingWindow();
-                        return false;
-                    }
-                    if (GameMain.data != null)
-                    {
-                        if (GameMain.data.gameDesc.goalLevel != __instance.level)
-                        {
-                            GameMain.data.gameDesc.goalLevel = __instance.level;
-                            GameMain.gameScenario.goalLogic.NotifyOnGoalLevelChanged();
-                            if (UIRoot.instance.uiGame.goalPanel.inited)
-                            {
-                                UIRoot.instance.uiGame.goalPanel.Reset();
-                            }
-                        }
-                        if (GameMain.isPaused)
-                        {
-                            GameMain.Resume();
-                        }
-                        __instance.CloseSettingWindow();
-                    }
+                    // GS2.Warn("14");
+                    __instance.loadGameWindow.loadWithGoalLevel = __instance.level;
+                    // GS2.Warn("15");
+                    __instance.CloseSettingWindow();
+                    // GS2.Warn("16");
                     return false;
                 }
+                if (GameMain.data != null)
+                {
+                    // GS2.Warn("17");
+                    if (GameMain.data.gameDesc.goalLevel != __instance.level)
+                    {
+                        // GS2.Warn("18");
+                        GameMain.data.gameDesc.goalLevel = __instance.level;
+                        // GS2.Warn("19");
+                        GameMain.gameScenario.goalLogic.NotifyOnGoalLevelChanged();
+                        // GS2.Warn("20");
+                        if (UIRoot.instance.uiGame.goalPanel.inited)
+                        {
+                            // GS2.Warn("21");
+                            UIRoot.instance.uiGame.goalPanel.Reset();
+                            // GS2.Warn("22");
+                        }
+                    }
+                    // GS2.Warn("23");
+                    if (GameMain.isPaused)
+                    {
+                        // GS2.Warn("24");
+                        GameMain.Resume();
+                    }
+                    // GS2.Warn("25");
+                    __instance.CloseSettingWindow();
+                }
+                // GS2.Warn("26");
+                return false;
                 // bool advisorTips = DSPGame.globalOption.advisorTips;
                 // DSPGame.globalOption.advisorTips = (__instance.uiCombat.advisorEnabled ?? DSPGame.globalOption.advisorTips);
                 // if (advisorTips != DSPGame.globalOption.advisorTips)
@@ -97,10 +121,12 @@ namespace GalacticScale
                 //Nebula PROBABLY NEEDS FIXING AS OF 0.10.31.24646
                 if (NebulaCompat.IsMultiplayerActive)
                 {
+                    // GS2.Warn("27");
                     NEB.Hack.EnterGame(UIRoot._instance.galaxySelect);
+                    // GS2.Warn("28");
                 }
             }
-
+            // GS2.Warn("29");
             return false;
         }
     }

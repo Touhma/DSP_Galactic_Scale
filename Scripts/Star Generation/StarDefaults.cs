@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace GalacticScale
 {
@@ -100,7 +101,7 @@ namespace GalacticScale
         {
             var t = star.Type;
             var s = star.Spectr;
-
+            // GS2.Warn("Star Luminosity");
             random = new GS2.Random(star.Seed);
             switch (t)
             {
@@ -137,7 +138,7 @@ namespace GalacticScale
 
                     break;
             }
-
+            // GS2.Error($"Couldn't get luminosity for {star.Name}");
             return 0f;
         }
 
@@ -225,39 +226,40 @@ namespace GalacticScale
             var s = star.Spectr;
 
             random = new GS2.Random(star.Seed);
+            GS2.Warn($"Testing Random 0.1-0.9f {random.NextFloat(0.1f, 0.9f)}");
             switch (t)
             {
-                case EStarType.BlackHole: return random.NextFloat(0.69f, 0.76f);
-                case EStarType.NeutronStar: return random.NextFloat(0.85f, 1.03f);
-                case EStarType.WhiteDwarf: return random.NextFloat(0.24f, 0.55f);
+                case EStarType.BlackHole: GS2.Warn("Class BH");return random.NextFloat(0.69f, 0.76f);
+                case EStarType.NeutronStar: GS2.Warn("Class NS");return random.NextFloat(0.85f, 1.03f);
+                case EStarType.WhiteDwarf: GS2.Warn("Class WD");return random.NextFloat(0.24f, 0.55f);
                 case EStarType.GiantStar:
                     switch (s)
                     {
-                        case ESpectrType.A:
+                        case ESpectrType.A: 
                         case ESpectrType.F:
                         case ESpectrType.G:
-                        case ESpectrType.K: return random.NextFloat(0.79f, 0.8f);
+                        case ESpectrType.K: GS2.Warn("Giant Class A-K"); return random.NextFloat(0.79f, 0.8f);
                         case ESpectrType.B:
-                        case ESpectrType.O: return random.NextFloat(3f, 3f);
-                        case ESpectrType.M: return random.NextFloat(0.75f, 1f);
+                        case ESpectrType.O: GS2.Warn("Giant Class O");return random.NextFloat(3f, 3f);
+                        case ESpectrType.M: GS2.Warn("Giant Class M");return random.NextFloat(0.75f, 1f);
                     }
-
+                    
                     break;
                 case EStarType.MainSeqStar:
                     switch (s)
                     {
-                        case ESpectrType.A: return random.NextFloat(0.44f, 0.60f);
-                        case ESpectrType.B: return random.NextFloat(0.59f, 0.8f);
-                        case ESpectrType.F: return random.NextFloat(0.325f, 0.545f);
-                        case ESpectrType.G: return random.NextFloat(0.260f, 0.330f);
-                        case ESpectrType.K: return random.NextFloat(0.239f, 0.264f);
-                        case ESpectrType.M: return random.NextFloat(0.229f, 0.239f);
-                        case ESpectrType.O: return random.NextFloat(0.8f, 0.93f);
+                        case ESpectrType.A: GS2.Warn("Class A (0.44-0.6)");return random.NextFloat(0.44f, 0.60f);
+                        case ESpectrType.B: GS2.Warn("Class B (0.59-0.8");return random.NextFloat(0.59f, 0.8f);
+                        case ESpectrType.F: GS2.Warn("Class F (0.325-0.545");return random.NextFloat(0.325f, 0.545f);
+                        case ESpectrType.G: GS2.Warn("Class G (0.26-0.33");return random.NextFloat(0.260f, 0.330f);
+                        case ESpectrType.K: GS2.Warn("Class K (0.239-0.264)");return random.NextFloat(0.239f, 0.264f);
+                        case ESpectrType.M: GS2.Warn("Class M (0.229-0.239)");return random.NextFloat(0.229f, 0.239f);
+                        case ESpectrType.O: GS2.Warn("Class O (0.8-0.93)");return random.NextFloat(0.8f, 0.93f);
                     }
 
                     break;
             }
-
+            GS2.Warn("Class Not Found!");
             return 0f;
         }
 

@@ -71,6 +71,13 @@ namespace GalacticScale
 		public static bool
 			OnPlanetDataSet7Prefix(ref UIPlanetDetail __instance) //, ref UIResAmountEntry __instance.tipEntry,
 		{
+            __instance.uiRoutePanel.astroId = ((__instance._planet != null) ? __instance._planet.astroId : 0);
+            if (__instance.uiRoutePanel.active)
+            {
+                __instance.uiRoutePanel.RefreshEntries();
+                __instance.uiRoutePanel.Refresh();
+            }
+            
 			for (int i = 0; i < __instance.entries.Count; i++)
 			{
 				UIResAmountEntry uiresAmountEntry = __instance.entries[i];
@@ -623,6 +630,7 @@ namespace GalacticScale
 
 				__instance.SetResCount(num13);
 				__instance.RefreshDynamicProperties();
+                __instance.RefreshTabPanel();
 			}
 
 			return false;

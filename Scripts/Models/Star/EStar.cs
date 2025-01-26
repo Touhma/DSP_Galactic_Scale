@@ -2,22 +2,22 @@
 {
     public enum EStar
     {
-        BlackHole,
-        WhiteDwarf,
-        NeutronStar,
-        O,
-        B,
-        A,
+        K,
+        M,
         F,
         G,
-        M,
-        K,
-        BlueGiant,
-        WhiteGiant,
+        A,
+        B,
+        O,
+        WhiteDwarf,
+        RedGiant,
         YellowGiant,
-        RedGiant
+        WhiteGiant,
+        BlueGiant,
+        NeutronStar,
+        BlackHole
+        
     }
-
     internal static class EStarMethods
     {
         public static (EStarType, ESpectrType) Convert(this EStar star)

@@ -145,8 +145,24 @@ namespace GalacticScale
         [SerializeField]
         public float luminosity
         {
-            get => _luminosity < 0 ? InitLuminosity() : _luminosity;
-            set => _luminosity = value;
+            get
+            {
+                if (_luminosity < 0)
+                {
+                    // GS2.Warn($"Luminosity is negative {Name}");
+                    return InitLuminosity();
+                }
+                else
+                {
+                    // GS2.Warn($"Returning Luminosity {_luminosity} for {Name}");
+                    return _luminosity;
+                }
+            }
+            set
+            {
+                _luminosity = value;
+                // GS2.Warn($"Set luminosity for {Name} to {value} by {GS2.GetCaller(0)} {GS2.GetCaller(1)} {GS2.GetCaller(2)}");
+            }
         }
 
         [SerializeField]
@@ -166,8 +182,22 @@ namespace GalacticScale
         [SerializeField]
         public float dysonRadius
         {
-            get => _dysonRadius < 0 ? InitDysonRadius() : _dysonRadius;
-            set => _dysonRadius = value;
+            get
+            {
+                if (_dysonRadius < 0)
+                {
+                    // GS2.Warn($"DysonRadius is being initialized {Name}");
+                    InitDysonRadius();
+                }
+                // GS2.Warn($"DysonRadius is {_dysonRadius} for {Name}");
+                    return _dysonRadius;
+                
+            }
+            set
+                {
+                    // GS2.Warn($"Set dysonRadius for {Name} to {value} by {GS2.GetCaller(0)} {GS2.GetCaller(1)}");
+                    _dysonRadius = value;
+                }
         }
 
         [SerializeField]
@@ -284,6 +314,9 @@ namespace GalacticScale
         private float InitDysonRadius()
         {
             _dysonRadius = StarDefaults.DysonRadius(this);
+            float newRadius = radius * _luminosity * 0.25f;
+            // GS2.Warn($"{Name} Companion:{BinaryCompanion} Luminosity:{_luminosity} Radius:{radius} Dyson Radius Set to {_dysonRadius} -> {newRadius} for {Spectr} spectr star of type {Type}. New Max should be {newRadius*40000}");
+            _dysonRadius = newRadius;
             return _dysonRadius;
         }
 
@@ -320,6 +353,7 @@ namespace GalacticScale
         private float InitLuminosity()
         {
             _luminosity = StarDefaults.Luminosity(this);
+            // GS2.Warn($"Set Luminosity to {_luminosity} for Star");
             return _luminosity;
         }
 
