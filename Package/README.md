@@ -1,7 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
-
+- Version 2.71.0 - Fix for new Game Update
 - Version 2.17.1 - Attempt to prevent star view distance from being reset 
 - Version 2.17.0 - Update Game Version
 - Version 2.16.6 - Fix Dyson Sphere Radius (New Saves. Edit the GS2 File otherwise)

@@ -13,7 +13,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.ReformSnap))]
         [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.ReformSnapCircle))]
         [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.ReformSnapExceptDisableCircle))]
-        [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.Snap))]
+        [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.Snap), new System.Type[] { typeof(Vector3), typeof(bool) })]
+        [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.Snap), new System.Type[] { typeof(Vector3), typeof(bool), typeof(int) })]
         [HarmonyPatch(typeof(PlanetAuxData), nameof(PlanetAuxData.SnapLineNonAlloc))]
         public static IEnumerable<CodeInstruction> PlanetAuxDataTranspiler(
             IEnumerable<CodeInstruction> instructions, ILGenerator il)
