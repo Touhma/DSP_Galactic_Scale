@@ -111,7 +111,21 @@ namespace GalacticScale
 				UniverseSimulator.VirtualMapping(uPos.x, uPos.y, uPos.z, position, out _, out var vscale);
 				float scaleFactored = planetData.GetScaleFactored();
 				__instance.atmoTrans1.localPosition = new Vector3(0, 0, Mathf.Clamp(Vector3.Dot(posToCam, __instance.lookCamera.forward) + 10f / scaleFactored, 0.0f, Math.Max(320f, 320f * scaleFactored)));
-				float intensityControl = Mathf.Clamp01(8000f / distancePosToCam);
+                float fieldOfView = GameCamera.main.fieldOfView;
+                float aspect = GameCamera.main.aspect;
+                float num2 = Mathf.Atan(Mathf.Tan(fieldOfView / 2f * ((float)Math.PI / 180f)) * aspect) * 2f * 57.29578f;
+                if (num2 > 90f)
+                {
+                    __instance.atmoTrans1.localScale = Vector3.one * (planetData.realRadius * 5f * Mathf.Tan(num2 / 2f * ((float)Math.PI / 180f)));
+                }
+                else if (__instance.atmoTrans1.localScale.x != planetData.realRadius * 5f)
+                {
+                    __instance.atmoTrans1.localScale = Vector3.one * (planetData.realRadius * 5f);
+                }
+                
+                
+                
+                float intensityControl = Mathf.Clamp01(8000f / distancePosToCam);
 				float scaleRadiusControl = Mathf.Clamp01(4000f / distancePosToCam);
 				float distanceControl = Mathf.Max(0f, distancePosToCam / 6000f - 1f);
 				Vector4 radiusParam = __instance.atmoMatRadiusParam;

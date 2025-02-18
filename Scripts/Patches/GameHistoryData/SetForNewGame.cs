@@ -36,6 +36,7 @@ namespace GalacticScale
             if (techs != null)
                 for (var k = 0; k < techs.Length; k++)
                     __instance.UnlockTech(techs[k]);
+           
             __instance.autoManageLabItems = true;
             __instance.currentTech = 0;
             __instance.techQueue = new int[8];
@@ -48,6 +49,7 @@ namespace GalacticScale
             __instance.inserterStackInput = 2;
             __instance.inserterStackOutput = 1;
             __instance.inserterBidirectional = false;
+            __instance.beltVerticalConstruction = false;
             __instance.constructionDroneSpeed = Configs.freeMode.droneSpeed;
             __instance.constructionDroneMovement = Configs.freeMode.droneMovement;
             __instance.autoReconstructSpeed = 0;
@@ -80,6 +82,8 @@ namespace GalacticScale
             __instance.blastDamageScale = 1f;//Added after 0.10 Update
             __instance.magneticDamageScale = 1f;//Added after 0.10 Update
             __instance.planetaryATFieldEnergyRate = Configs.freeMode.planetaryATFieldEnergyRate;//Added after 0.10 Update
+            __instance.globalHpEnhancement = 0f;
+            __instance.enemyDropScale = 1f;
             __instance.groundFleetPortCount = 0;//Added after 0.10 Update
             __instance.spaceFleetPortCount = 0;//Added after 0.10 Update
             __instance.combatDroneDamageRatio = 1f;//Added after 0.10 Update
@@ -95,7 +99,6 @@ namespace GalacticScale
             __instance.minimalDifficulty = __instance.gameData.gameDesc.combatSettings.difficulty;//Added after 0.10 Update
             __instance.dfTruceTimer = 0L;//Added after 0.10 Update
             __instance.combatSettings = __instance.gameData.gameDesc.combatSettings; //0.10
-            __instance.enemyDropScale = 1;
             __instance.propertyData.Clear(); //Added after 0.9.25 update
             __instance.createWithSandboxMode = __instance.gameData.gameDesc.isSandboxMode; //Added after 0.9.27 Update
             return false;

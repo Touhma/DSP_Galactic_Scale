@@ -35,6 +35,7 @@ namespace GalacticScale
             }
 
             GS2.Log("GameMain.End()");
+            UniverseGen.End();
             if (GameMain.gameScenario != null)
             {
                 GameMain.gameScenario.Free();
