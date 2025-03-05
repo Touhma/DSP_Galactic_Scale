@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using HarmonyLib;
+﻿using HarmonyLib;
 using static PlanetModelingManager;
 
 namespace GalacticScale
@@ -8,9 +7,10 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetModelingManager), "PlanetCalculateThreadMain")]
-        public static bool PlanetCalculateThreadMain(ref ThreadFlag ___planetCalculateThreadFlag, ref ThreadFlagLock ___planetCalculateThreadFlagLock, ref Thread ___planetCalculateThread)
+        public static bool PlanetCalculateThreadMain()
         {
             Modeler.Calculate();
+            GS2.Log("Loop end. ThreadFlag: " + planetCalculateThreadFlag);
             return false;
         }
     }
