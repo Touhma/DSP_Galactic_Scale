@@ -18,6 +18,8 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GameLoader), "FixedUpdate")]
         public static bool FixedUpdate(ref GameLoader __instance)
         {
+            if (VFInput.escape) OnEsc(__instance);
+
             // GS2.Warn($"Start {__instance.frame}");
             if (GS2.IsMenuDemo || GS2.Vanilla) return true;
             // GS2.DevLog("Not Vanilla");
@@ -159,6 +161,12 @@ namespace GalacticScale
             // GS2.DevLog("Increasing Frame");
             __instance.frame++;
             return false;
+        }
+
+        private static void OnEsc(GameLoader gameLoader)
+        {
+            GS2.Warn("User hit esc to abort loading");
+            gameLoader.LoadFailedMBCallback();
         }
     }
 }
