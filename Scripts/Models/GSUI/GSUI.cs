@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +14,9 @@ namespace GalacticScale
     public partial class GSUI
     {
         private static readonly Dictionary<int, Color> colors = new();
+
+        // Define a shared culture for consistent parsing
+        private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
         public static List<string> Settables = new()
         {
@@ -167,7 +173,7 @@ namespace GalacticScale
             //GS2.Warn(label);
             if (o is float) return (true, (float)o);
             //float result;
-            var success = float.TryParse(o.ToString(), out var result);
+            var success = float.TryParse(o.ToString(), NumberStyles.Any, InvariantCulture, out var result);
             return (success, result);
         }
 
@@ -339,7 +345,7 @@ namespace GalacticScale
                 else
                 {
                     var value = 0.1f;
-                    if (!float.TryParse(o.ToString(), out value))
+                    if (!float.TryParse(o.ToString(), NumberStyles.Any, InvariantCulture, out value))
                     {
                         GS2.Error($"Failed to parse increment {o} for slider {instance.Label}");
                     }

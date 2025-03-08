@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using GSSerializer;
 
 namespace GalacticScale
 {
     public class GSGenPreferences : Dictionary<string, string>
     {
+        // Define a shared culture for consistent parsing
+        private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+
         public string Get(string key)
         {
             return ContainsKey(key) ? this[key] : null;
@@ -25,13 +29,13 @@ namespace GalacticScale
         public float GetFloat(string key, float Default = -1f)
         {
             float parsedResult;
-            return ContainsKey(key) ? float.TryParse(this[key], out parsedResult) ? parsedResult : Default : Default;
+            return ContainsKey(key) ? float.TryParse(this[key], NumberStyles.Any, InvariantCulture, out parsedResult) ? parsedResult : Default : Default;
         }
 
         public double GetDouble(string key, double Default = -1.0)
         {
             double parsedResult;
-            return ContainsKey(key) ? double.TryParse(this[key], out parsedResult) ? parsedResult : Default : Default;
+            return ContainsKey(key) ? double.TryParse(this[key], NumberStyles.Any, InvariantCulture, out parsedResult) ? parsedResult : Default : Default;
         }
 
         public List<string> GetStringList(string key, List<string> Default)
@@ -88,6 +92,16 @@ namespace GalacticScale
                 var stringResult = fsJsonPrinter.CompressedJson(data);
                 //if (value is FloatPair) GS2.Warn(stringResult);
                 this[key] = stringResult;
+            }
+            else if (value is float floatValue)
+            {
+                // Format float values using InvariantCulture
+                this[key] = floatValue.ToString(InvariantCulture);
+            }
+            else if (value is double doubleValue)
+            {
+                // Format double values using InvariantCulture
+                this[key] = doubleValue.ToString(InvariantCulture);
             }
             else
             {

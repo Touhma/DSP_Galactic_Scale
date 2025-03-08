@@ -29,6 +29,9 @@ namespace GalacticScale
 
     public class Val
     {
+        // Define a shared culture for consistent parsing
+        private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+        
         public object val;
 
         public Val(object o)
@@ -48,8 +51,8 @@ namespace GalacticScale
             // GS2.Warn(val.ToString() + " " + GS2.GetCaller(0)+ GS2.GetCaller(1)+ GS2.GetCaller(2)+ GS2.GetCaller(3)+ GS2.GetCaller(4));
             var v = val.ToString().Split(':');
             if (v.Length < 2) return new FloatPair(-99, -99);
-            float.TryParse(v[0], out var i);
-            float.TryParse(v[1], out var j);
+            float.TryParse(v[0], NumberStyles.Any, InvariantCulture, out var i);
+            float.TryParse(v[1], NumberStyles.Any, InvariantCulture, out var j);
             return new FloatPair(i, j);
         }
 
@@ -62,8 +65,8 @@ namespace GalacticScale
 
         public float Float(float def = -1f)
         {
-            if (float.TryParse(ToString(), out var f)) return f;
-            if (double.TryParse(ToString(), out var d)) return (float)d;
+            if (float.TryParse(ToString(), NumberStyles.Any, InvariantCulture, out var f)) return f;
+            if (double.TryParse(ToString(), NumberStyles.Any, InvariantCulture, out var d)) return (float)d;
             if (int.TryParse(ToString(), out var i)) return i;
             GS2.Error("Failed to parse float " + val);
             return def;
@@ -71,7 +74,7 @@ namespace GalacticScale
 
         public double Double(double def = -1.0)
         {
-            if (double.TryParse(ToString(), out var i)) return i;
+            if (double.TryParse(ToString(), NumberStyles.Any, InvariantCulture, out var i)) return i;
             GS2.Error("Failed to parse double");
             return def;
         }
@@ -188,7 +191,15 @@ namespace GalacticScale
 
         public override string ToString()
         {
-            if (val != null) return val.ToString();
+            if (val != null)
+            {
+                if (val is float floatVal)
+                    return floatVal.ToString(InvariantCulture);
+                if (val is double doubleVal)
+                    return doubleVal.ToString(InvariantCulture);
+                
+                return val.ToString();
+            }
             return null;
         }
     }

@@ -1,6 +1,9 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+
+_ Version 2.72.1 - attempt to fix decimal numbers
+- Version 2.72.0 - starfish fixed loading :D.
 - Version 2.71.1 - Attempt to fix game not starting sometimes
 - Version 2.71.0 - Fix for new Game Update
 - Version 2.17.1 - Attempt to prevent star view distance from being reset 

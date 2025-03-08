@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
@@ -18,6 +19,9 @@ namespace GalacticScale
         public GSOptionCallback OnChange;
         public GSOptionCallback OnHighChange;
         public GSOptionCallback OnLowChange;
+
+        // Define a shared culture for consistent parsing
+        private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
         public float minValue
         {
@@ -100,7 +104,7 @@ namespace GalacticScale
 
         public void onLowInputChange(string value)
         {
-            if (!float.TryParse(value, out var result)) return;
+            if (!float.TryParse(value, NumberStyles.Any, InvariantCulture, out var result)) return;
             _slider.LowValue = result;
             OnChange?.Invoke(new FloatPair(result, _slider.HighValue));
             OnLowChange?.Invoke(result);
@@ -108,7 +112,7 @@ namespace GalacticScale
 
         public void onHighInputChange(string value)
         {
-            if (!float.TryParse(value, out var result)) return;
+            if (!float.TryParse(value, NumberStyles.Any, InvariantCulture, out var result)) return;
             _slider.HighValue = result;
             OnChange?.Invoke(new FloatPair(_slider.LowValue, _slider.HighValue));
             OnHighChange?.Invoke(result);

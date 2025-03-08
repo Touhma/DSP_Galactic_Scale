@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GalacticScale
@@ -14,6 +15,9 @@ namespace GalacticScale
         public Text _valueText;
         public string negativeLabel = "";
         public GSOptionCallback OnChange;
+
+        // Define a shared culture for consistent parsing
+        private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
         public float Value
         {
@@ -78,7 +82,7 @@ namespace GalacticScale
 
         public void onInputChange(string value)
         {
-            if (!float.TryParse(value, out var result)) return;
+            if (!float.TryParse(value, NumberStyles.Any, InvariantCulture, out var result)) return;
             _slider.value = result;
 
             OnChange?.Invoke(result);
