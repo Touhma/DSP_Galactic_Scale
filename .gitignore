@@ -1,4 +1,4 @@
-
+src/*
 .idea*
 .vs*
 **/Debug/**
@@ -19,3 +19,4 @@ TCLI.bat
 DevEnv.targets
 GalacticScale2.sln.DotSettings.user
 .aider*
+.cursor/rules/gs3.mdc

@@ -54,10 +54,16 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>.\galacticbundle</TargetPath>
         </None>
+        <None Remove="src\**" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="Assets\galaxy.json" />
         <EmbeddedResource Include="Assets\galaxy.json" />
+        <EmbeddedResource Remove="src\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="src\**" />
     </ItemGroup>
 </Project>
