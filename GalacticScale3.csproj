@@ -3,6 +3,11 @@
         <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
         <TargetFramework>net472</TargetFramework>
         <RootNamespace>GalacticScale</RootNamespace>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.samboy.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
     </PropertyGroup>
     <Import Project="$(DevEnvLoc)" Condition="Exists('$(DevEnvLoc)')" />
     <PropertyGroup>
@@ -15,6 +20,7 @@
         <OutDir Condition="Exists($(PluginDir))">$(PluginDir)\Galactic_Scale-GalacticScale\</OutDir>
     </PropertyGroup>
 
+    
     <ItemGroup>
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
@@ -66,4 +72,5 @@
     <ItemGroup>
       <Compile Remove="src\**" />
     </ItemGroup>
+    
 </Project>
