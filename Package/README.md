@@ -2,7 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
-_ Version 2.72.1 - attempt to fix decimal numbers
+- Version 2.72.2 - Fix DF Communicator being broken. Fix Crash with large starcount
+- Version 2.72.1 - attempt to fix decimal numbers
 - Version 2.72.0 - starfish fixed loading :D.
 - Version 2.71.1 - Attempt to fix game not starting sometimes
 - Version 2.71.0 - Fix for new Game Update

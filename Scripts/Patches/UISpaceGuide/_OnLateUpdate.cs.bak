@@ -255,6 +255,13 @@ namespace GalacticScale
                                 CosmicMessageData cosmicMessageData = messages[l];
                                 if (cosmicMessageData != null && cosmicMessageData.protoId != 0)
                                 {
+                                    // Check if this is a communicator and fix its position if needed
+                                    if (cosmicMessageData.doodadProtoId == 5 && __instance.gameData.localStar != null)
+                                    {
+                                        // Try to fix the position if it's out of bounds
+                                        TryFixCommunicatorPosition(cosmicMessageData, __instance.gameData.localStar);
+                                    }
+                                    
                                     bool flag8 = false;
                                     int protoId = cosmicMessageData.protoId;
                                     
@@ -293,6 +300,22 @@ namespace GalacticScale
                                         }
                                         if (cosmicMessageData.doodadProtoId == 5)
                                         {
+                                            // Debug log for communicator position
+                                            GS2.Log($"Communicator found at position: {cosmicMessageData.uPosition}, magnitude: {cosmicMessageData.uPosition.magnitude}");
+                                            
+                                            // If we're in a star system, log distance from local star for reference
+                                            if (__instance.gameData.localStar != null)
+                                            {
+                                                double distanceFromStar = (cosmicMessageData.uPosition - __instance.gameData.localStar.uPosition).magnitude;
+                                                GS2.Log($"Communicator distance from local star: {distanceFromStar}");
+                                                
+                                                // Check if it's exceptionally far from the star
+                                                if (distanceFromStar > __instance.gameData.localStar.systemRadius * 10)
+                                                {
+                                                    GS2.Warn($"Communicator is very far from local star (>{__instance.gameData.localStar.systemRadius * 10})");
+                                                }
+                                            }
+                                            
                                             flag8 = __instance.uiGame.dfSpaceGuideOnFinal;
                                         }
                                     }
@@ -468,6 +491,115 @@ namespace GalacticScale
 
                 enemyDFHiveSystem = enemyDFHiveSystem.nextSibling;
             }
+        }
+
+        // Track which communicators we've already fixed to prevent repeated fixes
+        private static HashSet<int> fixedCommunicators = new HashSet<int>();
+        private static Dictionary<int, double> lastLogTime = new Dictionary<int, double>();
+        
+        // Track the current star to detect star system changes
+        private static int lastStarId = -1;
+
+        // Method to fix out-of-bounds communicator positions
+        private static bool TryFixCommunicatorPosition(CosmicMessageData message, StarData localStar)
+        {
+            if (message == null || message.doodadProtoId != 5 || localStar == null)
+                return false;
+                
+            // Check if we've changed star systems
+            if (lastStarId != localStar.id)
+            {
+                GS2.Log($"Star system changed from {lastStarId} to {localStar.id}, clearing fixed communicators list");
+                fixedCommunicators.Clear();
+                lastLogTime.Clear();
+                lastStarId = localStar.id;
+            }
+                
+            // Check if we've already fixed this communicator
+            int messageId = message.protoId;
+            if (fixedCommunicators.Contains(messageId))
+                return false;
+                
+            // Check if the communicator is extremely far from the star
+            double distanceFromStar = (message.uPosition - localStar.uPosition).magnitude;
+            double maxReasonableDistance = localStar.systemRadius * 3.0; // 3x system radius should be reasonable
+            
+            if (distanceFromStar > maxReasonableDistance)
+            {
+                // Rate limit log messages to once per 30 seconds per communicator
+                double currentTime = Time.realtimeSinceStartup;
+                if (!lastLogTime.ContainsKey(messageId) || currentTime - lastLogTime[messageId] > 30.0)
+                {
+                    GS2.Warn($"Fixing out-of-bounds communicator (ID: {messageId}). Original distance: {distanceFromStar:N0}, max: {maxReasonableDistance:N0}");
+                    lastLogTime[messageId] = currentTime;
+                }
+                
+                // Generate a new position that's within a reasonable range of the star
+                // We'll place it at roughly 2x system radius in a random direction
+                
+                // Create a new random with the message ID as seed for consistency
+                System.Random rand = new System.Random(message.protoId);
+                
+                // Generate a random direction vector
+                VectorLF3 randomDirection = new VectorLF3(
+                    (rand.NextDouble() * 2.0) - 1.0,
+                    (rand.NextDouble() * 2.0) - 1.0,
+                    (rand.NextDouble() * 2.0) - 1.0
+                );
+                
+                // Normalize and scale to desired distance
+                double dirMagnitude = Math.Sqrt(randomDirection.x * randomDirection.x + 
+                                               randomDirection.y * randomDirection.y + 
+                                               randomDirection.z * randomDirection.z);
+                
+                if (dirMagnitude > 0.0001)
+                {
+                    randomDirection.x /= dirMagnitude;
+                    randomDirection.y /= dirMagnitude;
+                    randomDirection.z /= dirMagnitude;
+                    
+                    // Place at 1.5-2.5x system radius
+                    double newDistance = localStar.systemRadius * (1.5 + rand.NextDouble());
+                    
+                    // Set the new position
+                    message.uPosition = localStar.uPosition + randomDirection * newDistance;
+                    
+                    // Save the position to game data if possible
+                    try
+                    {
+                        // Also update the data in the cosmic message manager to make it persistent
+                        if (GameMain.gameScenario != null && 
+                            GameMain.gameScenario.cosmicMessageManager != null &&
+                            GameMain.gameScenario.cosmicMessageManager.messages != null)
+                        {
+                            // Find and update the message in the array
+                            for (int i = 0; i < GameMain.gameScenario.cosmicMessageManager.messages.Length; i++)
+                            {
+                                var msg = GameMain.gameScenario.cosmicMessageManager.messages[i];
+                                if (msg != null && msg.protoId == messageId)
+                                {
+                                    // Update the position in the manager's copy
+                                    msg.uPosition = message.uPosition;
+                                    
+                                    // Mark as fixed so we don't keep updating it
+                                    fixedCommunicators.Add(messageId);
+                                    
+                                    GS2.Log($"Applied persistent fix to communicator {messageId}. New distance from star: {newDistance:N0}");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        GS2.Warn($"Error while trying to make communicator position persistent: {ex.Message}");
+                    }
+                    
+                    return true;
+                }
+            }
+            
+            return false;
         }
     }
 }

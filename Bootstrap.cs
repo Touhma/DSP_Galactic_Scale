@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
 
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.72.1")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.72.2")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
@@ -84,10 +84,12 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnBuildTool_Path));
                 harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
                 harmony.PatchAll(typeof(PatchOnCloudSimulator));
+                harmony.PatchAll(typeof(PatchOnCosmicMessageManager));
                 harmony.PatchAll(typeof(PatchOnDefenseSystem));
                 harmony.PatchAll(typeof(PatchOnDFGTurretComponent));
                 harmony.PatchAll(typeof(PatchOnDFRelayComponent));
                 harmony.PatchAll(typeof(PatchOnDigitalSystem));
+                // harmony.PatchAll(typeof(PatchOnDysonSphere));
                 harmony.PatchAll(typeof(PatchOnEnemyDFGroundSystem));
                 harmony.PatchAll(typeof(PatchOnEnemyDFHiveSystem));
                 harmony.PatchAll(typeof(PatchOnFactoryModel));
@@ -101,6 +103,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnGameMain));
                 harmony.PatchAll(typeof(PatchOnGameOption));
                 harmony.PatchAll(typeof(PatchOnGameSave));
+                harmony.PatchAll(typeof(PatchOnGameScenarioLogic));
                 harmony.PatchAll(typeof(PatchOnGraticulePoser));
                 harmony.PatchAll(typeof(PatchOnGuideMissionStandardMode));
                 harmony.PatchAll(typeof(PatchOnKillStatistics));
@@ -133,6 +136,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnUIAchievementPanel));
                 harmony.PatchAll(typeof(PatchOnUIAdvisorTip));
                 harmony.PatchAll(typeof(PatchOnUIBuildingGrid));
+                harmony.PatchAll(typeof(PatchOnUICommunicatorIndicator));
                 harmony.PatchAll(typeof(PatchOnUIEscMenu));
                 harmony.PatchAll(typeof(PatchOnUIGalaxySelect));
                 harmony.PatchAll(typeof(PatchOnUIGame));
