@@ -51,8 +51,18 @@
           <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
-    <Target Name="CheckDevEnv" BeforeTargets="Build">
-        <Error Condition="!Exists('DevEnv.targets')" Text="The 'DevEnv.targets' file is missing. Please create it based on 'DevEnv.targets.example' and change PluginDir to match your active BepInEx plugins directory." />
+    <Target Name="CheckDevEnv" BeforeTargets="PrepareForBuild">
+        <PropertyGroup>
+            <DevEnvNotFound>false</DevEnvNotFound>
+        </PropertyGroup>
+        
+        <PropertyGroup Condition="!Exists('DevEnv.targets')">
+            <DevEnvNotFound>true</DevEnvNotFound>
+        </PropertyGroup>
+        
+        <Warning Condition="!Exists('DevEnv.targets')" Text="DevEnv.targets not found. Running setup..." />
+        <Exec Condition="'$(DevEnvNotFound)' == 'true'" Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\setup_devenv.ps1&quot;" />
+        <Error Condition="!Exists('DevEnv.targets')" Text="Failed to create DevEnv.targets. Please run setup_devenv.ps1 manually." />
     </Target>
     <ItemGroup>
 
