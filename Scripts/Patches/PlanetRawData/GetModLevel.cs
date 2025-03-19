@@ -14,9 +14,9 @@ namespace GalacticScale
                 __result = (__instance.modData[index >> 1] >> ((index & 1) << 2)) & 3;
                 return false;
             }
-            catch (Exception e)
+            catch 
             {
-                GS2.DevLog("modData Index " + index + " doesn't exist: " + e);
+                // GS2.DevLog("modData Index " + index + " doesn't exist: " + e);
                 __result = 0;
                 return false;
             }

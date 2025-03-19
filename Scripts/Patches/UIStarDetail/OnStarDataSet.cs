@@ -8,30 +8,59 @@ namespace GalacticScale
 {
     public class PatchOnUIStarDetail
     {
-        private static int actualLevel = GameMain.history.universeObserveLevel;
+        private static int actualLevel = -1;
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         private static void OnStarDataSetPost(StarData ____star, InputField ___nameInput, Text ___typeText, RectTransform ___paramGroup, Text ___massValueText, Text ___spectrValueText, Text ___radiusValueText, Text ___luminoValueText, Text ___temperatureValueText, Text ___ageValueText, Sprite ___unknownResIcon, GameObject ___trslBg, GameObject ___imgBg, UIResAmountEntry ___tipEntry, UIResAmountEntry ___entryPrafab, ref UIStarDetail __instance)
         {
-            if (!SystemDisplay.inGalaxySelect) return;
-            GameMain.history.universeObserveLevel = actualLevel;
+            if (!SystemDisplay.inGalaxySelect && actualLevel >= 0) 
+            {
+                GameMain.history.universeObserveLevel = actualLevel;
+                GS2.Log($"Restoring universeObserveLevel to {actualLevel}");
+            }
         }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         private static bool OnStarDataSet(StarData ____star, InputField ___nameInput, Text ___typeText, RectTransform ___paramGroup, Text ___massValueText, Text ___spectrValueText, Text ___radiusValueText, Text ___luminoValueText, Text ___temperatureValueText, Text ___ageValueText, Sprite ___unknownResIcon, GameObject ___trslBg, GameObject ___imgBg, UIResAmountEntry ___tipEntry, UIResAmountEntry ___entryPrafab, ref UIStarDetail __instance)
         {
-            if (!SystemDisplay.inGalaxySelect)
+            if (GameMain.history != null && GameMain.history.universeObserveLevel > actualLevel)
             {
-                GameMain.history.universeObserveLevel = actualLevel;
+                actualLevel = GameMain.history.universeObserveLevel;
+                GS2.Log($"Updated stored universeObserveLevel to {actualLevel} (research or save loaded)");
+            }
+            
+            if (SystemDisplay.inGalaxySelect)
+            {
+                if (actualLevel < 0 && GameMain.history != null)
+                {
+                    actualLevel = GameMain.history.universeObserveLevel;
+                    GS2.Log($"Initialized universeObserveLevel to {actualLevel}");
+                }
+                
+                if (GameMain.history != null)
+                {
+                    GameMain.history.universeObserveLevel = 4;
+                    GS2.Log("Set universeObserveLevel to 4 for Galaxy Selection");
+                }
+                
                 return true;
             }
-            actualLevel = GameMain.history.universeObserveLevel;
-            GameMain.history.universeObserveLevel = 4;
+
             return true;
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameData), "LoadCurrentGame")]
+        private static void OnGameLoaded()
+        {
+            if (GameMain.history != null)
+            {
+                actualLevel = GameMain.history.universeObserveLevel;
+                GS2.Log($"Game loaded - stored universeObserveLevel: {actualLevel}");
+            }
+        }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
@@ -380,7 +409,6 @@ namespace GalacticScale
 	}
 
 	return false;
-
         }
     }
 }
