@@ -179,6 +179,11 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Checkbox("New Gravity Mechanics".Translate(), false, "New Gravity", null, "Large planets attract a lot more. Can cause issues with large planets".Translate()));
             DebugOptions.Add(GSUI.Checkbox("Force Rare Spawn".Translate(), false, "Force Rare Spawn", null, "Ignore randomness/distance checks".Translate()));
             _cheatModeCheckbox = DebugOptions.Add(GSUI.Checkbox("Enable Teleport".Translate(), false, "Cheat Mode", null, "TP by ctrl-click nav arrow in star map".Translate()));
+            
+            // Add slider and button for universeObserveLevel
+            DebugOptions.Add(GSUI.Slider("Universe Observe Level".Translate(), 0, 1, 4, 1, "UniverseObserveLevel", null, "Controls visibility of distant stars/planets (1-4)".Translate()));
+            DebugOptions.Add(GSUI.Button("Apply Observe Level".Translate(), "Apply", ApplyObserveLevel, null, "Sets the current game's universeObserveLevel to the selected value".Translate()));
+            
             DebugOptions.Add(GSUI.Slider("Mecha Scale".Translate(), 0.1f, 1f, 10f, 0.1f, "MechaScale", ScaleMecha, "How big Icarus should be. 1 = default".Translate()));
             DebugOptions.Add(GSUI.Button("Reset Binary Star Position".Translate(), "Go", ResetBinaryStars, null, "Try and move binary stars to new position relative to main star".Translate()));
             DebugOptions.Add(GSUI.Slider("Ship Speed Multiplier".Translate(), 1f, 1f, 100f, "Logistics Ship Multi", null, "Multiplier for Warp Speed of Ships".Translate()));
@@ -769,6 +774,25 @@ namespace GalacticScale
                 if (Preferences.GetString("Import Filename", null) == filenames[i])
                     index = i;
             JsonGalaxies.RectTransform.GetComponentInChildren<GSUIDropdown>().Value = index;
+        }
+
+        // Add property for UniverseObserveLevel
+        public int UniverseObserveLevel => Preferences.GetInt("UniverseObserveLevel", 1);
+
+        // Add method to apply the observe level
+        public void ApplyObserveLevel(Val o)
+        {
+            if (GameMain.history != null)
+            {
+                int level = UniverseObserveLevel;
+                GameMain.history.universeObserveLevel = level;
+                GS2.Log($"Set universeObserveLevel to {level}");
+                UIRealtimeTip.Popup($"Universe Observe Level set to {level}");
+            }
+            else
+            {
+                UIRealtimeTip.Popup("No game loaded");
+            }
         }
     }
 }
