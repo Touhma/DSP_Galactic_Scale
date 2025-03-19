@@ -9,6 +9,9 @@ namespace GalacticScale
     public class PatchOnUIStarDetail
     {
         private static int actualLevel = -1;
+        
+        // Store the last checked frame to avoid checking every single frame
+        private static int lastCheckedFrame = -1;
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
@@ -25,24 +28,30 @@ namespace GalacticScale
         [HarmonyPatch(typeof(UIStarDetail), "OnStarDataSet")]
         private static bool OnStarDataSet(StarData ____star, InputField ___nameInput, Text ___typeText, RectTransform ___paramGroup, Text ___massValueText, Text ___spectrValueText, Text ___radiusValueText, Text ___luminoValueText, Text ___temperatureValueText, Text ___ageValueText, Sprite ___unknownResIcon, GameObject ___trslBg, GameObject ___imgBg, UIResAmountEntry ___tipEntry, UIResAmountEntry ___entryPrafab, ref UIStarDetail __instance)
         {
+            CheckAndInitializeLevel();
+            
+            // Always check for research level increases
             if (GameMain.history != null && GameMain.history.universeObserveLevel > actualLevel)
             {
                 actualLevel = GameMain.history.universeObserveLevel;
                 GS2.Log($"Updated stored universeObserveLevel to {actualLevel} (research or save loaded)");
             }
             
-            if (SystemDisplay.inGalaxySelect)
+            // When in galaxy select, set maximum visibility while preserving actual level
+            if (SystemDisplay.inSystemDisplay)
             {
+                // Store current level if it's not already stored and it's valid
                 if (actualLevel < 0 && GameMain.history != null)
                 {
                     actualLevel = GameMain.history.universeObserveLevel;
                     GS2.Log($"Initialized universeObserveLevel to {actualLevel}");
                 }
                 
+                // Set to max level for galaxy view
                 if (GameMain.history != null)
                 {
                     GameMain.history.universeObserveLevel = 4;
-                    GS2.Log("Set universeObserveLevel to 4 for Galaxy Selection");
+                    GS2.Log($"Set universeObserveLevel to 4 for Galaxy Selection {SystemDisplay.inSystemDisplay}");
                 }
                 
                 return true;
@@ -50,15 +59,19 @@ namespace GalacticScale
 
             return true;
         }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(GameData), "LoadCurrentGame")]
-        private static void OnGameLoaded()
+        
+        // Helper method to check and initialize the level from GameMain.history
+        private static void CheckAndInitializeLevel()
         {
-            if (GameMain.history != null)
+            // Skip if we checked recently (optimization)
+            if (Time.frameCount - lastCheckedFrame < 60) return;
+            
+            lastCheckedFrame = Time.frameCount;
+            
+            if (GameMain.history != null && actualLevel < 0)
             {
                 actualLevel = GameMain.history.universeObserveLevel;
-                GS2.Log($"Game loaded - stored universeObserveLevel: {actualLevel}");
+                GS2.Log($"Initialized universeObserveLevel to {actualLevel} on frame {Time.frameCount}");
             }
         }
 

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <DevEnvLoc>$(MSBuildThisFileDirectory)DevEnv.targets</DevEnvLoc>
         <TargetFramework>net472</TargetFramework>
@@ -13,7 +13,7 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.72.2</Version>
+        <Version>2.72.3</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
@@ -85,5 +85,27 @@
     <ItemGroup>
       <Compile Remove="src\**" />
     </ItemGroup>
+
+    <!-- Add a target to synchronize version numbers before build -->
+    <Target Name="SyncVersionNumbers" BeforeTargets="PrepareForBuild">
+        <Message Text="Synchronizing version numbers from README.md..." Importance="high" />
+        
+        <!-- Check if PowerShell is available -->
+        <Exec Command="powershell -Command &quot;&amp; { exit 0 }&quot;" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="PowerShellExists" />
+        </Exec>
+        
+        <!-- Run the version sync script if PowerShell exists -->
+        <Exec 
+            Command="powershell -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\update-version.ps1&quot;" 
+            Condition="'$(PowerShellExists)' == '0'"
+            ContinueOnError="false" 
+        />
+        
+        <Warning 
+            Text="PowerShell not found. Version numbers were not synchronized. Please run update-version.ps1 manually." 
+            Condition="'$(PowerShellExists)' != '0'" 
+        />
+    </Target>
     
 </Project>

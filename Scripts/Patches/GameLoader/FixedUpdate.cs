@@ -57,6 +57,7 @@ namespace GalacticScale
 
             if (__instance.frame >= 7)
             {
+                SystemDisplay.inSystemDisplay = false;
                 if (counter > 2000 && GS2.Config.IgnoreAbort) __instance.LoadFailed();
                 var planet = GameMain.localPlanet;
                 counter++;

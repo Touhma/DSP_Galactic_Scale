@@ -1,5 +1,7 @@
 ﻿namespace GalacticScale
 {
+    using UnityEngine;
+
     public class GS2PlanetAlgorithm : PlanetAlgorithm
     {
         public PlanetAlgorithm baseAlgorithm;
@@ -110,6 +112,14 @@
             if (gsPlanet != null)
                 if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null)
                     veinAlgo(gsPlanet); //, false);
+        }
+
+        public override void CalcWaterPercent()
+        {
+            // Simply delegate to the base algorithm's CalcWaterPercent method
+            if (gsPlanet != null && baseAlgorithm != null)
+                if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null)
+                    baseAlgorithm.CalcWaterPercent();
         }
 
         public static PlanetAlgorithm GetBaseAlgo(int algoId)

@@ -55,6 +55,7 @@ namespace GalacticScale
             Debug.Log("Start Clicked");
             Modeler.Reset();
             inGalaxySelect = false;
+            GS2.Log("Setting inGalaxySelect false");
             Debug.Log($"Waiting for modeler to reset...{Modeler.processing.Count}");
             if (instance.uiCombat.active)//0.10...
             {
