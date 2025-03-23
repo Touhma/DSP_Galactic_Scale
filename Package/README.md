@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.72.4 - Revert broken relay ship fix
 - Version 2.72.3 - Fix ObserveLevel bug. Add debug option to set observe level. Attempt to fix df relays and logistics ships not pathing past large stars
 - Version 2.72.2 - Fix DF Communicator being broken. Fix Crash with large starcount
 - Version 2.72.1 - attempt to fix decimal numbers
