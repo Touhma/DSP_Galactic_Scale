@@ -6,7 +6,7 @@ namespace GalacticScale
     public partial class PatchOnPlanetModelingManager
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlanetModelingManager), "PlanetComputeThreadMain")]
+        [HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.PlanetComputeThreadMain))]
         public static bool PlanetComputeThreadMain()
         {
             Modeler.Compute();

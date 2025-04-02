@@ -13,10 +13,10 @@ namespace GalacticScale.Generators
         {
             "Type K", "Type M", "Type F", "Type G", "Type A", "Type B", "Type O", "White Dwarf", "Red Giant",
             "Yellow Giant", "White Giant",
-            "Blue Giant", "Neutron Star", "Black Hole"
+            "Blue Giant", "O Giant" , "Neutron Star", "Black Hole"
         };
 
-        private readonly string[] typeLetter = { "K", "M", "F", "G", "A", "B", "O", "WD", "RG", "YG", "WG", "BG", "NS", "BH" };
+        private readonly string[] typeLetter = { "K", "M", "F", "G", "A", "B", "O", "WD", "RG", "YG", "WG", "BG", "OG", "NS", "BH" };
 
         // ReSharper disable once InconsistentNaming
         private readonly Dictionary<string, GSUI> UI = new();
@@ -39,41 +39,48 @@ namespace GalacticScale.Generators
 
         public void Import(GSGenPreferences importedPreferences)
         {
-            // Warn("Importing Preferences");
+            Warn("Importing Preferences");
             for (var i = 0; i < importedPreferences.Count; i++)
             {
                 var key = importedPreferences.Keys.ElementAt(i);
-                // Warn($"Setting:{key} to {importedPreferences[key]}");
+                Warn(key);
+                Warn($"Setting:{key} to {importedPreferences[key]}");
                 preferences.Set(key, importedPreferences[key]);
                 if (loaded && UI.ContainsKey(key))
-                    // Warn("UI Loaded, setting UI Element to match");
+                {
+                    Warn("UI Loaded, setting UI Element to match");
                     UI[key].Set(importedPreferences[key]);
+                }
             }
 
             // WarnJson(importedPreferences);
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
             {
+                Warn("**" + i);
+                Warn("**" + typeLetter[i]);
                 if (!UI.ContainsKey($"{typeLetter[i]}minStars")) break;
                 // GS2.Warn($"{importedPreferences.GetInt("OcountBias",30)}");
                 // if (!UI.ContainsKey($"{typeLetter[i]}binaryEnabled") break;
-                UI[$"{typeLetter[i]}minStars"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}minStars", 0));
-                UI[$"{typeLetter[i]}planetCount"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetCount", new FloatPair(1, 10)));
-                UI[$"{typeLetter[i]}planetSize"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetSize", new FloatPair(50, 500)));
-                UI[$"{typeLetter[i]}sizeBias"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}sizeBias", 50));
-                UI[$"{typeLetter[i]}countBias"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}countBias", 50));
-                UI[$"{typeLetter[i]}chanceGas"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}chanceGas", 20));
-                UI[$"{typeLetter[i]}chanceMoon"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}chanceMoon", 20));
-                UI[$"{typeLetter[i]}orbits"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}orbits", new FloatPair(0.1f, 10)));
-                UI[$"{typeLetter[i]}hz"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0.9f, 2)));
-                UI[$"{typeLetter[i]}orbitOverride"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}orbitOverride"));
-                UI[$"{typeLetter[i]}inclination"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}inclination"));
-                UI[$"{typeLetter[i]}orbitLongitude"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}orbitLongitude", 0));
-                UI[$"{typeLetter[i]}hzOverride"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}hzOverride"));
-                UI[$"{typeLetter[i]}rareChance"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}rareChance"));
-                UI[$"{typeLetter[i]}luminosityBoost"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}luminosityBoost", 1f));
-                UI[$"{typeLetter[i]}innerPlanetDistance"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}innerPlanetDistance", 1f));
-                if (i >= 8 && i <= 11) continue;
-                UI[$"{typeLetter[i]}binaryEnabled"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled"));
+                if (UI.ContainsKey($"{typeLetter[i]}minStars")) UI[$"{typeLetter[i]}minStars"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}minStars", 0));
+                if (UI.ContainsKey($"{typeLetter[i]}planetCount")) UI[$"{typeLetter[i]}planetCount"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetCount", new FloatPair(1, 10)));
+                if (UI.ContainsKey($"{typeLetter[i]}planetSize")) UI[$"{typeLetter[i]}planetSize"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}planetSize", new FloatPair(50, 500)));
+                if (UI.ContainsKey($"{typeLetter[i]}sizeBias")) UI[$"{typeLetter[i]}sizeBias"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}sizeBias", 50));
+                if (UI.ContainsKey($"{typeLetter[i]}countBias")) UI[$"{typeLetter[i]}countBias"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}countBias", 50));
+                if (UI.ContainsKey($"{typeLetter[i]}chanceGas")) UI[$"{typeLetter[i]}chanceGas"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}chanceGas", 20));
+                if (UI.ContainsKey($"{typeLetter[i]}chanceMoon")) UI[$"{typeLetter[i]}chanceMoon"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}chanceMoon", 20));
+                if (UI.ContainsKey($"{typeLetter[i]}orbits")) UI[$"{typeLetter[i]}orbits"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}orbits", new FloatPair(0.1f, 10)));
+                if (UI.ContainsKey($"{typeLetter[i]}hz")) UI[$"{typeLetter[i]}hz"]?.Set(importedPreferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0.9f, 2)));
+                if (UI.ContainsKey($"{typeLetter[i]}orbitOverride")) UI[$"{typeLetter[i]}orbitOverride"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}orbitOverride"));
+                if (UI.ContainsKey($"{typeLetter[i]}inclination")) UI[$"{typeLetter[i]}inclination"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}inclination"));
+                if (UI.ContainsKey($"{typeLetter[i]}orbitLongitude")) UI[$"{typeLetter[i]}orbitLongitude"]?.Set(importedPreferences.GetInt($"{typeLetter[i]}orbitLongitude", 0));
+                if (UI.ContainsKey($"{typeLetter[i]}hzOverride")) UI[$"{typeLetter[i]}hzOverride"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}hzOverride"));
+                if (UI.ContainsKey($"{typeLetter[i]}rareChance")) UI[$"{typeLetter[i]}rareChance"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}rareChance"));
+                if (UI.ContainsKey($"{typeLetter[i]}luminosityBoost")) UI[$"{typeLetter[i]}luminosityBoost"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}luminosityBoost", 1f));
+                if (UI.ContainsKey($"{typeLetter[i]}innerPlanetDistance")) UI[$"{typeLetter[i]}innerPlanetDistance"]?.Set(importedPreferences.GetFloat($"{typeLetter[i]}innerPlanetDistance", 1f));
+                
+                // For binary options, check if the UI element exists before setting it
+                if (UI.ContainsKey($"{typeLetter[i]}binaryEnabled")) 
+                    UI[$"{typeLetter[i]}binaryEnabled"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled"));
             }
 
             // GS2.Warn($"Imported:{importedPreferences.GetInt($"OcountBias")}");
@@ -126,7 +133,7 @@ namespace GalacticScale.Generators
             switch (spectr)
             {
                 case ESpectrType.A: return "WG";
-                case ESpectrType.O:
+                case ESpectrType.O: return "OG";
                 case ESpectrType.B: return "BG";
                 case ESpectrType.G:
                 case ESpectrType.F: return "YG";
@@ -169,6 +176,7 @@ namespace GalacticScale.Generators
                 { "YG", Utils.CalculateHabitableZone(1f) },
                 { "WG", Utils.CalculateHabitableZone(6f) },
                 { "BG", Utils.CalculateHabitableZone(10f) },
+                { "OG", Utils.CalculateHabitableZone(15f) },
                 { "WD", Utils.CalculateHabitableZone(0.05f) },
                 { "NS", Utils.CalculateHabitableZone(0.35f) },
                 { "BH", Utils.CalculateHabitableZone(0.006f) }
@@ -223,6 +231,7 @@ namespace GalacticScale.Generators
             preferences.Set("freqA", 10);
             preferences.Set("freqB", 4);
             preferences.Set("freqO", 2);
+
             preferences.Set("freqBH", 1);
             preferences.Set("freqNS", 1);
             preferences.Set("freqWD", 2);
@@ -230,6 +239,7 @@ namespace GalacticScale.Generators
             preferences.Set("freqYG", 1);
             preferences.Set("freqWG", 1);
             preferences.Set("freqBG", 1);
+            preferences.Set("freqOG", 1);
             preferences.Set("chanceGas", 20);
             preferences.Set("chanceMoon", 20);
             preferences.Set("chanceMoonMoon", 5);
@@ -249,7 +259,7 @@ namespace GalacticScale.Generators
             preferences.Set("vanillaStarNames", false);
             preferences.Set("planetNames", "Default");
             preferences.Set("preferInnerPlanets", false);
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
             {
                 preferences.Set($"{typeLetter[i]}innerPlanetDistance", 1f);
                 preferences.Set($"{typeLetter[i]}minStars", 0);
@@ -355,14 +365,21 @@ namespace GalacticScale.Generators
             var bOptions = new GSOptions();
             var starTypes = new List<string>
             {
-                "BlackHole",
-                "WhiteDwarf",
-                "NeutronStar",
-                "O", "B", "A", "F", "G", "M", "K",
-                "BlueGiant",
-                "WhiteGiant",
-                "YellowGiant",
-                "RedGiant",
+                "Type K",
+                "Type M",
+                "Type F",
+                "Type G",
+                "Type A", 
+                "Type B", 
+                "Type O", 
+                "White Dwarf", 
+                "Red Giant",
+                "Yellow Giant", 
+                "White Giant",
+                "Blue Giant", 
+                "O Giant", 
+                "Neutron Star", 
+                "Black Hole",
                 "Random"
             };
             AddSpacer(bOptions);
@@ -384,9 +401,9 @@ namespace GalacticScale.Generators
             var bOptions = new GSOptions();
             UI.Add("binaryDistanceMulti", bOptions.Add(GSUI.Slider("Binary Distance Multi".Translate(), 0.5f, 1f, 5f, 0.1f, "binaryDistanceMulti", null, "How close secondary stars should be to primaries".Translate())));
             UI.Add("binaryChance", bOptions.Add(GSUI.Slider("Binary Star Chance %".Translate(), 0, 0, 100, 1f, "binaryChance", null, "% Chance of a star having a binary companion".Translate())));
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
             {
-                if (i >= 8 && i <= 11) continue;
+                // Create binary enabled checkbox for all star types
                 UI.Add($"{typeLetter[i]}binaryEnabled", bOptions.Add(GSUI.Checkbox($"{typeDesc[i]}", i == 0, $"{typeLetter[i]}binaryEnabled", BinaryCallback, $"Allow {typeDesc[i]} to spawn as binary companions".Translate())));
             }
 
@@ -443,7 +460,7 @@ namespace GalacticScale.Generators
         {
             var oOptions = new GSOptions();
             AddSpacer(oOptions);
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
             {
                 var tOptions = new GSOptions();
                 AddSpacer(tOptions);
@@ -512,13 +529,15 @@ namespace GalacticScale.Generators
             UI.Add("WGminStars", freqOptions.Add(GSUI.Slider("Minimum White Giant".Translate(), 0, 0, 100, "WGminStars")));
             UI.Add("freqBG", freqOptions.Add(GSUI.Slider("Freq. Blue Giant".Translate(), 0, 1, 100, "freqBG")));
             UI.Add("BGminStars", freqOptions.Add(GSUI.Slider("Minimum Blue Giant".Translate(), 0, 0, 100, "BGminStars")));
+            UI.Add("freqOG", freqOptions.Add(GSUI.Slider("Freq. O Giant".Translate(), 0, 1, 100, "freqOG")));
+            UI.Add("OGminStars", freqOptions.Add(GSUI.Slider("Minimum O Giant".Translate(), 0, 0, 100, "OGminStars")));
             AddSpacer(freqOptions);
             return freqOptions;
         }
 
         private void BinaryCallback(Val o)
         {
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
                 if (preferences.GetBool($"{typeLetter[i]}binaryEnabled"))
                     return;
             UI["KbinaryEnabled"].Set(true);
@@ -529,7 +548,7 @@ namespace GalacticScale.Generators
             SetAllStarTypeOptions("luminosityBoost", o);
         }
 
-        private void InnerPlanetDistanceCallback(Val o)
+        private void InnerPlanetDistanceCallback(Val o) 
         {
             SetAllStarTypeOptions("innerPlanetDistance", o);
         }
@@ -635,12 +654,13 @@ namespace GalacticScale.Generators
 
         private void SetAllStarTypeOptions(string key, Val value)
         {
-            for (var i = 0; i < 14; i++) UI[$"{typeLetter[i]}{key}"].Set(value);
+            Warn("Setting option " + key + " to " + value);
+            for (var i = 0; i < 15; i++) UI[$"{typeLetter[i]}{key}"].Set(value);
         }
 
         private void SetAllStarTypeRangeSliderMin(string key, Val value)
         {
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
             {
                 var high = preferences.GetFloatFloat($"{typeLetter[i]}{key}", new FloatPair(1, 10)).high;
                 UI[$"{typeLetter[i]}{key}"].Set(new FloatPair(value, high));
@@ -650,7 +670,7 @@ namespace GalacticScale.Generators
 
         private void SetAllStarTypeRangeSliderMax(string key, Val value)
         {
-            for (var i = 0; i < 14; i++)
+            for (var i = 0; i < 15; i++)
             {
                 var low = preferences.GetFloatFloat($"{typeLetter[i]}{key}", new FloatPair(1, 10)).low;
                 UI[$"{typeLetter[i]}{key}"].Set(new FloatPair(low, value));
@@ -660,7 +680,7 @@ namespace GalacticScale.Generators
 
         private void CalculateFrequencies()
         {
-            var starFreqTupleArray = new (string type, double chance)[14];
+            var starFreqTupleArray = new (string type, double chance)[15];
             var fK = preferences.GetDouble("freqK", 40);
             var fM = preferences.GetDouble("freqM", 50);
             var fG = preferences.GetDouble("freqG", 30);
@@ -675,8 +695,9 @@ namespace GalacticScale.Generators
 
             var fYg = preferences.GetDouble("freqYG", 1);
             var fWg = preferences.GetDouble("freqWG", 1);
+            var fOg = preferences.GetDouble("freqOG", 1);
             var fBg = preferences.GetDouble("freqBG", 1);
-            var total = fK + fM + fG + fF + fA + fB + fO + fBh + fN + fW + fRg + fYg + fWg + fBg;
+            var total = fK + fM + fG + fF + fA + fB + fO + fBh + fN + fW + fRg + fYg + fWg + fBg + fOg;
 
             starFreqTupleArray[0] = ("K", fK / total);
             starFreqTupleArray[1] = ("M", fM / total);
@@ -692,7 +713,7 @@ namespace GalacticScale.Generators
             starFreqTupleArray[11] = ("YG", fYg / total);
             starFreqTupleArray[12] = ("WG", fWg / total);
             starFreqTupleArray[13] = ("BG", fBg / total);
-
+            starFreqTupleArray[14] = ("OG", fOg / total);
             starFreq = new Dictionary<string, double>
             {
                 { "K", fK / total }
@@ -710,22 +731,22 @@ namespace GalacticScale.Generators
         {
             _forcedStars = new List<string>();
 
-            Warn(preferences.GetInt("birthStar", 14).ToString());
-            for (var i = 0; i < 14; i++)
+            Warn(preferences.GetInt("birthStar", 15).ToString());
+            for (var i = 0; i < 15; i++)
             {
                 var count = preferences.GetInt($"{typeLetter[i]}minStars", 0);
                 for (var j = 0; j < count; j++) _forcedStars.Add(typeLetter[i]);
             }
 
-            var bsInt = preferences.GetInt("birthStar", 14);
-            if (bsInt >= 14) return;
+            var bsInt = preferences.GetInt("birthStar", 15);
+            if (bsInt >= 15) return;
             if (!_forcedStars.Contains(typeLetter[bsInt])) _forcedStars.Add(typeLetter[bsInt]);
         }
 
         private (EStarType type, ESpectrType spectr) ChooseStarType(bool birth = false)
         {
-            var bsInt = preferences.GetInt("birthStar", 14);
-            if (bsInt < 14 && birth) return ((EStar)bsInt).Convert();
+            var bsInt = preferences.GetInt("birthStar", 15);
+            if (bsInt < 15 && birth) return GetBirthStarTypeFromIndex(bsInt);
             var starType = "";
             if (_forcedStars.Count > 0)
             {
@@ -749,8 +770,33 @@ namespace GalacticScale.Generators
             return GetStarTypeSpectrFromLetter(starType);
         }
 
+        private (EStarType type, ESpectrType spectr) GetBirthStarTypeFromIndex(int index)
+        {
+            // Map the index directly to the star type and spectr
+            switch (index)
+            {
+                case 0: return (EStarType.MainSeqStar, ESpectrType.K);   // K
+                case 1: return (EStarType.MainSeqStar, ESpectrType.M);   // M
+                case 2: return (EStarType.MainSeqStar, ESpectrType.F);   // F
+                case 3: return (EStarType.MainSeqStar, ESpectrType.G);   // G
+                case 4: return (EStarType.MainSeqStar, ESpectrType.A);   // A
+                case 5: return (EStarType.MainSeqStar, ESpectrType.B);   // B
+                case 6: return (EStarType.MainSeqStar, ESpectrType.O);   // O
+                case 7: return (EStarType.WhiteDwarf, ESpectrType.X);    // WD
+                case 8: return (EStarType.GiantStar, ESpectrType.M);     // RG
+                case 9: return (EStarType.GiantStar, ESpectrType.G);     // YG
+                case 10: return (EStarType.GiantStar, ESpectrType.A);    // WG
+                case 11: return (EStarType.GiantStar, ESpectrType.B);    // BG
+                case 12: return (EStarType.GiantStar, ESpectrType.O);    // OG
+                case 13: return (EStarType.NeutronStar, ESpectrType.X);  // NS
+                case 14: return (EStarType.BlackHole, ESpectrType.X);    // BH
+                default: return (EStarType.MainSeqStar, ESpectrType.G);  // Default to G-type main sequence
+            }
+        }
+
         private static (EStarType type, ESpectrType spectr) GetStarTypeSpectrFromLetter(string starType)
         {
+            
             switch (starType)
             {
                 case "K": return (EStarType.MainSeqStar, ESpectrType.K);
@@ -766,6 +812,7 @@ namespace GalacticScale.Generators
                 case "RG": return (EStarType.GiantStar, ESpectrType.M);
                 case "YG": return (EStarType.GiantStar, ESpectrType.G);
                 case "WG": return (EStarType.GiantStar, ESpectrType.A);
+                case "OG": return (EStarType.GiantStar, ESpectrType.O);
                 default: return (EStarType.GiantStar, ESpectrType.B);
             }
         }

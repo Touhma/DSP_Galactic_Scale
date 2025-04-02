@@ -1,21 +1,23 @@
-﻿using HarmonyLib;
+﻿using System.Collections.Generic;
+using HarmonyLib;
 using static PlanetModelingManager;
 
 namespace GalacticScale
 {
     public partial class PatchOnPlanetModelingManager
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "EndPlanetCalculateThread")]
-        public static bool EndPlanetCalculateThread()
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.EndPlanetScanThread))]
+        public static bool EndPlanetScanThread()
         {
-            lock (planetCalculateThreadFlagLock)
+            Queue<PlanetData> queue = PlanetModelingManager.scnPlanetReqList;
+            lock (queue)
             {
-                // Change: If the ThreadFlag is already ended, don't change it to ending
-                if (planetCalculateThreadFlag == ThreadFlag.Running)
-                {
-                    planetCalculateThreadFlag = ThreadFlag.Ending;
-                    GS2.Log("ThreadFlag: Running => Ending");
-                }
+                PlanetModelingManager.scnPlanetReqList.Clear();
+            }
+            PlanetModelingManager.ThreadFlagLock threadFlagLock = PlanetModelingManager.planetScanThreadFlagLock;
+            lock (threadFlagLock)
+            {
+                PlanetModelingManager.planetScanThreadFlag = PlanetModelingManager.ThreadFlag.Ending;
             }
             return false;
         }

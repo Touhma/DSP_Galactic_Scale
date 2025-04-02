@@ -26,7 +26,7 @@ namespace GalacticScale
                 if (flag)
                 {
                     var viewStar = SystemDisplay.viewStar;
-                    var flag2 = !viewStar.calculated;
+                    var flag2 = !viewStar.scanned;
                     if (flag2)
                     {
                         loadingText = baseText + "\r\nStar Loading...\r\n";
@@ -34,9 +34,9 @@ namespace GalacticScale
                         var gsstar = GS2.GetGSStar(viewStar);
                         foreach (var gsplanet in gsstar.Bodies)
                         {
-                            var flag3 = !gsplanet.planetData.calculating && !gsplanet.planetData.calculated;
-                            if (flag3) gsplanet.planetData.RunCalculateThread();
-                            var flag4 = !gsplanet.planetData.calculated;
+                            var flag3 = !gsplanet.planetData.scanning && !gsplanet.planetData.scanned;
+                            if (flag3) gsplanet.planetData.RunScanThread();
+                            var flag4 = !gsplanet.planetData.scanned;
                             if (flag4) num++;
                         }
 

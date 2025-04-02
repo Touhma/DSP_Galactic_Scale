@@ -117,7 +117,7 @@ namespace GalacticScale
                         case ESpectrType.G:
                         case ESpectrType.K: return random.NextFloat(1.1f, 2f);
 
-                        case ESpectrType.B:
+                        case ESpectrType.B:return random.NextFloat(7f, 10f);
                         case ESpectrType.O: return random.NextFloat(9f, 11f);
 
                         case ESpectrType.M: return random.NextFloat(0.7f, 1f);
@@ -166,8 +166,8 @@ namespace GalacticScale
                         case ESpectrType.A:
                         case ESpectrType.F:
                         case ESpectrType.G: return random.NextFloat(6000f, 8000f);
-                        case ESpectrType.B:
-                        case ESpectrType.O: return random.NextFloat(25f, 30f);
+                        case ESpectrType.B:return random.NextFloat(25f, 30f);
+                        case ESpectrType.O: return random.NextFloat(5f, 10f);
                         case ESpectrType.M: return random.NextFloat(9600, 11300f);
                     }
 
@@ -239,8 +239,8 @@ namespace GalacticScale
                         case ESpectrType.F:
                         case ESpectrType.G:
                         case ESpectrType.K: GS2.Warn("Giant Class A-K"); return random.NextFloat(0.79f, 0.8f);
-                        case ESpectrType.B:
-                        case ESpectrType.O: GS2.Warn("Giant Class O");return random.NextFloat(3f, 3f);
+                        case ESpectrType.B:GS2.Warn("Giant Class O");return random.NextFloat(2f, 3f);
+                        case ESpectrType.O: GS2.Warn("Giant Class O");return random.NextFloat(3f, 5f);
                         case ESpectrType.M: GS2.Warn("Giant Class M");return random.NextFloat(0.75f, 1f);
                     }
                     
@@ -283,8 +283,8 @@ namespace GalacticScale
                         case ESpectrType.F:
                         case ESpectrType.G:
                         case ESpectrType.K: return random.NextFloat(3000f, 3600f);
-                        case ESpectrType.B:
-                        case ESpectrType.O: return random.NextFloat(10000f, 15000f);
+                        case ESpectrType.B:return random.NextFloat(10000f, 15000f);
+                        case ESpectrType.O: return random.NextFloat(31000f, 53000f);
                         case ESpectrType.M: return random.NextFloat(2200f, 3400f);
                     }
 
@@ -328,8 +328,8 @@ namespace GalacticScale
                         case ESpectrType.M:
                         case ESpectrType.K: return random.NextFloat(2.6f, 3f);
 
-                        case ESpectrType.B:
-                        case ESpectrType.O: return random.NextFloat(8f, 11f);
+                        case ESpectrType.B:return random.NextFloat(8f, 11f);
+                        case ESpectrType.O: return random.NextFloat(9f, 15f);
                     }
 
                     break;

@@ -24,7 +24,7 @@ namespace GalacticScale
                 }
             }
             GS2.Log($"GameScenarioLogic.Init_Postfix {__instance.cosmicMessageManager.messages?.Length}");
-            if (__instance.cosmicMessageManager != null && __instance.cosmicMessageManager.messages.Length == 102 && __instance.cosmicMessageManager.messages[101].nearStar != GameMain.localStar)
+            if (GameMain.localStar != null && __instance.cosmicMessageManager != null && __instance.cosmicMessageManager.messages != null && __instance.cosmicMessageManager.messages.Length == 102 && __instance.cosmicMessageManager.messages[101]?.nearStar != GameMain.localStar)
             {
                 GS2.Warn("Setting last cosmic message star to localStar");
                 __instance.cosmicMessageManager.messages[101] = __instance.cosmicMessageManager.CreateCosmicMessage(101, GameMain.localStar.seed);

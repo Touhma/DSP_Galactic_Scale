@@ -69,11 +69,11 @@ namespace GalacticScale
             if (p.GeneratorPreferences != null)
                 foreach (var generatorPreferences in p.GeneratorPreferences)
                 {
-                    // Log("Generator Preferences for " + generatorPreferences.Key + "found");
+                    Log("Generator Preferences for " + generatorPreferences.Key + "found");
                     var gen = GetGeneratorByID(generatorPreferences.Key) as iConfigurableGenerator;
                     if (gen != null)
                     {
-                        // Log(gen.Name + "'s preferences exported to generator");
+                        Log(gen.Name + "'s preferences exported to generator");
                         gen.Import(generatorPreferences.Value);
                     }
                 }

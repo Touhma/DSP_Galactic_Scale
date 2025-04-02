@@ -5,7 +5,7 @@ namespace GalacticScale
     public partial class PatchOnPlanetModelingManager
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetCoroutine")]
+        [HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.ModelingPlanetCoroutine))]
         public static bool ModelingPlanetCoroutine()
         {
             if (GS2.IsMenuDemo || GS2.Vanilla) return true;

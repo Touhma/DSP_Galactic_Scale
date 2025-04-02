@@ -15,7 +15,7 @@ namespace GalacticScale
         }
         
         [HarmonyTranspiler]
-        [HarmonyPatch(typeof(PowerSystem),  nameof(PowerSystem.CalculateGeothermalStrenth))]
+        [HarmonyPatch(typeof(PowerSystem),  nameof(PowerSystem.CalculateGeothermalStrength))]
 
     public static IEnumerable<CodeInstruction> Fix201f(IEnumerable<CodeInstruction> instructions)
         {

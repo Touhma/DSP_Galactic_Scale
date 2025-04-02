@@ -19,6 +19,10 @@ namespace GalacticScale
                 Seed = seed;
             }
 
+            public static Random getNewInstance()
+            {
+                return new Random(increment++);
+            }
             public int Seed
             {
                 get => seed;

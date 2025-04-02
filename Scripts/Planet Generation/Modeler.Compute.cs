@@ -120,7 +120,7 @@ namespace GalacticScale
                                     num3 = highStopwatch.duration;
                                     highStopwatch.Begin();
                                     if (compPlanet.type != EPlanetType.Gas && compPlanet.data != null) planetAlgorithm.GenerateVeins();
-                                    if (compPlanet.data != null) compPlanet.CalculateVeinGroups();
+                                    if (compPlanet.data != null) compPlanet.SummarizeVeinGroups();
                                     num4 = highStopwatch.duration;
                                 }
 
@@ -135,7 +135,7 @@ namespace GalacticScale
                                         Log($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                     }
 
-                                compPlanet?.NotifyCalculated();
+                                compPlanet?.NotifyScanEnded();
                                 if (processing.Contains(compPlanet)) processing.Remove(compPlanet);
                             }
                         }

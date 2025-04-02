@@ -12,10 +12,10 @@ namespace GalacticScale
         {
             GS2.Log("Calc");
             object obj = null;
-            var obj2 = planetCalculateThreadFlagLock;
+            var obj2 = planetScanThreadFlagLock;
             lock (obj2)
             {
-                obj = planetCalculateThread;
+                obj = planetScanThreadFlag;
             }
 
             for (;;)
@@ -23,16 +23,16 @@ namespace GalacticScale
                 calcPlanet = null;
                 lock (planetProcessingLock)
                 {
-                    obj2 = planetCalculateThreadFlagLock;
+                    obj2 = planetScanThreadFlagLock;
                     lock (obj2)
                     {
-                        if (planetCalculateThreadFlag != ThreadFlag.Running)
+                        if (planetScanThreadFlag != ThreadFlag.Running)
                         {
-                            planetCalculateThreadFlag = ThreadFlag.Ended;
+                            planetScanThreadFlag = ThreadFlag.Ended;
                             break;
                         }
 
-                        if (obj != planetCalculateThread)
+                        if (obj != planetScanThread)
                         {
                             GS2.Warn("End due to planetCalculateThread mismatch");
                             break;
@@ -40,10 +40,10 @@ namespace GalacticScale
                     }
 
 
-                    var obj3 = calPlanetReqList;
+                    var obj3 = scnPlanetReqList;
                     lock (obj3)
                     {
-                        if (calPlanetReqList.Count > 0) calcPlanet = calPlanetReqList.Dequeue();
+                        if (scnPlanetReqList.Count > 0) calcPlanet = scnPlanetReqList.Dequeue();
                     }
 
                     if (calcPlanet != null)
@@ -72,37 +72,37 @@ namespace GalacticScale
                                 if (calcPlanet == null || calcPlanet.data == null) return; var duration2 = highStopwatch.duration;
                                 highStopwatch.Begin();
                                 if (calcPlanet == null || calcPlanet.data == null || planetAlgorithm == null) return; if (calcPlanet.type != EPlanetType.Gas) planetAlgorithm.GenerateVeins();
-                                if (calcPlanet == null || calcPlanet.data == null) return; calcPlanet.CalculateVeinGroups();
+                                if (calcPlanet == null || calcPlanet.data == null) return; calcPlanet.SummarizeVeinGroups();
                                 if (calcPlanet == null || calcPlanet.data == null) return; calcPlanet.GenBirthPoints();
                                 if (calcPlanet == null || calcPlanet.data == null) return;
                                 var duration3 = highStopwatch.duration;
-                                if (planetCalculateThreadLogs != null)
+                                if (planetScanThreadLogs != null)
                                 {
-                                    var obj4 = planetCalculateThreadLogs;
+                                    var obj4 = planetScanThreadLogs;
                                     lock (obj4)
                                     {
-                                        planetCalculateThreadLogs.Add(string.Format("{0}\r\nGenerate Terrain {1:F5} s\r\nGenerate Vegetables {2:F5} s\r\nGenerate Veins {3:F5} s\r\n", calcPlanet.displayName, duration, duration2, duration3));
+                                        planetScanThreadLogs.Add(string.Format("{0}\r\nGenerate Terrain {1:F5} s\r\nGenerate Vegetables {2:F5} s\r\nGenerate Veins {3:F5} s\r\n", calcPlanet.displayName, duration, duration2, duration3));
                                     }
                                 }
 
-                                calcPlanet.NotifyCalculated();
+                                calcPlanet.NotifyScanEnded();
                                 processing.Remove(calcPlanet);
                             }
                         }
                         catch (Exception ex)
                         {
-                            var obj5 = planetCalculateThreadError;
+                            var obj5 = planetScanThreadError;
                             lock (obj5)
                             {
-                                if (string.IsNullOrEmpty(planetCalculateThreadError)) planetCalculateThreadError = ex.ToString();
+                                if (string.IsNullOrEmpty(planetScanThreadError)) planetScanThreadError = ex.ToString();
                             }
 
-                            calcPlanet.calculated = false;
+                            calcPlanet.scanned = false;
                             processing.Remove(calcPlanet);
 
                         }
 
-                        calcPlanet.calculating = false;
+                        calcPlanet.scanning = false;
                         if (processing.Contains(calcPlanet)) processing.Remove(calcPlanet);
                     }
                 }

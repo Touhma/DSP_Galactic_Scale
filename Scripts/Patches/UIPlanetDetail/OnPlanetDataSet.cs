@@ -101,15 +101,15 @@ namespace GalacticScale
 
 			Array.Clear(__instance.veinAmounts, 0, __instance.veinAmounts.Length);
 			Array.Clear(__instance.veinCounts, 0, __instance.veinCounts.Length);
-			__instance.calculated = false;
+			__instance._scanned = false;
 			if (__instance.planet != null)
 			{
-				if (!__instance.planet.calculated)
+				if (!__instance.planet.scanned)
 				{
-					__instance.planet.RunCalculateThread();
+					__instance.planet.RunScanThread();
 				}
 
-				__instance.calculated = __instance.planet.calculated;
+				__instance._scanned = __instance.planet.scanned;
 				int num = (__instance.planet == GameMain.localPlanet)
 					? 1
 					: ((__instance.planet.star == GameMain.localStar)
@@ -123,11 +123,11 @@ namespace GalacticScale
 					flag2 = true;
 				}
 
-				if (__instance.calculated && flag2)
+				if (__instance._scanned && flag2)
 				{
-					__instance.planet.CalcVeinAmounts(ref __instance.veinAmounts, __instance.tmp_ids,
+					__instance.planet.SummarizeVeinAmountsByFilter(ref __instance.veinAmounts, __instance.tmp_ids,
 						__instance.uiGame.veinAmountDisplayFilter);
-					__instance.planet.CalcVeinCounts(ref __instance.veinCounts, __instance.tmp_ids,
+					__instance.planet.SummarizeVeinCountsByFilter(ref __instance.veinCounts, __instance.tmp_ids,
 						__instance.uiGame.veinAmountDisplayFilter);
 				}
 
@@ -300,10 +300,10 @@ namespace GalacticScale
 						UIResAmountEntry entry4 = __instance.GetEntry();
 						__instance.entries.Add(entry4);
 						entry4.SetInfo(num13, "适建区域".Translate(), __instance.sprite6, "", false, false, "      %");
-						if (__instance.planet.landPercentDirty)
+						if (__instance.planet.landPercentDirtyFlag)
 						{
 							PlanetAlgorithm.CalcLandPercent(__instance.planet);
-							__instance.planet.landPercentDirty = false;
+							__instance.planet.landPercentDirtyFlag = false;
 						}
 
 						StringBuilderUtility.WritePositiveFloat(entry4.sb, 0, 5, __instance.planet.landPercent * 100f,

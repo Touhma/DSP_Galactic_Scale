@@ -23,7 +23,7 @@ namespace GalacticScale
         public static bool SaveOrLoadWindowOpen = false;
         public static bool Initialized = false;
         public static bool MenuHasLoaded;
-
+        public static int increment = 0;
         public static DebugTool debugtool;
         //Temp until GS2Cheats workaround
         public static bool ResearchUnlocked = false;

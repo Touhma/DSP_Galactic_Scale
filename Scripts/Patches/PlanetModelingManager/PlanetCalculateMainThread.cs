@@ -6,11 +6,10 @@ namespace GalacticScale
     public partial class PatchOnPlanetModelingManager
     {
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlanetModelingManager), "PlanetCalculateThreadMain")]
+        [HarmonyPatch(typeof(PlanetModelingManager),nameof(PlanetModelingManager.PlanetScanThreadMain))]
         public static bool PlanetCalculateThreadMain()
         {
             Modeler.Calculate();
-            GS2.Log("Loop end. ThreadFlag: " + planetCalculateThreadFlag);
             return false;
         }
     }

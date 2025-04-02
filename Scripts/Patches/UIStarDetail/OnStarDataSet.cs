@@ -102,11 +102,11 @@ namespace GalacticScale
 	__instance.calculated = false;
 	if (__instance.star != null)
 	{
-		if (!__instance.star.calculated)
+		if (!__instance.star.scanned)
 		{
-			__instance.star.RunCalculateThread();
+			__instance.star.RunScanningThread();
 		}
-		__instance.calculated = __instance.star.calculated;
+		__instance.calculated = __instance.star.scanned;
 		double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
 		int num = (__instance.star == GameMain.localStar) ? 2 : ((magnitude < 14400000.0) ? 3 : 4);
 		bool flag2 = GameMain.history.universeObserveLevel >= num;

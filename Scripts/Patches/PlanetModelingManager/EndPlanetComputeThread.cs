@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public partial class PatchOnPlanetModelingManager
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), "EndPlanetComputeThread")]
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.EndPlanetComputeThread))]
         public static bool EndPlanetComputeThread()
         {
             lock (planetComputeThreadFlagLock)

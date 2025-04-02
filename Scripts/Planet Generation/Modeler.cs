@@ -16,7 +16,7 @@ namespace GalacticScale
         
         public static void Reset()
         {
-            calPlanetReqList = new Queue<PlanetData>(100);
+            scnPlanetReqList = new Queue<PlanetData>(100);
             genPlanetReqList = new Queue<PlanetData>(100);
             modPlanetReqList = new Queue<PlanetData>(100);
             fctPlanetReqList = new Queue<PlanetData>(100);

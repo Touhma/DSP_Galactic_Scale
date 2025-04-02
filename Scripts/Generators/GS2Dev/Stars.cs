@@ -79,8 +79,8 @@ namespace GalacticScale.Generators
                 star.dysonRadius = Clamp(star.dysonRadius, 0.4f, 100f);
             }
 
-            var bsInt = preferences.GetInt("birthStar", 14);
-            if (bsInt < 14)
+            var bsInt = preferences.GetInt("birthStar", 15);
+            if (bsInt < 15)
             {
                 var birthStarDesc = ((EStar)bsInt).Convert();
                 var availBirthStars = (from s in GSSettings.Stars where s.Type == birthStarDesc.Item1 where s.Spectr == birthStarDesc.Item2 where s.Decorative == false select s).ToList();

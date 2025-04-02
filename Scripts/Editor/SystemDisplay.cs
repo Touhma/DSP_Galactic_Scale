@@ -316,11 +316,11 @@ namespace GalacticScale
         {
             HidePlanetDetail();
             HideStarCount();
-            if (!viewStar.calculated)
+            if (!viewStar.scanned)
             {
                 Debug.Log("Star not Calculated. Planet Status:");
-                foreach (var p in viewStar.planets) Debug.Log($"{p.name}: {p.calculated}");
-                viewStar.RunCalculateThread();
+                foreach (var p in viewStar.planets) Debug.Log($"{p.name}: {p.scanned}");
+                viewStar.RunScanningThread();
             }
 
             ShowStarDetail(viewStar);
@@ -419,9 +419,9 @@ namespace GalacticScale
             GS2.Log($"{pData.name}");
             HideStarDetail();
             HideStarCount();
-            if (!pData.calculated) pData.RunCalculateThread();
+            if (!pData.scanned) pData.RunScanThread();
             ShowPlanetDetail(pData);
-            GS2.Log($"calculated:{pData.calculated} calculating:{pData.calculating}");
+            GS2.Log($"calculated:{pData.scanned} calculating:{pData.scanning}");
         }
 
         private static void OnSolarSystemPlanetRightClick(UIVirtualStarmap starmap, int clickIndex)
@@ -460,7 +460,7 @@ namespace GalacticScale
             HideStarCount();
             // pData.CalculateVeinGroups();
             // pData.NotifyCalculated();
-            pData.RunCalculateThread();
+            pData.RunScanThread();
             ShowPlanetDetail(pData);
         }
 
@@ -529,7 +529,7 @@ namespace GalacticScale
             // add star
             var starData = starmap._galaxyData.StarById(starIndex + 1); // because StarById() decrements by 1
             AddStarToStarmap(starmap, starData);
-            starData.RunCalculateThread();
+            starData.RunScanningThread();
             var starScale = starmap.starPool[0].starData.radius / 40f * GS2.Config.VirtualStarmapStarScaleFactor; //This is RadiusAU
             // var starScale = starmap.starPool[0].starData.radius * GS2.Config.VirtualStarmapStarScaleFactor;
 

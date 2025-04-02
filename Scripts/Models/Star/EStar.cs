@@ -14,8 +14,9 @@
         YellowGiant,
         WhiteGiant,
         BlueGiant,
+        OGiant,
         NeutronStar,
-        BlackHole
+        BlackHole,
         
     }
     internal static class EStarMethods
@@ -38,6 +39,7 @@
                 case EStar.BlackHole: return (EStarType.BlackHole, ESpectrType.X);
                 case EStar.NeutronStar: return (EStarType.NeutronStar, ESpectrType.X);
                 case EStar.WhiteDwarf: return (EStarType.WhiteDwarf, ESpectrType.X);
+                case EStar.OGiant: return (EStarType.GiantStar, ESpectrType.O);
             }
 
             GS2.Warn($"Failed to convert EStar {star}");
