@@ -7,7 +7,19 @@ namespace GalacticScale
     {
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.EndPlanetComputeThread))]
         public static bool EndPlanetComputeThread()
-        {
+        {	
+            lock (genPlanetReqList)
+            {
+                genPlanetReqList.Clear();
+            }
+            lock (modPlanetReqList)
+            {
+                modPlanetReqList.Clear();
+            }
+            lock (fctPlanetReqList)
+            {
+                fctPlanetReqList.Clear();
+            }
             lock (planetComputeThreadFlagLock)
             {
                 // Change: If the ThreadFlag is already ended, don't change it to ending

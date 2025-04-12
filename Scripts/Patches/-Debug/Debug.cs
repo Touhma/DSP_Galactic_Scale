@@ -17,6 +17,164 @@ namespace GalacticScale
 {
     public static class PatchOnUnspecified_Debug
     {
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.RequestScanStar))]
+
+        public static bool RequestScanStar(StarData star)
+        {
+            Queue<PlanetData> queue = PlanetModelingManager.genPlanetReqList;
+            lock (queue)
+            {
+                for (int i = 0; i < star.planetCount; i++)
+                {
+                    if (!star.planets[i].scanned && !star.planets[i].scanning && star.planets[i].data == null && !star.planets[i].loaded && !star.planets[i].loading)
+                    {
+
+                        star.planets[i].wanted = true;
+                        if (!star.planets[i].loaded && !star.planets[i].loading)
+                        {
+                            star.planets[i].loading = true;
+                            PlanetModelingManager.genPlanetReqList.Enqueue(star.planets[i]);
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // Token: 0x06004A32 RID: 18994 RVA: 0x003D4724 File Offset: 0x003D2924
+
+        
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.RequestScanPlanet))]
+
+        public static bool RequestScanPlanet(PlanetData planet)
+        {
+            Queue<PlanetData> queue = PlanetModelingManager.genPlanetReqList;
+            lock (queue)
+            {
+                planet.wanted = true;
+                if (!planet.loaded && !planet.loading)
+                {
+                    planet.loading = true;
+                    PlanetModelingManager.genPlanetReqList.Enqueue(planet);
+                }
+            }
+
+            return false;
+
+        }
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), nameof(PlanetData.CopyScannedDataFrom))]
+        public static bool CopyScannedDataFrom(ref PlanetData __instance, PlanetData copy)
+        {
+            if (__instance == null) __instance = new PlanetData();
+            // Warn($"CopyScannedDataFrom {copy}");
+            __instance.landPercent = copy.landPercent;
+            // Warn("0");
+            __instance.veinBiasVector = copy.veinBiasVector;
+            // Warn("1");
+            __instance.birthPoint = copy.birthPoint;
+            // Warn("2");
+            __instance.birthResourcePoint0 = copy.birthResourcePoint0;
+            // Warn("3");
+            __instance.birthResourcePoint1 = copy.birthResourcePoint1;
+            // Warn("4");
+            if (copy.veinGroups == null || copy.veinGroups.Length == 0) return false;
+            __instance.veinGroups = new VeinGroup[copy.veinGroups.Length];
+            // GS2.Log("A");
+            __instance.veinGroups[0].SetNull();
+            // GS2.Log("B");
+            for (int i = 1; i < copy.veinGroups.Length; i++)
+            {
+                // GS2.Log("C " + i);
+                __instance.veinGroups[i] = copy.veinGroups[i];
+            }
+            // GS2.Log("D");
+
+            return false;
+        }
+        
+        [HarmonyPrefix, HarmonyPatch(typeof(GalaxyData), nameof(GalaxyData.UpdateScanningProcedure))]
+        public static bool UpdateScanningProcedure_Prefix(GalaxyData __instance, long gameTick)
+        {
+            // if (gameTick % 600L == 0L) {
+            //     // GS2.Log("Processing Queue:");
+            //     foreach (var p in Modeler.processing)
+            //     {
+            //         // GS2.Log($"{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            //     }
+            //     GS2.Log("Scanning Queue:");
+            //     foreach (var p in PlanetModelingManager.scnPlanetReqList)
+            //     {
+            //         // GS2.Log($"{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            //     }
+            //     GS2.Log("Generating Queue:");
+            //     foreach (var p in PlanetModelingManager.genPlanetReqList)
+            //     {
+            //         // GS2.Log($"{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            //     }
+            //     GS2.Log("Fact Queue:");
+            //     foreach (var p in PlanetModelingManager.fctPlanetReqList)
+            //     {
+            //         GS2.Log($"{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            //     }
+            //     GS2.Log("Planet Modeling Queue:");
+            //     foreach (var p in Modeler.planetModQueue)
+            //     {
+            //         GS2.Log($"{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            //     }
+            //     GS2.Log("Planet Queue:");
+            //     foreach (var p in Modeler.planetQueue)
+            //     {
+            //         GS2.Log($"{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            //     }
+            // }
+            return false;
+        }
+        
+        [HarmonyPrefix, HarmonyPatch(typeof(StarData), nameof(StarData.RunScanningThread))]
+        public static bool RunScanningThread(ref StarData __instance)
+        {
+            // GS2.Warn($"StarData.RunScanningThread: {__instance.name} {__instance.scanned} initiated by {GetCaller(1)} | {GetCaller(2)}");
+            PlanetModelingManager.RequestScanStar(__instance);
+            foreach (var planet in __instance.planets)
+            {
+                if (planet.scanned == false)
+                {
+                    // GS2.Log($"Scanning planet - {planet.name}");
+                    planet.RunScanThread();
+                    
+                }
+            }
+            return false;
+        }
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), nameof(PlanetData.RunScanThread))]
+        public static bool RunScanningThread2(ref PlanetData __instance)
+        {
+            if (!Modeler.processing.Contains(__instance) && !PlanetModelingManager.genPlanetReqList.Contains(__instance)) PlanetModelingManager.genPlanetReqList.AddItem(__instance);
+            // GS2.Log($"Forcing modelling of {__instance.name} ");
+            return false;
+            GS2.Warn($"PlanetData.RunScanningThread: {__instance.name} {__instance.scanned} {__instance.scanning} initiated by {GetCaller(1)} | {GetCaller(2)}");
+            foreach (var i in PlanetModelingManager.scnPlanetReqList)
+            {
+                GS2.Warn($"PlanetScanList - {i.name} Scanned:{i.scanned} Scanning:{i.scanning} Loading:{i.loading} Loaded:{i.loaded} | PMMScanThread:{PlanetModelingManager.planetScanThreadFlag} PMMComputeThread:{PlanetModelingManager.planetComputeThreadFlag}");
+            }
+            PlanetModelingManager.RequestScanPlanet(__instance);
+            foreach (PlanetData p in Modeler.processing)
+            {
+                GS2.Log($"Processing Queue:{p.name} Scanned:{p.scanned} Scanning:{p.scanning} Loading:{p.loading} Loaded:{p.loaded}");
+            }
+            if (Modeler.processing.Count == 0) Modeler.ForceCalculate(__instance);
+            return false;
+        }
+        [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), nameof(PlanetData.ExportRuntime))]
+        public static bool ExportRuntime_Prefix(PlanetData __instance)
+        {
+            if (__instance.modData == null)
+            {
+                __instance.data.InitModData(__instance.modData);
+            }
+            return true;
+        }
         [HarmonyPrefix, HarmonyPatch(typeof(DysonSphere), nameof(DysonSphere.RocketGameTick),new []{
             typeof(int), typeof(int), typeof(int)
         })]

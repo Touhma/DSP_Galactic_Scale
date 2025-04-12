@@ -2,6 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.73.3 - Force Modelling of Planets instead of scanning. Prevent Automatic Scanning every 10s
+- Version 2.73.2 - Init ModData on save to try prevent error
 - Version 2.73.1 - Fix game loading error when you save in outer space
 - Version 2.73.0 - Update for DSP Version 0.10.32.25779
 - Version 2.72.5 - Add O-Type Giant

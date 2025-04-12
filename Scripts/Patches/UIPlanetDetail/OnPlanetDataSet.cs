@@ -303,7 +303,7 @@ namespace GalacticScale
 						if (__instance.planet.landPercentDirtyFlag)
 						{
 							PlanetAlgorithm.CalcLandPercent(__instance.planet);
-							__instance.planet.landPercentDirtyFlag = false;
+							// __instance.planet.landPercentDirtyFlag = false;
 						}
 
 						StringBuilderUtility.WritePositiveFloat(entry4.sb, 0, 5, __instance.planet.landPercent * 100f,
