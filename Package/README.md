@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.74.4 - Attempt to fix memory leak
 - Version 2.73.3 - Force Modelling of Planets instead of scanning. Prevent Automatic Scanning every 10s
 - Version 2.73.2 - Init ModData on save to try prevent error
 - Version 2.73.1 - Fix game loading error when you save in outer space
@@ -32,7 +33,7 @@
 - Version 2.14.2 - Starfish fixed: Fix trash doesn't pick up by BAB soon on outer planets.  Fix throwable dealt no damage on different size planets.  Fix throwable curvature on outer planets. Fix Nebula client error when joining in space
 - Version 2.14.1 - Fix Gas Giant Moon Start
 - Version 2.14.0 - Update DSP Version
-- Version 2.13.4 - Even more hopfully fix bugs with rockets and spheres. Hopefully fix but with rare veins spawning on gas giants
+- Version 2.13.4 - Even more hopefully fix bugs with rockets and spheres. Hopefully fix but with rare veins spawning on gas giants
 - Version 2.13.3 - Hopefully fix bugs with rockets and spheres
 - Version 2.13.2 - Nebula Compatibility
 - Version 2.13.1 - Hopefully fix DF Drops not relating to planet type. Fixed the planet theme descriptions for Vanilla Themes. GS Themes still use their base theme... for now.

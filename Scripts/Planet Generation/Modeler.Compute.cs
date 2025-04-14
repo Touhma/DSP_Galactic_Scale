@@ -137,6 +137,7 @@ namespace GalacticScale
 
                                 compPlanet?.NotifyScanEnded();
                                 if (processing.Contains(compPlanet)) processing.Remove(compPlanet);
+                                if (compPlanet.star != GameMain.localStar) compPlanet.Unload();
                             }
                         }
                         catch (Exception ex)
@@ -152,7 +153,7 @@ namespace GalacticScale
                         lock (modPlanetReqList)
                         {
                             //Log($"Queuing {planetData.name} in modPlanetReqList after {pqsw.duration:F5}");
-                            modPlanetReqList.Enqueue(compPlanet);
+                            if (compPlanet.star == GameMain.localStar) modPlanetReqList.Enqueue(compPlanet);
                         }
                     }
                 }

@@ -45,24 +45,24 @@ namespace GalacticScale
         // Token: 0x06004A32 RID: 18994 RVA: 0x003D4724 File Offset: 0x003D2924
 
         
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.RequestScanPlanet))]
-
-        public static bool RequestScanPlanet(PlanetData planet)
-        {
-            Queue<PlanetData> queue = PlanetModelingManager.genPlanetReqList;
-            lock (queue)
-            {
-                planet.wanted = true;
-                if (!planet.loaded && !planet.loading)
-                {
-                    planet.loading = true;
-                    PlanetModelingManager.genPlanetReqList.Enqueue(planet);
-                }
-            }
-
-            return false;
-
-        }
+        // [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.RequestScanPlanet))]
+        //
+        // public static bool RequestScanPlanet(PlanetData planet)
+        // {
+        //     Queue<PlanetData> queue = PlanetModelingManager.genPlanetReqList;
+        //     lock (queue)
+        //     {
+        //         planet.wanted = true;
+        //         if (!planet.loaded && !planet.loading)
+        //         {
+        //             planet.loading = true;
+        //             PlanetModelingManager.genPlanetReqList.Enqueue(planet);
+        //         }
+        //     }
+        //
+        //     return false;
+        //
+        // }
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), nameof(PlanetData.CopyScannedDataFrom))]
         public static bool CopyScannedDataFrom(ref PlanetData __instance, PlanetData copy)
         {
