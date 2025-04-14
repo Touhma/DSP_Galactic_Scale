@@ -37,6 +37,7 @@ namespace GalacticScale
         public static VegeAlgorithmLibrary VegeAlgorithmLibrary = VegeAlgorithmLibrary.Init();
         public static GS2MainSettings Config = new();
 
+        public static PlanetData fastTravelTargetPlanet = null;
         public static GalaxyData galaxy;
 
         public static GameDesc gameDesc;
@@ -127,7 +128,7 @@ namespace GalacticScale
                 Directory.Move(OldDataDir, DataDir);
                 updateMessage += "Galactic Scale config Directory has changed to \r\n ...\\BepInEx\\config\\GalacticScale \r\nThis is to prevent data being lost when updating using the mod manager.\r\n".Translate();
             }
-            
+
             // Warn("Step3");
             if (!Directory.Exists(DataDir)) Directory.CreateDirectory(DataDir);
             if (Directory.Exists(Path.Combine(DataDir, "Splash"))) Utils.LoadSplashImagesFromDirectory();
@@ -219,6 +220,6 @@ namespace GalacticScale
             else
                 Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
         }
-        
+
     }
 }

@@ -81,6 +81,29 @@ namespace GalacticScale
 
                     }
 
+                    if (planetComputeThreadFlag == ThreadFlag.Running)
+
+
+                    {
+                        while (unloadPlanets.Count > 0 && GameMain.instance._running && !GameMain.instance._loading)
+                        {
+
+                            lock (unloadPlanets)
+                            {
+                                var u = unloadPlanets.Dequeue();
+                                Log($"Trying to unload planet {u.name}. Local Star : {GameMain.localStar?.name}");
+                                Log($"Distance to planet: {distanceTo(u)}. IsLocal: {GameMain.localStar == u.star}");
+                                if (u == GS2.fastTravelTargetPlanet)
+                                {
+                                    u.Load();
+                                    Log($"Skipping unload for {u.name} as it is the fast travel target.");
+                                    continue;
+                                }
+                                if (GameMain.localStar != u.star) u.Unload();
+                            }
+                        }
+                    }
+
                     if (compPlanet != null && planetComputeThreadFlag == ThreadFlag.Running)
                     {
                         Log($"Preamble time taken:{pqsw.duration:F5}");
@@ -137,7 +160,7 @@ namespace GalacticScale
 
                                 compPlanet?.NotifyScanEnded();
                                 if (processing.Contains(compPlanet)) processing.Remove(compPlanet);
-                                if (compPlanet.star != GameMain.localStar) compPlanet.Unload();
+                                
                             }
                         }
                         catch (Exception ex)
@@ -153,7 +176,21 @@ namespace GalacticScale
                         lock (modPlanetReqList)
                         {
                             //Log($"Queuing {planetData.name} in modPlanetReqList after {pqsw.duration:F5}");
-                            if (compPlanet.star == GameMain.localStar) modPlanetReqList.Enqueue(compPlanet);
+                            if (compPlanet.star == GameMain.localStar)
+                            {
+                                modPlanetReqList.Enqueue(compPlanet);
+                            }
+                            else
+                            {
+                                unloadPlanets.Enqueue(compPlanet);
+                                GS2.Log($"Unloading Planet {compPlanet.name}. Existing array:");
+                                foreach (var u in unloadPlanets)
+                                {
+                                    GS2.Log($"{u.name}");
+                                }
+                                GS2.Log("---");
+                            }
+        
                         }
                     }
                 }

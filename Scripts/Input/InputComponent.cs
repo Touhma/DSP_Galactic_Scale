@@ -6,13 +6,19 @@ namespace GalacticScale
 {
     public class InputComponent : MonoBehaviour
     {
-        // public void Awake()
-        // {
-        //     GS2.Warn("Input component Awake");
-        // }
+        public void Awake()
+        {
+            GS2.Warn("Input component Awake");
+        }
 
         public void FixedUpdate()
         {
+            if (VFInput.alt && VFInput._copyKey)
+            {
+                GS2.Warn($"Local Planet:{GameMain.localPlanet} | {GameMain.localStar}");
+                GS2.Warn($"Loaded:{GameMain.localPlanet.loaded} | Loading: {GameMain.localPlanet.loading}");
+                GameMain.localPlanet.Load();
+            }
             // GS2.Log("FU");
             if (VFInput.alt && VFInput.control && VFInput._openMechLight && GS2.Config.DevMode)
             {
