@@ -14,11 +14,10 @@ namespace GalacticScale
         
         public static bool Compute()
         {
-            Log("Compute");
-            object obj = null;
+            Thread thread = null;
             lock (planetComputeThreadFlagLock)
             {
-                obj = planetComputeThread;
+                thread = planetComputeThread;
             }
 
             var cycles = 0;
@@ -32,6 +31,12 @@ namespace GalacticScale
                 {
                     lock (planetComputeThreadFlagLock)
                     {
+                        if (thread != planetComputeThread)
+                        {
+                            Log("End due to planetComputeThread mismatch");
+                            return false;
+                        }
+
                         if (planetComputeThreadFlag != ThreadFlag.Running)
                         {
                             planetComputeThreadFlag = ThreadFlag.Ended;
@@ -39,13 +44,7 @@ namespace GalacticScale
                             planetModQueue.Clear();
                             planetQueueSorted = false;
                             planetModQueueSorted = false;
-                            Warn($"Ended after:{pqsw.duration:F5}");
-                            return false;
-                        }
-
-                        if (obj != planetComputeThread)
-                        {
-                            Warn("End due to planetComputeThread mismatch");
+                            Log($"Ended after:{pqsw.duration:F5}");
                             return false;
                         }
                     }
@@ -131,8 +130,12 @@ namespace GalacticScale
                                 if (planetComputeThreadLogs != null)
                                     lock (planetComputeThreadLogs)
                                     {
-                                        planetComputeThreadLogs.Add($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
-                                        Log($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                        // Change: Compress it to one line
+                                        string timerMessage = $"[Terrain]:{num2:F3}s [Vegetables]:{num3:F3}s [Veins]:{num4:F3}s  Planet: {compPlanet.displayName}";
+                                        planetComputeThreadLogs.Add(timerMessage);
+                                        Log(timerMessage);
+                                        //planetComputeThreadLogs.Add($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                        //Log($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                     }
 
                                 compPlanet?.NotifyScanEnded();
