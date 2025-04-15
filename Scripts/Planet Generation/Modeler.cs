@@ -10,7 +10,6 @@ namespace GalacticScale
         public static List<PlanetData> planetModQueue = new();
         public static bool planetModQueueSorted;
         public static List<PlanetData> planetQueue = new();
-        public static Queue<PlanetData> unloadPlanets = new Queue<PlanetData>(1000);
         public static bool planetQueueSorted;
         public static List<PlanetData> processing = new();
         public static bool Idle => processing.Count == 0;
@@ -21,7 +20,6 @@ namespace GalacticScale
             genPlanetReqList = new Queue<PlanetData>(100);
             modPlanetReqList = new Queue<PlanetData>(100);
             fctPlanetReqList = new Queue<PlanetData>(100);
-            unloadPlanets = new Queue<PlanetData>(1000);
             planetModQueue = new List<PlanetData>();
             planetModQueueSorted = false;
             planetQueue = new List<PlanetData>();
