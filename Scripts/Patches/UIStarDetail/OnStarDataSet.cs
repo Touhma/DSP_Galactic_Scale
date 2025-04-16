@@ -104,22 +104,8 @@ namespace GalacticScale
 	{
 		if (!__instance.star.scanned)
 		{
-            GS2.Log($"Scanning star {____star.name}");
 			__instance.star.RunScanningThread();
 		}
-        else
-        {
-            GS2.Log($"Already scanned star {__instance.star.name}");
-            foreach (PlanetData pd in __instance.star.planets)
-            {
-                if (!pd.scanned)
-                {
-                    AccessTools.Field(typeof(StarData), "scanned").SetValue(__instance.star, false);
-                    if (!Modeler.processing.Contains(pd) && !PlanetModelingManager.genPlanetReqList.Contains(pd)) PlanetModelingManager.genPlanetReqList.AddItem(pd);
-                }
-                GS2.Log($" {pd.name} | Scanned:{pd.scanned} | Scanning:{pd.scanning} | Star:{__instance.star.name} | Star Scanned:{__instance.star.scanned}");
-            }
-        }
 		__instance.calculated = __instance.star.scanned;
 		double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;
 		int num = (__instance.star == GameMain.localStar) ? 2 : ((magnitude < 14400000.0) ? 3 : 4);

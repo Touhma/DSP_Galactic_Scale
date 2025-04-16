@@ -14,11 +14,10 @@ namespace GalacticScale
         
         public static bool Compute()
         {
-            Log("Compute");
-            object obj = null;
+            Thread thread = null;
             lock (planetComputeThreadFlagLock)
             {
-                obj = planetComputeThread;
+                thread = planetComputeThread;
             }
 
             var cycles = 0;
@@ -32,6 +31,12 @@ namespace GalacticScale
                 {
                     lock (planetComputeThreadFlagLock)
                     {
+                        if (thread != planetComputeThread)
+                        {
+                            Log("End due to planetComputeThread mismatch");
+                            return false;
+                        }
+
                         if (planetComputeThreadFlag != ThreadFlag.Running)
                         {
                             planetComputeThreadFlag = ThreadFlag.Ended;
@@ -39,13 +44,7 @@ namespace GalacticScale
                             planetModQueue.Clear();
                             planetQueueSorted = false;
                             planetModQueueSorted = false;
-                            Warn($"Ended after:{pqsw.duration:F5}");
-                            return false;
-                        }
-
-                        if (obj != planetComputeThread)
-                        {
-                            Warn("End due to planetComputeThread mismatch");
+                            Log($"Ended after:{pqsw.duration:F5}");
                             return false;
                         }
                     }
@@ -79,29 +78,6 @@ namespace GalacticScale
                         planetQueue.RemoveAt(0);
                         Log($"Retrieved sorted planet from list: {compPlanet.name}");
 
-                    }
-
-                    if (planetComputeThreadFlag == ThreadFlag.Running)
-
-
-                    {
-                        while (unloadPlanets.Count > 0 && GameMain.instance._running && !GameMain.instance._loading)
-                        {
-
-                            lock (unloadPlanets)
-                            {
-                                var u = unloadPlanets.Dequeue();
-                                Log($"Trying to unload planet {u.name}. Local Star : {GameMain.localStar?.name}");
-                                Log($"Distance to planet: {distanceTo(u)}. IsLocal: {GameMain.localStar == u.star}");
-                                if (u == GS2.fastTravelTargetPlanet)
-                                {
-                                    u.Load();
-                                    Log($"Skipping unload for {u.name} as it is the fast travel target.");
-                                    continue;
-                                }
-                                if (GameMain.localStar != u.star) u.Unload();
-                            }
-                        }
                     }
 
                     if (compPlanet != null && planetComputeThreadFlag == ThreadFlag.Running)
@@ -154,13 +130,16 @@ namespace GalacticScale
                                 if (planetComputeThreadLogs != null)
                                     lock (planetComputeThreadLogs)
                                     {
-                                        planetComputeThreadLogs.Add($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
-                                        Log($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                        // Change: Compress it to one line
+                                        string timerMessage = $"[Terrain]:{num2:F3}s [Vegetables]:{num3:F3}s [Veins]:{num4:F3}s  Planet: {compPlanet.displayName}";
+                                        planetComputeThreadLogs.Add(timerMessage);
+                                        Log(timerMessage);
+                                        //planetComputeThreadLogs.Add($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
+                                        //Log($"{compPlanet.displayName}\r\nGenerate Terrain {num2:F5} s\r\nGenerate Vegetables {num3:F5} s\r\nGenerate Veins {num4:F5} s\r\n");
                                     }
 
                                 compPlanet?.NotifyScanEnded();
                                 if (processing.Contains(compPlanet)) processing.Remove(compPlanet);
-                                
                             }
                         }
                         catch (Exception ex)
@@ -176,21 +155,7 @@ namespace GalacticScale
                         lock (modPlanetReqList)
                         {
                             //Log($"Queuing {planetData.name} in modPlanetReqList after {pqsw.duration:F5}");
-                            if (compPlanet.star == GameMain.localStar)
-                            {
-                                modPlanetReqList.Enqueue(compPlanet);
-                            }
-                            else
-                            {
-                                unloadPlanets.Enqueue(compPlanet);
-                                GS2.Log($"Unloading Planet {compPlanet.name}. Existing array:");
-                                foreach (var u in unloadPlanets)
-                                {
-                                    GS2.Log($"{u.name}");
-                                }
-                                GS2.Log("---");
-                            }
-        
+                            modPlanetReqList.Enqueue(compPlanet);
                         }
                     }
                 }

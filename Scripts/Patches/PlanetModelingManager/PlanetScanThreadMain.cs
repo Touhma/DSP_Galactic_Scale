@@ -7,9 +7,11 @@ namespace GalacticScale
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetModelingManager),nameof(PlanetModelingManager.PlanetScanThreadMain))]
-        public static bool PlanetCalculateThreadMain()
+        public static bool PlanetScanThreadMain()
         {
-            Modeler.Calculate();
+            GS2.Warn("Loop start. ThreadFlag: " + planetScanThreadFlag);
+            Modeler.Scan();
+            GS2.Warn("Loop end. ThreadFlag: " + planetScanThreadFlag);
             return false;
         }
     }

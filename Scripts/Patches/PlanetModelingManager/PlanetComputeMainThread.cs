@@ -9,8 +9,9 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.PlanetComputeThreadMain))]
         public static bool PlanetComputeThreadMain()
         {
+            GS2.Warn("Loop start. ThreadFlag: " + planetComputeThreadFlag);
             Modeler.Compute();
-            GS2.Log("Loop end. ThreadFlag: " + planetComputeThreadFlag);
+            GS2.Warn("Loop end. ThreadFlag: " + planetComputeThreadFlag);
             return false;
         }
     }
