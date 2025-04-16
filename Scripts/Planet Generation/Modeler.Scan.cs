@@ -8,7 +8,7 @@ namespace GalacticScale
 {
     public static partial class Modeler
     {
-        public static void Calculate()
+        public static void Scan()
         {
             Thread thread = null;
             var threadFlagLock = planetProcessingLock;
