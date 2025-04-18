@@ -2,6 +2,10 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.75.8 - More Null Checks
+- Version 2.75.7 - Init RawData if missing
+- Version 2.75.6 - Add Nullcheck and wonder how I got the version numbering so hopelessly out of order
+- Version 2.75.5 - Starfish saves the day (again). Many thanks!
 - Version 2.74.4 - Attempt to fix memory leak
 - Version 2.73.3 - Force Modelling of Planets instead of scanning. Prevent Automatic Scanning every 10s
 - Version 2.73.2 - Init ModData on save to try prevent error

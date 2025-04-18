@@ -17,6 +17,32 @@ namespace GalacticScale
 {
     public static class PatchOnUnspecified_Debug
     {
+        
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlanetData), "ExportRuntime")]
+        public static void ExportRuntime_Prefix(PlanetData __instance)
+        {
+            try
+            {
+                if (__instance == null) return;
+                if (__instance.modData != null) return;
+                lock (PlanetModelingManager.planetProcessingLock)
+                {
+                    if (__instance.data == null) __instance.data = new PlanetRawData(__instance.precision);
+                    __instance.data.InitModData(__instance.modData);
+                }
+            }
+            catch
+            {
+                int precision = __instance.precision;
+                int dataLength = (precision + 1) * (precision + 1) * 4;
+                lock (PlanetModelingManager.planetProcessingLock)
+                {
+                    __instance.modData = new byte[dataLength / 2];
+                }
+            }
+        }
+        
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.RequestScanPlanet))]
         public static void RequestScanPlanet(PlanetData planet)
         {
@@ -29,15 +55,7 @@ namespace GalacticScale
             return false;
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(PlanetData), nameof(PlanetData.ExportRuntime))]
-        public static bool ExportRuntime_Prefix(PlanetData __instance)
-        {
-            if (__instance.modData == null)
-            {
-                __instance.data.InitModData(__instance.modData);
-            }
-            return true;
-        }
+
 
         [HarmonyPrefix, HarmonyPatch(typeof(DysonSphere), nameof(DysonSphere.RocketGameTick),new []{
             typeof(int), typeof(int), typeof(int)
