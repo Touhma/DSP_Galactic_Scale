@@ -323,13 +323,20 @@ namespace GalacticScale
                                         try
                                         {
                                             VectorLF3 vec = Maths.QInvRotateLF(__instance.relRot, cosmicMessageData.uPosition - __instance.relPos);
-                                            
-                                            // Safe doodad lookup
+
+                                            // --- GS2 Logging START ---
+                                            // Determine type first to log it correctly
                                             ESpaceGuideType guideType;
                                             var doodad = LDB.doodads.Select(cosmicMessageData.doodadProtoId);
-                                            guideType = (doodad != null && doodad.ID == 5) ? 
+                                            guideType = (doodad != null && doodad.ID == 5) ?
                                                 ESpaceGuideType.DFCommunicator : ESpaceGuideType.CosmicMessage;
-                                            
+
+                                            if (guideType == ESpaceGuideType.CosmicMessage || guideType == ESpaceGuideType.DFCommunicator)
+                                            {
+                                                GS2.Log($"Setting Entry for {guideType} ID:{protoId} | uPos: {cosmicMessageData.uPosition} | RelVec: {vec} | uPosMag: {cosmicMessageData.uPosition.magnitude:E2} | RelVecMag: {vec.magnitude:E2}");
+                                            }
+                                            // --- GS2 Logging END ---
+
                                             __instance.SetEntry(ref _guidecnt, guideType, protoId, 0, vec, 1f);
                                         }
                                         catch (System.Exception ex)

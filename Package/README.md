@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.75.9 - Add finer galaxy control to Dev Generator. Add Logging for some save bugs, and Communicator bugs. Make sure you turn logging on! (And in BepInEx config)
 - Version 2.75.8 - More Null Checks
 - Version 2.75.7 - Init RawData if missing
 - Version 2.75.6 - Add Nullcheck and wonder how I got the version numbering so hopelessly out of order

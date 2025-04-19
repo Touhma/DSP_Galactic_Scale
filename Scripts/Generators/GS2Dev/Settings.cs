@@ -37,6 +37,7 @@ namespace GalacticScale.Generators
             InitPreferences();
         }
 
+
         public void Import(GSGenPreferences importedPreferences)
         {
             Warn("Importing Preferences");
@@ -188,6 +189,8 @@ namespace GalacticScale.Generators
             // Log("InitPreferences");
             GetHz();
             foreach (var hz in hzDefs) preferences.Set($"{hz.Key}hz", hz.Value);
+            preferences.Set("minDistance", 3);
+            preferences.Set("stepLength", new FloatPair(3, 5));
             preferences.Set("birthStar", 14);
             preferences.Set("rotationMulti", 1f);
             preferences.Set("innerPlanetDistance", 1f);
@@ -411,11 +414,30 @@ namespace GalacticScale.Generators
             return bOptions;
         }
 
+        public void adjustDensity(Val value)
+        {
+            (minDistance, minStepLength, maxStepLength) = SetGalaxyDensity(value.Int(1));
+            GS2.Log($"adjustDensity called. Density: {value.Int(1)}, Returned minDistance: {minDistance}");
+            UI["stepLength"].Set(new FloatPair(minStepLength,maxStepLength));
+            UI["minDistance"].Set(minDistance);
+            GS2.Log($"UI['minDistance'].Set({minDistance}) called.");
+        }
+        public void zeroDensity(Val value)
+        {
+            preferences.Set("galaxyDensity", 0);
+            UI["galaxyDensity"].Set(0);
+        }
         private GSOptions CreateGalaxyOptions()
         {
             var gOptions = new GSOptions();
             AddSpacer(gOptions);
-            UI.Add("galaxyDensity", gOptions.Add(GSUI.Slider("Galaxy Spread".Translate(), 1, 5, 20, "galaxyDensity", null, "Lower = Stars are closer to each other. Default is 5".Translate())));
+             GSUI galaxyDensity = GSUI.Slider("Galaxy Spread".Translate(), 0, 5, 20, "galaxyDensity", adjustDensity, "Lower = Stars are closer to each other. Default is 5".Translate());
+             GSUI stepDistance = GSUI.Slider("Min Distance".Translate(),0.0f,2.0f,10.0f,"minDistance", null, "USE GALAXY SPREAD INSTEAD! - Min Distance Between Stars".Translate() );
+             GSUI stepLength = GSUI.RangeSlider("Step Length".Translate(),0.0f,1.0f,5.0f, 15f, 0.1f,"stepLength", null, null, null, "SE GALAXY SPREAD INSTEAD! - Min/Max Distance Between Stars".Translate());
+
+            UI.Add("galaxyDensity", gOptions.Add(galaxyDensity));
+            UI.Add("minDistance",  gOptions.Add(stepDistance));
+            UI.Add("stepLength", gOptions.Add( stepLength));
             UI.Add("defaultStarCount", gOptions.Add(GSUI.Slider("Default StarCount".Translate(), 1, 64, 1024, "defaultStarCount", DefaultStarCountCallback, "How many stars should the slider default to".Translate())));
             UI.Add("starSizeMulti", gOptions.Add(GSUI.Slider("Star Size Multiplier".Translate(), 0.5f, 5f, 20, 0.5f, "starSizeMulti", null, "GS2 uses 10x as standard. They just look cooler.".Translate())));
             UI.Add("luminosityBoost", gOptions.Add(GSUI.Slider("Luminosity Multiplier".Translate(), 0, 0, 10, .25f, "luminosityBoost", LuminosityBoostCallback, "Increase the luminosity of all stars by this multiplier".Translate(), "Default".Translate())));

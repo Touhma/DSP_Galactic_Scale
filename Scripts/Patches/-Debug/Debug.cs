@@ -25,6 +25,72 @@ namespace GalacticScale
             try
             {
                 if (__instance == null) return;
+                
+                // Get the type of the instance
+                var type = __instance.GetType();
+
+                // Get all public instance properties
+                var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+
+                GS2.Log($"--- Exporting PlanetData: {__instance.displayName} ({__instance.id}) ---");
+
+                // Iterate through properties and log their status
+                foreach (var property in properties)
+                {
+                    try
+                    {
+                        // Skip indexers to avoid exceptions
+                        if (property.GetIndexParameters().Length > 0) continue; 
+                        
+                        var value = property.GetValue(__instance, null);
+                        string status;
+                        if (value == null)
+                        {
+                            status = "null";
+                        }
+                        else
+                        {
+                            var propertyType = property.PropertyType;
+                            // Check for primitive types, string, decimal, enums, and Vector types
+                            if (propertyType.IsPrimitive || 
+                                propertyType == typeof(string) || 
+                                propertyType.IsEnum || 
+                                propertyType == typeof(decimal) ||
+                                propertyType == typeof(Vector2) ||
+                                propertyType == typeof(Vector3) ||
+                                propertyType == typeof(Vector4) ||
+                                propertyType == typeof(VectorLF3) ||
+                                propertyType == typeof(Quaternion)) 
+                            {
+                                status = value.ToString();
+                            }
+                            // Check for arrays or lists explicitly
+                            else if (propertyType.IsArray || (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>)))
+                            {
+                                System.Collections.IEnumerable collection = value as System.Collections.IEnumerable;
+                                int count = 0;
+                                if (collection != null)
+                                {
+                                     if (propertyType.IsArray) count = ((Array)collection).Length;
+                                     else count = (int)propertyType.GetProperty("Count").GetValue(collection, null);
+                                }
+                                status = $"{propertyType.Name}[{count}]";
+                            }
+                            else
+                            {
+                                status = "Object"; // For other complex objects
+                            }
+                        }
+                        GS2.Log($"Export:{property.Name}: {status}");
+                    }
+                    catch (Exception e)
+                    {
+                        // Handle potential exceptions when accessing properties 
+                        GS2.Log($"Export:{property.Name}: Error accessing property - {e.GetType().Name}: {e.Message}");
+                    }
+                }
+                GS2.Log($"--- Finished Exporting PlanetData: {__instance.displayName} ({__instance.id}) ---");
+
                 if (__instance.modData != null) return;
                 lock (PlanetModelingManager.planetProcessingLock)
                 {

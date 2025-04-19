@@ -154,10 +154,16 @@ namespace GalacticScale.Generators
 
      
 
-        public void SetGalaxyDensity(int density)
+        public (float,float,float) SetGalaxyDensity(int density)
         {
             switch (density)
             {
+                case 0:
+                    var stepLength = preferences.GetFloatFloat("stepLength");
+                    minStepLength =stepLength.low;
+                    maxStepLength = stepLength.high;
+                    minDistance = preferences.GetFloat("minDistance");
+                    break;
                 case 1:
                     minStepLength = 1.2f;
                     maxStepLength = 1.5f;
@@ -214,6 +220,7 @@ namespace GalacticScale.Generators
             GSSettings.GalaxyParams.minDistance = minDistance;
             GSSettings.GalaxyParams.minStepLength = minStepLength;
             GSSettings.GalaxyParams.maxStepLength = maxStepLength;
+            return (minDistance, minStepLength, maxStepLength);
         }
 
 

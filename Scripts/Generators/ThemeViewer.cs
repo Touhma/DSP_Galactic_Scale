@@ -9,7 +9,7 @@ namespace GalacticScale.Generators
 
         public static string themename;
         public ThemeLibrary ThemeTestLibrary = new();
-        public GSUI uiList;
+        public GSUI uiList; 
 
         public string Name => "ThemeViewer";
 
