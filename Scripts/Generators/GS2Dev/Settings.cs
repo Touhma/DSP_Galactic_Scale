@@ -421,6 +421,16 @@ namespace GalacticScale.Generators
             UI["stepLength"].Set(new FloatPair(minStepLength,maxStepLength));
             UI["minDistance"].Set(minDistance);
             GS2.Log($"UI['minDistance'].Set({minDistance}) called.");
+            if (value.Int(1) == 0)
+            {
+                UI["minDistance"].Enable();
+                UI["stepLength"].Enable();
+            }
+            else
+            {
+                UI["minDistance"].Disable();
+                UI["stepLength"].Disable();
+            }
         }
         public void zeroDensity(Val value)
         {

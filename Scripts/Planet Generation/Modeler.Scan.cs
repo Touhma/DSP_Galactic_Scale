@@ -138,12 +138,14 @@ namespace GalacticScale
             // Clear data and leave only landPercent, veinGroups and other useful data 
             PlanetData emptyCopy = new();
             emptyCopy.CopyScannedDataFrom(calcPlanet);
+            emptyCopy.DeepCopyScannedDataFrom(calcPlanet);
             emptyCopy.gasItems = calcPlanet.gasItems; // Those are not include in CopyScannedDataFrom
             emptyCopy.gasSpeeds = calcPlanet.gasSpeeds;
             emptyCopy.gasHeatValues = calcPlanet.gasSpeeds;
             emptyCopy.gasTotalHeat = calcPlanet.gasTotalHeat;
-            calcPlanet.Free();
+            // calcPlanet.Free();
             calcPlanet.CopyScannedDataFrom(emptyCopy);
+            calcPlanet.DeepCopyScannedDataFrom(emptyCopy);
             calcPlanet.gasItems = emptyCopy.gasItems;
             calcPlanet.gasSpeeds = emptyCopy.gasSpeeds;
             calcPlanet.gasSpeeds = emptyCopy.gasHeatValues;

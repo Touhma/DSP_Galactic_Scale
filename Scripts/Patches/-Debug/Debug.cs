@@ -25,75 +25,131 @@ namespace GalacticScale
             try
             {
                 if (__instance == null) return;
-                
-                // Get the type of the instance
                 var type = __instance.GetType();
 
-                // Get all public instance properties
-                var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                // Get all fields (public and non-public, instance)
+                var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                // Get all properties (public and non-public, instance)
+                var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
                 GS2.Log($"--- Exporting PlanetData: {__instance.displayName} ({__instance.id}) ---");
 
-                // Iterate through properties and log their status
-                foreach (var property in properties)
-                {
-                    try
-                    {
-                        // Skip indexers to avoid exceptions
-                        if (property.GetIndexParameters().Length > 0) continue; 
-                        
-                        var value = property.GetValue(__instance, null);
-                        string status;
-                        if (value == null)
-                        {
-                            status = "null";
-                        }
-                        else
-                        {
-                            var propertyType = property.PropertyType;
-                            // Check for primitive types, string, decimal, enums, and Vector types
-                            if (propertyType.IsPrimitive || 
-                                propertyType == typeof(string) || 
-                                propertyType.IsEnum || 
-                                propertyType == typeof(decimal) ||
-                                propertyType == typeof(Vector2) ||
-                                propertyType == typeof(Vector3) ||
-                                propertyType == typeof(Vector4) ||
-                                propertyType == typeof(VectorLF3) ||
-                                propertyType == typeof(Quaternion)) 
-                            {
-                                status = value.ToString();
-                            }
-                            // Check for arrays or lists explicitly
-                            else if (propertyType.IsArray || (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>)))
-                            {
-                                System.Collections.IEnumerable collection = value as System.Collections.IEnumerable;
-                                int count = 0;
-                                if (collection != null)
-                                {
-                                     if (propertyType.IsArray) count = ((Array)collection).Length;
-                                     else count = (int)propertyType.GetProperty("Count").GetValue(collection, null);
-                                }
-                                status = $"{propertyType.Name}[{count}]";
-                            }
-                            else
-                            {
-                                status = "Object"; // For other complex objects
-                            }
-                        }
-                        GS2.Log($"Export:{property.Name}: {status}");
-                    }
-                    catch (Exception e)
-                    {
-                        // Handle potential exceptions when accessing properties 
-                        GS2.Log($"Export:{property.Name}: Error accessing property - {e.GetType().Name}: {e.Message}");
-                    }
-                }
-                GS2.Log($"--- Finished Exporting PlanetData: {__instance.displayName} ({__instance.id}) ---");
+                // var loggedNames = new HashSet<string>();
+                //
+                // // Log all fields
+                // foreach (var field in fields)
+                // {
+                //     try
+                //     {
+                //         var value = field.GetValue(__instance);
+                //         string status;
+                //         if (value == null)
+                //         {
+                //             status = "null";
+                //         }
+                //         else
+                //         {
+                //             var fieldType = field.FieldType;
+                //             if (fieldType.IsPrimitive ||
+                //                 fieldType == typeof(string) ||
+                //                 fieldType.IsEnum ||
+                //                 fieldType == typeof(decimal) ||
+                //                 fieldType == typeof(Vector2) ||
+                //                 fieldType == typeof(Vector3) ||
+                //                 fieldType == typeof(Vector4) ||
+                //                 fieldType == typeof(VectorLF3) ||
+                //                 fieldType == typeof(Quaternion))
+                //             {
+                //                 status = value.ToString();
+                //             }
+                //             else if (fieldType.IsArray || (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>)))
+                //             {
+                //                 System.Collections.IEnumerable collection = value as System.Collections.IEnumerable;
+                //                 int count = 0;
+                //                 if (collection != null)
+                //                 {
+                //                     if (fieldType.IsArray) count = ((Array)collection).Length;
+                //                     else count = (int)fieldType.GetProperty("Count").GetValue(collection, null);
+                //                 }
+                //                 status = $"{fieldType.Name}[{count}]";
+                //             }
+                //             else
+                //             {
+                //                 status = "Object";
+                //             }
+                //         }
+                //         GS2.Log($"Export(Field):{field.Name}: {status}");
+                //         loggedNames.Add(field.Name);
+                //
+                //         // If this is the 'data' field and not null, log its internals
+                //         if (field.Name == "data" && value != null)
+                //         {
+                //             LogPlanetRawData(value);
+                //         }
+                //     }
+                //     catch (Exception e)
+                //     {
+                //         GS2.Log($"Export(Field):{field.Name}: Error accessing field - {e.GetType().Name}: {e.Message}");
+                //     }
+                // }
+                //
+                // // Log all properties (skip if already logged by field)
+                // foreach (var property in properties)
+                // {
+                //     if (loggedNames.Contains(property.Name)) continue;
+                //     try
+                //     {
+                //         if (property.GetIndexParameters().Length > 0) continue; // skip indexers
+                //         var value = property.GetValue(__instance, null);
+                //         string status;
+                //         if (value == null)
+                //         {
+                //             status = "null";
+                //         }
+                //         else
+                //         {
+                //             var propertyType = property.PropertyType;
+                //             if (propertyType.IsPrimitive ||
+                //                 propertyType == typeof(string) ||
+                //                 propertyType.IsEnum ||
+                //                 propertyType == typeof(decimal) ||
+                //                 propertyType == typeof(Vector2) ||
+                //                 propertyType == typeof(Vector3) ||
+                //                 propertyType == typeof(Vector4) ||
+                //                 propertyType == typeof(VectorLF3) ||
+                //                 propertyType == typeof(Quaternion))
+                //             {
+                //                 status = value.ToString();
+                //             }
+                //             else if (propertyType.IsArray || (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>)))
+                //             {
+                //                 System.Collections.IEnumerable collection = value as System.Collections.IEnumerable;
+                //                 int count = 0;
+                //                 if (collection != null)
+                //                 {
+                //                     if (propertyType.IsArray) count = ((Array)collection).Length;
+                //                     else count = (int)propertyType.GetProperty("Count").GetValue(collection, null);
+                //                 }
+                //                 status = $"{propertyType.Name}[{count}]";
+                //             }
+                //             else
+                //             {
+                //                 status = "Object";
+                //             }
+                //         }
+                //         GS2.Log($"Export(Property):{property.Name}: {status}");
+                //     }
+                //     catch (Exception e)
+                //     {
+                //         GS2.Log($"Export(Property):{property.Name}: Error accessing property - {e.GetType().Name}: {e.Message}");
+                //     }
+                // }
+                // GS2.Log($"--- Finished Exporting PlanetData: {__instance.displayName} ({__instance.id}) ---");
 
                 if (__instance.modData != null) return;
                 lock (PlanetModelingManager.planetProcessingLock)
                 {
+                    GS2.Warn("ModData is null");
                     if (__instance.data == null) __instance.data = new PlanetRawData(__instance.precision);
                     __instance.data.InitModData(__instance.modData);
                 }
@@ -107,6 +163,116 @@ namespace GalacticScale
                     __instance.modData = new byte[dataLength / 2];
                 }
             }
+        }
+
+        // Helper to log all fields and properties of a PlanetRawData object
+        private static void LogPlanetRawData(object rawDataObj)
+        {
+            var type = rawDataObj.GetType();
+            var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var loggedNames = new HashSet<string>();
+            GS2.Log($"--- Exporting PlanetData.data (PlanetRawData) ---");
+            foreach (var field in fields)
+            {
+                try
+                {
+                    var value = field.GetValue(rawDataObj);
+                    string status;
+                    if (value == null)
+                    {
+                        status = "null";
+                    }
+                    else
+                    {
+                        var fieldType = field.FieldType;
+                        if (fieldType.IsPrimitive ||
+                            fieldType == typeof(string) ||
+                            fieldType.IsEnum ||
+                            fieldType == typeof(decimal) ||
+                            fieldType == typeof(Vector2) ||
+                            fieldType == typeof(Vector3) ||
+                            fieldType == typeof(Vector4) ||
+                            fieldType == typeof(VectorLF3) ||
+                            fieldType == typeof(Quaternion))
+                        {
+                            status = value.ToString();
+                        }
+                        else if (fieldType.IsArray || (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(List<>)))
+                        {
+                            System.Collections.IEnumerable collection = value as System.Collections.IEnumerable;
+                            int count = 0;
+                            if (collection != null)
+                            {
+                                if (fieldType.IsArray) count = ((Array)collection).Length;
+                                else count = (int)fieldType.GetProperty("Count").GetValue(collection, null);
+                            }
+                            status = $"{fieldType.Name}[{count}]";
+                        }
+                        else
+                        {
+                            status = "Object";
+                        }
+                    }
+                    GS2.Log($"Export(Field):data.{field.Name}: {status}");
+                    loggedNames.Add(field.Name);
+                }
+                catch (Exception e)
+                {
+                    GS2.Log($"Export(Field):data.{field.Name}: Error accessing field - {e.GetType().Name}: {e.Message}");
+                }
+            }
+            foreach (var property in properties)
+            {
+                if (loggedNames.Contains(property.Name)) continue;
+                try
+                {
+                    if (property.GetIndexParameters().Length > 0) continue;
+                    var value = property.GetValue(rawDataObj, null);
+                    string status;
+                    if (value == null)
+                    {
+                        status = "null";
+                    }
+                    else
+                    {
+                        var propertyType = property.PropertyType;
+                        if (propertyType.IsPrimitive ||
+                            propertyType == typeof(string) ||
+                            propertyType.IsEnum ||
+                            propertyType == typeof(decimal) ||
+                            propertyType == typeof(Vector2) ||
+                            propertyType == typeof(Vector3) ||
+                            propertyType == typeof(Vector4) ||
+                            propertyType == typeof(VectorLF3) ||
+                            propertyType == typeof(Quaternion))
+                        {
+                            status = value.ToString();
+                        }
+                        else if (propertyType.IsArray || (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>)))
+                        {
+                            System.Collections.IEnumerable collection = value as System.Collections.IEnumerable;
+                            int count = 0;
+                            if (collection != null)
+                            {
+                                if (propertyType.IsArray) count = ((Array)collection).Length;
+                                else count = (int)propertyType.GetProperty("Count").GetValue(collection, null);
+                            }
+                            status = $"{propertyType.Name}[{count}]";
+                        }
+                        else
+                        {
+                            status = "Object";
+                        }
+                    }
+                    GS2.Log($"Export(Property):data.{property.Name}: {status}");
+                }
+                catch (Exception e)
+                {
+                    GS2.Log($"Export(Property):data.{property.Name}: Error accessing property - {e.GetType().Name}: {e.Message}");
+                }
+            }
+            GS2.Log($"--- Finished Exporting PlanetData.data (PlanetRawData) ---");
         }
         
         [HarmonyPrefix, HarmonyPatch(typeof(PlanetModelingManager), nameof(PlanetModelingManager.RequestScanPlanet))]
