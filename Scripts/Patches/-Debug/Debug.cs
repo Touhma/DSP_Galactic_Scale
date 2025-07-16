@@ -474,6 +474,7 @@ namespace GalacticScale
                             var orbit = ra.ItemAndRemove(possibleOrbits);
                             Warn($"New Orbit Radius = {orbit}");
                             enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius = orbit;
+							enemyDFHiveSystem2.orbitRadius = orbit * 40000f; // Convert from AU to m
                         }
                         
 
