@@ -27,22 +27,34 @@ namespace GalacticScale
         [HarmonyPatch(typeof(GalaxyData), "UpdatePoses")]
         public static bool UpdatePoses(Double time, GalaxyData __instance)
         {
-            var threads = MultithreadSystem.usedThreadCntSetting;
-            // 0 = "Default" in Gameplay settings. Use all available cores.
-            if (threads == 0) threads = SystemInfo.processorCount;
-
-            if (threads < 2 || __instance.starCount <= 64) return true;
-            Parallel.For(0, __instance.starCount, new ParallelOptions {MaxDegreeOfParallelism = threads},
-                (i) =>
+            for (int i = 0; i < __instance.starCount; i++)
+            {
+                for (int j = 0; j < __instance.stars[i].planetCount; j++)
                 {
-                    for (var j = 0; j < __instance.stars[i].planetCount; j++)
-                    {
-                        __instance.stars[i].planets[j].UpdateRuntimePose(time);
-                    }
+                    __instance.stars[i].planets[j].UpdateRuntimePose(time);
                 }
+            }
 
-            );
             return false;
         }
+
+        // {
+        //     var threads = MultithreadSystem.usedThreadCntSetting;
+        //     // 0 = "Default" in Gameplay settings. Use all available cores.
+        //     if (threads == 0) threads = SystemInfo.processorCount;
+        //
+        //     if (threads < 2 || __instance.starCount <= 64) return true;
+        //     Parallel.For(0, __instance.starCount, new ParallelOptions {MaxDegreeOfParallelism = threads},
+        //         (i) =>
+        //         {
+        //             for (var j = 0; j < __instance.stars[i].planetCount; j++)
+        //             {
+        //                 __instance.stars[i].planets[j].UpdateRuntimePose(time);
+        //             }
+        //         }
+        //
+        //     );
+        //     return false;
+        // }
     }
 }

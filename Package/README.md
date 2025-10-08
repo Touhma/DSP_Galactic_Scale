@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.76.0 - Attempt to fix for latest multithread patch 0.10.33.26934
 - Version 2.75.11 - Arflipe's fix for hives not attacking
 - Version 2.75.10 - Fix Crash when saving
 - Version 2.75.9 - Add finer galaxy control to Dev Generator. Add Logging for some save bugs, and Communicator bugs. Make sure you turn logging on! (And in BepInEx config)

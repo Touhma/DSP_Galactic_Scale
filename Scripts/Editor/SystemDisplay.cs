@@ -84,8 +84,8 @@ namespace GalacticScale
                 if (uiStarDetail.gameObject.activeSelf) uiStarDetail._OnUpdate();
             }
 
-            if (Input.mouseScrollDelta.y < 0) GalaxySelect.cameraPoser.distRatio += VFInput.shift ? 1f : .1f;
-            if (Input.mouseScrollDelta.y > 0) GalaxySelect.cameraPoser.distRatio -= VFInput.shift ? 1f : 0.1f;
+            if (VFInput.mouseWheel < 0) GalaxySelect.cameraPoser.distRatio += VFInput.shift ? 1f : .1f;
+            if (VFInput.mouseWheel > 0) GalaxySelect.cameraPoser.distRatio -= VFInput.shift ? 1f : 0.1f;
             if (VFInput._moveRight) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.right);
             if (VFInput._moveLeft) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.left);
             if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.up);

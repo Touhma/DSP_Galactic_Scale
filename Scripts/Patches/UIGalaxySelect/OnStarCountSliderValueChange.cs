@@ -32,7 +32,7 @@ namespace GalacticScale
 
             public void Update()
             {
-                mouseDown = Input.GetMouseButton(0);
+                mouseDown = VFInput.rtsConfirm.pressing;
             }
 
             public void Wait()

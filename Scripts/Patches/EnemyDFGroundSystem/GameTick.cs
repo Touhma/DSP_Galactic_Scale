@@ -8,7 +8,7 @@ namespace GalacticScale
         const float HOVER_HEIGHT = 2f;
         private static Dictionary<EnemyDFGroundSystem, bool> ready = new ();
         private static Dictionary<EnemyDFGroundSystem, (float radius,double radius2)> data = new ();
-        [HarmonyPostfix, HarmonyPatch(typeof(EnemyDFGroundSystem), nameof(EnemyDFGroundSystem.GameTickLogic))]
+        [HarmonyPostfix, HarmonyPatch(typeof(EnemyDFGroundSystem), nameof(EnemyDFGroundSystem.GameTickLogic_Prepare))]
         public static void GameTick(ref EnemyDFGroundSystem __instance)
         {
             if (!ready.ContainsKey(__instance)) ready.Add(__instance, false);

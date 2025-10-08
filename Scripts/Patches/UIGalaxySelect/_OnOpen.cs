@@ -67,6 +67,7 @@ namespace GalacticScale
             }//0.10
             if (__instance.starmapGroup == null) GS2.Warn("smg Null");
             __instance.starmapGroup?.gameObject?.SetActive(true);
+            __instance.starmapGrid?.SetActive(true);
             if (__instance.starmap == null) GS2.Warn("starmap Null");
             __instance.starmap?._Open();
             if (__instance.gameDesc == null) GS2.Warn("GameDesc Null 2");
