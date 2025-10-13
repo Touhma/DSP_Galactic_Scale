@@ -24,3 +24,8 @@ GalacticScale2.sln.DotSettings.user
 Assembly-CSharp_publicized.dll
 *.bak
 /srcOLD
+GalacticScale3.csproj.DotSettings
+GalacticScale3.csproj.bak
+GalacticScale3.csproj.bak
+GalacticScale3.sln.DotSettings.user
+*.user
