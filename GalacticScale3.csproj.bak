@@ -13,7 +13,7 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.75.11</Version>
+        <Version>2.76.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
@@ -77,16 +77,19 @@
             <TargetPath>.\galacticbundle</TargetPath>
         </None>
         <None Remove="src\**" />
+        <None Remove="srcOLD\**" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="Assets\galaxy.json" />
         <EmbeddedResource Include="Assets\galaxy.json" />
         <EmbeddedResource Remove="src\**" />
+        <EmbeddedResource Remove="srcOLD\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="src\**" />
+        <Compile Remove="srcOLD\**" />
     </ItemGroup>
 
     <!-- Add a target to synchronize version numbers before build -->
