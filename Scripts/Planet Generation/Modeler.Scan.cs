@@ -90,6 +90,7 @@ namespace GalacticScale
 
             if (planetAlgorithm != null)
             {
+                bool hadData = calcPlanet.data != null; 
                 bool isGS2PlanetAlgo = planetAlgorithm is GS2PlanetAlgorithm;
                 GS2.Log($"Scanning {calcPlanet.name}" + (isGS2PlanetAlgo ? " (GS)" : ""));
                 HighStopwatch highStopwatch = new HighStopwatch();
@@ -116,7 +117,7 @@ namespace GalacticScale
                 if (calcPlanet.type != EPlanetType.Gas) planetAlgorithm.GenerateVeins();
                 calcPlanet.SummarizeVeinGroups();
                 calcPlanet.GenBirthPoints();
-                CleanPlanetDataForScan(calcPlanet);
+                //CleanPlanetDataForScan(calcPlanet);
                 double duration3 = highStopwatch.duration;
 
                 if (planetScanThreadLogs != null)
@@ -127,7 +128,22 @@ namespace GalacticScale
                         planetScanThreadLogs.Add(timerMessage);
                     }
                 }
+                
+                // Clean up heavy data for non-local planets to prevent memory leak
+                // Only if we're not the local planet AND we didn't have data before
+                if (calcPlanet != GameMain.localPlanet && !hadData && calcPlanet.data != null)
+                {
+                    // Free the PlanetRawData we just created
+                    calcPlanet.data.Free();
+                    calcPlanet.data = null;
 
+                    // Free aux data too
+                    if (calcPlanet.aux != null)
+                    {
+                        calcPlanet.aux.Free();
+                        calcPlanet.aux = null;
+                    }
+                }
                 GS2.Log($"Finished calculating planet {calcPlanet.name}");
                 calcPlanet.NotifyScanEnded();
             }

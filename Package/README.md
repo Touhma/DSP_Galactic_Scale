@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.76.2 - Potentially fix memory leak when using UXAssist
 - Version 2.76.1 - Update GSUI for Unity 2022.3
 - Version 2.76.0 - Attempt to fix for latest multithread patch 0.10.33.26934
 - Version 2.75.11 - Arflipe's fix for hives not attacking
@@ -15,7 +16,7 @@
 - Version 2.73.3 - Force Modelling of Planets instead of scanning. Prevent Automatic Scanning every 10s
 - Version 2.73.2 - Init ModData on save to try prevent error
 - Version 2.73.1 - Fix game loading error when you save in outer space
-- Version 2.73.0 - Update for DSP Version 0.10.32.25779
+- Version 2.73.0 - Update for DSP Version 0.10.32.25779 
 - Version 2.72.5 - Add O-Type Giant
 - Version 2.72.4 - Revert broken relay ship fix
 - Version 2.72.3 - Fix ObserveLevel bug. Add debug option to set observe level. Attempt to fix df relays and logistics ships not pathing past large stars
