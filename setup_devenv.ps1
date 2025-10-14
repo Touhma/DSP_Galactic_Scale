@@ -4,7 +4,9 @@ function Find-DSPPlugins {
     $commonPaths = @(
     "$env:USERPROFILE\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins",
         "$env:ProgramFiles\Steam\steamapps\common\Dyson Sphere Program\BepInEx\plugins",
-        "${env:ProgramFiles(x86)}\Steam\steamapps\common\Dyson Sphere Program\BepInEx\plugins"
+        "${env:ProgramFiles(x86)}\Steam\steamapps\common\Dyson Sphere Program\BepInEx\plugins",
+        "$env:USERPROFILE\AppData\Roaming\com.kesomannen.gale\dyson-sphere-program\profiles\Default\BepInEx\plugins"
+        
         
     )
     

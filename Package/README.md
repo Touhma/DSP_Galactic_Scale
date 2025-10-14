@@ -2,7 +2,8 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
-- Version 2.76.2 - Potentially fix memory leak when using UXAssist
+- Version 2.76.3 - Fix vegetation generation crash by ensuring vegeCursor is properly reset.
+- Version 2.76.2 - Fix critical memory leak when mods query vein counts (was causing 128GB+ RAM usage). 
 - Version 2.76.1 - Update GSUI for Unity 2022.3
 - Version 2.76.0 - Attempt to fix for latest multithread patch 0.10.33.26934
 - Version 2.75.11 - Arflipe's fix for hives not attacking

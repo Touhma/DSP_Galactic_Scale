@@ -115,7 +115,11 @@ namespace GalacticScale
                                 {
                                     Log("Creating Factory");
                                     highStopwatch.Begin();
-                                    if (compPlanet.type != EPlanetType.Gas && compPlanet.data != null) planetAlgorithm.GenerateVegetables();
+                                    if (compPlanet.type != EPlanetType.Gas && compPlanet.data != null)
+                                    {
+                                        compPlanet.data.vegeCursor = 1;
+                                        planetAlgorithm.GenerateVegetables();
+                                    }
                                     num3 = highStopwatch.duration;
                                     highStopwatch.Begin();
                                     if (compPlanet.type != EPlanetType.Gas && compPlanet.data != null) planetAlgorithm.GenerateVeins();
