@@ -8,11 +8,13 @@ namespace GalacticScale
 {
     public class PatchOnStationComponent
     {
-        // Three patches being made to StationComponent.InternalTickRemote:
+        // Five patches being made to StationComponent.InternalTickRemote:
         // 1. Allow logistics vessels to path in systems up to 100 astrobodies, up from 10.
         // 2. Allow logistics vessels to get much closer to stars, rather than staying 2.5x radius away.
         //    Makes planets near huge stars reachable by ship.
-        // 3. Adjust star radius for pathing calculations to fix issues with large stars
+        // 3. Fix planet clearance altitude (5000.0) to scale with planet radius
+        // 4. Fix warp activation distance (25000000.0 = 5000²) to scale with planet radius
+        // 5. Adjust star radius for pathing calculations to fix issues with large stars
         // - Updated pattern matching to be more robust and find the correct insertion points
         // [HarmonyDebug]
         [HarmonyTranspiler]
@@ -51,6 +53,69 @@ namespace GalacticScale
             return instructions;
         }
         
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
+        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler3_PlanetClearance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        {
+            // Replace all instances of 5000.0 with GetRadiusFromAstroId(5000.0, planetId)
+            // This scales the ship clearance altitude with planet radius
+            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAstroId));
+            
+            var codeMatcher = new CodeMatcher(instructions, il);
+            
+            codeMatcher.Start().MatchForward(false,
+                new CodeMatch(i => i.opcode == OpCodes.Ldc_R8 && Convert.ToDouble(i.operand) == 5000.0)
+            );
+            
+            if (codeMatcher.IsInvalid)
+            {
+                GS2.Warn("InternalTickRemote 3rd Transpiler: Could not find 5000.0 constants");
+                return instructions;
+            }
+            
+            return codeMatcher.Repeat(matcher =>
+            {
+                // The 5000.0 constant is already on the stack
+                // Insert: ldarg.0 (this), ldfld planetId, call GetRadiusFromAstroId
+                matcher.Advance(1); // Move past the 5000.0
+                matcher.Insert(
+                    new CodeInstruction(OpCodes.Ldarg_0), // Load 'this' (StationComponent)
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(StationComponent), nameof(StationComponent.planetId))),
+                    new CodeInstruction(OpCodes.Call, methodInfo.MakeGenericMethod(typeof(double)))
+                );
+            }).InstructionEnumeration();
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
+        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler4_WarpDistance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        {
+            // Replace 25000000.0 (5000²) for warp activation distance check
+            // This scales the minimum warp distance with planet radius
+            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAstroId));
+            
+            var codeMatcher = new CodeMatcher(instructions, il);
+            
+            codeMatcher.Start().MatchForward(false,
+                new CodeMatch(i => i.opcode == OpCodes.Ldc_R8 && Convert.ToDouble(i.operand) == 25000000.0)
+            );
+            
+            if (codeMatcher.IsInvalid)
+            {
+                GS2.Warn("InternalTickRemote 4th Transpiler: Could not find 25000000.0 constant");
+                return instructions;
+            }
+            
+            return codeMatcher.Repeat(matcher =>
+            {
+                matcher.Advance(1);
+                matcher.Insert(
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(StationComponent), nameof(StationComponent.planetId))),
+                    new CodeInstruction(OpCodes.Call, methodInfo.MakeGenericMethod(typeof(double)))
+                );
+            }).InstructionEnumeration();
+        }
        
     }
 }
