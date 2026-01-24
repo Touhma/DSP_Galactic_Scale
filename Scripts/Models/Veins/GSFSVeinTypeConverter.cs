@@ -36,7 +36,13 @@ namespace GalacticScale
             //{
             //    list.Add(new fsData(model.veins[i].count + "@" + model.veins[i].richness));
             //}
-            SerializeMember(serialized, null, "type", GSVeinType.insaneVeinTypes[model.type]);
+            string typeString;
+            if (!GSVeinType.insaneVeinTypes.TryGetValue(model.type, out typeString))
+            {
+                GS2.Warn($"Unknown vein type during serialization: {model.type} (value: {(int)model.type}). Using enum name as fallback.");
+                typeString = model.type.ToString();
+            }
+            SerializeMember(serialized, null, "type", typeString);
             serialized["veins"] = new fsData(list);
             //SerializeMember(serialized, null, "veins", dict);
             SerializeMember(serialized, null, "rare", model.rare);
@@ -120,7 +126,20 @@ namespace GalacticScale
             string type;
             if ((result += DeserializeMember(data, null, "type", out type)).Failed) return result;
             //GS2.Log(type);
-            model.type = GSVeinType.saneVeinTypes[type];
+            if (!GSVeinType.saneVeinTypes.TryGetValue(type, out model.type))
+            {
+                GS2.Warn($"Unknown vein type name during deserialization: '{type}'. Attempting enum parse...");
+                if (Enum.TryParse<EVeinType>(type, true, out var parsedType))
+                {
+                    GS2.Log($"Successfully parsed vein type from enum: {parsedType}");
+                    model.type = parsedType;
+                }
+                else
+                {
+                    GS2.Error($"Failed to parse vein type '{type}'. Using EVeinType.None as fallback.");
+                    model.type = EVeinType.None;
+                }
+            }
             if ((result += DeserializeMember(data, null, "rare", out model.rare)).Failed) return result;
 
             return result;

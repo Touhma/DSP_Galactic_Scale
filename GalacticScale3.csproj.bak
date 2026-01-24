@@ -13,7 +13,7 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.76.2</Version>
+        <Version>2.76.4</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
@@ -26,7 +26,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2022.3.53" IncludeAssets="compile" />
-       <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.33.26943-r.0" IncludeAssets="compile" />
+       <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.34.28326-r.0" IncludeAssets="compile" />
         <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="2.0.0" IncludeAssets="compile" />
     </ItemGroup>
     
@@ -47,6 +47,9 @@
 <!--        <Reference Include="Assembly-CSharp">-->
 <!--          <HintPath>Assembly-CSharp_publicized.dll</HintPath>-->
 <!--        </Reference>-->
+        <Reference Include="BCE">
+          <HintPath>..\..\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\innominata-BepInEx_Console_Extensions\BCE.dll</HintPath>
+        </Reference>
         <Reference Include="GSUI">
             <HintPath>Package\GSUI.dll</HintPath>
         </Reference>
@@ -78,6 +81,7 @@
         </None>
         <None Remove="src\**" />
         <None Remove="srcOLD\**" />
+        <None Remove="srcNEW\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -85,11 +89,13 @@
         <EmbeddedResource Include="Assets\galaxy.json" />
         <EmbeddedResource Remove="src\**" />
         <EmbeddedResource Remove="srcOLD\**" />
+        <EmbeddedResource Remove="srcNEW\**" />
     </ItemGroup>
 
     <ItemGroup>
         <Compile Remove="src\**" />
         <Compile Remove="srcOLD\**" />
+        <Compile Remove="srcNEW\**" />
     </ItemGroup>
 
     <!-- Add a target to synchronize version numbers before build -->

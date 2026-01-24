@@ -44,7 +44,10 @@ namespace GalacticScale
 			{
 				if (__instance.surfaceRenderer != null && __instance.surfaceRenderer.Length != 0)
 				{
-					__instance.surfaceRenderer[0].sharedMaterial.SetVector(SunDir, sunDir);
+					if (__instance.surfaceRenderer[0] != null && __instance.surfaceRenderer[0].sharedMaterial != null)
+					{
+						__instance.surfaceRenderer[0].sharedMaterial.SetVector(SunDir, sunDir);
+					}
 				}
 				if (__instance.reformMat0 != null)
 				{

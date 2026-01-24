@@ -18,7 +18,11 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> UpdateDirtyMeshTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
+            // NOTE: heightData offset now applied in ModelingPlanetMain prefix, not needed here
+            // because heightData is already in absolute values when UpdateDirtyMesh runs
+            
             for (var i = 0; i < codes.Count; i++)
+            {
                 if (codes[i].opcode == OpCodes.Ldarg_0 && i < codes.Count - 1)
                     // This condition removes references to this.scale. First we just check for the IL equivalent of "this."
                     // We stop checking this 1 early because we operate on both the current AND following line when we do anything
@@ -39,6 +43,7 @@ namespace GalacticScale
                     // All existing calls to GetModPlane cast the result to a float, anyway...
                     codes[i] = new CodeInstruction(OpCodes.Call, typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
                 }
+            }
 
             return codes.AsEnumerable();
         }

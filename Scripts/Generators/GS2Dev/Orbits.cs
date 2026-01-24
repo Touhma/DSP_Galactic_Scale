@@ -159,7 +159,7 @@ namespace GalacticScale.Generators
 
                 freeOrbitRanges.Add((minimumOrbit, birthRadius - actualBirthPlanetOrHost.SystemRadius * 2));
                 freeOrbitRanges.Add((birthRadius + actualBirthPlanetOrHost.SystemRadius * 2, maximumOrbit));
-                GS2.LogJson(freeOrbitRanges);
+                // GS2.LogJson(freeOrbitRanges);
             }
             else
             {

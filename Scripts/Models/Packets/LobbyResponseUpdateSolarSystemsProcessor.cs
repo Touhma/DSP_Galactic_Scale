@@ -42,13 +42,13 @@ namespace NebulaCompatibility
                 {
                     var star = galaxyData.StarById(packet.StarIds[i]);
                     star.overrideName = packet.Names[i];
-                    star.NotifyOnDisplayNameChange();
+
                 }
                 else
                 {
                     var planet = galaxyData.PlanetById(packet.PlanetIds[i]);
                     planet.overrideName = packet.Names[i];
-                    planet.NotifyOnDisplayNameChange();
+                    GameMain.gameScenario.NotifyOnPlanetNameChange();
                 }
             }
 

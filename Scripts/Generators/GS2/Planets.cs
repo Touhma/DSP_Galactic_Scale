@@ -375,35 +375,46 @@ namespace GalacticScale.Generators
         private float GetNextAvailableOrbit(GSPlanet planet, int moonIndex)
         {
             var moons = planet.Moons;
-            if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].SystemRadius;
-            return moons[moonIndex - 1].SystemRadius + moons[moonIndex - 1].OrbitRadius + moons[moonIndex].SystemRadius;
+            // Use RadiusAU for the current moon being calculated instead of SystemRadius
+            // to avoid including uninitialized nested moon orbits
+            if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].RadiusAU;
+            // For previous moons, use their outermost orbit (OrbitRadius + SystemRadius)
+            // but for the current moon, only use its RadiusAU
+            return moons[moonIndex - 1].OrbitRadius + moons[moonIndex - 1].SystemRadius + moons[moonIndex].RadiusAU;
         }
 
         private void AssignMoonOrbits(GSStar star)
         {
-            // Now Work Backwards from secondary Satellites to Planets, creating orbits.
+            // Process all planets and recursively assign moon orbits from deepest level first
             for (var planetIndex = 0; planetIndex < star.PlanetCount; planetIndex++)
             {
                 var planet = star.Planets[planetIndex];
-                //For each Planet
-                for (var moonIndex = 0; moonIndex < planet.MoonCount; moonIndex++)
-                {
-                    var moon = planet.Moons[moonIndex];
-                    //For Each Moon
-                    for (var moon2Index = 0; moon2Index < moon.MoonCount; moon2Index++)
-                    {
-                        //for each subsatellite
-                        var moon2 = moon.Moons[moon2Index];
-                        moon2.OrbitRadius = GetMoonOrbit() / 2f + GetNextAvailableOrbit(moon, moon2Index);
-                        moon2.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon2.OrbitRadius);
-                    }
-
-                    moon.OrbitRadius = GetMoonOrbit() + GetNextAvailableOrbit(planet, moonIndex);
-                    moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
-                }
+                AssignMoonOrbitsRecursive(planet, 0);
             }
             //Orbits should be set.
             // GS2.Log($"Orbits Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+        }
+
+        private void AssignMoonOrbitsRecursive(GSPlanet host, int depth)
+        {
+            if (host.Moons == null || host.MoonCount == 0) return;
+
+            // First, recursively process all nested moons (deepest first)
+            for (var moonIndex = 0; moonIndex < host.MoonCount; moonIndex++)
+            {
+                var moon = host.Moons[moonIndex];
+                AssignMoonOrbitsRecursive(moon, depth + 1);
+            }
+
+            // Now assign orbits for this level's moons (after all nested moons are processed)
+            for (var moonIndex = 0; moonIndex < host.MoonCount; moonIndex++)
+            {
+                var moon = host.Moons[moonIndex];
+                // Use smaller orbit spacing for deeper nesting levels
+                var baseOrbit = depth == 0 ? GetMoonOrbit() : GetMoonOrbit() / 2f;
+                moon.OrbitRadius = baseOrbit + GetNextAvailableOrbit(host, moonIndex);
+                moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
+            }
         }
 
 

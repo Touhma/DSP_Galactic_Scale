@@ -435,6 +435,7 @@ namespace GalacticScale.Generators
             barrenSatellite.VeinSettings.Algorithm = "GS2";
             barrenSatellite.CustomGeneration = true;
             barrenSatellite.ThemeType = EThemeType.Moon;
+            barrenSatellite.Temperature = -4f; // Frozen temperature range
             barrenSatellite.atmosphereMaterial.Params["_Intensity"] = 0f;
             barrenSatellite.Process();
 

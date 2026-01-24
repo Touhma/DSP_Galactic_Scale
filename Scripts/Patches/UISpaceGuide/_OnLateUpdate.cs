@@ -170,22 +170,22 @@ namespace GalacticScale
                     // First check sector exists
                     if (__instance.sector == null)
                     {
-                        GS2.Warn("Sector is null - cannot process hives");
+                        // GS2.Warn("Sector is null - cannot process hives");
                     }
                     // Then check dfHives exists
                     else if (__instance.sector.dfHives == null)
                     {
-                        GS2.Warn("dfHives array is null - cannot process hives");
+                        // GS2.Warn("dfHives array is null - cannot process hives");
                     }
                     // Then check array bounds
                     else if (__instance.sector.dfHives.Length <= __instance.gameData.localStar.index || __instance.gameData.localStar.index < 0)
                     {
-                        GS2.Warn($"DFHives length ({__instance.sector.dfHives.Length}) is insufficient for localStar index ({__instance.gameData.localStar.index})");
+                        // GS2.Warn($"DFHives length ({__instance.sector.dfHives.Length}) is insufficient for localStar index ({__instance.gameData.localStar.index})");
                     }
                     // Finally check the specific array element isn't null
                     else if (__instance.sector.dfHives[__instance.gameData.localStar.index] == null)
                     {
-                        GS2.Warn($"DFHives at index {__instance.gameData.localStar.index} is null");
+                        // GS2.Warn($"DFHives at index {__instance.gameData.localStar.index} is null");
                     }
                     else
                     {
@@ -333,7 +333,7 @@ namespace GalacticScale
 
                                             if (guideType == ESpaceGuideType.CosmicMessage || guideType == ESpaceGuideType.DFCommunicator)
                                             {
-                                                GS2.Log($"Setting Entry for {guideType} ID:{protoId} | uPos: {cosmicMessageData.uPosition} | RelVec: {vec} | uPosMag: {cosmicMessageData.uPosition.magnitude:E2} | RelVecMag: {vec.magnitude:E2}");
+                                                // GS2.Log($"Setting Entry for {guideType} ID:{protoId} | uPos: {cosmicMessageData.uPosition} | RelVec: {vec} | uPosMag: {cosmicMessageData.uPosition.magnitude:E2} | RelVecMag: {vec.magnitude:E2}");
                                             }
                                             // --- GS2 Logging END ---
 
@@ -341,7 +341,7 @@ namespace GalacticScale
                                         }
                                         catch (System.Exception ex)
                                         {
-                                            GS2.Warn($"Error setting cosmic message entry: {ex.Message}");
+                                            // GS2.Warn($"Error setting cosmic message entry: {ex.Message}");
                                         }
                                     }
                                 }
@@ -349,7 +349,7 @@ namespace GalacticScale
                         }
                         else
                         {
-                            GS2.Warn("Cosmic message manager or messages array is null");
+                            // GS2.Warn("Cosmic message manager or messages array is null");
                         }
                     }
                     catch (System.Exception ex)

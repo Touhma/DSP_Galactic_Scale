@@ -218,7 +218,7 @@ namespace GalacticScale
             {
                 GS2.Error($"Could not find theme EThemeType {type} EThemeHeat {heat} Radius {radius} EThemeDistribute {distribute} Checking against temp.min:Value>={temp.min} temp.max:Value<{temp.max}");
                 foreach (var k in this)
-                    GS2.Warn($"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
+                    // GS2.Warn($"{k.Key} Temp:{k.Value.Temperature} Radius:{k.Value.MinRadius}-{k.Value.MaxRadius} Type:{k.Value.ThemeType} Distribute:{k.Value.Distribute}");
                 if (type == EThemeType.Gas)
                     switch (heat)
                     {
