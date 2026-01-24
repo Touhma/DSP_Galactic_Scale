@@ -27,12 +27,27 @@
             baseAlgorithm.Reset(gsPlanet.Seed, gsPlanet.planetData);
             // GS2.Log($"GS2PlanetAlgorithm|Constructor|Custom Generation:{gsPlanet.GsTheme.CustomGeneration} Terrain Algo: " + gsTheme.TerrainSettings.Algorithm + " Vein Algo: " + gsTheme.VeinSettings.Algorithm + " Vege Algo: " + gsTheme.VegeSettings.Algorithm);
 
-            if (gsTheme.TerrainSettings.Algorithm == "Vanilla")
+            // FIXED: Force ALL large planets to use custom terrain generation
+            if (gsPlanet.Radius > 200)
+            {
+                GS2.Log($"Large planet {gsPlanet.Name} (radius {gsPlanet.Radius}) - forcing GenerateTerrainLarge regardless of theme algorithm");
+                terrainAlgo = (p, modX, modY) =>
+                {
+                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) 
+                    {
+                        TerrainAlgorithms.GenerateTerrainLarge(gsPlanet, modX, modY);
+                    }
+                };
+            }
+            else if (gsTheme.TerrainSettings.Algorithm == "Vanilla")
                 // GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to Vanilla");
                 terrainAlgo = (p, modX, modY) =>
                 {
                     // GS2.Log("GS2PlanetAlgorithm|Constructor|Vanilla Terrain Algo Running");
-                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) baseAlgorithm.GenerateTerrain(modX, modY);
+                    if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null && gsPlanet.planetData.data.heightData != null) 
+                    {
+                        baseAlgorithm.GenerateTerrain(modX, modY);
+                    }
                 };
             else
                 // GS2.Log("GS2PlanetAlgorithm|Constructor|Terrain Algo Being Set to " + gsTheme.TerrainSettings.Algorithm);
@@ -95,7 +110,19 @@
             //GS2.Log("PlanetAlgorithm|GenerateTerrain|" + gsPlanet.Name);
             if (gsPlanet != null)
                 if (!UIRoot.instance.backToMainMenu && gsPlanet.planetData != null && gsPlanet.planetData.data != null)
+                {
+                    // DIAGNOSTIC LOGGING: Identify which terrain algorithm is being used
+                    var algo = gsPlanet.GsTheme?.TerrainSettings?.Algorithm ?? "unknown";
+                    GS2.Log($"GenerateTerrain START: planet={gsPlanet.Name}, radius={gsPlanet.Radius}, " +
+                           $"precision={gsPlanet.planetData.precision}, scale={gsPlanet.planetData.scale:F2}, " +
+                           $"segment={gsPlanet.planetData.segment}, algo={algo}");
+                    
+                    // Ensure full precision heightData is allocated before terrain generation
+                    gsPlanet.planetData.data.AddFactoredRadius(gsPlanet.planetData);
                     terrainAlgo(gsPlanet, modX, modY); //GS2.Log("PlanetAlgorithm|GenerateTerrain|End");
+                    
+                    GS2.Log($"GenerateTerrain END: planet={gsPlanet.Name}");
+                }
         }
 
         public override void GenerateVegetables()

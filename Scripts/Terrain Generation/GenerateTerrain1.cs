@@ -113,13 +113,15 @@ namespace GalacticScale
                     rawBiomeHeight;
                 
                 // Calculate final height data value in integer format for mesh vertices
-                var heightDataValue = (int)((planet.planetData.radius + leveledTerrainHeight + 0.2) * 100.0);
+                // Important: Use PRECISION not radius, because mesh will be scaled by planet.scale
+                // For clamped planets: precision=1250, scale=1.12 → visual radius = 1400
+                var heightDataValue = (int)((planet.planetData.precision + leveledTerrainHeight + 0.2) * 100.0);
                 
                 // Ensure height data array exists
                 if (planetVertexData.heightData == null) return;
                 
-                // Store clamped height value in the planet's data structure
-                planetVertexData.heightData[vertexIndex] = (ushort)Mathf.Clamp(heightDataValue, ushort.MinValue, ushort.MaxValue);
+                // Use full precision storage for large planets
+                planetVertexData.SetHeightData(vertexIndex, heightDataValue);
                 
                 // Calculate biome data value and clamp to byte range
                 var biomeValue = (byte)Mathf.Clamp((float)(scaledBiomeHeight * 100.0), 0.0f, 200f);
@@ -227,13 +229,14 @@ namespace GalacticScale
                 var scaledBiomeHeight = biomeNoise * 0.5 + 0.5;  // Range 0.0-1.0
                 
                 // Calculate final height data value for mesh vertices
-                var heightDataValue = (int)((planet.planetData.radius + terrainHeight) * 100.0);
+                // Important: Use PRECISION not radius, because mesh will be scaled by planet.scale
+                var heightDataValue = (int)((planet.planetData.precision + terrainHeight) * 100.0);
                 
                 // Ensure height data array exists
                 if (planetVertexData.heightData == null) return;
                 
-                // Store clamped height value in the planet's data structure
-                planetVertexData.heightData[vertexIndex] = (ushort)Mathf.Clamp(heightDataValue, ushort.MinValue, ushort.MaxValue);
+                // Use full precision storage for large planets
+                planetVertexData.SetHeightData(vertexIndex, heightDataValue);
                 
                 // Calculate biome data value and clamp to byte range (0-200)
                 var biomeValue = (byte)Mathf.Clamp((float)(scaledBiomeHeight * 100.0), 0.0f, 200f);

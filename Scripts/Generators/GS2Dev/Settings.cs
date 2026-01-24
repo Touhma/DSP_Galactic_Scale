@@ -40,16 +40,16 @@ namespace GalacticScale.Generators
 
         public void Import(GSGenPreferences importedPreferences)
         {
-            Warn("Importing Preferences");
+            // Warn("Importing Preferences");
             for (var i = 0; i < importedPreferences.Count; i++)
             {
                 var key = importedPreferences.Keys.ElementAt(i);
-                Warn(key);
-                Warn($"Setting:{key} to {importedPreferences[key]}");
+                // Warn(key);
+                // Warn($"Setting:{key} to {importedPreferences[key]}");
                 preferences.Set(key, importedPreferences[key]);
                 if (loaded && UI.ContainsKey(key))
                 {
-                    Warn("UI Loaded, setting UI Element to match");
+                    // Warn("UI Loaded, setting UI Element to match");
                     UI[key].Set(importedPreferences[key]);
                 }
             }
@@ -57,8 +57,8 @@ namespace GalacticScale.Generators
             // WarnJson(importedPreferences);
             for (var i = 0; i < 15; i++)
             {
-                Warn("**" + i);
-                Warn("**" + typeLetter[i]);
+                // Warn("**" + i);
+                // Warn("**" + typeLetter[i]);
                 if (!UI.ContainsKey($"{typeLetter[i]}minStars")) break;
                 // GS2.Warn($"{importedPreferences.GetInt("OcountBias",30)}");
                 // if (!UI.ContainsKey($"{typeLetter[i]}binaryEnabled") break;
@@ -351,7 +351,7 @@ namespace GalacticScale.Generators
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
             UI.Add("rotationMulti", sOptions.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 10, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
-            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
+            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 1600, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Planet Sizes".Translate(), CreateLimitPlanetSizeOptions(), "Force Planets to these sizes".Translate()));
             UI.Add("gasSize", sOptions.Add(GSUI.GasSizeRangeSlider("Gas Planet Size".Translate(), 50, 500, 5000, 5100, "gasSize", null, GasSizeLow, GasSizeHigh, "Min/Max Size of Gas Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Gas Giant Sizes".Translate(), CreateLimitGasSizeOptions(), "Force Gas Giants to these sizes".Translate()));
@@ -386,7 +386,7 @@ namespace GalacticScale.Generators
                 "Random"
             };
             AddSpacer(bOptions);
-            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
+            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 1600, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
@@ -498,7 +498,7 @@ namespace GalacticScale.Generators
                 AddSpacer(tOptions);
                 UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}countBias", tOptions.Add(GSUI.Slider("Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias", null, "Prefer Less (lower) or More (higher) Counts".Translate())));
-                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider("Telluric Planet Size".Translate(), 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
+                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider("Telluric Planet Size".Translate(), 5, 50, 500, 1600, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}gasSize", tOptions.Add(GSUI.RangeSlider("Gas Giant Planet Size".Translate(), 50, 500, 5000, 5100, 10f, $"{typeLetter[i]}gasSize", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider("Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
                 UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below".Translate())));

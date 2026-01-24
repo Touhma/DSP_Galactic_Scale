@@ -17,7 +17,7 @@ namespace GalacticScale
             LDBThemeId = 8,
             Algo = 1,
             MinRadius = 30,
-            MaxRadius = 510,
+            MaxRadius = 1600,
             MaterialPath = "Universe/Materials/Planets/Ocean 2/",
             Temperature = 0.0f,
             Habitable = true,

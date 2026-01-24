@@ -231,7 +231,7 @@ namespace GalacticScale
                 }
                 else
                 {
-                    GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attempts");
+                    // GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attempts");
                 }
             }
 

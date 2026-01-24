@@ -62,7 +62,10 @@ namespace GalacticScale
                 var num18 = num17 <= 0.0 ? 0.0 : num17 <= 2.0 ? num17 : 2.0;
                 var num19 = num18 + (num18 <= 1.8 ? num12 * 0.2 : -num12 * 0.8);
                 if (data.heightData == null) return;
-                data.heightData[index] = (ushort)((planet.radius + num15 * t.HeightMulti + 0.2 + t.BaseHeight) * 100.0);
+                // Use full precision storage for large planets
+                // Important: Use PRECISION not radius, because mesh will be scaled by planet.scale
+                int heightValue = (int)((planet.precision + num15 * t.HeightMulti + 0.2 + t.BaseHeight) * 100.0);
+                data.SetHeightData(index, heightValue);
                 data.biomoData[index] = (byte)Mathf.Clamp((float)(num19 * 100.0 * t.BiomeHeightMulti + t.BiomeHeightModifier), 0.0f, 200f);
             }
 

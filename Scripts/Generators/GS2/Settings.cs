@@ -351,7 +351,7 @@ namespace GalacticScale.Generators
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
             UI.Add("rotationMulti", sOptions.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 10, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
-            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
+            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 1600, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Planet Sizes".Translate(), CreateLimitPlanetSizeOptions(), "Force Planets to these sizes".Translate()));
             UI.Add("gasSize", sOptions.Add(GSUI.GasSizeRangeSlider("Gas Planet Size".Translate(), 50, 500, 5000, 5100, "gasSize", null, GasSizeLow, GasSizeHigh, "Min/Max Size of Gas Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Gas Giant Sizes".Translate(), CreateLimitGasSizeOptions(), "Force Gas Giants to these sizes".Translate()));
@@ -378,7 +378,7 @@ namespace GalacticScale.Generators
             InitThemes();
 
             var themes = GSSettings.ThemeLibrary.Where(t=>t.Value.Habitable).Select(t=>t.Key).ToList();
-            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
+            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 1600, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetOrbit", bOptions.Add(GSUI.Slider("Starting Planet Orbit".Translate(), -1, -1, 100, 0.1f, "birthPlanetOrbit", null, "How far from the star your starting planet is".Translate(), "Default")));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthTheme", bOptions.Add(GSUI.Selector("Birth Planet Theme", themes, "Mediterranean", "birthTheme", null, "Starting Planet Theme".Translate())));

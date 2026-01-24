@@ -29,7 +29,7 @@ namespace GalacticScale
                         var magnitudeOnPrecision = 1f - Mathf.Sqrt(sqrMagnitude) / radiusPrecision;
                         magnitudeOnPrecision *= __instance.GetFactoredScale();
                         var modLevel = __instance.GetModLevel(index4);
-                        float HeightDataFinal = __instance.heightData[index4];
+                        float HeightDataFinal = __instance.GetHeightDataInt(index4);
                         if (modLevel > 0)
                         {
                             float modPlane = __instance.GetModPlaneInt(index4);
@@ -40,7 +40,7 @@ namespace GalacticScale
                             else
                             {
                                 var num11 = modLevel * 0.3333333f;
-                                HeightDataFinal = __instance.heightData[index4] * (1f - num11) + modPlane * num11;
+                                HeightDataFinal = __instance.GetHeightDataInt(index4) * (1f - num11) + modPlane * num11;
                             }
                         }
 
@@ -53,7 +53,7 @@ namespace GalacticScale
             if (magnitudeOnPrecisionDummy == 0f)
             {
                 GS2.Log($"Bad Query. LocalPlanet:{GameMain.localPlanet.name} Vector:{vpos}");
-                __result = __instance.heightData[0] * 0.01f;
+                __result = __instance.GetHeightDataFloat(0);
                 return false;
             }
 

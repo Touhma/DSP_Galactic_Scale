@@ -17,7 +17,7 @@ namespace GalacticScale
             LDBThemeId = 24,
             Algo = 12,
             MinRadius = 5,
-            MaxRadius = 510,
+            MaxRadius = 1600,
             MaterialPath = "Universe/Materials/Planets/Desert 10/",
             Temperature = -4f,
             Distribute = EThemeDistribute.Default,

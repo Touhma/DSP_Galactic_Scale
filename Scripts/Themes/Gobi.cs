@@ -17,7 +17,7 @@ namespace GalacticScale
             BriefIntroduction = "戈壁介绍",
             Eigenbit = 8,
             MinRadius = 5,
-            MaxRadius = 510,
+            MaxRadius = 1600,
             MaterialPath = "Universe/Materials/Planets/Desert 4/",
             Temperature = 1.0f,
             Distribute = EThemeDistribute.Default,

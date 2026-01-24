@@ -80,7 +80,24 @@ namespace GalacticScale
             planet.sunDistance = GetSunDistance(GSSettings.Stars[star.index], gsPlanet, host);
 
             planet.radius = gsPlanet.Radius;
-            planet.segment = 5;
+            
+            // FIXED: Use full radius as precision, no scale compensation
+            // Scale should ALWAYS be 1.0 for terran worlds
+            planet.precision = gsPlanet.Radius;  // Use full radius, no clamping
+            planet.scale = 1f;  // Always 1.0 for terran worlds
+            
+            // Calculate segment count to keep vertices per chunk under 65k limit
+            // Each chunk has (precision/segment + 1)² vertices
+            // To stay under 65k: (precision/segment + 1)² < 65000
+            // Solve: precision/segment < 254
+            // So: segment >= precision / 254
+            // Use 220 instead of 254 to leave safety margin while maintaining mesh quality
+            int minSegment = Mathf.CeilToInt((float)planet.precision / 220f);
+            planet.segment = Mathf.Max(5, minSegment);  // At least 5 (vanilla)
+            
+            // Round precision to be divisible by segment (vanilla requirement)
+            planet.precision = (planet.precision / planet.segment) * planet.segment;
+            
             var segments = (int)(planet.radius / 4f + 0.1f) * 4;
             if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) SetLuts(segments, planet.radius);
             PatchOnUIBuildingGrid.refreshGridRadius = Mathf.RoundToInt(planet.radius);
@@ -99,8 +116,12 @@ namespace GalacticScale
             if (planet.type == EPlanetType.Gas) planet.scale = 10f;
 
             if (gsPlanet.Scale > 0) planet.scale = gsPlanet.Scale;
-
-            planet.precision = gsPlanet.Radius;
+            
+            // Add logging for planet creation parameters
+            int vertsPerChunk = (planet.precision / planet.segment + 1) * (planet.precision / planet.segment + 1);
+            GS2.Log($"CreatePlanet: {gsPlanet.Name} r={planet.radius}, precision={planet.precision}, " +
+                   $"scale={planet.scale:F2}, segment={planet.segment}, " +
+                   $"verts/chunk={vertsPerChunk}");
             gsPlanet.planetData = planet;
             //GS2.Log("Getting luminosity for " + gsPlanet.Name + " planetData == null?" + (planetData == null));
             planet.luminosity = gsPlanet.Luminosity;

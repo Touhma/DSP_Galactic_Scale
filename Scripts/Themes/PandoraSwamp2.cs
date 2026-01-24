@@ -17,7 +17,7 @@ namespace GalacticScale
             BriefIntroduction = "潘多拉沼泽介绍B",
             Eigenbit = 19,
             MinRadius = 5,
-            MaxRadius = 510,
+            MaxRadius = 1600,
             MaterialPath = "Universe/Materials/Planets/Desert 11/",
             Temperature = 0f,
             Distribute = EThemeDistribute.Interstellar,

@@ -425,10 +425,29 @@ namespace GalacticScale
         {
             if (radius < 8f) return 5;
 
-            radius = Mathf.Clamp(radius, 10, 510) / 10;
+            radius = Mathf.Clamp(radius, 10, 1600) / 10; // Increased from 510 to 1600 to support larger heightmap textures
             radius = Mathf.RoundToInt(radius) * 10;
             //GS2.Warn(radius.ToString());
             return (int)radius;
+        }
+        
+        /// <summary>
+        /// Calculates the required heightmap texture size for a planet based on its radius.
+        /// Returns power-of-2 sizes (512, 1024, 2048, 4096) for GPU efficiency.
+        /// </summary>
+        public static int CalculateHeightmapSize(PlanetData planet)
+        {
+            if (planet == null) return 512;
+            
+            float radius = planet.realRadius;
+            
+            // Scale texture size with planet radius
+            // Vanilla: 200 radius = 512 texture (2.56 multiplier)
+            // We use stepped power-of-2 sizes for GPU efficiency
+            if (radius <= 200) return 512;      // Vanilla size
+            if (radius <= 400) return 1024;     // 2x radius = 2x texture
+            if (radius <= 800) return 2048;     // 4x radius = 4x texture
+            return 4096;                         // 8x radius = 8x texture (supports up to ~1600 radius)
         }
 
         public static int ParseGasSize(float radius)

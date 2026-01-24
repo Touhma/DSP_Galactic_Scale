@@ -18,7 +18,7 @@ namespace GalacticScale
             BriefIntroduction = "草原介绍",
             Eigenbit = 11,
             MinRadius = 5,
-            MaxRadius = 510,
+            MaxRadius = 1600,
             MaterialPath = "Universe/Materials/Planets/Ocean 4/",
             Temperature = 0.0f,
             Habitable = true,

@@ -44,9 +44,29 @@ namespace GalacticScale
             if (tex.dimension == TextureDimension.Tex2D)
             {
                 var tex2d = (Texture2D)tex;
-                for (var i = 0; i < 512; i++)
+                var lutArray = LUT512[segment];
+                var lutSize = lutArray.Length;
+                
+                // Check if texture needs to be resized
+                if (tex2d.width != lutSize)
                 {
-                    var num = (LUT512[segment][i] / 4f + 0.05f) / 255f;
+                    // Create new texture with correct size
+                    var newTex = new Texture2D(lutSize, 4, TextureFormat.ARGB32, mipChain: false);
+                    newTex.name = tex2d.name;
+                    newTex.filterMode = tex2d.filterMode;
+                    newTex.wrapMode = tex2d.wrapMode;
+                    
+                    // Replace in material
+                    material.SetTexture("_SegmentTable", newTex);
+                    tex2d = newTex;
+                    
+                    GS2.Log($"Resized _SegmentTable texture from 512 to {lutSize} for segment {segment}");
+                }
+                
+                // Update texture pixels with LUT data
+                for (var i = 0; i < lutSize; i++)
+                {
+                    var num = (lutArray[i] / 4f + 0.05f) / 255f;
 
                     tex2d.SetPixel(i, 0, new Color(num, num, num, 1f));
                     tex2d.SetPixel(i, 1, new Color(num, num, num, 1f));
@@ -58,7 +78,7 @@ namespace GalacticScale
             }
             else
             {
-                GS2.Log("Nope");
+                GS2.Log("_SegmentTable is not a Texture2D!");
             }
 
             refreshGridRadius = -1;

@@ -78,7 +78,10 @@ namespace GalacticScale
             if (currentModelingPlanet != null)
                 try
                 {
-                    ModelingPlanetMain(currentModelingPlanet);
+                    // Call the vanilla method - our transpiler patches will be applied automatically
+                    GS2.Log($"Modeler.ModelingCoroutine: Calling ModelingPlanetMain for {currentModelingPlanet.name}");
+                    PlanetModelingManager.ModelingPlanetMain(currentModelingPlanet);
+                    GS2.Log($"Modeler.ModelingCoroutine: ModelingPlanetMain completed for {currentModelingPlanet.name}");
                 }
                 catch (Exception message)
                 {

@@ -525,7 +525,7 @@ namespace GalacticScale.Generators
                 radius = random.Next(Mathf.Max(minPlanetSize, 30), Mathf.Min(70, maxPlanetSize));
             else if (huge && !tiny)
                 //huge
-                radius = random.Next(Mathf.Min(avgPlanetSize, maxPlanetSize - 100), Mathf.Min(maxPlanetSize, 510)); //needs more limits, but I got bored
+                radius = random.Next(Mathf.Min(avgPlanetSize, maxPlanetSize - 100), Mathf.Min(maxPlanetSize, 1600)); //increased from 510 to 1600 for heightmap support
             else
                 radius = random.Next(minPlanetSize, maxPlanetSize);
             return Utils.ParsePlanetSize(radius);

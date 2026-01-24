@@ -27,7 +27,10 @@ namespace GalacticScale
                 var lastMajorRadius = planetRadius;
                 var lastMajorRadiusCount = numSegments * 4;
 
-                var classicLUT = new int[512];
+                // Dynamic LUT size based on segments - increased from hardcoded 512 to support larger planets
+                // Segments can be up to ~1604 for radius 1600 planets, so we need larger textures
+                var lutSize = CalculateLUTSize(segments);
+                var classicLUT = new int[lutSize];
                 classicLUT[0] = 1;
                 // GS2.Warn("Start");
                 for (var cnt = 0; cnt < numSegments; cnt++)
@@ -50,7 +53,7 @@ namespace GalacticScale
 
                 // GS2.Warn("Mid");
                 var last = 1;
-                for (var oldlLutIdx = 1; oldlLutIdx < 512; oldlLutIdx++)
+                for (var oldlLutIdx = 1; oldlLutIdx < lutSize; oldlLutIdx++)
                     if (classicLUT[oldlLutIdx] > last)
                     {
                         //Offset of 1 is required to avoid mismatch of some longitude circles
@@ -64,7 +67,7 @@ namespace GalacticScale
                     }
 
                 // Warn("End");
-                if (segments == 200)
+                if (segments == 200) // Only use hardcoded vanilla values for vanilla segment count
                 {
                     lut = new[]
                     {
@@ -597,6 +600,20 @@ namespace GalacticScale
                 if (!keyedLUTs.ContainsKey(segments)) keyedLUTs.Add(segments, lut);
                 if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
             }
+        }
+        
+        /// <summary>
+        /// Calculates the required segment table LUT size based on number of segments.
+        /// Returns power-of-2 sizes for GPU texture efficiency.
+        /// </summary>
+        private static int CalculateLUTSize(int segments)
+        {
+            // Segments can be up to segments value (for radius 1600, segments = 1604)
+            // Use next power of 2 for GPU efficiency
+            if (segments <= 512) return 512;      // Vanilla
+            if (segments <= 1024) return 1024;    // Medium planets
+            if (segments <= 2048) return 2048;    // Large planets  
+            return 4096;                           // Huge planets (up to 4096 segments)
         }
     }
 }

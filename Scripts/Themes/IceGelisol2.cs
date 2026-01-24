@@ -17,7 +17,7 @@ namespace GalacticScale
             BriefIntroduction = "冰原冻土介绍B",
             Eigenbit = 6,
             MinRadius = 5,
-            MaxRadius = 510,
+            MaxRadius = 1600,
             MaterialPath = "Universe/Materials/Planets/Ice 1/",
             Temperature = -5.0f,
             Distribute = EThemeDistribute.Default,
