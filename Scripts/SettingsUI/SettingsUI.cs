@@ -1,4 +1,8 @@
-﻿//using System.Linq;
+﻿/*
+ * Change Log:
+ * - 2026-01-25: Add null-safe anchor lookup for language row and early exits when UI elements are missing.
+ */
+//using System.Linq;
 //using UITools;
 
 using System.Collections.Generic;
@@ -40,10 +44,24 @@ namespace GalacticScale
 
         public static void CreateGalacticScaleSettingsPage(UIOptionWindow __instance, UIButton[] _tabButtons, Text[] _tabTexts)
         {
-            tabLine = GameObject.Find("Top Windows/Option Window/tab-line").GetComponent<RectTransform>();
+            var tabLineObj = GameObject.Find("Top Windows/Option Window/tab-line");
+            if (tabLineObj == null)
+            {
+                Warn("GS settings UI: tab-line not found, aborting page creation.");
+                return;
+            }
+
+            tabLine = tabLineObj.GetComponent<RectTransform>();
 
             //Add Tab Button
-            var tabParent = GameObject.Find("Option Window/tab-line/tab-button-5").GetComponent<RectTransform>().parent;
+            var tabButtonTemplateObj = GameObject.Find("Option Window/tab-line/tab-button-5");
+            if (tabButtonTemplateObj == null)
+            {
+                Warn("GS settings UI: tab-button-5 not found, aborting page creation.");
+                return;
+            }
+
+            var tabParent = tabButtonTemplateObj.GetComponent<RectTransform>().parent;
             MainTabIndex = tabParent.childCount - 1;
             var tabButtonTemplate = tabParent.GetChild(tabParent.childCount - 1).GetComponent<RectTransform>();
             galacticButton = Object.Instantiate(tabButtonTemplate, tabLine, false);
@@ -55,8 +73,16 @@ namespace GalacticScale
             galacticButton.GetComponent<Button>().onClick.AddListener(GalacticScaleTabClick);
 
 
-            var detailsTemplate = GameObject.Find("Option Window/details/content-5").GetComponent<RectTransform>();
-            details = Object.Instantiate(detailsTemplate, GameObject.Find("Option Window/details").GetComponent<RectTransform>(), false);
+            var detailsTemplateObj = GameObject.Find("Option Window/details/content-5");
+            var detailsParentObj = GameObject.Find("Option Window/details");
+            if (detailsTemplateObj == null || detailsParentObj == null)
+            {
+                Warn("GS settings UI: details template or parent not found, aborting page creation.");
+                return;
+            }
+
+            var detailsTemplate = detailsTemplateObj.GetComponent<RectTransform>();
+            details = Object.Instantiate(detailsTemplate, detailsParentObj.GetComponent<RectTransform>(), false);
 
 
             details.gameObject.SetActive(true);
@@ -77,12 +103,35 @@ namespace GalacticScale
             //DSP expects the same number of tabButtons and revertButtons. Otherwise will throw an IndexOutOfRange exception on exit.
             //See UIOptionWindow._OnRegEvent()
             var revertButtons = __instance.revertButtons;
-            var revertButton = details.Find("revert-button").GetComponent<RectTransform>();
+            var revertButtonTransform = details.Find("revert-button");
+            if (revertButtonTransform == null)
+            {
+                Warn("GS settings UI: revert-button not found, aborting page creation.");
+                return;
+            }
+
+            var revertButton = revertButtonTransform.GetComponent<RectTransform>();
             revertButton.gameObject.SetActive(false); // Revert function not implemented, so hide for now.
             var newRevertButtons = revertButtons.AddToArray(revertButton.GetComponent<UIButton>());
             __instance.revertButtons = newRevertButtons;
 
-            var languageCombo = details.Find("language").GetComponent<RectTransform>();
+            RectTransform languageCombo = null;
+            if (__instance != null && __instance.languageComp != null)
+            {
+                languageCombo = __instance.languageComp.transform as RectTransform;
+            }
+
+            if (languageCombo == null)
+            {
+                languageCombo = details.Find("language")?.GetComponent<RectTransform>();
+            }
+
+            if (languageCombo == null)
+            {
+                Warn("GS settings UI: language row not found, aborting page creation.");
+                return;
+            }
+
             anchorX = languageCombo.anchoredPosition.x;
             anchorY = languageCombo.anchoredPosition.y;
 
