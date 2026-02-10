@@ -13,7 +13,7 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.77.0</Version>
+        <Version>2.77.1</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
@@ -26,7 +26,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2022.3.53" IncludeAssets="compile" />
-       <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.34.28326-r.0" IncludeAssets="compile" />
+       <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.34.28347-r.0" IncludeAssets="compile" />
         <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="2.0.0" IncludeAssets="compile" />
     </ItemGroup>
     
