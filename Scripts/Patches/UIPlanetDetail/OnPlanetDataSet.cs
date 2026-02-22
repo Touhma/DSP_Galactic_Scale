@@ -2,8 +2,12 @@
  * Change Log:
  * - 2026-01-25: Preserve radius row + temporary observe level via postfix/prefix.
  * - 2026-01-25: Comment out legacy full-prefix OnPlanetDataSet replacement.
+ * - 2026-02-22: Add transpiler for safe orbit roman labels beyond vanilla limits.
  */
 using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,9 +68,91 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
 		public static bool OnPlanetDataSetPrefix(ref UIPlanetDetail __instance)
 		{
+			EnsureNameGenRomanCapacity(__instance?.planet?.orbitAround ?? 0);
 			actualLevel = GameMain.history.universeObserveLevel;
 			GameMain.history.universeObserveLevel = 4;
 			return true;
+		}
+
+		private static void EnsureNameGenRomanCapacity(int orbitAround)
+		{
+			if (orbitAround <= 0)
+			{
+				return;
+			}
+
+			var roman = NameGen.roman ?? Array.Empty<string>();
+			if (orbitAround < roman.Length)
+			{
+				return;
+			}
+
+			var desiredLength = orbitAround + 1;
+			if (RomanNumbers.roman != null && RomanNumbers.roman.Length > desiredLength)
+			{
+				desiredLength = RomanNumbers.roman.Length;
+			}
+
+			var expanded = new string[desiredLength];
+			Array.Copy(roman, expanded, roman.Length);
+			for (var i = roman.Length; i < expanded.Length; i++)
+			{
+				if (RomanNumbers.roman != null && i < RomanNumbers.roman.Length)
+				{
+					expanded[i] = RomanNumbers.roman[i];
+				}
+				else
+				{
+					expanded[i] = i.ToString();
+				}
+			}
+
+			NameGen.roman = expanded;
+		}
+
+		private static string SafeOrbitRoman(int orbitAround)
+		{
+			if (orbitAround <= 0)
+			{
+				return string.Empty;
+			}
+
+			if (RomanNumbers.roman != null && orbitAround < RomanNumbers.roman.Length)
+			{
+				return RomanNumbers.roman[orbitAround];
+			}
+
+			return orbitAround.ToString();
+		}
+
+		[HarmonyTranspiler]
+		[HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
+		public static IEnumerable<CodeInstruction> OnPlanetDataSetTranspiler(IEnumerable<CodeInstruction> instructions)
+		{
+			var code = new List<CodeInstruction>(instructions);
+			var safeRomanMethod = AccessTools.Method(typeof(PatchOnUIPlanetDetail), nameof(SafeOrbitRoman));
+
+			for (var i = 0; i < code.Count - 2; i++)
+			{
+				if (code[i].opcode == OpCodes.Ldsfld
+					&& code[i].operand is FieldInfo field
+					&& field.DeclaringType == typeof(NameGen)
+					&& field.Name == nameof(NameGen.roman)
+					&& code[i + 2].opcode == OpCodes.Ldelem_Ref)
+				{
+					yield return code[i + 1];
+					yield return new CodeInstruction(OpCodes.Call, safeRomanMethod);
+					i += 2;
+					continue;
+				}
+
+				yield return code[i];
+			}
+
+			for (var i = Math.Max(0, code.Count - 2); i < code.Count; i++)
+			{
+				yield return code[i];
+			}
 		}
 
 		/*

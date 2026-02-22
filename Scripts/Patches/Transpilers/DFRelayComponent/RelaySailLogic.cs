@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
@@ -18,6 +18,7 @@ namespace GalacticScale
         //   4. Adding adjustments to avoid safety distance calculations
         // - Updated pattern matching to be more robust and find the correct insertion points
         // - Fixed linter errors related to StarData field access
+        // - 2026-02-22: Clamp all DF relay/carrier star radius pathing reads to vanilla max.
 
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(DFRelayComponent),  nameof(DFRelayComponent.RelaySailLogic))]
@@ -44,6 +45,24 @@ namespace GalacticScale
                 }).InstructionEnumeration();
 
             return instructions;
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(DFRelayComponent), nameof(DFRelayComponent.RelaySailLogic))]
+        [HarmonyPatch(typeof(DFRelayComponent), nameof(DFRelayComponent.CarrierSailLogic))]
+        public static IEnumerable<CodeInstruction> CapStarRadiusToVanilla(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            var radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
+            var capMethod = AccessTools.Method(typeof(DarkFogRadius), nameof(DarkFogRadius.CapStarRadiusToVanillaMax));
+            for (var i = 0; i < codes.Count; i++)
+            {
+                yield return codes[i];
+                if (codes[i].LoadsField(radiusField))
+                {
+                    yield return new CodeInstruction(OpCodes.Call, capMethod);
+                }
+            }
         }
         
         // Fix 2.5f star radius multiplier to 0.5f, same as we did for logistics ships
@@ -215,15 +234,7 @@ namespace GalacticScale
         // Scaling function for avoidance calculations (similar to the one used for logistics ships)
         public static float AdjustRadiusForPathingDF(float originalRadius)
         {
-            // For small stars (default game sizes), keep the original radius
-            if (originalRadius < 1000f)
-                return originalRadius;
-                
-            // For larger stars, apply a logarithmic scale to avoid excessive avoidance distances
-            float adjustedRadius = 1000f + (float)(Math.Log10(originalRadius / 1000f + 1) * 1000f);
-            
-            // Ensure we never go below 60% of the original radius to avoid ships hitting stars
-            return Math.Max(originalRadius * 0.6f, adjustedRadius);
+            return DarkFogRadius.CapStarRadiusToVanillaMax(originalRadius);
         }
         
         // Adjust safety distance similar to the logistics ship patch

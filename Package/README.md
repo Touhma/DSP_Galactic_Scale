@@ -2,6 +2,7 @@
 
 # BACKUP YOUR SAVES. SERIOUSLY.
 
+- Version 2.77.2 - Fix Roman Numeral Bug for outer planets
 - Version 2.77.1 - Update for game patch 0.10.34.28347-r.0
 - Version 2.77.0 - Update for game patch 0.10.34.28326-r.0
 - Version 2.76.3 - Fix vegetation generation crash by ensuring vegeCursor is properly reset.

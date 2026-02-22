@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
@@ -9,6 +9,9 @@ namespace GalacticScale
 {
     public static class EnemyUnitComponentTranspiler
     {
+        // Change Log:
+        // - 2026-02-22: Cap space pathing star radius reads to vanilla max for Dark Fog movement.
+
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(EnemyUnitComponent),  nameof(EnemyUnitComponent.RunBehavior_Defense_Ground))] //225
         public static IEnumerable<CodeInstruction> Fix225(IEnumerable<CodeInstruction> instructions)
@@ -107,6 +110,26 @@ namespace GalacticScale
                 }).InstructionEnumeration();
 
             return instructions;
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.ApproachToTargetPoint_SLancer))]
+        [HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.SeekToHive_Space))]
+        [HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.SeekToHive_Space_FollowLeader))]
+        [HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.SeekToTargetPoint_Space))]
+        [HarmonyPatch(typeof(EnemyUnitComponent), nameof(EnemyUnitComponent.SeekToTargetPoint_Space_FollowLeader))]
+        public static IEnumerable<CodeInstruction> CapStarRadiusToVanilla(IEnumerable<CodeInstruction> instructions)
+        {
+            var radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
+            var capMethod = AccessTools.Method(typeof(DarkFogRadius), nameof(DarkFogRadius.CapStarRadiusToVanillaMax));
+            foreach (var instruction in instructions)
+            {
+                yield return instruction;
+                if (instruction.LoadsField(radiusField))
+                {
+                    yield return new CodeInstruction(Call, capMethod);
+                }
+            }
         }
     }
 }
