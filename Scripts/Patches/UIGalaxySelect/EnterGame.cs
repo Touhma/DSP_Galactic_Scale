@@ -43,7 +43,7 @@ namespace GalacticScale
                     // GS2.Warn($"instance.level {__instance.level}");
                     __instance.gameDesc.goalLevel = __instance.level;
                     // GS2.Warn("10");
-                    if (UIGalaxySelect.isPlayCutScene)
+                    if (UIGalaxySelect.willPlayCombatCutscene)
                     {
                         // GS2.Warn("11");
                         UIRoot.instance.StartCombatCutscene(__instance.gameDesc);
@@ -92,29 +92,7 @@ namespace GalacticScale
                 }
                 // GS2.Warn("26");
                 return false;
-                // bool advisorTips = DSPGame.globalOption.advisorTips;
-                // DSPGame.globalOption.advisorTips = (__instance.uiCombat.advisorEnabled ?? DSPGame.globalOption.advisorTips);
-                // if (advisorTips != DSPGame.globalOption.advisorTips)
-                // {
-                //     UIAdvisorTip.showAdvisorTips = DSPGame.globalOption.advisorTips;
-                //     DSPGame.globalOption.SaveGlobal();
-                // }
-                //
-                // if (__instance.gameDesc.isCombatMode)
-                // {
-                //     DSPGame.RecordPlayCombat();
-                // }
-                //
-                // DSPGame.RecordPlayVersion();
-                // __instance.uiCombat.advisorEnabled = null;
-                // if (UIGalaxySelect.isPlayCutScene)
-                // {
-                //     UIRoot.instance.StartCombatCutscene(__instance.gameDesc);
-                //     return false;
-                // }
-                //
-                // DSPGame.StartGame(___gameDesc);
-                
+              
             }
             else
             {
