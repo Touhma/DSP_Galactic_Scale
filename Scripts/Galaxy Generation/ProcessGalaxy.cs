@@ -6,9 +6,33 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        // Length of LDB._themes before GS2 ever appended a theme proto: vanilla themes plus
+        // anything other mods registered at load. Captured on the first ProcessGalaxy call and
+        // used as the reset point for the theme table between generations, replacing the old
+        // hardcoded 128 (which silently truncated real themes once vanilla+mods crossed it, and
+        // left stale dataIndices entries pointing past the shortened array).
+        private static int builtinThemeCount = -1;
+
+        private static void ResetThemeProtoSet()
+        {
+            var themes = LDB._themes;
+            if (themes?.dataArray == null || builtinThemeCount < 0 || themes.dataArray.Length <= builtinThemeCount) return;
+            var staleIds = new System.Collections.Generic.List<int>();
+            foreach (var kv in themes.dataIndices)
+                if (kv.Value >= builtinThemeCount)
+                    staleIds.Add(kv.Key);
+            foreach (var id in staleIds) themes.dataIndices.Remove(id);
+            Array.Resize(ref themes.dataArray, builtinThemeCount);
+        }
+
         public static GalaxyData ProcessGalaxy(GameDesc desc, bool sketchOnly = false)
         {
             Log($"Start ProcessGalaxy:{sketchOnly} StarCount:{gameDesc.starCount} Seed:{gameDesc.galaxySeed} Called By{GetCaller()}. Galaxy StarCount : {galaxy?.stars?.Length}");
+            if (builtinThemeCount < 0 && LDB._themes?.dataArray != null)
+            {
+                builtinThemeCount = LDB._themes.dataArray.Length;
+                Log($"Captured builtin theme table size: {builtinThemeCount}");
+            }
             var random = new Random(GSSettings.Seed);
             try
             {
@@ -25,7 +49,7 @@ namespace GalacticScale
                     // Log("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
                     // Warn(LDB._themes.dataArray.Length.ToString());
-                    if (LDB._themes.dataArray != null && LDB._themes.dataArray.Length > 128) Array.Resize(ref LDB._themes.dataArray, 128);
+                    ResetThemeProtoSet();
                     // Warn(LDB._themes.dataArray.Length.ToString());
                     // GS2.LogJson(gameDesc);
                     // GS2.Warn(gameDesc.resourceMultiplier.ToString());
