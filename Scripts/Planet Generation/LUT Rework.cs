@@ -8,17 +8,37 @@ namespace GalacticScale
     {
         public static Dictionary<int, int[]> keyedLUTs = new();
 
+        // Guards all WRITES to keyedLUTs / PatchOnUIBuildingGrid.LUT512. SetLuts is reached from
+        // the main thread (CreatePlanet, OnActivePlanetLoaded) and from the planet compute/scan
+        // threads via the DetermineLongitudeSegmentCount patches, and unsynchronized
+        // Dictionary.Add can corrupt the table or hang a concurrent reader. Reads stay lock-free:
+        // published dictionaries are never mutated again (copy-on-write below).
+        private static readonly object lutLock = new();
+
         public static void SetLuts(int segments, float planetRadius)
         {
             // GS2.Log($"{segments}, {planetRadius}");
             if (!DSPGame.IsMenuDemo && !Vanilla) // Prevent special LUT's being created in main menu
+                lock (lutLock)
             {
                 if (keyedLUTs.ContainsKey(segments) && PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) return;
+
+                // Callers disagree about planetRadius: most pass planet.radius, but the PlanetGrid
+                // patch passes the segment count as the radius (it has no planet reference). Since
+                // GS2 radii are always multiples of 10 (Utils.ParsePlanetSize) and segments =
+                // (int)(radius / 4) * 4, each segment count maps back to exactly one radius in
+                // [segments, segments + 4) - so derive it and every caller builds the identical
+                // table for a given key, instead of first-write-wins deciding the geometry.
+                var canonicalRadius = (segments + 9) / 10 * 10;
+                if (canonicalRadius < segments + 4) planetRadius = canonicalRadius;
 
                 if (segments < 4 || planetRadius < 5)
                 {
                     planetRadius = GameMain.data.localPlanet.realRadius;
-                    segments = Mathf.CeilToInt(GameMain.data.localPlanet.radius / 4f + 0.1f) * 4;
+                    // (int) truncation, not CeilToInt: must match the segment-key formula used by
+                    // CreatePlanet/OnActivePlanetLoaded or this fallback files its table under a
+                    // key nobody else looks up.
+                    segments = (int)(GameMain.data.localPlanet.radius / 4f + 0.1f) * 4;
                 }
                 var numSegments = segments / 4; //Number of segments on a quarter circle (the other 3/4 will result by mirroring)
                 var lut = new int[numSegments];
@@ -593,9 +613,14 @@ namespace GalacticScale
                     };
                 }
 
-                //Fill all Look Up Tables (Dictionaries really)
-                if (!keyedLUTs.ContainsKey(segments)) keyedLUTs.Add(segments, lut);
-                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments)) PatchOnUIBuildingGrid.LUT512.Add(segments, classicLUT);
+                //Fill all Look Up Tables (Dictionaries really). Publish copy-on-write: readers on
+                //other threads index these without taking lutLock, so a published dictionary must
+                //never be mutated - swap in a superset copy instead. Entries only ever accumulate,
+                //so a reader holding a stale reference just re-checks ContainsKey and lands here.
+                if (!keyedLUTs.ContainsKey(segments))
+                    keyedLUTs = new Dictionary<int, int[]>(keyedLUTs) { { segments, lut } };
+                if (!PatchOnUIBuildingGrid.LUT512.ContainsKey(segments))
+                    PatchOnUIBuildingGrid.LUT512 = new Dictionary<int, int[]>(PatchOnUIBuildingGrid.LUT512) { { segments, classicLUT } };
             }
         }
     }
