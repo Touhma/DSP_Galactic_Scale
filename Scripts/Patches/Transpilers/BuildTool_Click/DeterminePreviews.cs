@@ -36,16 +36,22 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> BuildTool_Click_DeterminePreviews_Transpiler(
             IEnumerable<CodeInstruction> instructions)
         {
-            instructions = new CodeMatcher(instructions)
+            var matcher = new CodeMatcher(instructions)
                 .MatchForward(true,
                     new CodeMatch(i =>
                         i.opcode == OpCodes.Callvirt && ((MethodInfo)i.operand).Name == "get_realRadius"),
-                    new CodeMatch(OpCodes.Call))
+                    new CodeMatch(OpCodes.Call));
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("BuildTool_Click.DeterminePreviews transpiler: realRadius pattern not found (game update changed the method?). Returning original code - preview reach will be uncapped on large planets.");
+                return instructions;
+            }
+
+            return matcher
                 .InsertAndAdvance(Transpilers.EmitDelegate<Func<float, float>>(realRadius =>
                 {
                     return Mathf.Min(realRadius * 0.025f, 20f) / 0.025f;
                 })).InstructionEnumeration();
-            return instructions;
         }
     }
 

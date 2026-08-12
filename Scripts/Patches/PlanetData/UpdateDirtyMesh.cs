@@ -20,7 +20,9 @@ namespace GalacticScale
             var codes = new List<CodeInstruction>(instructions);
             // NOTE: heightData offset now applied in ModelingPlanetMain prefix, not needed here
             // because heightData is already in absolute values when UpdateDirtyMesh runs
-            
+            var scalePatched = 0;
+            var modPlanePatched = 0;
+
             for (var i = 0; i < codes.Count; i++)
             {
                 if (codes[i].opcode == OpCodes.Ldarg_0 && i < codes.Count - 1)
@@ -34,6 +36,7 @@ namespace GalacticScale
                         codes[i] = new CodeInstruction(OpCodes.Nop);
                         // Instead load the fixed value 1, as a float32
                         codes[i + 1] = new CodeInstruction(OpCodes.Ldc_R4, 1f);
+                        scalePatched++;
                     }
                 }
                 else if (codes[i].Calls(typeof(PlanetRawData).GetMethod("GetModPlane")))
@@ -42,8 +45,14 @@ namespace GalacticScale
                     // We instead call PlanetRawDataExtension.GetModPlaneInt (which returns an int)
                     // All existing calls to GetModPlane cast the result to a float, anyway...
                     codes[i] = new CodeInstruction(OpCodes.Call, typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
+                    modPlanePatched++;
                 }
             }
+
+            if (scalePatched == 0)
+                GS2.Error("PlanetData.UpdateDirtyMesh transpiler: this.scale loads not found (game update changed the method?). Mesh updates may double-apply planet scale.");
+            if (modPlanePatched == 0)
+                GS2.Error("PlanetData.UpdateDirtyMesh transpiler: GetModPlane calls not found (game update changed the method?). Height mods on planets larger than ~327 radius may overflow.");
 
             return codes.AsEnumerable();
         }

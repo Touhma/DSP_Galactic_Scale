@@ -35,10 +35,10 @@ namespace GalacticScale
         [HarmonyPatch(typeof(SpaceCapsule), nameof(SpaceCapsule.LateUpdate))]
         
 
-        public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> Fix200f(IEnumerable<CodeInstruction> instructions, System.Reflection.MethodBase __originalMethod)
         {
             var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromLocalPlanet));
-            instructions = new CodeMatcher(instructions)
+            var matcher = new CodeMatcher(instructions)
                 .MatchForward(
                     true,
                     new CodeMatch(i =>
@@ -57,19 +57,29 @@ namespace GalacticScale
                                     Convert.ToDouble(i.operand ?? 0.0) == 212.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 225.0 ||
                                     Convert.ToDouble(i.operand ?? 0.0) == 228.0 ||
-                                    Convert.ToDouble(i.operand ?? 0.0) == 255.0 
+                                    Convert.ToDouble(i.operand ?? 0.0) == 255.0
                             );
                     })
-                )
-                .Repeat(matcher =>
-                {
-                    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
-                    var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
-                    matcher.Advance(1);
-                    matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
-                }).InstructionEnumeration();
+                );
+            // The transpiler runs once per target method; every target was chosen because it
+            // contains at least one of the radius constants above. Zero matches therefore means
+            // a game update removed/changed them in THIS method - report which one and leave it
+            // vanilla instead of letting Repeat() throw (which would abort the rest of
+            // Bootstrap's patch registration).
+            if (matcher.IsInvalid)
+            {
+                GS2.Error($"PlanetSizeTranspiler: no known radius constant found in {__originalMethod?.DeclaringType?.Name}.{__originalMethod?.Name} (game update changed it?). That method will use vanilla radius-200 behavior.");
+                return instructions;
+            }
 
-            return instructions;
+            return matcher
+                .Repeat(m =>
+                {
+                    // Bootstrap.Logger.LogInfo($"Found value {m.Operand} at {m.Pos} type {m.Operand?.GetType()}");
+                    var mi = methodInfo.MakeGenericMethod(m.Operand?.GetType() ?? typeof(float));
+                    m.Advance(1);
+                    m.InsertAndAdvance(new CodeInstruction(Call, mi));
+                }).InstructionEnumeration();
         }
     }
 }

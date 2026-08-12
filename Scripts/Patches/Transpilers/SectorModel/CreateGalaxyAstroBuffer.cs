@@ -13,15 +13,20 @@ namespace GalacticScale
             IEnumerable<CodeInstruction> instructions)
         {
             var calcMethod = AccessTools.Method(typeof(PatchOnSectorModel), nameof(CalcAstroBufferSize));
-            instructions = new CodeMatcher(instructions)
+            var matcher = new CodeMatcher(instructions)
                 // Replace 25600 with the result of the CalcAstroBufferSize method
                 .MatchForward(
                     true,
                     new CodeMatch(i => { return i.opcode == Ldc_I4 && Convert.ToInt32(i.operand ?? 0) == 25600; }
-                    ))
-                .Repeat(matcher => { matcher.SetInstructionAndAdvance(new CodeInstruction(Call, calcMethod)); }).InstructionEnumeration();
+                    ));
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("SectorModel.CreateGalaxyAstroBuffer transpiler: 25600 astro buffer constant not found (game update changed the method?). Returning original code - galaxies over 64 stars may fail to render.");
+                return instructions;
+            }
 
-            return instructions;
+            return matcher
+                .Repeat(m => { m.SetInstructionAndAdvance(new CodeInstruction(Call, calcMethod)); }).InstructionEnumeration();
         }
 
         public static int CalcAstroBufferSize()
