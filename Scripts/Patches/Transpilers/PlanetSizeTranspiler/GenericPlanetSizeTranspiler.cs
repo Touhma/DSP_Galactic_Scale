@@ -8,7 +8,7 @@ namespace GalacticScale
 
 {
     
-    public class PlanetSizeTranspiler
+    public partial class PlanetSizeTranspiler
     {
        [HarmonyTranspiler]
         [HarmonyPatch(typeof(BlueprintUtils), nameof(BlueprintUtils.GetNormalizedDir))]
@@ -25,7 +25,10 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlayerAction_Plant),  nameof(PlayerAction_Plant.UpdateRaycast))]
         [HarmonyPatch(typeof(PlayerAction_Navigate),  nameof(PlayerAction_Navigate.GameTick))]
         [HarmonyPatch(typeof(PowerSystem),  nameof(PowerSystem.CalculateGeothermalStrength))]
-        [HarmonyPatch(typeof(MinerComponent),  nameof(MinerComponent.IsTargetVeinInRange))]
+        // MinerComponent.IsTargetVeinInRange is deliberately NOT in this list: it is static
+        // and also runs for remote planets (CreateEntityLogicComponents re-checks prebuild
+        // vein IDs during BAB rebuild while the player is elsewhere), so localPlanet is the
+        // wrong radius source there. It has a dedicated transpiler in IsTargetVeinInRange.cs.
         [HarmonyPatch(typeof(BuildTool_Reform),  nameof(BuildTool_Reform.UpdateRaycastAndReform))]
         [HarmonyPatch(typeof(BuildTool_Upgrade),  nameof(BuildTool_Upgrade.UpdateRaycast))]
         [HarmonyPatch(typeof(BuildTool_Path),  nameof(BuildTool_Path.UpdateRaycast))]
