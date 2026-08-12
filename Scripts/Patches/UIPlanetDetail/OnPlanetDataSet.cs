@@ -133,26 +133,59 @@ namespace GalacticScale
 			var safeRomanMethod = AccessTools.Method(typeof(PatchOnUIPlanetDetail), nameof(SafeOrbitRoman));
 			var patched = 0;
 
-			for (var i = 0; i < code.Count - 2; i++)
+			for (var i = 0; i < code.Count; i++)
 			{
 				if (code[i].opcode == OpCodes.Ldsfld
 					&& code[i].operand is FieldInfo field
 					&& field.DeclaringType == typeof(NameGen)
-					&& field.Name == nameof(NameGen.roman)
-					&& code[i + 2].opcode == OpCodes.Ldelem_Ref)
+					&& field.Name == nameof(NameGen.roman))
 				{
-					yield return code[i + 1];
-					yield return new CodeInstruction(OpCodes.Call, safeRomanMethod);
-					i += 2;
-					patched++;
-					continue;
+					// Replace `NameGen.roman[<index expr>]` with `SafeOrbitRoman(<index expr>)`.
+					// The index expression used to be a single instruction; 0.10.34.28529 inlines
+					// `this.planet.orbitAround` (three instructions), so scan a short window for
+					// the closing ldelem.ref instead of assuming a fixed offset.
+					var end = -1;
+					for (var j = i + 1; j < code.Count && j <= i + 6; j++)
+					{
+						if (code[j].opcode == OpCodes.Ldsfld)
+						{
+							// a second static-field load inside the window means this is not
+							// the simple roman[<index>] shape we expect - leave it unpatched
+							break;
+						}
+
+						if (code[j].opcode == OpCodes.Ldelem_Ref)
+						{
+							end = j;
+							break;
+						}
+					}
+
+					if (end > i + 1)
+					{
+						for (var j = i + 1; j < end; j++)
+						{
+							var ci = code[j];
+							if (j == i + 1 && code[i].labels.Count > 0)
+							{
+								// the skipped ldsfld may be a branch target - move its labels
+								// onto the first emitted instruction
+								ci = new CodeInstruction(ci);
+								ci.labels.AddRange(code[i].labels);
+							}
+							yield return ci;
+						}
+
+						var call = new CodeInstruction(OpCodes.Call, safeRomanMethod);
+						// preserve any branch targets that pointed at the skipped ldelem.ref
+						call.labels.AddRange(code[end].labels);
+						yield return call;
+						i = end; // loop increment steps past the ldelem.ref
+						patched++;
+						continue;
+					}
 				}
 
-				yield return code[i];
-			}
-
-			for (var i = Math.Max(0, code.Count - 2); i < code.Count; i++)
-			{
 				yield return code[i];
 			}
 
