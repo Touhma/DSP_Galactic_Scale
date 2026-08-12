@@ -20,6 +20,8 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> ModelingPlanetMainTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionList = new List<CodeInstruction>(instructions);
+            var lodPatched = 0;
+            var modPlanePatched = 0;
 
             //Patch.Debug("ModelingPlanetMain Transpiler.", LogLevel.Debug, Patch.DebugPlanetModelingManagerDeep);
             for (var instructionCounter = 0; instructionCounter < instructionList.Count; instructionCounter++)
@@ -41,13 +43,20 @@ namespace GalacticScale
                             new(OpCodes.Div)
                         };
                         instructionList.InsertRange(instructionCounter + 3, toInsert);
+                        lodPatched++;
                     }
                 }
                 else if (instructionList[instructionCounter].Calls(typeof(PlanetRawData).GetMethod("GetModPlane")))
                 {
                     //GS2.Log("Found GetModPlane callvirt. Replacing with GetModPlaneInt call.");
                     instructionList[instructionCounter] = new CodeInstruction(OpCodes.Call, typeof(PlanetRawDataExtension).GetMethod("GetModPlaneInt"));
+                    modPlanePatched++;
                 }
+
+            if (lodPatched == 0)
+                GS2.Error("PlanetModelingManager.ModelingPlanetMain transpiler: realRadius+0.2f/0.025f LOD pattern not found (game update changed the method?). Planet mesh LOD will assume a radius-200 planet.");
+            if (modPlanePatched == 0)
+                GS2.Error("PlanetModelingManager.ModelingPlanetMain transpiler: GetModPlane call not found (game update changed the method?). Height mods on planets larger than ~327 radius may overflow.");
 
             return instructionList.AsEnumerable();
         }

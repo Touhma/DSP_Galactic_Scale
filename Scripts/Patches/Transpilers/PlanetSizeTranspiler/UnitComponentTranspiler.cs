@@ -20,7 +20,7 @@ namespace GalacticScale
         {
             // var methodInfo = AccessTools.Method(typeof(EnemyUnitComponentTranspiler), nameof(Utils.GetRadiusFromFactory));
             
-            instructions = new CodeMatcher(instructions)
+            var matcher = new CodeMatcher(instructions)
                 .MatchForward(
                     true,
                     new CodeMatch(i =>
@@ -28,22 +28,25 @@ namespace GalacticScale
                         return (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
                                (
                                    Convert.ToDouble(i.operand ?? 0.0) == 212.0 ||
-                                   Convert.ToDouble(i.operand ?? 0.0) == 225.0 
+                                   Convert.ToDouble(i.operand ?? 0.0) == 225.0
 
                                );
                     })
-                )
-                .Repeat(matcher =>
-                {
-                    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
-                    // var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
-                    var mi = matcher.GetRadiusFromFactory();
-                    matcher.Advance(1);
-                    matcher.InsertAndAdvance(new CodeInstruction(Ldarg_1));
-                    matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
-                }).InstructionEnumeration();
+                );
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("UnitComponent ground-engage transpiler: 212/225 radius constants not found (game update changed the method?). Returning original code - ground unit engagement ranges will assume a radius-200 planet.");
+                return instructions;
+            }
 
-            return instructions;
+            return matcher
+                .Repeat(m =>
+                {
+                    var mi = m.GetRadiusFromFactory();
+                    m.Advance(1);
+                    m.InsertAndAdvance(new CodeInstruction(Ldarg_1));
+                    m.InsertAndAdvance(new CodeInstruction(Call, mi));
+                }).InstructionEnumeration();
         }
         
         // Mecha
@@ -54,22 +57,25 @@ namespace GalacticScale
         {
             // var methodInfo = AccessTools.Method(typeof(UnitComponentTranspiler), nameof(UnitComponentTranspiler.GetRadiusFromMecha));
             
-            instructions = new CodeMatcher(instructions)
+            var matcher = new CodeMatcher(instructions)
                 .MatchForward(
                     true,
                     new CodeMatch(i => (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) && Convert.ToDouble(i.operand ?? 0.0) == 200.0)
-                )
-                .Repeat(matcher =>
+                );
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("UnitComponent mecha-engage transpiler: 200 radius constant not found (game update changed the method?). Returning original code - mecha engagement ranges will assume a radius-200 planet.");
+                return instructions;
+            }
+
+            return matcher
+                .Repeat(m =>
                 {
-                    // Bootstrap.Logger.LogInfo($"Found value {matcher.Operand} at {matcher.Pos} type {matcher.Operand?.GetType()}");
-                    // var mi = methodInfo.MakeGenericMethod(matcher.Operand?.GetType() ?? typeof(float));
-                    var mi =matcher.GetRadiusFromMecha();
-                    matcher.Advance(1);
-                    matcher.InsertAndAdvance(new CodeInstruction(Ldarg_2));
-                    matcher.InsertAndAdvance(new CodeInstruction(Call, mi));
+                    var mi = m.GetRadiusFromMecha();
+                    m.Advance(1);
+                    m.InsertAndAdvance(new CodeInstruction(Ldarg_2));
+                    m.InsertAndAdvance(new CodeInstruction(Call, mi));
                 }).InstructionEnumeration();
-        
-            return instructions;
         }
         
         

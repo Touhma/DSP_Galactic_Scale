@@ -131,6 +131,7 @@ namespace GalacticScale
 		{
 			var code = new List<CodeInstruction>(instructions);
 			var safeRomanMethod = AccessTools.Method(typeof(PatchOnUIPlanetDetail), nameof(SafeOrbitRoman));
+			var patched = 0;
 
 			for (var i = 0; i < code.Count - 2; i++)
 			{
@@ -143,6 +144,7 @@ namespace GalacticScale
 					yield return code[i + 1];
 					yield return new CodeInstruction(OpCodes.Call, safeRomanMethod);
 					i += 2;
+					patched++;
 					continue;
 				}
 
@@ -153,6 +155,9 @@ namespace GalacticScale
 			{
 				yield return code[i];
 			}
+
+			if (patched == 0)
+				GS2.Error("UIPlanetDetail.OnPlanetDataSet transpiler: NameGen.roman index pattern not found (game update changed the method?). Outer-planet roman numerals may throw on high orbit counts.");
 		}
 
 		/*

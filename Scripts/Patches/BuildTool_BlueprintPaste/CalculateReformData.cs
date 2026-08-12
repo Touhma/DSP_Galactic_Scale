@@ -22,6 +22,7 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> CalculateReformData(IEnumerable<CodeInstruction> instructions)
         {
             var clampedGet = AccessTools.Method(typeof(PatchOnBuildTool_BlueprintPaste), nameof(ClampedIntArrayGet));
+            var patched = 0;
             foreach (var ins in instructions)
             {
                 if (ins.opcode == OpCodes.Ldelem_I4)
@@ -30,12 +31,19 @@ namespace GalacticScale
                     call.labels.AddRange(ins.labels);
                     call.blocks.AddRange(ins.blocks);
                     yield return call;
+                    patched++;
                 }
                 else
                 {
                     yield return ins;
                 }
             }
+
+            // Zero replacements is not necessarily an error (another mod's transpiler may have
+            // replaced the loads first, which is a safe no-op for us) but after a game update it
+            // can also mean the method was rewritten - worth a note in the log either way.
+            if (patched == 0)
+                GS2.Warn("BuildTool_BlueprintPaste.CalculateReformData transpiler: no int-array loads found to clamp (another mod patched them first, or a game update rewrote the method).");
         }
 
         public static int ClampedIntArrayGet(int[] arr, int idx)

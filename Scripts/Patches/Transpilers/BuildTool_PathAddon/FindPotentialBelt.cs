@@ -13,16 +13,21 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> FindPotentialBeltTranspiler(
             IEnumerable<CodeInstruction> instructions)
         {
-            instructions = new CodeMatcher(instructions).MatchForward(true,
+            var matcher = new CodeMatcher(instructions).MatchForward(true,
                     new CodeMatch(i => i.opcode == Ldloc_S),
                     new CodeMatch(i => i.opcode == Ldloc_S),
                     new CodeMatch(i => i.opcode == Ldelem && i.operand.ToString().Contains("UnityEngine.Vector3")),
-                    new CodeMatch(i => i.opcode == Ldc_R4 && (float)i.operand == 2f))
+                    new CodeMatch(i => i.opcode == Ldc_R4 && (float)i.operand == 2f));
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("BuildTool_Addon.FindPotentialBelt transpiler: Vector3/2f pattern not found (game update changed the method?). Returning original code - addon belt snapping will assume a radius-200 planet.");
+                return instructions;
+            }
+
+            return matcher
                 .SetInstructionAndAdvance(new CodeInstruction(Call,
                     typeof(Utils).GetMethod(nameof(Utils.GetPlanetSizeRatio2))))
                 .InstructionEnumeration();
-
-            return instructions;
         }
     }
 }

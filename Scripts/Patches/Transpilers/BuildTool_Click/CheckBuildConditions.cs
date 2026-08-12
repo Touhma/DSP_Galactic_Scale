@@ -12,7 +12,15 @@ namespace GalacticScale
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var matcher = new CodeMatcher(instructions).End().MatchBack(false, new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldflda, AccessTools.Field(typeof(BuildTool_Click), nameof(BuildTool_Click.cursorTarget)))).Advance(1);
+            var matcher = new CodeMatcher(instructions).End().MatchBack(false, new CodeMatch(OpCodes.Ldarg_0), new CodeMatch(OpCodes.Ldflda, AccessTools.Field(typeof(BuildTool_Click), nameof(BuildTool_Click.cursorTarget))));
+            if (matcher.IsInvalid)
+            {
+                // Without this guard a failed match resets the cursor and the loop below would
+                // delete instructions from the start of the method.
+                GS2.Error("BuildTool_Click.CheckBuildConditions transpiler: cursorTarget pattern not found (game update changed the method?). Returning original code - click-build reach will assume a radius-200 planet.");
+                return instructions;
+            }
+            matcher.Advance(1);
 
             while (matcher.Opcode != OpCodes.Stloc_S) matcher.RemoveInstruction();
 

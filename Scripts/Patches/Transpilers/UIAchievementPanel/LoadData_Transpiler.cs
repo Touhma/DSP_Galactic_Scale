@@ -18,6 +18,11 @@ namespace GalacticScale
         public static IEnumerable<CodeInstruction> LoadData_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var matcher = new CodeMatcher(instructions).MatchForward(true, new CodeMatch(OpCodes.Br));
+            if (matcher.IsInvalid)
+            {
+                GS2.Error("UIAchievementPanel.LoadData transpiler: no br instruction found (game update changed the method?). Returning original code - duplicate-key guard for achievements disabled.");
+                return instructions;
+            }
 
             var continueJmp = matcher.Operand;
 
