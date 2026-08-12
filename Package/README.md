@@ -1,7 +1,10 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
-
+- Version 2.78.0 - AndrewLuebke fixed three other issues.
+- Version 2.77.6 - AndrewLuebke fixed a thread safety issue that probably caused crashes loading planets.
+- Version 2.77.5 - AndrewLuebke fixed an assumption with themeProto array sizing
+- Version 2.77.4 - AndrewLuebke fixed an error when pasting blueprints
 - Version 2.77.3 - Update Base Game Version 0.10.34.28485
 - Version 2.77.2 - Fix Roman Numeral Bug for outer planets
 - Version 2.77.1 - Update for game patch 0.10.34.28347-r.0
