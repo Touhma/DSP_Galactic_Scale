@@ -138,6 +138,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnUIAdvisorTip));
                 harmony.PatchAll(typeof(PatchOnUIBuildingGrid));
                 harmony.PatchAll(typeof(PatchOnUICommunicatorIndicator));
+                harmony.PatchAll(typeof(PatchOnUIEnemyBriefInfo));
                 harmony.PatchAll(typeof(PatchOnUIEscMenu));
                 harmony.PatchAll(typeof(PatchOnUIGalaxySelect));
                 harmony.PatchAll(typeof(PatchOnUIGame));
