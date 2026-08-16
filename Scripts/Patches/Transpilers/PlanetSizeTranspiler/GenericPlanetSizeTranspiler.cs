@@ -12,7 +12,7 @@ namespace GalacticScale
     {
         // Radius-derived constants the game hardcodes for the vanilla 200m planet.
         private static readonly double[] RadiusConstants =
-            { 196, 197.5, 197.6, 198.5, 200, 200.22, 200.5, 202, 206, 212, 225, 228, 255 };
+            { 196, 197.5, 197.6, 198.5, 200, 200.22, 200.5, 201, 202, 206, 212, 225, 228, 255 };
 
         private static bool IsRadiusConstant(CodeInstruction i)
         {
