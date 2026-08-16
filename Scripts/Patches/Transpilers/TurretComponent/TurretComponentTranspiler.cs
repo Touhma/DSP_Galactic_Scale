@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using UnityEngine;
 using static System.Reflection.Emit.OpCodes;
 
 namespace GalacticScale
@@ -9,71 +8,47 @@ namespace GalacticScale
 {
     public static class TurretComponentTranspiler
     {
-        public static Dictionary<TurretComponent, float> Radii = new();
-
-        public static float GetRadius(ref TurretComponent turret)
-        {
-            return !Radii.ContainsKey(turret) ? 200f : Radii[turret];
-        }
-
-        public static void AddTurret(DefenseSystem defenseSystem, ref TurretComponent turret)
-        {
-            GS2.Log($"Added Turret {turret.id} from DefenseSystem {defenseSystem.planet.name}");
-            Radii[turret] = defenseSystem.planet.realRadius + 1;
-        }
-
-        public static void RemoveTurret(ref TurretComponent turret)
-        {
-            GS2.Log($"Removed Turret {turret.id}");
-            Radii.Remove(turret);
-        }
-
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(TurretComponent), nameof(TurretComponent.BeforeRemove))]
-        public static IEnumerable<CodeInstruction> BeforeRemoveTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            instructions = new CodeMatcher(instructions).Advance(1)
-                .InsertAndAdvance(new CodeInstruction(Ldarg_0))
-                .InsertAndAdvance(new CodeInstruction(Call,
-                    AccessTools.Method(typeof(TurretComponentTranspiler), nameof(RemoveTurret))))
-                .InstructionEnumeration();
-            return instructions;
-        }
-        
+        // Both patched methods receive the owning PlanetFactory as their FIRST parameter
+        // (arg1), so the radius comes straight from factory.planet - no lookup table.
+        //
+        // This replaces a Dictionary<TurretComponent, float> keyed on the MUTABLE STRUCT:
+        // the stored key was a snapshot of the turret's state at build time, so every
+        // later lookup missed (the patch always fell back to 200f and never worked) and
+        // RemoveTurret could never find its entry either, leaking one stale snapshot per
+        // turret ever built.
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(TurretComponent), nameof(TurretComponent.CheckEnemyIsInAttackRange))]
         [HarmonyPatch(typeof(TurretComponent), nameof(TurretComponent.Shoot_Plasma))]
-        public static IEnumerable<CodeInstruction> Shoot_PlasmaTranspiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> FixTurretRadius(IEnumerable<CodeInstruction> instructions, System.Reflection.MethodBase __originalMethod)
         {
-            try
+            var helper = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromFactory));
+            // Census (0.10.34): CheckEnemyIsInAttackRange has one ldc.r4 200; Shoot_Plasma
+            // has two ldc.r8 200. Compare in the operand's own type.
+            var matcher = new CodeMatcher(instructions)
+                .MatchForward(
+                    true,
+                    new CodeMatch(i =>
+                        (i.opcode == Ldc_R4 && i.operand is float f && f == 200f) ||
+                        (i.opcode == Ldc_R8 && i.operand is double d && d == 200.0))
+                );
+            if (matcher.IsInvalid)
             {
-                var matcher = new CodeMatcher(instructions)
-                    .MatchForward(
-                        true,
-                        new CodeMatch(i => (i.opcode == Ldc_R4 || i.opcode == Ldc_R8 || i.opcode == Ldc_I4) &&
-                                           Math.Abs(Convert.ToDouble(i.operand ?? 0.0) - 200.0) < 0.01f)
-                    );
-                if (!matcher.IsInvalid)
+                GS2.Error($"TurretComponentTranspiler: no 200 constant found in {__originalMethod?.Name} (game update changed the method?). Returning original code - that method will use vanilla radius-200 behavior.");
+                return instructions;
+            }
+
+            // Each match leaves the cursor ON the constant. It stays in place; ldarg.1
+            // (the PlanetFactory parameter) and the factory-radius helper are appended, so
+            // the pair consumes (vanilla, factory) and pushes ModifyRadius(200, realRadius)
+            // in the constant's own type. Net stack effect identical to the bare constant.
+            return matcher
+                .Repeat(m =>
                 {
-                    matcher.Repeat(matcher =>
-                    {
-                        matcher.SetInstructionAndAdvance(new CodeInstruction(Ldarg_0));
-                        matcher.InsertAndAdvance(new CodeInstruction(Call, AccessTools.Method(typeof(TurretComponentTranspiler), nameof(GetRadius))));
-                    });
-                    instructions = matcher.InstructionEnumeration();
-                    return instructions;
-                }
-                return instructions;
-            }
-            catch
-            {
-                Bootstrap.Logger.LogInfo("TurretComponentTranspiler.Shoot_PlasmaTranspiler failed");
-                return instructions;
-            }
+                    var mi = helper.MakeGenericMethod(m.Operand?.GetType() ?? typeof(float));
+                    m.Advance(1);
+                    m.InsertAndAdvance(new CodeInstruction(Ldarg_1));
+                    m.InsertAndAdvance(new CodeInstruction(Call, mi));
+                }).InstructionEnumeration();
         }
-
-
-        // [HarmonyPatch(typeof(TurretComponent),  nameof(TurretComponent.SetStateToAim_Default))]
-        // 
     }
 }
