@@ -8,7 +8,7 @@ namespace GalacticScale
 
 {
     
-    public class PlanetSizeTranspiler
+    public partial class PlanetSizeTranspiler
     {
         // Radius-derived constants the game hardcodes for the vanilla 200m planet.
         private static readonly double[] RadiusConstants =
@@ -61,6 +61,11 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlayerAction_Combat),  nameof(PlayerAction_Combat.Shoot_Plasma))]
         [HarmonyPatch(typeof(PlayerAction_Plant),  nameof(PlayerAction_Plant.UpdateRaycast))]
         [HarmonyPatch(typeof(PlayerAction_Navigate),  nameof(PlayerAction_Navigate.GameTick))]
+        [HarmonyPatch(typeof(PowerSystem),  nameof(PowerSystem.CalculateGeothermalStrength))]
+        // MinerComponent.IsTargetVeinInRange is deliberately NOT in this list: it is static
+        // and also runs for remote planets (CreateEntityLogicComponents re-checks prebuild
+        // vein IDs during BAB rebuild while the player is elsewhere), so localPlanet is the
+        // wrong radius source there. It has a dedicated transpiler in IsTargetVeinInRange.cs.
         // PowerSystem.CalculateGeothermalStrength is deliberately NOT in this list: it runs
         // for remote planets too, so localPlanet is the wrong radius source there. It has a
         // dedicated transpiler in CalculateGeothermalStrength.cs.
