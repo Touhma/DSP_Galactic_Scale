@@ -1,6 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.78.1 - AndrewLuebke fixed 4 bugs with planet radius causing errors in: Beacon hover altitude, Geothermal, Blueprints and Veins.
 - Version 2.78.0 - AndrewLuebke fixed three other issues.
 - Version 2.77.6 - AndrewLuebke fixed a thread safety issue that probably caused crashes loading planets.
 - Version 2.77.5 - AndrewLuebke fixed an assumption with themeProto array sizing
