@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
@@ -61,7 +61,6 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlayerAction_Combat),  nameof(PlayerAction_Combat.Shoot_Plasma))]
         [HarmonyPatch(typeof(PlayerAction_Plant),  nameof(PlayerAction_Plant.UpdateRaycast))]
         [HarmonyPatch(typeof(PlayerAction_Navigate),  nameof(PlayerAction_Navigate.GameTick))]
-        [HarmonyPatch(typeof(PowerSystem),  nameof(PowerSystem.CalculateGeothermalStrength))]
         // MinerComponent.IsTargetVeinInRange is deliberately NOT in this list: it is static
         // and also runs for remote planets (CreateEntityLogicComponents re-checks prebuild
         // vein IDs during BAB rebuild while the player is elsewhere), so localPlanet is the
@@ -69,7 +68,6 @@ namespace GalacticScale
         // PowerSystem.CalculateGeothermalStrength is deliberately NOT in this list: it runs
         // for remote planets too, so localPlanet is the wrong radius source there. It has a
         // dedicated transpiler in CalculateGeothermalStrength.cs.
-        [HarmonyPatch(typeof(MinerComponent),  nameof(MinerComponent.IsTargetVeinInRange))]
         [HarmonyPatch(typeof(BuildTool_Reform),  nameof(BuildTool_Reform.UpdateRaycastAndReform))]
         [HarmonyPatch(typeof(BuildTool_Upgrade),  nameof(BuildTool_Upgrade.UpdateRaycast))]
         [HarmonyPatch(typeof(BuildTool_Path),  nameof(BuildTool_Path.UpdateRaycast))]
