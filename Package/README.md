@@ -1,6 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.78.3 - Zord fixed a bug I introduced when merging PR's without paying attention to the merge conflicts.
 - Version 2.78.2 - AndrewLuebke fixed another bug with the planet radius.
 - Version 2.78.1 - AndrewLuebke fixed 4 bugs with planet radius causing errors in: Beacon hover altitude, Geothermal, Blueprints and Veins.
 - Version 2.78.0 - AndrewLuebke fixed three other issues.
