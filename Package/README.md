@@ -1,6 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.78.3 - ZordDevzz fixed the 2.78.1 vein/geothermal radius patches being applied twice (miners not accepting veins in range, #283).
 - Version 2.78.2 - AndrewLuebke fixed another bug with the planet radius.
 - Version 2.78.1 - AndrewLuebke fixed 4 bugs with planet radius causing errors in: Beacon hover altitude, Geothermal, Blueprints and Veins.
 - Version 2.78.0 - AndrewLuebke fixed three other issues.
