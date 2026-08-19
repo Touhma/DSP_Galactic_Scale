@@ -85,7 +85,6 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
                 harmony.PatchAll(typeof(PatchOnCloudSimulator));
                 harmony.PatchAll(typeof(PatchOnCosmicMessageManager));
-                harmony.PatchAll(typeof(PatchOnDefenseSystem));
                 harmony.PatchAll(typeof(PatchOnDFGTurretComponent));
                 harmony.PatchAll(typeof(PatchOnDFRelayComponent));
                 harmony.PatchAll(typeof(PatchOnDFTinderComponent));
