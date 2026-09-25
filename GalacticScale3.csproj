@@ -89,6 +89,7 @@
     <ItemGroup>
         <None Remove="Assets\galaxy.json" />
         <EmbeddedResource Include="Assets\galaxy.json" />
+        <EmbeddedResource Include="Translations\zh-CN.tsv" />
         <EmbeddedResource Remove="src\**" />
         <EmbeddedResource Remove="srcOLD\**" />
         <EmbeddedResource Remove="srcNEW\**" />

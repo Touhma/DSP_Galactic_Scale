@@ -1,0 +1,320 @@
+# Galactic Scale UI translations. English key<TAB>Simplified Chinese. Escape line breaks as \r\n.
+Galactic Scale	银河尺度
+Start Game at {0}	在 {0} 开始游戏
+Galactic Scale 2	银河尺度 2
+Galactic Scale 2 Dev	银河尺度 2 开发版
+Main Settings	主要设置
+Vanilla	原版
+ThemeViewer	主题查看器
+Sol	太阳系
+Type K	K 型恒星
+Type M	M 型恒星
+Type F	F 型恒星
+Type G	G 型恒星
+Type A	A 型恒星
+Type B	B 型恒星
+Type O	O 型恒星
+White Dwarf	白矮星
+Red Giant	红巨星
+Yellow Giant	黄巨星
+White Giant	白巨星
+Blue Giant	蓝巨星
+O Giant	O 型巨星
+Neutron Star	中子星
+Black Hole	黑洞
+Generator	生成器
+Try them all!	可以逐一尝试！
+Default Settings	默认设置
+Quality of Life	便捷功能
+Useful settings	实用设置
+Useful for testing galaxies/themes	用于测试星系和主题
+Debug Options	调试选项
+Debug Log	调试日志
+Dev Log	开发日志
+Generation Log	生成日志
+Dev Mode	开发模式
+Print extra logs to BepInEx console	在 BepInEx 控制台输出额外日志
+Print generation logs to BepInEx console (SLOW)	在 BepInEx 控制台输出生成日志（较慢）
+Print stupid amount of logs to BepInEx console (SLOW)	在 BepInEx 控制台输出大量日志（较慢）
+Skip Prologue	跳过序章
+Skip Tutorials	跳过教程
+Enable Teleport	启用传送
+TP by ctrl-click nav arrow in star map	在星图中按住 Ctrl 点击导航箭头传送
+Show/Hide Vein Labels	显示／隐藏矿脉标签
+When show vein markers is enabled	启用矿脉标记时生效
+Useful for finding veins	方便寻找矿脉
+Show Iron Vein Labels	显示铁矿脉标签
+Show Copper Vein Labels	显示铜矿脉标签
+Show Silicon Vein Labels	显示硅矿脉标签
+Show Titanium Vein Labels	显示钛矿脉标签
+Show Stone Vein Labels	显示石矿脉标签
+Show Coal Vein Labels	显示煤矿脉标签
+Show Oil Vein Labels	显示原油标签
+Show Fire Ice Vein Labels	显示可燃冰标签
+Show Organic Crystal Vein Labels	显示有机晶体标签
+Show Kimberlite Labels	显示金伯利矿标签
+Show Fractal Silicon Vein Labels	显示分形硅石标签
+Show Optical Grating Vein Labels	显示光栅石标签
+Show Spiriform Vein Labels	显示刺笋结晶标签
+Show Unipolar Vein Labels	显示单极磁石标签
+Set ResourceMulti Infinite	将资源倍率设为无限
+Universe Observe Level	宇宙探索等级
+Controls visibility of distant stars/planets (1-4)	控制远处恒星和行星的可见范围（1–4）
+Apply Observe Level	应用探索等级
+Sets the current game's universeObserveLevel to the selected value	将当前游戏的宇宙探索等级设为所选值
+Will end current game	将结束当前游戏
+Will need to be saved and loaded to apply	需要保存并重新加载才会生效
+Enable Keybinds for Refreshing Working Theme	启用刷新当前主题的快捷键
+Prevent Game Load Timeout	防止游戏加载超时
+Ignore Load Timeout	忽略加载超时
+Disable Sector Update	禁用星区更新
+Disable SpaceSector	禁用太空星区
+Disable Starmap Batches	禁用星图批处理
+GalaxySelect Click Tolerance	星系选择点击容差
+How close to a star/planet your mouse needs to be to register a click	鼠标距离恒星／行星多近才会识别点击
+GalaxySelect Orbit ScaleFactor	星系选择轨道缩放系数
+How spaced orbits should be in the new game system view	新游戏恒星系视图中的轨道间距
+GalaxySelect Planet ScaleFactor	星系选择行星缩放系数
+How big planets should be in the new game system view	新游戏恒星系视图中的行星大小
+GalaxySelect Star ScaleFactor	星系选择恒星缩放系数
+How big star should be in the new game system view	新游戏恒星系视图中的恒星大小
+Galaxy Settings	星系设置
+Settings that control Galaxy formation	控制星系生成的设置
+System Settings	恒星系设置
+Settings that control how systems are generated	控制恒星系生成的设置
+Planet Settings	行星设置
+Settings that control how planets are generated	控制行星生成的设置
+Birth Planet Settings	出生星球设置
+Settings that only affect the starting planet	仅影响出生星球的设置
+Star Specific Overrides	恒星类型专属设置
+Settings that are star specific	针对特定恒星类型的设置
+Binary Star Settings	双星设置
+Settings that control Binary Star formation	控制双星生成的设置
+Star Relative Frequencies	恒星类型相对频率
+How often to select a star type	选择各类恒星的相对频率
+Changing these will reset all star specific overrides	修改这些值会重置所有恒星类型专属设置
+Galaxy Spread	星系分布范围
+Lower = Stars are closer to each other. Default is 5	数值越低，恒星之间越近。默认值为 5
+Enable the slider below	启用下方滑块
+Lower prefers telluric planets, higher gas giants	数值越低越偏向岩质行星，越高越偏向气态巨行星
+Will be selected randomly from this range	将在此范围内随机选择
+Default StarCount	默认恒星数量
+How many stars should the slider default to	恒星数量滑块的默认值
+Min Distance	最小距离
+USE GALAXY SPREAD INSTEAD! - Min Distance Between Stars	请改用“星系分布范围”！此项是恒星间最小距离
+SE GALAXY SPREAD INSTEAD! - Min/Max Distance Between Stars	请改用“星系分布范围”！此项是恒星间最小／最大距离
+Distance (LY) before skipping	跳过距离（光年）
+Ignore randomness/distance checks	忽略随机性／距离检查
+Use Vanilla Star Names	使用原版恒星名称
+Use DSP's Name Generator	使用戴森球计划的名称生成器
+Star Size Multiplier	恒星大小倍率
+Luminosity Multiplier	光度倍率
+Increase the luminosity of all stars by this multiplier	以此倍率提高所有恒星的光度
+Luminosity Boost	光度提升
+Increase the luminosity of this star type by this amount	按此数值提高该恒星类型的光度
+Comet Chance	彗星概率
+Enable Comets	启用彗星
+% Chance of a star spawning a comet	恒星生成彗星的概率（%）
+Star has a small planetoid with a random rare resource	恒星附近生成带有随机稀有资源的小天体
+Planet Count	行星数量
+The amount of planets per star	每颗恒星的行星数量
+Planet Count Bias	行星数量偏向
+Count Bias	数量偏向
+Prefer Less (lower) or More (higher) Counts	数值越低数量越少，越高数量越多
+Prefer Less (lower) or More (higher) Planets	数值越低行星越少，越高行星越多
+Planet Size Bias	行星大小偏向
+Telluric Size Bias	岩质行星大小偏向
+Prefer Smaller (lower) or Larger (higher) Sizes	数值越低越小，越高越大
+Gas Giants Moon Bias	气态巨行星卫星偏向
+Large planets attract a lot more. Can cause issues with large planets	大行星会吸引更多卫星；数值过高可能引发问题
+Orbit Range	轨道范围
+Force the distances planets can spawn between	限定行星生成距离范围
+Orbit Spacing	轨道间距
+Minimum gap between planet orbits	行星轨道之间的最小间隔
+Inner Planet Distance (AU)	内侧行星距离（天文单位）
+Prefer Inner Planets	偏向内侧行星
+Prefer planets closer to the star	更倾向于在恒星附近生成行星
+Bias orbits closer to star	让轨道更靠近恒星
+How close to 100% the inner and outer planets will be	内外侧行星的位置有多接近范围边界
+Chance for Moon	卫星概率
+% Chance of a rocky planet being a moon	岩质行星成为卫星的概率（%）
+Chance Moon	卫星概率
+Chance Gas	气态行星概率
+Chance for Gas giant	气态巨行星概率
+% Chance of a planet being a Gas Giant	行星成为气态巨行星的概率（%）
+Percentage of planets to make Gas Giants	生成气态巨行星的行星比例
+Percentage of planets to make Moons	生成卫星的行星比例
+Moons Are Small	缩小卫星
+Try to ensure moons are 1/2 their planets size or less	尽量使卫星不超过母行星大小的一半
+Allow moons to have moons	允许卫星拥有卫星
+Recursive Moons	多级卫星
+Moons of moons can have moons...	卫星的卫星也可以拥有卫星……
+Secondary satellites	次级卫星
+Secondary Satellite Chance	次级卫星概率
+% Chance for a moon to have a moon	卫星拥有次级卫星的概率（%）
+... of a Gas Giant	……对于气态巨行星
+Gas Planet Size	气态行星大小
+Gas Giant Planet Size	气态巨行星大小
+Telluric Planet Size	岩质行星大小
+Min/Max Size of Gas Planets	气态行星最小／最大大小
+Min/Max Size of Rocky Planets	岩质行星最小／最大大小
+Limit Planet Sizes	限制行星大小
+Force Planets to these sizes	将行星大小限制在此范围
+Limit Gas Giant Sizes	限制气态巨行星大小
+Force Gas Giants to these sizes	将气态巨行星大小限制在此范围
+Huge Gas Giants	巨型气态巨行星
+Allow gas giants larger than 800 radius	允许半径大于 800 的气态巨行星
+GS2 uses 10x as standard. They just look cooler.	GS2 默认使用 10 倍；看起来更壮观。
+Habitable Zone	宜居带
+Override Habitable Zone	覆盖宜居带
+Force habitable zone between these distances	将宜居带限制在这些距离之间
+Override Orbits	覆盖轨道设置
+Allow Orbital Harmonics	允许轨道谐振
+Allow Orbital Resonance 1:2 and 1:4	允许 1:2 和 1:4 轨道共振
+Tidal Lock Inner Planets	潮汐锁定内侧行星
+Force planets below the orbit threshold to be tidally locked	对轨道距离低于阈值的行星强制潮汐锁定
+Distance forced tidal locking stops acting	强制潮汐锁定停止生效的距离
+Min/Max Solar	太阳能最小／最大值
+Min/Max Solar Output as Percent	太阳能输出最小／最大百分比
+Solar Power Falloff	太阳能衰减方式
+How solar power falls off with distance	太阳能如何随距离衰减
+Linear	线性
+InverseSquare	平方反比
+None	无
+Planet Naming Scheme	行星命名方案
+How to determine planet names	决定行星名称的方式
+Default	默认
+Alpha	字母
+Random	随机
+Birth Planet is a Moon	出生星球是卫星
+Start game on a moon	在卫星上开始游戏
+Start game on a moon of a gas giant (Need above checked)	在气态巨行星的卫星上开始（需启用上方选项）
+Starting Planet Size	出生星球大小
+How big the starting planet is. Default is 200	出生星球的大小；默认值为 200
+Starting Planet Orbit	出生星球轨道
+How far from the star your starting planet is	出生星球与恒星的距离
+Starting Planet Star	出生恒星类型
+Type of Star to Start at	开始游戏时所在恒星的类型
+Birth Planet Theme	出生星球主题
+Starting Planet Theme	出生星球主题
+Starting Planet Unlock	解锁出生星球
+Allow other habitable themes for starting planet	允许出生星球使用其他宜居主题
+Starting Planet No Rares	出生星球无稀有矿脉
+Disable to allow rare veins on starting planet	关闭此项即可允许出生星球出现稀有矿脉
+Allow Rares in Starting System	允许出生恒星系出现稀有矿脉
+Allow Rares other than Oil and FireIce	允许出现除原油和可燃冰以外的稀有资源
+Starting planet Si/Ti	出生星球含硅／钛
+Force Silicon and Titanium on the starting planet	强制出生星球生成硅和钛
+Tidal Lock Starting Planet	潮汐锁定出生星球
+Force the starting planet to be tidally locked	强制出生星球潮汐锁定
+Vanilla Grid (200r)	原版网格（半径 200）
+Use the vanilla grid for 200 size planets	为大小为 200 的行星使用原版网格
+Rare Vein Chance % Override	稀有矿脉概率覆盖（%）
+Override the chance of planets spawning rare veins	覆盖行星生成稀有矿脉的概率
+Force Rare Spawn	强制生成稀有资源
+Binary Star Chance %	双星生成概率（%）
+% Chance of a star having a binary companion	恒星拥有伴星的概率（%）
+Binary Distance Multi	双星距离倍率
+How close secondary stars should be to primaries	伴星与主星的距离
+Reset Binary Star Position	重置双星位置
+Try and move binary stars to new position relative to main star	尝试相对于主星重新放置伴星
+Minimum Type O	O 型恒星最小数量
+Minimum Type B	B 型恒星最小数量
+Minimum Type A	A 型恒星最小数量
+Minimum Type F	F 型恒星最小数量
+Minimum Type G	G 型恒星最小数量
+Minimum Type K	K 型恒星最小数量
+Minimum Type M	M 型恒星最小数量
+Minimum O Giant	O 型巨星最小数量
+Minimum Blue Giant	蓝巨星最小数量
+Minimum Yellow Giant	黄巨星最小数量
+Minimum Red Giant	红巨星最小数量
+Minimum White Giant	白巨星最小数量
+Minimum WhiteDwarf	白矮星最小数量
+Minimum Neutron	中子星最小数量
+Minimum BlackHole	黑洞最小数量
+Freq. Type O	O 型恒星频率
+Freq. Type B	B 型恒星频率
+Freq. Type A	A 型恒星频率
+Freq. Type F	F 型恒星频率
+Freq. Type G	G 型恒星频率
+Freq. Type K	K 型恒星频率
+Freq. Type M	M 型恒星频率
+Freq. O Giant	O 型巨星频率
+Freq. Blue Giant	蓝巨星频率
+Freq. Yellow Giant	黄巨星频率
+Freq. Red Giant	红巨星频率
+Freq. White Giant	白巨星频率
+Freq. WhiteDwarf	白矮星频率
+Freq. Neutron	中子星频率
+Freq. BlackHole	黑洞频率
+Mecha Scale	机甲大小
+How big Icarus should be. 1 = default	伊卡洛斯的大小；1 为默认值
+Ship Speed Multiplier	飞船速度倍率
+Multiplier for Warp Speed of Ships	飞船曲速速度倍率
+New Gravity Mechanics	新引力机制
+Linear Damping	线性阻尼
+Max Inclination	最大轨道倾角
+Maximum angle of orbit	轨道最大角度
+Max Orbit Longitude	最大升交点经度
+Maximum longitude of the ascending node	升交点经度的最大值
+Combat Settings	战斗设置
+Enable Dark Fog	启用黑雾
+Enable Enemies	启用敌人
+Pause DarkFog	暂停黑雾
+Skip DF Hive Logic	跳过黑雾巢穴逻辑
+Skip DF Render	跳过黑雾渲染
+Skip DF Turn	跳过黑雾回合
+Aggressiveness	攻击性
+How aggressive the AI is	AI 的攻击性
+How the AI behaves	AI 的行为方式
+Initial Level	初始等级
+How strong the AI is at the start	AI 开始时的强度
+Initial Growth	初始成长
+How fast the AI grows at the start	AI 开始时的成长速度
+Growth Speed Factor	成长速度系数
+How fast the AI grows	AI 的成长速度
+Initial Colonize	初始扩张
+How fast the AI colonizes at the start	AI 开始时的扩张速度
+Max Density	最大密度
+How dense the AI can get	AI 可以达到的最大密度
+Battle Threat Factor	战斗威胁系数
+How much the AI cares about battle	AI 对战斗的重视程度
+Battle Exp Factor	战斗经验系数
+How much the AI cares about battle experience	AI 对战斗经验的重视程度
+Power Threat Factor	电力威胁系数
+How much the AI cares about power	AI 对电力的重视程度
+Step Length	步长
+Distance to start Pausing(LY)	开始暂停的距离（光年）
+Day/Night Multiplier	昼夜时长倍率
+Increase the duration of night/day	延长昼夜时长
+Custom Galaxy	自定义星系
+Custom Galaxy Export/Import	导出／导入自定义星系
+Select a custom galaxy to load	选择要加载的自定义星系
+Load Custom Galaxy	加载自定义星系
+Export Custom Galaxy	导出自定义星系
+Save Galaxy to File	保存星系到文件
+Export Filename	导出文件名
+Excluding .json	不含 .json 扩展名
+Minify Exported JSON	压缩导出的 JSON
+Export available once in game	进入游戏后才能导出
+Galaxy Saved to\s	星系已保存至\s
+To use the Custom JSON Generator you must select a file to load.	使用自定义 JSON 生成器前，必须选择要加载的文件。
+External Themes	外部主题
+Export All Themes	导出所有主题
+Themes have been exported to\s	主题已导出至\s
+Only save changes	仅保存修改
+Reset	重置
+Export	导出
+Success	成功
+Error	错误
+Note	提示
+Ok	确定
+Now	立即
+D'oh!	糟糕！
+Noted!	知道了！
+Of course not!	当然不！
+Woohoo!	太好了！
+You cannot change the generator to vanilla while in game.	游戏进行中不能切换到原版生成器。
+Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings.	请在创建星系后重试 :)\r\n开始游戏后按 Esc，再点击“设置”。
+Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 查看所有恒星／行星名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
