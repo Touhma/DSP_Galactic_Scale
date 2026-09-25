@@ -45,7 +45,7 @@ namespace GalacticScale.Generators
                 var (type, spectr) = ChooseStarType(i == birthIndex);
                 var starSeed = random.Next();
                 var starName = SystemNames.GetName(starSeed);
-                if (preferences.GetBool("vanillaStarNames")) starName = NameGen._RandomStarName(starSeed, new StarData { type = type });
+                if (preferences.GetBool("vanillaStarNames")) starName = NameGenCompat.RandomStarName(starSeed, new StarData { type = type });
                 var star = new GSStar(starSeed, starName, spectr, type, new GSPlanets());
                 if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
                 if (star.Type == EStarType.BlackHole && preferences.GetFloat("starSizeMulti", 10f) < 2.01f)

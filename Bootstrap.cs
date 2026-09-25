@@ -119,6 +119,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnPlanetAtmoBlur));
                 harmony.PatchAll(typeof(PatchOnPlanetAuxData));
                 harmony.PatchAll(typeof(PatchOnPlanetData));
+                harmony.PatchAll(typeof(PatchOnPlanetDataDirtyMesh));
                 harmony.PatchAll(typeof(PatchOnPlanetFactory));
                 harmony.PatchAll(typeof(PatchOnPlanetGrid));
                 harmony.PatchAll(typeof(PatchOnPlanetModelingManager));
