@@ -1,4 +1,6 @@
 ﻿using HarmonyLib;
+using System;
+using System.Reflection;
 using NebulaCompatibility;
 using UnityEngine;
 
@@ -6,6 +8,31 @@ namespace GalacticScale
 {
     public partial class PatchOnGuideMissionStandardMode
     {
+        private static readonly MethodInfo FlattenTerrainMethod = AccessTools.Method(typeof(PlanetFactory), "FlattenTerrain");
+
+        private static void FlattenBirthTerrain(PlanetFactory factory, Vector3 pos, Quaternion rot)
+        {
+            if (FlattenTerrainMethod == null)
+                throw new MissingMethodException(nameof(PlanetFactory), "FlattenTerrain");
+
+            var parameters = FlattenTerrainMethod.GetParameters();
+            var bound = new Bounds(Vector3.zero, new Vector3(10f, 5f, 10f));
+            var args = new object[] { pos, rot, bound, 6f, 1f, true, true, true, true, new Bounds() };
+
+            // DSP 0.10.35 added a SkillTarget caster before removeVegeBound.
+            if (parameters.Length == 11 && parameters[9].ParameterType.Name == "SkillTarget")
+            {
+                args = new object[] { pos, rot, bound, 6f, 1f, true, true, true, true,
+                    Activator.CreateInstance(parameters[9].ParameterType), new Bounds() };
+            }
+            else if (parameters.Length != 10)
+            {
+                throw new MissingMethodException(nameof(PlanetFactory), "FlattenTerrain with a supported signature");
+            }
+
+            FlattenTerrainMethod.Invoke(factory, args);
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GuideMissionStandardMode), "Skip")]
         public static bool GS2_GuideMissionStandardMode_Skip_Prefix(GameData _gameData, ref GuideMissionStandardMode __instance)
@@ -50,7 +77,7 @@ namespace GalacticScale
             __instance.targetURot = __instance.localPlanet.runtimeRotation * __instance.targetRot;
             if (__instance.localPlanet.factory != null)
             {
-                __instance.localPlanet.factory.FlattenTerrain(__instance.targetPos, __instance.targetRot, new Bounds(Vector3.zero, new Vector3(10f, 5f, 10f)), removeVein: true, lift: true);
+                FlattenBirthTerrain(__instance.localPlanet.factory, __instance.targetPos, __instance.targetRot);
                 GS2.Log("Waking in SpacePod");
                 __instance.CreateSpaceCapsuleVegetable();
                 GS2.Log("Searching for landing place");

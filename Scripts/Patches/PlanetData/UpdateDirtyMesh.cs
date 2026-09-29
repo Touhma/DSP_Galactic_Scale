@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 
 namespace GalacticScale
 {
-    public partial class PatchOnPlanetData
+    [HarmonyPatch]
+    public static class PatchOnPlanetDataDirtyMesh
     {
         //Strategy: 1) Remove checks for PlanetData.scale; 2) Convert GetModPlane to use our Int version
         // 1) find all calls to ldArg.0
@@ -13,8 +15,15 @@ namespace GalacticScale
         //    change ldarg.0 to OpCodes.Nop
         //    change the following instruction to ldc.r4 1
         // 2) find all calls to GetModPlane
+        [HarmonyTargetMethod]
+        public static MethodBase TargetMethod()
+        {
+            // The vertex work moved out of UpdateDirtyMesh in DSP 0.10.35.
+            return AccessTools.Method(typeof(PlanetData), "UpdateDirtyMeshVertices", new[] { typeof(int) })
+                   ?? AccessTools.Method(typeof(PlanetData), "UpdateDirtyMesh", new[] { typeof(int) });
+        }
+
         [HarmonyTranspiler]
-        [HarmonyPatch(typeof(PlanetData), "UpdateDirtyMesh")]
         public static IEnumerable<CodeInstruction> UpdateDirtyMeshTranspiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
@@ -50,9 +59,9 @@ namespace GalacticScale
             }
 
             if (scalePatched == 0)
-                GS2.Error("PlanetData.UpdateDirtyMesh transpiler: this.scale loads not found (game update changed the method?). Mesh updates may double-apply planet scale.");
+                GS2.Error("PlanetData dirty mesh transpiler: this.scale loads not found (game update changed the method?). Mesh updates may double-apply planet scale.");
             if (modPlanePatched == 0)
-                GS2.Error("PlanetData.UpdateDirtyMesh transpiler: GetModPlane calls not found (game update changed the method?). Height mods on planets larger than ~327 radius may overflow.");
+                GS2.Error("PlanetData dirty mesh transpiler: GetModPlane calls not found (game update changed the method?). Height mods on planets larger than ~327 radius may overflow.");
 
             return codes.AsEnumerable();
         }
