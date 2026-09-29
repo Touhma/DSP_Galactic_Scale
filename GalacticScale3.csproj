@@ -13,7 +13,7 @@
     <PropertyGroup>
         <AssemblyName>GalacticScale</AssemblyName>
         <Description>Galaxy Customization for Dyson Sphere Program</Description>
-        <Version>2.78.8</Version>
+        <Version>2.80.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>9.0</LangVersion>
         <OutDir>bin/$(Configuration)</OutDir>
@@ -26,7 +26,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.4.17" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2022.3.53" IncludeAssets="compile" />
-<!--       <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.34.28347-r.0" IncludeAssets="compile" />-->
+       <PackageReference Include="DysonSphereProgram.GameLibs" Version="0.10.35.29088-r.0" IncludeAssets="compile" />
         <PackageReference Include="DysonSphereProgram.Modding.NebulaMultiplayerModApi" Version="2.0.0" IncludeAssets="compile" />
     </ItemGroup>
     
@@ -44,66 +44,66 @@
 <!--        <Reference Include="BCE">-->
 <!--          <HintPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\innominata-BepInEx_Console_Extensions\BCE.dll</HintPath>-->
 <!--        </Reference>-->
-        <Reference Include="Assembly-CSharp">
-          <HintPath>Assembly-CSharp_public.dll</HintPath>
-        </Reference>
-        <Reference Include="BCE">
-          <HintPath>..\..\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\innominata-BepInEx_Console_Extensions\BCE.dll</HintPath>
-        </Reference>
-        <Reference Include="GSUI">
-            <HintPath>Package\GSUI.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UI">
-          <HintPath Condition="Exists('$(GameDir)\DSPGAME_Data\Managed\UnityEngine.UI.dll')">$(GameDir)\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
-          <HintPath Condition="!Exists('$(GameDir)\DSPGAME_Data\Managed\UnityEngine.UI.dll')">$(MSBuildThisFileDirectory)..\CommonAPI\Libs\UnityEngine.UI.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <Target Name="CheckDevEnv" BeforeTargets="PrepareForBuild">
-        <PropertyGroup>
-            <DevEnvNotFound>false</DevEnvNotFound>
-        </PropertyGroup>
-        
-        <PropertyGroup Condition="!Exists('DevEnv.targets')">
-            <DevEnvNotFound>true</DevEnvNotFound>
-        </PropertyGroup>
-        
-        <Warning Condition="!Exists('DevEnv.targets')" Text="DevEnv.targets not found. Running setup..." />
-        <Exec Condition="'$(DevEnvNotFound)' == 'true'" Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\setup_devenv.ps1&quot;" />
-        <Error Condition="!Exists('DevEnv.targets')" Text="Failed to create DevEnv.targets. Please run setup_devenv.ps1 manually." />
-    </Target>
-    <ItemGroup>
-
-        <None Update="LICENSE">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Package\galacticbundle">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <TargetPath>.\galacticbundle</TargetPath>
-        </None>
-        <None Remove="src\**" />
-        <None Remove="srcOLD\**" />
-        <None Remove="srcNEW\**" />
-        <None Remove="srcNewest\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Remove="Assets\galaxy.json" />
-        <EmbeddedResource Include="Assets\galaxy.json" />
-        <EmbeddedResource Include="Translations\zh-CN.tsv" />
-        <EmbeddedResource Remove="src\**" />
-        <EmbeddedResource Remove="srcOLD\**" />
-        <EmbeddedResource Remove="srcNEW\**" />
-        <EmbeddedResource Remove="srcNewest\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Remove="src\**" />
-        <Compile Remove="srcOLD\**" />
-        <Compile Remove="srcNEW\**" />
-        <Compile Remove="srcNewest\**" />
-    </ItemGroup>
-
-    <!-- Add a target to synchronize version numbers before build -->
+    <!--        <Reference Include="Assembly-CSharp">
+              <HintPath>Assembly-CSharp_public.dll</HintPath>
+            </Reference>-->
+            <Reference Include="BCE">
+              <HintPath>..\..\Users\inno\AppData\Roaming\r2modmanPlus-local\DysonSphereProgram\profiles\Default\BepInEx\plugins\innominata-BepInEx_Console_Extensions\BCE.dll</HintPath>
+            </Reference>
+            <Reference Include="GSUI">
+                <HintPath>Package\GSUI.dll</HintPath>
+            </Reference>
+            <Reference Include="UnityEngine.UI">
+              <HintPath Condition="Exists('$(GameDir)\DSPGAME_Data\Managed\UnityEngine.UI.dll')">$(GameDir)\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
+              <HintPath Condition="!Exists('$(GameDir)\DSPGAME_Data\Managed\UnityEngine.UI.dll')">$(MSBuildThisFileDirectory)..\CommonAPI\Libs\UnityEngine.UI.dll</HintPath>
+            </Reference>
+        </ItemGroup>
+        <Target Name="CheckDevEnv" BeforeTargets="PrepareForBuild">
+            <PropertyGroup>
+                <DevEnvNotFound>false</DevEnvNotFound>
+            </PropertyGroup>
+            
+            <PropertyGroup Condition="!Exists('DevEnv.targets')">
+                <DevEnvNotFound>true</DevEnvNotFound>
+            </PropertyGroup>
+            
+            <Warning Condition="!Exists('DevEnv.targets')" Text="DevEnv.targets not found. Running setup..." />
+            <Exec Condition="'$(DevEnvNotFound)' == 'true'" Command="powershell.exe -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\setup_devenv.ps1&quot;" />
+            <Error Condition="!Exists('DevEnv.targets')" Text="Failed to create DevEnv.targets. Please run setup_devenv.ps1 manually." />
+        </Target>
+        <ItemGroup>
+    
+            <None Update="LICENSE">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            </None>
+            <None Update="Package\galacticbundle">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                <TargetPath>.\galacticbundle</TargetPath>
+            </None>
+            <None Remove="src\**" />
+            <None Remove="srcOLD\**" />
+            <None Remove="srcNEW\**" />
+            <None Remove="srcNewest\**" />
+        </ItemGroup>
+    
+        <ItemGroup>
+            <None Remove="Assets\galaxy.json" />
+            <EmbeddedResource Include="Assets\galaxy.json" />
+            <EmbeddedResource Include="Translations\zh-CN.tsv" />
+            <EmbeddedResource Remove="src\**" />
+            <EmbeddedResource Remove="srcOLD\**" />
+            <EmbeddedResource Remove="srcNEW\**" />
+            <EmbeddedResource Remove="srcNewest\**" />
+        </ItemGroup>
+    
+        <ItemGroup>
+            <Compile Remove="src\**" />
+            <Compile Remove="srcOLD\**" />
+            <Compile Remove="srcNEW\**" />
+            <Compile Remove="srcNewest\**" />
+        </ItemGroup>
+    
+        <!-- Add a target to synchronize version numbers before build -->
     <Target Name="SyncVersionNumbers" BeforeTargets="PrepareForBuild">
         <Message Text="Synchronizing version numbers from README.md..." Importance="high" />
         
