@@ -54,7 +54,7 @@ namespace GalacticScale
         {
             if (Items.Count == 0) return;
             if (_index < 0 || _index >= Items.Count) index = 0;
-            _itemText.text = Items[_index];
+            _itemText.text = GSLocalization.Translate(Items[_index]);
             OnChange.Invoke(Items[_index]);
         }
 

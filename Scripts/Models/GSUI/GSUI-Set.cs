@@ -107,7 +107,7 @@ namespace GalacticScale
             // GS2.Warn("TEST");
             // GS2.Warn((items == null).ToString());
             Data = items;
-            if (RectTransform != null) RectTransform.GetComponent<GSUIDropdown>().Items = items;
+            if (RectTransform != null) RectTransform.GetComponent<GSUIDropdown>().Items = items.ConvertAll(GSLocalization.Translate);
             return true;
         }
     }
