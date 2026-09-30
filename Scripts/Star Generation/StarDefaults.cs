@@ -117,8 +117,8 @@ namespace GalacticScale
                         case ESpectrType.G:
                         case ESpectrType.K: return random.NextFloat(1.1f, 2f);
 
-                        case ESpectrType.B:return random.NextFloat(7f, 10f);
-                        case ESpectrType.O: return random.NextFloat(9f, 11f);
+                        case ESpectrType.B: return random.NextFloat(7f, 10f);
+                        case ESpectrType.O: return random.NextFloat(11.5f, 14f);
 
                         case ESpectrType.M: return random.NextFloat(0.7f, 1f);
                     }
@@ -201,7 +201,8 @@ namespace GalacticScale
                 case EStarType.BlackHole: return random.NextFloat(3.45f, 4.6f);
                 case EStarType.NeutronStar: return random.NextFloat(0.37f, 0.52f);
                 case EStarType.WhiteDwarf: return random.NextFloat(0.19f, 0.45f);
-                case EStarType.GiantStar: return random.NextFloat(12f, 31f);
+                case EStarType.GiantStar:
+                return s == ESpectrType.O ? random.NextFloat(15f, 39f) : random.NextFloat(12f, 31f);
                 case EStarType.MainSeqStar:
                     switch (s)
                     {

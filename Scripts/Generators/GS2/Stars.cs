@@ -8,6 +8,17 @@ namespace GalacticScale.Generators
 {
     public partial class GS2Generator2 : iConfigurableGenerator
     {
+        // "Blue Giant" covers both B-type and O-type giants. This is the share of them that come out as O-type
+        // (the rest are B-type), so O-type giants stay rarer to find than B-type giants.
+        private const double OTypeShareOfBlueGiants = 0.3;
+
+        // Decided from the star's own seed rather than the shared generator stream, so picking O-type vs B-type
+        // doesn't shift any other random rolls in the galaxy.
+        private static ESpectrType RollBlueGiantSpectr(int starSeed)
+        {
+        var rng = new GS2.Random(GS2.Random.Mix(GSSettings.Seed, starSeed, 0x4f4247));
+        return rng.NextPick(OTypeShareOfBlueGiants) ? ESpectrType.O : ESpectrType.B;
+        }
         public void GenerateBinaryStar(GSStar star)
         {
             var availStarTypes = new List<(EStarType, ESpectrType)>();
@@ -19,7 +30,9 @@ namespace GalacticScale.Generators
 
             if (availStarTypes.Count == 0) availStarTypes.Add((EStarType.MainSeqStar, ESpectrType.K));
             var starType = random.Item(availStarTypes);
-            var binary = GSSettings.Stars.Add(new GSStar(random.Next(), star.Name + "-B", starType.Item2, starType.Item1, new GSPlanets()));
+            var binarySeed = random.Next();
+            if (starType.Item1 == EStarType.GiantStar && starType.Item2 == ESpectrType.B) starType.Item2 = RollBlueGiantSpectr(binarySeed);
+            var binary = GSSettings.Stars.Add(new GSStar(binarySeed, star.Name + "-B", starType.Item2, starType.Item1, new GSPlanets()));
             binary.genData.Add("binary", true);
             star.genData.Add("hasBinary", true);
             star.BinaryCompanion = binary.Name;
@@ -45,6 +58,7 @@ namespace GalacticScale.Generators
             {
                 var (type, spectr) = ChooseStarType(i == birthIndex);
                 var starSeed = random.Next();
+                if (type == EStarType.GiantStar && spectr == ESpectrType.B) spectr = RollBlueGiantSpectr(starSeed);
                 var starName = SystemNames.GetName(starSeed);
                 if (preferences.GetBool("vanillaStarNames")) starName = NameGenCompat.RandomStarName(starSeed, new StarData { type = type });
                 var star = new GSStar(starSeed, starName, spectr, type, new GSPlanets());
@@ -84,7 +98,7 @@ namespace GalacticScale.Generators
             var bsInt = preferences.GetInt("birthStar", 14);
             if (bsInt < 14)
             {
-                var birthStarDesc = ((EStar)bsInt).Convert();
+                var birthStarDesc = GetBirthEStar(bsInt).Convert();
                 var availBirthStars = (from s in GSSettings.Stars where s.Type == birthStarDesc.Item1 where s.Spectr == birthStarDesc.Item2 where s.Decorative == false select s).ToList();
                 // GS2.Warn($"Stars that are {birthStarDesc.Item1} {birthStarDesc.Item2}");
                 // GS2.WarnJson(availBirthStars);
