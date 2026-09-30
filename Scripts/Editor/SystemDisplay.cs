@@ -9,6 +9,8 @@ namespace GalacticScale
     {
         private const float mouseTolerance = 1.7f;
         public static bool inSystemDisplay;
+        private static bool systemLabelsHidden;
+        private static bool altWasDown;
         public static StarData viewStar;
         public static Button randomButton;
         public static Button startButton;
@@ -91,6 +93,9 @@ namespace GalacticScale
             if (VFInput._moveForward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.up);
             if (VFInput._moveBackward) GameCamera.instance.transform.localPosition += GameCamera.instance.galaxySelectPoser.transform.localRotation * ((VFInput.shift ? 1f : 0.1f) * Vector3.down);
             if (VFInput._jump) ResetView();
+            if (inSystemDisplay && VFInput.alt && !altWasDown) systemLabelsHidden = !systemLabelsHidden;
+            altWasDown = VFInput.alt;
+            if (!inSystemDisplay) systemLabelsHidden = false;
 
             var targetIndex = -1;
             starmap.starPointBirth.gameObject.SetActive(false);
@@ -103,7 +108,8 @@ namespace GalacticScale
                     var gsStar = GS2.GetGSStar(starData);
                     var decorative = false;
                     if (gsStar != null) decorative = gsStar.Decorative;
-                    UIRoot.ScreenPointIntoRect(Camera.main.WorldToScreenPoint(starData.position), starmap.textGroup, out var zero);
+                    var screenPoint = Camera.main.WorldToScreenPoint(starData.position);
+                    UIRoot.ScreenPointIntoRect(screenPoint, starmap.textGroup, out var zero);
                     zero.x += 18f;
                     zero.y += 6f;
                     starmap.starPool[i].nameText.rectTransform.anchoredPosition = zero;
@@ -142,7 +148,13 @@ namespace GalacticScale
                     }
                     // else GS2.Log($"{starData?.id} {GSSettings.BirthPlanet?.planetData?.id} {viewStar?.id} {GSSettings.BirthPlanet?.planetData?.star?.id}");
 
-                    starmap.starPool[i].nameText.gameObject.SetActive(targetIndex == i || VFInput.alt || (i == GSSettings.BirthPlanet.planetData.star.index && !inSystemDisplay));
+                    // In the system view every body (star, planets, moons) keeps its label visible.
+                    // Labels for bodies behind the camera are hidden so they don't appear mirrored on screen.
+                    var showLabel = inSystemDisplay
+                        ? targetIndex == i || (!systemLabelsHidden && screenPoint.z > 0f)
+                        : targetIndex == i || VFInput.alt || i == GSSettings.BirthPlanet.planetData.star.index;
+                    starmap.starPool[i].nameText.gameObject.SetActive(showLabel);
+                    if (inSystemDisplay && targetIndex == i) starmap.starPool[i].nameText.rectTransform.SetAsLastSibling();
 
                     starmap.starPool[i].nameText.rectTransform.sizeDelta = new Vector2(starmap.starPool[i].nameText.preferredWidth, starmap.starPool[i].nameText.preferredHeight);
 
@@ -678,6 +690,13 @@ namespace GalacticScale
             return dir + starData.position;
         }
 
+        // The "型恒星" translation is a format string ("{0} type Star") in some languages and plain text in others.
+        public static string GetMainSeqStarTypeText(ESpectrType spectr)
+        {
+        var format = "型恒星".Translate();
+        return format.Contains("{0}") ? string.Format(format, spectr) : spectr + format;
+        }
+
         // probably reverse patch this if there is time
         private static void AddStarToStarmap(UIVirtualStarmap starmap, StarData starData)
         {
@@ -727,7 +746,7 @@ namespace GalacticScale
             }
             else if (starData.type == EStarType.MainSeqStar)
             {
-                text = text + starData.spectr + "型恒星".Translate();
+                text += GetMainSeqStarTypeText(starData.spectr);
             }
 
 
@@ -802,7 +821,7 @@ namespace GalacticScale
             var helpText = helpTextObject.GetComponent<Text>();
             // GS2.Log("4");
             if (leftGroup.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(leftGroup.GetComponentInChildren<Localizer>());
-            helpText.text = GSLocalization.Translate("Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn");
+            helpText.text = GSLocalization.Translate("Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn");
             helpText.alignment = TextAnchor.LowerLeft;
             leftGroup.SetActive(true);
             // GS2.Log("5");

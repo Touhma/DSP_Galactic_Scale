@@ -317,4 +317,4 @@ Of course not!	当然不！
 Woohoo!	太好了！
 You cannot change the generator to vanilla while in game.	游戏进行中不能切换到原版生成器。
 Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings.	请在创建星系后重试 :)\r\n开始游戏后按 Esc，再点击“设置”。
-Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nAlt to view all star/planet names\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 查看所有恒星／行星名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
+Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 键可在星系视图中显示名称/按下该键可在星系视图中切换名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
