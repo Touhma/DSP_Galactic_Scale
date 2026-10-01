@@ -80,7 +80,7 @@ namespace GalacticScale
                     str += "中子星".Translate();
                 else if (star1.type == EStarType.BlackHole)
                     str += "黑洞".Translate();
-                else if (star1.type == EStarType.MainSeqStar) str = str + star1.spectr + "型恒星".Translate();
+                else if (star1.type == EStarType.MainSeqStar) str += SystemDisplay.GetMainSeqStarTypeText(star1.spectr);
 
                 if (star1.index == GSSettings.BirthPlanet.planetData.star.index)
                     str = "即将登陆".Translate() + "\r\n" + str;

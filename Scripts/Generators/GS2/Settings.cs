@@ -737,6 +737,13 @@ namespace GalacticScale.Generators
             if (!_forcedStars.Contains(typeLetter[bsInt])) _forcedStars.Add(typeLetter[bsInt]);
         }
 
+        private static EStar GetBirthEStar(int dropdownIndex)
+        {
+        if (dropdownIndex == 12) return EStar.NeutronStar;
+        if (dropdownIndex == 13) return EStar.BlackHole;
+        return (EStar)dropdownIndex;
+        }
+
         private (EStarType type, ESpectrType spectr) ChooseStarType(bool birth = false)
         {
             var bsInt = preferences.GetInt("birthStar", 14);
@@ -745,7 +752,7 @@ namespace GalacticScale.Generators
             //     DotNet35Random random = new();
             //     bsInt = random.Next(14);
             // }
-            if (bsInt < 14 && birth) return ((EStar)bsInt).Convert();
+            if (bsInt < 14 && birth) return GetBirthEStar(bsInt).Convert();
             var starType = "";
             if (_forcedStars.Count > 0)
             {

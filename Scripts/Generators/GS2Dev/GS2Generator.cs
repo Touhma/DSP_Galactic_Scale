@@ -13,6 +13,8 @@ namespace GalacticScale.Generators
 
         private GSStar birthStar;
         private string forcedBirthStar;
+        private int forcedBirthStarSeed;
+        private int forcedBirthStarCount;
         private float maxStepLength = 3.5f;
         private float minDistance = 2f;
 
@@ -34,13 +36,24 @@ namespace GalacticScale.Generators
 
         public void OnUpdate(string key, Val val)
         {
-            preferences.Set(key, val);
+        preferences.Set(key, val);
+        // Choosing a starting star type in the dropdown replaces any star that was picked by right-clicking.
+        if (key == "birthStar") forcedBirthStar = null;
         }
 
         public void Generate(int starCount, StarData forcedBirthStar = null)
         {
             if (forcedBirthStar != null)
-                this.forcedBirthStar = forcedBirthStar.name;
+            {
+            this.forcedBirthStar = forcedBirthStar.name;
+            forcedBirthStarSeed = GSSettings.Seed;
+            forcedBirthStarCount = GS2.gameDesc?.starCount ?? starCount;
+            }
+            else if (this.forcedBirthStar != null && (forcedBirthStarSeed != GSSettings.Seed || forcedBirthStarCount != starCount))
+            {
+            // A different galaxy is being generated (new seed or star count), so the old right-clicked star no longer applies.
+            this.forcedBirthStar = null;
+            }
             // GS2.Warn("Forcing BirthStar to "+this.forcedBirthStar);
             var highStopwatch = new HighStopwatch();
             highStopwatch.Begin();
