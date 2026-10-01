@@ -1,6 +1,7 @@
 # DSP Galactic Scale 2.0 Mod
 
-# BACKUP YOUR SAVES. SERIOUSLY.- 
+# BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.1 - Devious55 Fixed several bugs
 - Version 2.80.0 - Xabsurd updated for DSP 0.10.35
 - Version 2.78.8 - AndrewLuebke fixed planets of overlapping systems being invisible and unlandable (#294): with very large orbits a neighboring star could hold onto you and the planet you were at could never load. Locality now hands off to the star whose planet you're approaching. Existing saves benefit immediately; no galaxy changes.
 - Version 2.78.7 - ZordDevzz reworked Dyson sphere scaling: orbit bounds now follow system geometry (star surface to farthest planet +1 AU) instead of exploding with luminosity, with editor camera sync and sail/rocket speed scaling for large systems. AndrewLuebke fixed logistics vessels getting stuck near giant stars (steering-update throttle collateral + the missing star-radius pathing cap).
