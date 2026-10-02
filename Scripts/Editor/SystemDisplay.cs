@@ -832,6 +832,18 @@ namespace GalacticScale
             leftGroupRect.offsetMax = new Vector2(300, 20);
             leftGroupRect.anchoredPosition = new Vector2(0, 80);
             leftGroupRect.sizeDelta = new Vector2(300, 300);
+            MoveMetadataPanelToTopLeft(__instance);
+        }
+
+        private static void MoveMetadataPanelToTopLeft(UIGalaxySelect galaxySelect)
+        {
+            var rect = galaxySelect.propertyRect;
+            if (rect == null) return;
+            var width = rect.rect.width > 1f ? rect.rect.width : 300f; 
+            if (rect.parent != galaxySelect.transform) rect.SetParent(galaxySelect.transform, false);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 1f);
+            rect.sizeDelta = new Vector2(width, rect.sizeDelta.y);
+            rect.anchoredPosition = new Vector2(40f, -40f);
         }
     }
 }

@@ -181,6 +181,7 @@ namespace GalacticScale
             var groupVector = new Vector3();
             groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypes(gsPlanet);
+            var birthVectors = birth ? new[] { planet.birthResourcePoint0, planet.birthResourcePoint1 } : null;
             gsPlanet.planetData.veinGroups = new VeinGroup[veinGroups.Count];
             var veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
@@ -218,7 +219,7 @@ namespace GalacticScale
                         continue; // Check for spawn point in a hollow
 
                     var padding = (float)planetRadiusFactor * (oreVein ? gsPlanet.veinSettings.VeinPadding * 196f : 100f);
-                    if (SurfaceVectorCollisionGS2(potentialVector, veinGroups, i, padding)) continue;
+                    if (SurfaceVectorCollisionGS2(potentialVector, veinGroups, i, padding) || birth && CollidesWithBirthVeins(potentialVector, birthVectors, padding)) continue;
 
                     succeeded = true;
                     break;
@@ -283,6 +284,15 @@ namespace GalacticScale
         {
             for (var m = 0; m < processedVectorCount; m++)
                 if ((vectors[m].position - vector).sqrMagnitude < padding)
+                    return true;
+
+            return false;
+        }
+
+        private static bool CollidesWithBirthVeins(Vector3 vector, Vector3[] birthVectors, float padding)
+        {
+            foreach (var birthVector in birthVectors)
+                if ((birthVector - vector).sqrMagnitude < padding)
                     return true;
 
             return false;
