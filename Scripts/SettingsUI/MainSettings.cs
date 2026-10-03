@@ -44,6 +44,8 @@ namespace GalacticScale
         public bool SkipDFHiveLogic => Preferences.GetBool("SkipDFHiveLogic", false);
         public float SkipDFHiveDistance => Preferences.GetFloat("SkipDFHiveDistance", 0f);
         // public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
+        public float ShieldScaleStrength => Preferences.GetFloat("ShieldScaleStrength", 0.25f);
+        public float ShieldScaleLargeStrength => Preferences.GetFloat("ShieldScaleLargeStrength", 0f);
         public bool MinifyJson
         {
             get => Preferences.GetBool("Minify JSON");
@@ -161,6 +163,13 @@ namespace GalacticScale
             GameOptions.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
             GameOptions.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
             GameOptions.Add(GSUI.Checkbox("Ignore Load Timeout".Translate(), false, "IgnoreAbort", null, "Prevent Game Load Timeout".Translate()));
+            if (ShieldCompat.PlanetwideShieldInstalled)
+            GameOptions.Add(GSUI.Header("Shield Scaling: Off".Translate(), "Planetwide Shield mod detected".Translate()));
+            else
+            {
+            GameOptions.Add(GSUI.Slider("Shield Scaling: Small Planets".Translate(), 0f, 0.25f, 1f, 0.05f, "ShieldScaleStrength", null, "0=vanilla Higher= bigger shields on small planets".Translate()));
+            GameOptions.Add(GSUI.Slider("Shield Scaling: Large Planets".Translate(), 0f, 0f, 0.5f, 0.05f, "ShieldScaleLargeStrength", null, "0=vanilla Higher=Weakens shields on big planets".Translate()));
+            }
             GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
             GameOptions.Add(GSUI.Spacer());
             Options.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));

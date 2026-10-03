@@ -72,7 +72,13 @@ namespace GalacticScale.Generators
             // Warn($"Creating Planets for {star.Name}");
             GS2.Random random = new GS2.Random(star.Seed);
 
+            bool isBirthStar = star == birthStar;
+            bool startIsMoonOfGas = isBirthStar && preferences.GetBool("birthPlanetGasMoon");
+            bool startOnMoon = isBirthStar && preferences.GetBool("birthPlanetMoon");
+
             int starBodyCount = GetStarPlanetCount(star);
+            if (isBirthStar && startOnMoon && startIsMoonOfGas) starBodyCount = Math.Max(3, starBodyCount);
+            else if (isBirthStar && (startOnMoon || startIsMoonOfGas)) starBodyCount = Math.Max(2, starBodyCount);
             if (starBodyCount == 0) return;
             double moonChance = GetMoonChanceForStar(star);
             if (starBodyCount == 1) moonChance = 0;
@@ -82,15 +88,11 @@ namespace GalacticScale.Generators
             float moonBias = preferences.GetFloat("moonBias", 50f);
             //moonChance = moonChance - subMoonChance;
 
-            bool isBirthStar = star == birthStar;
-
-            bool startOnMoon = isBirthStar && preferences.GetBool("birthPlanetMoon");
-            bool startIsMoonOfGas = isBirthStar && startOnMoon && preferences.GetBool("birthPlanetGasMoon");
-
-
             int birthPlanetSize = preferences.GetInt("birthPlanetSize", 200);
 
             int gasCount = Math.Max(startIsMoonOfGas ? 1 : 0, Mathf.RoundToInt(starBodyCount * (float)gasChance));
+            if (isBirthStar && startOnMoon && !startIsMoonOfGas)
+                starBodyCount = Math.Max(starBodyCount, gasCount + 2);
             int telluricCount = Math.Max(isBirthStar ? 1 : 0, starBodyCount - gasCount);
             int moonCount = Math.Max(startOnMoon ? 1 : 0, Mathf.RoundToInt(telluricCount * (float)moonChance));
             telluricCount -= moonCount;
@@ -184,12 +186,27 @@ namespace GalacticScale.Generators
                     -1, new GSPlanets());
                 if (startIsMoonOfGas)
                 {
-                    GS2.Log("BirthPlanet is moon of gas giant");
                     GSPlanet gasHost = random.Item(gasPlanets);
-                    gasHost.Moons.Add(birthPlanet);
-                    moons.Add(birthPlanet);
-                    birthPlanet.OrbitRadius     = gasHost.Radius * 6;
-                    GS2.Log($"Added BirthPlanet {birthPlanet.Name} to gas host {gasHost.Name}");
+                    if (startOnMoon)
+                    {
+                        var rockyHost = new GSPlanet("BirthPlanetHost", "Barren",
+                            GetStarMoonSize(star, gasHost.Radius, true, random), -1, -1, -1, -1, -1, -1, -1, -1,
+                            new GSPlanets());
+                        rockyHost.genData.Add("hosttype", "planet");
+                        rockyHost.genData.Add("hostname", gasHost.Name);
+                        gasHost.Moons.Add(rockyHost);
+                        rockyHost.Moons.Add(birthPlanet);
+                        moons.Add(rockyHost);
+                        moons.Add(birthPlanet);
+                        GS2.Log($"Added BirthPlanet {birthPlanet.Name} as moon of rocky moon {rockyHost.Name} around gas host {gasHost.Name}");
+                    }
+                    else
+                    {
+                        gasHost.Moons.Add(birthPlanet);
+                        moons.Add(birthPlanet);
+                        birthPlanet.OrbitRadius = gasHost.Radius * 6;
+                        GS2.Log($"Added BirthPlanet {birthPlanet.Name} to gas host {gasHost.Name}");
+                    }
                 }
                 else if (startOnMoon)
                 {
@@ -378,12 +395,8 @@ namespace GalacticScale.Generators
         private float GetNextAvailableOrbit(GSPlanet planet, int moonIndex)
         {
             var moons = planet.Moons;
-            // Use RadiusAU for the current moon being calculated instead of SystemRadius
-            // to avoid including uninitialized nested moon orbits
-            if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].RadiusAU;
-            // For previous moons, use their outermost orbit (OrbitRadius + SystemRadius)
-            // but for the current moon, only use its RadiusAU
-            return moons[moonIndex - 1].OrbitRadius + moons[moonIndex - 1].SystemRadius + moons[moonIndex].RadiusAU;
+            if (moonIndex == 0) return planet.RadiusAU + moons[moonIndex].SystemRadius;
+            return moons[moonIndex - 1].OrbitRadius + moons[moonIndex - 1].SystemRadius + moons[moonIndex].SystemRadius;
         }
 
         private void AssignMoonOrbits(GSStar star)
@@ -443,16 +456,18 @@ namespace GalacticScale.Generators
                 if (planet != birthPlanet)
                 {
                     if (planet.Scale == 10f) type = EThemeType.Gas;
-                    planet.Theme = GSSettings.ThemeLibrary.Query(rng, type, heat, planet.Radius);
+                    var isBirthGasHost = star == birthStar && preferences.GetBool("birthPlanetGasMoon") &&
+                                         planet.Bodies.Contains(birthPlanet);
+                    var selectedGasTheme = preferences.GetString("birthGasGiantTheme", "GasGiant");
+                    if (isBirthGasHost && GSSettings.ThemeLibrary.TryGetValue(selectedGasTheme, out var gasTheme) &&
+                        gasTheme.PlanetType == EPlanetType.Gas)
+                        planet.Theme = selectedGasTheme;
+                    else
+                        planet.Theme = GSSettings.ThemeLibrary.Query(rng, type, heat, planet.Radius);
                 }
                 else
                 {
-                    // GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
-                    var habitableTheme = GSSettings.ThemeLibrary.Query(rng, EThemeType.Telluric,
-                        EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default,
-                        true);
-                    if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
-                    else planet.Theme = "Mediterranean";
+                    planet.Theme = GetSelectedBirthPlanetTheme(rng, EThemeType.Telluric);
                     planet.Scale = 1f;
                 }
 
@@ -466,18 +481,25 @@ namespace GalacticScale.Generators
                         }
                         else
                         {
-                            var habitableTheme = GSSettings.ThemeLibrary.Query(rng, EThemeType.Moon,
-                                EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200),
-                                EThemeDistribute.Default,
-                                true);
-                            if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;
-                            else body.Theme = "Mediterranean";
+                            body.Theme = GetSelectedBirthPlanetTheme(rng, EThemeType.Moon);
                             body.Scale = 1f;
                         }
                     }
                 //Warn($"Set Theme for {body.Name} to {body.Theme}");
             }
             // GS2.Log($"Themes Set {(birthPlanet != null ? birthPlanet.Name : "null")}");
+        }
+
+        private string GetSelectedBirthPlanetTheme(GS2.Random rng, EThemeType planetType)
+        {
+            if (!preferences.GetBool("birthPlanetUnlock")) return "Mediterranean";
+
+            var selectedTheme = preferences.GetString("birthTheme", "Mediterranean");
+            if (GSSettings.ThemeLibrary.TryGetValue(selectedTheme, out var theme) && theme.Habitable)
+                return selectedTheme;
+
+            return GSSettings.ThemeLibrary.Query(rng, planetType, EThemeHeat.Temperate,
+                preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
         }
 
         public bool CalculateIsGas(GSStar star)

@@ -18,6 +18,8 @@ namespace GalacticScale
     [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.80.1")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("lltcggie.DSP.plugin.PlanetwidePlanetaryShieldGenerator", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("un1eagle.planetwideshield", BepInDependency.DependencyFlags.SoftDependency)]
     public class Bootstrap : BaseUnityPlugin
     {
         public static Bootstrap instance;
@@ -82,6 +84,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnBuildTool_BlueprintPaste));
                 harmony.PatchAll(typeof(PatchOnBuildTool_Click));
                 harmony.PatchAll(typeof(PatchOnBuildTool_Inserter));
+                harmony.PatchAll(typeof(PatchOnBuildTool_Reform));
                 harmony.PatchAll(typeof(PatchOnBuildTool_Path));
                 harmony.PatchAll(typeof(PatchOnBuildTool_PathAddon));
                 harmony.PatchAll(typeof(PatchOnCloudSimulator));
@@ -93,6 +96,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnDysonSphere));
                 harmony.PatchAll(typeof(PatchOnDysonSwarm));
                 harmony.PatchAll(typeof(PatchOnDysonSphereRocket));
+                harmony.PatchAll(typeof(PatchOnDysonStatistics));
                 harmony.PatchAll(typeof(PatchOnUIDEDialogues));
                 harmony.PatchAll(typeof(PatchOnEnemyDFGroundSystem));
                 harmony.PatchAll(typeof(PatchOnEnemyDFHiveSystem));
@@ -141,6 +145,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnUIAchievementPanel));
                 harmony.PatchAll(typeof(PatchOnUIAdvisorTip));
                 harmony.PatchAll(typeof(PatchOnUIBuildingGrid));
+                harmony.PatchAll(typeof(PatchOnUIBuildMenu));
                 harmony.PatchAll(typeof(PatchOnUICommunicatorIndicator));
                 harmony.PatchAll(typeof(PatchOnUIEnemyBriefInfo));
                 harmony.PatchAll(typeof(PatchOnUIEscMenu));
