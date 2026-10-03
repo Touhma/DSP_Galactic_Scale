@@ -5,7 +5,7 @@ namespace GalacticScale
 {
     public static class GSUIBrushSizePanel
     {
-        private static readonly int[] Sizes = { 20, 10 };
+        private static readonly int[] Sizes = { 20, 10, 5, 1 };
         private static bool _created;
 
         private const float Width = 28f;
@@ -26,7 +26,7 @@ namespace GalacticScale
             float columnX = anchor.anchoredPosition.x - (anchorWidth / 2f + HGap + Width / 2f);
 
             float totalHeight = Sizes.Length * Height + (Sizes.Length - 1) * VGap;
-            float topY = anchor.anchoredPosition.y + totalHeight / 2f - Height / 2f;
+            float topY = anchor.anchoredPosition.y + totalHeight / 2f - Height / 2f + 14f;
 
             for (int i = 0; i < Sizes.Length; i++)
             {

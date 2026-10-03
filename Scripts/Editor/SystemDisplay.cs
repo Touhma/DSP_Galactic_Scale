@@ -443,6 +443,12 @@ namespace GalacticScale
             var pData = viewStar?.planets[planetIndex];
             // GS2.Warn("C");
             if (pData == null) return;
+            if (pData.type == EPlanetType.Gas)
+            {
+                UIRealtimeTip.Popup("Gas giants cannot be selected as the birth planet.".Translate());
+                return;
+            }
+
             GS2.Log($"Setting new Star as BirthStar and Planet as {pData.name}");
             if (pData.star.id != starmap.galaxyData.birthStarId || pData.id != starmap.galaxyData.birthPlanetId)
             {

@@ -262,7 +262,7 @@ namespace GalacticScale.Generators
             //GS2.Log("Creating Themes");
             var oiler = new GSTheme("OilGiant", "SpaceWhale Excrement".Translate(), "IceGiant");
             oiler.terrainMaterial.Tint = new Color(0.3f, 0.3f, 0.3f, 1f);
-            oiler.atmosphereMaterial.Tint = new Color(0f, 0f, 0f, 1);
+            oiler.atmosphereMaterial.Tint = new Color(0.72f, 0.58f, 0.42f, 0.35f);
             oiler.thumbMaterial.Tint = new Color(0.01f, 0.005f, 0f, 0.001f);
             oiler.PlanetType = EPlanetType.Gas;
             oiler.TerrainSettings.Algorithm = "GSTA1";
@@ -271,7 +271,7 @@ namespace GalacticScale.Generators
             oiler.GasItems[0] = 1114;
             oiler.GasItems[1] = 1120;
             oiler.GasSpeeds[0] = 0.1f;
-            oiler.GasSpeeds[1] = 10f;
+            oiler.GasSpeeds[1] = 1f;
             oiler.ThemeType = EThemeType.Private;
             oiler.Process();
             //GS2.Log("Oiler Processed");

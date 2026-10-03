@@ -98,6 +98,18 @@ namespace GalacticScale
 
             if (localStar != null && localPlanet != null && (!localPlanet.loaded || !localPlanet.factoryLoaded || localPlanet.loading))
             {
+                var approachingPlanet = FindPlanetInApproach(localStar);
+                if (approachingPlanet != null && approachingPlanet != localPlanet &&
+                    approachingPlanet.loaded && approachingPlanet.factoryLoaded &&
+                    DistanceTo(approachingPlanet) + 1000.0 < DistanceTo(localPlanet))
+                {
+                    Log($"Leaving loading planet {localPlanet.name} for ready approaching planet {approachingPlanet.name}");
+                    GameMain.data.LeavePlanet();
+                    GameMain.mainPlayer.NotifyLocalAstroChange();
+                    GameMain.data.ArrivePlanet(approachingPlanet);
+                    return true;
+                }
+
                 //We assume the planet is still loading, so wait.
                 LogStatus($"Planet  {localPlanet.name} Loading");
                 return false;
@@ -105,7 +117,21 @@ namespace GalacticScale
 
             if (closestStar != null) EnsureStarStillLocal();
 
-            if (closestStar != null && closestPlanet != null) EnsurePlanetStillLocal();
+            if (closestStar != null && closestPlanet != null)
+            {
+                EnsurePlanetStillLocal();
+
+                if (closestPlanet != null)
+                {
+                    var approachingPlanet = FindPlanetInApproach(closestStar);
+                    if (approachingPlanet != null && approachingPlanet != closestPlanet &&
+                        DistanceTo(approachingPlanet) + 1000.0 < DistanceTo(closestPlanet))
+                    {
+                        Log($"Switching local planet from {closestPlanet.name} to approaching {approachingPlanet.name}");
+                        closestPlanet = approachingPlanet;
+                    }
+                }
+            }
 
             if (closestStar == null) SearchStar();
 
@@ -238,16 +264,28 @@ namespace GalacticScale
 
         private static void SearchPlanet()
         {
-            for (var i = 0; closestStar != null && closestPlanet == null && i < closestStar.planetCount; i++)
+            closestPlanet = FindPlanetInApproach(closestStar);
+        }
+
+        private static PlanetData FindPlanetInApproach(StarData star)
+        {
+            if (star?.planets == null) return null;
+
+            PlanetData best = null;
+            var bestDistance = double.MaxValue;
+            for (var i = 0; i < star.planetCount; i++)
             {
-                var planet = closestStar.planets[i];
-                if (DistanceTo(planet) < TransitionDistance(planet))
-                {
-                    // GS2.Log($"Switching to {planet.name}");
-                    closestPlanet = planet;
-                    break;
-                }
+                var planet = star.planets[i];
+                if (planet == null) continue;
+
+                var distance = DistanceTo(planet);
+                if (distance >= ApproachDistance(planet) || distance >= bestDistance) continue;
+
+                best = planet;
+                bestDistance = distance;
             }
+
+            return best;
         }
 
         private static void SearchStar()
