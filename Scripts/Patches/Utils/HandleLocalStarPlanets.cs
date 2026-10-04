@@ -7,10 +7,13 @@ namespace GalacticScale
 {
     public static class HandleLocalStarPlanets
     {
+        private const double PlanetPreloadDistance = 80000.0;
         private static string status = "Start";
         private static string lastStatus = "";
         private static StarData closestStar;
         private static PlanetData closestPlanet;
+        private static PlanetData legacyOverlapMoon;
+        private static PlanetData legacyOverlapGasGiant;
         public static readonly Dictionary<PlanetData, double> TransitionRadii = new();
 
         static HandleLocalStarPlanets()
@@ -48,6 +51,23 @@ namespace GalacticScale
         {
             var localStar = GameMain.data.localStar;
             var localPlanet = GameMain.data.localPlanet;
+
+            if (legacyOverlapGasGiant != null &&
+                DistanceTo(legacyOverlapGasGiant) > ApproachDistance(legacyOverlapGasGiant))
+            {
+                legacyOverlapMoon = null;
+                legacyOverlapGasGiant = null;
+            }
+
+            var factoryLoadingPlanet = PlanetModelingManager.currentFactingPlanet;
+            if (factoryLoadingPlanet != null && factoryLoadingPlanet.factoryLoading)
+            {
+                LogStatus($"Waiting for {factoryLoadingPlanet.name} factory load before changing locality");
+                return false;
+            }
+
+            if (localStar != null && localStar.loaded) PreloadNearestPlanet(localStar);
+
             closestStar = localStar;
             closestPlanet = localPlanet;
             if (localPlanet != null && VFInput.shift && VFInput.alt && Config.DevMode)
@@ -101,6 +121,7 @@ namespace GalacticScale
                 var approachingPlanet = FindPlanetInApproach(localStar);
                 if (approachingPlanet != null && approachingPlanet != localPlanet &&
                     approachingPlanet.loaded && approachingPlanet.factoryLoaded &&
+                    !IsPreferredOver(localPlanet, approachingPlanet) &&
                     DistanceTo(approachingPlanet) + 1000.0 < DistanceTo(localPlanet))
                 {
                     Log($"Leaving loading planet {localPlanet.name} for ready approaching planet {approachingPlanet.name}");
@@ -125,7 +146,9 @@ namespace GalacticScale
                 {
                     var approachingPlanet = FindPlanetInApproach(closestStar);
                     if (approachingPlanet != null && approachingPlanet != closestPlanet &&
-                        DistanceTo(approachingPlanet) + 1000.0 < DistanceTo(closestPlanet))
+                        (IsPreferredOver(approachingPlanet, closestPlanet) ||
+                         (!IsPreferredOver(closestPlanet, approachingPlanet) &&
+                          DistanceTo(approachingPlanet) + 1000.0 < DistanceTo(closestPlanet))))
                     {
                         Log($"Switching local planet from {closestPlanet.name} to approaching {approachingPlanet.name}");
                         closestPlanet = approachingPlanet;
@@ -267,25 +290,114 @@ namespace GalacticScale
             closestPlanet = FindPlanetInApproach(closestStar);
         }
 
+        private static void PreloadNearestPlanet(StarData star)
+        {
+            if (star?.planets == null) return;
+
+            PlanetData nearest = null;
+            var nearestCenterDistance = double.MaxValue;
+            PlanetData onApproach = null;
+            var nearestApproachDistance = double.MaxValue;
+            var player = GameMain.mainPlayer;
+            var velocity = player.uVelocity;
+            var speedSquared = velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z;
+
+            for (var i = 0; i < star.planetCount; i++)
+            {
+                var planet = star.planets[i];
+                if (planet == null) continue;
+
+                var toCenter = planet.uPosition - player.uPosition;
+                var centerDistance = toCenter.magnitude;
+                if (centerDistance < nearestCenterDistance)
+                {
+                    nearest = planet;
+                    nearestCenterDistance = centerDistance;
+                }
+
+                if (speedSquared <= 1.0) continue;
+
+                var timeToClosestApproach = VectorLF3.Dot(toCenter, velocity) / speedSquared;
+                if (timeToClosestApproach <= 0.0) continue;
+
+                var distanceAlongPath = timeToClosestApproach * System.Math.Sqrt(speedSquared);
+                if (distanceAlongPath >= PlanetPreloadDistance || distanceAlongPath >= nearestApproachDistance) continue;
+
+                var missDistance = (toCenter - velocity * timeToClosestApproach).magnitude;
+                if (missDistance > ApproachDistance(planet)) continue;
+
+                onApproach = planet;
+                nearestApproachDistance = distanceAlongPath;
+            }
+
+            var target = onApproach ?? nearest;
+            var targetDistance = onApproach != null ? nearestApproachDistance : nearestCenterDistance;
+            if (target == null || targetDistance >= PlanetPreloadDistance || target.loaded || target.loading) return;
+
+            Log($"Preloading approaching planet {target.name} at {targetDistance:0}m");
+            target.Load();
+        }
+
         private static PlanetData FindPlanetInApproach(StarData star)
         {
             if (star?.planets == null) return null;
 
             PlanetData best = null;
             var bestDistance = double.MaxValue;
+
             for (var i = 0; i < star.planetCount; i++)
             {
                 var planet = star.planets[i];
                 if (planet == null) continue;
 
                 var distance = DistanceTo(planet);
-                if (distance >= ApproachDistance(planet) || distance >= bestDistance) continue;
+                if (distance >= ApproachDistance(planet)) continue;
 
-                best = planet;
-                bestDistance = distance;
+                if (best == null || IsPreferredOver(planet, best) ||
+                    (!IsPreferredOver(best, planet) && distance < bestDistance))
+                {
+                    best = planet;
+                    bestDistance = distance;
+                }
             }
 
             return best;
+        }
+
+        private static bool IsPreferredOver(PlanetData candidate, PlanetData other)
+        {
+            if (candidate == null || other == null || candidate == other) return false;
+
+            if (IsEmbeddedMoonOf(candidate, other))
+            {
+                legacyOverlapMoon = candidate;
+                legacyOverlapGasGiant = other;
+                return true;
+            }
+
+            if (candidate == legacyOverlapMoon && other == legacyOverlapGasGiant) return true;
+            return false;
+        }
+
+        private static bool IsEmbeddedMoonOf(PlanetData moon, PlanetData possibleGasGiant)
+        {
+            if (moon == null || possibleGasGiant == null || possibleGasGiant.type != EPlanetType.Gas ||
+                moon.type == EPlanetType.Gas) return false;
+
+            var ancestor = moon.orbitAroundPlanet;
+            while (ancestor != null)
+            {
+                if (ancestor == possibleGasGiant)
+                {
+                    var centerDistance = (moon.uPosition - possibleGasGiant.uPosition).magnitude;
+                    var overlapMargin = System.Math.Max(1000.0, moon.realRadius * 0.25);
+                    return centerDistance <= possibleGasGiant.realRadius + moon.realRadius + overlapMargin;
+                }
+
+                ancestor = ancestor.orbitAroundPlanet;
+            }
+
+            return false;
         }
 
         private static void SearchStar()
@@ -345,11 +457,8 @@ namespace GalacticScale
         /// </summary>
         private static double ApproachDistance(PlanetData planet)
         {
-            // 80000 (2 AU) floor: field-tested — a 20000 floor made the handoff (and with it
-            // the planet popping into existence) happen at ~0.5 AU, which reads as still-broken
-            // to a player flying at an invisible planet. 2 AU triggers before the approach
-            // feels wrong.
-            var wide = planet.realRadius * 4.0 + 80000.0;
+            var speedLead = Mathf.Clamp((float)(GameMain.mainPlayer.uVelocity.magnitude * 1.5), 2000f, 20000f);
+            var wide = planet.realRadius * 4.0 + speedLead;
             var transition = TransitionDistance(planet);
             return wide > transition ? wide : transition;
         }

@@ -206,6 +206,7 @@ namespace GalacticScale.Generators
             preferences.Set("limitPlanetSize400", false);
             preferences.Set("limitPlanetSize500", false);
             preferences.Set("birthTheme", "Mediterranean");
+            preferences.Set("birthGasGiantTheme", "GasGiant");
             preferences.Set("birthPlanetOrbit", -1f);
 
 
@@ -378,6 +379,7 @@ namespace GalacticScale.Generators
             InitThemes();
 
             var themes = GSSettings.ThemeLibrary.Where(t=>t.Value.Habitable).Select(t=>t.Key).ToList();
+            var gasGiantThemes = GSSettings.ThemeLibrary.Where(t => t.Value.PlanetType == EPlanetType.Gas && t.Key != "Center").Select(t => t.Key).ToList();
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetOrbit", bOptions.Add(GSUI.Slider("Starting Planet Orbit".Translate(), -1, -1, 100, 0.1f, "birthPlanetOrbit", null, "How far from the star your starting planet is".Translate(), "Default")));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
@@ -386,8 +388,9 @@ namespace GalacticScale.Generators
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
-            UI.Add("birthPlanetMoon", bOptions.Add(GSUI.Checkbox("Birth Planet is a Moon".Translate(), false, "birthPlanetMoon", null, "Start game on a moon".Translate())));
-            UI.Add("birthPlanetGasMoon", bOptions.Add(GSUI.Checkbox("... of a Gas Giant".Translate(), false, "birthPlanetGasMoon", null, "Start game on a moon of a gas giant (Need above checked)".Translate())));
+            UI.Add("birthPlanetMoon", bOptions.Add(GSUI.Checkbox("Birth Planet is a Moon".Translate(), false, "birthPlanetMoon", null, "Start on a moon of a rocky planet".Translate())));
+            UI.Add("birthPlanetGasMoon", bOptions.Add(GSUI.Checkbox("... of a Gas Giant".Translate(), false, "birthPlanetGasMoon", null, "Start on a moon of a gas giant".Translate())));
+            UI.Add("birthGasGiantTheme", bOptions.Add(GSUI.Selector("Birth Planet Gas Giant Type".Translate(), gasGiantThemes, "GasGiant", "birthGasGiantTheme", null, "Theme of the gas giant hosting your starting moon".Translate())));
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
             AddSpacer(bOptions);
             return bOptions;
