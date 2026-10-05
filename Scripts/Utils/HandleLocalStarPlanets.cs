@@ -364,13 +364,6 @@ namespace GalacticScale
             return best;
         }
 
-        /// <summary>
-        /// Older saves can contain moons whose orbits pass through a gas giant. In that
-        /// overlap, surface-distance comparisons always favor the gas giant and locality
-        /// oscillates as the player moves around the moon. Prefer the embedded moon while
-        /// its approach region is active, and apply the same rule when comparing candidates
-        /// with the current local planet.
-        /// </summary>
         private static bool IsPreferredOver(PlanetData candidate, PlanetData other)
         {
             if (candidate == null || other == null || candidate == other) return false;
