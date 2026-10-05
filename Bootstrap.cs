@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
  
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.80.1")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.80.2")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("lltcggie.DSP.plugin.PlanetwidePlanetaryShieldGenerator", BepInDependency.DependencyFlags.SoftDependency)]
