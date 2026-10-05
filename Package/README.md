@@ -1,6 +1,25 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.2 - Devious55 Did the following 
+Features:
+  -Foundation Brush Size buttons for 20x20, 10x10, 5x5, 1x1. The last two options are mostly there to quickly switch from 20x20 back down to more precise amounts.
+  -Planetary Shield scaling in settings, found under Galactic Scale quality of life options on the left. Sidenote, this will turn itself off if you're using Starfish or un1eagle's Planetwide Shield Generator mods.
+  -Gas Giant selector for when your birth planet is the moon of one.
+  -By selecting the settings Birth Planet is a Moon and ...of a Gas Giant, your birth planet will now be the moon of a rocky planet orbiting a gas giant. The two settings are independent, so if you want your birth planet to only orbit a gas giant as its moon, then select ...of a Gas Giant.
+  -In the Gas Giant selector, you may discover an Oil Giant. I found this while looking through the themes, and it works, so I made it available as a starter giant selection.
+
+Bugfixes:
+-New game screen Metadata UI has been moved to the top left to avoid covering Galactic Scale hotkey information and make all your available Metadata visible.
+-New game ore veins shouldn't be able to generate inside other ore veins now.
+-Recursive moons fixed. They should all now be solid on approach and allow you to land without flying through them.
+-Dyson Sphere UI out of range fixed to account for ZordDevzz's orbit bounds change.
+-Fixed Birth Planet theme selection for both standard spawn and moon spawn.
+-Fixed Index out of range when Dark Fog bases were too close to the poles, and you tried to set foundations anywhere on the planet.
+-Fixed being able to set your spawn on a gas giant.
+-Fixed recursive moons being able to orbit into gas giants.
+Thanks to Dinglebatz for helping test the recursive moon fixes.
+
 - Version 2.80.1 - Devious55 Fixed several bugs
 - Version 2.80.0 - Xabsurd updated for DSP 0.10.35
 - Version 2.78.8 - AndrewLuebke fixed planets of overlapping systems being invisible and unlandable (#294): with very large orbits a neighboring star could hold onto you and the planet you were at could never load. Locality now hands off to the star whose planet you're approaching. Existing saves benefit immediately; no galaxy changes.
