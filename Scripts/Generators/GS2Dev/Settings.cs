@@ -54,6 +54,16 @@ namespace GalacticScale.Generators
                 }
             }
 
+            // Earlier builds stored the displayed density (1.0–3.0) instead of the
+            // New Game slider position (0–4). Preserve those settings on upgrade.
+            if (importedPreferences.ContainsKey("darkFogMaxDensity") && !importedPreferences.ContainsKey("darkFogMaxDensityStep"))
+            {
+                var densityStep = (int)((importedPreferences.GetFloat("darkFogMaxDensity", 1f) - 1f) * 2f + 0.5f);
+                densityStep = densityStep < 0 ? 0 : densityStep > 4 ? 4 : densityStep;
+                preferences.Set("darkFogMaxDensityStep", densityStep);
+                UI["darkFogMaxDensityStep"]?.Set(densityStep);
+            }
+
             // WarnJson(importedPreferences);
             for (var i = 0; i < 15; i++)
             {
@@ -81,7 +91,8 @@ namespace GalacticScale.Generators
                 
                 // For binary options, check if the UI element exists before setting it
                 if (UI.ContainsKey($"{typeLetter[i]}binaryEnabled")) 
-                    UI[$"{typeLetter[i]}binaryEnabled"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled"));
+                UI[$"{typeLetter[i]}binaryEnabled"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}binaryEnabled"));
+                UI[$"{typeLetter[i]}binaryPrimaryEnabled"]?.Set(importedPreferences.GetBool($"{typeLetter[i]}binaryPrimaryEnabled", true));
             }
 
             // GS2.Warn($"Imported:{importedPreferences.GetInt($"OcountBias")}");
@@ -202,6 +213,18 @@ namespace GalacticScale.Generators
             preferences.Set("starSizeMulti", 10);
             preferences.Set("binaryChance", 0);
             preferences.Set("birthPlanetSize", 200);
+            preferences.Set("birthDarkFogSystem", true);
+            preferences.Set("birthDarkFogPlanet", true);
+            preferences.Set("darkFogEnabled", true);
+            preferences.Set("darkFogAggressiveness", 3f);
+            preferences.Set("darkFogInitialLevel", 0f);
+            preferences.Set("darkFogInitialGrowth", 4f);
+            preferences.Set("darkFogInitialColonize", 4f);
+            preferences.Set("darkFogMaxDensityStep", 0);
+            preferences.Set("darkFogGrowthSpeed", 2f);
+            preferences.Set("darkFogPowerThreat", 4f);
+            preferences.Set("darkFogBattleThreat", 4f);
+            preferences.Set("darkFogBattleExp", 4f);
             preferences.Set("birthPlanetMoon", false);
             preferences.Set("birthPlanetGasMoon", false);
             preferences.Set("birthPlanetUnlock", false);
@@ -282,6 +305,7 @@ namespace GalacticScale.Generators
                 preferences.Set($"{typeLetter[i]}rareChance", -1f);
                 preferences.Set($"{typeLetter[i]}luminosityBoost", 1);
                 preferences.Set($"{typeLetter[i]}binaryEnabled", false);
+                preferences.Set($"{typeLetter[i]}binaryPrimaryEnabled", true);
             }
 
             preferences.Set("KbinaryEnabled", true);
@@ -291,7 +315,9 @@ namespace GalacticScale.Generators
         {
             Options.Add(GSUI.Group("Galaxy Settings".Translate(), CreateGalaxyOptions(), "Settings that control Galaxy formation".Translate()));
             AddSpacer();
-            Options.Add(GSUI.Group("Birth Planet Settings".Translate(), CreateBirthOptions(), "Settings that only affect the starting planet".Translate()));
+            Options.Add(GSUI.Group("Birth System Settings".Translate(), CreateBirthOptions(), "Settings that affect your starting system".Translate()));
+            AddSpacer();
+            Options.Add(GSUI.Group("Dark Fog Settings".Translate(), CreateDarkFogOptions(), "Default Dark Fog settings for new galaxies".Translate()));
             AddSpacer();
             Options.Add(GSUI.Group("System Settings".Translate(), CreateSystemOptions(), "Settings that control how systems are generated".Translate()));
             AddSpacer();
@@ -351,9 +377,9 @@ namespace GalacticScale.Generators
             var sOptions = new GSOptions();
             AddSpacer(sOptions);
             UI.Add("rotationMulti", sOptions.Add(GSUI.Slider("Day/Night Multiplier".Translate(), 0.5f, 1, 10, 0.5f, "rotationMulti", null, "Increase the duration of night/day".Translate())));
-            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 510, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
+            UI.Add("planetSize", sOptions.Add(GSUI.PlanetSizeRangeSlider("Telluric Planet Size".Translate(), 5, 50, 400, 500, "planetSize", null, PlanetSizeLow, PlanetSizeHigh, "Min/Max Size of Rocky Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Planet Sizes".Translate(), CreateLimitPlanetSizeOptions(), "Force Planets to these sizes".Translate()));
-            UI.Add("gasSize", sOptions.Add(GSUI.GasSizeRangeSlider("Gas Planet Size".Translate(), 50, 500, 5000, 5100, "gasSize", null, GasSizeLow, GasSizeHigh, "Min/Max Size of Gas Planets".Translate())));
+            UI.Add("gasSize", sOptions.Add(GSUI.GasSizeRangeSlider("Gas Planet Size".Translate(), 50, 500, 5000, 5000, "gasSize", null, GasSizeLow, GasSizeHigh, "Min/Max Size of Gas Planets".Translate())));
             sOptions.Add(GSUI.Group("Limit Gas Giant Sizes".Translate(), CreateLimitGasSizeOptions(), "Force Gas Giants to these sizes".Translate()));
             UI.Add("sizeBias", sOptions.Add(GSUI.Slider("Planet Size Bias".Translate(), 0, 50, 100, "sizeBias", SizeBiasCallback, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
             UI.Add("inclination", sOptions.Add(GSUI.Slider("Max Inclination".Translate(), -1, -1, 180, 1f, "inclination", InclinationCallback, "Maximum angle of orbit".Translate(), "Random".Translate())));
@@ -386,11 +412,13 @@ namespace GalacticScale.Generators
                 "Random"
             };
             AddSpacer(bOptions);
-            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 510, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
+            UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 500, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
+            UI.Add("birthDarkFogSystem", bOptions.Add(GSUI.Checkbox("Allow Dark Fog in Birth System".Translate(), true, "birthDarkFogSystem", null, "Allow Dark Fog hives to spawn in your starting star system".Translate())));
+            UI.Add("birthDarkFogPlanet", bOptions.Add(GSUI.Checkbox("Allow Dark Fog on Birth Planet".Translate(), true, "birthDarkFogPlanet", null, "Allow Dark Fog relays to land on your starting planet".Translate())));
             UI.Add("birthTidalLock", bOptions.Add(GSUI.Checkbox("Tidal Lock Starting Planet".Translate(), false, "birthTidalLock", null, "Force the starting planet to be tidally locked".Translate())));
             UI.Add("birthPlanetMoon", bOptions.Add(GSUI.Checkbox("Birth Planet is a Moon".Translate(), false, "birthPlanetMoon")));
             UI.Add("birthPlanetGasMoon", bOptions.Add(GSUI.Checkbox("... of a Gas Giant".Translate(), false, "birthPlanetGasMoon")));
@@ -399,16 +427,38 @@ namespace GalacticScale.Generators
             return bOptions;
         }
 
+        private GSOptions CreateDarkFogOptions()
+        {
+            var options = new GSOptions();
+            UI.Add("darkFogEnabled", options.Add(GSUI.Checkbox("Enable Dark Fog".Translate(), true, "darkFogEnabled", null, "Enable or disable Dark Fog in new galaxies".Translate())));
+            UI.Add("darkFogAggressiveness", options.Add(GSUI.Slider("Aggressiveness".Translate(), 0, 3, 5, 1, "darkFogAggressiveness", null, "Same choices as New Game Dark Fog settings".Translate(), "", new[] { "活靶子", "被动", "消极", "正常", "积极", "狂暴" })));
+            UI.Add("darkFogInitialLevel", options.Add(GSUI.Slider("Initial Level".Translate(), 0, 0, 10, 1, "darkFogInitialLevel", null, "Starting Dark Fog level".Translate(), "", new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" })));
+            UI.Add("darkFogInitialGrowth", options.Add(GSUI.Slider("Initial Growth".Translate(), 0, 4, 6, 1, "darkFogInitialGrowth", null, "Starting hive growth".Translate(), "", new[] { "0%", "25%", "50%", "75%", "100%", "150%", "200%" })));
+            UI.Add("darkFogInitialColonize", options.Add(GSUI.Slider("Initial Occupation".Translate(), 0, 4, 6, 1, "darkFogInitialColonize", null, "Starting hive occupation".Translate(), "", new[] { "1%", "25%", "50%", "75%", "100%", "150%", "200%" })));
+            UI.Add("darkFogMaxDensityStep", options.Add(GSUI.Slider("Max Density".Translate(), 0, 0, 4, 1, "darkFogMaxDensityStep", null, "Maximum hive density".Translate(), "", new[] { "1x", "1.5x", "2x", "2.5x", "3x" })));
+            UI.Add("darkFogGrowthSpeed", options.Add(GSUI.Slider("Growth Speed".Translate(), 0, 2, 4, 1, "darkFogGrowthSpeed", null, "Dark Fog growth speed".Translate(), "", new[] { "25%", "50%", "100%", "200%", "300%" })));
+            UI.Add("darkFogPowerThreat", options.Add(GSUI.Slider("Power Threat Factor".Translate(), 0, 4, 8, 1, "darkFogPowerThreat", null, "Power-based threat".Translate(), "", new[] { "1%", "10%", "20%", "50%", "100%", "200%", "500%", "800%", "1000%" })));
+            UI.Add("darkFogBattleThreat", options.Add(GSUI.Slider("Combat Threat Factor".Translate(), 0, 4, 8, 1, "darkFogBattleThreat", null, "Combat-based threat".Translate(), "", new[] { "1%", "10%", "20%", "50%", "100%", "200%", "500%", "800%", "1000%" })));
+            UI.Add("darkFogBattleExp", options.Add(GSUI.Slider("Combat Experience Factor".Translate(), 0, 4, 8, 1, "darkFogBattleExp", null, "Combat experience".Translate(), "", new[] { "1%", "10%", "20%", "50%", "100%", "200%", "500%", "800%", "1000%" })));
+            return options;
+        }
+
         private GSOptions CreateBinaryStarOptions()
         {
             var bOptions = new GSOptions();
             UI.Add("binaryDistanceMulti", bOptions.Add(GSUI.Slider("Binary Distance Multi".Translate(), 0.5f, 1f, 5f, 0.1f, "binaryDistanceMulti", null, "How close secondary stars should be to primaries".Translate())));
             UI.Add("binaryChance", bOptions.Add(GSUI.Slider("Binary Star Chance %".Translate(), 0, 0, 100, 1f, "binaryChance", null, "% Chance of a star having a binary companion".Translate())));
+            bOptions.Add(GSUI.Header("Binary Companion Types".Translate(), "Choose which star types can be secondary stars".Translate()));
             for (var i = 0; i < 15; i++)
             {
                 // Create binary enabled checkbox for all star types
                 UI.Add($"{typeLetter[i]}binaryEnabled", bOptions.Add(GSUI.Checkbox($"{typeDesc[i]}", i == 0, $"{typeLetter[i]}binaryEnabled", BinaryCallback, $"Allow {typeDesc[i]} to spawn as binary companions".Translate())));
             }
+
+            AddSpacer(bOptions);
+            bOptions.Add(GSUI.Header("Binary Primary Types".Translate(), "Choose which star types can have a binary companion".Translate()));
+            for (var i = 0; i < 15; i++)
+                UI.Add($"{typeLetter[i]}binaryPrimaryEnabled", bOptions.Add(GSUI.Checkbox($"{typeDesc[i]}", true, $"{typeLetter[i]}binaryPrimaryEnabled", null, $"Allow {typeDesc[i]} stars to have binary companions".Translate())));
 
             AddSpacer(bOptions);
             return bOptions;
@@ -498,8 +548,8 @@ namespace GalacticScale.Generators
                 AddSpacer(tOptions);
                 UI.Add($"{typeLetter[i]}planetCount", tOptions.Add(GSUI.RangeSlider("Planet Count".Translate(), 1, 2, 10, 99, 1f, $"{typeLetter[i]}planetCount", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}countBias", tOptions.Add(GSUI.Slider("Count Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}countBias", null, "Prefer Less (lower) or More (higher) Counts".Translate())));
-                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider("Telluric Planet Size".Translate(), 5, 50, 500, 510, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
-                UI.Add($"{typeLetter[i]}gasSize", tOptions.Add(GSUI.RangeSlider("Gas Giant Planet Size".Translate(), 50, 500, 5000, 5100, 10f, $"{typeLetter[i]}gasSize", null, null, null, "Will be selected randomly from this range".Translate())));
+                UI.Add($"{typeLetter[i]}planetSize", tOptions.Add(GSUI.RangeSlider("Telluric Planet Size".Translate(), 5, 50, 500, 500, 1f, $"{typeLetter[i]}planetSize", null, null, null, "Will be selected randomly from this range".Translate())));
+                UI.Add($"{typeLetter[i]}gasSize", tOptions.Add(GSUI.RangeSlider("Gas Giant Planet Size".Translate(), 50, 500, 5000, 5000, 10f, $"{typeLetter[i]}gasSize", null, null, null, "Will be selected randomly from this range".Translate())));
                 UI.Add($"{typeLetter[i]}sizeBias", tOptions.Add(GSUI.Slider("Telluric Size Bias".Translate(), 0, 50, 100, $"{typeLetter[i]}sizeBias", null, "Prefer Smaller (lower) or Larger (higher) Sizes".Translate())));
                 UI.Add($"{typeLetter[i]}hzOverride", tOptions.Add(GSUI.Checkbox("Override Habitable Zone".Translate(), false, $"{typeLetter[i]}hzOverride", null, "Enable the slider below".Translate())));
                 UI.Add($"{typeLetter[i]}hz", tOptions.Add(GSUI.RangeSlider("Habitable Zone".Translate(), 0, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 1)).low, preferences.GetFloatFloat($"{typeLetter[i]}hz", new FloatPair(0, 3)).low, 100, 0.01f, $"{typeLetter[i]}hz", null, null, null, "Force habitable zone between these distances".Translate())));

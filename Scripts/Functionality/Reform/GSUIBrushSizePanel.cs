@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace GalacticScale
 {
@@ -7,6 +8,7 @@ namespace GalacticScale
     {
         private static readonly int[] Sizes = { 20, 10, 5, 1 };
         private static bool _created;
+        private static readonly List<GameObject> Buttons = new();
 
         private const float Width = 28f;
         private const float Height = 14f;
@@ -15,7 +17,11 @@ namespace GalacticScale
 
         public static void CreateInstance(UIBuildMenu buildMenu)
         {
-            if (_created) return;
+            if (_created)
+            {
+                RefreshVisibility();
+                return;
+            }
 
             var f1 = buildMenu.childButtons[1];
             if (f1 == null) return;
@@ -35,12 +41,24 @@ namespace GalacticScale
             }
 
             _created = true;
+            RefreshVisibility();
+        }
+
+        public static void RefreshVisibility()
+        {
+            bool visible = GS2.Config.ShowFoundationBrushSizeButtons;
+            for (int i = Buttons.Count - 1; i >= 0; i--)
+            {
+                if (Buttons[i] == null) Buttons.RemoveAt(i);
+                else Buttons[i].SetActive(visible);
+            }
         }
 
         private static void PlaceButton(RectTransform anchor, float x, float y, int size)
         {
             var btn = GSUIUtil.MakeSmallTextButton($"{size}x", Width, Height, 11);
             btn.gameObject.name = $"gs-brush-{size}x";
+            Buttons.Add(btn.gameObject);
 
             btn.tips.tipTitle = "Brush Size";
             btn.tips.tipText = $"{size}x{size} area";

@@ -15,6 +15,8 @@ namespace GalacticScale
         public Text _valueText;
         public string negativeLabel = "";
         public GSOptionCallback OnChange;
+        private string[] valueLabels;
+        private System.Func<float, string> valueFormatter;
 
         // Define a shared culture for consistent parsing
         private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
@@ -59,8 +61,7 @@ namespace GalacticScale
         {
             // GS2.Warn($"{slider.value} -> {Mathf.RoundToInt(slider.value * 100f)}");
             var value = Mathf.RoundToInt(slider.value * 100f) / 100f;
-            _valueText.text = value.ToString();
-            if (negativeLabel != "" && value < 0) _valueText.text = GSLocalization.Translate(negativeLabel);
+            _valueText.text = FormatValue(value);
             OnChange?.Invoke(value);
         }
 
@@ -88,6 +89,11 @@ namespace GalacticScale
             OnChange?.Invoke(result);
         }
 
+        public void RefreshValueText()
+        {
+            _valueText.text = FormatValue(_slider.value);
+        }
+
         public void initialize(GSUI options)
         {
             // GS2.Log("Initializing");
@@ -100,11 +106,24 @@ namespace GalacticScale
             var wholenumbers = options.increment % 1f == 0;
             _slider.wholeNumbers = wholenumbers;
             negativeLabel = sc.negativeLabel;
+            valueLabels = sc.valueLabels;
+            valueFormatter = sc.valueFormatter;
             minValue = sc.minValue;
             maxValue = sc.maxValue;
             OnChange = options.callback;
+            _valueText.text = FormatValue(_slider.value);
             // OnNumClick();
             //options.postfix?.Invoke();
+        }
+
+        private string FormatValue(float value)
+        {
+            if (negativeLabel != "" && value < 0) return GSLocalization.Translate(negativeLabel);
+            if (valueFormatter != null) return valueFormatter(value);
+            var labelIndex = Mathf.RoundToInt(value - minValue);
+            if (valueLabels != null && labelIndex >= 0 && labelIndex < valueLabels.Length)
+                return valueLabels[labelIndex].Translate();
+            return value.ToString(InvariantCulture);
         }
     }
 }

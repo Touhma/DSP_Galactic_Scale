@@ -6,6 +6,64 @@ namespace GalacticScale
 {
     internal static class PatchOnNearColliderLogic
     {
+        private static int lastInvalidPlayerHashPlanetId;
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(NearColliderLogic), "UpdatePlayerPosNear")]
+        public static bool UpdatePlayerPosNear(NearColliderLogic __instance)
+        {
+            if (!PatchOnGameData.IsNaNRecoveryActive) return true;
+
+            var player = GameMain.mainPlayer;
+            if (player == null || player.transform == null) return false;
+            if (GameMain.localPlanet == __instance.planet && NeedsRecoveryCheck(player.transform))
+                PatchOnGameData.TryRecoverInvalidPlayerPosition(__instance.planet);
+
+            var transform = player.transform;
+            if (!IsFinite(transform.position) || !IsFinite(transform.forward) || !IsFinite(transform.right) ||
+                transform.forward.sqrMagnitude < 0.5f || transform.right.sqrMagnitude < 0.5f)
+            {
+                LogInvalidPlayerHashOnce(__instance.planet, transform.position);
+                return false;
+            }
+
+            lastInvalidPlayerHashPlanetId = 0;
+            return true;
+        }
+
+        private static bool NeedsRecoveryCheck(Transform transform)
+        {
+            return !IsFinite(transform.localPosition) || !IsFinite(transform.position) ||
+                   !IsFinite(transform.localRotation) ||
+                   transform.localRotation.x * transform.localRotation.x +
+                   transform.localRotation.y * transform.localRotation.y +
+                   transform.localRotation.z * transform.localRotation.z +
+                   transform.localRotation.w * transform.localRotation.w < 0.25f;
+        }
+
+        private static bool IsFinite(Vector3 value)
+        {
+            return !float.IsNaN(value.x) && !float.IsInfinity(value.x) &&
+                   !float.IsNaN(value.y) && !float.IsInfinity(value.y) &&
+                   !float.IsNaN(value.z) && !float.IsInfinity(value.z);
+        }
+
+        private static bool IsFinite(Quaternion value)
+        {
+            return !float.IsNaN(value.x) && !float.IsInfinity(value.x) &&
+                   !float.IsNaN(value.y) && !float.IsInfinity(value.y) &&
+                   !float.IsNaN(value.z) && !float.IsInfinity(value.z) &&
+                   !float.IsNaN(value.w) && !float.IsInfinity(value.w);
+        }
+
+        private static void LogInvalidPlayerHashOnce(PlanetData planet, Vector3 position)
+        {
+            var planetId = planet?.id ?? 0;
+            if (lastInvalidPlayerHashPlanetId == planetId) return;
+            lastInvalidPlayerHashPlanetId = planetId;
+            GS2.Warn($"Skipped near-collider update on {planet?.name ?? "unknown planet"}: invalid player transform at {position} during fast travel.");
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NearColliderLogic), "GetVeinsInAreaNonAlloc")]
         public static bool GetVeinsInAreaNonAlloc(ref NearColliderLogic __instance, ref int __result, Vector3 center, float areaRadius, int[] veinIds, ref int ___activeColHashCount, ref int[] ___activeColHashes, ref ColliderContainer[] ___colChunks)

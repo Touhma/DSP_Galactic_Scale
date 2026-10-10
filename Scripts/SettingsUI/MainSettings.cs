@@ -16,6 +16,23 @@ namespace GalacticScale
 
         // private GSUI GeneratorCombobox;
         private List<string> _generatorNames = new();
+        private const string DevGeneratorGuid = "space.customizing.generators.gs2devActual";
+        private static List<iGenerator> _visibleGenerators = new();
+        private static bool _updatingGeneratorList;
+
+        //I have hidden the Dev generator behind Dev Mode in debug options. -Devious55
+        public void UpdateGeneratorList()
+        {
+            var showDev = Preferences.GetBool("DevMode", false);
+            _visibleGenerators = GS2.Generators.FindAll(g => g.GUID != DevGeneratorGuid || showDev || g == ActiveGenerator);
+            _generatorNames = _visibleGenerators.ConvertAll(g => g.Name);
+            if (_generatorsCombobox == null) return;
+            _updatingGeneratorList = true;
+            _generatorsCombobox.SetItems(_generatorNames);
+            var index = _visibleGenerators.IndexOf(ActiveGenerator);
+            if (index >= 0 && _generatorsCombobox.RectTransform != null) _generatorsCombobox.Set(index);
+            _updatingGeneratorList = false;
+        }
         public List<string> filenames = new();
         public GSUI JsonGalaxies;
         public GSGenPreferences Preferences = new();
@@ -38,6 +55,7 @@ namespace GalacticScale
         public string ImportFilename => Preferences.GetString("Import Filename");
         public bool SkipPrologue => Preferences.GetBool("Skip Prologue", true);
         public bool SkipTutorials => Preferences.GetBool("Skip Tutorials");
+        public bool ShowFoundationBrushSizeButtons => Preferences.GetBool("Show Foundation Brush Size Buttons", true);
         public bool ScarletRevert => Preferences.GetBool("RevertScarlet");
         public bool CheatMode => Preferences.GetBool("Cheat Mode");
         public float MechaScale => Preferences.GetFloat("MechaScale", 1f);
@@ -107,8 +125,7 @@ namespace GalacticScale
 
         public void Generate(int starCount, StarData birthStar = null)
         {
-            _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
-            _generatorsCombobox?.SetItems(_generatorNames);
+            UpdateGeneratorList();
         }
 
         public void Import(GSGenPreferences preferences)
@@ -121,6 +138,7 @@ namespace GalacticScale
             // GS2.Log($"* { id}");
 
             ActiveGenerator = GetGeneratorByID(id);
+            UpdateGeneratorList();
             // GS2.Log($"* {ActiveGenerator.Name}");
             // LogJson(_generatorNames);
             Preferences.Set("Generator", _generatorNames.IndexOf(ActiveGenerator.Name));
@@ -133,7 +151,7 @@ namespace GalacticScale
         public void Init()
         {
             GS2.Warn("!");
-            _generatorNames = GS2.Generators.ConvertAll(iGen => iGen.Name);
+            UpdateGeneratorList();
             // GS2.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback, "Try them all!".Translate()));
             RefreshFileNames();
@@ -162,13 +180,23 @@ namespace GalacticScale
             GameOptions.Add(GSUI.Spacer());
             GameOptions.Add(GSUI.Checkbox("Skip Prologue".Translate(), true, "Skip Prologue"));
             GameOptions.Add(GSUI.Checkbox("Skip Tutorials".Translate(), false, "Skip Tutorials"));
+            GameOptions.Add(GSUI.Checkbox("Show Brush Size Buttons".Translate(), true, "Show Foundation Brush Size Buttons", _ => GSUIBrushSizePanel.RefreshVisibility(), "Toggle for brush size buttons visibility".Translate()));
             GameOptions.Add(GSUI.Checkbox("Ignore Load Timeout".Translate(), false, "IgnoreAbort", null, "Prevent Game Load Timeout".Translate()));
             if (ShieldCompat.PlanetwideShieldInstalled)
             GameOptions.Add(GSUI.Header("Shield Scaling: Off".Translate(), "Planetwide Shield mod detected".Translate()));
             else
             {
-            GameOptions.Add(GSUI.Slider("Shield Scaling: Small Planets".Translate(), 0f, 0.25f, 1f, 0.05f, "ShieldScaleStrength", null, "0=vanilla Higher= bigger shields on small planets".Translate()));
-            GameOptions.Add(GSUI.Slider("Shield Scaling: Large Planets".Translate(), 0f, 0f, 0.5f, 0.05f, "ShieldScaleLargeStrength", null, "0=vanilla Higher=Weakens shields on big planets".Translate()));
+            GameOptions.Add(GSUI.Slider("Shield Scaling: Small Planets".Translate(), 0f, 0.25f, 1f, 0.05f, "ShieldScaleStrength", null, "0=vanilla Higher= bigger shields on small planets".Translate(), valueFormatter: value => value <= 0f ? "Vanilla" : $" +{Mathf.RoundToInt(Mathf.Clamp01(value) * 100f)}%"));
+            GameOptions.Add(GSUI.Slider("Shield Scaling: Large Planets".Translate(), 0f, 0f, 0.5f, 0.05f, "ShieldScaleLargeStrength", null, "0=vanilla Higher=Weakens shields on big planets".Translate(), valueFormatter: value =>
+            {
+                var strength = Mathf.Clamp(value, 0f, 0.5f);
+                var weakening = strength <= 0.1f
+                    ? strength / 0.1f * 25f
+                    : strength <= 0.25f
+                        ? 25f + (strength - 0.1f) / 0.15f * 25f
+                        : 50f + (strength - 0.25f) / 0.25f * 25f;
+                return strength <= 0f ? "Vanilla" : $"-{Mathf.RoundToInt(weakening)}%";
+            }));
             }
             GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
             GameOptions.Add(GSUI.Spacer());
@@ -200,7 +228,7 @@ namespace GalacticScale
             DebugOptions.Add(GSUI.Slider("GalaxySelect Star ScaleFactor".Translate(), 0.1f, 0.6f, 100f, 0.1f, "VSStarScaleFactor", null, "How big star should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Orbit ScaleFactor".Translate(), 0.1f, 5f, 100f, 0.1f, "VSOrbitScaleFactor", null, "How spaced orbits should be in the new game system view".Translate()));
             DebugOptions.Add(GSUI.Slider("GalaxySelect Click Tolerance".Translate(), 1f, 3f, 10f, 0.1f, "VSClickTolerance", null, "How close to a star/planet your mouse needs to be to register a click".Translate()));
-            DebugOptions.Add(GSUI.Checkbox("Dev Mode".Translate(), false, "DevMode", null, "Enable Keybinds for Refreshing Working Theme".Translate()));
+            DebugOptions.Add(GSUI.Checkbox("Dev Mode".Translate(), false, "DevMode", o => UpdateGeneratorList(), "Dev keybinds to refresh theme+shows Dev generator".Translate()));
             DebugOptions.Add(GSUI.Button("Set ResourceMulti Infinite".Translate(), "Now", o =>
             {
                 gameDesc.resourceMultiplier = 100;
@@ -690,7 +718,10 @@ namespace GalacticScale
             //     return;
             // }
 
-            ActiveGenerator = GS2.Generators[(int)result];
+            if (_updatingGeneratorList) return;
+            if ((int)result < 0 || (int)result >= _visibleGenerators.Count) return;
+            var generatorIndex = GS2.Generators.IndexOf(_visibleGenerators[(int)result]);
+            ActiveGenerator = GS2.Generators[generatorIndex];
             GSEvents.GeneratorChange(ActiveGenerator);
             UpdateNebulaSettings();
 
@@ -700,12 +731,12 @@ namespace GalacticScale
                 canvas.gameObject.SetActive(false);
             // GS2.Warn("They have been set inactive");
             //Warn(SettingsUI.GeneratorCanvases.Count + " count , trying to set " + (int)result);
-            SettingsUI.GeneratorCanvases[(int)result].gameObject.SetActive(true);
-            DevLog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
-            SettingsUI.GeneratorCanvases[(int)result].anchoredPosition = new Vector2(
+            SettingsUI.GeneratorCanvases[generatorIndex].gameObject.SetActive(true);
+            DevLog("Anchored Position:" + SettingsUI.GeneratorCanvases[generatorIndex].anchoredPosition);
+            SettingsUI.GeneratorCanvases[generatorIndex].anchoredPosition = new Vector2(
                 500,
-                SettingsUI.GeneratorCanvases[(int)result].anchoredPosition.y);
-            DevLog("Anchored Position:" + SettingsUI.GeneratorCanvases[(int)result].anchoredPosition);
+                SettingsUI.GeneratorCanvases[generatorIndex].anchoredPosition.y);
+            DevLog("Anchored Position:" + SettingsUI.GeneratorCanvases[generatorIndex].anchoredPosition);
             // GS2.Warn("Correct one set active");
             SettingsUI.GeneratorIndex = (int)result;
             // GS2.Warn("Gen Index Set");

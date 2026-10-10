@@ -140,6 +140,7 @@ namespace GalacticScale
             // Warn("Step5");
             LoadPreferences(true);
             ActiveGenerator = GetGeneratorByID(Config.GeneratorID);
+            Config.UpdateGeneratorList();
             // Log($"Set Active Generator to {ActiveGenerator.Name}");
             // Warn("Step6");
             var themes = GSSettings.ThemeLibrary.Select(t => t.Value).ToList();

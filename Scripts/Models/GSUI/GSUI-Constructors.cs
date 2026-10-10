@@ -104,13 +104,13 @@ namespace GalacticScale
         }
 
         //Slider with increment and preferences Key
-        public static GSUI Slider(string label, float min, float val, float max, float increment, string key, GSOptionCallback callback = null, string hint = "", string negativeLabel = "")
+        public static GSUI Slider(string label, float min, float val, float max, float increment, string key, GSOptionCallback callback = null, string hint = "", string negativeLabel = "", string[] valueLabels = null, System.Func<float, string> valueFormatter = null)
         {
             GSUI instance = null;
             var tt = Utils.GetCallingType();
             foreach (var t in tt.GetInterfaces())
-                if (t.Name == "iGenerator" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurableGeneratorInstance(tt), key, label, "Slider", new GSSliderConfig { minValue = min, maxValue = max, defaultValue = val, negativeLabel = negativeLabel }, null, null, hint);
-                else if (t.Name == "iConfigurablePlugin" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurablePluginInstance(tt), key, label, "Slider", new GSSliderConfig { minValue = min, maxValue = max, defaultValue = val, negativeLabel = negativeLabel }, null, null, hint);
+                if (t.Name == "iGenerator" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurableGeneratorInstance(tt), key, label, "Slider", new GSSliderConfig { minValue = min, maxValue = max, defaultValue = val, negativeLabel = negativeLabel, valueLabels = valueLabels, valueFormatter = valueFormatter }, null, null, hint);
+                else if (t.Name == "iConfigurablePlugin" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurablePluginInstance(tt), key, label, "Slider", new GSSliderConfig { minValue = min, maxValue = max, defaultValue = val, negativeLabel = negativeLabel, valueLabels = valueLabels, valueFormatter = valueFormatter }, null, null, hint);
             if (instance == null) return null;
             var defaultCallback = instance.CreateDefaultCallback(callback);
             var CB = defaultCallback;

@@ -65,8 +65,8 @@ namespace GalacticScale
                 new DotNet35Random((int)(DateTime.Now.Ticks / 10000L));
             __instance.gameDesc = new GameDesc();
             __instance.gameDesc?.SetForNewGame(UniverseGen.algoVersion, __instance.random.Next(100000000), GS2.ActiveGenerator.Config.DefaultStarCount, 1, GS2.Config.ResourceMultiplier);
+            if (__instance.gameDesc != null) GS2.ApplyActiveGeneratorDarkFogSettings(__instance.gameDesc);
             GS2.gameDesc = __instance.gameDesc;
-            GS2.gameDesc.isPeaceMode = false;//0.10
             int[] itemIds = PropertySystem.itemIds; //0.10
             for (int i = 0; i < itemIds.Length; i++)//0.10
             {//0.10

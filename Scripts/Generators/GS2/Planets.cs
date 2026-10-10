@@ -88,7 +88,7 @@ namespace GalacticScale.Generators
             float moonBias = preferences.GetFloat("moonBias", 50f);
             //moonChance = moonChance - subMoonChance;
 
-            int birthPlanetSize = preferences.GetInt("birthPlanetSize", 200);
+            int birthPlanetSize = Mathf.Clamp(preferences.GetInt("birthPlanetSize", 200), 20, 500);
 
             int gasCount = Math.Max(startIsMoonOfGas ? 1 : 0, Mathf.RoundToInt(starBodyCount * (float)gasChance));
             if (isBirthStar && startOnMoon && !startIsMoonOfGas)
@@ -192,6 +192,7 @@ namespace GalacticScale.Generators
                         var rockyHost = new GSPlanet("BirthPlanetHost", "Barren",
                             GetStarMoonSize(star, gasHost.Radius, true, random), -1, -1, -1, -1, -1, -1, -1, -1,
                             new GSPlanets());
+                        EnsureBirthMoonHostSize(rockyHost, birthPlanetSize);
                         rockyHost.genData.Add("hosttype", "planet");
                         rockyHost.genData.Add("hostname", gasHost.Name);
                         gasHost.Moons.Add(rockyHost);
@@ -202,6 +203,7 @@ namespace GalacticScale.Generators
                     }
                     else
                     {
+                        EnsureBirthMoonHostSize(gasHost, birthPlanetSize);
                         gasHost.Moons.Add(birthPlanet);
                         moons.Add(birthPlanet);
                         birthPlanet.OrbitRadius = gasHost.Radius * 6;
@@ -211,7 +213,8 @@ namespace GalacticScale.Generators
                 else if (startOnMoon)
                 {
                     GSPlanet moonHost = random.Item(telPlanets);
-                        moonHost.Moons.Add(birthPlanet);
+                    EnsureBirthMoonHostSize(moonHost, birthPlanetSize);
+                    moonHost.Moons.Add(birthPlanet);
                     moons.Add(birthPlanet);
                     GS2.Log($"Added Birthplanet {birthPlanet.Name} to moon host {moonHost.Name}");
                 }
@@ -258,6 +261,14 @@ namespace GalacticScale.Generators
             // GS2.Warn("Done");
             AssignVeinSettings(star);
             // GS2.Log($"Assigning Vein Settings for {star.Name}");
+        }
+
+        private static void EnsureBirthMoonHostSize(GSPlanet host, int birthPlanetSize)
+        {
+            var requiredSize = birthPlanetSize >= 500 ? 500 : birthPlanetSize + 10;
+            var scale = host.Scale > 0f ? host.Scale : 1f;
+            var requiredRadius = Mathf.CeilToInt(requiredSize / (scale * 10f)) * 10;
+            if (host.Radius < requiredRadius) host.Radius = requiredRadius;
         }
 
         private void AssignVeinSettings(GSStar star)
@@ -431,7 +442,8 @@ namespace GalacticScale.Generators
                 var moon = host.Moons[moonIndex];
                 // Use smaller orbit spacing for deeper nesting levels
                 var baseOrbit = depth == 0 ? GetMoonOrbit(rng) : GetMoonOrbit(rng) / 2f;
-                moon.OrbitRadius = baseOrbit + GetNextAvailableOrbit(host, moonIndex);
+                if (moon.Radius > 200f) baseOrbit = Mathf.Max(baseOrbit, 0.025f);
+                moon.OrbitRadius = baseOrbit + GetNextAvailableOrbit(host, moonIndex) + host.RadiusAU * 0.5f;
                 moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
             }
         }
@@ -499,7 +511,7 @@ namespace GalacticScale.Generators
                 return selectedTheme;
 
             return GSSettings.ThemeLibrary.Query(rng, planetType, EThemeHeat.Temperate,
-                preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default, true);
+                Mathf.Clamp(preferences.GetInt("birthPlanetSize", 200), 20, 500), EThemeDistribute.Default, true);
         }
 
         public bool CalculateIsGas(GSStar star)

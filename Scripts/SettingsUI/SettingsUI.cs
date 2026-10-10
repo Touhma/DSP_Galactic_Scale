@@ -428,6 +428,8 @@ namespace GalacticScale
                     slider.Hint = hint;
                     if (slider.negativeLabel != "" && slider.Value < 0)
                         slider._valueText.text = GSLocalization.Translate(slider.negativeLabel);
+                    else
+                        slider.RefreshValueText();
                     break;
                 case "RangeSlider":
                     var range = option.RectTransform.GetComponent<GSUIRangeSlider>();

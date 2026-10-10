@@ -2,7 +2,7 @@
 
 namespace GalacticScale
 {
-    public class PatchOnBuildTool_BlueprintCopy
+    public partial class PatchOnBuildTool_BlueprintCopy
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(BuildTool_BlueprintCopy), "segment", MethodType.Getter)]
