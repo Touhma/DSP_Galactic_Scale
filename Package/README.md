@@ -1,6 +1,22 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.3 - Changelog:
+Features:
+-Added a toggle in Galactic Scale quality of life options to hide the brush size buttons for those who don't want them. You can also go up to 20x20 with the regular in-game hotkeys as well.
+-Expanded Binary Star settings to choose what stars are allowed as either companion or host stars.
+-Added a new Dark Fog settings tab so that players who like to keep the same difficulty settings can set them once and not have to repeat them every new game.
+-You can now choose whether or not a relay is allowed to spawn on your birth planet and whether or not a hive exists in your birth system, under any difficulty settings.
+-Stars will now all have unique names; no more duplicate names should generate in new galaxies.
+
+Bugfixes:
+-ILS vessels and Combat ships shouldn't get stuck around large stars anymore, but please report it in the GS2 Discord if you see your vessels or ships get stuck.
+-Fixed gas giants being unlandable on if an orbiting moon has an incredibly tight orbit.
+-Fix introduced for the NaN error when fast traveling in sandbox.
+-Fixed telluric planet and gas giant sizes being able to generate up to 510 and 5100 respectively, causing errors on terrain generation and blueprint copying.
+-Fixed planet numeral designations changing on loading a save or renaming the host star.
+-Fixed an ILS vessel incompatibility issue between Galactic Scale and MoreMegaStructures.
+
 - Version 2.80.2 - Devious55 Did the following 
 Features:
   -Foundation Brush Size buttons for 20x20, 10x10, 5x5, 1x1. The last two options are mostly there to quickly switch from 20x20 back down to more precise amounts.
