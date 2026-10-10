@@ -104,7 +104,15 @@ namespace GalacticScale
                 calcPlanet.modData = calcPlanet.data.InitModData(calcPlanet.modData);
                 calcPlanet.data.CalcVerts();
                 calcPlanet.aux = new PlanetAuxData(calcPlanet);
-                planetAlgorithm.GenerateTerrain(calcPlanet.mod_x, calcPlanet.mod_y);
+                try
+                {
+                    planetAlgorithm.GenerateTerrain(calcPlanet.mod_x, calcPlanet.mod_y);
+                }
+                catch (Exception ex)
+                {
+                    LogTerrainGenerationFailure(calcPlanet, planetAlgorithm, ex);
+                    throw;
+                }
                 planetAlgorithm.CalcWaterPercent();
                 double duration = highStopwatch.duration;
 
@@ -149,6 +157,31 @@ namespace GalacticScale
                 }
                 GS2.Log($"Finished calculating planet {calcPlanet.name}");
                 calcPlanet.NotifyScanEnded();
+            }
+        }
+
+        private static void LogTerrainGenerationFailure(PlanetData planet, PlanetAlgorithm algorithm, Exception exception)
+        {
+            try
+            {
+                var gsPlanet = GS2.GetGSPlanet(planet);
+                var theme = gsPlanet?.GsTheme;
+                var data = planet?.data;
+                var baseAlgorithm = (algorithm as GS2PlanetAlgorithm)?.baseAlgorithm;
+
+                GS2.Warn(
+                    $"Terrain generation failed. Planet: name='{planet?.name}', displayName='{planet?.displayName}', id={planet?.id}, index={planet?.index}, " +
+                    $"star='{planet?.star?.name}', host='{planet?.orbitAroundPlanet?.name}', GSPlanet='{gsPlanet?.Name}', theme='{gsPlanet?.Theme}', " +
+                    $"themeFound={theme != null}, terrainAlgorithm='{theme?.TerrainSettings?.Algorithm}', customGeneration={theme?.CustomGeneration}, " +
+                    $"planetAlgorithm='{algorithm?.GetType().FullName}', baseAlgorithm='{baseAlgorithm?.GetType().FullName}', " +
+                    $"seed={planet?.seed}, radius={planet?.radius}, precision={planet?.precision}, type={planet?.type}, modX={planet?.mod_x}, modY={planet?.mod_y}, " +
+                    $"rawDataNull={data == null}, dataLength={data?.dataLength}, verticesLength={data?.vertices?.Length}, " +
+                    $"heightDataLength={data?.heightData?.Length}, biomeDataLength={data?.biomoData?.Length}, auxNull={planet?.aux == null}, " +
+                    $"exception={exception}");
+            }
+            catch (Exception loggingException)
+            {
+                GS2.Warn($"Terrain generation failed, and collecting planet diagnostics also failed: {loggingException}");
             }
         }
 

@@ -364,25 +364,38 @@ namespace GalacticScale
             return best;
         }
 
+        private enum GasGiantOverlap
+        {
+            None,
+
+            Grazing,
+
+            Embedded
+        }
+
         private static bool IsPreferredOver(PlanetData candidate, PlanetData other)
         {
             if (candidate == null || other == null || candidate == other) return false;
 
-            if (IsEmbeddedMoonOf(candidate, other))
+            var overlap = GetGasGiantOverlap(candidate, other);
+            if (overlap == GasGiantOverlap.Embedded)
             {
                 legacyOverlapMoon = candidate;
                 legacyOverlapGasGiant = other;
                 return true;
             }
 
+            if (overlap == GasGiantOverlap.None) return false;
+
             if (candidate == legacyOverlapMoon && other == legacyOverlapGasGiant) return true;
-            return false;
+
+            return DistanceTo(candidate) < TransitionDistance(candidate);
         }
 
-        private static bool IsEmbeddedMoonOf(PlanetData moon, PlanetData possibleGasGiant)
+        private static GasGiantOverlap GetGasGiantOverlap(PlanetData moon, PlanetData possibleGasGiant)
         {
             if (moon == null || possibleGasGiant == null || possibleGasGiant.type != EPlanetType.Gas ||
-                moon.type == EPlanetType.Gas) return false;
+                moon.type == EPlanetType.Gas) return GasGiantOverlap.None;
 
             var ancestor = moon.orbitAroundPlanet;
             while (ancestor != null)
@@ -390,14 +403,19 @@ namespace GalacticScale
                 if (ancestor == possibleGasGiant)
                 {
                     var centerDistance = (moon.uPosition - possibleGasGiant.uPosition).magnitude;
+                    if (centerDistance <= possibleGasGiant.realRadius) return GasGiantOverlap.Embedded;
+
                     var overlapMargin = System.Math.Max(1000.0, moon.realRadius * 0.25);
-                    return centerDistance <= possibleGasGiant.realRadius + moon.realRadius + overlapMargin;
+                    if (centerDistance <= possibleGasGiant.realRadius + moon.realRadius + overlapMargin)
+                        return GasGiantOverlap.Grazing;
+
+                    return GasGiantOverlap.None;
                 }
 
                 ancestor = ancestor.orbitAroundPlanet;
             }
 
-            return false;
+            return GasGiantOverlap.None;
         }
 
         private static void SearchStar()

@@ -4,7 +4,7 @@
     {
         public static int startIndex = -1;
 
-        public static string[] names = new string[1660]
+        public static string[] names = new string[1720]
         {
             "Vouskiaho",
             "Otsela",
@@ -1665,16 +1665,78 @@
             "Malukker",
             "Orgron",
             "Todeko",
-            "Usteli"
+            "Usteli",
+            "Procyon",
+            "Epsilon Indi",
+            "Tau Ceti",
+            "Luyten's Star",
+            "Bidmere",
+            "Omicron-2 Eridani",
+            "La Rochelle",
+            "Sigma Draconis",
+            "KX Librae",
+            "YZ Canis Minoris",
+            "Altair",
+            "Stein",
+            "EZ Aquarii",
+            "UV Ceti",
+            "Delta Arae",
+            "Thunderbird",
+            "Peacock",
+            "Prism",
+            "Regulus",
+            "Psi Centauri",
+            "Eta Centauri",
+            "Epsilon Hydri",
+            "Sabik",
+            "Belaako",
+            "Kaus Australis",
+            "Ascella",
+            "Pavonis",
+            "Epsilon Serpentis",
+            "Virginis",
+            "Rasalhague",
+            "Lambda Muscae",
+            "Algorab",
+            "Pemoeri",
+            "Sandagaray",
+            "Dyavata",
+            "Tamanka",
+            "Klamath",
+            "Ipetes",
+            "Tripitaka",
+            "Igalumathi",
+            "Nyanmil",
+            "Iota-1 Normae",
+            "Biga",
+            "Rukbat",
+            "Camelopardalis",
+            "Ophiuchi",
+            "Gommat",
+            "Baxbakaeris",
+            "Chi Orionis",
+            "Pollux",
+            "Gweir",
+            "Anlave",
+            "Bootis",
+            "Caerdroia",
+            "Viracocha",
+            "Leonis Minoris",
+            "Marduk",
+            "Elohim",
+            "Mu Arae",
+            "Eol Prou"
         };
 
         private static int startIndexSeed = int.MinValue;
+        private static readonly System.Collections.Generic.HashSet<string> usedNames = new(System.StringComparer.OrdinalIgnoreCase);
 
         public static void Reset()
         {
             var random = new GS2.Random(GSSettings.Seed);
-            startIndex = random.Next(names.Length - 1);
+            startIndex = random.Next(names.Length);
             startIndexSeed = GSSettings.Seed;
+            usedNames.Clear();
         }
 
         public static string GetName(int index)
@@ -1686,8 +1748,28 @@
             // pure function of the galaxy seed.
             if (startIndex < 0 || startIndexSeed != GSSettings.Seed) Reset();
 
-            var calcIndex = (index + startIndex) % names.Length;
-            return names[calcIndex];
+            return GetUniqueName(null, index);
+        }
+
+        public static string GetUniqueName(string requestedName, int seed)
+        {
+            if (startIndex < 0 || startIndexSeed != GSSettings.Seed) Reset();
+
+            if (!string.IsNullOrWhiteSpace(requestedName) && usedNames.Add(requestedName))
+                return requestedName;
+
+            var calcIndex = ((seed % names.Length) + startIndex + names.Length) % names.Length;
+            for (var offset = 0; offset < names.Length; offset++)
+            {
+                var candidate = names[(calcIndex + offset) % names.Length];
+                if (usedNames.Add(candidate)) return candidate;
+            }
+
+            var fallbackBase = string.IsNullOrWhiteSpace(requestedName) ? names[calcIndex] : requestedName;
+            var suffix = usedNames.Count + 1;
+            var fallback = fallbackBase + " " + suffix;
+            while (!usedNames.Add(fallback)) fallback = fallbackBase + " " + ++suffix;
+            return fallback;
         }
     }
 }

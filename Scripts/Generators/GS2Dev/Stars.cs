@@ -19,7 +19,8 @@ namespace GalacticScale.Generators
 
             if (availStarTypes.Count == 0) availStarTypes.Add((EStarType.MainSeqStar, ESpectrType.K));
             var starType = random.Item(availStarTypes);
-            var binary = GSSettings.Stars.Add(new GSStar(random.Next(), star.Name + "-B", starType.Item2, starType.Item1, new GSPlanets()));
+            var baseName = star.Name.EndsWith("-α") ? star.Name.Substring(0, star.Name.Length - 2) : star.Name;
+            var binary = GSSettings.Stars.Add(new GSStar(random.Next(), baseName + "-β", starType.Item2, starType.Item1, new GSPlanets()));
             binary.genData.Add("binary", true);
             star.genData.Add("hasBinary", true);
             star.BinaryCompanion = binary.Name;
@@ -38,14 +39,16 @@ namespace GalacticScale.Generators
         
         public void GenerateStars(int starCount, int startID = 0)
         {
+            SystemNames.Reset();
             // Log("Generating Stars");
             var birthIndex = random.Next(starCount);
             for (var i = startID; i < starCount; i++)
             {
                 var (type, spectr) = ChooseStarType(i == birthIndex);
                 var starSeed = random.Next();
-                var starName = SystemNames.GetName(starSeed);
-                if (preferences.GetBool("vanillaStarNames")) starName = NameGenCompat.RandomStarName(starSeed, new StarData { type = type });
+                var starName = preferences.GetBool("vanillaStarNames")
+                    ? SystemNames.GetUniqueName(NameGenCompat.RandomStarName(starSeed, new StarData { type = type }), starSeed)
+                    : SystemNames.GetName(starSeed);
                 var star = new GSStar(starSeed, starName, spectr, type, new GSPlanets());
                 if (star.Type != EStarType.BlackHole) star.radius *= preferences.GetFloat("starSizeMulti", 10f);
                 if (star.Type == EStarType.BlackHole && preferences.GetFloat("starSizeMulti", 10f) < 2.01f)
@@ -59,8 +62,10 @@ namespace GalacticScale.Generators
                 if (preferences.GetInt("binaryChance") != -1)
                 {
                     var chance = preferences.GetInt("binaryChance") / 100.0;
-                    if (i < starCount - 1 && random.NextPick(chance) && birthIndex != i + 1)
+                    var canHaveBinary = preferences.GetBool($"{GetTypeLetterFromStar(star)}binaryPrimaryEnabled", true);
+                    if (i < starCount - 1 && canHaveBinary && random.NextPick(chance) && birthIndex != i + 1)
                     {
+                        star.Name += "-α";
                         // GS2.Log($"Creating Binary Companion Star for {star.Name}");
                         GenerateBinaryStar(star);
                         i++;

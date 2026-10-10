@@ -60,7 +60,7 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Checkbox("Start in Sol".Translate(), true, "startInSol"));
             Options.Add(GSUI.Slider("Max planets per system".Translate(), 1, 10, 99, "maxPlanetCount"));
             Options.Add(GSUI.Slider("Sol System Day/Night Multi".Translate(), 0.5f, 1f, 20f, 0.5f, "IncreaseRotation", null, "Change the Sol system planets day/night cycle".Translate()));
-            UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 20, 30, 510, o =>
+            UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 20, 30, 500, o =>
             {
                 var maxSize = preferences.GetFloat("maxPlanetSize", 300);
                 if (maxSize == -1f) maxSize = 500;
@@ -72,7 +72,7 @@ namespace GalacticScale.Generators
             }, () => UI_minPlanetSize.Set(preferences.GetInt("minPlanetSize", 30))));
 
 
-            UI_maxPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Max planet size".Translate(), 50, 300, 510, o =>
+            UI_maxPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Max planet size".Translate(), 50, 300, 500, o =>
             {
                 var minSize = preferences.GetFloat("minPlanetSize", 30);
                 if (minSize == -1f) minSize = 5;
@@ -81,7 +81,7 @@ namespace GalacticScale.Generators
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }, () => UI_maxPlanetSize.Set(preferences.GetInt("maxPlanetSize", 300))));
             //UI_secondarySatellites = options.Add(GSUI.Checkbox("Secondary satellites", false, o => preferences.Set("secondarySatellites", o)));
-            Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 20, 400, 510, "birthPlanetSize"));
+            Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 20, 400, 500, "birthPlanetSize"));
             //{
             //    preferences.Set("birthPlanetSize", Utils.ParsePlanetSize((float)o));
             //    UI_birthPlanetSize.Set(preferences.GetFloat("birthPlanetSize"));
@@ -427,12 +427,14 @@ namespace GalacticScale.Generators
             var randomvariance = random.NextFloat(0.005f, 0.01f);
             var planetsize = planet.RadiusAU;
             var moonsize = moon.RadiusAU;
-            if (planet.Moons?.Count < 1) return planetsize + moonsize + randomvariance;
+            var hostClearance = planetsize * 0.5f;
+            if (moon.Radius > 200f) randomvariance = Mathf.Max(randomvariance, 0.025f);
+            if (planet.Moons?.Count < 1) return planetsize + moonsize + hostClearance + randomvariance;
             var lastMoon = planet.Moons[planet.Moons.Count - 1];
             var lastOrbit = lastMoon.OrbitRadius + lastMoon.SystemRadius;
             var thisMoonSystemRadius = moon.SystemRadius;
             //GS2.Warn($"Calculating moon orbit. last orbit:{lastOrbit} thisMoonSystemRadius:{moon.SystemRadius} randomVariance:{randomvariance}");
-            return lastOrbit + thisMoonSystemRadius + randomvariance;
+            return lastOrbit + thisMoonSystemRadius + hostClearance + randomvariance;
         }
 
         private float CalculateNextAvailableOrbit(GSStar star, GSPlanet planet)

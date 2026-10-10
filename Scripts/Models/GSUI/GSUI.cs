@@ -536,6 +536,8 @@ namespace GalacticScale
         public float maxValue;
         public float defaultValue;
         public string negativeLabel;
+        public string[] valueLabels;
+        public Func<float, string> valueFormatter;
 
         public GSSliderConfig(float minValue, float value, float maxValue, string negativeLabel = "")
         {
@@ -543,6 +545,8 @@ namespace GalacticScale
             this.maxValue = maxValue;
             defaultValue = value;
             this.negativeLabel = negativeLabel;
+            valueLabels = null;
+            valueFormatter = null;
         }
     }
 

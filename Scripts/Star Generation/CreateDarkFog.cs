@@ -6,6 +6,41 @@ namespace GalacticScale
 {
     public static partial class GS2
     {
+        public static bool GetActiveGeneratorBoolPreference(string key, bool defaultValue)
+        {
+            var configurable = ActiveGenerator as iConfigurableGenerator;
+            return configurable == null ? defaultValue : configurable.Export().GetBool(key, defaultValue);
+        }
+
+        public static bool AllowDarkFogOnBirthPlanet => GetActiveGeneratorBoolPreference("birthDarkFogPlanet", true);
+
+        public static void ApplyActiveGeneratorDarkFogSettings(GameDesc desc)
+        {
+            var configurable = ActiveGenerator as iConfigurableGenerator;
+            if (configurable == null) return;
+            var settings = configurable.Export();
+            if (!settings.ContainsKey("darkFogEnabled")) return;
+
+            desc.isPeaceMode = !settings.GetBool("darkFogEnabled", true);
+            var combat = desc.combatSettings;
+            combat.aggressiveness = MapDarkFogAggressiveness(settings.GetFloat("darkFogAggressiveness", 1f));
+            combat.initialLevel = Mathf.Clamp(Mathf.Round(settings.GetFloat("darkFogInitialLevel", 0f)), 0f, 10f);
+            combat.initialGrowth = MapDarkFogGrowth(settings.GetFloat("darkFogInitialGrowth", 1f));
+            combat.initialColonize = MapDarkFogColonize(settings.GetFloat("darkFogInitialColonize", 1f));
+            combat.maxDensity = 1f + Mathf.Clamp(Mathf.Round(settings.GetFloat("darkFogMaxDensityStep", 0f)), 0f, 4f) * 0.5f;
+            combat.growthSpeedFactor = MapDarkFogGrowthSpeed(settings.GetFloat("darkFogGrowthSpeed", 1f));
+            combat.powerThreatFactor = MapDarkFogThreat(settings.GetFloat("darkFogPowerThreat", 1f));
+            combat.battleThreatFactor = MapDarkFogThreat(settings.GetFloat("darkFogBattleThreat", 1f));
+            combat.battleExpFactor = MapDarkFogThreat(settings.GetFloat("darkFogBattleExp", 1f));
+            desc.combatSettings = combat;
+        }
+
+        private static float MapDarkFogAggressiveness(float value) => value < .5f ? -1f : value < 1.5f ? 0f : value < 2.5f ? .5f : value < 3.5f ? 1f : value < 4.5f ? 2f : 3f;
+        private static float MapDarkFogGrowth(float value) => value < .5f ? 0f : value < 1.5f ? .25f : value < 2.5f ? .5f : value < 3.5f ? .75f : value < 4.5f ? 1f : value < 5.5f ? 1.5f : 2f;
+        private static float MapDarkFogColonize(float value) => value < .5f ? .01f : value < 1.5f ? .25f : value < 2.5f ? .5f : value < 3.5f ? .75f : value < 4.5f ? 1f : value < 5.5f ? 1.5f : 2f;
+        private static float MapDarkFogGrowthSpeed(float value) => value < .5f ? .25f : value < 1.5f ? .5f : value < 2.5f ? 1f : value < 3.5f ? 2f : 3f;
+        private static float MapDarkFogThreat(float value) => value < .5f ? .01f : value < 1.5f ? .1f : value < 2.5f ? .2f : value < 3.5f ? .5f : value < 4.5f ? 1f : value < 5.5f ? 2f : value < 6.5f ? 5f : value < 7.5f ? 8f : 10f;
+
         public static void ConfigureBirthStarHiveSettings(Random random, StarData starData)
         {
 	        starData.hivePatternLevel = 0;
@@ -19,7 +54,12 @@ namespace GalacticScale
 	        starData.maxHiveCount = Mathf.Clamp(starData.maxHiveCount, 1, 8);
 	        starData.initialHiveCount = Mathf.RoundToInt(initialColonize/2 * (starData.maxHiveCount -0.2f));
 	        starData.initialHiveCount = Mathf.Clamp(starData.initialHiveCount, 1, starData.maxHiveCount);
-	        if (initialColonize < 0.015f)
+	        if (!GetActiveGeneratorBoolPreference("birthDarkFogSystem", true))
+	        {
+		        starData.initialHiveCount = 0;
+		        starData.maxHiveCount = 0;
+	        }
+	        else if (initialColonize < 0.015f)
 	        {
 		        Log("Preventing Birth System from having a Hive");
 		        starData.initialHiveCount = 0;

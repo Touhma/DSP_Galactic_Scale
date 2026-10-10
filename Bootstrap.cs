@@ -73,6 +73,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PlanetSizeTranspiler));
                 harmony.PatchAll(typeof(TurretComponentTranspiler));
                 harmony.PatchAll(typeof(UnitComponentTranspiler));
+                harmony.PatchAll(typeof(CombatShipPathingTranspiler));
                 harmony.PatchAll(typeof(DetermineCraftAstroIdTranspiler));
                 harmony.PatchAll(typeof(LagFixTranspiler));
                 // Environment.SetEnvironmentVariable("MONOMOD_DMD_DUMP", "");
@@ -139,6 +140,8 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
                 harmony.PatchAll(typeof(PatchOnStarGen));
                 harmony.PatchAll(typeof(PatchOnStationComponent));
+                harmony.PatchAll(typeof(MoreMegaStructuresCompatibility));
+                MoreMegaStructuresCompatibility.TryInstall(harmony);
                 harmony.PatchAll(typeof(PatchOnThemeProto));
                 harmony.PatchAll(typeof(PatchOnTrashSystem));
                 

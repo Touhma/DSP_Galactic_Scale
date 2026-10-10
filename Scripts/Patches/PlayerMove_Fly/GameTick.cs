@@ -13,6 +13,14 @@ namespace GalacticScale
             var num = 0.016666668f;
             if (__instance.player.movementState == EMovementState.Fly)
             {
+                if (PatchOnGameData.IsNaNRecoveryActive && PatchOnGameData.TryRecoverInvalidPlayerPosition(GameMain.localPlanet))
+                {
+                    __instance.controller.velocity = Vector3.zero;
+                    __instance.moveVelocity = Vector3.zero;
+                    __instance.rtsVelocity = Vector3.zero;
+                    return false;
+                }
+
                 var vector = __instance.controller.mainCamera.transform.forward;
                 var normalized = __instance.player.position.normalized;
                 var normalized2 = Vector3.Cross(normalized, vector).normalized;

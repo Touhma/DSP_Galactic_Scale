@@ -614,7 +614,7 @@ namespace GalacticScale.Generators
             var startIsMoonOfGas = isBirthStar && startOnMoon && preferences.GetBool("birthPlanetGasMoon");
 
 
-            var birthPlanetSize = preferences.GetInt("birthPlanetSize", 200);
+            var birthPlanetSize = Mathf.Clamp(preferences.GetInt("birthPlanetSize", 200), 20, 500);
 
             var gasCount = Math.Max(startIsMoonOfGas ? 1 : 0, Mathf.RoundToInt(starBodyCount * (float)gasChance));
             var telluricCount = Math.Max(isBirthStar ? 1 : 0, starBodyCount - gasCount);
@@ -715,6 +715,7 @@ namespace GalacticScale.Generators
                 if (startIsMoonOfGas)
                 {
                     var gasHost = random.Item(gasPlanets);
+                    EnsureBirthMoonHostSize(gasHost, birthPlanetSize);
                     gasHost.Moons.Add(birthPlanet);
                     birthPlanet.OrbitRadius     = gasHost.Radius * 6;
                     moons.Add(birthPlanet);
@@ -723,7 +724,8 @@ namespace GalacticScale.Generators
                 else if (startOnMoon)
                 {
                     var moonHost = random.Item(telPlanets);
-                        moonHost.Moons.Add(birthPlanet);
+                    EnsureBirthMoonHostSize(moonHost, birthPlanetSize);
+                    moonHost.Moons.Add(birthPlanet);
                     moons.Add(birthPlanet);
                     GS2.Log($"Added Birthplanet {birthPlanet.Name} to moon host {moonHost.Name}");
                 }
@@ -770,6 +772,14 @@ namespace GalacticScale.Generators
             // GS2.Warn("Done");
             AssignVeinSettings(star);
             // GS2.Log($"Assigning Vein Settings for {star.Name}");
+        }
+
+        private static void EnsureBirthMoonHostSize(GSPlanet host, int birthPlanetSize)
+        {
+            var requiredSize = birthPlanetSize >= 500 ? 500 : birthPlanetSize + 10;
+            var scale = host.Scale > 0f ? host.Scale : 1f;
+            var requiredRadius = Mathf.CeilToInt(requiredSize / (scale * 10f)) * 10;
+            if (host.Radius < requiredRadius) host.Radius = requiredRadius;
         }
 
         private void AssignVeinSettings(GSStar star)
@@ -943,7 +953,8 @@ namespace GalacticScale.Generators
                 var moon = host.Moons[moonIndex];
                 // Use smaller orbit spacing for deeper nesting levels
                 var baseOrbit = depth == 0 ? GetMoonOrbit(rng) : GetMoonOrbit(rng) / 2f;
-                moon.OrbitRadius = baseOrbit + GetNextAvailableOrbit(host, moonIndex);
+                if (moon.Radius > 200f) baseOrbit = Mathf.Max(baseOrbit, 0.025f);
+                moon.OrbitRadius = baseOrbit + GetNextAvailableOrbit(host, moonIndex) + host.RadiusAU * 0.5f;
                 moon.OrbitalPeriod = Utils.CalculateOrbitPeriod(moon.OrbitRadius);
             }
         }
@@ -970,7 +981,7 @@ namespace GalacticScale.Generators
                 {
                     // GS2.Warn($"Setting Theme for BirthPlanet {birthPlanet.Name}");
                     var habitableTheme = GSSettings.ThemeLibrary.Query(rng, EThemeType.Telluric,
-                        EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200), EThemeDistribute.Default,
+                        EThemeHeat.Temperate, Mathf.Clamp(preferences.GetInt("birthPlanetSize", 200), 20, 500), EThemeDistribute.Default,
                         true);
                     if (preferences.GetBool("birthPlanetUnlock")) planet.Theme = habitableTheme;
                     else planet.Theme = "Mediterranean";
@@ -988,7 +999,7 @@ namespace GalacticScale.Generators
                         else
                         {
                             var habitableTheme = GSSettings.ThemeLibrary.Query(rng, EThemeType.Moon,
-                                EThemeHeat.Temperate, preferences.GetInt("birthPlanetSize", 200),
+                                EThemeHeat.Temperate, Mathf.Clamp(preferences.GetInt("birthPlanetSize", 200), 20, 500),
                                 EThemeDistribute.Default,
                                 true);
                             if (preferences.GetBool("birthPlanetUnlock")) body.Theme = habitableTheme;

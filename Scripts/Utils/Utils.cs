@@ -425,7 +425,7 @@ namespace GalacticScale
         {
             if (radius < 8f) return 5;
 
-            radius = Mathf.Clamp(radius, 10, 510) / 10;
+            radius = Mathf.Clamp(radius, 10, 500) / 10;
             radius = Mathf.RoundToInt(radius) * 10;
             //GS2.Warn(radius.ToString());
             return (int)radius;
@@ -435,7 +435,7 @@ namespace GalacticScale
         {
             if (radius < 80f) return 50;
 
-            radius = Mathf.Clamp(radius, 100, 5100) / 100;
+            radius = Mathf.Clamp(radius, 100, 5000) / 100;
             radius = Mathf.RoundToInt(radius) * 100;
             //GS2.Warn(radius.ToString());
             return (int)radius;
@@ -894,6 +894,8 @@ namespace GalacticScale
         }
         public static int ClampedNormalSizeTelluric(GS2.Random random, int min, int max, int bias)
         {
+            min = Mathf.Clamp(min, 5, 500);
+            max = Mathf.Clamp(max, min, 500);
             var range = max - min;
             var average = bias / 100f * range + min;
             var sdHigh = (max - average) / 3;
@@ -906,6 +908,8 @@ namespace GalacticScale
         }
         public static int ClampedNormalSizeGas(GS2.Random random, int min, int max, int bias)
         {
+            min = Mathf.Clamp(min, 50, 5000);
+            max = Mathf.Clamp(max, min, 5000);
             var range = max - min;
             var average = bias / 100f * range + min;
             var sdHigh = (max - average) / 3;

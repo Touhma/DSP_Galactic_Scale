@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
@@ -8,6 +9,18 @@ namespace GalacticScale
 {
     public class PatchOnStationComponent
     {
+        public static double GetRadiusFromShipDestination(double vanilla, ref ShipData ship)
+        {
+            int destinationPlanetId = ship.direction > 0 ? ship.planetB : ship.planetA;
+            if (destinationPlanetId <= 0 || GameMain.data?.galaxy?.astrosFactory == null ||
+                destinationPlanetId >= GameMain.data.galaxy.astrosFactory.Length)
+            {
+                return vanilla;
+            }
+
+            return Utils.GetRadiusFromAstroId(vanilla, destinationPlanetId);
+        }
+
         // Five patches being made to StationComponent.InternalTickRemote:
         // 1. Allow logistics vessels to path in systems up to 100 astrobodies, up from 10.
         // 2. Allow logistics vessels to get much closer to stars, rather than staying 2.5x radius away.
@@ -65,6 +78,100 @@ namespace GalacticScale
         }
 
         [HarmonyTranspiler]
+        [HarmonyPatch(typeof(StationComponent), nameof(StationComponent.InternalTickRemote))]
+        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler6_TargetAwareStarAvoidance(IEnumerable<CodeInstruction> instructions)
+        {
+            var code = instructions.ToList();
+            var radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
+            var helper = AccessTools.Method(typeof(PatchOnStationComponent), nameof(AdjustTargetStarAvoidanceRadius));
+            bool patched = false;
+
+            for (int i = 1; i + 1 < code.Count; i++)
+            {
+                if (!code[i].LoadsField(radiusField) ||
+                    !LoadsLocal(code[i - 1], 94) ||
+                    !StoresLocal(code[i + 1], 95))
+                {
+                    continue;
+                }
+
+                code.InsertRange(i + 2, new[]
+                {
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)95),
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)7),
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)57),
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
+                    new CodeInstruction(OpCodes.Call, helper),
+                    new CodeInstruction(OpCodes.Stloc_S, (byte)95)
+                });
+                patched = true;
+                break;
+            }
+
+            if (!patched)
+                GS2.Warn("InternalTickRemote target-aware star avoidance transpiler: selected obstacle radius pattern not found; destination-star steering remains unchanged.");
+
+            return code;
+        }
+
+        private static bool LoadsLocal(CodeInstruction instruction, int index)
+        {
+            return IsLocal(instruction, index) &&
+                   (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Ldloc_S ||
+                    instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Ldloc_1 ||
+                    instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Ldloc_3);
+        }
+
+        private static bool StoresLocal(CodeInstruction instruction, int index)
+        {
+            return IsLocal(instruction, index) &&
+                   (instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Stloc_S ||
+                    instruction.opcode == OpCodes.Stloc_0 || instruction.opcode == OpCodes.Stloc_1 ||
+                    instruction.opcode == OpCodes.Stloc_2 || instruction.opcode == OpCodes.Stloc_3);
+        }
+
+        private static bool IsLocal(CodeInstruction instruction, int index)
+        {
+            if (instruction.operand is LocalBuilder local)
+                return local.LocalIndex == index;
+            if (instruction.operand is byte byteIndex)
+                return byteIndex == index;
+            if (instruction.operand is int intIndex)
+                return intIndex == index;
+
+            return (index == 0 && (instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Stloc_0)) ||
+                   (index == 1 && (instruction.opcode == OpCodes.Ldloc_1 || instruction.opcode == OpCodes.Stloc_1)) ||
+                   (index == 2 && (instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Stloc_2)) ||
+                   (index == 3 && (instruction.opcode == OpCodes.Ldloc_3 || instruction.opcode == OpCodes.Stloc_3));
+        }
+
+        public static float AdjustTargetStarAvoidanceRadius(float radius, AstroData[] astroPoses, int obstacleAstroId, ref ShipData ship)
+        {
+            if (obstacleAstroId <= 0 || obstacleAstroId % 100 != 0)
+                return radius;
+
+            int endpointPlanetId;
+            if (ship.planetA > 0 && ship.planetA / 100 * 100 == obstacleAstroId)
+                endpointPlanetId = ship.planetA;
+            else if (ship.planetB > 0 && ship.planetB / 100 * 100 == obstacleAstroId)
+                endpointPlanetId = ship.planetB;
+            else
+                return radius;
+
+            if (endpointPlanetId >= astroPoses.Length)
+                return radius;
+
+            AstroData star = astroPoses[obstacleAstroId];
+            AstroData planet = astroPoses[endpointPlanetId];
+            double centerDistance = (planet.uPos - star.uPos).magnitude;
+            float availableClearance = (float)centerDistance - planet.uRadius - 5000f;
+            if (availableClearance < 0f)
+                availableClearance = 0f;
+
+            return Mathf.Min(radius, availableClearance);
+        }
+
+        [HarmonyTranspiler]
         [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler2(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
@@ -76,7 +183,7 @@ namespace GalacticScale
             }
 
             instructions = codeMatcher.Repeat(z => z // Repeat for all occurences
-                    .Set(OpCodes.Ldc_R4, 0.5f)) // Replace operand with 0.05f
+                    .Set(OpCodes.Ldc_R4, 1.0f))
                 .InstructionEnumeration();
 
             return instructions;
@@ -86,9 +193,10 @@ namespace GalacticScale
         [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler3_PlanetClearance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
-            // Replace all instances of 5000.0 with GetRadiusFromAstroId(5000.0, planetId)
-            // This scales the ship clearance altitude with planet radius
-            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAstroId));
+            // Scale the approach clearance using the planet this vessel is
+            // traveling to. this.planetId is only the station owner planet and
+            // is wrong for outbound vessels headed to a larger gas giant.
+            var methodInfo = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetRadiusFromShipDestination));
             
             var codeMatcher = new CodeMatcher(instructions, il);
             
@@ -105,12 +213,11 @@ namespace GalacticScale
             return codeMatcher.Repeat(matcher =>
             {
                 // The 5000.0 constant is already on the stack
-                // Insert: ldarg.0 (this), ldfld planetId, call GetRadiusFromAstroId
+                // Insert: ldloc.s V_25 (current ShipData&), call destination-aware helper
                 matcher.Advance(1); // Move past the 5000.0
                 matcher.Insert(
-                    new CodeInstruction(OpCodes.Ldarg_0), // Load 'this' (StationComponent)
-                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(StationComponent), nameof(StationComponent.planetId))),
-                    new CodeInstruction(OpCodes.Call, methodInfo.MakeGenericMethod(typeof(double)))
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
+                    new CodeInstruction(OpCodes.Call, methodInfo)
                 );
             }).InstructionEnumeration();
         }
@@ -119,9 +226,9 @@ namespace GalacticScale
         [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler4_WarpDistance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
-            // Replace 25000000.0 (5000²) for warp activation distance check
-            // This scales the minimum warp distance with planet radius
-            var methodInfo = AccessTools.Method(typeof(Utils), nameof(Utils.GetRadiusFromAstroId));
+            // Keep the associated warp threshold tied to this ship's destination
+            // planet as well, so both thresholds agree during approach and return.
+            var methodInfo = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetRadiusFromShipDestination));
             
             var codeMatcher = new CodeMatcher(instructions, il);
             
@@ -139,9 +246,8 @@ namespace GalacticScale
             {
                 matcher.Advance(1);
                 matcher.Insert(
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(StationComponent), nameof(StationComponent.planetId))),
-                    new CodeInstruction(OpCodes.Call, methodInfo.MakeGenericMethod(typeof(double)))
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
+                    new CodeInstruction(OpCodes.Call, methodInfo)
                 );
             }).InstructionEnumeration();
         }
