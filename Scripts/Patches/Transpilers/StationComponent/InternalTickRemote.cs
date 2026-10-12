@@ -21,6 +21,27 @@ namespace GalacticScale
             return Utils.GetRadiusFromAstroId(vanilla, destinationPlanetId);
         }
 
+        public static double GetWarpStartDistanceSquaredFromShipDeparture(double vanillaSquared, ref ShipData ship)
+        {
+            int departurePlanetId = ship.direction > 0 ? ship.planetA : ship.planetB;
+            if (departurePlanetId <= 0 || GameMain.data?.galaxy?.astrosFactory == null ||
+                departurePlanetId >= GameMain.data.galaxy.astrosFactory.Length)
+            {
+                return vanillaSquared;
+            }
+
+            double vanillaDistance = Math.Sqrt(vanillaSquared);
+            double adjustedDistance = Utils.GetRadiusFromAstroId(vanillaDistance, departurePlanetId);
+            return adjustedDistance * adjustedDistance;
+        }
+
+        public static double GetWarpReentryDistance(double configuredThreshold, ref ShipData ship, float shipSailSpeed, float shipWarpSpeed)
+        {
+            double dewarpFloor = GetRadiusFromShipDestination(5000.0, ref ship) + shipSailSpeed * 0.25;
+            double finalDecelerationStep = shipWarpSpeed * 0.0000263;
+            return Math.Max(configuredThreshold, dewarpFloor + finalDecelerationStep + 1.0);
+        }
+
         // Five patches being made to StationComponent.InternalTickRemote:
         // 1. Allow logistics vessels to path in systems up to 100 astrobodies, up from 10.
         // 2. Allow logistics vessels to get much closer to stars, rather than staying 2.5x radius away.
@@ -226,11 +247,42 @@ namespace GalacticScale
         [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
         public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler4_WarpDistance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
-            // Keep the associated warp threshold tied to this ship's destination
-            // planet as well, so both thresholds agree during approach and return.
-            var methodInfo = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetRadiusFromShipDestination));
+            var methodInfo = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetWarpStartDistanceSquaredFromShipDeparture));
             
             var codeMatcher = new CodeMatcher(instructions, il);
+
+            var code = codeMatcher.InstructionEnumeration().ToList();
+            var warpEnableDistField = AccessTools.Field(typeof(StationComponent), nameof(StationComponent.warpEnableDist));
+            var reentryHelper = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetWarpReentryDistance));
+            bool reentryThresholdPatched = false;
+            for (int i = 0; i + 3 < code.Count; i++)
+            {
+                if (!code[i].LoadsField(warpEnableDistField) ||
+                    code[i + 1].opcode != OpCodes.Ldc_R8 || !code[i + 1].OperandIs(0.5) ||
+                    code[i + 2].opcode != OpCodes.Mul ||
+                    !StoresLocal(code[i + 3], 52))
+                {
+                    continue;
+                }
+
+                code.InsertRange(i + 4, new[]
+                {
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)52),
+                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
+                    new CodeInstruction(OpCodes.Ldarg_3),
+                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4),
+                    new CodeInstruction(OpCodes.Call, reentryHelper),
+                    new CodeInstruction(OpCodes.Stloc_S, (byte)52)
+                });
+                reentryThresholdPatched = true;
+                break;
+            }
+
+            if (!reentryThresholdPatched)
+                GS2.Warn("InternalTickRemote warp re-entry threshold pattern not found; large destination dewarp may consume a second warper.");
+
+            instructions = code;
+            codeMatcher = new CodeMatcher(instructions, il);
             
             codeMatcher.Start().MatchForward(false,
                 new CodeMatch(i => i.opcode == OpCodes.Ldc_R8 && Convert.ToDouble(i.operand) == 25000000.0)

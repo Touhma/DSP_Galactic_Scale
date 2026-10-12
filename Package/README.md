@@ -1,6 +1,10 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.4 - Changelog:
+
+Bugfix: ILS vessels not returning at warp speed when station warp distance is set to 0.5AU.
+
 - Version 2.80.3 - Changelog:
 Features:
 -Added a toggle in Galactic Scale quality of life options to hide the brush size buttons for those who don't want them. You can also go up to 20x20 with the regular in-game hotkeys as well.

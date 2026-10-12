@@ -55,7 +55,15 @@ namespace GalacticScale
             FieldInfo radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
             MethodInfo capRadius = AccessTools.Method(typeof(DarkFogRadius), nameof(DarkFogRadius.CapStarRadiusToVanillaMax));
             MethodInfo destinationRadius = AccessTools.Method(typeof(PatchOnStationComponent), nameof(PatchOnStationComponent.GetRadiusFromShipDestination));
+            MethodInfo departureWarpDistance = AccessTools.Method(typeof(PatchOnStationComponent), nameof(PatchOnStationComponent.GetWarpStartDistanceSquaredFromShipDeparture));
+            MethodInfo reentryDistance = AccessTools.Method(typeof(PatchOnStationComponent), nameof(PatchOnStationComponent.GetWarpReentryDistance));
+            FieldInfo warpEnableDistField = AccessTools.Field(typeof(StationComponent), nameof(StationComponent.warpEnableDist));
             int shipLocal = FindShipReferenceLocal(__originalMethod);
+            ParameterInfo[] parameters = __originalMethod.GetParameters();
+            int sailSpeedArgument = FindArgument(parameters, "shipSailSpeed");
+            int warpSpeedArgument = FindArgument(parameters, "shipWarpSpeed");
+            int reentryThresholdStore = FindReentryThresholdStore(source, warpEnableDistField);
+            bool reentryThresholdPatched = false;
             int cappedReads = 0;
             int scaledThresholds = 0;
             int softenedStarMultipliers = 0;
@@ -74,17 +82,34 @@ namespace GalacticScale
                 }
 
                 output.Add(instruction);
+                if (i == reentryThresholdStore && shipLocal >= 0 && sailSpeedArgument >= 0 && warpSpeedArgument >= 0)
+                {
+                    int thresholdLocal = GetStoredLocalIndex(instruction);
+                    output.Add(CreateLoadLocal(thresholdLocal));
+                    output.Add(CreateLoadLocal(shipLocal));
+                    output.Add(CreateLoadArgument(sailSpeedArgument));
+                    output.Add(CreateLoadArgument(warpSpeedArgument));
+                    output.Add(new CodeInstruction(OpCodes.Call, reentryDistance));
+                    output.Add(CreateStoreLocal(thresholdLocal));
+                    reentryThresholdPatched = true;
+                }
+
                 if (instruction.LoadsField(radiusField))
                 {
                     output.Add(new CodeInstruction(OpCodes.Call, capRadius));
                     cappedReads++;
                 }
 
-                if (shipLocal >= 0 && instruction.opcode == OpCodes.Ldc_R8 &&
-                    (instruction.OperandIs(5000.0) || instruction.OperandIs(25000000.0)))
+                if (shipLocal >= 0 && instruction.opcode == OpCodes.Ldc_R8 && instruction.OperandIs(5000.0))
                 {
                     output.Add(CreateLoadLocal(shipLocal));
                     output.Add(new CodeInstruction(OpCodes.Call, destinationRadius));
+                    scaledThresholds++;
+                }
+                else if (shipLocal >= 0 && instruction.opcode == OpCodes.Ldc_R8 && instruction.OperandIs(25000000.0))
+                {
+                    output.Add(CreateLoadLocal(shipLocal));
+                    output.Add(new CodeInstruction(OpCodes.Call, departureWarpDistance));
                     scaledThresholds++;
                 }
             }
@@ -97,6 +122,12 @@ namespace GalacticScale
                 GS2.Warn("MoreMegaStructures compatibility: ShipData reference local was not found; destination-scaled thresholds were skipped.");
             else if (scaledThresholds == 0)
                 GS2.Warn("MoreMegaStructures compatibility: no clearance thresholds were found.");
+            if (reentryThresholdStore < 0)
+                GS2.Warn("MoreMegaStructures compatibility: warp re-entry threshold pattern was not found.");
+            else if (sailSpeedArgument < 0 || warpSpeedArgument < 0)
+                GS2.Warn("MoreMegaStructures compatibility: ship sail/warp speed arguments were not found; warp re-entry threshold was not adjusted.");
+            else if (!reentryThresholdPatched)
+                GS2.Warn("MoreMegaStructures compatibility: could not apply the warp re-entry threshold adjustment.");
 
             return output;
         }
@@ -127,6 +158,63 @@ namespace GalacticScale
             return index <= byte.MaxValue
                 ? new CodeInstruction(OpCodes.Ldloc_S, (byte)index)
                 : new CodeInstruction(OpCodes.Ldloc, index);
+        }
+
+        private static int FindArgument(ParameterInfo[] parameters, string name)
+        {
+            return parameters.FirstOrDefault(parameter => string.Equals(parameter.Name, name, StringComparison.Ordinal))?.Position ?? -1;
+        }
+
+        private static int FindReentryThresholdStore(List<CodeInstruction> instructions, FieldInfo warpEnableDistField)
+        {
+            for (int i = 0; i + 3 < instructions.Count; i++)
+            {
+                if (instructions[i].LoadsField(warpEnableDistField) &&
+                    instructions[i + 1].opcode == OpCodes.Ldc_R8 && instructions[i + 1].OperandIs(0.5) &&
+                    instructions[i + 2].opcode == OpCodes.Mul && IsStoreLocal(instructions[i + 3]))
+                    return i + 3;
+            }
+
+            return -1;
+        }
+
+        private static bool IsStoreLocal(CodeInstruction instruction)
+        {
+            return instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Stloc_S ||
+                   instruction.opcode == OpCodes.Stloc_0 || instruction.opcode == OpCodes.Stloc_1 ||
+                   instruction.opcode == OpCodes.Stloc_2 || instruction.opcode == OpCodes.Stloc_3;
+        }
+
+        private static int GetStoredLocalIndex(CodeInstruction instruction)
+        {
+            if (instruction.opcode == OpCodes.Stloc_0) return 0;
+            if (instruction.opcode == OpCodes.Stloc_1) return 1;
+            if (instruction.opcode == OpCodes.Stloc_2) return 2;
+            if (instruction.opcode == OpCodes.Stloc_3) return 3;
+            if (instruction.operand is LocalBuilder localBuilder) return localBuilder.LocalIndex;
+            return Convert.ToInt32(instruction.operand);
+        }
+
+        private static CodeInstruction CreateStoreLocal(int index)
+        {
+            return index <= byte.MaxValue
+                ? new CodeInstruction(OpCodes.Stloc_S, (byte)index)
+                : new CodeInstruction(OpCodes.Stloc, index);
+        }
+
+        private static CodeInstruction CreateLoadArgument(int index)
+        {
+            switch (index)
+            {
+                case 0: return new CodeInstruction(OpCodes.Ldarg_0);
+                case 1: return new CodeInstruction(OpCodes.Ldarg_1);
+                case 2: return new CodeInstruction(OpCodes.Ldarg_2);
+                case 3: return new CodeInstruction(OpCodes.Ldarg_3);
+                default:
+                    return index <= byte.MaxValue
+                        ? new CodeInstruction(OpCodes.Ldarg_S, (byte)index)
+                        : new CodeInstruction(OpCodes.Ldarg, index);
+            }
         }
     }
 }
