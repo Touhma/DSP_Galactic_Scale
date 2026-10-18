@@ -44,8 +44,10 @@ namespace GalacticScale
                 // Warn($"GSSettings.BirthPlanet.Name:{GSSettings.BirthPlanet?.Name} ID:{GSSettings.BirthPlanetId}");
                 Failed = false;
                 PatchOnUIGalaxySelect.StartButton?.SetActive(true);
+                var freshlyGenerated = false;
                 if (!GSSettings.Instance.imported && sketchOnly)
                 {
+                    freshlyGenerated = true;
                     // Log("Start");
                     GSSettings.Reset(gameDesc.galaxySeed);
                     // Warn(LDB._themes.dataArray.Length.ToString());
@@ -126,6 +128,7 @@ namespace GalacticScale
                 Log($"Resource Coefficients Set: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
                 UniverseGen.CreateGalaxyStarGraph(galaxy);
+                if (freshlyGenerated) OverlapWarning.Check();
                 // Log($"{bs.name} - {bs.initialHiveCount}/{bs.maxHiveCount}");
                 Log($"Stargraph Generated: {highStopwatch.duration:F5}");
                 highStopwatch.Begin();
