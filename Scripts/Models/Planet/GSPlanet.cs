@@ -101,7 +101,7 @@ namespace GalacticScale
         public int Radius
         {
             get => radius < 0 ? InitRadius() : radius;
-            set => radius = Utils.ParsePlanetSize(value);
+            set => radius = value == 510 ? 510 : Utils.ParsePlanetSize(value);
         }
 
         [SerializeField]

@@ -1,6 +1,16 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.5 - Changelog:
+
+Bugfixes: 
+-Fixed Icarus disappearing while flying away from large gas giants and not being able to warp until reaching 0.5 to 1AU away from the gas giant.
+-Fixed items dropping from destroyed Dark Fog being assigned to the planet's moon instead of the planet where the Dark Fog unit was destroyed.
+-Fixed size 510 planets in old saves being shrunken.
+-Fixed additional issues with ILS vessels between Galactic Scale and MoreMegaStructures. Hopefully no more problems crop up. 
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
 - Version 2.80.4 - Changelog:
 
 Bugfix: ILS vessels not returning at warp speed when station warp distance is set to 0.5AU.
@@ -336,8 +346,8 @@ https://discord.gg/NbpBn6gM6d
 
 What can be customized?
 
-- Planet Sizes from 5-510 tile radius (Vanilla is 200)
-- Gas Giant Sizes from 500-5100
+- Planet Sizes from 5-500 tile radius (Vanilla is 200)
+- Gas Giant Sizes from 500-5000
 - Star Counts from 1-1024+ stars
 - Planet Themes (New planet types aplenty)
 - Vein Distribution

@@ -15,6 +15,48 @@ namespace GalacticScale
         {
             try
             {
+                var nearPlanetId = AccessTools.Field(typeof(TrashData), nameof(TrashData.nearPlanetId));
+                var ownershipMatcher = new CodeMatcher(instructions)
+                    .MatchForward(false,
+                        new CodeMatch(Ldarg_1),
+                        new CodeMatch(Ldloc_S),
+                        new CodeMatch(Stfld, nearPlanetId));
+                if (ownershipMatcher.IsValid)
+                {
+                    var candidateIdLocal = ownershipMatcher.InstructionAt(1).operand;
+                    ownershipMatcher.RemoveInstructions(3)
+                        .Insert(
+                            new CodeInstruction(Ldarg_1),
+                            new CodeInstruction(Ldarg_2),
+                            new CodeInstruction(Ldloc_S, candidateIdLocal),
+                            new CodeInstruction(Call, AccessTools.Method(typeof(PatchOnTrashSystem), nameof(SetNearPlanetToClosest))));
+                    instructions = ownershipMatcher.InstructionEnumeration();
+                }
+                else
+                {
+                    GS2.Warn("can't find trash nearPlanetId assignment!");
+                }
+
+                var landMatcher = new CodeMatcher(instructions)
+                    .MatchForward(false,
+                        new CodeMatch(Ldarg_1),
+                        new CodeMatch(Ldloc_S),
+                        new CodeMatch(Stfld, AccessTools.Field(typeof(TrashData), nameof(TrashData.landPlanetId))));
+                if (landMatcher.IsValid)
+                {
+                    var idLocal = landMatcher.InstructionAt(1).operand;
+                    landMatcher.Advance(3)
+                        .Insert(
+                            new CodeInstruction(Ldarg_1),
+                            new CodeInstruction(Ldloc_S, idLocal),
+                            new CodeInstruction(Stfld, nearPlanetId));
+                    instructions = landMatcher.InstructionEnumeration();
+                }
+                else
+                {
+                    GS2.Warn("can't find trash landPlanetId assignment!");
+                }
+
                 // Fix planet loop for outer planets
                 // Change: for (int i = nearStarId + 1; i <= nearStarId + 8; i++)
                 // To:     for (int i = nearStarId + 1; i <= nearStarId + GameMain.galaxy.StarById(nearStarId / 100).planetCount; i++)
@@ -92,6 +134,29 @@ namespace GalacticScale
             }
         }
 
+        private static void SetNearPlanetToClosest(ref TrashData trash, AstroData[] astroPoses, int candidateId)
+        {
+            if (trash.landPlanetId > 0)
+            {
+                trash.nearPlanetId = trash.landPlanetId;
+                return;
+            }
+
+            if (trash.nearPlanetId == 0)
+            {
+                trash.nearPlanetId = candidateId;
+                return;
+            }
+
+            if (Altitude(astroPoses, candidateId, trash.uPos) < Altitude(astroPoses, trash.nearPlanetId, trash.uPos))
+                trash.nearPlanetId = candidateId;
+        }
+
+        private static double Altitude(AstroData[] astroPoses, int id, VectorLF3 pos)
+        {
+            return (astroPoses[id].uPos - pos).magnitude - astroPoses[id].uRadius;
+        }
+
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(TrashSystem), nameof(TrashSystem.AddTrash))]
         [HarmonyPatch(typeof(TrashSystem), nameof(TrashSystem.AddTrashFromGroundEnemy))]
@@ -100,52 +165,55 @@ namespace GalacticScale
         {
             try
             {
-                // Change: if (vectorLF.magnitude < 170.0f)
-                // To:     if (vectorLF.magnitude < @planet.realRadius - 30.0f)
                 var matcher = new CodeMatcher(instructions)
-                    .MatchForward(
-                        false,
-                        new CodeMatch(Ldloca_S),
-                        new CodeMatch(op => op.opcode == Call && ((MethodInfo)op.operand).Name == "get_magnitude"),
-                        new CodeMatch(op => op.opcode == Ldc_R8 && op.OperandIs(170f))
-                    )
-                    .Advance(2)
-                    .RemoveInstruction();
+                .MatchForward(false,
+                new CodeMatch(Ldloca_S),
+                new CodeMatch(op => op.opcode == Call && ((MethodInfo)op.operand).Name == "get_magnitude"),
+                new CodeMatch(op => op.opcode == Ldc_R8 && op.operand is double d && d == 170.0));
 
-                switch (__originalMethod.Name)
-                {
-                    case "AddTrash": // GameMain.localPlanet.realRadius - 30.0f
-                        matcher.Insert(
-                            new CodeInstruction(Call, AccessTools.PropertyGetter(typeof(GameMain), nameof(GameMain.localPlanet))),
-                            new CodeInstruction(Callvirt, AccessTools.PropertyGetter(typeof(PlanetData), nameof(PlanetData.realRadius))),
-                            new CodeInstruction(Ldc_R8, 30f),
-                            new CodeInstruction(Sub));
-                        break;
-                    case "AddTrashFromGroundEnemy": // factory.planet - 30.0f
-                        matcher.Insert(
-                            new CodeInstruction(Ldarg_S, 5), // factory
-                            new CodeInstruction(Callvirt, AccessTools.PropertyGetter(typeof(PlanetFactory), nameof(PlanetFactory.planet))),
-                            new CodeInstruction(Callvirt, AccessTools.PropertyGetter(typeof(PlanetData), nameof(PlanetData.realRadius))),
-                            new CodeInstruction(Ldc_R8, 30f),
-                            new CodeInstruction(Sub));
-                        break;
-                    case "AddTrashOnPlanet": // planet - 30.0f
-                        matcher.Insert(
-                            new CodeInstruction(Ldarg_S, 5), // planet
-                            new CodeInstruction(Callvirt, AccessTools.PropertyGetter(typeof(PlanetData), nameof(PlanetData.realRadius))),
-                            new CodeInstruction(Ldc_R8, 30f),
-                            new CodeInstruction(Sub));
-                        break;
-                }
-
+            if (matcher.IsInvalid)
+            {
+                GS2.Warn("AddTrash 170 check not found in " + __originalMethod.Name);
                 return instructions;
+            }
+
+            matcher.Advance(2).RemoveInstruction();
+
+            switch (__originalMethod.Name)
+            {
+                case "AddTrash":
+                    matcher.InsertAndAdvance(
+                        new CodeInstruction(Call, AccessTools.PropertyGetter(typeof(GameMain), nameof(GameMain.localPlanet))));
+                    break;
+                case "AddTrashFromGroundEnemy":
+                    matcher.InsertAndAdvance(
+                        new CodeInstruction(Ldarg_S, (byte)5),
+                        new CodeInstruction(Callvirt, AccessTools.PropertyGetter(typeof(PlanetFactory), nameof(PlanetFactory.planet))));
+                    break;
+                case "AddTrashOnPlanet":
+                    matcher.InsertAndAdvance(new CodeInstruction(Ldarg_S, (byte)5));
+                    break;
+                default:
+                GS2.Warn("AddTrashTranspiler: unexpected method " + __originalMethod.Name);
+                return instructions;
+            }
+
+            matcher.Insert(new CodeInstruction(Call, AccessTools.Method(typeof(PatchOnTrashSystem), nameof(MinTrashDistance))));
+            return matcher.InstructionEnumeration();
             }
             catch (Exception e)
             {
-                GS2.Warn("PatchOnTrashSystem.AddTrashTranspiler failed: " + __originalMethod.Name.ToString());
-                GS2.Warn(e.ToString());
-                return instructions;
+            GS2.Warn("PatchOnTrashSystem.AddTrashTranspiler failed: " + __originalMethod.Name);
+            GS2.Warn(e.ToString());
+            return instructions;
             }
+        }
+
+        public static double MinTrashDistance(PlanetData planet)
+        {
+            var result = planet == null ? 170.0 : planet.realRadius * 0.85;
+            // GS2.Log($"MinTrashDistance: {planet?.displayName} r={planet?.realRadius} -> {result}");
+            return result;
         }
     }
 }

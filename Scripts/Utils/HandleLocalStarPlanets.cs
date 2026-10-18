@@ -287,7 +287,32 @@ namespace GalacticScale
 
         private static void SearchPlanet()
         {
-            closestPlanet = FindPlanetInApproach(closestStar);
+            closestPlanet = FindPlanetInTransition(closestStar);
+        }
+
+        private static PlanetData FindPlanetInTransition(StarData star)
+        {
+            if (star?.planets == null) return null;
+
+            PlanetData best = null;
+            var bestDistance = double.MaxValue;
+            for (var i = 0; i < star.planetCount; i++)
+            {
+                var planet = star.planets[i];
+                if (planet == null) continue;
+
+                var distance = DistanceTo(planet);
+                if (distance > TransitionDistance(planet)) continue;
+
+                if (best == null || IsPreferredOver(planet, best) ||
+                    (!IsPreferredOver(best, planet) && distance < bestDistance))
+                {
+                    best = planet;
+                    bestDistance = distance;
+                }
+            }
+
+            return best;
         }
 
         private static void PreloadNearestPlanet(StarData star)

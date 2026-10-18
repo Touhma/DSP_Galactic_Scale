@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
@@ -42,133 +43,9 @@ namespace GalacticScale
             return Math.Max(configuredThreshold, dewarpFloor + finalDecelerationStep + 1.0);
         }
 
-        // Five patches being made to StationComponent.InternalTickRemote:
-        // 1. Allow logistics vessels to path in systems up to 100 astrobodies, up from 10.
-        // 2. Allow logistics vessels to get much closer to stars, rather than staying 2.5x radius away.
-        //    Makes planets near huge stars reachable by ship.
-        // 3. Fix planet clearance altitude (5000.0) to scale with planet radius
-        // 4. Fix warp activation distance (25000000.0 = 5000²) to scale with planet radius
-        // 5. Cap star uRadius for pathing/avoidance so the exclusion bubble around giant stars
-        //    never exceeds the vanilla envelope. Planet radii are far below the cap, so every
-        //    non-star load is untouched.
-        // [HarmonyDebug]
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), nameof(StationComponent.InternalTickRemote))]
-        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-        {
-            // Only the two obstacle-scan loop bounds (ldc.i4.s 10 followed by add) may grow to 100.
-            // The method also uses ldc.i4.s 10 for the far-ship steering throttle (num23 = 10,
-            // stored via stloc); replacing that one made distant vessels update their steering and
-            // obstacle avoidance only every 100 ticks, so they flew blind between corrections.
-            var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false,
-                new CodeMatch(op => op.opcode == OpCodes.Ldc_I4_S && op.OperandIs(10)),
-                new CodeMatch(OpCodes.Add));
-
-            if (codeMatcher.IsInvalid)
-            {
-                GS2.Error("InternalTickRemote Transpiler Failed");
-                return instructions;
-            }
-
-            instructions = codeMatcher.Repeat(z => z // Repeat for all occurences
-                    .Set(OpCodes.Ldc_I4_S, 100)) // Replace operand with 100
-                .InstructionEnumeration();
-            return instructions;
-        }
-
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), nameof(StationComponent.InternalTickRemote))]
-        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler5_CapStarRadius(IEnumerable<CodeInstruction> instructions)
-        {
-            // Same treatment the DF seekers/relays got in DarkFogRadius: every AstroData.uRadius
-            // read in this method feeds obstacle detection, the star exclusion bubble, or approach
-            // shaping. Cap it at the vanilla max star physics radius so GS2 giant stars do not
-            // project avoidance bubbles that swallow whole planetary orbits (vessels endlessly
-            // circling the bubble edge, unable to reach stations). All planet radii sit far below
-            // the cap, so approach and landing on planets keep the real radius.
-            var radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
-            var capMethod = AccessTools.Method(typeof(DarkFogRadius), nameof(DarkFogRadius.CapStarRadiusToVanillaMax));
-            foreach (var code in instructions)
-            {
-                yield return code;
-                if (code.LoadsField(radiusField))
-                {
-                    yield return new CodeInstruction(OpCodes.Call, capMethod);
-                }
-            }
-        }
-
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), nameof(StationComponent.InternalTickRemote))]
-        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler6_TargetAwareStarAvoidance(IEnumerable<CodeInstruction> instructions)
-        {
-            var code = instructions.ToList();
-            var radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
-            var helper = AccessTools.Method(typeof(PatchOnStationComponent), nameof(AdjustTargetStarAvoidanceRadius));
-            bool patched = false;
-
-            for (int i = 1; i + 1 < code.Count; i++)
-            {
-                if (!code[i].LoadsField(radiusField) ||
-                    !LoadsLocal(code[i - 1], 94) ||
-                    !StoresLocal(code[i + 1], 95))
-                {
-                    continue;
-                }
-
-                code.InsertRange(i + 2, new[]
-                {
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)95),
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte)7),
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)57),
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
-                    new CodeInstruction(OpCodes.Call, helper),
-                    new CodeInstruction(OpCodes.Stloc_S, (byte)95)
-                });
-                patched = true;
-                break;
-            }
-
-            if (!patched)
-                GS2.Warn("InternalTickRemote target-aware star avoidance transpiler: selected obstacle radius pattern not found; destination-star steering remains unchanged.");
-
-            return code;
-        }
-
-        private static bool LoadsLocal(CodeInstruction instruction, int index)
-        {
-            return IsLocal(instruction, index) &&
-                   (instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Ldloc_S ||
-                    instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Ldloc_1 ||
-                    instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Ldloc_3);
-        }
-
-        private static bool StoresLocal(CodeInstruction instruction, int index)
-        {
-            return IsLocal(instruction, index) &&
-                   (instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Stloc_S ||
-                    instruction.opcode == OpCodes.Stloc_0 || instruction.opcode == OpCodes.Stloc_1 ||
-                    instruction.opcode == OpCodes.Stloc_2 || instruction.opcode == OpCodes.Stloc_3);
-        }
-
-        private static bool IsLocal(CodeInstruction instruction, int index)
-        {
-            if (instruction.operand is LocalBuilder local)
-                return local.LocalIndex == index;
-            if (instruction.operand is byte byteIndex)
-                return byteIndex == index;
-            if (instruction.operand is int intIndex)
-                return intIndex == index;
-
-            return (index == 0 && (instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Stloc_0)) ||
-                   (index == 1 && (instruction.opcode == OpCodes.Ldloc_1 || instruction.opcode == OpCodes.Stloc_1)) ||
-                   (index == 2 && (instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Stloc_2)) ||
-                   (index == 3 && (instruction.opcode == OpCodes.Ldloc_3 || instruction.opcode == OpCodes.Stloc_3));
-        }
-
         public static float AdjustTargetStarAvoidanceRadius(float radius, AstroData[] astroPoses, int obstacleAstroId, ref ShipData ship)
         {
-            if (obstacleAstroId <= 0 || obstacleAstroId % 100 != 0)
+            if (obstacleAstroId <= 0 || obstacleAstroId % 100 != 0 || obstacleAstroId >= astroPoses.Length)
                 return radius;
 
             int endpointPlanetId;
@@ -186,124 +63,267 @@ namespace GalacticScale
             AstroData planet = astroPoses[endpointPlanetId];
             double centerDistance = (planet.uPos - star.uPos).magnitude;
             float availableClearance = (float)centerDistance - planet.uRadius - 5000f;
-            if (availableClearance < 0f)
-                availableClearance = 0f;
+
+            if (availableClearance < 1f)
+                availableClearance = 1f;
 
             return Mathf.Min(radius, availableClearance);
         }
 
         [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
-        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler2(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        [HarmonyPatch(typeof(StationComponent), nameof(StationComponent.InternalTickRemote))]
+        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
         {
-            var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false, new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(2.5f))); // Search for ldc.r4 2.5f
-            if (codeMatcher.IsInvalid)
-            {
-                GS2.Error("InternalTickRemote 2nd Transpiler Failed");
-                return instructions;
-            }
-
-            instructions = codeMatcher.Repeat(z => z // Repeat for all occurences
-                    .Set(OpCodes.Ldc_R4, 1.0f))
-                .InstructionEnumeration();
-
-            return instructions;
-        }
-        
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
-        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler3_PlanetClearance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-        {
-            // Scale the approach clearance using the planet this vessel is
-            // traveling to. this.planetId is only the station owner planet and
-            // is wrong for outbound vessels headed to a larger gas giant.
-            var methodInfo = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetRadiusFromShipDestination));
-            
-            var codeMatcher = new CodeMatcher(instructions, il);
-            
-            codeMatcher.Start().MatchForward(false,
-                new CodeMatch(i => i.opcode == OpCodes.Ldc_R8 && Convert.ToDouble(i.operand) == 5000.0)
-            );
-            
-            if (codeMatcher.IsInvalid)
-            {
-                GS2.Warn("InternalTickRemote 3rd Transpiler: Could not find 5000.0 constants");
-                return instructions;
-            }
-            
-            return codeMatcher.Repeat(matcher =>
-            {
-                // The 5000.0 constant is already on the stack
-                // Insert: ldloc.s V_25 (current ShipData&), call destination-aware helper
-                matcher.Advance(1); // Move past the 5000.0
-                matcher.Insert(
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
-                    new CodeInstruction(OpCodes.Call, methodInfo)
-                );
-            }).InstructionEnumeration();
+            return ApplyPathingFixes(instructions, __originalMethod, "InternalTickRemote");
         }
 
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(StationComponent), "InternalTickRemote")]
-        public static IEnumerable<CodeInstruction> InternalTickRemoteTranspiler4_WarpDistance(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        public static List<CodeInstruction> ApplyPathingFixes(IEnumerable<CodeInstruction> instructions, MethodBase original, string label)
         {
-            var methodInfo = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetWarpStartDistanceSquaredFromShipDeparture));
-            
-            var codeMatcher = new CodeMatcher(instructions, il);
+            List<CodeInstruction> source = instructions.ToList();
+            try
+            {
+                return ApplyPathingFixesInternal(source, original, label);
+            }
+            catch (Exception exception)
+            {
+                GS2.Error($"{label}: pathing transpiler failed, leaving method unpatched. {exception}");
+                return source;
+            }
+        }
 
-            var code = codeMatcher.InstructionEnumeration().ToList();
-            var warpEnableDistField = AccessTools.Field(typeof(StationComponent), nameof(StationComponent.warpEnableDist));
-            var reentryHelper = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetWarpReentryDistance));
+        private static List<CodeInstruction> ApplyPathingFixesInternal(List<CodeInstruction> source, MethodBase original, string label)
+        {
+            var output = new List<CodeInstruction>(source.Count + 64);
+
+            FieldInfo radiusField = AccessTools.Field(typeof(AstroData), nameof(AstroData.uRadius));
+            FieldInfo warpEnableDistField = AccessTools.Field(typeof(StationComponent), nameof(StationComponent.warpEnableDist));
+            MethodInfo capRadius = AccessTools.Method(typeof(DarkFogRadius), nameof(DarkFogRadius.CapStarRadiusToVanillaMax));
+            MethodInfo destinationRadius = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetRadiusFromShipDestination));
+            MethodInfo departureWarpDistance = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetWarpStartDistanceSquaredFromShipDeparture));
+            MethodInfo reentryDistance = AccessTools.Method(typeof(PatchOnStationComponent), nameof(GetWarpReentryDistance));
+            MethodInfo targetStarRadius = AccessTools.Method(typeof(PatchOnStationComponent), nameof(AdjustTargetStarAvoidanceRadius));
+
+            int shipLocal = FindShipReferenceLocal(original);
+            ParameterInfo[] parameters = original.GetParameters();
+            int argumentOffset = original.IsStatic ? 0 : 1; 
+            int astroPosesArgument = FindArgument(parameters, "astroPoses", argumentOffset);
+            int sailSpeedArgument = FindArgument(parameters, "shipSailSpeed", argumentOffset);
+            int warpSpeedArgument = FindArgument(parameters, "shipWarpSpeed", argumentOffset);
+
+            int reentryThresholdStore = FindReentryThresholdStore(source, warpEnableDistField);
+            int obstacleRadiusLoad = FindObstacleRadiusLoad(source, radiusField);
+            int obstacleRadiusStore = obstacleRadiusLoad >= 0 ? obstacleRadiusLoad + 1 : -1;
+            bool canPatchObstacleRadius = obstacleRadiusLoad >= 0 && shipLocal >= 0 && astroPosesArgument >= 0;
+
+            int widenedLoops = 0;
+            int softenedStarMultipliers = 0;
+            int cappedReads = 0;
+            int scaledClearances = 0;
+            int scaledWarpDistances = 0;
             bool reentryThresholdPatched = false;
-            for (int i = 0; i + 3 < code.Count; i++)
+            bool obstacleRadiusPatched = false;
+
+            for (int i = 0; i < source.Count; i++)
             {
-                if (!code[i].LoadsField(warpEnableDistField) ||
-                    code[i + 1].opcode != OpCodes.Ldc_R8 || !code[i + 1].OperandIs(0.5) ||
-                    code[i + 2].opcode != OpCodes.Mul ||
-                    !StoresLocal(code[i + 3], 52))
+                CodeInstruction instruction = source[i];
+
+                if (IsLdcI4(instruction, 10) && i + 1 < source.Count && source[i + 1].opcode == OpCodes.Add)
                 {
+                    output.Add(new CodeInstruction(instruction) { operand = Convert.ChangeType(100, instruction.operand.GetType()) });
+                    widenedLoops++;
                     continue;
                 }
 
-                code.InsertRange(i + 4, new[]
+                if (instruction.opcode == OpCodes.Ldc_R4 && instruction.operand is float multiplier && multiplier == 2.5f &&
+                    i > 0 && IsLoadLocal(source[i - 1]) && i + 1 < source.Count && source[i + 1].opcode == OpCodes.Mul)
                 {
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)52),
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
-                    new CodeInstruction(OpCodes.Ldarg_3),
-                    new CodeInstruction(OpCodes.Ldarg_S, (byte)4),
-                    new CodeInstruction(OpCodes.Call, reentryHelper),
-                    new CodeInstruction(OpCodes.Stloc_S, (byte)52)
-                });
-                reentryThresholdPatched = true;
-                break;
+                    output.Add(new CodeInstruction(instruction) { operand = 1.0f });
+                    softenedStarMultipliers++;
+                    continue;
+                }
+
+                output.Add(instruction);
+
+                if (i == reentryThresholdStore && shipLocal >= 0 && sailSpeedArgument >= 0 && warpSpeedArgument >= 0)
+                {
+                    output.Add(LoadFromStore(instruction));
+                    output.Add(CreateLoadLocal(shipLocal));
+                    output.Add(CreateLoadArgument(sailSpeedArgument));
+                    output.Add(CreateLoadArgument(warpSpeedArgument));
+                    output.Add(new CodeInstruction(OpCodes.Call, reentryDistance));
+                    output.Add(CloneWithoutLabels(instruction));
+                    reentryThresholdPatched = true;
+                }
+
+                if (instruction.LoadsField(radiusField))
+                {
+                    output.Add(new CodeInstruction(OpCodes.Call, capRadius));
+                    cappedReads++;
+                }
+
+                if (canPatchObstacleRadius && i == obstacleRadiusStore)
+                {
+                    output.Add(LoadFromStore(instruction));
+                    output.Add(CreateLoadArgument(astroPosesArgument));
+                    output.Add(CloneWithoutLabels(source[i + 1]));
+                    output.Add(CreateLoadLocal(shipLocal));
+                    output.Add(new CodeInstruction(OpCodes.Call, targetStarRadius));
+                    output.Add(CloneWithoutLabels(instruction));
+                    obstacleRadiusPatched = true;
+                }
+
+                if (shipLocal >= 0 && instruction.opcode == OpCodes.Ldc_R8 && instruction.OperandIs(5000.0))
+                {
+                    output.Add(CreateLoadLocal(shipLocal));
+                    output.Add(new CodeInstruction(OpCodes.Call, destinationRadius));
+                    scaledClearances++;
+                }
+                else if (shipLocal >= 0 && instruction.opcode == OpCodes.Ldc_R8 && instruction.OperandIs(25000000.0))
+                {
+                    output.Add(CreateLoadLocal(shipLocal));
+                    output.Add(new CodeInstruction(OpCodes.Call, departureWarpDistance));
+                    scaledWarpDistances++;
+                }
             }
 
-            if (!reentryThresholdPatched)
-                GS2.Warn("InternalTickRemote warp re-entry threshold pattern not found; large destination dewarp may consume a second warper.");
-
-            instructions = code;
-            codeMatcher = new CodeMatcher(instructions, il);
-            
-            codeMatcher.Start().MatchForward(false,
-                new CodeMatch(i => i.opcode == OpCodes.Ldc_R8 && Convert.ToDouble(i.operand) == 25000000.0)
-            );
-            
-            if (codeMatcher.IsInvalid)
+            if (widenedLoops == 0)
+                GS2.Warn($"{label}: Obstacle-scan loop bound pattern (ldc.i4.s 10 / add) not found. Systems stay limited to 10 astrobodies.");
+            if (softenedStarMultipliers == 0)
+                GS2.Warn($"{label}: Star exclusion multiplier pattern (2.5f) not found.");
+            if (cappedReads == 0)
+                GS2.Warn($"{label}: No AstroData.uRadius reads found to cap.");
+            if (shipLocal < 0)
+                GS2.Warn($"{label}: ShipData reference local not found. Destination/departure-scaled thresholds and target-aware star avoidance were skipped.");
+            else
             {
-                GS2.Warn("InternalTickRemote 4th Transpiler: Could not find 25000000.0 constant");
-                return instructions;
+                if (scaledClearances == 0)
+                    GS2.Warn($"{label}: Planet clearance constant (5000.0) not found.");
+                if (scaledWarpDistances == 0)
+                    GS2.Warn($"{label}: Warp activation distance constant (25000000.0) not found.");
             }
-            
-            return codeMatcher.Repeat(matcher =>
-            {
-                matcher.Advance(1);
-                matcher.Insert(
-                    new CodeInstruction(OpCodes.Ldloc_S, (byte)25),
-                    new CodeInstruction(OpCodes.Call, methodInfo)
-                );
-            }).InstructionEnumeration();
+            if (!obstacleRadiusPatched)
+                GS2.Warn($"{label}: Target-aware star avoidance: obstacle radius pattern not found" +
+                         (obstacleRadiusLoad < 0 ? "" : " (argument or ship local missing)") +
+                         "; destination-star steering remains unchanged.");
+            if (reentryThresholdStore < 0)
+                GS2.Warn($"{label}: Warp re-entry threshold pattern not found. Large destination dewarp may consume a second warper.");
+            else if (!reentryThresholdPatched)
+                GS2.Warn($"{label}: Could not apply the warp re-entry threshold adjustment (ship local or speed arguments missing).");
+
+            GS2.Log($"{label}: pathing fixes applied (loops {widenedLoops}, star multipliers {softenedStarMultipliers}, radius caps {cappedReads}, clearances {scaledClearances}, warp distances {scaledWarpDistances}, re-entry {(reentryThresholdPatched ? 1 : 0)}, target-aware star {(obstacleRadiusPatched ? 1 : 0)}).");
+            return output;
         }
-       
+
+        private static int FindObstacleRadiusLoad(List<CodeInstruction> code, FieldInfo radiusField)
+        {
+            for (int i = 1; i + 4 < code.Count; i++)
+            {
+                if (code[i].LoadsField(radiusField) &&
+                    IsLoadLocal(code[i - 1]) &&
+                    IsStoreLocal(code[i + 1]) &&
+                    IsLoadLocal(code[i + 2]) &&
+                    IsLdcI4(code[i + 3], 100) &&
+                    code[i + 4].opcode == OpCodes.Rem)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private static int FindReentryThresholdStore(List<CodeInstruction> code, FieldInfo warpEnableDistField)
+        {
+            for (int i = 0; i + 3 < code.Count; i++)
+            {
+                if (code[i].LoadsField(warpEnableDistField) &&
+                    code[i + 1].opcode == OpCodes.Ldc_R8 && code[i + 1].OperandIs(0.5) &&
+                    code[i + 2].opcode == OpCodes.Mul &&
+                    IsStoreLocal(code[i + 3]))
+                {
+                    return i + 3;
+                }
+            }
+
+            return -1;
+        }
+
+        private static int FindShipReferenceLocal(MethodBase method)
+        {
+            try
+            {
+                return method.GetMethodBody()?.LocalVariables
+                    .FirstOrDefault(local => local.LocalType.IsByRef && local.LocalType.GetElementType() == typeof(ShipData))
+                    ?.LocalIndex ?? -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        private static int FindArgument(ParameterInfo[] parameters, string name, int argumentOffset)
+        {
+            ParameterInfo parameter = parameters.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.Ordinal));
+            return parameter == null ? -1 : parameter.Position + argumentOffset;
+        }
+
+        private static bool IsLdcI4(CodeInstruction instruction, int value)
+        {
+            return (instruction.opcode == OpCodes.Ldc_I4_S || instruction.opcode == OpCodes.Ldc_I4) &&
+                   instruction.operand != null && Convert.ToInt32(instruction.operand) == value;
+        }
+
+        private static bool IsLoadLocal(CodeInstruction instruction)
+        {
+            return instruction.opcode == OpCodes.Ldloc || instruction.opcode == OpCodes.Ldloc_S ||
+                   instruction.opcode == OpCodes.Ldloc_0 || instruction.opcode == OpCodes.Ldloc_1 ||
+                   instruction.opcode == OpCodes.Ldloc_2 || instruction.opcode == OpCodes.Ldloc_3;
+        }
+
+        private static bool IsStoreLocal(CodeInstruction instruction)
+        {
+            return instruction.opcode == OpCodes.Stloc || instruction.opcode == OpCodes.Stloc_S ||
+                   instruction.opcode == OpCodes.Stloc_0 || instruction.opcode == OpCodes.Stloc_1 ||
+                   instruction.opcode == OpCodes.Stloc_2 || instruction.opcode == OpCodes.Stloc_3;
+        }
+
+        private static CodeInstruction LoadFromStore(CodeInstruction store)
+        {
+            if (store.opcode == OpCodes.Stloc_0) return new CodeInstruction(OpCodes.Ldloc_0);
+            if (store.opcode == OpCodes.Stloc_1) return new CodeInstruction(OpCodes.Ldloc_1);
+            if (store.opcode == OpCodes.Stloc_2) return new CodeInstruction(OpCodes.Ldloc_2);
+            if (store.opcode == OpCodes.Stloc_3) return new CodeInstruction(OpCodes.Ldloc_3);
+            if (store.opcode == OpCodes.Stloc_S) return new CodeInstruction(OpCodes.Ldloc_S, store.operand);
+            return new CodeInstruction(OpCodes.Ldloc, store.operand);
+        }
+
+        private static CodeInstruction CloneWithoutLabels(CodeInstruction instruction)
+        {
+            return new CodeInstruction(instruction.opcode, instruction.operand);
+        }
+
+        private static CodeInstruction CreateLoadLocal(int index)
+        {
+            return index <= byte.MaxValue
+                ? new CodeInstruction(OpCodes.Ldloc_S, (byte)index)
+                : new CodeInstruction(OpCodes.Ldloc, index);
+        }
+
+        private static CodeInstruction CreateLoadArgument(int index)
+        {
+            switch (index)
+            {
+                case 0: return new CodeInstruction(OpCodes.Ldarg_0);
+                case 1: return new CodeInstruction(OpCodes.Ldarg_1);
+                case 2: return new CodeInstruction(OpCodes.Ldarg_2);
+                case 3: return new CodeInstruction(OpCodes.Ldarg_3);
+                default:
+                    return index <= byte.MaxValue
+                        ? new CodeInstruction(OpCodes.Ldarg_S, (byte)index)
+                        : new CodeInstruction(OpCodes.Ldarg, index);
+            }
+        }
     }
 }
 

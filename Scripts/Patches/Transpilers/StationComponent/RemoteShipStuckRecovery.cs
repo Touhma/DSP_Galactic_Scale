@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using HarmonyLib;
 using UnityEngine;
 
@@ -22,7 +22,19 @@ namespace GalacticScale
             public int CooldownUntilTick;
         }
 
-        private static readonly Dictionary<long, ShipProgress> ProgressByShip = new Dictionary<long, ShipProgress>();
+        private static readonly ConcurrentDictionary<long, ShipProgress> ProgressByShip = new ConcurrentDictionary<long, ShipProgress>();
+
+        public static void Reset()
+        {
+            ProgressByShip.Clear();
+        }
+
+        private static void ClearProgress(long key)
+        {
+            if (ProgressByShip.ContainsKey(key))
+                ProgressByShip.TryRemove(key, out _);
+        }
+
         [HarmonyPostfix]
         public static void RecoverStuckReturningShips(StationComponent __instance, AstroData[] astroPoses, float shipSailSpeed)
         {
@@ -41,7 +53,7 @@ namespace GalacticScale
                     if (ship.shipIndex >= 0)
                     {
                         long staleKey = ((long)__instance.gid << 32) | (uint)ship.shipIndex;
-                        ProgressByShip.Remove(staleKey);
+                        ClearProgress(staleKey);
                     }
                     continue;
                 }
@@ -57,14 +69,13 @@ namespace GalacticScale
                 double distance = offset.magnitude;
                 if (distance < 1.0)
                 {
-                    ProgressByShip.Remove(key);
+                    ClearProgress(key);
                     continue;
                 }
 
                 if (!ProgressByShip.TryGetValue(key, out ShipProgress progress))
                 {
-                    progress = new ShipProgress { ClosestDistance = distance, LastProgressTick = 0 };
-                    ProgressByShip.Add(key, progress);
+                    progress = ProgressByShip.GetOrAdd(key, new ShipProgress { ClosestDistance = distance, LastProgressTick = 0 });
                 }
                 progress.ObservedTicks++;
                 if (distance < progress.ClosestDistance - ProgressDistance)

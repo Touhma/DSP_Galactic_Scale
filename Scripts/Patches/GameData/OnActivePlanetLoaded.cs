@@ -76,7 +76,7 @@ namespace GalacticScale
             var safeRadius = Mathf.Max(0f, planetRadius - recoveryThreshold);
             var safeRadiusSquared = (double)safeRadius * safeRadius;
             var insidePlanet = !invalidPosition &&
-                               (distanceSquared < safeRadiusSquared || localDistanceSquared < safeRadiusSquared);
+                               distanceSquared < safeRadiusSquared;
 
             if (invalidPosition || insidePlanet)
             {
