@@ -23,7 +23,7 @@ namespace GalacticScale
             return instance;
         }
 
-        public static GSUI Selector(string label, List<string> items, string defaultValue, string key, GSOptionCallback callback = null, string hint = null)
+        public static GSUI Selector(string label, List<string> items, string defaultValue, string key, GSOptionCallback callback = null, string hint = null, GSOptionPostfix postfix = null)
         {
             GSUI instance = null;
             var tt = Utils.GetCallingType();
@@ -32,7 +32,12 @@ namespace GalacticScale
                 else if (t.Name == "iConfigurablePlugin" && !tt.IsAbstract && !tt.IsInterface) instance = new GSUI(Utils.GetConfigurablePluginInstance(tt), key, label, "Selector", items, null, null, hint);
             if (instance == null) return null;
             instance.callback = instance.CreateDefaultCallback(callback);
-            instance.postfix = instance.CreateDefaultPostfix();
+            var defaultPostfix = instance.CreateDefaultPostfix();
+            instance.postfix = () =>
+            {
+                defaultPostfix();
+                postfix?.Invoke();
+            };
             instance.comboDefault = items.IndexOf(defaultValue);
             return instance;
         }

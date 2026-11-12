@@ -19,6 +19,20 @@ namespace GalacticScale
 	{
 		private static int actualLevel = 5;
 
+		[HarmonyFinalizer]
+		[HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
+		public static Exception OnPlanetDataSetCompatibilityFinalizer(Exception __exception)
+		{
+			if (__exception is NullReferenceException && SystemDisplay.inGalaxySelect && SystemDisplay.inSystemDisplay &&
+			    __exception.StackTrace?.Contains("UIPlanetDetailExpand.OnPlanetDataSet_Postfix") == true)
+			{
+				GS2.Warn($"Suppressing a planet detail compatibility NullReferenceException during galaxy-select system preview: {__exception}");
+				return null;
+			}
+
+			return __exception;
+		}
+
 		[HarmonyPostfix]
 		[HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
 		public static void OnPlanetDataSet(ref UIPlanetDetail __instance)

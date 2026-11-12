@@ -1,6 +1,21 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.6 - Changelog:
+
+Features:
+-Performance Settings category under GS2 settings that lets you tweak how frequently distant stars and planets update. Planets with factories and stars with Dyson Spheres will use their normal update logic. This shouldn't cause any compatibility issues with SampleAndHoldSim or Weaver.
+
+Bugfixes:
+-Invisible solid planets shouldn't require a save and reload to fix anymore.
+-Belts should now be properly aligned on large planets. Please let me know if anything else is misaligned.
+-Minor fix to prevent inconsequential errors when previewing planets in GS2's galaxy preview while Orbital Ring is installed. Side note, Orbital Ring should be compatible with GS2 now.
+-Minor fix to prevent a small memory leak during galaxy generation.
+-Seed randomizer now properly randomizes the seed.
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
+
 - Version 2.80.5 - Changelog:
 
 Bugfixes: 
@@ -8,8 +23,6 @@ Bugfixes:
 -Fixed items dropping from destroyed Dark Fog being assigned to the planet's moon instead of the planet where the Dark Fog unit was destroyed.
 -Fixed size 510 planets in old saves being shrunken.
 -Fixed additional issues with ILS vessels between Galactic Scale and MoreMegaStructures. Hopefully no more problems crop up. 
-
-Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
 
 - Version 2.80.4 - Changelog:
 

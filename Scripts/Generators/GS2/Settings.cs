@@ -408,8 +408,8 @@ namespace GalacticScale.Generators
             var gasGiantThemes = GSSettings.ThemeLibrary.Where(t => t.Value.PlanetType == EPlanetType.Gas && t.Key != "Center").Select(t => t.Key).ToList();
             UI.Add("birthPlanetSize", bOptions.Add(GSUI.PlanetSizeSlider("Starting Planet Size".Translate(), 20, 200, 500, "birthPlanetSize", null, "How big the starting planet is. Default is 200".Translate())));
             UI.Add("birthPlanetOrbit", bOptions.Add(GSUI.Slider("Starting Planet Orbit".Translate(), -1, -1, 100, 0.1f, "birthPlanetOrbit", null, "How far from the star your starting planet is".Translate(), "Default")));
-            UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", null, "Allow other habitable themes for starting planet".Translate())));
-            UI.Add("birthTheme", bOptions.Add(GSUI.Selector("Birth Planet Theme", themes, "Mediterranean", "birthTheme", null, "Starting Planet Theme".Translate())));
+            UI.Add("birthPlanetUnlock", bOptions.Add(GSUI.Checkbox("Starting Planet Unlock".Translate(), false, "birthPlanetUnlock", BirthPlanetUnlockCallback, "Allow other habitable themes for starting planet".Translate())));
+            UI.Add("birthTheme", bOptions.Add(GSUI.Selector("Birth Planet Theme", themes, "Mediterranean", "birthTheme", null, "Starting Planet Theme".Translate(), UpdateBirthThemeAvailability)));
             UI.Add("birthPlanetSiTi", bOptions.Add(GSUI.Checkbox("Starting planet Si/Ti".Translate(), false, "birthPlanetSiTi", null, "Force Silicon and Titanium on the starting planet".Translate())));
             UI.Add("noRaresStartingSystem", bOptions.Add(GSUI.Checkbox("Allow Rares in Starting System".Translate(), false, "noRaresStartingSystem", null, "Allow Rares other than Oil and FireIce".Translate())));
             UI.Add("birthStar", bOptions.Add(GSUI.Combobox("Starting Planet Star".Translate(), starTypes, 7, "birthStar", null, "Type of Star to Start at".Translate())));
@@ -422,6 +422,25 @@ namespace GalacticScale.Generators
             UI.Add("birthRareDisable", bOptions.Add(GSUI.Checkbox("Starting Planet No Rares".Translate(), true, "birthRareDisable", null, "Disable to allow rare veins on starting planet".Translate())));
             AddSpacer(bOptions);
             return bOptions;
+        }
+
+        private void BirthPlanetUnlockCallback(Val value)
+        {
+            UpdateBirthThemeAvailability();
+        }
+
+        private void UpdateBirthThemeAvailability()
+        {
+            if (!UI.TryGetValue("birthTheme", out var themeSelector) || themeSelector.RectTransform == null) return;
+
+            if (preferences.GetBool("birthPlanetUnlock", false))
+            {
+                if (themeSelector.Disabled) themeSelector.Enable();
+            }
+            else if (!themeSelector.Disabled)
+            {
+                themeSelector.Disable();
+            }
         }
 
         private GSOptions CreateDarkFogOptions()

@@ -1,12 +1,13 @@
 ﻿using HarmonyLib;
 using System;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace GalacticScale
 {
     public class PatchOnGalaxyData
     {
+        private static bool[] _active;
+        private static GalaxyData _galaxy;
+        private static int _call;
         /// <summary>
         /// Only beneficial for >64 stars because of the overhead involved in creating threads.
         /// 
@@ -25,17 +26,45 @@ namespace GalacticScale
         /// <returns></returns>
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GalaxyData), "UpdatePoses")]
-        public static bool UpdatePoses(Double time, GalaxyData __instance)
+        public static bool UpdatePoses(double time, GalaxyData __instance)
         {
-            for (int i = 0; i < __instance.starCount; i++)
+            var count = __instance.starCount;
+            var stars = __instance.stars;
+            var data = GameMain.data;
+            var config = GS2.Config;
+            var interval = Math.Max(1, config.FarPoseInterval);
+            if (!config.ThrottleFarPoses || interval <= 1 || data == null)
             {
-                for (int j = 0; j < __instance.stars[i].planetCount; j++)
-                {
-                    __instance.stars[i].planets[j].UpdateRuntimePose(time);
-                }
+                for (var i = 0; i < count; i++) UpdateStarPoses(stars[i], time);
+                return false;
             }
 
+            _call++;
+            var first = !ReferenceEquals(_galaxy, __instance) || _active == null || _active.Length != count;
+            if (first || _call % interval == 1)
+            {
+                if (_active == null || _active.Length != count) _active = new bool[count];
+                else Array.Clear(_active, 0, count);
+                for (var f = 0; f < data.factoryCount; f++)
+                {
+                    var star = data.factories[f]?.planet?.star;
+                    if (star != null && star.index >= 0 && star.index < count) _active[star.index] = true;
+                }
+                if (data.dysonSpheres != null)
+                    for (var i = 0; i < count && i < data.dysonSpheres.Length; i++)
+                        if (data.dysonSpheres[i] != null) _active[i] = true;
+                _galaxy = __instance;
+            }
+            var localIndex = GameMain.localStar != null ? GameMain.localStar.index : -1;
+            for (var i = 0; i < count; i++)
+                if (first || i == localIndex || _active[i] || (i + _call) % interval == 0)
+                    UpdateStarPoses(stars[i], time);
             return false;
+        }
+
+        private static void UpdateStarPoses(StarData star, double time)
+        {
+            for (var j = 0; j < star.planetCount; j++) star.planets[j].UpdateRuntimePose(time);
         }
 
         // {

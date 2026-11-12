@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
 
@@ -8,43 +5,8 @@ namespace GalacticScale
 {
     public class PatchOnSprayCoaterComponent
     {
-        // Replaces all 200f with planet.realRadius. There is a -200f in a Vector3 that will be missed, haven't noticed any issues yet with it.
-
-        // [HarmonyDebug]
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
-        public static IEnumerable<CodeInstruction> SpraycoaterComponentReshapeTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-        {
-            var codeMatcher = new CodeMatcher(instructions, il).MatchForward(false, new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(200))); // Search for 200f
-
-            if (codeMatcher.IsInvalid)
-            {
-                GS2.Error("Reshape Transpiler Failed");
-                return instructions;
-            }
-
-            instructions = codeMatcher.Repeat(z => z // Repeat for all occurences 
-                .SetInstructionAndAdvance(new CodeInstruction(OpCodes.Ldarg_1)).Insert(Transpilers.EmitDelegate<Func<PlanetFactory, float>>(factory => factory.planet?.realRadius ?? 200f))).InstructionEnumeration();
-
-            // codeMatcher = new CodeMatcher(instructions, il).MatchForward(false,
-            //     new CodeMatch(op => op.opcode == OpCodes.Ldc_R4 && op.OperandIs(400))); // Search for 200f
-            //
-            // if (codeMatcher.IsInvalid)
-            // {
-            //     GS2.Error("Reshape Transpiler Failed");
-            //     return instructions;
-            // }
-            //
-            //
-            // instructions = codeMatcher.Repeat(z => z // Repeat for all occurences 
-            //     .SetInstruction(Transpilers.EmitDelegate<Func<float>>(() => GameMain.localPlanet?.realRadius * 2?? 400f))).InstructionEnumeration();
-
-
-            return instructions;
-        }
-
-        // [HarmonyPrefix]
-        // [HarmonyPatch(typeof(SpraycoaterComponent), "Reshape")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.Reshape))]
         public static bool Reshape(SpraycoaterComponent __instance, PlanetFactory factory, AnimData[] _animPool)
 
         {
@@ -58,7 +20,7 @@ namespace GalacticScale
             vector = normalized * r;
             var rhs = vector.y > 0f ? (new Vector3(0f, r, 0f) - vector).normalized : (new Vector3(0f, -r, 0f) - vector).normalized;
             var num = Mathf.Abs(Vector3.Dot(Vector3.Cross(normalized, rhs), vector2));
-            var reshapeData = SpraycoaterComponent.GetReshapeData(vector, rot);
+            var reshapeData = GetReshapeDataForRadius(vector, rot, r);
             var num2 = reshapeData.x;
             var num3 = reshapeData.y;
             var num4 = reshapeData.z;
@@ -207,8 +169,36 @@ namespace GalacticScale
             }
 
             _animPool[__instance.entityId].working_length = -1.265f - num4;
-            _animPool[__instance.entityId].prepare_length = Mathf.Round(num3 * r) + Mathf.Round(num2 * r) * 400f;
+            _animPool[__instance.entityId].prepare_length = Mathf.Round(num3 * r) + Mathf.Round(num2 * r) * (r * 2f);
             return false;
+        }
+
+        private static Vector3 GetReshapeDataForRadius(Vector3 position, Quaternion rotation, float radius)
+        {
+            var normalized = position.normalized;
+            if (normalized.x * normalized.x + normalized.z * normalized.z <= 1E-06f) return Vector3.zero;
+
+            var scaledPosition = normalized * radius;
+            var tangent = scaledPosition.y > 0f
+                ? (new Vector3(0f, radius, 0f) - scaledPosition).normalized
+                : (new Vector3(0f, -radius, 0f) - scaledPosition).normalized;
+            var forward = rotation.Forward();
+            var cross = Vector3.Cross(normalized, tangent);
+            var orientation = Mathf.Abs(Vector3.Dot(cross, forward));
+            var segmentCount = BlueprintUtils.GetLongitudeSegmentCount(normalized, Mathf.RoundToInt(radius)) * 5;
+            if (segmentCount <= 0) return Vector3.zero;
+
+            var circleRadius = Mathf.Pow(1f - Mathf.Pow(Mathf.Abs(Vector3.Dot(normalized, Vector3.up)), 2f), 0.5f) * radius;
+            const float VanillaCircumference = 1256.6371f;
+            var circumference = circleRadius * 3.1415927f * 2f;
+            var vanillaGridWidth = VanillaCircumference * 0.001f;
+            var gridWidth = circumference / segmentCount;
+            var gridWidthDelta = (gridWidth - vanillaGridWidth) * orientation;
+            var bend = Mathf.Sin(6.2831855f / segmentCount * 3.1415927f * 0.25f) * gridWidth * orientation;
+            var x = -bend * (2.4f / gridWidth);
+            var y = -bend * ((2.4f + gridWidthDelta) / gridWidth);
+            var sign = Mathf.Sign(Vector3.Dot(cross, forward));
+            return new Vector3(x * sign, y * sign, gridWidthDelta);
         }
     }
 }

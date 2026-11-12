@@ -55,9 +55,12 @@ namespace GalacticScale
                     if (calcPlanet != null)
                     {
                         processing.Add(calcPlanet);
+                        bool hadData = calcPlanet.data != null;
+                        bool scanSucceeded = false;
                         try
                         {
                             ScanPlanetGS(calcPlanet);
+                            scanSucceeded = true;
                         }
                         catch (Exception ex)
                         {
@@ -67,6 +70,7 @@ namespace GalacticScale
                             }
 
                             GS2.Warn($"Error during calculating planet {calcPlanet.name}: {ex}");
+                            if (calcPlanet != GameMain.localPlanet && !hadData && calcPlanet.data != null) FreeScanData(calcPlanet);
                             calcPlanet.scanned = false;
                             processing.Remove(calcPlanet);
                         }
@@ -75,7 +79,7 @@ namespace GalacticScale
                         // #233 belt-and-suspenders: if the generators were skipped because a
                         // quit was in progress (backToMainMenu gate), do NOT commit the planet
                         // as scanned - an empty scan marked scanned locks "no ore" into the UI.
-                        calcPlanet.scanned = UIRoot.instance == null || !UIRoot.instance.backToMainMenu;
+                        calcPlanet.scanned = scanSucceeded && (UIRoot.instance == null || !UIRoot.instance.backToMainMenu);
                         if (processing.Contains(calcPlanet)) processing.Remove(calcPlanet);
                     }
                 }
@@ -145,18 +149,21 @@ namespace GalacticScale
                 if (calcPlanet != GameMain.localPlanet && !hadData && calcPlanet.data != null)
                 {
                     // Free the PlanetRawData we just created
-                    calcPlanet.data.Free();
-                    calcPlanet.data = null;
-
-                    // Free aux data too
-                    if (calcPlanet.aux != null)
-                    {
-                        calcPlanet.aux.Free();
-                        calcPlanet.aux = null;
-                    }
+                    FreeScanData(calcPlanet);
                 }
                 GS2.Log($"Finished calculating planet {calcPlanet.name}");
                 calcPlanet.NotifyScanEnded();
+            }
+        }
+
+        private static void FreeScanData(PlanetData planet)
+        {
+            planet.data.Free();
+            planet.data = null;
+            if (planet.aux != null)
+            {
+                planet.aux.Free();
+                planet.aux = null;
             }
         }
 

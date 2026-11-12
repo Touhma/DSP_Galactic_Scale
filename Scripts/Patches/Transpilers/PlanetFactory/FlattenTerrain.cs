@@ -7,6 +7,28 @@ namespace GalacticScale
 {
     public static partial class PatchOnPlanetFactory
     {
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(PlanetFactory), nameof(PlanetFactory.EndFlattenTerrain))]
+        private static IEnumerable<CodeInstruction> EndFlattenTerrainRadiusTranspiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var code = new List<CodeInstruction>(instructions);
+            for (var i = 0; i + 4 < code.Count; i++)
+            {
+                if (code[i].opcode == OpCodes.Ldc_R4 && code[i].OperandIs(100f)
+                    && code[i + 1].opcode == OpCodes.Mul
+                    && code[i + 2].opcode == OpCodes.Ldc_R4 && code[i + 2].OperandIs(20f)
+                    && code[i + 3].opcode == OpCodes.Add
+                    && code[i + 4].opcode == OpCodes.Conv_I2)
+                {
+                    code[i + 4].opcode = OpCodes.Conv_I4;
+                    return code;
+                }
+            }
+
+            GS2.Warn("EndFlattenTerrain radius threshold pattern not found; batched builds on very large planets may use the vanilla short conversion.");
+            return code;
+        }
+
         // change
         // short num5 = (short)(planet.realRadius * 100f + 20f);
         // to
