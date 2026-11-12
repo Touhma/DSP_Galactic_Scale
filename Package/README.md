@@ -1,6 +1,13 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.7 - Changelog:
+
+Bugfix:
+-Fixes a null error when loading certain saves made prior to 2.80.6 
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
 - Version 2.80.6 - Changelog:
 
 Features:
@@ -12,8 +19,6 @@ Bugfixes:
 -Minor fix to prevent inconsequential errors when previewing planets in GS2's galaxy preview while Orbital Ring is installed. Side note, Orbital Ring should be compatible with GS2 now.
 -Minor fix to prevent a small memory leak during galaxy generation.
 -Seed randomizer now properly randomizes the seed.
-
-Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
 
 
 - Version 2.80.5 - Changelog:
