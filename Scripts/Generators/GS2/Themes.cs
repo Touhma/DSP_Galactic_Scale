@@ -85,6 +85,7 @@ namespace GalacticScale.Generators
 
         public static void InitThemes()
         {
+            cometThemes.Clear();
             var sulfursea = new GSTheme("SulfurSea", "Sulfurous Sea".Translate(), "OceanWorld");
             var giganticforest = new GSTheme("GiganticForest", "Gigantic Forest".Translate(), "OceanicJungle");
             var moltenworld = new GSTheme("MoltenWorld", "Molten World".Translate(), "Lava");

@@ -245,6 +245,12 @@ namespace GalacticScale
                     RectTransform.GetComponentInChildren<Dropdown>().interactable = false;
                     Disabled = true;
                     return true;
+                case "Selector":
+                    var selector = RectTransform.GetComponent<GSUISelector>();
+                    selector.lbutton.interactable = false;
+                    selector.rButton.interactable = false;
+                    Disabled = true;
+                    return true;
                 case "Button":
                     GS2.Warn("Disabling Button");
                     RectTransform.GetComponentInChildren<Button>().interactable = false;
@@ -298,6 +304,12 @@ namespace GalacticScale
                     return true;
                 case "Combobox":
                     RectTransform.GetComponentInChildren<Dropdown>().interactable = true;
+                    Disabled = false;
+                    return true;
+                case "Selector":
+                    var selector = RectTransform.GetComponent<GSUISelector>();
+                    selector.lbutton.interactable = true;
+                    selector.rButton.interactable = true;
                     Disabled = false;
                     return true;
                 case "Button":

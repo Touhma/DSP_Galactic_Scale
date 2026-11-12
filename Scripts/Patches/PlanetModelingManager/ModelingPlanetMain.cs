@@ -11,6 +11,20 @@ namespace GalacticScale
         [HarmonyPatch(typeof(PlanetModelingManager), "ModelingPlanetMain")]
         public static bool ModelingPlanetMain(PlanetData planet)
         {
+            if (planet.data == null)
+            {
+                GS2.Warn($"ModelingPlanetMain: {planet.name} has no raw data, aborting its modeling");
+                Modeler.AbortModeling(planet);
+                return false;
+            }
+
+            if (PlanetModelingManager.currentModelingStage == 0)
+            {
+                PlanetModelingManager.tmpMeshRendererList?.Clear();
+                PlanetModelingManager.tmpMeshColliderList?.Clear();
+                PlanetModelingManager.tmpOceanCollider = null;
+            }
+
             planet.data.AddFactoredRadius(planet);
             return true;
         }

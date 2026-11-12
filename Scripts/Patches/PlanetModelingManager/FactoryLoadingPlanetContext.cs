@@ -14,7 +14,7 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlanetModelingManager), "LoadingPlanetFactoryMain")]
-        public static void LoadingPlanetFactoryMain_Prefix(PlanetData planet, out Context __state)
+        public static bool LoadingPlanetFactoryMain_Prefix(PlanetData planet, out Context __state)
         {
             var gpuManager = GameMain.gpuiManager;
             var buildPreviewManager = GameMain.bpgpuiManager;
@@ -26,8 +26,19 @@ namespace GalacticScale
                 PreviousBuildPreviewPlanet = buildPreviewManager?.specifyPlanet
             };
 
+            if (planet == null || !planet.loaded || planet.gameObject == null)
+            {
+                GS2.Warn($"Dropping stale factory load request for {planet?.name}: loaded:{planet?.loaded} " +
+                         $"model:{planet?.gameObject != null} stage:{PlanetModelingManager.currentFactingStage}");
+                planet?.UnloadFactory();
+                PlanetModelingManager.currentFactingPlanet = null;
+                PlanetModelingManager.currentFactingStage = 0;
+                return false;
+            }
+
             if (gpuManager != null) gpuManager.specifyPlanet = planet;
             if (buildPreviewManager != null) buildPreviewManager.specifyPlanet = planet;
+            return true;
         }
 
         [HarmonyFinalizer]

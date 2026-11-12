@@ -28,6 +28,13 @@ namespace GalacticScale
         private static UIPlanetDetail uiPlanetDetail => uiGame.planetDetail;
         private static UIStarDetail uiStarDetail => uiGame.starDetail;
 
+        private static PlanetData GetDisplayedPlanet(int clickIndex)
+        {
+            var planets = viewStar?.planets;
+            var planetIndex = clickIndex - 1;
+            return planets != null && planetIndex >= 0 && planetIndex < planets.Length ? planets[planetIndex] : null;
+        }
+
 
         public static void AbortRender(UIVirtualStarmap starmap)
         {
@@ -423,9 +430,8 @@ namespace GalacticScale
 
         private static void OnSolarSystemPlanetClick(int clickIndex)
         {
-            var planetIndex = clickIndex - 1;
-            GS2.Log($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
-            var pData = viewStar?.planets[planetIndex];
+            GS2.Log($"System:{viewStar?.name} PlanetCount:{viewStar?.planetCount}");
+            var pData = GetDisplayedPlanet(clickIndex);
             // GS2.Warn("C");
             if (pData == null) return;
             GS2.Log($"{pData.name}");
@@ -438,9 +444,8 @@ namespace GalacticScale
 
         private static void OnSolarSystemPlanetRightClick(UIVirtualStarmap starmap, int clickIndex)
         {
-            var planetIndex = clickIndex - 1;
-            // GS2.Warn($"System:{viewStar.name} PlanetCount:{viewStar.planetCount}");
-            var pData = viewStar?.planets[planetIndex];
+            // GS2.Warn($"System:{viewStar?.name} PlanetCount:{viewStar?.planetCount}");
+            var pData = GetDisplayedPlanet(clickIndex);
             // GS2.Warn("C");
             if (pData == null) return;
             if (pData.type == EPlanetType.Gas)

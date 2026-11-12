@@ -61,6 +61,23 @@ namespace GalacticScale
         public float MechaScale => Preferences.GetFloat("MechaScale", 1f);
         public bool SkipDFHiveLogic => Preferences.GetBool("SkipDFHiveLogic", false);
         public float SkipDFHiveDistance => Preferences.GetFloat("SkipDFHiveDistance", 0f);
+        public bool ThrottleFarStars => Preferences.GetBool("ThrottleFarStars", true);
+        public int FarStarInterval => (int)Preferences.GetFloat("FarStarInterval", 3f);
+        public float NearStarDistance => Preferences.GetFloat("NearStarDistance", 7f);
+        public float StarFlightThreshold
+        {
+            get
+            {
+                switch (Preferences.GetInt("StarFlightMode", 0))
+                {
+                    case 1: return 9f;
+                    case 2: return float.MaxValue;
+                    default: return 1f;
+                }
+            }
+        }
+        public bool ThrottleFarPoses => Preferences.GetBool("ThrottleFarPoses", true);
+        public int FarPoseInterval => (int)Preferences.GetFloat("FarPoseInterval", 30f);
         // public bool VanillaGrid => Preferences.GetBool("Vanilla Grid");
         public float ShieldScaleStrength => Preferences.GetFloat("ShieldScaleStrength", 0.25f);
         public float ShieldScaleLargeStrength => Preferences.GetFloat("ShieldScaleLargeStrength", 0f);
@@ -201,6 +218,18 @@ namespace GalacticScale
             GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
             GameOptions.Add(GSUI.Spacer());
             Options.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
+            Options.Add(GSUI.Spacer());
+
+            var PerformanceOptions = new GSOptions();
+            PerformanceOptions.Add(GSUI.Spacer());
+            PerformanceOptions.Add(GSUI.Checkbox("Throttle Distant Stars".Translate(), true, "ThrottleFarStars", null, "Updates far stars less often".Translate()));
+            PerformanceOptions.Add(GSUI.Slider("Far Star Update Interval".Translate(), 2, 3, 30, "FarStarInterval", null, "Frames between far star updates".Translate()));
+            PerformanceOptions.Add(GSUI.Slider("Near Star Distance (LY)".Translate(), 0, 7, 20, "NearStarDistance", null, "Stars closer than this use default logic".Translate()));
+            PerformanceOptions.Add(GSUI.Combobox("Stars While Moving".Translate(), new List<string> { "Smooth", "Balanced", "Fast" }, 0, "StarFlightMode", null, "Stars may shimmer with options above smooth".Translate()));
+            PerformanceOptions.Add(GSUI.Checkbox("Throttle Distant Planets".Translate(), true, "ThrottleFarPoses", null, "Updates far planets less often".Translate()));
+            PerformanceOptions.Add(GSUI.Slider("Far Planet Update Interval".Translate(), 5, 30, 120, "FarPoseInterval", null, "Ticks between far planet updates".Translate()));
+            PerformanceOptions.Add(GSUI.Spacer());
+            Options.Add(GSUI.Group("Performance".Translate(), PerformanceOptions, "Performance settings for big galaxies".Translate()));
             Options.Add(GSUI.Spacer());
 
             var DebugOptions = new GSOptions();

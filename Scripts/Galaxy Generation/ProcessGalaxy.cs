@@ -145,9 +145,16 @@ namespace GalacticScale
             {
                 GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button").gameObject.SetActive(false);
                 Log(e.ToString());
+                try
+                {
+                    DumpException(e);
+                }
+                catch (Exception logException)
+                {
+                    Error($"Failed to write galaxy generation exception log: {logException}");
+                }
                 Log(GetCaller());
                 Log(GetCaller(1));
-                // DumpException(e);
                 UIMessageBox.Show("Error", "There has been a problem creating the galaxy. \nPlease let the Galactic Scale team know in our discord server. An error log has been generated in the plugin/ErrorLog Directory", "Return", 0);
                 UIRoot.instance.OnGameLoadFailed();
                 return null;

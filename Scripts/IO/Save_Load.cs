@@ -29,10 +29,24 @@ namespace GalacticScale
             var version = "2";
             var json = "";
             // var isVanilla = true;
-            version = r.ReadString();
-            json = r.ReadString();
-            fsData data2;
-            var parseResult = fsJsonParser.Parse(json, out data2);
+            fsData data2 = null;
+            var parseResult = fsResult.Fail("DSV contains no legacy GalacticScale settings.");
+            try
+            {
+                version = ReadLegacySaveString(r, 32);
+                if (version == "2" || System.Version.TryParse(version, out _))
+                {
+                    json = ReadLegacySaveString(r, int.MaxValue);
+                    parseResult = fsJsonParser.Parse(json, out data2);
+                    if (parseResult.Succeeded && (!data2.IsDictionary ||
+                        (!data2.AsDictionary.ContainsKey("Stars") && !data2.AsDictionary.ContainsKey("stars"))))
+                        parseResult = fsResult.Fail("DSV contains no legacy GalacticScale settings.");
+                }
+            }
+            catch (Exception e) when (e is EndOfStreamException || e is FormatException)
+            {
+                parseResult = fsResult.Fail("DSV contains no readable legacy GalacticScale settings.");
+            }
             if (parseResult.Failed)
             {
                 Warn("DSV Contained No GS2 Data.");
@@ -98,6 +112,24 @@ namespace GalacticScale
             GSSettings.Instance.imported = true;
             Warn($"Final Stream Position:{r.BaseStream.Position}");
             return true;
+        }
+
+        private static string ReadLegacySaveString(BinaryReader r, int maxBytes)
+        {
+            var position = r.BaseStream.Position;
+            uint length = 0;
+            for (var shift = 0; shift < 35; shift += 7)
+            {
+                var b = r.ReadByte();
+                if (shift == 28 && (b & 0xf0) != 0) throw new FormatException("Invalid string length.");
+                length |= (uint)(b & 0x7f) << shift;
+                if ((b & 0x80) != 0) continue;
+                if (length > maxBytes || length > r.BaseStream.Length - r.BaseStream.Position)
+                    throw new EndOfStreamException("Legacy string exceeds the available save data.");
+                r.BaseStream.Position = position;
+                return r.ReadString();
+            }
+            throw new FormatException("Invalid string length.");
         }
     }
 }

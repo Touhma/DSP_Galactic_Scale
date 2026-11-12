@@ -17,7 +17,7 @@ namespace GalacticScale
                 // Replace 25600 with the result of the CalcAstroBufferSize method
                 .MatchForward(
                     true,
-                    new CodeMatch(i => { return i.opcode == Ldc_I4 && Convert.ToInt32(i.operand ?? 0) == 25600; }
+                    new CodeMatch(i => i.LoadsConstant(25600) || i.LoadsConstant(102500)
                     ));
             if (matcher.IsInvalid)
             {
