@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
@@ -43,6 +43,27 @@ namespace GalacticScale
                 Bootstrap.Logger.LogInfo("PatchOnLocalLaserOneShot.Aim_Transpiler failed");
                 return instructions;
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(LocalLaserOneShot), nameof(LocalLaserOneShot.TickSkillLogic))]
+        public static bool TickSkillLogic_Prefix(LocalLaserOneShot __instance, SkillSystem skillSystem)
+        {
+            var factories = skillSystem?.astroFactories;
+            var astroId = __instance.astroId;
+            var factory = factories != null && astroId >= 0 && astroId < factories.Length
+                ? factories[astroId]
+                : null;
+
+            var factoryReady = factory?.planet != null && factory.planet.factoryLoaded &&
+                               factory.enemyPool != null && factory.craftPool != null &&
+                               factory.entityPool != null && factory.vegePool != null &&
+                               factory.veinPool != null;
+            if (factoryReady)
+                return true;
+
+            __instance.life = 0;
+            return false;
         }
 
         // [HarmonyPatch(typeof(SkillSystem),  nameof(SkillSystem.AddSpaceEnemyHatred), new[]

@@ -8,6 +8,12 @@ namespace GalacticScale
 {
     public partial class PatchOnSpaceSector
     {
+        [HarmonyPrefix, HarmonyPatch(typeof(SpaceSector), nameof(SpaceSector.GameTick))]
+        public static bool SkipSpaceSectorTickWhileLoading()
+        {
+            return !GameMain.isLoading;
+        }
+
         [HarmonyTranspiler, HarmonyPatch(typeof(SpaceSector), nameof(SpaceSector.SetForNewGame))]
         public static IEnumerable<CodeInstruction> TranspilerSpaceSectorSetForNewGameAstroCount(
             IEnumerable<CodeInstruction> instructions)

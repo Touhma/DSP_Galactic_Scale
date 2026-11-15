@@ -1,12 +1,16 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.8 - Changelog:
+
+Bugfix: Fixes additional null errors while loading planets and fixes a mistake I made that caused problems with SampleAndHoldSim.
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
 - Version 2.80.7 - Changelog:
 
 Bugfix:
 -Fixes a null error when loading certain saves made prior to 2.80.6 
-
-Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
 
 - Version 2.80.6 - Changelog:
 
