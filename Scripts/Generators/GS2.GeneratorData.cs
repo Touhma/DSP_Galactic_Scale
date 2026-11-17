@@ -27,7 +27,8 @@ namespace GalacticScale
             new GS2Generator2(),
             //new Generators.SizeTest(),
             //new Generators.TintTest(),
-            new Sol()
+            new Sol(),
+            new NiceSol()
             // new JsonImport(),
             // new Generators.ThemeViewer(),
             //new Generators.Spiral(),
