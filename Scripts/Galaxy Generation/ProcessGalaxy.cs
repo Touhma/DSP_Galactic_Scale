@@ -61,6 +61,8 @@ namespace GalacticScale
                     // Warn("Cleared");
                     Warn("Loading Data from Generator : " + ActiveGenerator.Name);
                     ActiveGenerator.Generate(gameDesc.starCount);
+                    if (Config.ScaleVeinsBySize || Mathf.Abs(Config.VeinCountMultiplier - 1f) >= 0.01f)
+                        VeinAlgorithms.ScaleGalaxyVeins(Config.ScaleVeinsBySize, Config.VeinCountMultiplier);
                     GSSettings.Instance.galaxyParams.resourceMulti = gameDesc.resourceMultiplier;
                     GSSettings.Instance.generatorGUID = ActiveGenerator.GUID;
                     // Log("Final Seed = " + GSSettings.Seed);

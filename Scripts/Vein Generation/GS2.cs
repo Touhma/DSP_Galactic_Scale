@@ -347,5 +347,69 @@ namespace GalacticScale
 
             gsPlanet.veinSettings.VeinTypes.Add(veinType);
         }
+
+        public static void ScaleGalaxyVeins(bool scaleBySize, float veinCountMulti = 1f)
+        {
+            for (var s = 0; s < GSSettings.Stars.Count; s++)
+            {
+                var bodies = GSSettings.Stars[s].Bodies;
+                for (var b = 0; b < bodies.Count; b++)
+                    ScalePlanetVeins(bodies[b], scaleBySize, veinCountMulti);
+            }
+        }
+
+        public static void ScalePlanetVeins(GSPlanet planet, bool scaleBySize, float veinCountMulti = 1f)
+        {
+            if (planet == null || planet.Scale >= 5f) return;
+            var theme = planet.GsTheme;
+            if (theme == null || theme.PlanetType == EPlanetType.Gas) return;
+
+            var planetRadius = Mathf.Max(20f, planet.Radius);
+            var planetArea = (planetRadius / 200f) * (planetRadius / 200f);
+            var clampedMulti = Mathf.Clamp(veinCountMulti, 0.25f, 4f);
+            var factor = (scaleBySize ? planetArea : 1f) * clampedMulti;
+            if (Mathf.Abs(factor - 1f) < 0.01f) return;
+
+            if (theme.VeinSettings.VeinTypes.Count == 0 && theme.VeinSpot != null && theme.VeinSpot.Length > 0)
+                theme.PopulateVeinData();
+
+            var useThemeBaseline = planet.veinSettings == null ||
+                                   (planet.veinSettings.VeinTypes.Count == 0 && planet.veinSettings.Algorithm == "Vanilla");
+            var settings = useThemeBaseline ? theme.VeinSettings.Clone() : planet.veinSettings;
+            if (settings.VeinTypes.Count == 0) return;
+
+            var anyScaled = false;
+            for (var i = 0; i < settings.VeinTypes.Count; i++)
+            {
+                var vt = settings.VeinTypes[i];
+                var baseCount = vt.veins.Count;
+                if (baseCount <= 0) continue;
+
+                var targetCount = Mathf.Clamp(Mathf.RoundToInt(baseCount * factor), 1, 500);
+                if (targetCount != baseCount) anyScaled = true;
+
+                if (targetCount < baseCount)
+                {
+                    vt.veins.RemoveRange(targetCount, baseCount - targetCount);
+                }
+                else if (targetCount > baseCount)
+                {
+                    for (var idx = baseCount; idx < targetCount; idx++)
+                        vt.veins.Add(vt.veins[idx % baseCount].Clone());
+                }
+            }
+
+            if (!anyScaled && useThemeBaseline) return;
+            if (settings.Algorithm == "Vanilla") settings.Algorithm = theme.Algo == 7 ? "GS2W" : "GS2";
+
+            var spatialDensity = factor / planetArea;
+            if (spatialDensity > 1.01f)
+            {
+                var targetPadding = Mathf.Clamp(1f / spatialDensity, 0.25f, 1f);
+                if (targetPadding < settings.VeinPadding) settings.VeinPadding = targetPadding;
+            }
+
+            planet.veinSettings = settings;
+        }
     }
 }

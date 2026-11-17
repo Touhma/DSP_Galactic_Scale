@@ -43,6 +43,8 @@ namespace GalacticScale
         public bool DisableSectorUpdate => Preferences.GetBool("DisableSectorUpdate");
         public bool DisableSpaceSector => Preferences.GetBool("DisableSpaceSector");
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
+        public bool ScaleVeinsBySize => Preferences.GetBool("ScaleVeinsBySize", false);
+        public float VeinCountMultiplier => Mathf.Clamp(Preferences.GetFloat("VeinCountMultiplier", 1f), 0.25f, 4f);
         public bool DebugMode => Preferences.GetBool("Debug Log", false);
         public bool GenLog => Preferences.GetBool("Generator Log", false);
         public bool NewGravity => Preferences.GetBool("New Gravity", false);
@@ -172,6 +174,8 @@ namespace GalacticScale
             // GS2.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback, "Try them all!".Translate()));
             RefreshFileNames();
+            Options.Add(GSUI.Checkbox("Scale veins by planet size".Translate(), false, "ScaleVeinsBySize", null, "Scale vein patch counts by planet surface area relative to vanilla size 200".Translate()));
+            Options.Add(GSUI.Slider("Vein count multiplier".Translate(), 0.25f, 1f, 4f, 0.25f, "VeinCountMultiplier", null, "Additional multiplier for vein patch counts across planets (1x = standard density)".Translate()));
 
             // Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
 
