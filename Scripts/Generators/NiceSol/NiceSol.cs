@@ -31,7 +31,7 @@ namespace GalacticScale.Generators
 
             var todayDefault = DateTime.UtcNow.ToString("yyyy-MM-dd");
             UI_epochDate = Options.Add(GSUI.Input("Epoch Date (YYYY-MM-DD)".Translate(), todayDefault, "epochDate", null,
-                "UTC date for Solar System orbits and star positions (or 'today')".Translate()));
+                "UTC date for Solar System & star orbits".Translate()));
             Options.Add(GSUI.Button("Reset Epoch Date".Translate(), "Today (UTC)".Translate(), _ =>
             {
                 var today = DateTime.UtcNow.ToString("yyyy-MM-dd");
@@ -42,16 +42,16 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.Selector("Name Language".Translate(), new List<string> { "Auto", "Chinese", "English" }, "Auto", "nameLanguage", null,
                 "Language for star and planet names".Translate()));
             Options.Add(GSUI.Checkbox("Accurate Stars".Translate(), true, "accurateStars", null,
-                "Use real spectral types, giants, white dwarfs, neutron stars, and black holes".Translate()));
+                "Use real star spectral & remnant types".Translate()));
             Options.Add(GSUI.Checkbox("Start in Sol".Translate(), true, "startInSol", null,
                 "Start on Earth in the Solar System".Translate()));
 
             Options.Add(GSUI.Slider("Max Star Distance (ly)".Translate(), 40f, 95f, 200f, 5f, "maxStarDistance", null,
-                "Outer radius of radially compressed 88-constellation sphere".Translate()));
+                "Outer radius of 88-constellation sphere".Translate()));
             Options.Add(GSUI.Slider("Sol Orbit Speed Multi".Translate(), 0.25f, 1f, 4f, 0.25f, "solOrbitSpeedMulti", null,
-                "Multiplier for Solar System orbital speeds (1x = 4h Earth year)".Translate()));
+                "Sol orbital speed multi (1x = 4h year)".Translate()));
             Options.Add(GSUI.Slider("Sol System Day/Night Multi".Translate(), 0.5f, 1f, 10f, 0.5f, "IncreaseRotation", null,
-                "Multiplier for Solar System day/night length (1x = 12m Earth day)".Translate()));
+                "Sol day/night multi (1x = 12m day)".Translate()));
             Options.Add(GSUI.Slider("Max planets per system".Translate(), 1, 10, 99, "maxPlanetCount"));
 
             UI_minPlanetSize = Options.Add(GSUI.PlanetSizeSlider("Min planet size".Translate(), 20, 30, 500, o =>
