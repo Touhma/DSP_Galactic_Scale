@@ -174,8 +174,6 @@ namespace GalacticScale
             // GS2.LogJson(_generatorNames, true);
             _generatorsCombobox = Options.Add(GSUI.Combobox("Generator".Translate(), _generatorNames, 0, "Generator", GeneratorCallback, "Try them all!".Translate()));
             RefreshFileNames();
-            Options.Add(GSUI.Checkbox("Scale veins by planet size".Translate(), false, "ScaleVeinsBySize", null, "Scale vein patch counts by planet surface area relative to vanilla size 200".Translate()));
-            Options.Add(GSUI.Slider("Vein count multiplier".Translate(), 0.25f, 1f, 4f, 0.25f, "VeinCountMultiplier", null, "Additional multiplier for vein patch counts across planets (1x = standard density)".Translate()));
 
             // Options.Add(GSUI.Checkbox("Vanilla Grid (200r)".Translate(), false, "Vanilla Grid", VanillaGridCheckboxCallback, "Use the vanilla grid for 200 size planets".Translate()));
 
@@ -221,7 +219,13 @@ namespace GalacticScale
             }
             GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
             GameOptions.Add(GSUI.Spacer());
-            Options.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
+            
+            var UniversalOptions = new GSOptions();
+            UniversalOptions.Add(GSUI.Checkbox("Scale veins by planet size".Translate(), false, "ScaleVeinsBySize", null, "Scale vein patch count by planet area".Translate()));
+            UniversalOptions.Add(GSUI.Slider("Vein count multiplier".Translate(), 0.25f, 1f, 4f, 0.25f, "VeinCountMultiplier", null, "Multiplies vein patches per planet, 1x = vanilla".Translate()));
+            UniversalOptions.Add(GSUI.Spacer());
+            UniversalOptions.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
+            Options.Add(GSUI.Group("Universal Settings".Translate(), UniversalOptions));
             Options.Add(GSUI.Spacer());
 
             var PerformanceOptions = new GSOptions();
