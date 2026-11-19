@@ -72,7 +72,7 @@ namespace GalacticScale.Generators
                 UI_maxPlanetSize.Set(preferences.GetFloat("maxPlanetSize"));
             }, () => UI_maxPlanetSize.Set(preferences.GetInt("maxPlanetSize", 300))));
 
-            Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 20, 400, 500, "birthPlanetSize"));
+            Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 100, 400, 500, "birthPlanetSize"));
             Options.Add(GSUI.Checkbox("Birth planet Si/Ti".Translate(), false, "birthPlanetSiTi"));
             Options.Add(GSUI.Checkbox("Moons are small".Translate(), true, "moonsAreSmall"));
         }
@@ -126,7 +126,7 @@ namespace GalacticScale.Generators
 
             if (birthPlanet != null)
             {
-                var desiredSize = preferences.GetInt("birthPlanetSize", 400);
+                var desiredSize = Mathf.Clamp(preferences.GetInt("birthPlanetSize", 400), 100, 500);
                 if (desiredSize != birthPlanet.Radius) birthPlanet.Radius = Utils.ParsePlanetSize(desiredSize);
             }
 
@@ -181,6 +181,8 @@ namespace GalacticScale.Generators
         public void Import(GSGenPreferences preferences)
         {
             this.preferences = preferences ?? new GSGenPreferences();
+            if (this.preferences.ContainsKey("birthPlanetSize") && this.preferences.GetInt("birthPlanetSize", 400) < 100)
+                this.preferences.Set("birthPlanetSize", 100);
         }
 
         public GSGenPreferences Export()
@@ -602,7 +604,7 @@ namespace GalacticScale.Generators
                 var planet = star.Planets[index];
                 var themeNames = GSSettings.ThemeLibrary.Habitable;
                 planet.Theme = themeNames[random.Next(themeNames.Count)];
-                planet.Radius = Utils.ParsePlanetSize(preferences.GetInt("birthPlanetSize", 400));
+                planet.Radius = Utils.ParsePlanetSize(Mathf.Clamp(preferences.GetInt("birthPlanetSize", 400), 100, 500));
                 birthPlanet = planet;
                 return;
             }
