@@ -22,5 +22,9 @@
         {
             
         }
+
+        public override void CalcWaterPercent()
+        {
+        }
     }
 }
