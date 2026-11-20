@@ -117,7 +117,7 @@ namespace GalacticScale
                     LogTerrainGenerationFailure(calcPlanet, planetAlgorithm, ex);
                     throw;
                 }
-                planetAlgorithm.CalcWaterPercent();
+                if (calcPlanet?.data != null) planetAlgorithm.CalcWaterPercent();
                 double duration = highStopwatch.duration;
 
                 // Calculate vege
