@@ -6,6 +6,7 @@ namespace GalacticScale
     {
         public string Algorithm = "Vanilla";
         public float VeinPadding = 1f;
+        public bool PreventOverlap;
         public GSVeinTypes VeinTypes = new();
         public bool RequiresConversion => VeinTypes.Count > 0;
 

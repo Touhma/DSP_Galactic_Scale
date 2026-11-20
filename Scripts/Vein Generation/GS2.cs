@@ -77,6 +77,15 @@ namespace GalacticScale
             InitializePlanetVeins(planet, veinData.Count);
             var nodeVectors = new List<Vector2>();
             var infiniteResources = DSPGame.GameDesc.resourceMultiplier >= 99.5f;
+            var preventOverlap = gsPlanet.veinSettings != null && gsPlanet.veinSettings.PreventOverlap;
+            var tinyScaleSq = preventOverlap ? ComputeTinyPlanetScaleSq(gsPlanet.Radius) : 1f;
+            var placedGroupNodes = preventOverlap ? new List<Vector3>[veinData.Count] : null;
+            var nearbyGroups = preventOverlap ? new List<int>(8) : null;
+            var startProtectedIndex = GSSettings.BirthPlanet == gsPlanet ? 2 : 0;
+            var planetRealRadius = Mathf.Max(20f, planet.realRadius > 0f ? planet.realRadius : planet.radius);
+            var centerSearchRadius = 46f * Mathf.Sqrt(tinyScaleSq);
+            var centerSearchSq = (centerSearchRadius / planetRealRadius) * (centerSearchRadius / planetRealRadius);
+            var minInterGroupNodeDistSq = 121f * tinyScaleSq; // 11.0m minimum crystal-to-crystal gap (scaled self-similarly below R=80)
             // GS2.Warn($"Adding Veins to Planet {gsPlanet.Name} infinite:{infiniteResources} resourceMulti:{DSPGame.GameDesc.resourceMultiplier}");
 
             for (var i = 0; i < veinData.Count; i++) // For each veingroup (patch of vein nodes)
@@ -94,17 +103,40 @@ namespace GalacticScale
                 nodeVectors.Add(Vector2.zero);
                 if (veinType == EVeinType.Oil) veinData[i].count = 1;
 
-                GenerateNodeVectors(nodeVectors, veinData[i].count);
+                var originalCount = Mathf.Max(1, veinData[i].count);
+                var targetNodeCount = originalCount;
+                if (preventOverlap && veinType != EVeinType.Oil && tinyScaleSq < 0.999f && i >= startProtectedIndex && originalCount > 4)
+                    targetNodeCount = Mathf.Clamp(Mathf.RoundToInt(originalCount * tinyScaleSq), 4, originalCount);
+
+                GenerateNodeVectors(nodeVectors, targetNodeCount);
                 // GS2.Warn("Vectors generated");
                 var veinAmount = Mathf.RoundToInt(veinData[i].richness * 100000f * resourceCoef);
                 if (gsPlanet.randomizeVeinAmounts) veinAmount = (int)(veinAmount * (random.NextDouble() + 0.5));
 
                 if (veinType == EVeinType.Oil) veinAmount *= 2;
+                else if (targetNodeCount < originalCount)
+                    veinAmount = Mathf.RoundToInt(veinAmount * ((float)originalCount / targetNodeCount));
 
                 if (veinAmount < 20) veinAmount = 20;
 
                 if (planet.veinGroups[i].type != EVeinType.Oil)
                     veinAmount = Mathf.RoundToInt(veinAmount * DSPGame.GameDesc.resourceMultiplier);
+
+                if (preventOverlap)
+                {
+                    placedGroupNodes[i] = new List<Vector3>(nodeVectors.Count);
+                    nearbyGroups.Clear();
+                    if (i >= startProtectedIndex)
+                    {
+                        for (var m = 0; m < i; m++)
+                        {
+                            if (placedGroupNodes[m] != null && placedGroupNodes[m].Count > 0 &&
+                                (veinData[m].position.normalized - normalized).sqrMagnitude <= centerSearchSq)
+                                nearbyGroups.Add(m);
+                        }
+                    }
+                }
+
                 // GS2.Warn($"NodeVectorCount:{nodeVectors.Count}");
                 for (var k = 0; k < nodeVectors.Count; k++)
                 {
@@ -118,15 +150,29 @@ namespace GalacticScale
 
                     if (infiniteResources && veinType != EVeinType.Oil) veinAmount = 1000000000;
 
-                    var veinPosition = normalized + vector5;
-                    //GS2.Log("veinPosition = " + veinPosition);
-                    if (veinType == EVeinType.Oil) SnapToGrid(ref veinPosition, planet);
+                    var rawPosition = normalized + vector5;
+                    //GS2.Log("veinPosition = " + rawPosition);
+                    if (veinType == EVeinType.Oil) SnapToGrid(ref rawPosition, planet);
 
-                    EraseVegetableAtPoint(veinPosition, planet);
-                    veinPosition = Utils.PositionAtSurface(veinPosition, gsPlanet);
-                    //if (!Utils.IsUnderWater(veinPosition, gsPlanet))
-                    // GS2.Warn("Adding Vein To Planet");
-                    AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)(i), planet);
+                    if (preventOverlap)
+                    {
+                        var surfacePosition = Utils.PositionAtSurface(rawPosition, gsPlanet);
+                        if (k > 0 && nearbyGroups.Count > 0 &&
+                            CollidesWithNearbyGroupNodes(surfacePosition, placedGroupNodes, nearbyGroups, minInterGroupNodeDistSq))
+                            continue;
+
+                        EraseVegetableAtPoint(rawPosition, planet);
+                        AddVeinToPlanet(veinAmount, veinType, surfacePosition, (short)i, planet);
+                        placedGroupNodes[i].Add(surfacePosition);
+                    }
+                    else
+                    {
+                        EraseVegetableAtPoint(rawPosition, planet);
+                        var veinPosition = Utils.PositionAtSurface(rawPosition, gsPlanet);
+                        //if (!Utils.IsUnderWater(veinPosition, gsPlanet))
+                        // GS2.Warn("Adding Vein To Planet");
+                        AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, planet);
+                    }
                 }
             }
 
@@ -203,23 +249,42 @@ namespace GalacticScale
                 if (v.position != Vector3.zero) continue;
 
                 var oreVein = v.type != EVeinType.Oil;
+                var preventOverlap = gsPlanet.veinSettings != null && gsPlanet.veinSettings.PreventOverlap;
+                var tinyScaleSq = preventOverlap ? ComputeTinyPlanetScaleSq(gsPlanet.Radius) : 1f;
+                var maxAttempts = preventOverlap ? 180 : 99;
+                var baseVeinPadding = Mathf.Max(0.5f, gsPlanet.veinSettings.VeinPadding);
+                var oreOrePad = (float)planetRadiusFactor * baseVeinPadding * 196f * tinyScaleSq;
+                var oreOilPad = (float)planetRadiusFactor * 144f * tinyScaleSq;
+                var oilOilPad = (float)planetRadiusFactor * 100f * tinyScaleSq;
                 var repeats = 0;
                 var potentialVector = Vector3.zero;
                 var succeeded = false;
-                while (repeats++ < 99)
+                while (repeats++ < maxAttempts)
                 {
                     potentialVector = Utils.RandomDirection(random);
-                    if (oreVein) potentialVector += groupVector; //randomize placement in the patch
+                    if (oreVein && (!preventOverlap || repeats <= 60))
+                        potentialVector += groupVector; //randomize placement in the patch, then fall back to full globe if crowded
 
                     potentialVector.Normalize(); //make the length of the vector 1
                     if (planet.data == null) return null;
                     var height = planet.data.QueryHeight(potentialVector);
-                    if (PreventUnderwater && (height < planet.radius || !oreVein && height < planet.radius + 0.5f))
+                    var oilShoreMargin = preventOverlap && repeats > 120 ? 0.05f : 0.5f;
+                    if (PreventUnderwater && (height < planet.radius || !oreVein && height < planet.radius + oilShoreMargin))
                         // GS2.Log("Point is underwater!");
                         continue; // Check for spawn point in a hollow
 
-                    var padding = (float)planetRadiusFactor * (oreVein ? gsPlanet.veinSettings.VeinPadding * 196f : 100f);
-                    if (SurfaceVectorCollisionGS2(potentialVector, veinGroups, i, padding) || birth && CollidesWithBirthVeins(potentialVector, birthVectors, padding)) continue;
+                    if (preventOverlap)
+                    {
+                        var birthPad = oreVein ? oreOrePad : oreOilPad;
+                        if (SurfaceVectorCollisionPreventOverlap(potentialVector, oreVein, veinGroups, i, oreOrePad, oreOilPad, oilOilPad) ||
+                            birth && CollidesWithBirthVeins(potentialVector, birthVectors, birthPad))
+                            continue;
+                    }
+                    else
+                    {
+                        var padding = (float)planetRadiusFactor * (oreVein ? gsPlanet.veinSettings.VeinPadding * 196f : 100f);
+                        if (SurfaceVectorCollisionGS2(potentialVector, veinGroups, i, padding) || birth && CollidesWithBirthVeins(potentialVector, birthVectors, padding)) continue;
+                    }
 
                     succeeded = true;
                     break;
@@ -237,7 +302,7 @@ namespace GalacticScale
                 }
                 else
                 {
-                    GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after 99 attempts");
+                    GS2.Log("Failed to find a vector for " + veinGroups[i].type + " on planet:" + gsPlanet.Name + " after " + maxAttempts + " attempts");
                 }
             }
 
@@ -287,6 +352,54 @@ namespace GalacticScale
                     return true;
 
             return false;
+        }
+
+        private static bool SurfaceVectorCollisionPreventOverlap(
+            Vector3 vector,
+            bool isOreVein,
+            List<GSVeinDescriptor> vectors,
+            int processedVectorCount,
+            float oreOrePadding,
+            float oreOilPadding,
+            float oilOilPadding)
+        {
+            for (var m = 0; m < processedVectorCount; m++)
+            {
+                if (vectors[m].position == Vector3.zero) continue;
+                var otherOre = vectors[m].type != EVeinType.Oil;
+                var minPadding = isOreVein && otherOre
+                    ? oreOrePadding
+                    : isOreVein || otherOre
+                        ? oreOilPadding
+                        : oilOilPadding;
+                if ((vectors[m].position - vector).sqrMagnitude < minPadding)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static bool CollidesWithNearbyGroupNodes(
+            Vector3 candidateSurfacePos,
+            List<Vector3>[] placedGroupNodes,
+            List<int> nearbyGroups,
+            float minDistSq)
+        {
+            for (var idx = 0; idx < nearbyGroups.Count; idx++)
+            {
+                var nodes = placedGroupNodes[nearbyGroups[idx]];
+                for (var n = 0; n < nodes.Count; n++)
+                    if ((nodes[n] - candidateSurfacePos).sqrMagnitude < minDistSq)
+                        return true;
+            }
+
+            return false;
+        }
+
+        private static float ComputeTinyPlanetScaleSq(float planetRadius)
+        {
+            if (planetRadius >= 80f) return 1f;
+            return Mathf.Clamp(Mathf.Pow(Mathf.Max(20f, planetRadius) / 80f, 1.4f), 0.16f, 1f);
         }
 
         private static bool CollidesWithBirthVeins(Vector3 vector, Vector3[] birthVectors, float padding)
@@ -346,6 +459,64 @@ namespace GalacticScale
             }
 
             gsPlanet.veinSettings.VeinTypes.Add(veinType);
+        }
+
+        public static void ScaleGalaxyVeins(bool scaleBySize, float veinCountMulti = 1f)
+        {
+            for (var s = 0; s < GSSettings.Stars.Count; s++)
+            {
+                var bodies = GSSettings.Stars[s].Bodies;
+                for (var b = 0; b < bodies.Count; b++)
+                    ScalePlanetVeins(bodies[b], scaleBySize, veinCountMulti);
+            }
+        }
+
+        public static void ScalePlanetVeins(GSPlanet planet, bool scaleBySize, float veinCountMulti = 1f)
+        {
+            if (planet == null || planet.Scale >= 5f) return;
+            var theme = planet.GsTheme;
+            if (theme == null || theme.PlanetType == EPlanetType.Gas) return;
+
+            var planetRadius = Mathf.Max(20f, planet.Radius);
+            var planetArea = (planetRadius / 200f) * (planetRadius / 200f);
+            var clampedMulti = Mathf.Clamp(veinCountMulti, 0.25f, 4f);
+            var factor = (scaleBySize ? planetArea : 1f) * clampedMulti;
+            var needsOverlapProtection = planetRadius < 80f || factor / planetArea > 1.01f;
+            if (Mathf.Abs(factor - 1f) < 0.01f && !needsOverlapProtection) return;
+
+            if (theme.VeinSettings.VeinTypes.Count == 0 && theme.VeinSpot != null && theme.VeinSpot.Length > 0)
+                theme.PopulateVeinData();
+
+            var useThemeBaseline = planet.veinSettings == null ||
+                                   (planet.veinSettings.VeinTypes.Count == 0 && planet.veinSettings.Algorithm == "Vanilla");
+            var settings = useThemeBaseline ? theme.VeinSettings.Clone() : planet.veinSettings;
+            if (settings.VeinTypes.Count == 0) return;
+
+            var anyScaled = false;
+            for (var i = 0; i < settings.VeinTypes.Count; i++)
+            {
+                var vt = settings.VeinTypes[i];
+                var baseCount = vt.veins.Count;
+                if (baseCount <= 0) continue;
+
+                var targetCount = Mathf.Clamp(Mathf.RoundToInt(baseCount * factor), 1, 500);
+                if (targetCount != baseCount) anyScaled = true;
+
+                if (targetCount < baseCount)
+                {
+                    vt.veins.RemoveRange(targetCount, baseCount - targetCount);
+                }
+                else if (targetCount > baseCount)
+                {
+                    for (var idx = baseCount; idx < targetCount; idx++)
+                        vt.veins.Add(vt.veins[idx % baseCount].Clone());
+                }
+            }
+
+            if (!anyScaled && useThemeBaseline && !needsOverlapProtection) return;
+            if (settings.Algorithm == "Vanilla") settings.Algorithm = theme.Algo == 7 ? "GS2W" : "GS2";
+            settings.PreventOverlap = true;
+            planet.veinSettings = settings;
         }
     }
 }

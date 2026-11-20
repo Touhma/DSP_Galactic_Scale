@@ -26,6 +26,7 @@ Generator	生成器
 Try them all!	可以逐一尝试！
 Default Settings	默认设置
 Quality of Life	便捷功能
+Universal Settings	通用设置
 Useful settings	实用设置
 Useful for testing galaxies/themes	用于测试星系和主题
 Debug Options	调试选项
@@ -318,6 +319,10 @@ Woohoo!	太好了！
 You cannot change the generator to vanilla while in game.	游戏进行中不能切换到原版生成器。
 Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings.	请在创建星系后重试 :)\r\n开始游戏后按 Esc，再点击“设置”。
 Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 键可在星系视图中显示名称/按下该键可在星系视图中切换名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
+Scale veins by planet size	矿脉数量随行星尺寸缩放
+Scale vein patch count by planet area	按行星表面积缩放矿脉簇数量
+Vein count multiplier	矿脉数量倍率
+Multiplies vein patches per planet, 1x = vanilla	行星矿脉簇倍率（1x = 原版）
 NiceSol	精致太阳系 (NiceSol)
 88 Constellations & Realistic Dynamic Solar System	88 星座亮星与动态真实太阳系
 Epoch Date (YYYY-MM-DD)	星象日期 (YYYY-MM-DD)

@@ -43,6 +43,8 @@ namespace GalacticScale
         public bool DisableSectorUpdate => Preferences.GetBool("DisableSectorUpdate");
         public bool DisableSpaceSector => Preferences.GetBool("DisableSpaceSector");
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
+        public bool ScaleVeinsBySize => Preferences.GetBool("ScaleVeinsBySize", false);
+        public float VeinCountMultiplier => Mathf.Clamp(Preferences.GetFloat("VeinCountMultiplier", 1f), 0.25f, 4f);
         public bool DebugMode => Preferences.GetBool("Debug Log", false);
         public bool GenLog => Preferences.GetBool("Generator Log", false);
         public bool NewGravity => Preferences.GetBool("New Gravity", false);
@@ -217,7 +219,13 @@ namespace GalacticScale
             }
             GameOptions.Add(GSUI.Group("Show/Hide Vein Labels".Translate(), VeinOptions, "Useful for finding veins".Translate()));
             GameOptions.Add(GSUI.Spacer());
-            Options.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
+            
+            var UniversalOptions = new GSOptions();
+            UniversalOptions.Add(GSUI.Checkbox("Scale veins by planet size".Translate(), false, "ScaleVeinsBySize", null, "Scale vein patch count by planet area".Translate()));
+            UniversalOptions.Add(GSUI.Slider("Vein count multiplier".Translate(), 0.25f, 1f, 4f, 0.25f, "VeinCountMultiplier", null, "Multiplies vein patches per planet, 1x = vanilla".Translate()));
+            UniversalOptions.Add(GSUI.Spacer());
+            UniversalOptions.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
+            Options.Add(GSUI.Group("Universal Settings".Translate(), UniversalOptions));
             Options.Add(GSUI.Spacer());
 
             var PerformanceOptions = new GSOptions();
