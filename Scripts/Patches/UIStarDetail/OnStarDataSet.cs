@@ -104,7 +104,7 @@ namespace GalacticScale
 	{
 		if (!__instance.star.scanned)
 		{
-			__instance.star.RunScanningThread();
+			Modeler.RequestScanStarPriority(__instance.star);
 		}
 		__instance.calculated = __instance.star.scanned;
 		double magnitude = (__instance.star.uPosition - GameMain.mainPlayer.uPosition).magnitude;

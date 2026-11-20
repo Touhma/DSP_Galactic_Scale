@@ -127,10 +127,12 @@ namespace GalacticScale
                                     num4 = highStopwatch.duration;
                                 }
 
-                                // else if (planetData.galaxy.birthPlanetId == planetData.id) //Added after 0.9.25 update
-                                // {
-                                //     planetData.GenBirthPoints();
-                                // }//end add 0.9.25 update
+                                if (!UIRoot.instance.backToMainMenu &&
+                                    compPlanet.data != null &&
+                                    !(planetAlgorithm is NullAlgorithm) &&
+                                    compPlanet.birthPoint.sqrMagnitude <= 1e-8f)
+                                    compPlanet.GenBirthPoints();
+
                                 if (planetComputeThreadLogs != null)
                                     lock (planetComputeThreadLogs)
                                     {

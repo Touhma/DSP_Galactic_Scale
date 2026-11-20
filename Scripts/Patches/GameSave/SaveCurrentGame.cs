@@ -6,31 +6,60 @@ namespace GalacticScale
 {
     public partial class PatchOnGameSave
     {
+        private static readonly object SaveGate = new();
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameSave), "SaveCurrentGame")]
         public static void SaveCurrentGame(string saveName)
         {
-            var path = GameConfig.gameSaveFolder + saveName + ".gs2";
-            var backuppath = path + ".backup";
-            var deletepath = backuppath + ".delete";
-            if (File.Exists(deletepath))
+            lock (SaveGate)
             {
-                GS2.ShowMessage("There has been a problem with saving GS2 data previously. Please backup your saves!", "WARNING");
-                File.Move(deletepath, path + ".previousFailure." + DateTime.Now.ToString("dd"));
+                var path = GameConfig.gameSaveFolder + saveName + ".gs2";
+                var backupPath = path + ".backup";
+                var deletePath = backupPath + ".delete";
+                string pendingPath = null;
+
+                try
+                {
+                    if (!GS2.Vanilla)
+                    {
+                        pendingPath = UniqueSidecarPath(path + ".pending");
+                        GS2.SaveSettingsToJson(pendingPath);
+                    }
+
+                    if (File.Exists(deletePath))
+                    {
+                        GS2.ShowMessage("There has been a problem with saving GS2 data previously. Please backup your saves!", "WARNING");
+                        MoveSidecar(deletePath, UniqueSidecarPath(path + ".previousFailure"));
+                    }
+
+                    if (File.Exists(backupPath)) MoveSidecar(backupPath, deletePath);
+                    if (File.Exists(path)) MoveSidecar(path, backupPath);
+                    if (pendingPath != null) MoveSidecar(pendingPath, path);
+                    if (File.Exists(deletePath)) File.Delete(deletePath);
+                }
+                catch (Exception exception)
+                {
+                    GS2.Warn($"Could not rotate Galactic Scale metadata for save '{saveName}' at '{path}': {exception}");
+                }
             }
+        }
 
-            if (File.Exists(backuppath)) File.Move(backuppath, deletepath);
-            if (File.Exists(path)) File.Move(path, backuppath);
-            // if (saveName.Length < 9 || saveName.Substring(1,8) != "autosave" && saveName.Substring(1,8) != "lastexit")
-            if (!GS2.Vanilla) GS2.SaveSettingsToJson(path);
-            if (File.Exists(deletepath)) File.Delete(deletepath);
+        private static string UniqueSidecarPath(string basePath)
+        {
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff");
+            var candidate = basePath + "." + timestamp;
+            var suffix = 1;
+            while (File.Exists(candidate)) candidate = basePath + "." + timestamp + "." + suffix++;
+            return candidate;
+        }
 
+        private static void MoveSidecar(string sourcePath, string destinationPath)
+        {
+            if (File.Exists(destinationPath))
+                throw new IOException($"Refusing to overwrite existing Galactic Scale sidecar '{destinationPath}' while moving '{sourcePath}'.");
 
-            // var path = Path.Combine(GS2.DataDir, "GalaxyBackups");
-            // if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            // path = Path.Combine(path, saveName);
-            // path = path+ "-" + DateTime.Now.ToString("dd") + ".json";
-            // if (saveName.Length < 10) return;
+            File.Move(sourcePath, destinationPath);
         }
     }
 }

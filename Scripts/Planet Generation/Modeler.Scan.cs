@@ -8,6 +8,82 @@ namespace GalacticScale
 {
     public static partial class Modeler
     {
+        public static void RequestScanPlanetPriority(PlanetData planet)
+        {
+            if (planet == null || planet.scanned) return;
+
+            var queue = scnPlanetReqList;
+            if (queue == null)
+            {
+                planet.RunScanThread();
+                return;
+            }
+
+            lock (queue)
+            {
+                var pending = queue.ToArray();
+                var queuedAlready = Array.Exists(pending, queuedPlanet => queuedPlanet == planet);
+                if (!queuedAlready && (planet.scanning || planet.data != null || planet.loaded || planet.loading)) return;
+
+                queue.Clear();
+                if (!queuedAlready) planet.scanning = true;
+                queue.Enqueue(planet);
+                foreach (PlanetData queuedPlanet in pending)
+                {
+                    if (queuedPlanet != planet) queue.Enqueue(queuedPlanet);
+                }
+                scanBusy = true;
+            }
+        }
+
+        public static void RequestScanStarPriority(StarData star)
+        {
+            if (star == null) return;
+
+            var queue = scnPlanetReqList;
+            if (queue == null)
+            {
+                star.RunScanningThread();
+                return;
+            }
+
+            lock (queue)
+            {
+                var pending = queue.ToArray();
+                var pendingSet = new HashSet<PlanetData>(pending);
+                var prioritized = new List<PlanetData>();
+                var prioritizedSet = new HashSet<PlanetData>();
+
+                for (int i = 0; i < star.planetCount; i++)
+                {
+                    PlanetData planet = star.planets[i];
+                    if (planet == null || planet.scanned) continue;
+
+                    if (pendingSet.Contains(planet))
+                    {
+                        prioritized.Add(planet);
+                        prioritizedSet.Add(planet);
+                    }
+                    else if (!planet.scanning && planet.data == null && !planet.loaded && !planet.loading)
+                    {
+                        planet.scanning = true;
+                        prioritized.Add(planet);
+                        prioritizedSet.Add(planet);
+                    }
+                }
+
+                if (prioritized.Count == 0) return;
+
+                queue.Clear();
+                foreach (PlanetData planet in prioritized) queue.Enqueue(planet);
+                foreach (PlanetData planet in pending)
+                {
+                    if (!prioritizedSet.Contains(planet)) queue.Enqueue(planet);
+                }
+                scanBusy = true;
+            }
+        }
+
         public static void Scan()
         {
             Thread thread = null;
@@ -59,8 +135,7 @@ namespace GalacticScale
                         bool scanSucceeded = false;
                         try
                         {
-                            ScanPlanetGS(calcPlanet);
-                            scanSucceeded = true;
+                            scanSucceeded = ScanPlanetGS(calcPlanet);
                         }
                         catch (Exception ex)
                         {
@@ -90,10 +165,12 @@ namespace GalacticScale
             }
         }
 
-        public static void ScanPlanetGS(PlanetData calcPlanet)
+        public static bool ScanPlanetGS(PlanetData calcPlanet)
         {
             // Note: We don't use vanilla's GetUnloadedCopy method, as it will not get the correct GS2 
             PlanetAlgorithm planetAlgorithm = Algorithm(calcPlanet);
+
+            if (planetAlgorithm == null || planetAlgorithm is NullAlgorithm) return false;
 
             if (planetAlgorithm != null)
             {
@@ -153,7 +230,10 @@ namespace GalacticScale
                 }
                 GS2.Log($"Finished calculating planet {calcPlanet.name}");
                 calcPlanet.NotifyScanEnded();
+                return true;
             }
+
+            return false;
         }
 
         private static void FreeScanData(PlanetData planet)
