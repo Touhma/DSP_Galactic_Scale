@@ -320,11 +320,11 @@ Please try again after creating a galaxy :)\r\nStart a game, then press ESC and 
 Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 键可在星系视图中显示名称/按下该键可在星系视图中切换名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
 NiceSol	精致太阳系 (NiceSol)
 88 Constellations & Realistic Dynamic Solar System	88 星座亮星与动态真实太阳系
-Epoch Date (YYYY-MM-DD)	历元日期 (YYYY-MM-DD)
+Epoch Date (YYYY-MM-DD)	星空日期 (YYYY-MM-DD)
 UTC date for Solar System & star orbits	行星轨道与恒星位置的 UTC 日期
-Reset Epoch Date	重置历元日期
+Reset Epoch Date	重置星空日期
 Today (UTC)	今天 (UTC)
-Set Epoch Date to today's UTC date	将历元日期设为当前 UTC 日期
+Set Epoch Date to today's UTC date	将星空日期设为当前 UTC 日期
 Name Language	天体命名语言
 Language for star and planet names	恒星与行星的名称语言
 Auto	自动
