@@ -56,8 +56,15 @@ namespace GalacticScale
                 _galaxy = __instance;
             }
             var localIndex = GameMain.localStar != null ? GameMain.localStar.index : -1;
+            var selectedStarIndex = -1;
+            var planetDetail = UIRoot.instance?.uiGame?.planetDetail;
+            if (planetDetail != null && planetDetail.gameObject.activeInHierarchy)
+            {
+                var selectedPlanet = planetDetail.planet;
+                if (selectedPlanet?.star != null) selectedStarIndex = selectedPlanet.star.index;
+            }
             for (var i = 0; i < count; i++)
-                if (first || i == localIndex || _active[i] || (i + _call) % interval == 0)
+                if (first || i == localIndex || i == selectedStarIndex || _active[i] || (i + _call) % interval == 0)
                     UpdateStarPoses(stars[i], time);
             return false;
         }

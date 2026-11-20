@@ -250,7 +250,7 @@ namespace GalacticScale
 			{
 				if (!__instance.planet.scanned)
 				{
-					__instance.planet.RunScanThread();
+					Modeler.RequestScanPlanetPriority(__instance.planet);
 				}
 
 				__instance._scanned = __instance.planet.scanned;

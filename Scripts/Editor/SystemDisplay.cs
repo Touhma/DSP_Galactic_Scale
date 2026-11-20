@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Cryptography;
 using NGPT;
 using UnityEngine;
 using UnityEngine.UI;
@@ -247,20 +248,42 @@ namespace GalacticScale
 
         private static void OnRandomClick(UIGalaxySelect instance)
         {
-            // await Modeler.KillPlanetCompute();
-            // Task.WaitAll( Modeler.RestartPlanetCalcThread(),Modeler.RestartPlanetComputeThread());
             Modeler.Reset();
-            // GS2.Log("A");
-            // GS2.Warn(Modeler.processing.Count.ToString());
-            // instance.Rerand();
-            // ShowStarMap(instance.starmap);
-            // PlanetModelingManager.StartPlanetCalculateThread();
             Bootstrap.WaitUntil(() => Modeler.Idle, () =>
             {
-                // GS2.Log("Idle, restarting sysdisp");
-                instance.Rerand();
+                if (instance.gameDesc == null)
+                {
+                    GS2.Warn("Cannot randomize the galaxy seed because the game description is missing.");
+                    return;
+                }
+
+                var previousSeed = instance.gameDesc.galaxySeed;
+                var newSeed = CreateRandomGalaxySeed(previousSeed);
+                instance.gameDesc.galaxySeed = newSeed;
+                GS2.Log($"Randomized galaxy seed: {previousSeed} -> {newSeed}");
+                instance.SetStarmapGalaxy();
                 ShowStarMap(instance.starmap);
             });
+        }
+
+        private static int CreateRandomGalaxySeed(int previousSeed)
+        {
+            const uint seedRange = 100000000;
+            var acceptedSampleLimit = ((ulong)uint.MaxValue + 1UL) / seedRange * seedRange;
+            var bytes = new byte[sizeof(uint)];
+
+            using (var random = RandomNumberGenerator.Create())
+            {
+                while (true)
+                {
+                    random.GetBytes(bytes);
+                    var sample = System.BitConverter.ToUInt32(bytes, 0);
+                    if ((ulong)sample >= acceptedSampleLimit) continue;
+
+                    var seed = (int)(sample % seedRange);
+                    if (seed != previousSeed) return seed;
+                }
+            }
         }
 
 

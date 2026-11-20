@@ -1,11 +1,43 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.9 - Changelog:
+
+Changes by Kimi-Arthur:
+
+Features:
+
+-Added two opt-in vein patch count controls under Universal Settings in Galactic Scale's main settings panel that work uniformly across all generators (GS2Generator3, GS2Generator2, Sol, and external generators):
+
+1, Scale veins by planet size (ScaleVeinsBySize, off by default): scales solid-planet vein patch counts proportionally to planet surface area (Radius / 200)^2.
+
+2, Vein count multiplier (VeinCountMultiplier, 0.25–4.0, step 0.25, 1.0 by default): multiplies vein patch counts across solid planets independently or on top of surface-area scaling, capped at 4.0x so continents remain buildable and below land-packing saturation.
+
+-Added NiceSol, a new optional galaxy generator alongside Sol featuring a 1,000-star 3D catalog spanning all 88 IAU constellations and a dynamic, ephemeris-driven Solar System.
+
+Bugfix:
+
+-Fixed a NullReferenceException on the planet compute thread when starting a new game after changing galaxy preview settings or exiting a previous session.
+
+Changes by Devious:
+
+Bugfix:
+
+-Fixed planet detail UI spacing that wasn't right anymore after the latest DSP updates.
+
+-Fixed a minor invalid scanned records warning.
+
+-Added a surface integrity check on the active planet to ensure it is rendered properly even after teleports/fast-travels that could cause an unrendered planet.
+
+-Changed the seed randomizer again to ensure it continues randomizing after returning to the main menu.
+
+-Slightly changed how GS2 saving works to mitigate save overwrite failures.
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
 - Version 2.80.8 - Changelog:
 
 Bugfix: Fixes additional null errors while loading planets and fixes a mistake I made that caused problems with SampleAndHoldSim.
-
-Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
 
 - Version 2.80.7 - Changelog:
 
