@@ -89,11 +89,14 @@
         <ItemGroup>
             <None Remove="Assets\galaxy.json" />
             <EmbeddedResource Include="Assets\galaxy.json" />
+            <None Remove="Assets\constellations.json" />
+            <EmbeddedResource Include="Assets\constellations.json" />
             <EmbeddedResource Include="Translations\zh-CN.tsv" />
             <EmbeddedResource Remove="src\**" />
             <EmbeddedResource Remove="srcOLD\**" />
             <EmbeddedResource Remove="srcNEW\**" />
             <EmbeddedResource Remove="srcNewest\**" />
+            <EmbeddedResource Remove="Tools\**" />
         </ItemGroup>
     
         <ItemGroup>
@@ -101,6 +104,7 @@
             <Compile Remove="srcOLD\**" />
             <Compile Remove="srcNEW\**" />
             <Compile Remove="srcNewest\**" />
+            <Compile Remove="Tools\**" />
         </ItemGroup>
     
         <!-- Add a target to synchronize version numbers before build -->
