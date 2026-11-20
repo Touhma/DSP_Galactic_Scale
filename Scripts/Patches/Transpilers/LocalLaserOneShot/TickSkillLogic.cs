@@ -47,7 +47,7 @@ namespace GalacticScale
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LocalLaserOneShot), nameof(LocalLaserOneShot.TickSkillLogic))]
-        public static bool TickSkillLogic_Prefix(LocalLaserOneShot __instance, SkillSystem skillSystem)
+        public static bool TickSkillLogic_Prefix(ref LocalLaserOneShot __instance, SkillSystem skillSystem)
         {
             var factories = skillSystem?.astroFactories;
             var astroId = __instance.astroId;
