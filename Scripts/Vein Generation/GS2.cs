@@ -82,6 +82,8 @@ namespace GalacticScale
             var placedGroupNodes = preventOverlap ? new List<Vector3>[veinData.Count] : null;
             var nearbyGroups = preventOverlap ? new List<int>(8) : null;
             var startProtectedIndex = GSSettings.BirthPlanet == gsPlanet ? 2 : 0;
+            var hasBirthPoint = GSSettings.BirthPlanet == gsPlanet && planet.birthPoint != Vector3.zero;
+            var birthPointClearanceSq = 225f * tinyScaleSq; // 15.0m surface clearance around the starting Landing Capsule
             var planetRealRadius = Mathf.Max(20f, planet.realRadius > 0f ? planet.realRadius : planet.radius);
             var centerSearchRadius = 46f * Mathf.Sqrt(tinyScaleSq);
             var centerSearchSq = (centerSearchRadius / planetRealRadius) * (centerSearchRadius / planetRealRadius);
@@ -157,6 +159,9 @@ namespace GalacticScale
                     if (preventOverlap)
                     {
                         var surfacePosition = Utils.PositionAtSurface(rawPosition, gsPlanet);
+                        if (k > 0 && hasBirthPoint && i >= startProtectedIndex &&
+                            (surfacePosition - planet.birthPoint).sqrMagnitude < birthPointClearanceSq)
+                            continue;
                         if (k > 0 && nearbyGroups.Count > 0 &&
                             CollidesWithNearbyGroupNodes(surfacePosition, placedGroupNodes, nearbyGroups, minInterGroupNodeDistSq))
                             continue;
@@ -167,8 +172,12 @@ namespace GalacticScale
                     }
                     else
                     {
-                        EraseVegetableAtPoint(rawPosition, planet);
                         var veinPosition = Utils.PositionAtSurface(rawPosition, gsPlanet);
+                        if (k > 0 && hasBirthPoint && i >= startProtectedIndex &&
+                            (veinPosition - planet.birthPoint).sqrMagnitude < birthPointClearanceSq)
+                            continue;
+
+                        EraseVegetableAtPoint(rawPosition, planet);
                         //if (!Utils.IsUnderWater(veinPosition, gsPlanet))
                         // GS2.Warn("Adding Vein To Planet");
                         AddVeinToPlanet(veinAmount, veinType, veinPosition, (short)i, planet);
@@ -227,7 +236,11 @@ namespace GalacticScale
             var groupVector = new Vector3();
             groupVector = InitVeinGroupVector(planet, birth); //Random Vector, unless its birth planet.
             var veinGroups = DistributeVeinTypes(gsPlanet);
-            var birthVectors = birth ? new[] { planet.birthResourcePoint0, planet.birthResourcePoint1 } : null;
+            var birthVectors = birth
+                ? (planet.birthPoint != Vector3.zero
+                    ? new[] { planet.birthResourcePoint0, planet.birthResourcePoint1, planet.birthPoint.normalized }
+                    : new[] { planet.birthResourcePoint0, planet.birthResourcePoint1 })
+                : null;
             gsPlanet.planetData.veinGroups = new VeinGroup[veinGroups.Count];
             var veinTotals = new Dictionary<EVeinType, int>();
             for (var i = 0; i < veinGroups.Count; i++)
