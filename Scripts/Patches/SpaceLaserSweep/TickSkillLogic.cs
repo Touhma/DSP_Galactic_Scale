@@ -16,7 +16,7 @@ namespace GalacticScale
         public static bool FactoryReady(SkillSystem skillSystem, int astroId)
         {
             var factory = GetFactory(skillSystem, astroId);
-            return factory?.planet?.factoryLoaded == true &&
+            return factory?.planet != null &&
                    factory.enemyPool != null && factory.craftPool != null &&
                    factory.entityPool != null && factory.vegePool != null &&
                    factory.veinPool != null;

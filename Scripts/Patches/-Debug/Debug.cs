@@ -700,13 +700,31 @@ namespace GalacticScale
                         EnemyDFHiveSystem enemyDFHiveSystem2 = new EnemyDFHiveSystem();
                         enemyDFHiveSystem2.Init(__instance.gameData, __instance.galaxy.stars[num4].id, 0);
                         enemyDFHiveSystem2.Import(r);
-                        if (enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius > __instance.galaxy.stars[num4].systemRadius)
+                        var star = __instance.galaxy.stars[num4];
+                        var minimumHiveOrbit = star.radius * 800f / 40000f + 0.1f;
+                        if (enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius > star.systemRadius ||
+                            enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius < minimumHiveOrbit)
                         {
-                            Warn($"DFHive orbit radius is larger than {__instance.galaxy.stars[num4].name} system radius {enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius} > {__instance.galaxy.stars[num4].systemRadius}");
+                            Warn($"DFHive orbit radius is outside the safe range for {star.name}: " +
+                                 $"{enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius} AU " +
+                                 $"(star clearance {minimumHiveOrbit}, system radius {star.systemRadius})");
                             var orbit = ra.ItemAndRemove(possibleOrbits);
                             Warn($"New Orbit Radius = {orbit}");
                             enemyDFHiveSystem2.hiveAstroOrbit.orbitRadius = orbit;
+							enemyDFHiveSystem2.hiveAstroOrbit.orbitalPeriod = Utils.CalculateOrbitPeriod(orbit);
 							enemyDFHiveSystem2.orbitRadius = orbit * 40000f; // Convert from AU to m
+                        }
+
+                        var hiveOrbit = enemyDFHiveSystem2.hiveAstroOrbit;
+                        if (Math.Abs(hiveOrbit.orbitInclination) <= 1f &&
+                            hiveOrbit.orbitLongitude >= 0f && hiveOrbit.orbitLongitude <= 1f &&
+                            hiveOrbit.orbitPhase >= 0f && hiveOrbit.orbitPhase <= 1f)
+                        {
+                            var orientationRandom = new GS2.Random(
+                                GS2.Random.Mix(enemyDFHiveSystem2.seed, enemyDFHiveSystem2.hiveAstroId, 0x48495645));
+                            GS2.SetHiveOrbitOrientation(hiveOrbit, orientationRandom);
+                            Warn($"Repaired legacy near-aligned Dark Fog hive orbit for {star.name} " +
+                                 $"(astro {enemyDFHiveSystem2.hiveAstroId})");
                         }
                         
 

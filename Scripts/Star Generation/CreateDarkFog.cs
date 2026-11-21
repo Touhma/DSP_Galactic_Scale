@@ -138,50 +138,77 @@ namespace GalacticScale
                 var orbit = random.ItemAndRemove(possibleHiveOrbits);
                 hiveAstroOrbits[i].orbitRadius = orbit;
                 // Warn($"Created Hive Orbit at {star.name} {Utils.Round2DP(hiveAstroOrbits[i].orbitRadius)}");
-                hiveAstroOrbits[i].orbitInclination = random.NextFloat();
-                hiveAstroOrbits[i].orbitLongitude = random.NextFloat();
-                hiveAstroOrbits[i].orbitPhase = random.NextFloat();
+                SetHiveOrbitOrientation(hiveAstroOrbits[i], random);
                 hiveAstroOrbits[i].orbitalPeriod = Utils.CalculateOrbitPeriod(hiveAstroOrbits[i].orbitRadius);
-                hiveAstroOrbits[i].orbitRotation = Quaternion.AngleAxis(hiveAstroOrbits[i].orbitLongitude, Vector3.up) *
-                                                   Quaternion.AngleAxis(hiveAstroOrbits[i].orbitInclination,
-                                                       Vector3.forward);
-                hiveAstroOrbits[i].orbitNormal =
-                    Maths.QRotateLF(hiveAstroOrbits[i].orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
             }
             // Log($"Darkfog Hive Orbits Generated for {gsStar.Name}");
         }
 
+        public static void SetHiveOrbitOrientation(AstroOrbitData orbit, Random random)
+        {
+            var inclinationSample = random.NextDouble() * 2.0 - 1.0;
+            orbit.orbitInclination = (float)(Math.Sign(inclinationSample) *
+                                             Math.Pow(Math.Abs(inclinationSample), 0.7) * 90.0);
+            orbit.orbitLongitude = random.NextFloat(360f);
+            orbit.orbitPhase = random.NextFloat(360f);
+            orbit.orbitRotation = Quaternion.AngleAxis(orbit.orbitLongitude, Vector3.up) *
+                                  Quaternion.AngleAxis(orbit.orbitInclination, Vector3.forward);
+            orbit.orbitNormal = Maths.QRotateLF(orbit.orbitRotation, new VectorLF3(0f, 1f, 0f)).normalized;
+        }
+
         public static List<float> GeneratePossibleHiveOrbits(GSStar gsStar, int count = 10, Random random = null)
         {
-            if (gsStar.PlanetCount == 0 || gsStar.Decorative) return new List<float>{1f,2f,3f,4f,5f,6f,7f,8f};
+            var minimumHiveOrbit = Mathf.Max(0f, gsStar.RadiusAU + 0.1f);
+            var orbitCount = Mathf.Max(0, count - 1);
+            if (gsStar.PlanetCount == 0 || gsStar.Decorative)
+            {
+                var fallbackOrbits = new List<float>(orbitCount);
+                for (var i = 1; i <= orbitCount; i++)
+                    fallbackOrbits.Add(minimumHiveOrbit + i * 0.5f);
+                return fallbackOrbits;
+            }
+
             List<(float inner, float outer)> ExistingOrbits = new();
             List<(float inner, float outer)> ExistingGaps = new();
             List<float> PossibleOrbits = new();
-            var MaxOrbit = gsStar.SystemRadius;//gsStar.luminosity * 2f;
+            var MaxOrbit = Mathf.Max(gsStar.SystemRadius, minimumHiveOrbit + 1f);//gsStar.luminosity * 2f;
             if (random == null) random = new Random(Mathf.CeilToInt( gsStar.luminosity*gsStar.age*gsStar.SystemRadius));
             foreach (GSPlanet p in gsStar.Planets)
             {
                 ExistingOrbits.Add((p.OrbitRadius-p.SystemRadius, p.OrbitRadius+p.SystemRadius));
             }
-            if (ExistingOrbits[0].inner > gsStar.RadiusAU + 0.1f) ExistingGaps.Add((gsStar.RadiusAU+0.1f, ExistingOrbits[0].inner));
+            ExistingOrbits.Sort((left, right) => left.inner.CompareTo(right.inner));
+            if (ExistingOrbits.Count == 0)
+            {
+                for (var i = 1; i <= orbitCount; i++)
+                    PossibleOrbits.Add(minimumHiveOrbit + i * 0.5f);
+                return PossibleOrbits;
+            }
+
+            if (ExistingOrbits[0].inner > minimumHiveOrbit + 0.1f)
+                ExistingGaps.Add((minimumHiveOrbit, ExistingOrbits[0].inner));
             for (var i=0;i<ExistingOrbits.Count-1;i++)
             {
-                ExistingGaps.Add((ExistingOrbits[i].outer, ExistingOrbits[i+1].inner));
+                var gapInner = Mathf.Max(ExistingOrbits[i].outer, minimumHiveOrbit);
+                var gapOuter = ExistingOrbits[i+1].inner;
+                if (gapOuter - gapInner > 0.1f)
+                    ExistingGaps.Add((gapInner, gapOuter));
             }
 
 
-            if (ExistingOrbits[ExistingOrbits.Count -1].outer < MaxOrbit)
+            var outerGapInner = Mathf.Max(ExistingOrbits[ExistingOrbits.Count -1].outer, minimumHiveOrbit);
+            if (outerGapInner < MaxOrbit)
             {
-                ExistingGaps.Add((ExistingOrbits[ExistingOrbits.Count - 1].outer, MaxOrbit));
+                ExistingGaps.Add((outerGapInner, MaxOrbit));
             }
-            for (var i = 0; i < count - 1; i++)
+            for (var i = 0; i < orbitCount; i++)
             {
                 if (ExistingGaps.Count == 0)
                 {
                     // GS2.Error($"No Existing Gaps! Cycle:{i}/{count} Possible Orbits: {PossibleOrbits.Count} Existing Orbits: {ExistingOrbits.Count} Existing Gaps: {ExistingGaps.Count}");
                     // LogJson(ExistingOrbits);
                     // GS2.Warn("Adding Extra Orbit Gap");
-                    var oldMaxOrbit = MaxOrbit;
+                    var oldMaxOrbit = Mathf.Max(MaxOrbit, minimumHiveOrbit);
                     MaxOrbit += 5f;
                     ExistingGaps.Add((oldMaxOrbit, MaxOrbit));
                 }
