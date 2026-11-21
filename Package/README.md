@@ -1,6 +1,30 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.10 - Changelog:
+
+Changes by Komonad:
+
+Bugfix:
+
+-Fixed one-shot ground laser entries accumulating when their planet factory is unavailable. Thanks Komonad for catching my mistake here.
+
+Changes by Devious:
+
+Bugfixes and alterations:
+
+-Tweaked combat skill updates during planet loading to prevent some potential null errors and redid a few changes I made previously that might've affected combat on planets you weren't on.
+
+-Fixed Dark Fog hive orbits clustering into nearly identical planes. Previous Unsafe re-mappings and legacy near-aligned orbits are corrected when loading saves. This will alter the orbits of most Dark Fog Hives to be more varied, so just be aware of that when you load in.
+
+-The starting planet theme selector is now disabled unless Starting Planet Unlock is enabled. This change and the batched construction one below were done previously, I just forgot to put them in previous changelogs. I really have got to organize better.
+
+Performance:
+
+-Batched construction terrain flattening to reduce building and blueprint cpu usage spikes on large planets.
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
 - Version 2.80.9 - Changelog:
 
 Changes by Kimi-Arthur:
@@ -32,8 +56,6 @@ Bugfix:
 -Changed the seed randomizer again to ensure it continues randomizing after returning to the main menu.
 
 -Slightly changed how GS2 saving works to mitigate save overwrite failures.
-
-Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
 
 - Version 2.80.8 - Changelog:
 

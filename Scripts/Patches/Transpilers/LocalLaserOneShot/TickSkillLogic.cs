@@ -49,17 +49,7 @@ namespace GalacticScale
         [HarmonyPatch(typeof(LocalLaserOneShot), nameof(LocalLaserOneShot.TickSkillLogic))]
         public static bool TickSkillLogic_Prefix(ref LocalLaserOneShot __instance, SkillSystem skillSystem)
         {
-            var factories = skillSystem?.astroFactories;
-            var astroId = __instance.astroId;
-            var factory = factories != null && astroId >= 0 && astroId < factories.Length
-                ? factories[astroId]
-                : null;
-
-            var factoryReady = factory?.planet != null && factory.planet.factoryLoaded &&
-                               factory.enemyPool != null && factory.craftPool != null &&
-                               factory.entityPool != null && factory.vegePool != null &&
-                               factory.veinPool != null;
-            if (factoryReady)
+            if (SpaceLaserFactoryReadiness.FactoryReady(skillSystem, __instance.astroId))
                 return true;
 
             __instance.life = 0;
