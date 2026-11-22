@@ -74,6 +74,17 @@ COLLOQUIAL_ZH = {
 
 PRIORITY_NEIGHBOR_HIPS = {70890, 87937, 114046}
 
+# 26 prominent naked-eye constellations (12 Zodiac + 14 iconic sky landmarks)
+# prioritized for smaller star budgets (e.g., 450-640 stars on mid-range PCs)
+PROMINENT_CONSTELLATIONS = {
+    # 12 Zodiac
+    "Ari", "Tau", "Gem", "Cnc", "Leo", "Vir",
+    "Lib", "Sco", "Sgr", "Cap", "Aqr", "Psc",
+    # 14 Iconic naked-eye landmarks (Orion, Big/Little Dipper, Cassiopeia, Summer Triangle, Southern Cross, etc.)
+    "Ori", "UMa", "UMi", "Cas", "Cyg", "Lyr", "Aql",
+    "Cru", "CMa", "Cen", "Per", "Aur", "Boo", "Peg",
+}
+
 CURATED_REMNANTS = [
     # 8 Black Holes
     {"nameEn": "Cygnus X-1", "nameZh": "天鹅座X-1 (天鹅座 HDE 226868)", "con": "Cyg", "starType": "BlackHole", "spectr": "X", "ra_h": 19.9727, "dec_d": 35.2017, "dist_ly": 7240.0, "mag": 8.95, "lum": 0.006, "temp": 0.0, "mass": 21.2, "radius": 4.0},
@@ -530,13 +541,28 @@ def main():
         if len(catalog) < args.count:
             try_add_optical(rec)
 
-    # Tier 2: Constellation stick-figure vertex stars + remaining curated remnants + additional O MainSeq stars
+    # Tier 2a: Prominent constellations' bright naked-eye stick-figure vertices (mag <= 4.5)
+    # Ensures recognizable outlines of all 12 Zodiac + 14 iconic constellations by ~350 stars.
     vertex_recs = sorted([r for r in hyg_by_mag if r["is_vertex"]], key=lambda r: r["mag"])
     for rec in vertex_recs:
         if len(catalog) >= args.count:
             break
-        try_add_optical(rec)
+        if rec["con"] in PROMINENT_CONSTELLATIONS and rec["mag"] <= 4.5:
+            try_add_optical(rec)
 
+    # Tier 2b: Remaining bright naked-eye stars (mag <= 4.0) in prominent constellations
+    # (e.g., Pleiades/Alcyone, Lesath, Hatysa, Alniyat, Albaldah, Almaaz, Haedus, Subra).
+    for rec in hyg_by_mag:
+        if len(catalog) >= args.count:
+            break
+        if rec["mag"] > 4.0:
+            break
+        if rec["con"] in PROMINENT_CONSTELLATIONS:
+            try_add_optical(rec)
+
+    # Tier 3a: Remaining curated remnants (all 26 BH/NS/WD) + additional O MainSeq stars
+    # + all remaining bright naked-eye stars (mag <= 4.0) across the rest of the sky.
+    # By ~455 stars, 100% of the mag <= 4.0 sky + all 26 remnants + all 26 prominent outlines are present.
     for rem in bhs[3:] + nss[3:] + wds[3:]:
         if len(catalog) < args.count:
             catalog.append(rem)
@@ -545,7 +571,36 @@ def main():
         if len(catalog) < args.count:
             try_add_optical(rec)
 
-    # Tier 3: Fill remainder to exact target count with brightest stars overall
+    for rec in hyg_by_mag:
+        if len(catalog) >= args.count:
+            break
+        if rec["mag"] > 4.0:
+            break
+        try_add_optical(rec)
+
+    # Tier 3b: Bright stick-figure vertices (mag <= 4.5) of the remaining 62 constellations
+    for rec in vertex_recs:
+        if len(catalog) >= args.count:
+            break
+        if rec["mag"] <= 4.5:
+            try_add_optical(rec)
+
+    # Tier 4a: Remaining prominent-constellation naked-eye stars (4.0 < mag <= 4.5)
+    for rec in hyg_by_mag:
+        if len(catalog) >= args.count:
+            break
+        if rec["mag"] > 4.5:
+            break
+        if rec["con"] in PROMINENT_CONSTELLATIONS:
+            try_add_optical(rec)
+
+    # Tier 4b: Remaining faint stick-figure vertices (mag > 4.5) across obscure constellations
+    for rec in vertex_recs:
+        if len(catalog) >= args.count:
+            break
+        try_add_optical(rec)
+
+    # Tier 4c: Fill remainder to exact target count with brightest stars overall
     for rec in hyg_by_mag:
         if len(catalog) >= args.count:
             break
