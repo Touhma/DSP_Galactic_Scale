@@ -516,7 +516,7 @@ namespace GalacticScale.Generators
         {
             var maxHostBound = Mathf.Clamp(host.Radius - 10, 30, 510);
             var radius = Utils.ParsePlanetSize(starRng.Next(30, Math.Max(31, maxHostBound)));
-            if (preferences.GetBool("moonsAreSmall", true) && radius > 200) radius = starRng.Next(30, 190);
+            if (preferences.GetBool("moonsAreSmall", true) && radius > 200) radius = Utils.ParsePlanetSize(starRng.Next(30, 190));
 
             var moonThemes = GSSettings.ThemeLibrary.Query(EThemeType.Moon, themeHeat, radius);
             var theme = moonThemes.Count > 0 ? moonThemes[starRng.Next(moonThemes.Count)] : "BarrenSatellite";
