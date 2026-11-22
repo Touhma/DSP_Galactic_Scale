@@ -27,7 +27,7 @@ namespace GalacticScale.Generators
         {
             Config.MinStarCount = 32;
             Config.MaxStarCount = 1000;
-            Config.DefaultStarCount = 1000;
+            Config.DefaultStarCount = 500;
 
             var todayDefault = DateTime.UtcNow.ToString("yyyy-MM-dd");
             UI_epochDate = Options.Add(GSUI.Input("Epoch Date (YYYY-MM-DD)".Translate(), todayDefault, "epochDate", null,
