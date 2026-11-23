@@ -72,6 +72,7 @@ namespace GalacticScale
 			{
 				__instance.cloudSimulator.OnLateUpdate();
 			}
+			PlanetaryRingSystem.UpdateShadow(__instance);
 			if (__instance.oceanMat != null)
 			{
 				if (__instance.oceanRenderQueue > 2987)
