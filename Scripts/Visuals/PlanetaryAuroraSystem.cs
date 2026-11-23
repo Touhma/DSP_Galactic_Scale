@@ -51,9 +51,9 @@ namespace GalacticScale
 
                 var r = Mathf.Max(20f, planet.realRadius);
                 var isGas = planet.type == EPlanetType.Gas;
-                // Hug the upper atmospheric limb (realistic ISS proportion from space while staying above trees/clouds on surface)
-                var lowAlt = isGas ? r * 1.022f : r + Mathf.Clamp(r * 0.036f, 12f, 22f);
-                var highAlt = isGas ? r * 1.072f : r + Mathf.Clamp(r * 0.104f, 36f, 58f);
+                // Hug the upper atmospheric limb proportionally on all planet sizes (including tiny worlds)
+                var lowAlt = isGas ? r * 1.022f : r + Mathf.Min(r * 0.036f, 22f);
+                var highAlt = isGas ? r * 1.072f : r + Mathf.Min(r * 0.104f, 58f);
 
                 var go = new GameObject(AuroraObjectName)
                 {
@@ -127,8 +127,11 @@ namespace GalacticScale
             var trans = simulator.transform.Find(AuroraObjectName);
             if (trans == null) return;
 
+            var planet = simulator.planetData;
             var starmapOpen = UIRoot.instance != null && UIRoot.instance.uiGame != null && UIRoot.instance.uiGame.starmap != null && UIRoot.instance.uiGame.starmap.active;
-            if (!GS2.Config.PlanetaryAuroras || starmapOpen)
+            var planetVisible = planet.star == GameMain.localStar
+                && (planet.type == EPlanetType.Gas || (planet.loaded && !planet.loading && planet.bodyObject != null && planet.bodyObject.activeInHierarchy));
+            if (!GS2.Config.PlanetaryAuroras || starmapOpen || !planetVisible)
             {
                 if (trans.gameObject.activeSelf) trans.gameObject.SetActive(false);
                 return;
@@ -143,7 +146,6 @@ namespace GalacticScale
             if (now - state.LastUpdateTime < 0.04f) return; // ~25 Hz butter-smooth ethereal morphing
             state.LastUpdateTime = now;
 
-            var planet = simulator.planetData;
             var gameSec = GameMain.gameTick / 60.0;
 
             // Multi-period quasi-periodic geomagnetic storm envelope (not always on!).
@@ -203,6 +205,19 @@ namespace GalacticScale
             var heightSpan = state.HighRadius - state.LowRadius;
             var stripVerts = (Segments + 1) * 2;
 
+            // Analytic planet-sphere occlusion when viewed from space (prevents back-side aurora bleeding through gas giants / non-ZWrite planets)
+            var useSpaceOcclusion = GameMain.localPlanet != planet && Camera.main != null;
+            var camLocal = Vector3.zero;
+            var occRadiusSq = 0f;
+            if (useSpaceOcclusion)
+            {
+                camLocal = trans.InverseTransformPoint(Camera.main.transform.position);
+                var occR = planet.realRadius * 0.985f;
+                occRadiusSq = occR * occR;
+                if (camLocal.sqrMagnitude <= occRadiusSq * 1.02f)
+                    useSpaceOcclusion = false;
+            }
+
             for (var pole = 0; pole < 2; pole++)
             {
                 var sign = pole == 0 ? 1f : -1f;
@@ -250,9 +265,16 @@ namespace GalacticScale
                         var lowPos = dir * lowR;
                         var highPos = dir * highR;
 
-                        // Night-side / deep twilight visibility mask
+                        // Night-side / deep twilight visibility mask + analytic planet-limb occlusion from space
                         var sunDot = Vector3.Dot(dir, sunDirLocal);
                         var nightMask = 1f - SmoothStep01(-0.18f, 0.08f, sunDot);
+                        var occLow = 1f;
+                        var occHigh = 1f;
+                        if (useSpaceOcclusion)
+                        {
+                            if (IsOccludedByPlanet(camLocal, lowPos, occRadiusSq)) occLow = 0f;
+                            if (IsOccludedByPlanet(camLocal, highPos, occRadiusSq)) occHigh = 0f;
+                        }
 
                         // Localized slow blooming & fading brightness patches (standing waves, not fast scrolling)
                         var bloom1 = Mathf.Sin(a * 3f + 0.5f) * Mathf.Sin(t * 0.11f + layerPhase);
@@ -260,8 +282,8 @@ namespace GalacticScale
                         var rippleLow = Mathf.Clamp01(0.56f + 0.26f * bloom1 + 0.18f * bloom2);
                         var rippleHigh = Mathf.Clamp01(0.54f + 0.24f * bloom1 + 0.20f * Mathf.Cos(a * 7f + 0.9f) * Mathf.Sin(t * 0.15f + layerPhase));
 
-                        var alphaLow = stormStrength * nightMask * rippleLow * 0.90f * layerAlphaMul;
-                        var alphaHigh = stormStrength * nightMask * rippleHigh * 0.74f * layerAlphaMul;
+                        var alphaLow = stormStrength * nightMask * rippleLow * 0.90f * layerAlphaMul * occLow;
+                        var alphaHigh = stormStrength * nightMask * rippleHigh * 0.74f * layerAlphaMul * occHigh;
 
                         // Localized palette variation along the curtain (green/cyan base + occasional pink N2 edge + rose/violet O(630nm) crown)
                         var localPatch = 0.5f + 0.5f * Mathf.Sin(a * 2f + t * 0.015f + layerPhase);
@@ -308,6 +330,18 @@ namespace GalacticScale
             state.Mesh.vertices = verts;
             state.Mesh.uv = uvs;
             state.Mesh.colors32 = colors;
+        }
+
+        private static bool IsOccludedByPlanet(Vector3 camLocal, Vector3 ptLocal, float occRadiusSq)
+        {
+            var seg = ptLocal - camLocal;
+            var segLenSq = seg.sqrMagnitude;
+            if (segLenSq < 1e-4f) return false;
+            // Closest point on segment [camLocal, ptLocal] to planet center (0,0,0)
+            var t = -Vector3.Dot(camLocal, seg) / segLenSq;
+            if (t <= 0f || t >= 1f) return false;
+            var closest = camLocal + seg * t;
+            return closest.sqrMagnitude < occRadiusSq;
         }
 
         private static bool ShouldHaveAurora(PlanetData planet)
