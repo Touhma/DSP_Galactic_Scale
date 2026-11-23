@@ -27,7 +27,7 @@ namespace GalacticScale
                         // $"Magnitude:{magnitude}, NearestStar TransitionRadius:{(nearestStar.systemRadius + 2) * 40000}");
                     // num = 3600000.0;
                     double num = (nearestStar.systemRadius + 2) * 40000;
-                    if (magnitude > num * 0.5) nearestStar = null;
+                    if (magnitude > num * 1.05) nearestStar = null;
                 }
             }
 

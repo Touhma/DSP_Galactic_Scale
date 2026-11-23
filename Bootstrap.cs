@@ -143,6 +143,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
                 harmony.PatchAll(typeof(PatchOnStarGen));
                 harmony.PatchAll(typeof(PatchOnStarSimulator));
+                harmony.PatchAll(typeof(PatchOnCometOrbits));
                 harmony.PatchAll(typeof(PatchOnStationComponent));
                 harmony.PatchAll(typeof(RemoteShipStuckRecovery));
                 harmony.PatchAll(typeof(MoreMegaStructuresCompatibility));

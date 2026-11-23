@@ -31,6 +31,7 @@ namespace GalacticScale
 
                 if (__instance.cloudSimulator != null) __instance.cloudSimulator.gameObject.layer = 0;
 
+                CometSystem.SyncLayer(__instance);
                 __instance.layerSet = true;
             }
 

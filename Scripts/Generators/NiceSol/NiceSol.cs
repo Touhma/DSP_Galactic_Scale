@@ -75,6 +75,8 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 100, 400, 500, "birthPlanetSize"));
             Options.Add(GSUI.Checkbox("Birth planet Si/Ti".Translate(), false, "birthPlanetSiTi"));
             Options.Add(GSUI.Checkbox("Moons are small".Translate(), true, "moonsAreSmall"));
+            Options.Add(GSUI.Selector("Solar System Comets".Translate(), new List<string> { "Elliptical", "Circular", "Off" }, "Elliptical", "solarComets", null,
+                "Halley & Hale-Bopp with anti-solar tails".Translate()));
         }
 
         public void Generate(int starCount, StarData birthStar = null)
@@ -370,6 +372,41 @@ namespace GalacticScale.Generators
                 plutoPose.orbitInclination, plutoT, plutoPose.orbitPhase, 122.53f,
                 charonT, 0f, 0.0009f, new GSPlanets { charon })
             { OrbitLongitude = plutoPose.orbitLongitude, Scale = 1f });
+
+            // 11-12. Famous Solar System Comets (optional: Elliptical / Circular / Off)
+            var cometMode = preferences.GetString("solarComets", "Elliptical");
+            if (!string.Equals(cometMode, "Off", StringComparison.OrdinalIgnoreCase))
+            {
+                var elliptical = string.Equals(cometMode, "Elliptical", StringComparison.OrdinalIgnoreCase);
+
+                // 1P/Halley: retrograde 162.3 deg inclination, placed near perihelion (~1.15 AU) close to Earth's sky
+                // so players can spot a glowing comet & tail from Earth at game start!
+                var halleyRadiusAU = elliptical ? 3.05f : 1.20f;
+                var halleyPhase = elliptical ? 9.5f : NiceSolEphemeris.NormalizeDeg(earth.OrbitPhase + 10.0);
+                var halleyOrbitLong = elliptical
+                    ? NiceSolEphemeris.NormalizeDeg(earth.OrbitLongitude + earth.OrbitPhase - 111.3 - 14.0)
+                    : earth.OrbitLongitude;
+                var halleyPeriod = -ComputeSolPeriod(halleyRadiusAU, orbitSpeedMulti); // negative = retrograde
+                planets.Add(new GSPlanet(
+                    SolBodyName(useChinese, "Halley's Comet", "哈雷彗星"), "Comet", 30, halleyRadiusAU,
+                    17.7f, halleyPeriod, halleyPhase, 25f,
+                    900f * dayNightMulti, 0f, 0.25f, null)
+                { OrbitLongitude = halleyOrbitLong, Scale = 1f });
+
+                // C/1995 O1 Hale-Bopp: iconic near-perpendicular 89.4 deg inclination
+                var haleBoppPhase = NiceSolEphemeris.NormalizeDeg(((jd - 2450539.5) / (2533.0 * 365.25)) * 360.0 + 35.0);
+                var haleBoppRadiusAU = elliptical ? 3.90f : 4.85f;
+                var haleBoppPeriod = ComputeSolPeriod(haleBoppRadiusAU, orbitSpeedMulti);
+                planets.Add(new GSPlanet(
+                    SolBodyName(useChinese, "Hale-Bopp", "海尔-波普彗星"), "Comet", 30, haleBoppRadiusAU,
+                    89.4f, haleBoppPeriod, haleBoppPhase, 40f,
+                    1100f * dayNightMulti, 0f, 0.20f, null)
+                { OrbitLongitude = 282.5f, Scale = 1f });
+            }
+
+            // Keep Sol.Planets sorted by ascending OrbitRadius so Pluto (9.07 AU) remains the last/outermost body
+            // and DSP's StarData.systemRadius (which reads planets[last].orbitRadius) is 9.07 AU instead of Hale-Bopp's 3.90 AU!
+            planets.Sort((a, b) => a.OrbitRadius.CompareTo(b.OrbitRadius));
 
             return earth;
         }

@@ -405,7 +405,13 @@ namespace GalacticScale
             get
             {
                 if (PlanetCount == 0) return 0;
-                return Planets[Planets.Count - 1].OrbitOutermostSystemRadiusAU + 1;
+                var maxR = 0f;
+                for (var i = 0; i < Planets.Count; i++)
+                {
+                    var r = Planets[i].OrbitOutermostSystemRadiusAU;
+                    if (r > maxR) maxR = r;
+                }
+                return maxR + 1;
             }
         }
     }
