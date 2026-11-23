@@ -45,6 +45,7 @@ namespace GalacticScale
         public bool ForceRare => Preferences.GetBool("Force Rare Spawn");
         public bool ScaleVeinsBySize => Preferences.GetBool("ScaleVeinsBySize", false);
         public float VeinCountMultiplier => Mathf.Clamp(Preferences.GetFloat("VeinCountMultiplier", 1f), 0.25f, 4f);
+        public bool PlanetaryAuroras => Preferences.GetBool("PlanetaryAuroras", true);
         public bool DebugMode => Preferences.GetBool("Debug Log", false);
         public bool GenLog => Preferences.GetBool("Generator Log", false);
         public bool NewGravity => Preferences.GetBool("New Gravity", false);
@@ -223,6 +224,7 @@ namespace GalacticScale
             var UniversalOptions = new GSOptions();
             UniversalOptions.Add(GSUI.Checkbox("Scale veins by planet size".Translate(), false, "ScaleVeinsBySize", null, "Scale vein patch count by planet area".Translate()));
             UniversalOptions.Add(GSUI.Slider("Vein count multiplier".Translate(), 0.25f, 1f, 4f, 0.25f, "VeinCountMultiplier", null, "Multiplies vein patches per planet, 1x = vanilla".Translate()));
+            UniversalOptions.Add(GSUI.Checkbox("Planetary Auroras".Translate(), true, "PlanetaryAuroras", null, "Periodic polar auroras on night side".Translate()));
             UniversalOptions.Add(GSUI.Spacer());
             UniversalOptions.Add(GSUI.Group("Quality of Life".Translate(), GameOptions, "Useful settings".Translate()));
             Options.Add(GSUI.Group("Universal Settings".Translate(), UniversalOptions));

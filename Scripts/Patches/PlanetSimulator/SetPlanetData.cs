@@ -58,6 +58,7 @@ namespace GalacticScale
             ___lookCamera = Camera.main.transform;
             ___universe = GameMain.universeSimulator;
             ___star = ___universe.FindStarSimulator(planet.star);
+            PlanetaryAuroraSystem.AttachToPlanetSimulator(__instance, planet);
 
             return false;
         }
