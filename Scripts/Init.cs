@@ -43,6 +43,7 @@ namespace GalacticScale
         public static Dictionary<int, GSPlanet> gsPlanets = new();
         public static Dictionary<int, GSStar> gsStars = new();
         private static AssetBundle bundle;
+        private static AssetBundle bundle2;
 
         //Nebula 
         private static Button.ButtonClickedEvent origHost;
@@ -72,6 +73,24 @@ namespace GalacticScale
                 }
 
                 return bundle;
+            }
+        }
+
+        public static AssetBundle Bundle2
+        {
+            get
+            {
+                if (bundle2 == null)
+                {
+                    var path = Path.Combine(AssemblyPath, "galacticbundle2");
+                    if (File.Exists(path))
+                    {
+                        bundle2 = AssetBundle.LoadFromFile(path);
+                        if (bundle2 == null) Warn("Could not load optional AssetBundle 'galacticbundle2'.");
+                    }
+                }
+
+                return bundle2;
             }
         }
 
@@ -219,6 +238,13 @@ namespace GalacticScale
                 Error($"{filepath} not found");
             else
                 Utils.AddSwapShaderMapping("Unlit/Planet ATField Shape", planetATFieldShader);
+
+            const string orbitShaderPath = "assets/planetorbit_elliptical.shader";
+            var optionalBundle = Bundle2;
+            if (optionalBundle == null) return;
+            var orbitShader = optionalBundle.LoadAsset<Shader>(orbitShaderPath);
+            if (orbitShader != null)
+                Utils.AddSwapShaderMapping("Universe/Starmap/Planet Orbit", orbitShader);
         }
         
     }

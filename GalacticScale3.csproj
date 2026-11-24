@@ -80,6 +80,10 @@
                 <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
                 <TargetPath>.\galacticbundle</TargetPath>
             </None>
+            <None Update="Package\galacticbundle2" Condition="Exists('Package\galacticbundle2')">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                <TargetPath>.\galacticbundle2</TargetPath>
+            </None>
             <None Remove="src\**" />
             <None Remove="srcOLD\**" />
             <None Remove="srcNEW\**" />

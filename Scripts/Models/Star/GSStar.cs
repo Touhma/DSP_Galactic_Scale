@@ -400,13 +400,18 @@ namespace GalacticScale
             return clone;
         }
 
-        public float SystemRadius
+        internal float OutermostOrbitRadius
         {
             get
             {
-                if (PlanetCount == 0) return 0;
-                return Planets[Planets.Count - 1].OrbitOutermostSystemRadiusAU + 1;
+                var extent = 0f;
+                if (Planets == null) return extent;
+                foreach (var planet in Planets)
+                    if (planet != null) extent = Mathf.Max(extent, planet.OrbitOutermostSystemRadiusAU);
+                return extent;
             }
         }
+
+        public float SystemRadius => PlanetCount == 0 ? 0f : OutermostOrbitRadius + 1f;
     }
 }
