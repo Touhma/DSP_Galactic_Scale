@@ -18,6 +18,8 @@ namespace GalacticScale
         private float orbitLongitude = -1;
         private float orbitPhase = -1;
         private float orbitRadius = -1;
+        private float orbitEccentricity;
+        private float orbitArgumentOfPeriapsis;
 
         [NonSerialized] public PlanetData planetData;
 
@@ -137,6 +139,20 @@ namespace GalacticScale
         {
             get => orbitLongitude < 0 ? InitOrbitLongitude() : orbitLongitude;
             set => orbitLongitude = value;
+        }
+
+        [SerializeField]
+        public float OrbitEccentricity
+        {
+            get => orbitEccentricity;
+            set => orbitEccentricity = float.IsNaN(value) ? 0f : Mathf.Clamp(value, 0f, 0.999f);
+        }
+
+        [SerializeField]
+        public float OrbitArgumentOfPeriapsis
+        {
+            get => orbitArgumentOfPeriapsis;
+            set => orbitArgumentOfPeriapsis = float.IsNaN(value) || float.IsInfinity(value) ? 0f : Mathf.Repeat(value, 360f);
         }
 
         [SerializeField]
@@ -260,29 +276,15 @@ namespace GalacticScale
         {
             get
             {
-                var mds = MostDistantSatellite;
-                if (mds == this)
-                    //GS2.Log($"{Name} Most Distant is itself");
-                    return RadiusAU;
-                var p = this;
-                var c = 0;
-                float rad = 0;
-                while (p != mds || c < 99)
-                {
-                    //GS2.Log($"p:{p.Name} while. MDS:{mds.Name} MoonCount : {p.MoonCount} {p.MoonsCount} {p.Moons.Count}");
-                    c++;
-                    var moon = p.Moons[p.MoonCount - 1];
-                    rad += moon.OrbitRadius;
-                    p = moon;
-                    if (p == mds) break;
-                }
-
-                //GS2.Log($"{Name} most distant:{mds.Name} its RadiusAU:{mds.RadiusAU} its OrbitRadius:{mds.OrbitRadius}");
-                return rad + mds.RadiusAU;
+                var extent = RadiusAU;
+                if (Moons == null) return extent;
+                foreach (var moon in Moons)
+                    if (moon != null) extent = Mathf.Max(extent, moon.OrbitOutermostSystemRadiusAU);
+                return extent;
             }
         }
 
-        public float OrbitOutermostSystemRadiusAU => orbitRadius + SystemRadius;
+        public float OrbitOutermostSystemRadiusAU => Mathf.Max(0f, orbitRadius) * (1f + OrbitEccentricity) + SystemRadius;
         public float OrbitInnermostSystemRadiusAU => orbitRadius - SystemRadius;
         public float OrbitOutermostSurfaceRadiusAU => orbitRadius + RadiusAU;
         public float OrbitInnermostSurfaceRadiusAU => orbitRadius - RadiusAU;

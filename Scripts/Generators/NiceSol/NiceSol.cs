@@ -75,6 +75,8 @@ namespace GalacticScale.Generators
             Options.Add(GSUI.PlanetSizeSlider("Starting planet size".Translate(), 100, 400, 500, "birthPlanetSize"));
             Options.Add(GSUI.Checkbox("Birth planet Si/Ti".Translate(), false, "birthPlanetSiTi"));
             Options.Add(GSUI.Checkbox("Moons are small".Translate(), true, "moonsAreSmall"));
+            Options.Add(GSUI.Selector("Solar System Comets".Translate(), new List<string> { "Elliptical", "Circular", "Off" }, "Elliptical", "solarComets", null,
+                "Halley & Hale-Bopp with anti-solar tails".Translate()));
         }
 
         public void Generate(int starCount, StarData birthStar = null)
@@ -371,7 +373,47 @@ namespace GalacticScale.Generators
                 charonT, 0f, 0.0009f, new GSPlanets { charon })
             { OrbitLongitude = plutoPose.orbitLongitude, Scale = 1f });
 
+            AddSolarComets(planets, earth, jd, useChinese, orbitSpeedMulti, dayNightMulti);
             return earth;
+        }
+
+        private void AddSolarComets(GSPlanets planets, GSPlanet earth, double jd, bool useChinese, float orbitSpeedMulti, float dayNightMulti)
+        {
+            var mode = preferences.GetString("solarComets", "Elliptical");
+            if (string.Equals(mode, "Off", StringComparison.OrdinalIgnoreCase)) return;
+
+            var elliptical = string.Equals(mode, "Elliptical", StringComparison.OrdinalIgnoreCase);
+            const float halleyPeriapsis = 111.3f;
+            var halleyRadius = elliptical ? 3.05f : 1.20f;
+            var halleyPhase = elliptical ? 9.5f : NiceSolEphemeris.NormalizeDeg(earth.OrbitPhase + 10.0);
+            var halleyLongitude = elliptical
+                ? NiceSolEphemeris.NormalizeDeg(earth.OrbitLongitude + earth.OrbitPhase - halleyPeriapsis - 14.0)
+                : earth.OrbitLongitude;
+
+            // Append after Pluto so the existing bodies keep their IDs.
+            planets.Add(new GSPlanet(
+                SolBodyName(useChinese, "Halley's Comet", "哈雷彗星"), "Comet", 30, halleyRadius,
+                17.7f, -ComputeSolPeriod(halleyRadius, orbitSpeedMulti), halleyPhase, 25f,
+                900f * dayNightMulti, 0f, 0.25f)
+            {
+                OrbitLongitude = halleyLongitude,
+                OrbitEccentricity = elliptical ? 0.78f : 0f,
+                OrbitArgumentOfPeriapsis = elliptical ? halleyPeriapsis : 0f,
+                Scale = 1f
+            });
+
+            var haleBoppRadius = elliptical ? 3.90f : 4.85f;
+            var haleBoppPhase = NiceSolEphemeris.NormalizeDeg(((jd - 2450539.5) / (2533.0 * 365.25)) * 360.0 + 35.0);
+            planets.Add(new GSPlanet(
+                SolBodyName(useChinese, "Hale-Bopp", "海尔-波普彗星"), "Comet", 30, haleBoppRadius,
+                89.4f, ComputeSolPeriod(haleBoppRadius, orbitSpeedMulti), haleBoppPhase, 40f,
+                1100f * dayNightMulti, 0f, 0.20f)
+            {
+                OrbitLongitude = 282.5f,
+                OrbitEccentricity = elliptical ? 0.76f : 0f,
+                OrbitArgumentOfPeriapsis = elliptical ? 130.6f : 0f,
+                Scale = 1f
+            });
         }
 
         private void GenerateExoplanets(GSStar star)

@@ -62,6 +62,8 @@ namespace GalacticScale.Generators
             if (star.Planets.Count > 0) comet.OrbitRadius = star.Planets[star.Planets.Count - 1].OrbitRadius + 0.5f;
             else return;
             comet.Luminosity = 0f;
+            EllipticalOrbits.AssignGeneratedCometElements(star, comet,
+                preferences.GetFloat("maxOrbitEccentricity", 0f), preferences.GetFloat("orbitSpacing", 0.05f));
             comet.OrbitalPeriod = Utils.CalculateOrbitPeriod(comet.OrbitRadius);
             star.Planets.Add(comet);
         }
@@ -258,6 +260,9 @@ namespace GalacticScale.Generators
             SelectPlanetThemes(star);
             // GS2.Warn($"Now assigning parameters {(birthPlanet != null ? birthPlanet.Name : "null")}");
             FudgeNumbersForPlanets(star);
+            EllipticalOrbits.AssignGeneratedElements(star,
+                preferences.GetFloat("maxOrbitEccentricity", 0f), preferences.GetFloat("orbitSpacing", 0.05f),
+                CalculateMinimumOrbit(star));
             // GS2.Warn("Done");
             AssignVeinSettings(star);
             // GS2.Log($"Assigning Vein Settings for {star.Name}");

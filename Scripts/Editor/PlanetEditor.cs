@@ -14,6 +14,8 @@ namespace GalacticScale.Editor
         public float orbitPeriod;
         public float orbitPhase;
         public float orbitInclination;
+        public float orbitEccentricity;
+        public float orbitArgumentOfPeriapsis;
         public float luminosity;
         public float rotationPeriod;
         public float rotationPhase;
@@ -44,6 +46,8 @@ namespace GalacticScale.Editor
             planet.OrbitalPeriod = orbitPeriod;
             planet.OrbitPhase = orbitPhase;
             planet.OrbitInclination = orbitInclination;
+            planet.OrbitEccentricity = orbitEccentricity;
+            planet.OrbitArgumentOfPeriapsis = orbitArgumentOfPeriapsis;
             planet.Luminosity = luminosity;
             planet.RotationPeriod = rotationPeriod;
             planet.RotationPhase = rotationPhase;
@@ -64,6 +68,8 @@ namespace GalacticScale.Editor
             orbitPhase = planet.OrbitPhase;
             orbitPeriod = planet.OrbitalPeriod;
             orbitInclination = planet.OrbitInclination;
+            orbitEccentricity = planet.OrbitEccentricity;
+            orbitArgumentOfPeriapsis = planet.OrbitArgumentOfPeriapsis;
             luminosity = planet.Luminosity;
             rotationPeriod = planet.RotationPeriod;
             rotationPhase = planet.RotationPhase;

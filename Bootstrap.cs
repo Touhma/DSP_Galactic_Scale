@@ -124,6 +124,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnPlanetAtmoBlur));
                 harmony.PatchAll(typeof(PatchOnPlanetAuxData));
                 harmony.PatchAll(typeof(PatchOnPlanetData));
+                harmony.PatchAll(typeof(PatchOnPlanetDataPredictPoseLF));
                 harmony.PatchAll(typeof(PatchOnPlanetDataDirtyMesh));
                 harmony.PatchAll(typeof(PatchOnPlanetFactory));
                 harmony.PatchAll(typeof(PatchOnPlanetGrid));
@@ -141,6 +142,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnSpaceLaserOneShot));
                 harmony.PatchAll(typeof(PatchSkillFactoryGuards));
                 harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
+                harmony.PatchAll(typeof(PatchOnStarData));
                 harmony.PatchAll(typeof(PatchOnStarGen));
                 harmony.PatchAll(typeof(PatchOnStarSimulator));
                 harmony.PatchAll(typeof(PatchOnStationComponent));

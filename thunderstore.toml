@@ -30,6 +30,9 @@ target = "./3rdPartyLicenses.md"
 [[build.copy]]
 source = "./Package/galacticbundle"
 target = "./galacticbundle"
+[[build.copy]]
+source = "./Package/galacticbundle2"
+target = "./galacticbundle2"
 
 [general]
 repository = "https://dsp.thunderstore.io"

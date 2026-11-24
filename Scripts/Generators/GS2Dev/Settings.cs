@@ -282,6 +282,7 @@ namespace GalacticScale.Generators
             preferences.Set("solarRange", new FloatPair(1, 500));
             preferences.Set("solarLerp", 0.0f);
             preferences.Set("orbitSpacing", 0.05f);
+            preferences.Set("maxOrbitEccentricity", 0f);
             preferences.Set("vanillaStarNames", false);
             preferences.Set("planetNames", "Default");
             preferences.Set("preferInnerPlanets", false);
@@ -344,6 +345,7 @@ namespace GalacticScale.Generators
             UI.Add("solarLerp", sOptions.Add(GSUI.Slider("Linear Damping".Translate(), 0, 0, 1f, 0.1f, "solarLerp", null, "How close to 100% the inner and outer planets will be".Translate())));
             UI.Add("solarRange", sOptions.Add(GSUI.RangeSlider("Min/Max Solar".Translate(), 0, 10, 500, 5000, 1, "solarRange")));
             UI.Add("orbitSpacing", sOptions.Add(GSUI.Slider("Orbit Spacing".Translate(), 0.01f, 0.05f, 5, 0.01f, "orbitSpacing", null, "Minimum gap between planet orbits".Translate())));
+            UI.Add("maxOrbitEccentricity", sOptions.Add(GSUI.Slider("Maximum Orbit Eccentricity".Translate(), 0f, 0f, 0.8f, 0.01f, "maxOrbitEccentricity", null, "Max eccentricity for planet and moon orbits".Translate())));
             UI.Add("planetNames", sOptions.Add(GSUI.Selector("Planet Naming Scheme".Translate(), new List<string> { "Default", "Alpha", "Random" }, "Default", "planetNames", null, "How to determine planet names")));
             UI.Add("tidalLockInnerPlanets", sOptions.Add(GSUI.Checkbox("Tidal Lock Inner Planets".Translate(), false, "tidalLockInnerPlanets", null, "Force planets below the orbit threshold to be tidally locked".Translate())));
             UI.Add("innerPlanetDistance", sOptions.Add(GSUI.Slider("Inner Planet Distance (AU)".Translate(), 0, 1, 100, 0.1f, "innerPlanetDistance", InnerPlanetDistanceCallback, "Distance forced tidal locking stops acting".Translate())));
