@@ -157,7 +157,8 @@ namespace GalacticScale
             var threshold = Mathf.Clamp(0.32f - (state.WindBoost - 1f) * 0.18f, 0.05f, 0.45f);
             var stormStrength = Mathf.Clamp01((rawActivity - threshold) / (1f - threshold));
 
-            if (planet.id == GSSettings.BirthPlanetId && gameSec < 210.0)
+            if (!GS2.IsMenuDemo && GameMain.galaxy != null &&
+            planet.id == GameMain.galaxy.birthPlanetId && gameSec < 210.0)
             {
                 var introFade = 1f - SmoothStep01(150f, 210f, (float)gameSec);
                 stormStrength = Mathf.Max(stormStrength, 0.72f * introFade);
