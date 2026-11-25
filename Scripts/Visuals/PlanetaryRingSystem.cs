@@ -37,6 +37,11 @@ namespace GalacticScale
             public Color32[] Colors;
             public float PlanetRadius;
             public Vector3 LastSunDirLocal;
+
+            private void OnDestroy()
+            {
+                if (Mesh != null) UnityEngine.Object.Destroy(Mesh);
+            }
         }
 
         private static readonly Dictionary<int, Material> MaterialCache = new();
@@ -45,7 +50,7 @@ namespace GalacticScale
         private static bool TryGetRingSpec(PlanetData planet, out RingSpec spec)
         {
             spec = default;
-            if (planet == null || planet.type != EPlanetType.Gas) return false;
+            if (GS2.IsMenuDemo || planet == null || planet.type != EPlanetType.Gas) return false;
             var ringMode = GS2.Config.PlanetaryRingsMode;
             if (string.Equals(ringMode, "Off", StringComparison.OrdinalIgnoreCase)) return false;
 
@@ -90,12 +95,23 @@ namespace GalacticScale
             if ((hash % 100u) >= 22u) return false;
 
             var variant = (int)((hash >> 8) % 4u);
-            var themeName = GS2.GetGSPlanet(planet)?.Theme ?? string.Empty;
+            var gsPlanet = GS2.GetGSPlanet(planet);
+            var themeName = gsPlanet?.Theme ?? string.Empty;
+            var themeTemp = gsPlanet?.GsTheme?.Temperature ?? 0f;
+            var isIceTheme = themeName.IndexOf("Ice", StringComparison.OrdinalIgnoreCase) >= 0;
+            var isHotTheme = themeTemp >= 1.5f
+                || themeName.IndexOf("Inferno", StringComparison.OrdinalIgnoreCase) >= 0
+                || themeName.IndexOf("Hot", StringComparison.OrdinalIgnoreCase) >= 0
+                || themeName.IndexOf("Lava", StringComparison.OrdinalIgnoreCase) >= 0
+                || themeName.IndexOf("Volcanic", StringComparison.OrdinalIgnoreCase) >= 0
+                || (!isIceTheme && planet.orbitRadius > 0f && planet.orbitRadius < 0.7f);
+
             RingPreset preset;
-            if (themeName.IndexOf("Ice", StringComparison.OrdinalIgnoreCase) >= 0)
+            if (isHotTheme)
+                // Inside the frost line (e.g., Infernal Gas Giants): silicate/rocky warm dust rings only, never ice
+                preset = (variant % 3 == 0) ? RingPreset.ExoGolden : RingPreset.ExoAmber;
+            else if (isIceTheme)
                 preset = (variant % 2 == 0) ? RingPreset.ExoIce : RingPreset.ExoSilver;
-            else if (themeName.IndexOf("Hot", StringComparison.OrdinalIgnoreCase) >= 0)
-                preset = RingPreset.ExoAmber;
             else
                 preset = variant switch
                 {
@@ -156,7 +172,7 @@ namespace GalacticScale
                 var r = Mathf.Max(100f, planet.realRadius);
                 var go = new GameObject(RingObjectName)
                 {
-                    layer = simulator.gameObject.layer
+                    layer = 0
                 };
                 go.transform.SetParent(simulator.transform, false);
                 go.transform.localPosition = Vector3.zero;
@@ -197,12 +213,18 @@ namespace GalacticScale
 
         public static void UpdateShadow(PlanetSimulator simulator)
         {
-            if (simulator == null || simulator.planetData == null || simulator.planetData.star == null) return;
+            if (GS2.IsMenuDemo || simulator == null || simulator.planetData == null || simulator.planetData.star == null) return;
             var ringTrans = simulator.transform.Find(RingObjectName);
             if (ringTrans == null) return;
 
+            var starmapOpen = UIRoot.instance != null && UIRoot.instance.uiGame != null && UIRoot.instance.uiGame.starmap != null && UIRoot.instance.uiGame.starmap.active;
+            var showRing = !starmapOpen && simulator.planetData.star == GameMain.localStar;
+            if (ringTrans.gameObject.activeSelf != showRing) ringTrans.gameObject.SetActive(showRing);
+            if (!showRing) return;
+            if (ringTrans.gameObject.layer != 0) ringTrans.gameObject.layer = 0;
+
             var state = ringTrans.GetComponent<RingShadowState>();
-            if (state == null || state.Mesh == null || state.LocalVertices == null) return;
+            if (state == null || state.Mesh == null || state.LocalVertices == null || state.Colors == null) return;
 
             var planet = simulator.planetData;
             var sunDirWorld = (Vector3)(planet.star.uPosition - planet.uPosition).normalized;
