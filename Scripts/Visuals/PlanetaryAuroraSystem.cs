@@ -51,9 +51,9 @@ namespace GalacticScale
 
                 var r = Mathf.Max(20f, planet.realRadius);
                 var isGas = planet.type == EPlanetType.Gas;
-                // Hug the upper atmospheric limb proportionally on all planet sizes (including tiny worlds)
-                var lowAlt = isGas ? r * 1.022f : r + Mathf.Min(r * 0.036f, 22f);
-                var highAlt = isGas ? r * 1.072f : r + Mathf.Min(r * 0.104f, 58f);
+                // Hug the upper atmospheric limb proportionally while staying cleanly above trees/surface on tiny worlds
+                var lowAlt = isGas ? r * 1.022f : r + Mathf.Clamp(r * 0.065f, 8f, 22f);
+                var highAlt = isGas ? r * 1.072f : r + Mathf.Clamp(r * 0.16f, 22f, 58f);
 
                 var go = new GameObject(AuroraObjectName)
                 {
@@ -154,7 +154,8 @@ namespace GalacticScale
             var wave2 = Mathf.Sin((float)(gameSec * 0.0087) + phase * 1.7f);   // ~12 min period
             var wave3 = Mathf.Sin((float)(gameSec * 0.0029) + phase * 2.3f);   // ~36 min period
             var rawActivity = 0.48f * wave1 + 0.34f * wave2 + 0.18f * wave3;   // [-1, 1]
-            var threshold = Mathf.Clamp(0.32f - (state.WindBoost - 1f) * 0.18f, 0.05f, 0.45f);
+            // Keep auroras special and realistic (~11-12% active on Earth, ~15-19% near bright/active stars)
+            var threshold = Mathf.Clamp(0.56f - (state.WindBoost - 1f) * 0.10f, 0.38f, 0.66f);
             var stormStrength = Mathf.Clamp01((rawActivity - threshold) / (1f - threshold));
 
             if (!GS2.IsMenuDemo && GameMain.galaxy != null &&
