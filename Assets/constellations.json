@@ -1639,7 +1639,7 @@
   },
   {
     "nameEn": "Gaia BH1",
-    "nameZh": "盖亚BH1 (蛇夫座 BH1)",
+    "nameZh": "盖亚BH1 (蛇夫座)",
     "con": "Oph",
     "starType": "BlackHole",
     "spectr": "X",
@@ -1657,7 +1657,7 @@
   },
   {
     "nameEn": "Gaia BH3",
-    "nameZh": "盖亚BH3 (天鹰座 BH3)",
+    "nameZh": "盖亚BH3 (天鹰座)",
     "con": "Aql",
     "starType": "BlackHole",
     "spectr": "X",
