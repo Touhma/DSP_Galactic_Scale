@@ -1621,7 +1621,7 @@
   },
   {
     "nameEn": "Cygnus X-1",
-    "nameZh": "天鹅座X-1 (天鹅座 HDE 226868)",
+    "nameZh": "天鹅座X-1",
     "con": "Cyg",
     "starType": "BlackHole",
     "spectr": "X",
@@ -1675,7 +1675,7 @@
   },
   {
     "nameEn": "Crab Pulsar",
-    "nameZh": "天关客星脉冲星 (金牛座 PSR B0531+21)",
+    "nameZh": "天关客星脉冲星 (金牛座)",
     "con": "Tau",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -1693,7 +1693,7 @@
   },
   {
     "nameEn": "Vela Pulsar",
-    "nameZh": "船帆座脉冲星 (船帆座 PSR B0833-45)",
+    "nameZh": "船帆座脉冲星",
     "con": "Vel",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -1711,7 +1711,7 @@
   },
   {
     "nameEn": "Geminga",
-    "nameZh": "杰敏卡脉冲星 (双子座 PSR J0633+1746)",
+    "nameZh": "杰敏卡脉冲星 (双子座)",
     "con": "Gem",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -1729,7 +1729,7 @@
   },
   {
     "nameEn": "Van Maanen's Star",
-    "nameZh": "范马南星 (双鱼座 HIP 3829)",
+    "nameZh": "范马南星 (双鱼座)",
     "con": "Psc",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -1765,7 +1765,7 @@
   },
   {
     "nameEn": "Stein 2051 B",
-    "nameZh": "施泰因2051B (鹿豹座 WD 0426+58)",
+    "nameZh": "施泰因2051B (鹿豹座)",
     "con": "Cam",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -4969,7 +4969,7 @@
   },
   {
     "nameEn": "HR 5089 (Cen)",
-    "nameZh": "库楼五 (半人马座 HR 5089)",
+    "nameZh": "库楼五 (半人马座)",
     "con": "Cen",
     "starType": "GiantStar",
     "spectr": "G",
@@ -6265,7 +6265,7 @@
   },
   {
     "nameEn": "Fuyue",
-    "nameZh": "傅说 (天蝎座 HR 6630)",
+    "nameZh": "傅说 (天蝎座)",
     "con": "Sco",
     "starType": "GiantStar",
     "spectr": "K",
@@ -6967,7 +6967,7 @@
   },
   {
     "nameEn": "A0620-00",
-    "nameZh": "麒麟座V616 (麒麟座 A0620-00)",
+    "nameZh": "麒麟座V616",
     "con": "Mon",
     "starType": "BlackHole",
     "spectr": "X",
@@ -6985,7 +6985,7 @@
   },
   {
     "nameEn": "Sagittarius A*",
-    "nameZh": "人马座A* (人马座银心黑洞)",
+    "nameZh": "人马座A* (银心黑洞)",
     "con": "Sgr",
     "starType": "BlackHole",
     "spectr": "X",
@@ -7003,7 +7003,7 @@
   },
   {
     "nameEn": "V404 Cygni",
-    "nameZh": "天鹅座V404 (天鹅座 GS 2023+338)",
+    "nameZh": "天鹅座V404",
     "con": "Cyg",
     "starType": "BlackHole",
     "spectr": "X",
@@ -7021,7 +7021,7 @@
   },
   {
     "nameEn": "GRS 1915+105",
-    "nameZh": "天鹰座V1487 (天鹰座 GRS 1915+105)",
+    "nameZh": "天鹰座V1487",
     "con": "Aql",
     "starType": "BlackHole",
     "spectr": "X",
@@ -7039,7 +7039,7 @@
   },
   {
     "nameEn": "GX 339-4",
-    "nameZh": "天坛座V821 (天坛座 GX 339-4)",
+    "nameZh": "天坛座V821",
     "con": "Ara",
     "starType": "BlackHole",
     "spectr": "X",
@@ -7057,7 +7057,7 @@
   },
   {
     "nameEn": "Lich",
-    "nameZh": "巫妖脉冲星 (室女座 PSR B1257+12)",
+    "nameZh": "巫妖脉冲星 (室女座)",
     "con": "Vir",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -7075,7 +7075,7 @@
   },
   {
     "nameEn": "PSR J0437-4715",
-    "nameZh": "绘架座脉冲星 (绘架座 PSR J0437-4715)",
+    "nameZh": "绘架座脉冲星",
     "con": "Pic",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -7093,7 +7093,7 @@
   },
   {
     "nameEn": "RX J1856.5-3754",
-    "nameZh": "南冕座孤立中子星 (南冕座 RX J1856)",
+    "nameZh": "南冕座中子星",
     "con": "CrA",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -7111,7 +7111,7 @@
   },
   {
     "nameEn": "Cassiopeia A",
-    "nameZh": "仙后座A中子星 (仙后座 Cas A)",
+    "nameZh": "仙后座A中子星",
     "con": "Cas",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -7129,7 +7129,7 @@
   },
   {
     "nameEn": "Calvera",
-    "nameZh": "卡尔维拉中子星 (小熊座 1RXS J1412)",
+    "nameZh": "卡尔维拉中子星 (小熊座)",
     "con": "UMi",
     "starType": "NeutronStar",
     "spectr": "X",
@@ -7147,7 +7147,7 @@
   },
   {
     "nameEn": "LP 145-141",
-    "nameZh": "苍蝇座白矮星 (苍蝇座 HIP 57367)",
+    "nameZh": "苍蝇座白矮星",
     "con": "Mus",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -7183,7 +7183,7 @@
   },
   {
     "nameEn": "IK Pegasi B",
-    "nameZh": "飞马座IK B (飞马座白矮星)",
+    "nameZh": "飞马座IK B",
     "con": "Peg",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -7201,7 +7201,7 @@
   },
   {
     "nameEn": "AR Scorpii",
-    "nameZh": "天蝎座AR (天蝎座白矮脉冲星)",
+    "nameZh": "天蝎座AR",
     "con": "Sco",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -7219,7 +7219,7 @@
   },
   {
     "nameEn": "WD 1145+017",
-    "nameZh": "室女座白矮星 (室女座 WD 1145+017)",
+    "nameZh": "室女座白矮星",
     "con": "Vir",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -7237,7 +7237,7 @@
   },
   {
     "nameEn": "ZZ Ceti",
-    "nameZh": "鲸鱼座ZZ (鲸鱼座脉动白矮星)",
+    "nameZh": "鲸鱼座ZZ",
     "con": "Cet",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -7255,7 +7255,7 @@
   },
   {
     "nameEn": "HZ 43",
-    "nameZh": "后发座HZ 43 (后发座白矮星)",
+    "nameZh": "后发座HZ 43",
     "con": "Com",
     "starType": "WhiteDwarf",
     "spectr": "X",
@@ -8119,7 +8119,7 @@
   },
   {
     "nameEn": "HR 3803 (Vel)",
-    "nameZh": "天社六 (船帆座 HR 3803)",
+    "nameZh": "天社六 (船帆座)",
     "con": "Vel",
     "starType": "GiantStar",
     "spectr": "K",
@@ -8461,7 +8461,7 @@
   },
   {
     "nameEn": "HR 4140 (Car)",
-    "nameZh": "南船二 (船底座 HR 4140)",
+    "nameZh": "南船二 (船底座)",
     "con": "Car",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -8587,7 +8587,7 @@
   },
   {
     "nameEn": "HR 4050 (Car)",
-    "nameZh": "南船一 (船底座 HR 4050)",
+    "nameZh": "南船一 (船底座)",
     "con": "Car",
     "starType": "GiantStar",
     "spectr": "K",
@@ -8749,7 +8749,7 @@
   },
   {
     "nameEn": "HR 3659 (Car)",
-    "nameZh": "海石增一 (船底座 HR 3659)",
+    "nameZh": "海石增一 (船底座)",
     "con": "Car",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -9289,7 +9289,7 @@
   },
   {
     "nameEn": "HR 3017 (Pup)",
-    "nameZh": "弧矢三 (船尾座 HR 3017)",
+    "nameZh": "弧矢三 (船尾座)",
     "con": "Pup",
     "starType": "GiantStar",
     "spectr": "K",
@@ -9469,7 +9469,7 @@
   },
   {
     "nameEn": "HR 3884 (Car)",
-    "nameZh": "海石四 (船底座 HR 3884)",
+    "nameZh": "海石四 (船底座)",
     "con": "Car",
     "starType": "GiantStar",
     "spectr": "G",
@@ -9541,7 +9541,7 @@
   },
   {
     "nameEn": "HR 3080 (Pup)",
-    "nameZh": "弧矢增廿三 (船尾座 HR 3080)",
+    "nameZh": "弧矢增廿三 (船尾座)",
     "con": "Pup",
     "starType": "GiantStar",
     "spectr": "G",
@@ -9667,7 +9667,7 @@
   },
   {
     "nameEn": "HR 3614 (Vel)",
-    "nameZh": "天社增三 (船帆座 HR 3614)",
+    "nameZh": "天社增三 (船帆座)",
     "con": "Vel",
     "starType": "GiantStar",
     "spectr": "K",
@@ -9811,7 +9811,7 @@
   },
   {
     "nameEn": "HR 2948 (Pup)",
-    "nameZh": "弧矢六 (船尾座 HR 2948)",
+    "nameZh": "弧矢六 (船尾座)",
     "con": "Pup",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -9865,7 +9865,7 @@
   },
   {
     "nameEn": "HR 4114 (Car)",
-    "nameZh": "海山一 (船底座 HR 4114)",
+    "nameZh": "海山一 (船底座)",
     "con": "Car",
     "starType": "GiantStar",
     "spectr": "F",
@@ -10027,7 +10027,7 @@
   },
   {
     "nameEn": "HR 3571 (Car)",
-    "nameZh": "海石增二 (船底座 HR 3571)",
+    "nameZh": "海石增二 (船底座)",
     "con": "Car",
     "starType": "GiantStar",
     "spectr": "B",
@@ -10045,7 +10045,7 @@
   },
   {
     "nameEn": "HR 4167 (Vel)",
-    "nameZh": "海山增一 (船帆座 HR 4167)",
+    "nameZh": "海山增一 (船帆座)",
     "con": "Vel",
     "starType": "MainSeqStar",
     "spectr": "A",
@@ -10153,7 +10153,7 @@
   },
   {
     "nameEn": "HR 4023 (Vel)",
-    "nameZh": "天记增二 (船帆座 HR 4023)",
+    "nameZh": "天记增二 (船帆座)",
     "con": "Vel",
     "starType": "MainSeqStar",
     "spectr": "A",
@@ -10333,7 +10333,7 @@
   },
   {
     "nameEn": "HR 3487 (Vel)",
-    "nameZh": "天社增二 (船帆座 HR 3487)",
+    "nameZh": "天社增二 (船帆座)",
     "con": "Vel",
     "starType": "GiantStar",
     "spectr": "A",
@@ -10459,7 +10459,7 @@
   },
   {
     "nameEn": "HR 3314 (Hya)",
-    "nameZh": "外厨增三 (长蛇座 HR 3314)",
+    "nameZh": "外厨增三 (长蛇座)",
     "con": "Hya",
     "starType": "MainSeqStar",
     "spectr": "A",
@@ -10693,7 +10693,7 @@
   },
   {
     "nameEn": "HR 3579 (Lyn)",
-    "nameZh": "轩辕一 (天猫座 HR 3579)",
+    "nameZh": "轩辕一 (天猫座)",
     "con": "Lyn",
     "starType": "MainSeqStar",
     "spectr": "F",
@@ -10711,7 +10711,7 @@
   },
   {
     "nameEn": "HR 3663 (Car)",
-    "nameZh": "海石增三 (船底座 HR 3663)",
+    "nameZh": "海石增三 (船底座)",
     "con": "Car",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -10873,7 +10873,7 @@
   },
   {
     "nameEn": "HR 4102 (Car)",
-    "nameZh": "南船增一 (船底座 HR 4102)",
+    "nameZh": "南船增一 (船底座)",
     "con": "Car",
     "starType": "MainSeqStar",
     "spectr": "F",
@@ -11449,7 +11449,7 @@
   },
   {
     "nameEn": "HR 1195 (Eri)",
-    "nameZh": "天园九 (波江座 HR 1195)",
+    "nameZh": "天园九 (波江座)",
     "con": "Eri",
     "starType": "GiantStar",
     "spectr": "G",
@@ -11539,7 +11539,7 @@
   },
   {
     "nameEn": "HR 1035 (Cam)",
-    "nameZh": "传舍七 (鹿豹座 HR 1035)",
+    "nameZh": "传舍七 (鹿豹座)",
     "con": "Cam",
     "starType": "GiantStar",
     "spectr": "B",
@@ -11809,7 +11809,7 @@
   },
   {
     "nameEn": "82 G. Eri",
-    "nameZh": "天园增三 (波江座 HR 1008)",
+    "nameZh": "天园增三 (波江座)",
     "con": "Eri",
     "starType": "MainSeqStar",
     "spectr": "G",
@@ -12007,7 +12007,7 @@
   },
   {
     "nameEn": "HR 1189 (Eri)",
-    "nameZh": "天园八 (波江座 HR 1189)",
+    "nameZh": "天园八 (波江座)",
     "con": "Eri",
     "starType": "MainSeqStar",
     "spectr": "A",
@@ -12943,7 +12943,7 @@
   },
   {
     "nameEn": "HR 5471 (Cen)",
-    "nameZh": "阳门一 (半人马座 HR 5471)",
+    "nameZh": "阳门一 (半人马座)",
     "con": "Cen",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -13123,7 +13123,7 @@
   },
   {
     "nameEn": "HR 5485 (Cen)",
-    "nameZh": "阳门二 (半人马座 HR 5485)",
+    "nameZh": "阳门二 (半人马座)",
     "con": "Cen",
     "starType": "GiantStar",
     "spectr": "K",
@@ -13663,7 +13663,7 @@
   },
   {
     "nameEn": "HR 6546 (Sco)",
-    "nameZh": "尾宿增三 (天蝎座 HR 6546)",
+    "nameZh": "尾宿增三 (天蝎座)",
     "con": "Sco",
     "starType": "GiantStar",
     "spectr": "G",
@@ -14418,8 +14418,8 @@
     "radius": 16.513
   },
   {
-    "nameEn": "Bidelman's Helium Variable Star",
-    "nameZh": "柱五[角宿] (半人马座 HR 5378)",
+    "nameEn": "Bidelman's Star",
+    "nameZh": "柱五[角宿] (半人马座)",
     "con": "Cen",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -15265,7 +15265,7 @@
   },
   {
     "nameEn": "HR 3612 (Lyn)",
-    "nameZh": "轩辕二 (天猫座 HR 3612)",
+    "nameZh": "轩辕二 (天猫座)",
     "con": "Lyn",
     "starType": "GiantStar",
     "spectr": "G",
@@ -15787,7 +15787,7 @@
   },
   {
     "nameEn": "HR 789 (Eri)",
-    "nameZh": "天园五 (波江座 HR 789)",
+    "nameZh": "天园五 (波江座)",
     "con": "Eri",
     "starType": "MainSeqStar",
     "spectr": "A",
@@ -16147,7 +16147,7 @@
   },
   {
     "nameEn": "HR 1204 (Cam)",
-    "nameZh": "上丞增三 (鹿豹座 HR 1204)",
+    "nameZh": "上丞增三 (鹿豹座)",
     "con": "Cam",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -16381,7 +16381,7 @@
   },
   {
     "nameEn": "HR 1686 (Cam)",
-    "nameZh": "六甲六 (鹿豹座 HR 1686)",
+    "nameZh": "六甲六 (鹿豹座)",
     "con": "Cam",
     "starType": "MainSeqStar",
     "spectr": "F",
@@ -16687,7 +16687,7 @@
   },
   {
     "nameEn": "HR 7129 (CrA)",
-    "nameZh": "鳖九 (南冕座 HR 7129)",
+    "nameZh": "鳖九 (南冕座)",
     "con": "CrA",
     "starType": "MainSeqStar",
     "spectr": "B",
@@ -16813,7 +16813,7 @@
   },
   {
     "nameEn": "HR 5991 (Lup)",
-    "nameZh": "积卒增二 (豺狼座 HR 5991)",
+    "nameZh": "积卒增二 (豺狼座)",
     "con": "Lup",
     "starType": "MainSeqStar",
     "spectr": "F",
@@ -16957,7 +16957,7 @@
   },
   {
     "nameEn": "HR 3477 (Vel)",
-    "nameZh": "天狗二 (船帆座 HR 3477)",
+    "nameZh": "天狗二 (船帆座)",
     "con": "Vel",
     "starType": "GiantStar",
     "spectr": "G",
@@ -17065,7 +17065,7 @@
   },
   {
     "nameEn": "HR 3825 (Car)",
-    "nameZh": "海石三 (船底座 HR 3825)",
+    "nameZh": "海石三 (船底座)",
     "con": "Car",
     "starType": "GiantStar",
     "spectr": "B",
@@ -17119,7 +17119,7 @@
   },
   {
     "nameEn": "HR 3426 (Vel)",
-    "nameZh": "天狗一 (船帆座 HR 3426)",
+    "nameZh": "天狗一 (船帆座)",
     "con": "Vel",
     "starType": "GiantStar",
     "spectr": "A",
@@ -17353,7 +17353,7 @@
   },
   {
     "nameEn": "HR 285 (Cep)",
-    "nameZh": "勾陈五 (仙王座 HR 285)",
+    "nameZh": "勾陈五 (仙王座)",
     "con": "Cep",
     "starType": "GiantStar",
     "spectr": "K",
@@ -17461,7 +17461,7 @@
   },
   {
     "nameEn": "HR 3751 (Dra)",
-    "nameZh": "四辅增一 (天龙座 HR 3751)",
+    "nameZh": "四辅增一 (天龙座)",
     "con": "Dra",
     "starType": "GiantStar",
     "spectr": "K",
@@ -17893,7 +17893,7 @@
   },
   {
     "nameEn": "HR 1155 (Cam)",
-    "nameZh": "上丞增一 (鹿豹座 HR 1155)",
+    "nameZh": "上丞增一 (鹿豹座)",
     "con": "Cam",
     "starType": "GiantStar",
     "spectr": "M",
@@ -17911,7 +17911,7 @@
   },
   {
     "nameEn": "HR 3145 (CMi)",
-    "nameZh": "南河增八 (小犬座 HR 3145)",
+    "nameZh": "南河增八 (小犬座)",
     "con": "CMi",
     "starType": "GiantStar",
     "spectr": "K",
