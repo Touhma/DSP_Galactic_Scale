@@ -19,6 +19,9 @@ readme = "./Package/README.md"
 outdir = "./"
 
 [[build.copy]]
+source = "./Package/CHANGELOG.md"
+target = "./CHANGELOG.md"
+[[build.copy]]
 source = "./obj/Debug/net472/GalacticScale.dll"
 target = "./GalacticScale.dll"
 [[build.copy]]

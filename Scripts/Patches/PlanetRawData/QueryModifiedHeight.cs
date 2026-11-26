@@ -1,139 +1,126 @@
-﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
 using UnityEngine;
 
 namespace GalacticScale
 {
     public partial class PatchOnPlanetRawData
     {
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlanetRawData), "QueryModifiedHeight")]
-        public static bool QueryModifiedHeight(ref PlanetRawData __instance, ref float __result, Vector3 vpos)
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(PlanetRawData), nameof(PlanetRawData.QueryHeight))]
+        [HarmonyPatch(typeof(PlanetRawData), nameof(PlanetRawData.QueryModifiedHeight))]
+        public static IEnumerable<CodeInstruction> PatchHeightQueries(
+            IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
         {
-            //GS2.Warn((__instance == null).ToString());
-            vpos.Normalize();
-            var index1 = __instance.indexMap[__instance.PositionHash(vpos)];
-            var radiusPrecision = 3.1415927f / (__instance.precision * 2) * 1.2f;
-            var radiusPrecisionSq = radiusPrecision * radiusPrecision;
-            var magnitudeOnPrecisionDummy = 0f;
-            var HeightTimePrecision = 0f;
-            var stride = __instance.stride;
-            for (var index2 = -1; index2 <= 3; index2++)
-            for (var index3 = -1; index3 <= 3; index3++)
+            var modified = __originalMethod.Name == nameof(PlanetRawData.QueryModifiedHeight);
+            var matcher = new CodeMatcher(instructions);
+            if (modified)
             {
-                var index4 = index1 + index2 + index3 * stride;
-                if ((ulong)index4 < (ulong)__instance.dataLength)
-                {
-                    var sqrMagnitude = (__instance.vertices[index4] - vpos).sqrMagnitude;
-                    if (sqrMagnitude <= radiusPrecisionSq)
-                    {
-                        var magnitudeOnPrecision = 1f - Mathf.Sqrt(sqrMagnitude) / radiusPrecision;
-                        magnitudeOnPrecision *= __instance.GetFactoredScale();
-                        var modLevel = __instance.GetModLevel(index4);
-                        float HeightDataFinal = __instance.heightData[index4];
-                        if (modLevel > 0)
-                        {
-                            float modPlane = __instance.GetModPlaneInt(index4);
-                            if (modLevel == 3)
-                            {
-                                HeightDataFinal = modPlane;
-                            }
-                            else
-                            {
-                                var num11 = modLevel * 0.3333333f;
-                                HeightDataFinal = __instance.heightData[index4] * (1f - num11) + modPlane * num11;
-                            }
-                        }
-
-                        magnitudeOnPrecisionDummy += magnitudeOnPrecision;
-                        HeightTimePrecision += HeightDataFinal * magnitudeOnPrecision;
-                    }
-                }
+                var getModPlane = AccessTools.Method(typeof(PlanetRawData), nameof(PlanetRawData.GetModPlane));
+                matcher.MatchForward(false, new CodeMatch(instruction => instruction.Calls(getModPlane)));
+                if (matcher.IsValid)
+                    matcher.Set(OpCodes.Call, AccessTools.Method(typeof(PlanetRawDataExtension), nameof(PlanetRawDataExtension.GetModPlaneInt)));
+                else
+                    GS2.Error("QueryModifiedHeight: GetModPlane call not found.");
             }
 
-            if (magnitudeOnPrecisionDummy == 0f)
+            matcher.Start().MatchForward(false,
+                new CodeMatch(OpCodes.Ldstr, "bad query"),
+                new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(Debug), nameof(Debug.LogWarning), new[] { typeof(object) })),
+                new CodeMatch(OpCodes.Ldarg_0),
+                new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(PlanetRawData), nameof(PlanetRawData.heightData))),
+                new CodeMatch(OpCodes.Ldc_I4_0),
+                new CodeMatch(OpCodes.Ldelem_U2),
+                new CodeMatch(OpCodes.Conv_R4),
+                new CodeMatch(OpCodes.Ldc_R4, 0.01f),
+                new CodeMatch(OpCodes.Mul),
+                new CodeMatch(OpCodes.Ret));
+            if (matcher.IsInvalid)
             {
-                GS2.Log($"Bad Query. LocalPlanet:{GameMain.localPlanet.name} Vector:{vpos}");
-                __result = __instance.heightData[0] * 0.01f;
-                return false;
+                GS2.Error($"{__originalMethod.Name}: terrain query fallback not found.");
+                return matcher.InstructionEnumeration();
             }
 
-            __result = HeightTimePrecision / magnitudeOnPrecisionDummy * 0.01f;
-            return false;
+            return matcher
+                .SetAndAdvance(OpCodes.Ldarg_0, null)
+                .SetAndAdvance(OpCodes.Ldarg_1, null)
+                .SetAndAdvance(modified ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0, null)
+                .SetAndAdvance(OpCodes.Call, AccessTools.Method(typeof(PatchOnPlanetRawData), nameof(RecoverTerrainHeight)))
+                .RemoveInstructions(5)
+                .InstructionEnumeration();
+        }
+
+        private static float RecoverTerrainHeight(PlanetRawData data, Vector3 position, bool modified)
+        {
+            if (!(position.sqrMagnitude > 0f)) return data.heightData[0] * 0.01f;
+
+            var index = GetTerrainVertexNear(data, position);
+            var radius = Mathf.PI / (data.precision * 2) * 1.2f;
+            var radiusSquared = radius * radius;
+            var totalWeight = 0f;
+            var weightedHeight = 0f;
+            var stride = data.stride;
+            var length = data.vertices.Length;
+            for (var x = -1; x <= 3; x++)
+            for (var y = -1; y <= 3; y++)
+            {
+                var neighbor = index + x + y * stride;
+                if ((uint)neighbor >= (uint)length) continue;
+
+                var distanceSquared = (data.vertices[neighbor] - position).sqrMagnitude;
+                if (distanceSquared >= radiusSquared) continue;
+
+                var weight = 1f - Mathf.Sqrt(distanceSquared) / radius;
+                totalWeight += weight;
+                weightedHeight += GetVertexHeight(data, neighbor, modified) * weight;
+            }
+
+            return (totalWeight > 0f ? weightedHeight / totalWeight : GetVertexHeight(data, index, modified)) * 0.01f;
+        }
+
+        private static float GetVertexHeight(PlanetRawData data, int index, bool modified)
+        {
+            var height = data.heightData[index];
+            if (!modified || data.modData == null) return height;
+
+            var level = data.GetModLevel(index);
+            if (level == 0) return height;
+
+            var plane = data.GetModPlaneInt(index);
+            if (level == 3) return plane;
+
+            var blend = level * 0.3333333f;
+            return height * (1f - blend) + plane * blend;
+        }
+
+        private static int GetTerrainVertexNear(PlanetRawData data, Vector3 position)
+        {
+            var north = position.y >= 0f;
+            var front = position.z >= 0f;
+            var left = (position.x >= 0f) == front;
+            var absX = Mathf.Abs(position.x);
+            var absY = Mathf.Abs(position.y);
+            var absZ = Mathf.Abs(position.z);
+
+            var secondAlongX = left == north;
+            var alongA2 = secondAlongX ? absX : absZ;
+            var alongB = secondAlongX ? absZ : absX;
+            var rowAngle = Mathf.Atan2(alongB, absY + alongA2);
+            var row = rowAngle * (2f / Mathf.PI);
+            var sinRow = Mathf.Sin(rowAngle);
+            var arc = Mathf.Acos(sinRow * sinRow);
+            var column = arc > 0f
+                ? Mathf.Atan2(alongA2 * Mathf.Sin(arc), absY + alongA2 * Mathf.Cos(arc)) / arc
+                : 0f;
+
+            var precision = data.precision;
+            var columnIndex = Mathf.RoundToInt((north ? 1f - column * (1f - row) : column * (1f - row)) * precision);
+            var rowIndex = Mathf.RoundToInt((north ? row : 1f - row) * precision);
+            if (!left) columnIndex += data.substride;
+            if (!front) rowIndex += data.substride;
+            return rowIndex * data.stride + columnIndex;
         }
     }
 }
-
-/* ChatGPT Generated Rewrite
-
-public static bool QueryModifiedHeight(ref PlanetRawData planetData, ref float height, Vector3 position)
-{
-    // Normalize input position vector
-    position.Normalize();
-    
-    // Get index of vertex in the planet data
-    var vertexIndex = planetData.indexMap[planetData.PositionHash(position)];
-    
-    // Calculate precision-related values
-    var radiusPrecision = 3.1415927f / (planetData.precision * 2) * 1.2f;
-    var radiusPrecisionSq = radiusPrecision * radiusPrecision;
-    
-    // Initialize variables for magnitude and height calculations
-    var magnitudeOnPrecisionSum = 0f;
-    var heightTimePrecisionSum = 0f;
-    var stride = planetData.stride;
-    
-    // Iterate over neighboring vertices to calculate final height
-    for (var x = -1; x <= 3; x++)
-    {
-        for (var y = -1; y <= 3; y++)
-        {
-            var neighborIndex = vertexIndex + x + y * stride;
-            if ((ulong)neighborIndex < (ulong)planetData.dataLength)
-            {
-                var sqrMagnitude = (planetData.vertices[neighborIndex] - position).sqrMagnitude;
-                if (sqrMagnitude <= radiusPrecisionSq)
-                {
-                    // Calculate magnitude on precision and multiply by factored scale
-                    var magnitudeOnPrecision = 1f - Mathf.Sqrt(sqrMagnitude) / radiusPrecision;
-                    magnitudeOnPrecision *= planetData.GetFactoredScale();
-                    
-                    // Get modification level of vertex
-                    var modLevel = planetData.GetModLevel(neighborIndex);
-                    
-                    // If vertex has modifications, adjust height calculation accordingly
-                    var heightData = planetData.heightData[neighborIndex];
-                    if (modLevel > 0)
-                    {
-                        var modPlane = planetData.GetModPlaneInt(neighborIndex);
-                        if (modLevel == 3)
-                        {
-                            heightData = modPlane;
-                        }
-                        else
-                        {
-                            var blendFactor = modLevel * 0.3333333f;
-                            heightData = planetData.heightData[neighborIndex] * (1f - blendFactor) + modPlane * blendFactor;
-                        }
-                    }
-                    
-                    // Add to magnitude and height sums
-                    magnitudeOnPrecisionSum += magnitudeOnPrecision;
-                    heightTimePrecisionSum += heightData * magnitudeOnPrecision;
-                }
-            }
-        }
-    }
-
-    // Handle cases where no valid vertices were found
-    if (magnitudeOnPrecisionSum == 0f)
-    {
-        GS2.Log($"Bad Query. LocalPlanet:{GameMain.localPlanet.name} Vector:{position}");
-        height = planetData.heightData[0] * 0.01f;
-        return false;
-    }
-
-    // Calculate final height using magnitude and height sums
-    height = heightTimePrecisionSum / magnitudeOnPrecisionSum * 0.01f;
-    return false;
-}
-*/

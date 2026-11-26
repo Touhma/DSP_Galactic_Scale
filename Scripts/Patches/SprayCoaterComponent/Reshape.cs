@@ -5,200 +5,171 @@ namespace GalacticScale
 {
     public class PatchOnSprayCoaterComponent
     {
+        private const float BeltEndDistance = 2.4f;
+        private const float BendUnitsPerMeter = 200f;
+        private const float BendPackingStride = 400f;
+
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.Reshape))]
-        public static bool Reshape(SpraycoaterComponent __instance, PlanetFactory factory, AnimData[] _animPool)
-
+        [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.GetReshapeData))]
+        public static bool GetReshapeData(Vector3 _pos, Quaternion _rot, ref Vector3 __result)
         {
-            var vector = factory.entityPool[__instance.entityId].pos;
-            var rot = factory.entityPool[__instance.entityId].rot;
-            var vector2 = rot.Forward();
-            var normalized = vector.normalized;
-            if (normalized.x * normalized.x + normalized.z * normalized.z <= 1E-06f) return false;
+            var planet = GameMain.localPlanet;
+            if (planet == null) return true;
 
-            var r = factory.planet.realRadius;
-            vector = normalized * r;
-            var rhs = vector.y > 0f ? (new Vector3(0f, r, 0f) - vector).normalized : (new Vector3(0f, -r, 0f) - vector).normalized;
-            var num = Mathf.Abs(Vector3.Dot(Vector3.Cross(normalized, rhs), vector2));
-            var reshapeData = GetReshapeDataForRadius(vector, rot, r);
-            var num2 = reshapeData.x;
-            var num3 = reshapeData.y;
-            var num4 = reshapeData.z;
-            var modelProto = LDB.models.Select(factory.entityPool[__instance.entityId].modelIndex);
-            var addonAreaColPoses = modelProto.prefabDesc.addonAreaColPoses;
-            var addonAreaSize = modelProto.prefabDesc.addonAreaSize;
-            if (__instance.incBeltId != 0)
-            {
-                var b = vector + rot * addonAreaColPoses[1].position;
-                var lineStart = vector + rot * (addonAreaColPoses[1].position + addonAreaColPoses[1].forward * addonAreaSize[1].z * 2.5f);
-                var lineEnd = vector + rot * (addonAreaColPoses[1].position - addonAreaColPoses[1].forward * addonAreaSize[1].z * 2.5f);
-                var vector3 = factory.entityPool[factory.cargoTraffic.beltPool[__instance.incBeltId].entityId].pos;
-                b = b.normalized * r;
-                lineStart = lineStart.normalized * r;
-                lineEnd = lineEnd.normalized * r;
-                vector3 = vector3.normalized * r;
-                var num5 = Maths.DistancePointLine(vector3, lineStart, lineEnd);
-                num4 = -Mathf.Sign(Vector3.Dot((vector3 - b).normalized, vector2)) * num5 * num;
-            }
-
-            if (__instance.cargoBeltId != 0)
-            {
-                var objId = factory.cargoTraffic.beltPool[__instance.cargoBeltId].entityId;
-                var vector4 = vector + rot * addonAreaColPoses[0].position;
-                var vector5 = vector + rot * (addonAreaColPoses[0].position + addonAreaColPoses[0].forward * 2.4f);
-                var vector6 = vector + rot * (addonAreaColPoses[0].position - addonAreaColPoses[0].forward * (2.4f + num4));
-                vector4 = vector4.normalized * r;
-                vector5 = vector5.normalized * r;
-                vector6 = vector6.normalized * r;
-                bool flag;
-                int num6;
-                int num7;
-                factory.ReadObjectConn(objId, 0, out flag, out num6, out num7);
-                var num8 = num6;
-                factory.ReadObjectConn(objId, 1, out flag, out num6, out num7);
-                var num9 = num6;
-                var lineStart2 = vector5;
-                var lineEnd2 = vector5;
-                var lineStart3 = vector6;
-                var lineEnd3 = vector6;
-                if (num8 != 0)
-                {
-                    var a = (num8 > 0 ? factory.entityPool[num8].pos : factory.prebuildPool[-num8].pos).normalized * r;
-                    var flag2 = Mathf.Sign(Vector3.Dot((a - vector4).normalized, vector2)) > 0f;
-                    var normalized2 = (a - vector4).normalized;
-                    Vector3.Angle(vector2, normalized2);
-                    if (flag2)
-                    {
-                        lineStart2 = vector4 + normalized2 * 5f;
-                        lineEnd2 = vector4 - normalized2 * 5f;
-                    }
-                    else
-                    {
-                        lineStart3 = vector4 + normalized2 * 5f;
-                        lineEnd3 = vector4 - normalized2 * 5f;
-                    }
-
-                    bool flag3;
-                    int num10;
-                    int num11;
-                    factory.ReadObjectConn(num8, 0, out flag3, out num10, out num11);
-                    if (num10 != 0)
-                    {
-                        var vector7 = (num10 > 0 ? factory.entityPool[num10].pos : factory.prebuildPool[-num10].pos).normalized * r;
-                        normalized2 = (vector7 - vector4).normalized;
-                        Vector3.Angle(vector2, normalized2);
-                        if (flag2)
-                        {
-                            lineStart2 = vector4 + normalized2 * 5f;
-                            lineEnd2 = vector4 - normalized2 * 5f;
-                        }
-                        else
-                        {
-                            lineStart3 = vector4 + normalized2 * 5f;
-                            lineEnd3 = vector4 - normalized2 * 5f;
-                        }
-
-                        a = vector7;
-                    }
-
-                    var rhs2 = Vector3.Cross(vector2, normalized);
-                    if (flag2)
-                    {
-                        var num12 = -Mathf.Sign(Vector3.Dot((a - vector4).normalized, rhs2));
-                        num2 = Maths.DistancePointLine(vector5, lineStart2, lineEnd2) * num12;
-                    }
-                    else
-                    {
-                        var num13 = -Mathf.Sign(Vector3.Dot((a - vector4).normalized, rhs2));
-                        num3 = Maths.DistancePointLine(vector6, lineStart3, lineEnd3) * num13;
-                    }
-                }
-
-                if (num9 != 0)
-                {
-                    var a2 = (num9 > 0 ? factory.entityPool[num9].pos : factory.prebuildPool[-num9].pos).normalized * r;
-                    var flag4 = Mathf.Sign(Vector3.Dot((a2 - vector4).normalized, vector2)) > 0f;
-                    var normalized3 = (a2 - vector4).normalized;
-                    Vector3.Angle(vector2, normalized3);
-                    if (flag4)
-                    {
-                        lineStart2 = vector4 + normalized3 * 5f;
-                        lineEnd2 = vector4 - normalized3 * 5f;
-                    }
-                    else
-                    {
-                        lineStart3 = vector4 + normalized3 * 5f;
-                        lineEnd3 = vector4 - normalized3 * 5f;
-                    }
-
-                    bool flag5;
-                    int num14;
-                    int num15;
-                    factory.ReadObjectConn(num9, 1, out flag5, out num14, out num15);
-                    if (num14 != 0)
-                    {
-                        var vector8 = (num14 > 0 ? factory.entityPool[num14].pos : factory.prebuildPool[-num14].pos).normalized * r;
-                        normalized3 = (vector8 - vector4).normalized;
-                        Vector3.Angle(vector2, normalized3);
-                        if (flag4)
-                        {
-                            lineStart2 = vector4 + normalized3 * 5f;
-                            lineEnd2 = vector4 - normalized3 * 5f;
-                        }
-                        else
-                        {
-                            lineStart3 = vector4 + normalized3 * 5f;
-                            lineEnd3 = vector4 - normalized3 * 5f;
-                        }
-
-                        a2 = vector8;
-                    }
-
-                    var rhs3 = Vector3.Cross(vector2, normalized);
-                    if (flag4)
-                    {
-                        var num12 = -Mathf.Sign(Vector3.Dot((a2 - vector4).normalized, rhs3));
-                        num2 = Maths.DistancePointLine(vector5, lineStart2, lineEnd2) * num12;
-                    }
-                    else
-                    {
-                        var num13 = -Mathf.Sign(Vector3.Dot((a2 - vector4).normalized, rhs3));
-                        num3 = Maths.DistancePointLine(vector6, lineStart3, lineEnd3) * num13;
-                    }
-                }
-            }
-
-            _animPool[__instance.entityId].working_length = -1.265f - num4;
-            _animPool[__instance.entityId].prepare_length = Mathf.Round(num3 * r) + Mathf.Round(num2 * r) * (r * 2f);
+            __result = GetGridReshapeData(_pos.normalized, _rot.Forward(), planet);
             return false;
         }
 
-        private static Vector3 GetReshapeDataForRadius(Vector3 position, Quaternion rotation, float radius)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(SpraycoaterComponent), nameof(SpraycoaterComponent.Reshape))]
+        public static bool Reshape(SpraycoaterComponent __instance, PlanetFactory factory, AnimData[] _animPool)
         {
-            var normalized = position.normalized;
-            if (normalized.x * normalized.x + normalized.z * normalized.z <= 1E-06f) return Vector3.zero;
+            var entity = factory.entityPool[__instance.entityId];
+            var normal = entity.pos.normalized;
+            if (IsAtPole(normal)) return false;
 
-            var scaledPosition = normalized * radius;
-            var tangent = scaledPosition.y > 0f
-                ? (new Vector3(0f, radius, 0f) - scaledPosition).normalized
-                : (new Vector3(0f, -radius, 0f) - scaledPosition).normalized;
-            var forward = rotation.Forward();
-            var cross = Vector3.Cross(normalized, tangent);
-            var orientation = Mathf.Abs(Vector3.Dot(cross, forward));
-            var segmentCount = BlueprintUtils.GetLongitudeSegmentCount(normalized, Mathf.RoundToInt(radius)) * 5;
+            var prefab = LDB.models.Select(entity.modelIndex)?.prefabDesc;
+            if (prefab == null) return false;
+
+            var radius = factory.planet.realRadius;
+            var position = normal * radius;
+            var forward = entity.rot.Forward();
+            var bend = GetGridReshapeData(normal, forward, factory.planet);
+            var poses = prefab.addonAreaColPoses;
+
+            var incBelt = GetBeltEntityId(factory, __instance.incBeltId);
+            if (incBelt != 0)
+            {
+                var pose = poses[1];
+                var center = (position + entity.rot * pose.position).normalized * radius;
+                var reach = pose.forward * (prefab.addonAreaSize[1].z * 2.5f);
+                var start = (position + entity.rot * (pose.position + reach)).normalized * radius;
+                var end = (position + entity.rot * (pose.position - reach)).normalized * radius;
+                var beltPosition = factory.entityPool[incBelt].pos.normalized * radius;
+                var side = Mathf.Sign(Vector3.Dot((beltPosition - center).normalized, forward));
+                bend.z = -side * Maths.DistancePointLine(beltPosition, start, end)
+                    * Mathf.Abs(GetBeltAlignment(normal, forward));
+            }
+
+            var cargoBelt = GetBeltEntityId(factory, __instance.cargoBeltId);
+            if (cargoBelt != 0)
+            {
+                var pose = poses[0];
+                var center = (position + entity.rot * pose.position).normalized * radius;
+                var front = (position + entity.rot * (pose.position + pose.forward * BeltEndDistance)).normalized * radius;
+                var back = (position + entity.rot * (pose.position - pose.forward * (BeltEndDistance + bend.z))).normalized * radius;
+                var right = Vector3.Cross(forward, normal);
+
+                for (var slot = 0; slot < 2; slot++)
+                {
+                    factory.ReadObjectConn(cargoBelt, slot, out _, out var neighbor, out _);
+                    if (!TryGetObjectPosition(factory, neighbor, out var neighborPosition)) continue;
+
+                    var direction = (neighborPosition.normalized * radius - center).normalized;
+                    var isFront = Vector3.Dot(direction, forward) >= 0f;
+                    factory.ReadObjectConn(neighbor, slot, out _, out var next, out _);
+                    if (TryGetObjectPosition(factory, next, out var nextPosition))
+                        direction = (nextPosition.normalized * radius - center).normalized;
+
+                    var side = -Mathf.Sign(Vector3.Dot(direction, right));
+                    var offset = direction * 5f;
+                    var distance = Maths.DistancePointLine(isFront ? front : back, center + offset, center - offset) * side;
+                    if (isFront) bend.x = distance;
+                    else bend.y = distance;
+                }
+            }
+
+            ref var animation = ref _animPool[__instance.entityId];
+            animation.working_length = -1.265f - bend.z;
+            animation.prepare_length = Mathf.Round(bend.y * BendUnitsPerMeter)
+                + Mathf.Round(bend.x * BendUnitsPerMeter) * BendPackingStride;
+            return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PlanetFactory), nameof(PlanetFactory.Import))]
+        public static void AfterFactoryImport(PlanetFactory __instance)
+        {
+            RepairExistingCoaters(__instance);
+        }
+
+        public static void RepairExistingCoaters(PlanetFactory factory)
+        {
+            var planet = factory?.planet;
+            var traffic = factory?.cargoTraffic;
+            if (planet == null || traffic?.spraycoaterPool == null) return;
+            if (planet.realRadius == 200f && GetGridSegmentCount(planet) == 200) return;
+
+            var coaters = traffic.spraycoaterPool;
+            for (var id = 1; id < traffic.spraycoaterCursor; id++)
+            {
+                ref var coater = ref coaters[id];
+                if (coater.id != id || coater.entityId <= 0 || coater.entityId >= factory.entityCursor) continue;
+                ref var entity = ref factory.entityPool[coater.entityId];
+                if (entity.id != coater.entityId || entity.spraycoaterId != id) continue;
+
+                coater.Reshape(factory, factory.entityAnimPool);
+            }
+        }
+
+        private static int GetBeltEntityId(PlanetFactory factory, int beltId)
+        {
+            var belts = factory.cargoTraffic.beltPool;
+            if (beltId <= 0 || beltId >= belts.Length || belts[beltId].id != beltId) return 0;
+
+            var entityId = belts[beltId].entityId;
+            return entityId > 0 && TryGetObjectPosition(factory, entityId, out _) ? entityId : 0;
+        }
+
+        private static bool TryGetObjectPosition(PlanetFactory factory, int objectId, out Vector3 position)
+        {
+            if (objectId > 0 && objectId < factory.entityPool.Length && factory.entityPool[objectId].id == objectId)
+            {
+                position = factory.entityPool[objectId].pos;
+                return true;
+            }
+
+            var prebuildId = -objectId;
+            if (objectId < 0 && prebuildId > 0 && prebuildId < factory.prebuildPool.Length &&
+                factory.prebuildPool[prebuildId].id == prebuildId)
+            {
+                position = factory.prebuildPool[prebuildId].pos;
+                return true;
+            }
+
+            position = default;
+            return false;
+        }
+
+        private static Vector3 GetGridReshapeData(Vector3 normal, Vector3 forward, PlanetData planet)
+        {
+            if (IsAtPole(normal)) return Vector3.zero;
+
+            var segmentCount = BlueprintUtils.GetLongitudeSegmentCount(normal, GetGridSegmentCount(planet)) * 5;
             if (segmentCount <= 0) return Vector3.zero;
 
-            var circleRadius = Mathf.Pow(1f - Mathf.Pow(Mathf.Abs(Vector3.Dot(normalized, Vector3.up)), 2f), 0.5f) * radius;
-            const float VanillaCircumference = 1256.6371f;
-            var circumference = circleRadius * 3.1415927f * 2f;
-            var vanillaGridWidth = VanillaCircumference * 0.001f;
-            var gridWidth = circumference / segmentCount;
-            var gridWidthDelta = (gridWidth - vanillaGridWidth) * orientation;
-            var bend = Mathf.Sin(6.2831855f / segmentCount * 3.1415927f * 0.25f) * gridWidth * orientation;
-            var x = -bend * (2.4f / gridWidth);
-            var y = -bend * ((2.4f + gridWidthDelta) / gridWidth);
-            var sign = Mathf.Sign(Vector3.Dot(cross, forward));
-            return new Vector3(x * sign, y * sign, gridWidthDelta);
+            var alignment = GetBeltAlignment(normal, forward);
+            var circleRadius = Mathf.Sqrt(normal.x * normal.x + normal.z * normal.z) * planet.realRadius;
+            var gridWidth = circleRadius * (2f * Mathf.PI) / segmentCount;
+            var gridWidthDelta = (gridWidth - 2f * Mathf.PI * 200f / 1000f) * Mathf.Abs(alignment);
+            var bendPerMeter = -Mathf.Sin(2f * Mathf.PI / segmentCount * Mathf.PI * 0.25f) * alignment;
+            return new Vector3(bendPerMeter * BeltEndDistance, bendPerMeter * (BeltEndDistance + gridWidthDelta), gridWidthDelta);
+        }
+
+        private static int GetGridSegmentCount(PlanetData planet)
+        {
+            return planet.aux?.mainGrid?.segment ?? (int)(planet.radius / 4f + 0.1f) * 4;
+        }
+
+        private static bool IsAtPole(Vector3 normal)
+        {
+            return normal.x * normal.x + normal.z * normal.z <= 1E-06f;
+        }
+
+        private static float GetBeltAlignment(Vector3 normal, Vector3 forward)
+        {
+            var pole = normal.y > 0f ? Vector3.up : Vector3.down;
+            return Vector3.Dot(Vector3.Cross(normal, (pole - normal).normalized), forward);
         }
     }
 }

@@ -4,7 +4,7 @@ This system automatically synchronizes version numbers across multiple project f
 
 ## How It Works
 
-1. The system extracts the latest version number from `Package/README.md`
+1. The system reads the first release heading in `Package/CHANGELOG.md`.
 2. It then updates the version in:
    - `GalacticScale3.csproj` (in the `<Version>` tag)
    - `thunderstore.toml` (in the `versionNumber` field)
@@ -14,13 +14,13 @@ This system automatically synchronizes version numbers across multiple project f
 
 - `update-version.ps1`: The main script that performs the version extraction and updating
 - `sync-version.ps1`: A helper script that can be called from other build processes
-- `build.ps1`: An example build script that synchronizes versions before building
+- `GalacticScale3.csproj` runs the updater before a build.
 
 ## Usage
 
 ### Manually Updating Versions
 
-To manually synchronize all version numbers from `README.md`:
+Run the updater to synchronize all version numbers from `Package/CHANGELOG.md`.
 
 ```powershell
 ./update-version.ps1
@@ -28,32 +28,29 @@ To manually synchronize all version numbers from `README.md`:
 
 ### Building with Version Synchronization
 
-To build your project with automatic version synchronization:
+Build with either configuration to synchronize versions automatically.
 
 ```powershell
-./build.ps1        # For Release build
-./build.ps1 debug  # For Debug build
+dotnet build -c Release
+dotnet build -c Debug
 ```
 
 ## Version Format
 
-The script expects the version in `README.md` to be in the format:
+Add each new release at the top of `Package/CHANGELOG.md` with a three-part version heading and a list of changes.
 
 ```
-- Version X.Y.Z - Description of changes
+## 2.80.12
+- Describe the change
 ```
 
-Where X.Y.Z is the semantic version (e.g., 2.72.3).
+Thunderstore displays this file in the package's Changelog tab.
 
 ## Important Notes
 
-1. Always update the version in `README.md` first
-2. The script assumes all files are in the project root directory
-3. Make sure the scripts have execution permissions (`chmod +x *.ps1` on Unix-based systems)
+1. Add the new version to `Package/CHANGELOG.md` before building.
+2. Keep the newest release at the top of the changelog.
 
 ## Troubleshooting
 
-If the script fails to find the version in `README.md`, ensure:
-1. The version follows the expected format: `- Version X.Y.Z - `
-2. The path to `README.md` is correct (`Package/README.md`)
-3. The file can be read by the current user 
+If the script fails to find the version, check that `Package/CHANGELOG.md` is readable and that the release heading uses the `## X.Y.Z` format.
