@@ -59,6 +59,7 @@ namespace GalacticScale
             ___universe = GameMain.universeSimulator;
             ___star = ___universe.FindStarSimulator(planet.star);
             PlanetaryRingSystem.AttachToPlanetSimulator(__instance, planet);
+            CometSystem.AttachTailToPlanetSimulator(__instance, planet);
 
             return false;
         }

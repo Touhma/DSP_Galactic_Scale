@@ -27,7 +27,8 @@ namespace GalacticScale
                         // $"Magnitude:{magnitude}, NearestStar TransitionRadius:{(nearestStar.systemRadius + 2) * 40000}");
                     // num = 3600000.0;
                     double num = (nearestStar.systemRadius + 2) * 40000;
-                    if (magnitude > num * 0.5) nearestStar = null;
+                    var retention = GS2.Vanilla || GS2.IsMenuDemo ? 0.5 : 1.05;
+                    if (magnitude > num * retention) nearestStar = null;
                 }
             }
 

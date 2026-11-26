@@ -33,6 +33,7 @@ namespace GalacticScale
 
                 PlanetaryRingSystem.SyncLayer(__instance);
 
+                CometSystem.SyncLayer(__instance);
                 __instance.layerSet = true;
             }
 

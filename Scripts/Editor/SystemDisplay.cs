@@ -675,7 +675,15 @@ namespace GalacticScale
                     // GS2.Warn("ShowSolarSystem7");
                     var f = j * 0.017453292f * 6f; // ty dsp devs :D
                     Vector3 cPos = GetCenterOfOrbit(starData, pData, ref isMoon);
-                    var position = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.x, cPos.y, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + cPos.z);
+                    Vector3 orbitOffset;
+                    if (EllipticalOrbits.TryGetElements(pData, out var orbitElements))
+                        orbitOffset = EllipticalOrbits.OffsetAtEccentricAnomaly(
+                            pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor,
+                            orbitElements.OrbitEccentricity, orbitElements.OrbitArgumentOfPeriapsis, f);
+                    else
+                        orbitOffset = new Vector3(Mathf.Cos(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor,
+                            0f, Mathf.Sin(f) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor);
+                    var position = new Vector3(orbitOffset.x + cPos.x, orbitOffset.y + cPos.y, orbitOffset.z + cPos.z);
 
                     // GS2.Warn("ShowSolarSystem7a");
 
@@ -712,13 +720,32 @@ namespace GalacticScale
             {
                 var centerPos = GetRelativeRotatedPlanetPos(starData, pData.orbitAroundPlanet, ref isMoon);
                 isMoon = true;
-                pos = new VectorLF3(Mathf.Cos(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + centerPos.x, centerPos.y, Mathf.Sin(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + centerPos.z);
+                Vector3 orbitOffset;
+                if (EllipticalOrbits.TryGetElements(pData, out var orbitElements))
+                    orbitOffset = EllipticalOrbits.OffsetAtMeanAnomaly(
+                        pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor,
+                        orbitElements.OrbitEccentricity, orbitElements.OrbitArgumentOfPeriapsis,
+                        pData.orbitPhase * Mathf.Deg2Rad);
+                else
+                    orbitOffset = new Vector3(Mathf.Cos(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor,
+                        0f, Mathf.Sin(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor);
+                pos = new VectorLF3(orbitOffset.x + centerPos.x, orbitOffset.y + centerPos.y, orbitOffset.z + centerPos.z);
                 quaternion = Quaternion.Euler(pData.orbitInclination, pData.orbitInclination, pData.orbitInclination);
                 dir = quaternion * (pos - centerPos);
                 return dir + centerPos;
             }
 
-            pos = new VectorLF3(Mathf.Cos(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + starData.position.x, starData.position.y, Mathf.Sin(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor + starData.position.z);
+            Vector3 starOrbitOffset;
+            if (EllipticalOrbits.TryGetElements(pData, out var starOrbitElements))
+                starOrbitOffset = EllipticalOrbits.OffsetAtMeanAnomaly(
+                    pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor,
+                    starOrbitElements.OrbitEccentricity, starOrbitElements.OrbitArgumentOfPeriapsis,
+                    pData.orbitPhase * Mathf.Deg2Rad);
+            else
+                starOrbitOffset = new Vector3(Mathf.Cos(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor,
+                    0f, Mathf.Sin(pData.orbitPhase) * pData.orbitRadius * GS2.Config.VirtualStarmapOrbitScaleFactor);
+            pos = new VectorLF3(starOrbitOffset.x + starData.position.x, starOrbitOffset.y + starData.position.y,
+                starOrbitOffset.z + starData.position.z);
             quaternion = Quaternion.Euler(pData.orbitInclination, pData.orbitInclination, pData.orbitInclination);
             dir = quaternion * (pos - starData.position);
             return dir + starData.position;

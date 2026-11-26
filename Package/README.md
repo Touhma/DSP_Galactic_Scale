@@ -1,6 +1,21 @@
 # DSP Galactic Scale 2.0 Mod
 
 # BACKUP YOUR SAVES. SERIOUSLY.
+- Version 2.80.11 - Changelog:
+
+Changes by Kimi-Arthur:
+
+NiceSol bugfix and alterations:
+
+-Changed generation to prioritize prominent constellations for smaller star counts, and changed the default star count to 500 instead of 1000.
+-Fixed NiceSol small-moon radius not being rounded to a valid planet size to avoid theme lookup gap.
+
+Universal bugfix:
+
+-Fixed veins from overlapping the starting landing capsule.
+
+Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
+
 - Version 2.80.10 - Changelog:
 
 Changes by Komonad:
@@ -22,8 +37,6 @@ Bugfixes and alterations:
 Performance:
 
 -Batched construction terrain flattening to reduce building and blueprint cpu usage spikes on large planets.
-
-Please report errors either on the Galactic Scale GitHub under issues or ping me directly in either the DSP Discord or the Galactic Scale Discord. @Devious-GS2
 
 - Version 2.80.9 - Changelog:
 

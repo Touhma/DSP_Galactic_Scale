@@ -15,7 +15,7 @@ namespace GalacticScale
     }
 
  
-    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.80.10")]
+    [BepInPlugin("dsp.galactic-scale.2", "Galactic Scale 2 Plug-In", "2.80.11")]
     [BepInDependency("space.customizing.console", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dsp.nebula-multiplayer-api", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("lltcggie.DSP.plugin.PlanetwidePlanetaryShieldGenerator", BepInDependency.DependencyFlags.SoftDependency)]
@@ -124,6 +124,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnPlanetAtmoBlur));
                 harmony.PatchAll(typeof(PatchOnPlanetAuxData));
                 harmony.PatchAll(typeof(PatchOnPlanetData));
+                harmony.PatchAll(typeof(PatchOnPlanetDataPredictPoseLF));
                 harmony.PatchAll(typeof(PatchOnPlanetDataDirtyMesh));
                 harmony.PatchAll(typeof(PatchOnPlanetFactory));
                 harmony.PatchAll(typeof(PatchOnPlanetGrid));
@@ -141,6 +142,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(PatchOnSpaceLaserOneShot));
                 harmony.PatchAll(typeof(PatchSkillFactoryGuards));
                 harmony.PatchAll(typeof(PatchOnSprayCoaterComponent));
+                harmony.PatchAll(typeof(PatchOnStarData));
                 harmony.PatchAll(typeof(PatchOnStarGen));
                 harmony.PatchAll(typeof(PatchOnStarSimulator));
                 harmony.PatchAll(typeof(PatchOnStationComponent));
