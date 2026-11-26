@@ -72,6 +72,7 @@ namespace GalacticScale
 			{
 				__instance.cloudSimulator.OnLateUpdate();
 			}
+			PlanetaryAuroraSystem.UpdateAurora(__instance);
 			PlanetaryRingSystem.UpdateShadow(__instance);
 			CometSystem.UpdateSpaceTail(__instance);
 			if (__instance.oceanMat != null)
