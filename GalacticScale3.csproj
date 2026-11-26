@@ -113,7 +113,7 @@
     
         <!-- Add a target to synchronize version numbers before build -->
     <Target Name="SyncVersionNumbers" BeforeTargets="PrepareForBuild">
-        <Message Text="Synchronizing version numbers from README.md..." Importance="high" />
+        <Message Text="Synchronizing version numbers from CHANGELOG.md..." Importance="high" />
         
         <!-- Check if PowerShell is available -->
         <Exec Command="powershell -Command &quot;&amp; { exit 0 }&quot;" ContinueOnError="true">
@@ -126,6 +126,11 @@
             Condition="'$(PowerShellExists)' == '0'"
             ContinueOnError="false" 
         />
+
+        <!-- Refresh the already evaluated version for the current build. -->
+        <XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="/Project/PropertyGroup/Version/text()" Condition="'$(PowerShellExists)' == '0'">
+            <Output TaskParameter="Result" PropertyName="Version" />
+        </XmlPeek>
         
         <Warning 
             Text="PowerShell not found. Version numbers were not synchronized. Please run update-version.ps1 manually." 

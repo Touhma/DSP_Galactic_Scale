@@ -1,34 +1,33 @@
 #!/usr/bin/env pwsh
 
-# Script to extract latest version from README.md and update it in all project files
+# Synchronize project versions with the first release heading in CHANGELOG.md
 Write-Host "GalacticScale Version Updater" -ForegroundColor Cyan
 
 # Get the project root directory
 $rootDir = $PSScriptRoot
 
-# Read the README.md file to extract the latest version
-$readmePath = Join-Path -Path $rootDir -ChildPath "Package\README.md"
-if (-not (Test-Path -Path $readmePath)) {
-    Write-Host "README.md not found at path: $readmePath" -ForegroundColor Red
+# Read the changelog to extract the latest version
+$changelogPath = Join-Path -Path $rootDir -ChildPath "Package\CHANGELOG.md"
+if (-not (Test-Path -LiteralPath $changelogPath -PathType Leaf)) {
+    Write-Host "CHANGELOG.md not found at path: $changelogPath" -ForegroundColor Red
     exit 1
 }
 
-$readmeContent = Get-Content -Path $readmePath -Raw
-if (-not $readmeContent) {
-    Write-Host "README.md is empty or couldn't be read" -ForegroundColor Red
+$changelogContent = Get-Content -LiteralPath $changelogPath -Raw -Encoding UTF8
+if (-not $changelogContent) {
+    Write-Host "CHANGELOG.md is empty or couldn't be read" -ForegroundColor Red
     exit 1
 }
 
-# Extract the latest version using regex
-# Looking for the pattern "Version X.Y.Z - " at the beginning of a line
-$versionMatch = [regex]::Match($readmeContent, "- Version (\d+\.\d+\.\d+) -")
+# Release headings use the format "## X.Y.Z", with the newest release first.
+$versionMatch = [regex]::Match($changelogContent, '(?m)^##[ \t]+([0-9]+\.[0-9]+\.[0-9]+)[ \t]*\r?$')
 if (-not $versionMatch.Success) {
-    Write-Host "Could not find version pattern in README.md" -ForegroundColor Red
+    Write-Host "Could not find a release heading in CHANGELOG.md. Expected '## X.Y.Z'." -ForegroundColor Red
     exit 1
 }
 
 $latestVersion = $versionMatch.Groups[1].Value
-Write-Host "Latest version found in README.md: $latestVersion" -ForegroundColor Green
+Write-Host "Latest version found in CHANGELOG.md: $latestVersion" -ForegroundColor Green
 
 # Update GalacticScale3.csproj
 $csprojPath = Join-Path -Path $rootDir -ChildPath "GalacticScale3.csproj"
@@ -130,4 +129,5 @@ if (Test-Path -Path $bootstrapPath) {
     Write-Host "Bootstrap.cs file not found" -ForegroundColor Yellow
 }
 
-Write-Host "All files have been updated to version $latestVersion" -ForegroundColor Cyan 
+Write-Host "All files have been updated to version $latestVersion" -ForegroundColor Cyan
+exit 0

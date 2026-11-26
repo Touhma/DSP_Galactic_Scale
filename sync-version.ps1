@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 
 # This script is meant to be called from your build process
-# It updates all version numbers based on README.md and then proceeds with the build
+# It updates all version numbers based on Package/CHANGELOG.md
 
 # Run the version updater
 & "$PSScriptRoot\update-version.ps1"
