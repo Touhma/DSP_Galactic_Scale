@@ -134,22 +134,27 @@ namespace GalacticScale
                                 showPlanetLabel = __instance.CheckVisible(pId0, planetID, __instance.astroPoses[planetID].uPos, camUPos);
                             if (showPlanetLabel && __instance.mouseInPlanet != planetID
                                 && __instance.history.GetPlanetPin(planetID) != EPin.Show
-                                && (__instance.player?.navigation == null || __instance.player.navigation.indicatorAstroId != planetID))
+                                && (__instance.player?.navigation == null || __instance.player.navigation.indicatorAstroId != planetID)
+                                && __instance.galaxy != null && __instance.gameCamera != null && __instance.astroPoses != null)
                             {
                                 // Hide distant moon labels when they visually overlap their host planet on screen (e.g., Pluto + Charon)
                                 var planetObj = __instance.galaxy.PlanetById(planetID);
                                 if (planetObj?.orbitAroundPlanet != null && _rpos2.magnitude > 10000f)
                                 {
                                     var hostId = planetObj.orbitAroundPlanet.id;
-                                    var hostRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[hostId].uPos - __instance.relPos);
-                                    var moonScreen = __instance.gameCamera.WorldToScreenPoint(_rpos2);
-                                    var hostScreen = __instance.gameCamera.WorldToScreenPoint(hostRpos);
-                                    if (moonScreen.z > 0f && hostScreen.z > 0f)
+                                    if (hostId >= 0 && hostId < __instance.astroPoses.Length)
                                     {
-                                        var dx = moonScreen.x - hostScreen.x;
-                                        var dy = moonScreen.y - hostScreen.y;
-                                        if (dx * dx + dy * dy < 36f * 36f)
-                                            showPlanetLabel = false;
+                                        var hostRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[hostId].uPos - __instance.relPos);
+                                        var moonScreen = __instance.gameCamera.WorldToScreenPoint(_rpos2);
+                                        var hostScreen = __instance.gameCamera.WorldToScreenPoint(hostRpos);
+                                        if (moonScreen.z > 0f && hostScreen.z > 0f)
+                                        {
+                                            var pxThresh = 36f * Mathf.Max(1f, Screen.height / 1080f);
+                                            var dx = moonScreen.x - hostScreen.x;
+                                            var dy = moonScreen.y - hostScreen.y;
+                                            if (dx * dx + dy * dy < pxThresh * pxThresh)
+                                                showPlanetLabel = false;
+                                        }
                                     }
                                 }
                             }

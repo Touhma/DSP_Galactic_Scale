@@ -40,6 +40,9 @@ namespace GalacticScale
 
             var starmap = __instance.starmap;
             if (starmap.mouseHoverPlanet == __instance || starmap.focusPlanet == __instance) return;
+            var planetId = __instance.planet.id;
+            if (GameMain.history != null && GameMain.history.GetPlanetPin(planetId) == EPin.Show) return;
+            if (GameMain.mainPlayer?.navigation != null && GameMain.mainPlayer.navigation.indicatorAstroId == planetId) return;
             var planetUIs = starmap.planetUIs;
             if (planetUIs == null) return;
 
