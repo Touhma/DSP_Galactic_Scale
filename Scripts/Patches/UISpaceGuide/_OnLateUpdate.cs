@@ -162,16 +162,17 @@ namespace GalacticScale
                                             }
                                             else if (planetObj.star?.planets != null)
                                             {
-                                                // Also hide if overlapping an earlier sibling moon of the same host planet (e.g., Jupiter's Galilean moons)
+                                                // Also hide if overlapping a closer sibling moon (by camera depth z, with id tiebreaker)
                                                 var siblings = planetObj.star.planets;
                                                 for (var si = 0; si < siblings.Length; si++)
                                                 {
                                                     var sib = siblings[si];
-                                                    if (sib == null || sib.orbitAroundPlanet != planetObj.orbitAroundPlanet || sib.id >= planetID) continue;
+                                                    if (sib == null || sib.id == planetID || sib.orbitAroundPlanet != planetObj.orbitAroundPlanet) continue;
                                                     if (sib.id < 0 || sib.id >= __instance.astroPoses.Length) continue;
                                                     var sibRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[sib.id].uPos - __instance.relPos);
                                                     var sibScreen = __instance.gameCamera.WorldToScreenPoint(sibRpos);
                                                     if (sibScreen.z > 0f
+                                                        && (sibScreen.z < moonScreen.z - 1f || (Mathf.Abs(sibScreen.z - moonScreen.z) <= 1f && sib.id < planetID))
                                                         && Mathf.Abs(moonScreen.x - sibScreen.x) < boxW
                                                         && Mathf.Abs(moonScreen.y - sibScreen.y) < boxH)
                                                     {
