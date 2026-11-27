@@ -149,10 +149,10 @@ namespace GalacticScale
                                         var hostScreen = __instance.gameCamera.WorldToScreenPoint(hostRpos);
                                         if (moonScreen.z > 0f && hostScreen.z > 0f)
                                         {
-                                            var pxThresh = 36f * Mathf.Max(1f, Screen.height / 1080f);
-                                            var dx = moonScreen.x - hostScreen.x;
-                                            var dy = moonScreen.y - hostScreen.y;
-                                            if (dx * dx + dy * dy < pxThresh * pxThresh)
+                                            // Rectangular text-box overlap check scaled for DPI (2-line space guide label: name + distance)
+                                            var dpiScale = Mathf.Max(1f, Screen.height / 1080f);
+                                            if (Mathf.Abs(moonScreen.x - hostScreen.x) < 78f * dpiScale
+                                                && Mathf.Abs(moonScreen.y - hostScreen.y) < 34f * dpiScale)
                                                 showPlanetLabel = false;
                                         }
                                     }
