@@ -149,6 +149,7 @@ namespace GalacticScale
                 harmony.PatchAll(typeof(RemoteShipStuckRecovery));
                 harmony.PatchAll(typeof(MoreMegaStructuresCompatibility));
                 MoreMegaStructuresCompatibility.TryInstall(harmony);
+                harmony.PatchAll(typeof(PatchOnLocalization));
                 harmony.PatchAll(typeof(PatchOnThemeProto));
                 harmony.PatchAll(typeof(PatchOnTrashSystem));
                 

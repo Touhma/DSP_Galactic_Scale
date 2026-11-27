@@ -69,7 +69,7 @@ namespace GalacticScale
             galacticButton.anchoredPosition = new Vector2(galacticButton.anchoredPosition.x + 160, galacticButton.anchoredPosition.y);
             Object.Destroy(galacticButton.GetComponentInChildren<Localizer>());
             galacticButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            galacticButton.GetComponentInChildren<Text>().text = GSLocalization.Translate("Galactic Scale");
+            galacticButton.GetComponentInChildren<Text>().text = "Galactic Scale".Translate();
             galacticButton.GetComponent<Button>().onClick.AddListener(GalacticScaleTabClick);
 
 
@@ -378,8 +378,8 @@ namespace GalacticScale
         private static void LocalizeUIElement(GSUI option)
         {
             if (option.RectTransform == null) return;
-            var label = GSLocalization.Translate(option.Label);
-            var hint = GSLocalization.Translate(option.Hint);
+            var label = option.Label.Translate();
+            var hint = option.Hint.Translate();
             switch (option.Type)
             {
                 case "Group":
@@ -394,7 +394,7 @@ namespace GalacticScale
                     if (option.Data is List<string> choices)
                     {
                         var selected = dropdown._dropdown.value;
-                        dropdown.Items = choices.ConvertAll(GSLocalization.Translate);
+                        dropdown.Items = choices.ConvertAll(Localization.Translate);
                         dropdown._dropdown.SetValueWithoutNotify(selected);
                         dropdown._dropdown.RefreshShownValue();
                     }
@@ -404,7 +404,7 @@ namespace GalacticScale
                     selector.Label = label;
                     selector.Hint = hint;
                     if (selector.Items != null && selector.index >= 0 && selector.index < selector.Items.Count)
-                        selector._itemText.text = GSLocalization.Translate(selector.Items[selector.index]);
+                        selector._itemText.text = selector.Items[selector.index].Translate();
                     break;
                 case "Input":
                     var input = option.RectTransform.GetComponent<GSUIInput>();
@@ -415,7 +415,7 @@ namespace GalacticScale
                     var button = option.RectTransform.GetComponent<GSUIButton>();
                     button.Label = label;
                     button.Hint = hint;
-                    if (option.Data is string caption) button.Caption = GSLocalization.Translate(caption);
+                    if (option.Data is string caption) button.Caption = caption.Translate();
                     break;
                 case "Checkbox":
                     var toggle = option.RectTransform.GetComponent<GSUIToggle>();
@@ -427,7 +427,7 @@ namespace GalacticScale
                     slider.Label = label;
                     slider.Hint = hint;
                     if (slider.negativeLabel != "" && slider.Value < 0)
-                        slider._valueText.text = GSLocalization.Translate(slider.negativeLabel);
+                        slider._valueText.text = slider.negativeLabel.Translate();
                     else
                         slider.RefreshValueText();
                     break;
@@ -447,14 +447,14 @@ namespace GalacticScale
         public static void RefreshLocalization()
         {
             if (galacticButton != null)
-                galacticButton.GetComponentInChildren<Text>().text = GSLocalization.Translate("Galactic Scale");
+                galacticButton.GetComponentInChildren<Text>().text = "Galactic Scale".Translate();
             foreach (var option in options) RefreshOption(option);
             foreach (var generatorOptions in generatorPluginOptions)
                 foreach (var option in generatorOptions) RefreshOption(option);
             for (var i = 0; i < GeneratorCanvases.Count && i < GS2.Generators.Count; i++)
             {
                 var header = GeneratorCanvases[i].GetComponentInChildren<GSUIHeader>(true);
-                if (header != null) header.Label = GSLocalization.Translate(GS2.Generators[i].Name);
+                if (header != null) header.Label = GS2.Generators[i].Name.Translate();
             }
         }
 

@@ -6,8 +6,8 @@ using System.Text;
 
 namespace GalacticScale
 {
-    /// <summary>Translations for Galactic Scale's own UI. Keys remain the original English text.</summary>
-    public static class GSLocalization
+    /// <summary>Fallback translations for Galactic Scale's own UI, invoked via PatchOnLocalization on Localization.Translate.</summary>
+    internal static class GSLocalization
     {
         private static readonly Dictionary<int, Dictionary<string, string>> Languages = new()
         {
@@ -23,12 +23,18 @@ namespace GalacticScale
         {
             if (string.IsNullOrEmpty(text) || !Languages.TryGetValue(lcid, out var entries)) return text;
             if (entries.TryGetValue(text, out var translation)) return translation;
-            foreach (var starType in StarTypes)
+            if (text.StartsWith("Allow ", StringComparison.Ordinal)
+                || text.StartsWith("Change Settings for Type ", StringComparison.Ordinal)
+                || text.EndsWith(" Overrides", StringComparison.Ordinal))
             {
-                if (!entries.TryGetValue(starType, out var translatedType)) continue;
-                if (text == starType + " Overrides") return translatedType + "专属设置";
-                if (text == "Change Settings for Type " + starType + " stars") return "修改" + translatedType + "的设置";
-                if (text == "Allow " + starType + " to spawn as binary companions") return "允许" + translatedType + "作为双星伴星生成";
+                foreach (var starType in StarTypes)
+                {
+                    if (!entries.TryGetValue(starType, out var translatedType)) continue;
+                    if (text == starType + " Overrides") return translatedType + "专属设置";
+                    if (text == "Change Settings for Type " + starType + " stars") return "修改" + translatedType + "的设置";
+                    if (text == "Allow " + starType + " to spawn as binary companions") return "允许" + translatedType + "作为双星伴星生成";
+                    if (text == "Allow " + starType + " stars to have binary companions") return "允许" + translatedType + "拥有双星伴星";
+                }
             }
             return text;
         }
