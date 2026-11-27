@@ -127,7 +127,7 @@ Planet Size Bias	行星大小偏向
 Telluric Size Bias	岩质行星大小偏向
 Prefer Smaller (lower) or Larger (higher) Sizes	数值越低越小，越高越大
 Gas Giants Moon Bias	气态巨行星卫星偏向
-Large planets attract a lot more. Can cause issues with large planets	大行星会吸引更多卫星；数值过高可能引发问题
+Large planets attract a lot more. Can cause issues with large planets	大行星的引力显著增强；在大行星上可能引发问题
 Orbit Range	轨道范围
 Force the distances planets can spawn between	限定行星生成距离范围
 Orbit Spacing	轨道间距
@@ -145,7 +145,7 @@ Chance for Gas giant	气态巨行星概率
 % Chance of a planet being a Gas Giant	行星成为气态巨行星的概率（%）
 Percentage of planets to make Gas Giants	生成气态巨行星的行星比例
 Percentage of planets to make Moons	生成卫星的行星比例
-Moons Are Small	缩小卫星
+Moons Are Small	卫星保持较小尺寸
 Try to ensure moons are 1/2 their planets size or less	尽量使卫星不超过母行星大小的一半
 Allow moons to have moons	允许卫星拥有卫星
 Recursive Moons	多级卫星
@@ -153,12 +153,12 @@ Moons of moons can have moons...	卫星的卫星也可以拥有卫星……
 Secondary satellites	次级卫星
 Secondary Satellite Chance	次级卫星概率
 % Chance for a moon to have a moon	卫星拥有次级卫星的概率（%）
-... of a Gas Giant	……对于气态巨行星
+... of a Gas Giant	气态巨星的卫星
 Gas Planet Size	气态行星大小
-Gas Giant Planet Size	气态巨行星大小
+Gas Giant Planet Size	气态巨星大小
 Telluric Planet Size	岩质行星大小
-Min/Max Size of Gas Planets	气态行星最小／最大大小
-Min/Max Size of Rocky Planets	岩质行星最小／最大大小
+Min/Max Size of Gas Planets	气态行星最小／最大尺寸
+Min/Max Size of Rocky Planets	岩质行星最小／最大尺寸
 Limit Planet Sizes	限制行星大小
 Force Planets to these sizes	将行星大小限制在此范围
 Limit Gas Giant Sizes	限制气态巨行星大小
@@ -170,7 +170,7 @@ Habitable Zone	宜居带
 Override Habitable Zone	覆盖宜居带
 Force habitable zone between these distances	将宜居带限制在这些距离之间
 Override Orbits	覆盖轨道设置
-Allow Orbital Harmonics	允许轨道谐振
+Allow Orbital Harmonics	允许轨道共振
 Allow Orbital Resonance 1:2 and 1:4	允许 1:2 和 1:4 轨道共振
 Tidal Lock Inner Planets	潮汐锁定内侧行星
 Force planets below the orbit threshold to be tidally locked	对轨道距离低于阈值的行星强制潮汐锁定
@@ -311,6 +311,7 @@ Success	成功
 Error	错误
 Note	提示
 Ok	确定
+OK	确定
 Now	立即
 D'oh!	糟糕！
 Noted!	知道了！
@@ -318,7 +319,7 @@ Of course not!	当然不！
 Woohoo!	太好了！
 You cannot change the generator to vanilla while in game.	游戏进行中不能切换到原版生成器。
 Please try again after creating a galaxy :)\r\nStart a game, then press ESC and click settings.	请在创建星系后重试 :)\r\n开始游戏后按 Esc，再点击“设置”。
-Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 键可在星系视图中显示名称/按下该键可在星系视图中切换名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
+Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn	点击恒星／行星查看恒星系／详情\r\n滚动鼠标滚轮缩放\r\n使用移动按键平移\r\n按住 Shift 加快缩放／平移\r\n按住 Alt 在星团视图显示名称／按 Alt 在恒星系视图切换名称\r\n按空格重置视图\r\n右键点击恒星／行星设置出生位置
 Scale veins by planet size	矿脉数量随行星尺寸缩放
 Scale vein patch count by planet area	按行星表面积缩放矿脉簇数量
 Vein count multiplier	矿脉数量倍率
@@ -362,3 +363,123 @@ Halley & Hale-Bopp with anti-solar tails	哈雷与海尔-波普彗星及背日�
 Elliptical	椭圆轨道
 Circular	圆轨道
 Off	关闭
+# Planet Themes (Vanilla Aliases)
+Mariterra	地中海
+Aquatica	水世界
+Tropicana	海洋丛林
+Prairiea	草原
+Savanna	热带草原
+Sakura Ocean	樱林海
+Pandora Swamp	潘多拉沼泽
+Pandora Swamp II	潘多拉沼泽 II
+Scorchedia	干旱荒漠
+Gobi Desert	戈壁
+Desolus	贫瘠荒漠
+Onyxtopia	晶石荒漠
+Halitum	黑石盐滩
+Crimsonis	红石
+Cyclonius	飓风石林
+Sulfuria	火山灰
+Lava	熔岩
+Geloterra	灰烬冻土
+Icefrostia	冰冻苔原
+Maroonfrost	猩红冰湖
+Glacieon	冰原冻土
+Glacieon II	冰原冻土 II
+Glacieon III	冰原冻土 III
+Gas Giant	气态巨星
+Gas Giant II	气态巨星 II
+Gas Giant III	气态巨星 III
+Gas Giant IV	气态巨星 IV
+Gas Giant V	气态巨星 V
+Ice Giant	冰巨星
+Ice Giant II	冰巨星 II
+Ice Giant III	冰巨星 III
+Ice Giant IV	冰巨星 IV
+# Planet Themes (GS2 Custom)
+Infernal Gas Giant	炼狱气态巨星
+SpaceWhale Excrement	原油巨星
+Acid Greenhouse	酸液温室
+Sulfurous Sea	硫酸之海
+Molten World	熔岩世界
+Obsidian	黑曜石
+Hot Obsidian	炙热黑曜石
+Barren Satellite	贫瘠卫星
+Dwarf Planet	矮行星
+Comet	彗星
+Beach	海滩世界
+Gigantic Forest	巨木森林
+Red Forest	红木森林
+Pandora	潘多拉
+Ice Malusol	恶寒冰原
+Ice Malusmol	微寒冰原
+# Generator / Elliptical Orbits / Dark Fog / Birth System
+Maximum Orbit Eccentricity	最大轨道偏心率
+Max eccentricity for planet and moon orbits	行星与卫星轨道的最大偏心率
+Birth System Settings	出生星系设置
+Settings that affect your starting system	影响出生恒星系的设置
+Birth Planet Gas Giant Type	出生母星气态巨星类型
+Theme of the gas giant hosting your starting moon	出生卫星所属气态巨星的主题
+Start on a moon of a rocky planet	从岩石行星的卫星出生
+Start on a moon of a gas giant	从气态巨星的卫星出生
+Gas giants cannot be selected as the birth planet.	无法将气态巨星设为出生行星。
+Could not find birthplanet as there are no stars or planets.	星系中没有任何恒星或行星，无法确定出生行星。
+Binary Primary Types	双星主星类型
+Choose which star types can have a binary companion	选择可拥有双星伴星的恒星类型
+Binary Companion Types	双星伴星类型
+Choose which star types can be secondary stars	选择可作为伴星生成的恒星类型
+Dark Fog Settings	黑雾设置
+Default Dark Fog settings for new galaxies	新星系的默认黑雾设置
+Enable or disable Dark Fog in new galaxies	在新星系中开启或关闭黑雾
+Same choices as New Game Dark Fog settings	与新游戏界面的黑雾难度选项一致
+Allow Dark Fog in Birth System	允许出生星系出现黑雾
+Allow Dark Fog hives to spawn in your starting star system	允许黑雾太空巢穴在出生星系生成
+Allow Dark Fog on Birth Planet	允许出生行星出现黑雾
+Allow Dark Fog relays to land on your starting planet	允许黑雾中继站登陆出生行星
+Starting Dark Fog level	黑雾初始等级
+Starting hive occupation	巢穴初始占领度
+Initial Occupation	初始占领度
+Starting hive growth	黑雾初始成长速度
+Growth Speed	成长速度
+Dark Fog growth speed	黑雾成长速度
+Maximum hive density	最大巢穴密度
+Combat Threat Factor	战斗威胁系数
+Combat-based threat	战斗产生的威胁度
+Power-based threat	电力消耗产生的威胁度
+Combat Experience Factor	黑雾经验系数
+Combat experience	黑雾战斗经验获取倍率
+GS2 can safely support x5, use higher at your own risk.	GS2 可稳定支持 5 倍，超过此值请自行承担风险。
+Change the Sol system planets day/night cycle	调整太阳系行星的昼夜时长
+Huge gas giants	超大尺寸气态巨星
+# Performance / Shield Scaling / UI & HUD
+Performance	性能优化
+Performance settings for big galaxies	面向大型星系的性能优化设置
+Throttle Distant Stars	远距恒星降频更新
+Updates far stars less often	降低远处恒星的刷新频率以提升帧率
+Far Star Update Interval	远距恒星更新间隔
+Frames between far star updates	远处恒星每次更新间隔的帧数
+Near Star Distance (LY)	近距恒星范围（光年）
+Stars closer than this use default logic	小于此距离的恒星使用原版全速刷新
+Stars While Moving	移动时恒星刷新模式
+Stars may shimmer with options above smooth	高于“流畅”档位时远处恒星可能轻微闪烁
+Throttle Distant Planets	远距行星降频更新
+Updates far planets less often	降低远处行星的刷新频率以提升帧率
+Far Planet Update Interval	远距行星更新间隔
+Ticks between far planet updates	远处行星每次更新间隔的逻辑帧（Tick）
+Show Brush Size Buttons	显示地基笔刷尺寸按钮
+Toggle for brush size buttons visibility	切换地基笔刷尺寸快捷按钮的显示状态
+Shield Scaling: Off	护盾缩放：已关闭
+Planetwide Shield mod detected	检测到星球全局护盾（Planetwide Shield）模组
+Shield Scaling: Small Planets	护盾缩放：小行星
+0=vanilla Higher= bigger shields on small planets	0=原版；数值越高，小行星上的护盾覆盖越大
+Shield Scaling: Large Planets	护盾缩放：大行星
+0=vanilla Higher=Weakens shields on big planets	0=原版；数值越高，大行星上的护盾范围越缩减
+Dev keybinds to refresh theme+shows Dev generator	启用主题刷新快捷键并显示 Dev 调试生成器
+Planetary Radius	行星半径
+Planet Radius	行星半径
+How large the planet is. Standard is 200	行星的半径大小（原版标准为 200）
+Darkfog Bases	黑雾基地
+DarkFog Infested	黑雾盘踞
+Distance Left	剩余距离
+Lands in {0}	预计 {0} 后着陆
+Loading Planets:\s	正在加载行星：
