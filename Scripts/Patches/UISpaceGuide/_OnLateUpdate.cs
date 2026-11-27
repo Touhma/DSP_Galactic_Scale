@@ -144,16 +144,42 @@ namespace GalacticScale
                                     var hostId = planetObj.orbitAroundPlanet.id;
                                     if (hostId >= 0 && hostId < __instance.astroPoses.Length)
                                     {
-                                        var hostRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[hostId].uPos - __instance.relPos);
                                         var moonScreen = __instance.gameCamera.WorldToScreenPoint(_rpos2);
-                                        var hostScreen = __instance.gameCamera.WorldToScreenPoint(hostRpos);
-                                        if (moonScreen.z > 0f && hostScreen.z > 0f)
+                                        if (moonScreen.z > 0f)
                                         {
                                             // Rectangular text-box overlap check scaled for DPI (2-line space guide label: name + distance)
                                             var dpiScale = Mathf.Max(1f, Screen.height / 1080f);
-                                            if (Mathf.Abs(moonScreen.x - hostScreen.x) < 78f * dpiScale
-                                                && Mathf.Abs(moonScreen.y - hostScreen.y) < 34f * dpiScale)
+                                            var boxW = 78f * dpiScale;
+                                            var boxH = 34f * dpiScale;
+
+                                            var hostRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[hostId].uPos - __instance.relPos);
+                                            var hostScreen = __instance.gameCamera.WorldToScreenPoint(hostRpos);
+                                            if (hostScreen.z > 0f
+                                                && Mathf.Abs(moonScreen.x - hostScreen.x) < boxW
+                                                && Mathf.Abs(moonScreen.y - hostScreen.y) < boxH)
+                                            {
                                                 showPlanetLabel = false;
+                                            }
+                                            else if (planetObj.star?.planets != null)
+                                            {
+                                                // Also hide if overlapping an earlier sibling moon of the same host planet (e.g., Jupiter's Galilean moons)
+                                                var siblings = planetObj.star.planets;
+                                                for (var si = 0; si < siblings.Length; si++)
+                                                {
+                                                    var sib = siblings[si];
+                                                    if (sib == null || sib.orbitAroundPlanet != planetObj.orbitAroundPlanet || sib.id >= planetID) continue;
+                                                    if (sib.id < 0 || sib.id >= __instance.astroPoses.Length) continue;
+                                                    var sibRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[sib.id].uPos - __instance.relPos);
+                                                    var sibScreen = __instance.gameCamera.WorldToScreenPoint(sibRpos);
+                                                    if (sibScreen.z > 0f
+                                                        && Mathf.Abs(moonScreen.x - sibScreen.x) < boxW
+                                                        && Mathf.Abs(moonScreen.y - sibScreen.y) < boxH)
+                                                    {
+                                                        showPlanetLabel = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
