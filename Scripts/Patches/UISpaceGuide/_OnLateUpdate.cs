@@ -132,6 +132,59 @@ namespace GalacticScale
 
                             if (showPlanetLabel)
                                 showPlanetLabel = __instance.CheckVisible(pId0, planetID, __instance.astroPoses[planetID].uPos, camUPos);
+                            if (showPlanetLabel && __instance.mouseInPlanet != planetID
+                                && __instance.history.GetPlanetPin(planetID) != EPin.Show
+                                && (__instance.player?.navigation == null || __instance.player.navigation.indicatorAstroId != planetID)
+                                && __instance.galaxy != null && __instance.gameCamera != null && __instance.astroPoses != null)
+                            {
+                                // Hide distant moon labels when they visually overlap their host planet on screen (e.g., Pluto + Charon)
+                                var planetObj = __instance.galaxy.PlanetById(planetID);
+                                if (planetObj?.orbitAroundPlanet != null && _rpos2.magnitude > 10000f)
+                                {
+                                    var hostId = planetObj.orbitAroundPlanet.id;
+                                    if (hostId >= 0 && hostId < __instance.astroPoses.Length)
+                                    {
+                                        var moonScreen = __instance.gameCamera.WorldToScreenPoint(_rpos2);
+                                        if (moonScreen.z > 0f)
+                                        {
+                                            // Rectangular text-box overlap check scaled for DPI (2-line space guide label: name + distance)
+                                            var dpiScale = Mathf.Max(1f, Screen.height / 1080f);
+                                            var boxW = 78f * dpiScale;
+                                            var boxH = 34f * dpiScale;
+
+                                            var hostRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[hostId].uPos - __instance.relPos);
+                                            var hostScreen = __instance.gameCamera.WorldToScreenPoint(hostRpos);
+                                            if (hostScreen.z > 0f
+                                                && Mathf.Abs(moonScreen.x - hostScreen.x) < boxW
+                                                && Mathf.Abs(moonScreen.y - hostScreen.y) < boxH)
+                                            {
+                                                showPlanetLabel = false;
+                                            }
+                                            else if (planetObj.star?.planets != null)
+                                            {
+                                                // Also hide if overlapping a closer sibling moon (by camera depth z, with id tiebreaker)
+                                                var siblings = planetObj.star.planets;
+                                                for (var si = 0; si < siblings.Length; si++)
+                                                {
+                                                    var sib = siblings[si];
+                                                    if (sib == null || sib.id == planetID || sib.orbitAroundPlanet != planetObj.orbitAroundPlanet) continue;
+                                                    if (sib.id < 0 || sib.id >= __instance.astroPoses.Length) continue;
+                                                    var sibRpos = Maths.QInvRotateLF(__instance.relRot, __instance.astroPoses[sib.id].uPos - __instance.relPos);
+                                                    var sibScreen = __instance.gameCamera.WorldToScreenPoint(sibRpos);
+                                                    if (sibScreen.z > 0f
+                                                        && (sibScreen.z < moonScreen.z - 1f || (Mathf.Abs(sibScreen.z - moonScreen.z) <= 1f && sib.id < planetID))
+                                                        && Mathf.Abs(moonScreen.x - sibScreen.x) < boxW
+                                                        && Mathf.Abs(moonScreen.y - sibScreen.y) < boxH)
+                                                    {
+                                                        showPlanetLabel = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             if (showPlanetLabel)
                                 __instance.SetEntry(ref _guidecnt, ESpaceGuideType.Planet, planetID, 0, _rpos2, __instance.astroPoses[planetID].uRadius);
                         }
