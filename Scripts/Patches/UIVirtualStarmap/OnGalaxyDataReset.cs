@@ -150,7 +150,7 @@ namespace GalacticScale
             }
 
             var text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
-            text.text = $"Start Game at {__instance._galaxyData.PlanetById(__instance._galaxyData.birthPlanetId)?.displayName}";
+            text.text = string.Format("Start Game at {0}".Translate(), __instance._galaxyData.PlanetById(__instance._galaxyData.birthPlanetId)?.displayName);
             text.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             return false;

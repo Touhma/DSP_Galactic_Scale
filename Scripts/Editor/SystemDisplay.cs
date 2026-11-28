@@ -498,7 +498,7 @@ namespace GalacticScale
                 GameMain.data.galaxy.birthStarId = viewStar.id;
                 // GS2.Warn($" GSSettings.BirthPlanetId:{GSSettings.BirthPlanetId} should be {pData.id} {GSSettings.BirthPlanet.Name} should be {pData.name}");
                 var text = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/start-button/start-text").GetComponent<Text>();
-                text.text = string.Format(GSLocalization.Translate("Start Game at {0}"), pData.displayName);
+                text.text = string.Format("Start Game at {0}".Translate(), pData.displayName);
                 text.horizontalOverflow = HorizontalWrapMode.Overflow;
             }
 
@@ -882,7 +882,7 @@ namespace GalacticScale
             var helpText = helpTextObject.GetComponent<Text>();
             // GS2.Log("4");
             if (leftGroup.GetComponentInChildren<Localizer>() != null) Object.DestroyImmediate(leftGroup.GetComponentInChildren<Localizer>());
-            helpText.text = GSLocalization.Translate("Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn");
+            helpText.text = "Click star/planet to view system/details\r\nMousewheel to zoom\r\nMovement keys to pan\r\nShift to increase zoom/pan speed\r\nHold Alt to show names in Galaxy view/press it to toggle names in System view\r\nSpace to reset view\r\nRightclick star/planet to set spawn".Translate();
             helpText.alignment = TextAnchor.LowerLeft;
             leftGroup.SetActive(true);
             // GS2.Log("5");

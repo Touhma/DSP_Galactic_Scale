@@ -512,7 +512,7 @@ namespace GalacticScale
                 SID = "",
                 PlanetType = PlanetType,
                 DisplayName = DisplayName,
-                displayName = DisplayName,
+                displayName = DisplayName.Translate(),
                 Algos = new[] { Algo },
                 MaterialPath = MaterialPath,
                 Temperature = Temperature,

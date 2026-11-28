@@ -118,7 +118,7 @@ namespace GalacticScale
 
         private string FormatValue(float value)
         {
-            if (negativeLabel != "" && value < 0) return GSLocalization.Translate(negativeLabel);
+            if (negativeLabel != "" && value < 0) return negativeLabel.Translate();
             if (valueFormatter != null) return valueFormatter(value);
             var labelIndex = Mathf.RoundToInt(value - minValue);
             if (valueLabels != null && labelIndex >= 0 && labelIndex < valueLabels.Length)
