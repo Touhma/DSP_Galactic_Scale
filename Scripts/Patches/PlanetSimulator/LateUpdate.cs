@@ -116,7 +116,6 @@ namespace GalacticScale
 				}
 				UniverseSimulator.VirtualMapping(uPos.x, uPos.y, uPos.z, position, out _, out var vscale);
 				float atmosphereScale = planetData.GetAtmosphereScale();
-				// Keep the quad's camera offset in planet units. Only extend the depth limit for larger planets.
 				float quadDepth = Mathf.Clamp(Vector3.Dot(posToCam, __instance.lookCamera.forward) + 10f, 0f, Mathf.Max(320f, 320f * atmosphereScale));
 				__instance.atmoTrans1.localPosition = new Vector3(0f, 0f, quadDepth);
                 float fieldOfView = GameCamera.main.fieldOfView;
