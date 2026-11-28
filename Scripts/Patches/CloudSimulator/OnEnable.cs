@@ -23,7 +23,6 @@ namespace GalacticScale
             ScaleMaterial(planet.nephogramMaterial, scale);
             ScaleMaterial(planet.cloudMaterial, scale);
 
-            // CloudRenderer scatters particles around the shell with a fixed radial spread.
             float shellRadius = planet.realRadius + __instance.cloudHeight;
             var particles = __instance.cloudr.instArr;
             for (int i = 0; i < particles.Length; i++)
@@ -40,7 +39,6 @@ namespace GalacticScale
             var settings = MaterialSettings.GetValue(material, source => new CloudMaterialSettings(source));
             if (settings.Tiling.HasValue)
             {
-                // The sphere shader and particle culling shader sample in planet-local distance units.
                 var tiling = settings.Tiling.Value;
                 tiling.w /= scale;
                 material.SetVector(TileSettings, tiling);
