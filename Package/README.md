@@ -45,7 +45,7 @@ https://discord.gg/NbpBn6gM6d To talk about the mod and ask me questions directl
 
 # Patch notes & releases :
 
-See the Changelog tab for patch notes and [GitHub Releases](https://github.com/Touhma/DSP_Plugins/releases) for releases.
+See the Changelog tab for patch notes and the Versions tab for releases.
 
 # Bug report :
 
@@ -130,6 +130,6 @@ Credits:
 -
 - Devious55 - GS2 Code / Maintainer
 -
-- Kimi-Arthur - GS2 Code
+- Kimi-Arthur - GS2/NiceSol Code / GS2 Simplified Chinese Translation
 -
 - komonad - GS2 Code
