@@ -475,6 +475,7 @@ Shield Scaling: Small Planets	护盾缩放：小行星
 Shield Scaling: Large Planets	护盾缩放：大行星
 0=vanilla Higher=Weakens shields on big planets	0=原版；数值越高，大行星上的护盾范围越缩减
 Dev keybinds to refresh theme+shows Dev generator	启用主题刷新快捷键并显示 Dev 调试生成器
+Orbit Eccentricity	轨道偏心率
 Planetary Radius	行星半径
 Planet Radius	行星半径
 How large the planet is. Standard is 200	行星的半径大小（原版标准为 200）

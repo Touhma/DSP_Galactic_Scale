@@ -17,6 +17,11 @@ namespace GalacticScale
             return planet.radius / 200;
         }
 
+        internal static float GetAtmosphereScale(this PlanetData planet)
+        {
+            return planet.realRadius / (planet.type == EPlanetType.Gas ? 800f : 200f);
+        }
+
         // Deep copy method for safe copying of all relevant fields
         public static void DeepCopyScannedDataFrom(this PlanetData target, PlanetData copy)
         {

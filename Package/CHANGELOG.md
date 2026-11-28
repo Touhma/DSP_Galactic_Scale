@@ -1,12 +1,33 @@
-## 2.81.0
+## 2.81.2
+
+### Changes by Kimi-Arthur:
+
+**Improvements**
+
+- Prevented distant moon labels from overlapping their host planet labels in space and on the starmap.
+- Shortened long NiceSol star names for cleaner HUD and starmap labels.
+- Unified localization through `.Translate()` and completed the Simplified Chinese (`zh-CN`) translations.
+
+### Changes by Devious:
+
+**Features**
+
+- Added orbit eccentricity to the planet summary alongside the other orbital details.
+
+**Bugfixes**
+
+- Fixed missing atmospheres on non-vanilla sized planets.
+- Fixed cloud height, thickness, and pattern scaling on non-vanilla sized planets.
+
+## 2.81.1
 
 ### Changes by Kimi-Arthur:
 
 **Features**
 
--Added procedural planetary ring system for gas giants.
--Added dynamic night-side polar planetary auroras for atmospheric planets and gas giants.
--Added elliptical orbits to comets and comet tails.
+- Added procedural planetary ring system for gas giants.
+- Added dynamic night-side polar planetary auroras for atmospheric planets and gas giants.
+- Added elliptical orbits to comets and comet tails.
 
 
 
@@ -14,12 +35,12 @@
 
 **Features**
 
--I've finally added elliptical orbits which were planned like 5 years ago, but are now finally here, yay. Elliptical orbits will only generate in new galaxies to avoid breaking saves prior to this update. Maximum Orbit Eccentricity under System Settings controls the ceilling for elliptical orbits.
+- I've finally added elliptical orbits which were planned like 5 years ago, but are now finally here, yay. Elliptical orbits will only generate in new galaxies to avoid breaking saves prior to this update. Maximum Orbit Eccentricity under System Settings controls the ceilling for elliptical orbits.
 
 **Bugfixes**
 
--Fixed bent spray coaters.
--Fixed small terrain vertex issue.
+- Fixed bent spray coaters.
+- Fixed small terrain vertex issue.
 
 ## 2.80.11
 

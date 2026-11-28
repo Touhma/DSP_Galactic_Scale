@@ -45,7 +45,7 @@ https://discord.gg/NbpBn6gM6d To talk about the mod and ask me questions directl
 
 # Patch notes & releases :
 
-See the Changelog tab for patch notes and the Versions tab for releases.
+See the Changelog tab for patch notes and [GitHub Releases](https://github.com/Touhma/DSP_Plugins/releases) for releases.
 
 # Bug report :
 

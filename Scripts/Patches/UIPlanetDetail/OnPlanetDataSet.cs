@@ -17,6 +17,8 @@ namespace GalacticScale
 {
 	public partial class PatchOnUIPlanetDetail
 	{
+		private const int SummaryRowHeight = 20;
+		private const int AddedSummaryRows = 2;
 		private static int actualLevel = 5;
 
 		[HarmonyFinalizer]
@@ -37,45 +39,46 @@ namespace GalacticScale
 		[HarmonyPatch(typeof(UIPlanetDetail), "OnPlanetDataSet")]
 		public static void OnPlanetDataSet(ref UIPlanetDetail __instance)
 		{
-			// GS2.Warn("Dataset");
-			// GS2.Warn(__instance.obliquityValueText.transform.parent.transform.parent.childCount.ToString());
-			// Add the planets radius to the Planet Detail UI
-			// if (GS2.GetGSPlanet( __instance.planet).GsTheme.DisplayName == "Comet") __instance.
-			if (__instance.obliquityValueText.transform.parent.transform.parent.childCount == 7)
-			{
-				GameObject radiusLabel;
-				var obliquityLabel = __instance.obliquityValueText.transform.parent.gameObject;
-				radiusLabel = Object.Instantiate(obliquityLabel, obliquityLabel.transform.parent.transform);
-				var parentRect = obliquityLabel.transform.parent.transform.GetComponent<RectTransform>();
-				parentRect.sizeDelta = new Vector2(0, 40);
-				radiusLabel.transform.localPosition += Vector3.down * 20;
-				var radiusLabelText = radiusLabel.GetComponent<Text>();
-				radiusLabelText.GetComponent<Localizer>().enabled = false;
-				var radiusIcon = radiusLabel.transform.GetChild(1).GetComponent<Image>();
-				var uiButton = radiusLabel.transform.GetChild(1).GetComponent<UIButton>();
-				uiButton.tips.tipText = "How large the planet is. Standard is 200".Translate();
-				uiButton.tips.tipTitle = "Planet Radius".Translate();
-
-				//GS2.LogJson(uiButton.button);
-				if (uiButton.button == null) uiButton.button = uiButton.gameObject.AddComponent<Button>();
-
-				uiButton.button.transform.SetParent(uiButton.transform);
-
-				radiusIcon.sprite = Utils.GetSpriteAsset("ruler");
-				var radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
-				radiusLabelText.text = "Planetary Radius".Translate();
-				radiusValueText.text = __instance.planet.realRadius.ToString();
-			}
-
-			if (__instance.obliquityValueText.transform.parent.transform.parent.childCount == 8)
-			{
-				var p = __instance.obliquityValueText.transform.parent.parent;
-				var radiusLabel = p.GetChild(p.childCount - 1).gameObject;
-				var radiusValueText = radiusLabel.transform.GetChild(0).GetComponent<Text>();
-				if (__instance.planet != null) radiusValueText.text = __instance.planet.realRadius.ToString();
-			}
-
 			GameMain.history.universeObserveLevel = actualLevel;
+			var planet = __instance.planet;
+			if (planet == null) return;
+
+			var template = (RectTransform)__instance.obliquityValueText.transform.parent;
+			var eccentricity = EllipticalOrbits.TryGetElements(planet, out var elements) && elements.planetData == planet
+				? elements.OrbitEccentricity
+				: 0f;
+			SetSummaryRow(template, "Orbit Eccentricity", 1, eccentricity.ToString("0.000###"));
+			SetSummaryRow(template, "Planetary Radius", AddedSummaryRows, planet.realRadius.ToString(),
+				"ruler", "Planet Radius", "How large the planet is. Standard is 200");
+		}
+
+		private static void SetSummaryRow(RectTransform template, string label, int offset, string value,
+			string iconAsset = null, string tipTitle = null, string tipText = null)
+		{
+			var rowName = "GS2 " + label;
+			var row = template.parent.Find(rowName) as RectTransform;
+			if (row == null)
+			{
+				row = Object.Instantiate(template, template.parent);
+				row.name = rowName;
+				row.GetComponent<Localizer>().stringKey = label;
+
+				var icon = row.GetChild(1);
+				icon.gameObject.SetActive(iconAsset != null);
+				if (iconAsset != null)
+				{
+					icon.GetComponent<Localizer>().enabled = false;
+					icon.GetComponent<Image>().sprite = Utils.GetSpriteAsset(iconAsset);
+					var button = icon.GetComponent<UIButton>();
+					button.tips.tipTitle = tipTitle.Translate();
+					button.tips.tipText = tipText.Translate();
+					if (button.button == null) button.button = icon.gameObject.AddComponent<Button>();
+				}
+			}
+
+			row.anchoredPosition = template.anchoredPosition + Vector2.down * (offset * SummaryRowHeight);
+			row.GetComponent<Text>().text = label.Translate();
+			row.GetChild(0).GetComponent<Text>().text = value;
 		}
 
 		[HarmonyPrefix]
