@@ -115,8 +115,9 @@ namespace GalacticScale
 					uPos -= GameMain.mainPlayer.uPosition;
 				}
 				UniverseSimulator.VirtualMapping(uPos.x, uPos.y, uPos.z, position, out _, out var vscale);
-				float scaleFactored = planetData.GetScaleFactored();
-				__instance.atmoTrans1.localPosition = new Vector3(0, 0, Mathf.Clamp(Vector3.Dot(posToCam, __instance.lookCamera.forward) + 10f / scaleFactored, 0.0f, Math.Max(320f, 320f * scaleFactored)));
+				float atmosphereScale = planetData.GetAtmosphereScale();
+				float quadDepth = Mathf.Clamp(Vector3.Dot(posToCam, __instance.lookCamera.forward) + 10f, 0f, Mathf.Max(320f, 320f * atmosphereScale));
+				__instance.atmoTrans1.localPosition = new Vector3(0f, 0f, quadDepth);
                 float fieldOfView = GameCamera.main.fieldOfView;
                 float aspect = GameCamera.main.aspect;
                 float num2 = Mathf.Atan(Mathf.Tan(fieldOfView / 2f * ((float)Math.PI / 180f)) * aspect) * 2f * 57.29578f;
@@ -136,7 +137,7 @@ namespace GalacticScale
 				float distanceControl = Mathf.Max(0f, distancePosToCam / 6000f - 1f);
 				Vector4 radiusParam = __instance.atmoMatRadiusParam;
 				radiusParam.z = radiusParam.x + (radiusParam.z - radiusParam.x) * (2.7f - scaleRadiusControl * 1.7f);
-				radiusParam = radiusParam * vscale * __instance.planetData.GetScaleFactored();
+				radiusParam *= vscale * atmosphereScale;
 				
 				
 				atmoMat.SetVector(PlanetPos, __instance.transform.localPosition);
@@ -145,7 +146,7 @@ namespace GalacticScale
 				atmoMat.SetColor(Color4, __instance.star.sunAtmosColor);
 				atmoMat.SetColor(Sky4, __instance.star.sunriseAtmosColor);
 				atmoMat.SetVector(LocalPos, localPos);
-				atmoMat.SetFloat(SunRiseScatterPower, Mathf.Max(60f * scaleFactored, (distancePosToCam - planetData.realRadius * 2f) * 0.18f));
+				atmoMat.SetFloat(SunRiseScatterPower, Mathf.Max(60f * atmosphereScale, (distancePosToCam - planetData.realRadius * 2f) * 0.18f));
 				atmoMat.SetFloat(IntensityControl, intensityControl);
 				atmoMat.SetFloat(DistanceControl, distanceControl);
 				atmoMat.renderQueue = planetData == localPlanet ? 2991 : 2989;
@@ -156,7 +157,7 @@ namespace GalacticScale
 				atmoMatLate.SetColor(Color4, __instance.star.sunAtmosColor);
 				atmoMatLate.SetColor(Sky4, __instance.star.sunriseAtmosColor);
 				atmoMatLate.SetVector(LocalPos, localPos);
-				atmoMatLate.SetFloat(SunRiseScatterPower, Mathf.Max(60f * scaleFactored, (distancePosToCam - planetData.realRadius * 2f) * 0.18f));
+				atmoMatLate.SetFloat(SunRiseScatterPower, Mathf.Max(60f * atmosphereScale, (distancePosToCam - planetData.realRadius * 2f) * 0.18f));
 				atmoMatLate.SetFloat(IntensityControl, intensityControl);
 				atmoMatLate.SetFloat(DistanceControl, distanceControl);
 				if (planetData == localPlanet)

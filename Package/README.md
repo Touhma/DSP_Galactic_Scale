@@ -130,6 +130,6 @@ Credits:
 -
 - Devious55 - GS2 Code / Maintainer
 -
-- Kimi-Arthur - GS2 Code
+- Kimi-Arthur - GS2/NiceSol Code / GS2 Simplified Chinese Translation
 -
 - komonad - GS2 Code
